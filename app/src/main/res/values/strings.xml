@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Exhibition</string>
+    <string name="error_no_connection">No Connection</string>
+    <string name="waiting">loading ...</string>
+</resources>
