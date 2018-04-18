@@ -1,6 +1,6 @@
 package ishopgo.com.exhibition.ui.base.list
 
-import ishopgo.com.exhibition.ui.base.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 
 /**
  * Created by xuanhong on 3/16/18. HappyCoding!

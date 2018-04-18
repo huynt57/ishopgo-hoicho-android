@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.base
+package ishopgo.com.exhibition.domain
 
 /**
  * Created by xuanhong on 1/6/18. HappyCoding!

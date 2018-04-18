@@ -6,6 +6,7 @@ import android.util.Log
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import ishopgo.com.exhibition.BuildConfig
+import ishopgo.com.exhibition.domain.BaseErrorSignal
 
 /**
  * @author Steve

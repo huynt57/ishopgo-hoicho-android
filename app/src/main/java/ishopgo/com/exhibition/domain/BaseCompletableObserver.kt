@@ -1,6 +1,8 @@
-package ishopgo.com.exhibition.ui.base
+package ishopgo.com.exhibition.domain
 
 import io.reactivex.observers.DisposableCompletableObserver
+import ishopgo.com.exhibition.domain.BaseErrorSignal
+import ishopgo.com.exhibition.domain.IResponse
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException

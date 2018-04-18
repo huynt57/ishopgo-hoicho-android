@@ -14,6 +14,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
+import ishopgo.com.exhibition.domain.BaseErrorSignal
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.extensions.transact
 

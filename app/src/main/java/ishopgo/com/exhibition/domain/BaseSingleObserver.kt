@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.base
+package ishopgo.com.exhibition.domain
 
 import io.reactivex.observers.DisposableSingleObserver
 import ishopgo.com.exhibition.domain.response.BaseDataResponse

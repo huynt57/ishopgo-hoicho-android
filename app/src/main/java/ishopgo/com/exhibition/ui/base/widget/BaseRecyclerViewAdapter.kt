@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.base
+package ishopgo.com.exhibition.ui.base.widget
 
 import android.support.v7.widget.RecyclerView
 import android.util.SparseBooleanArray
