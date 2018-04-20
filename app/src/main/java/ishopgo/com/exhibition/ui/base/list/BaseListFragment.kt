@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  */
 abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
 
-    protected lateinit var adapter: BaseListAdapter<ITEM>
+    protected lateinit var adapter: ClickableAdapter<ITEM>
     protected lateinit var viewModel: BaseListViewModel<DATA>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -74,7 +74,7 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
 
     abstract fun populateData(data: DATA)
 
-    abstract fun itemAdapter(): BaseListAdapter<ITEM>
+    abstract fun itemAdapter(): ClickableAdapter<ITEM>
 
     abstract fun title(): String
 

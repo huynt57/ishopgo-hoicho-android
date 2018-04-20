@@ -1,10 +1,12 @@
-package ishopgo.com.exhibition.ui.base.splash
+package ishopgo.com.exhibition.ui.splash
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 
 
 class SplashActivity : BaseActivity() {
@@ -18,6 +20,14 @@ class SplashActivity : BaseActivity() {
 
         viewModel = obtainViewModel(SplashViewModel::class.java)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+
+        handler.postDelayed({
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            startActivity(intent)
+
+            finish()
+
+        }, 500)
     }
 
 }

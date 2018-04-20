@@ -49,7 +49,7 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         }
     }
 
-    fun replaceAll(data: List<T>) {
+    open fun replaceAll(data: List<T>) {
         mData.clear()
         mData.addAll(data)
         notifyDataSetChanged()
@@ -130,8 +130,8 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
 
     abstract fun createHolder(v: View, viewType: Int): ViewHolder<T>
 
-    class ViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun populate(data: T) {
+    open class ViewHolder<T>(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        open fun populate(data: T) {
 
         }
     }

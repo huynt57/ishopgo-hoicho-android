@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.base.splash
+package ishopgo.com.exhibition.ui.splash
 
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel

@@ -1,9 +1,11 @@
 package ishopgo.com.exhibition.app
 
 import android.app.Application
-import ishopgo.com.exhibition.ui.base.splash.SplashViewModel
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
+import ishopgo.com.exhibition.ui.main.MainViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
+import ishopgo.com.exhibition.ui.splash.SplashViewModel
 import javax.inject.Singleton
 
 @Singleton
@@ -14,10 +16,12 @@ interface AppComponent {
 
     fun apiService(): ApiService
 
-    fun inject(splashViewModel: SplashViewModel)
-
     interface Injectable {
         fun inject(appComponent: AppComponent)
     }
+
+    fun inject(splashViewModel: SplashViewModel)
+    fun inject(main: MainViewModel)
+    fun inject(productDetailViewModel: ProductDetailViewModel)
 
 }

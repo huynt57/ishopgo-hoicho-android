@@ -2,17 +2,32 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="25dp">
 
     <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@mipmap/ic_launcher"
+        android:id="@+id/imageView3"
+        android:layout_width="336dp"
+        android:layout_height="128dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/flyer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintVertical_chainStyle="packed"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 </android.support.constraint.ConstraintLayout>

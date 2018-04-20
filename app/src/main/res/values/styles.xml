@@ -10,4 +10,34 @@
         <item name="android:textColor">@color/colorPureBlack</item>
     </style>
 
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.MoreInfo" parent="TextAppearance.AppCompat.Small">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="AppTheme.SectionLabel" parent="TextAppearance.AppCompat.Small">
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/colorPureBlack</item>
+    </style>
+
+    <style name="AppTheme.CategoryTitle" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textSize">14sp</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/colorGrey_800</item>
+    </style>
+
+
 </resources>

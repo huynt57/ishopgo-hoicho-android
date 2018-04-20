@@ -5,7 +5,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 /**
  * Created by xuanhong on 3/16/18. HappyCoding!
  */
-abstract class BaseListAdapter<T> : BaseRecyclerViewAdapter<T>() {
+abstract class ClickableAdapter<T> : BaseRecyclerViewAdapter<T>() {
 
     var listener: BaseAdapterAction<T>? = null
 

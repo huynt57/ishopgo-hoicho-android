@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    tools:parentTag="android.support.constraint.ConstraintLayout">
+
+    <TextView
+        android:id="@+id/view_toolbar_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view_option_end"
+        app:layout_constraintStart_toEndOf="@+id/view_toolbar_start"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="?attr/actionBarSize"
+        app:layout_goneMarginStart="?attr/actionBarSize"
+        tools:text="Title"/>
+
+    <ImageView
+        android:id="@+id/view_toolbar_start"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher"
+        tools:visibility="visible"/>
+
+    <RelativeLayout
+        android:id="@+id/view_option_end"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="end|center_vertical"
+        android:padding="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginEnd="?attr/actionBarSize"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/view_toolbar_end"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center_vertical"
+            android:layout_margin="8dp"
+            android:visibility="visible"
+            app:srcCompat="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_unread_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/notification_circle"
+            android:gravity="center"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
+            android:singleLine="true"
+            android:text="12"
+            android:textColor="@color/colorPureWhite"
+            android:textSize="12sp"
+            android:visibility="visible"
+            />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_option_end2"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_gravity="end|center_vertical"
+        android:padding="4dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_option_end"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible"
+        >
+
+        <ImageView
+            android:id="@+id/view_toolbar_end2"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="end|center_vertical"
+            android:layout_margin="8dp"
+            android:visibility="visible"
+            app:srcCompat="@mipmap/ic_launcher"/>
+
+        <TextView
+            android:id="@+id/tv_unread_count2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/notification_circle"
+            android:gravity="center"
+            android:minHeight="20dp"
+            android:minWidth="20dp"
+            android:singleLine="true"
+            android:text="12"
+            android:textColor="@color/colorPureWhite"
+            android:textSize="12sp"
+            android:visibility="visible"
+            />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/view_divider_toolbar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPureBlack"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</merge>
