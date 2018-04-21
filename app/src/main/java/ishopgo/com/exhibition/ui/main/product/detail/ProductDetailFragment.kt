@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.TypedValue
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,12 +15,15 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.brand.ProductsByBrandActivity
-import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailFragment
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
+import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
+import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
 
@@ -41,6 +43,7 @@ class ProductDetailFragment : BaseActionBarFragment() {
     private val sameShopProductsAdapter = ProductAdapter(0.4f)
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
+    private val productCommentAdapter = ProductCommentAdapter()
     private var productId: Long = -1L
 
     override fun contentLayoutRes(): Int {
@@ -51,6 +54,8 @@ class ProductDetailFragment : BaseActionBarFragment() {
         super.onCreate(savedInstanceState)
 
         productId = arguments?.getLong(Const.TransferKey.EXTRA_ID) ?: -1L
+        if (productId == -1L)
+            throw RuntimeException("Sai dinh dang")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -97,7 +102,7 @@ class ProductDetailFragment : BaseActionBarFragment() {
             view_product_brand.text = product.provideProductBrand()
             view_product_description.text = product.provideProductShortDescription()
             view_product_show_more_description.setOnClickListener {
-                val intent = Intent(it.context, FullDetailFragment::class.java)
+                val intent = Intent(it.context, FullDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Gson().toJson(product))
                 startActivity(intent)
             }
@@ -127,15 +132,15 @@ class ProductDetailFragment : BaseActionBarFragment() {
                 // show all comment of this product
             }
             more_products_same_shop.setOnClickListener {
-                // show all products of this shop
+                openProductsByBrand(productId)
             }
             view_list_products_same_shop
             more_favorite.setOnClickListener {
-                // show all my favorite products
+                openFavoriteProducts()
             }
             view_list_favorite
             more_viewed.setOnClickListener {
-                // show all viewed products
+                openViewedProducts()
             }
             view_list_viewed
         }
@@ -146,6 +151,7 @@ class ProductDetailFragment : BaseActionBarFragment() {
 
         setupToolbars()
 
+        setupProductComments(view.context)
         setupFavoriteProducts(view.context)
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
@@ -155,18 +161,6 @@ class ProductDetailFragment : BaseActionBarFragment() {
     }
 
     private fun setupListeners() {
-        more_viewed.setOnClickListener {
-            // show all viewed products
-        }
-
-        more_favorite.setOnClickListener {
-            // show all favorited products
-        }
-
-        more_products_same_shop.setOnClickListener {
-            // show all same shop products
-        }
-
         favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
             override fun click(position: Int, data: ProductProvider, code: Int) {
                 openProductDetail(data)
@@ -196,15 +190,19 @@ class ProductDetailFragment : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Tìm kiếm")
-        val titleView = toolbar.getTitleView()
-        titleView.setBackgroundResource(R.drawable.bg_search_box)
-        titleView.setTextColor(resources.getColor(R.color.colorGrey_700))
-        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
-        toolbar.leftButton(R.drawable.ic_drawer_toggle_24dp)
+        toolbar.setCustomTitle("Chi tiết sản phẩm")
+        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
-
+            activity?.finish()
         }
+    }
+
+    private fun setupProductComments(context: Context) {
+        view_list_comments.adapter = productCommentAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_comments.layoutManager = layoutManager
+        view_list_comments.isNestedScrollingEnabled = false
+        view_list_comments.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupFavoriteProducts(context: Context) {
@@ -212,6 +210,7 @@ class ProductDetailFragment : BaseActionBarFragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view_list_favorite.layoutManager = layoutManager
         view_list_favorite.isNestedScrollingEnabled = false
+        view_list_favorite.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupSameShopProducts(context: Context) {
@@ -219,22 +218,7 @@ class ProductDetailFragment : BaseActionBarFragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view_list_products_same_shop.layoutManager = layoutManager
         view_list_products_same_shop.isNestedScrollingEnabled = false
-    }
-
-    private fun openProductDetail(product: ProductProvider) {
-        context?.let {
-            val intent = Intent(it, ProductDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, Gson().toJson(product))
-            startActivity(intent)
-        }
-    }
-
-    private fun openProductsByBrand(brand: HighlightBrandProvider) {
-        context?.let {
-            val intent = Intent(it, ProductsByBrandActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, Gson().toJson(brand))
-            startActivity(intent)
-        }
+        view_list_products_same_shop.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupViewedProducts(context: Context) {
@@ -242,6 +226,42 @@ class ProductDetailFragment : BaseActionBarFragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         view_list_viewed.layoutManager = layoutManager
         view_list_viewed.isNestedScrollingEnabled = false
+        view_list_viewed.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    private fun openFavoriteProducts() {
+        context?.let {
+            val intent = Intent(it, FavoriteProductsActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    private fun openViewedProducts() {
+        context?.let {
+            val intent = Intent(it, ViewedProductsActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    private fun openProductDetail(product: ProductProvider) {
+        context?.let {
+            if (product is IdentityData) {
+                val intent = Intent(it, ProductDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+                startActivity(intent)
+            }
+        }
+
+    }
+
+    private fun openProductsByBrand(productId: Long) {
+        context?.let {
+            val intent = Intent(it, ProductsByBrandActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+            startActivity(intent)
+        }
     }
 
 }

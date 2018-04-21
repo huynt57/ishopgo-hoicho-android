@@ -51,8 +51,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:background="@color/colorGrey_300"/>
+                    style="@style/AppTheme.DividerFat"/>
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/container_sponsors"
@@ -85,6 +84,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        android:clipToPadding="false"
+                        android:padding="@dimen/item_spacing"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -95,8 +96,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:background="@color/colorGrey_300"/>
+                    style="@style/AppTheme.DividerFat"/>
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/container_highlight_products"
@@ -129,6 +129,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
+                        android:clipToPadding="false"
+                        android:padding="@dimen/item_spacing"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -139,8 +141,7 @@
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="8dp"
-                    android:background="@color/colorGrey_300"/>
+                    style="@style/AppTheme.DividerFat"/>
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/container_viewed_products"
@@ -200,8 +201,7 @@
                     <View
                         android:id="@+id/divider_tab"
                         android:layout_width="0dp"
-                        android:layout_height="1px"
-                        android:background="@color/colorGrey_400"
+                        style="@style/AppTheme.DividerLine"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/label_suggest"/>
@@ -211,6 +211,8 @@
                         android:id="@+id/view_list_referenced_products"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:padding="@dimen/item_spacing"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
@@ -239,12 +241,11 @@
             android:padding="8dp"
             android:text="Danh mục sản phẩm"
             android:textAllCaps="true"
-            android:textColor="@color/colorGrey_800"/>
+            android:textColor="@color/md_grey_800"/>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/colorGrey_400"/>
+            style="@style/AppTheme.DividerLine"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_categories"

@@ -5,12 +5,8 @@
     <color name="colorAccent">#ff3d00</color>
     <color name="colorPureWhite">#FFFFFF</color>
     <color name="colorPureBlack">#000000</color>
-    <color name="colorGrey_300">#E0E0E0</color>
-    <color name="colorGrey_400">#BDBDBD</color>
-    <color name="colorGrey_500">#9E9E9E</color>
-    <color name="colorGrey_700">#616161</color>
-    <color name="colorGrey_800">#424242</color>
-    <color name="colorBlue_700">#1976D2</color>
 
-    <color name="control_button">@color/colorGrey_700</color>
+    <color name="control_button">@color/md_grey_700</color>
+    <color name="divider_line">@color/md_grey_400</color>
+    <color name="divider_fat">@color/md_grey_200</color>
 </resources>

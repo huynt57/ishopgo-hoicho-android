@@ -4,27 +4,35 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import com.google.gson.Gson
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
+import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.brand.ProductsByBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
+import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
+import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_main.*
+
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
@@ -37,8 +45,25 @@ class MainFragment : BaseActionBarFragment() {
     private val suggestedProductAdapter = ProductAdapter()
     private val viewedProductAdapter = ProductAdapter()
     private val favoriteProductAdapter = ProductAdapter()
-    private val highlightBrandAdapter = HighlightBrandAdapter()
+    private val highlightBrandAdapter = HighlightBrandAdapter(0.4f)
     private val categoriesAdapter = CategoryAdapter()
+    private var mPagerAdapter: FragmentPagerAdapter? = null
+    private var changePage = Runnable {
+        val currentItem = view_banner_pager.currentItem
+        val nextItem = (currentItem + 1) % (mPagerAdapter?.count ?: 1)
+        view_banner_pager.setCurrentItem(nextItem, nextItem != 0)
+
+        doChangeBanner()
+    }
+
+    private fun doChangeBanner() {
+        if (mPagerAdapter?.count ?: 1 > 1) {
+            view_banner_pager.handler?.let {
+                it.removeCallbacks(changePage)
+                it.postDelayed(changePage, 2500)
+            }
+        }
+    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_main
@@ -81,8 +106,56 @@ class MainFragment : BaseActionBarFragment() {
                 swipe.isRefreshing = false
             }
         })
+        viewModel.banners.observe(this, Observer { b ->
+            b?.let {
+                if (it.isEmpty()) {
+                    container_banner.visibility = View.GONE
+                } else {
+                    container_banner.visibility = View.VISIBLE
+                    showBanners(it)
+                }
+            }
+        })
 
         loadData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        doChangeBanner()
+
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        view_banner_pager.handler?.removeCallbacks(changePage)
+    }
+
+    private fun showBanners(imageUrls: List<String>) {
+        if (fragmentManager != null) {
+            mPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
+
+                override fun getItem(position: Int): Fragment {
+                    val params = Bundle()
+                    params.putString(Const.TransferKey.EXTRA_URL, imageUrls[position])
+                    return BannerImageFragment.newInstance(params)
+                }
+
+                override fun getCount(): Int {
+                    return imageUrls.size
+                }
+            }
+            view_banner_pager.offscreenPageLimit = imageUrls.size
+            view_banner_pager.adapter = mPagerAdapter
+            view_banner_indicator.setViewPager(view_banner_pager)
+
+            view_banner_pager.post {
+                if (imageUrls.size > 1)
+                    doChangeBanner()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,11 +202,11 @@ class MainFragment : BaseActionBarFragment() {
         }
 
         more_sponsors.setOnClickListener {
-            // show all brands
+            openPopularBrands()
         }
 
         more_highlight_products.setOnClickListener {
-            // show all highlight products
+            openHighlightProducts()
         }
 
         swipe.setOnRefreshListener {
@@ -190,6 +263,37 @@ class MainFragment : BaseActionBarFragment() {
 
     }
 
+    private fun openHighlightProducts() {
+        context?.let {
+            val intent = Intent(it, PopularProductsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openPopularBrands() {
+        context?.let {
+            val intent = Intent(it, PopularBrandsActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    private fun openViewedProducts() {
+        context?.let {
+            val intent = Intent(it, ViewedProductsActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    private fun openFavoriteProducts() {
+        context?.let {
+            val intent = Intent(it, FavoriteProductsActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
     private fun loadData() {
         viewModel.loadHighlightBrands()
         viewModel.loadHighlightProducts()
@@ -197,13 +301,14 @@ class MainFragment : BaseActionBarFragment() {
         viewModel.loadSuggestedProducts()
         viewModel.loadViewedProducts()
         viewModel.loadCategories()
+        viewModel.loadBanners()
     }
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Tìm kiếm")
         val titleView = toolbar.getTitleView()
         titleView.setBackgroundResource(R.drawable.bg_search_box)
-        titleView.setTextColor(resources.getColor(R.color.colorGrey_700))
+        titleView.setTextColor(resources.getColor(R.color.md_grey_700))
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
         toolbar.leftButton(R.drawable.ic_drawer_toggle_24dp)
         toolbar.setLeftButtonClickListener {
@@ -223,6 +328,7 @@ class MainFragment : BaseActionBarFragment() {
         layoutManager.isAutoMeasureEnabled = true
         view_list_referenced_products.layoutManager = layoutManager
         view_list_referenced_products.isNestedScrollingEnabled = false
+        view_list_referenced_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupSponsorsProducts(context: Context) {
@@ -230,6 +336,7 @@ class MainFragment : BaseActionBarFragment() {
         val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_sponsors.layoutManager = layoutManager
         view_list_sponsors.isNestedScrollingEnabled = false
+        view_list_sponsors.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun openProductDetail(product: ProductProvider) {
@@ -258,11 +365,13 @@ class MainFragment : BaseActionBarFragment() {
         layoutManager.isAutoMeasureEnabled = true
         view_list_highlight_products.layoutManager = layoutManager
         view_list_highlight_products.isNestedScrollingEnabled = false
+        view_list_highlight_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupCategories(context: Context) {
         rv_categories.adapter = categoriesAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_categories.layoutManager = layoutManager
+        rv_categories.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 }

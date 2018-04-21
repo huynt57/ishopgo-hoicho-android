@@ -23,6 +23,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val dummy = mutableListOf<HighlightBrandProvider>()
         for (i in 0..14)
             dummy.add(object : IdentityData(), HighlightBrandProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/11793/d2deb19a06df9d842fb60a966f1d2b9amy-pham-cao-cap-tphcm-napie-skinpng.png"
                 }
@@ -38,6 +43,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
             dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -65,6 +75,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
             dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -92,6 +107,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
             dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -119,6 +139,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
             dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -146,6 +171,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val dummy = mutableListOf<CategoryProvider>()
         for (i in 0..5)
             dummy.add(object : IdentityData(), CategoryProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideIcon(): String {
                     return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
                 }
@@ -185,6 +215,18 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
             })
 
         categories.postValue(dummy)
+    }
+
+    var banners = MutableLiveData<List<String>>()
+
+    fun loadBanners() {
+        val dummy = mutableListOf<String>()
+        dummy.add("http://1.bp.blogspot.com/-y1UTm1XVdbI/U0eBjHlNymI/AAAAAAAABFg/IMtJO_CEf0o/s1600/Revlon+Lipstick+Banner+3.jpg")
+        dummy.add("http://winkandasmilemakeup.com/wp-content/uploads/parser/makeup-banner-1.png")
+        dummy.add("https://s3.amazonaws.com/pikpsdnw/wp-content/uploads/2017/11/19123047/91.jpg")
+        dummy.add("http://corp.sasa.com/wps/wcm/connect/c5057d3f-34fa-4460-9aff-e46559c9ec42/CYB_Rosy+Makeup+line_Lipstick_Web+banner_20161125-01.jpg?MOD=AJPERES&CACHEID=c5057d3f-34fa-4460-9aff-e46559c9ec42")
+
+        banners.postValue(dummy)
     }
 
 }

@@ -29,7 +29,7 @@ class ProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float
         if (itemWidthRatio > 0)
             layoutParams.width = (screenWidth * itemWidthRatio).toInt()
         if (itemHeightRatio > 0)
-            layoutParams.width = (screenHeight * itemHeightRatio).toInt()
+            layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
         return productHolder
     }

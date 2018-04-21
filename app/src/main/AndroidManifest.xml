@@ -47,11 +47,35 @@
             />
 
         <activity
+            android:name=".ui.main.product.favorite.FavoriteProductsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.main.product.viewed.ViewedProductsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
+        <activity
             android:name=".ui.main.shop.ShopDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name=".ui.main.brand.popular.PopularBrandsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.main.product.popular.PopularProductsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
 
 

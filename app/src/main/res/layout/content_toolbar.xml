@@ -123,8 +123,7 @@
     <View
         android:id="@+id/view_divider_toolbar_bottom"
         android:layout_width="match_parent"
-        android:layout_height="1px"
+        style="@style/AppTheme.DividerLine"
         android:layout_gravity="bottom"
-        android:background="@color/colorPureBlack"
         app:layout_constraintBottom_toBottomOf="parent"/>
 </merge>

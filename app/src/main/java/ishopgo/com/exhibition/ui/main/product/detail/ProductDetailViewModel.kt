@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.product.detail
 
 import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
@@ -19,7 +20,12 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun loadSameShopProducts(productId: Long) {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
-            dummy.add(object : ProductProvider {
+            dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -46,7 +52,12 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun loadViewedProducts(productId: Long) {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
-            dummy.add(object : ProductProvider {
+            dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -73,7 +84,12 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun loadFavoriteProducts(productId: Long) {
         val dummy = mutableListOf<ProductProvider>()
         for (i in 0..5)
-            dummy.add(object : ProductProvider {
+            dummy.add(object : IdentityData(), ProductProvider {
+
+                init {
+                    id = i.toLong()
+                }
+
                 override fun provideImage(): String {
                     return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
                 }
@@ -99,7 +115,12 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadProductDetail(productId: Long) {
 
-        detail.postValue(object : ProductDetailProvider {
+        detail.postValue(object : IdentityData(), ProductDetailProvider {
+
+            init {
+                id = 100
+            }
+
             override fun provideProductImage(): String {
                 return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
             }

@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.base.list
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -31,13 +32,16 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
         adapter = itemAdapter()
         view_recyclerview.adapter = adapter
         view_recyclerview.setHasFixedSize(true)
-        val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+        val layoutManager = layoutManager(view.context)
         view_recyclerview.layoutManager = layoutManager
 
         view_recyclerview.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
 
-            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                reloadData = false
                 loadMore(totalItemsCount)
+
+                swipe.isRefreshing = true
             }
         })
 
@@ -62,6 +66,7 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
             }
         })
 
+        reloadData = true
         firstLoad()
         swipe.isRefreshing = true
     }
@@ -72,11 +77,13 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
         swipe.isRefreshing = true
     }
 
+    open fun layoutManager(context: Context): RecyclerView.LayoutManager {
+        return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    }
+
     abstract fun populateData(data: DATA)
 
     abstract fun itemAdapter(): ClickableAdapter<ITEM>
-
-    abstract fun title(): String
 
     abstract fun firstLoad()
 
