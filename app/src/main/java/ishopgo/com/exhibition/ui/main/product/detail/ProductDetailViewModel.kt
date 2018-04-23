@@ -187,7 +187,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         for (i in 0..3)
             dummy.add(object : IdentityData(), ProductCommentProvider {
                 override fun provideName(): String {
-                    return "Kem trị thâm mụn Medi Spotless"
+                    return "Vương Xuân Hồng"
                 }
 
                 override fun provideAvatar(): String {

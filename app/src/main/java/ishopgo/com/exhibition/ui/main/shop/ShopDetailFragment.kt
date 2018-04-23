@@ -20,7 +20,7 @@ class ShopDetailFragment : BaseActionBarFragment() {
     }
 
     override fun contentLayoutRes(): Int {
-        return R.layout.fragment_shop_detail
+        return R.layout.fragment_single_content
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

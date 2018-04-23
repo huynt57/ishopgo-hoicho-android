@@ -15,7 +15,7 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
         for (i in 0..5)
             dummy.add(object : IdentityData(), ProductCommentProvider {
                 override fun provideName(): String {
-                    return "Kem trị thâm mụn Medi Spotless"
+                    return "Nguyễn Phương Thảo"
                 }
 
                 override fun provideAvatar(): String {
