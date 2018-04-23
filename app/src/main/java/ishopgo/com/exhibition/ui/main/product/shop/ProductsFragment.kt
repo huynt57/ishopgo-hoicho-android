@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.brand
+package ishopgo.com.exhibition.ui.main.product.shop
 
 import android.content.Context
 import android.content.Intent
@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -36,7 +37,7 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         }
     }
 
-    override fun itemAdapter(): ClickableAdapter<ProductProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductProvider> {
         return ProductAdapter()
     }
 
@@ -58,7 +59,8 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
+        if (adapter is ClickableAdapter<ProductProvider>)
+            (adapter as ClickableAdapter<ProductProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
             override fun click(position: Int, data: ProductProvider, code: Int) {
                 context?.let {
                     if (data is IdentityData) {
@@ -72,6 +74,6 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ProductProvider>> {
-        return obtainViewModel(ProductsByBrandViewModel::class.java, false)
+        return obtainViewModel(ProductsOfShopViewModel::class.java, false)
     }
 }

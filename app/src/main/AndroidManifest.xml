@@ -35,7 +35,7 @@
             />
 
         <activity
-            android:name=".ui.main.product.brand.ProductsByBrandActivity"
+            android:name=".ui.main.product.shop.ProductsOfShopActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             />
@@ -77,6 +77,11 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name=".ui.main.product.detail.comment.ProductCommentsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
 
     </application>

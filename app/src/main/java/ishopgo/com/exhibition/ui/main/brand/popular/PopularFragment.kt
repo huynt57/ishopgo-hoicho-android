@@ -13,9 +13,10 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
-import ishopgo.com.exhibition.ui.main.product.brand.ProductsByBrandActivity
+import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
@@ -36,7 +37,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
         }
     }
 
-    override fun itemAdapter(): ClickableAdapter<HighlightBrandProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<HighlightBrandProvider> {
         return HighlightBrandAdapter()
     }
 
@@ -58,13 +59,15 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<HighlightBrandProvider> {
-            override fun click(position: Int, data: HighlightBrandProvider, code: Int) {
-                context?.let {
-                    if (data is IdentityData) {
-                        val intent = Intent(it, ProductsByBrandActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
+        if (adapter is ClickableAdapter<HighlightBrandProvider>) {
+            (adapter as ClickableAdapter<HighlightBrandProvider>).listener = object : ClickableAdapter.BaseAdapterAction<HighlightBrandProvider> {
+                override fun click(position: Int, data: HighlightBrandProvider, code: Int) {
+                    context?.let {
+                        if (data is IdentityData) {
+                            val intent = Intent(it, ProductsOfShopActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                            startActivity(intent)
+                        }
                     }
                 }
             }

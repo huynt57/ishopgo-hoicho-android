@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -36,7 +37,7 @@ class PopularFragment : BaseListFragment<List<ProductProvider>, ProductProvider>
         }
     }
 
-    override fun itemAdapter(): ClickableAdapter<ProductProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductProvider> {
         return ProductAdapter()
     }
 
@@ -58,21 +59,24 @@ class PopularFragment : BaseListFragment<List<ProductProvider>, ProductProvider>
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
-                context?.let {
-                    if (data is IdentityData) {
-                        val intent = Intent(it, ProductDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
+        if (adapter is ClickableAdapter<ProductProvider>) {
+            (adapter as ClickableAdapter<ProductProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
+                override fun click(position: Int, data: ProductProvider, code: Int) {
+                    context?.let {
+                        if (data is IdentityData) {
+                            val intent = Intent(it, ProductDetailActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                            startActivity(intent)
+                        }
                     }
+
                 }
             }
         }
-
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ProductProvider>> {
         return obtainViewModel(PopularProductsViewModel::class.java, false)
     }
+
 }

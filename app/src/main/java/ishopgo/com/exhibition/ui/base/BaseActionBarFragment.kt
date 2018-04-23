@@ -19,6 +19,9 @@ abstract class BaseActionBarFragment : BaseFragment(), ContentDescription {
         if (contentLayoutRes != 0) {
             inflater.inflate(contentLayoutRes, view.content, true)
         }
+
+        // prevent click through fragment
+        view.setOnTouchListener { v, event -> true }
         return view
     }
 

@@ -5,11 +5,15 @@ import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
-import ishopgo.com.exhibition.ui.main.product.brand.ProductsByBrandViewModel
+import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
+import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewMode
+import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
 import ishopgo.com.exhibition.ui.splash.SplashViewModel
 import javax.inject.Singleton
 
@@ -32,6 +36,10 @@ interface AppComponent {
     fun inject(viewedProductsViewModel: ViewedProductsViewModel)
     fun inject(popularBrandsViewModel: PopularBrandsViewModel)
     fun inject(popularProductsViewModel: PopularProductsViewModel)
-    fun inject(brandedProductsViewModel: ProductsByBrandViewModel)
+    fun inject(brandedProductsViewModel: ProductsOfShopViewModel)
+    fun inject(productCommentViewModel: ProductCommentViewModel)
+    fun inject(shopDetailViewModel: ShopDetailViewModel)
+    fun inject(shopInfoViewModel: ShopInfoViewModel)
+    fun inject(categoryViewMode: CategoryViewMode)
 
 }

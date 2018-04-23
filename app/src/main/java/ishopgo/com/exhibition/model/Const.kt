@@ -12,4 +12,9 @@ object Const {
         const val EXTRA_ID = "id"
         const val EXTRA_URL = "url"
     }
+
+    object RequestCode {
+        const val EDIT_PRODUCT_COMMENT = 1
+    }
+
 }

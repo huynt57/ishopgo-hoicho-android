@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPureWhite">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -271,6 +272,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_button_stroked_rounded_rectangle"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="8dp"
@@ -302,6 +304,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_button_stroked_rounded_rectangle"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:padding="8dp"
@@ -355,40 +358,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"/>
 
-            <TextView
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_like_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_heart"
                 android:text="90 Thích"
+                app:drawableStartCompat="@drawable/ic_heart"
                 app:layout_constraintEnd_toStartOf="@+id/view_product_comment_count"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
-            <TextView
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_comment_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_comment"
                 android:text="10 bình luận"
+                app:drawableStartCompat="@drawable/ic_comment"
                 app:layout_constraintEnd_toStartOf="@+id/view_product_share_count"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_product_like_count"
                 app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
-            <TextView
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_share_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_share"
                 android:text="10 chia sẻ"
+                app:drawableStartCompat="@drawable/ic_share"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_product_comment_count"
