@@ -15,6 +15,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.main.home.MainHomeFragment
+import ishopgo.com.exhibition.ui.main.profile.ProfileFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
@@ -109,13 +110,16 @@ class MainFragment : BaseFragment() {
                 3 -> {
                     MainHomeFragment()
                 }
+                4 -> {
+                    ProfileFragment.newInstance(Bundle())
+                }
                 else -> {
                     Fragment()
                 }
             }
         }
 
-        override fun getCount(): Int = 4
+        override fun getCount(): Int = 5
 
     }
 }
