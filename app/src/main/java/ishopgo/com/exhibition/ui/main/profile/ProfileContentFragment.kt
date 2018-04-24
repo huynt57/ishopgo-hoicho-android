@@ -48,7 +48,8 @@ class ProfileContentFragment : BaseFragment() {
     private fun showData(profile: ProfileProvider) {
         context?.let {
             Glide.with(it)
-                    .load(RequestOptions
+                    .load(profile.provideAvatar())
+                    .apply(RequestOptions
                             .circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
                             .error(R.drawable.avatar_placeholder))
