@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.app
 import android.app.Application
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
-import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel

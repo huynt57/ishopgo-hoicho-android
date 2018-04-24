@@ -5,13 +5,13 @@ import android.view.View
 import android.widget.TextView
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 
 /**
  * Created by hoangnh on 4/24/2018.
  */
-class RegionAdapter : BaseRecyclerViewAdapter<Region>() {
-    var listenerClick: onClickListener? = null
+class RegionAdapter : ClickableAdapter<Region>() {
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_region
@@ -25,7 +25,7 @@ class RegionAdapter : BaseRecyclerViewAdapter<Region>() {
         super.onBindViewHolder(holder, position)
 
         holder.apply {
-            itemView.setOnClickListener { listenerClick?.onClick(adapterPosition, getItem(adapterPosition)) }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
         }
     }
 
@@ -38,9 +38,5 @@ class RegionAdapter : BaseRecyclerViewAdapter<Region>() {
             val textView = itemView as TextView
             textView.text = data.name
         }
-    }
-
-    interface onClickListener {
-        fun onClick(position: Int, item: Region)
     }
 }

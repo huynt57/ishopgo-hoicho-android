@@ -14,33 +14,43 @@ import kotlinx.android.synthetic.main.item_community_share.view.*
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
-    var listenerClick: onClickListener? = null
+    companion object {
+        const val COMMUNITY_SHARE = 0
+        const val COMMUNITY_LIST = 1
+
+        const val COMMUNITY_SHARE_CLICK = 1
+        const val COMMUNITY_LIKE_CLICK = 2
+        const val COMMUNITY_COMMENT_CLICK = 3
+        const val COMMUNITY_SHARE_NUMBER_CLICK = 4
+        const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
+        const val COMMUNITY_PRODUCT_CLICK = 6
+    }
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return if (viewType == 0) R.layout.item_community_share else R.layout.item_community
+        return if (viewType == COMMUNITY_SHARE) R.layout.item_community_share else R.layout.item_community
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) 0 else 1
+        return if (position == COMMUNITY_SHARE) COMMUNITY_SHARE else COMMUNITY_LIST
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<CommunityProvider> {
-        return if (viewType == 0) ShareHolder(v) else ProductHolder(v)
+        return if (viewType == COMMUNITY_SHARE) ShareHolder(v) else ProductHolder(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder<CommunityProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         if (holder is ShareHolder) {
             holder.apply {
-                itemView.constrain_community_share.setOnClickListener { listenerClick?.onShareListenner(adapterPosition, getItem(adapterPosition)) }
+                itemView.constrain_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_CLICK) }
             }
         } else if (holder is ProductHolder) {
             holder.apply {
-                itemView.tv_community_like.setOnClickListener { listenerClick?.onClickAction(adapterPosition, getItem(adapterPosition)) }
-                itemView.tv_community_comment.setOnClickListener { listenerClick?.onClickAction(adapterPosition, getItem(adapterPosition)) }
-                itemView.tv_community_number_share.setOnClickListener { listenerClick?.onClickAction(adapterPosition, getItem(adapterPosition)) }
-                itemView.cv_community_share.setOnClickListener { listenerClick?.onSelectShare(adapterPosition, getItem(adapterPosition)) }
-                itemView.cv_community_product.setOnClickListener { listenerClick?.onClickProduct(adapterPosition, getItem(adapterPosition)) }
+                itemView.tv_community_like.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK) }
+                itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
+                itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
+                itemView.cv_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
+                itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
             }
         }
     }
@@ -95,12 +105,5 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                                 .placeholder(R.drawable.image_placeholder)).into(img_community_share_avatar)
             }
         }
-    }
-
-    interface onClickListener {
-        fun onShareListenner(position: Int, item: CommunityProvider)
-        fun onClickAction(position: Int, item: CommunityProvider)
-        fun onSelectShare(position: Int, item: CommunityProvider)
-        fun onClickProduct(position: Int, item: CommunityProvider)
     }
 }

@@ -33,6 +33,13 @@ class CommunityFragment : BaseActionBarFragment() {
 
             return fragment
         }
+
+        const val COMMUNITY_SHARE_CLICK = 1
+        const val COMMUNITY_LIKE_CLICK = 2
+        const val COMMUNITY_COMMENT_CLICK = 3
+        const val COMMUNITY_SHARE_NUMBER_CLICK = 4
+        const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
+        const val COMMUNITY_PRODUCT_CLICK = 6
     }
 
     override fun contentLayoutRes(): Int {
@@ -56,54 +63,62 @@ class CommunityFragment : BaseActionBarFragment() {
             }
         })
 
-        adapter.listenerClick = object : CommunityAdapter.onClickListener, ClickableAdapter.BaseAdapterAction<CommunityProvider> {
-            override fun onSelectShare(position: Int, item: CommunityProvider) {
-                context?.let {
-                    val dialog = MaterialDialog.Builder(it)
-                            .customView(R.layout.dialog_community_share, false)
-                            .autoDismiss(false)
-                            .canceledOnTouchOutside(true)
-                            .build()
-
-                    val tv_new_post = dialog.findViewById(R.id.tv_new_post) as TextView
-                    val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as TextView
-                    val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as TextView
-
-                    val postDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_write) }
-                    tv_new_post.setCompoundDrawablesWithIntrinsicBounds(postDrawable, null, null, null)
-                    tv_new_post.compoundDrawablePadding = 20
-
-                    val fbDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_facebook) }
-                    tv_share_facebook.setCompoundDrawablesWithIntrinsicBounds(fbDrawable, null, null, null)
-                    tv_share_facebook.compoundDrawablePadding = 20
-
-                    val zaloDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_zalo) }
-                    tv_share_zalo.setCompoundDrawablesWithIntrinsicBounds(zaloDrawable, null, null, null)
-                    tv_share_zalo.compoundDrawablePadding = 20
-
-                    dialog.show()
-                }
-            }
-
-            override fun onClickAction(position: Int, item: CommunityProvider) {
-                toast("Vào xem chi tiết sản phẩm")
-            }
-
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
             override fun click(position: Int, data: CommunityProvider, code: Int) {
-                toast("Chia sẻ với cộng đồng")
-            }
+                when (code) {
+                    COMMUNITY_SHARE_CLICK -> {
+                        toast("Chia sẻ với cộng đồng")
+                    }
 
-            override fun onShareListenner(position: Int, item: CommunityProvider) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
+                    COMMUNITY_LIKE_CLICK -> {
+                        toast("Vào xem chi tiết sản phẩm")
+                    }
 
-            override fun onClickProduct(position: Int, item: CommunityProvider) {
-                toast("Vào xem chi tiết sản phẩm")
+                    COMMUNITY_COMMENT_CLICK -> {
+                        toast("Vào xem chi tiết sản phẩm")
+                    }
+
+                    COMMUNITY_SHARE_NUMBER_CLICK -> {
+                        toast("Vào xem chi tiết sản phẩm")
+                    }
+
+                    COMMUNITY_SHARE_PRODUCT_CLICK -> {
+                        context?.let {
+                            val dialog = MaterialDialog.Builder(it)
+                                    .customView(R.layout.dialog_community_share, false)
+                                    .autoDismiss(false)
+                                    .canceledOnTouchOutside(true)
+                                    .build()
+
+                            val tv_new_post = dialog.findViewById(R.id.tv_new_post) as TextView
+                            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as TextView
+                            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as TextView
+
+                            val postDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_write) }
+                            tv_new_post.setCompoundDrawablesWithIntrinsicBounds(postDrawable, null, null, null)
+                            tv_new_post.compoundDrawablePadding = 20
+
+                            val fbDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_facebook) }
+                            tv_share_facebook.setCompoundDrawablesWithIntrinsicBounds(fbDrawable, null, null, null)
+                            tv_share_facebook.compoundDrawablePadding = 20
+
+                            val zaloDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_zalo) }
+                            tv_share_zalo.setCompoundDrawablesWithIntrinsicBounds(zaloDrawable, null, null, null)
+                            tv_share_zalo.compoundDrawablePadding = 20
+
+                            dialog.show()
+                        }
+                    }
+
+                    COMMUNITY_PRODUCT_CLICK -> {
+                        toast("Vào xem chi tiết sản phẩm")
+                    }
+                }
             }
         }
     }
 
-    private fun setupToolbars(){
+    private fun setupToolbars() {
         toolbar.setCustomTitle("Cộng đồng")
     }
 

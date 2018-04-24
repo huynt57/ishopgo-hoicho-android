@@ -19,6 +19,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.fragment_signup.*
 import java.io.IOException
@@ -111,6 +112,12 @@ class SignupFragment : BaseFragment() {
             return false
         }
 
+        if (region.trim().isEmpty()) {
+            toast("Khu vực không được để trống")
+            tv_signup_region.error = "Trường này còn trống"
+            return false
+        }
+
         if (email.trim().isEmpty()) {
             toast("Email không được để trống")
             tv_signup_mail.error = "Trường này còn trống"
@@ -196,12 +203,11 @@ class SignupFragment : BaseFragment() {
                 }
             })
             rv_search.adapter = adapterRegion
-            adapterRegion.listenerClick = object : RegionAdapter.onClickListener {
-
-                override fun onClick(position: Int, item: Region) {
+            adapterRegion.listener = object : ClickableAdapter.BaseAdapterAction<Region> {
+                override fun click(position: Int, data: Region, code: Int) {
                     context?.let {
                         dialog.dismiss()
-                        view.text = item.name
+                        view.text = data.name
                     }
                 }
             }
