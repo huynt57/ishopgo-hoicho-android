@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.R.id.rv_community
 import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
@@ -41,7 +42,7 @@ class CommunityFragment : BaseActionBarFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        toolbar.setCustomTitle("Cộng đồng")
+        setupToolbars()
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_community.adapter = adapter
@@ -102,6 +103,10 @@ class CommunityFragment : BaseActionBarFragment() {
         }
     }
 
+    private fun setupToolbars(){
+        toolbar.setCustomTitle("Cộng đồng")
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(CommunityViewModel::class.java, false)
@@ -127,10 +132,10 @@ class CommunityFragment : BaseActionBarFragment() {
     }
 
     fun firstLoad() {
-        val loadMore = LoadMoreRequestParams()
-        loadMore.limit = Const.PAGE_LIMIT
-        loadMore.offset = 0
-        viewModel.loadData(loadMore)
+        val firstLoad = LoadMoreRequestParams()
+        firstLoad.limit = Const.PAGE_LIMIT
+        firstLoad.offset = 0
+        viewModel.loadData(firstLoad)
     }
 
     fun loadMore(currentCount: Int) {

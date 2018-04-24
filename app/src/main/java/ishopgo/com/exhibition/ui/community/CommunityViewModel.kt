@@ -29,44 +29,47 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
                     return "http://www.urhobosocialclublagos.com/wp-content/uploads/2017/07/default-avatar-ginger-guy.png"
                 }
 
-                override fun communityContent(): String {
+                override fun provideContent(): String {
                     return "Xin chào"
                 }
 
-                override fun communityTime(): String {
+                override fun provideTime(): String {
                     return "23/04/2018 4:02:50"
                 }
 
-                override fun communityLike(): Int {
+                override fun provideLikeCount(): Int {
                     return 10
                 }
 
-                override fun communityComment(): Int {
+                override fun provideCommentCount(): Int {
                     return 5
                 }
 
-                override fun communityShare(): Int {
+                override fun provideShareCount(): Int {
                     return 15
                 }
 
-                override fun communityProductName(): String {
+                override fun provideProductName(): String {
                     return "Mỹ phẩm làm đẹp da Hồng Thảo"
                 }
 
-                override fun communityProductCode(): String {
+                override fun provideProductCode(): String {
                     return "0123456789"
                 }
 
-                override fun communityProductPrice(): String {
+                override fun provideProductPrice(): String {
                     return "1.000.000đ"
                 }
 
-                override fun communityProductImage(): String {
-                    return "http://admin.bigmua.com/public/media/media/pic112014/kem-tri-seo-ro-medi-white-medi-scar-4(2).jpg"
-                }
-
-                override fun communityProductListImage(): MutableList<String>? {
-                    return null
+                override fun provideProductListImage(): MutableList<CommunityImageProvider>? {
+                    val child = mutableListOf<CommunityImageProvider>()
+                    for (i in 0..1)
+                        child.add(object : IdentityData(), CommunityImageProvider {
+                            override fun url(): String {
+                                return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
+                            }
+                        })
+                    return child
                 }
             })
 

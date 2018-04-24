@@ -7,14 +7,13 @@ interface CommunityProvider {
     fun userName(): String
     fun userAvatar(): String
     fun currentUserAvatar(): String
-    fun communityContent(): String
-    fun communityTime(): String
-    fun communityLike(): Int
-    fun communityComment(): Int
-    fun communityShare(): Int
-    fun communityProductName(): String
-    fun communityProductCode(): String
-    fun communityProductPrice(): String
-    fun communityProductImage(): String
-    fun communityProductListImage(): MutableList<String>?
+    fun provideContent(): String
+    fun provideTime(): String
+    fun provideLikeCount(): Int
+    fun provideCommentCount(): Int
+    fun provideShareCount(): Int
+    fun provideProductName(): String
+    fun provideProductCode(): String
+    fun provideProductPrice(): String
+    fun provideProductListImage(): MutableList<CommunityImageProvider>?
 }

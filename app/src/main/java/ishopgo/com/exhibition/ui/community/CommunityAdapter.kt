@@ -66,21 +66,20 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                 img_community_share.setCompoundDrawablesWithIntrinsicBounds(shareWhiteDrawable, null, null, null)
 
                 tv_community_username.text = data.userName()
-                tv_community_time.text = data.communityTime()
-                tv_community_content.text = data.communityContent()
-                tv_community_content.text = data.communityContent()
-                tv_community_product_name.text = data.communityProductName()
-                tv_community_product_code.text = data.communityProductCode()
-                tv_community_product_price.text = data.communityProductPrice()
-                tv_community_like.text = data.communityLike().toString()
-                tv_community_comment.text = data.communityComment().toString()
-                tv_community_number_share.text = data.communityShare().toString()
+                tv_community_time.text = data.provideTime()
+                tv_community_content.text = data.provideContent()
+                tv_community_product_name.text = data.provideProductName()
+                tv_community_product_code.text = data.provideProductCode()
+                tv_community_product_price.text = data.provideProductPrice()
+                tv_community_like.text = data.provideLikeCount().toString()
+                tv_community_comment.text = data.provideCommentCount().toString()
+                tv_community_number_share.text = data.provideShareCount().toString()
 
                 Glide.with(this).load(data.userAvatar())
                         .apply(RequestOptions.circleCropTransform()
                                 .placeholder(R.drawable.image_placeholder)).into(img_community_avatar)
 
-                Glide.with(this).load(data.communityProductImage())
+                Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)).into(img_community_product)
             }
         }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wallpaper_login">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/ff_roboto"
+        android:text="Welcome"
+        android:textColor="@color/md_white_1000"
+        android:textSize="50sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/ff_roboto"
+        android:text="Chào mừng bạn đến với hội chợ Ishopgo"
+        android:textColor="@color/md_white_1000" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_skip_login"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/button_radius_purple"
+        android:fontFamily="@font/ff_roboto"
+        android:paddingBottom="16dp"
+        android:paddingEnd="70dp"
+        android:paddingStart="70dp"
+        android:paddingTop="16dp"
+        android:text="Đăng nhập"
+        android:textColor="@color/md_white_1000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sigup"
+        tools:ignore="HardcodedText" />
+
+    <Button
+        android:id="@+id/btn_sigup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_login"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_radius_green"
+        android:fontFamily="@font/ff_roboto"
+        android:paddingBottom="16dp"
+        android:paddingEnd="60dp"
+        android:paddingStart="60dp"
+        android:paddingTop="16dp"
+        android:text="Đăng ký ngay"
+        android:textColor="@color/md_white_1000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="HardcodedText"
+        tools:layout_editor_absoluteY="400dp" />
+
+    <TextView
+        android:id="@+id/tv_skip_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:fontFamily="@font/ff_roboto"
+        android:text="Bỏ qua"
+        android:textColor="@color/md_white_1000" />
+
+</RelativeLayout>
