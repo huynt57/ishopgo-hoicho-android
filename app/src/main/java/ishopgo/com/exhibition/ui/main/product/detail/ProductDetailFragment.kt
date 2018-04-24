@@ -97,7 +97,9 @@ class ProductDetailFragment : BaseActionBarFragment() {
         context?.let {
             Glide.with(it)
                     .load(product.provideProductImage())
-                    .apply(RequestOptions().placeholder(R.drawable.image_placeholder))
+                    .apply(RequestOptions()
+                            .placeholder(R.drawable.avatar_placeholder)
+                            .error(R.drawable.avatar_placeholder))
                     .into(view_product_image)
 
             view_product_name.text = product.provideProductName()

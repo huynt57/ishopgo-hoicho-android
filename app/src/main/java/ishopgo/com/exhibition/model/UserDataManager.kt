@@ -9,9 +9,28 @@ import android.content.SharedPreferences
 object UserDataManager {
     private const val PREF_NAME = "user_data_manager"
 
-    var accessToken: String = ""
-    var currentUserId: String = ""
-    var currentUserPhone: String = ""
+    private const val KEY_ACCESS_TOKEN = "access_token"
+    private const val KEY_USER_ID = "user_id"
+    private const val KEY_USER_AVATAR = "user_avatar"
+    private const val KEY_USER_PHONE = "user_phone"
+    private const val KEY_USER_NAME = "user_name"
+
+    var accessToken: String
+        get() = pref.getString(KEY_ACCESS_TOKEN, "")
+        set(value) = pref.edit().putString(KEY_ACCESS_TOKEN, value).apply()
+    var currentUserAvatar: String
+        get() = pref.getString(KEY_USER_AVATAR, "")
+        set(value) = pref.edit().putString(KEY_USER_AVATAR, value).apply()
+    var currentUserId: Long
+        get() = pref.getLong(KEY_USER_ID, -1L)
+        set(value) = pref.edit().putLong(KEY_USER_ID, value).apply()
+    var currentUserPhone: String
+        get() = pref.getString(KEY_USER_PHONE, "")
+        set(value) = pref.edit().putString(KEY_USER_PHONE, value).apply()
+    var currentUserName: String
+        get() = pref.getString(KEY_USER_NAME, "")
+        set(value) = pref.edit().putString(KEY_USER_NAME, value).apply()
+
     var displayWidth: Int = 0
     var displayHeight: Int = 0
 

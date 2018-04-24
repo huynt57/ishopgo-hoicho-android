@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.ui.main.MainViewModel
+import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
@@ -11,6 +12,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewM
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
+import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewMode
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
@@ -41,5 +43,6 @@ interface AppComponent {
     fun inject(shopDetailViewModel: ShopDetailViewModel)
     fun inject(shopInfoViewModel: ShopInfoViewModel)
     fun inject(categoryViewMode: CategoryViewMode)
-
+    fun inject(accountViewModel: AccountViewModel)
+    fun inject(profileViewModel: ProfileViewModel)
 }

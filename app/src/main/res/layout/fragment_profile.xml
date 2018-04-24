@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/view_scrollview"
     android:layout_height="match_parent">
 
     <LinearLayout
@@ -25,16 +26,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_phone"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.DisableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Số điện thoại"
                 android:inputType="phone"
-                android:maxLength="20"/>
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -42,7 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_name"
@@ -50,8 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Họ tên"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="textPersonName"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -59,7 +62,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_dob"
@@ -67,8 +71,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Ngày sinh"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="text"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -76,7 +80,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_email"
@@ -84,8 +89,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="textEmailAddress"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -93,7 +98,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_company"
@@ -101,8 +107,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Công ty, cửa hàng"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="text"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -110,7 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_region"
@@ -118,8 +125,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Khu vực"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="text"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -127,7 +134,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_address"
@@ -135,8 +143,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Địa chỉ"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="text"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -144,16 +152,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_account_type"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.DisableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Loại tài khoản"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="text"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -161,16 +170,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin">
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/view_joined_date"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.DisableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Ngày tham gia"
-                android:inputType="phone"
-                android:maxLength="20"/>
+                android:inputType="text"
+                />
 
         </android.support.design.widget.TextInputLayout>
 

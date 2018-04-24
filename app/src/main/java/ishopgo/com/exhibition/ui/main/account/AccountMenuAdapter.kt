@@ -1,5 +1,6 @@
-package ishopgo.com.exhibition.ui.main.category
+package ishopgo.com.exhibition.ui.main.account
 
+import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -10,9 +11,9 @@ import kotlinx.android.synthetic.main.item_category_child.view.*
 import kotlinx.android.synthetic.main.item_category_parent.view.*
 
 /**
- * Created by xuanhong on 4/18/18. HappyCoding!
+ * Created by xuanhong on 4/23/18. HappyCoding!
  */
-class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
+class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
 
     companion object {
         const val TYPE_PARENT = 1
@@ -25,7 +26,7 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
     /**
      * Running state of which positions are currently checked
      */
-    private var mExpanding = mutableListOf<CategoryProvider>()
+    private var mExpanding = mutableListOf<AccountMenuProvider>()
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return when (viewType) {
@@ -44,7 +45,7 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
         return if (isParent) TYPE_PARENT else TYPE_CHILD
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<CategoryProvider> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<AccountMenuProvider> {
         return when (viewType) {
             TYPE_PARENT -> {
                 ParentHolder(v)
@@ -56,13 +57,13 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
 
     }
 
-    override fun replaceAll(data: List<CategoryProvider>) {
+    override fun replaceAll(data: List<AccountMenuProvider>) {
         mExpanding.clear()
 
         super.replaceAll(data)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<CategoryProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<AccountMenuProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         if (holder is ParentHolder) {
@@ -108,9 +109,9 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
         }
     }
 
-    inner class ParentHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<CategoryProvider>(v) {
+    inner class ParentHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<AccountMenuProvider>(v) {
 
-        override fun populate(data: CategoryProvider) {
+        override fun populate(data: AccountMenuProvider) {
             super.populate(data)
 
             itemView.apply {
@@ -122,6 +123,7 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
                         .into(view_parent_icon)
 
                 view_parent_text.text = data.provideName()
+                view_parent_text.setTextColor(ResourcesCompat.getColor(resources, data.provideTextColor(), null))
 
                 if (data.provideChilds().isEmpty()) {
                     view_parent_expand.setImageResource(0)
@@ -135,9 +137,9 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
         }
     }
 
-    inner class ChildHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<CategoryProvider>(v) {
+    inner class ChildHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<AccountMenuProvider>(v) {
 
-        override fun populate(data: CategoryProvider) {
+        override fun populate(data: AccountMenuProvider) {
             super.populate(data)
 
             itemView.apply {

@@ -14,6 +14,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.main.account.AccountFragment
 import ishopgo.com.exhibition.ui.main.home.MainHomeFragment
 import ishopgo.com.exhibition.ui.main.profile.ProfileFragment
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -102,16 +103,16 @@ class MainFragment : BaseFragment() {
                     MainHomeFragment()
                 }
                 1 -> {
-                    MainHomeFragment()
+                    Fragment()
                 }
                 2 -> {
-                    MainHomeFragment()
+                    Fragment()
                 }
                 3 -> {
-                    MainHomeFragment()
+                    Fragment()
                 }
                 4 -> {
-                    ProfileFragment.newInstance(Bundle())
+                    AccountFragment.newInstance(Bundle())
                 }
                 else -> {
                     Fragment()
