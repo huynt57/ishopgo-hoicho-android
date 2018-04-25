@@ -85,6 +85,10 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:$project.ext.archExtension"
     kapt "android.arch.lifecycle:compiler:$project.ext.archCompiler"
 
+    // qrcode
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+
     // utilities
     implementation 'com.android.support:multidex:1.0.3'
     implementation "com.facebook.stetho:stetho:1.5.0"

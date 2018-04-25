@@ -26,7 +26,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".ui.main.product.brand.ProductsByBrandActivity"
+            android:name=".ui.main.product.shop.ProductsOfShopActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
@@ -97,6 +97,22 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+            android:name=".ui.main.product.detail.comment.ProductCommentsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.main.profile.ProfileActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+        <activity
+            android:name=".ui.main.account.password.ChangePasswordActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
 
 
     </application>

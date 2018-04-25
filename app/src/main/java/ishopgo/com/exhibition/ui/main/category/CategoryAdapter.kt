@@ -116,7 +116,9 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
             itemView.apply {
                 Glide.with(context)
                         .load(data.provideIcon())
-                        .apply(RequestOptions().placeholder(R.drawable.ic_new))
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
                         .into(view_parent_icon)
 
                 view_parent_text.text = data.provideName()
@@ -141,7 +143,9 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
             itemView.apply {
                 Glide.with(context)
                         .load(data.provideIcon())
-                        .apply(RequestOptions().placeholder(R.drawable.ic_new))
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
                         .into(view_child_icon)
 
                 view_child_text.text = data.provideName()

@@ -2,4 +2,9 @@
     <string name="app_name">Exhibition</string>
     <string name="error_no_connection">No Connection</string>
     <string name="waiting">loading ...</string>
+    <string name="tab_message">Tin nhắn</string>
+    <string name="tab_scan">Quét mã</string>
+    <string name="tab_community">Cộng đồng</string>
+    <string name="tab_home">Hội chợ</string>
+    <string name="tab_profile">Tài khoản</string>
 </resources>

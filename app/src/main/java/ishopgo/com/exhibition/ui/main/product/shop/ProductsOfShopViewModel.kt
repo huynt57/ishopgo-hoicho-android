@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.brand
+package ishopgo.com.exhibition.ui.main.product.shop
 
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.request.RequestParams
@@ -6,7 +6,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
-class ProductsByBrandViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
+class ProductsOfShopViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
 
     override fun loadData(params: RequestParams) {
         val dummy = mutableListOf<ProductProvider>()

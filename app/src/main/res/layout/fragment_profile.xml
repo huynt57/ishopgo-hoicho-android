@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/view_scrollview"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        >
+
+        <ImageView
+            android:id="@+id/view_avatar"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_horizontal"
+            app:srcCompat="@drawable/avatar_placeholder"
+            />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_phone"
+                style="@style/AppTheme.DisableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Số điện thoại"
+                android:inputType="phone"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_name"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Họ tên"
+                android:inputType="textPersonName"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_dob"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ngày sinh"
+                android:inputType="text"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_email"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_company"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Công ty, cửa hàng"
+                android:inputType="text"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_region"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Khu vực"
+                android:inputType="text"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_address"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Địa chỉ"
+                android:inputType="text"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_account_type"
+                style="@style/AppTheme.DisableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Loại tài khoản"
+                android:inputType="text"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_joined_date"
+                style="@style/AppTheme.DisableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ngày tham gia"
+                android:inputType="text"
+                />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/view_submit"
+            style="@style/AppTheme.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Cập nhật"
+            />
+
+    </LinearLayout>
+
+</ScrollView>

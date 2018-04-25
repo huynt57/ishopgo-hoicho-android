@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 class PopularBrandsActivity: BaseSingleFragmentActivity() {
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return PopularBrandsFragment.newInstance(startupOption)
+        return PopularBrandsFragmentActionBar.newInstance(startupOption)
     }
 
 

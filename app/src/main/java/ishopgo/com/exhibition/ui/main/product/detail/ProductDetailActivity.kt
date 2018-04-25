@@ -30,7 +30,7 @@ class ProductDetailActivity : BaseSingleFragmentActivity() {
 
         supportFragmentManager.transact {
             setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            replace(R.id.fragment_container, ProductDetailFragment.newInstance(intent?.extras
+            add(R.id.fragment_container, ProductDetailFragment.newInstance(intent?.extras
                     ?: Bundle()))
             addToBackStack(null)
         }

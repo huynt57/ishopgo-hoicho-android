@@ -9,12 +9,12 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class PopularProductsFragment : BaseActionBarFragment() {
+class PopularProductsFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
 
-        fun newInstance(params: Bundle): PopularProductsFragment {
-            val fragment = PopularProductsFragment()
+        fun newInstance(params: Bundle): PopularProductsFragmentActionBar {
+            val fragment = PopularProductsFragmentActionBar()
             fragment.arguments = params
 
             return fragment

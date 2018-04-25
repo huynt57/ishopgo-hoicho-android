@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/view_name"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Tên: "/>
+
+        <TextView
+            android:id="@+id/view_pic"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Nguoi phu trach: "/>
+
+
+        <TextView
+            android:id="@+id/view_product_count"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="So san pham"
+            />
+
+        <TextView
+            android:id="@+id/view_joined_date"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ngay tham gia"
+            />
+
+        <TextView
+            android:id="@+id/view_region"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Khu vuc"
+            />
+
+        <TextView
+            android:id="@+id/view_rating"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Danh gia shop"/>
+
+        <TextView
+            android:id="@+id/view_click_count"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="luot click"/>
+
+        <TextView
+            android:id="@+id/view_share_count"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="luot chia se "/>
+
+        <View
+            android:id="@+id/textView10"
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="match_parent"
+            />
+
+        <TextView
+            android:id="@+id/textView11"
+            style="@style/AppTheme.ShopInfo.Section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mô tả"
+            />
+
+        <TextView
+            android:id="@+id/view_description"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Công ty mỹ phẩm hàng đầu Việt Nam"/>
+
+        <TextView
+            android:id="@+id/textView15"
+            style="@style/AppTheme.ShopInfo.Section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/md_grey_300"
+            android:text="Điểm bán"
+            android:textStyle="bold"
+            />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="@dimen/item_spacing"
+            tools:listitem="@layout/item_sale_point"
+            />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

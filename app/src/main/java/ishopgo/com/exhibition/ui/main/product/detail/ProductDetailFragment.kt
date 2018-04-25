@@ -17,10 +17,11 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
-import ishopgo.com.exhibition.ui.main.product.brand.ProductsByBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
+import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -83,6 +84,11 @@ class ProductDetailFragment : BaseActionBarFragment() {
                 viewedProductAdapter.replaceAll(it)
             }
         })
+        viewModel.productComments.observe(this, Observer { c ->
+            c?.let {
+                productCommentAdapter.replaceAll(it)
+            }
+        })
 
         loadData(productId)
     }
@@ -91,7 +97,9 @@ class ProductDetailFragment : BaseActionBarFragment() {
         context?.let {
             Glide.with(it)
                     .load(product.provideProductImage())
-                    .apply(RequestOptions().placeholder(R.drawable.image_placeholder))
+                    .apply(RequestOptions()
+                            .placeholder(R.drawable.avatar_placeholder)
+                            .error(R.drawable.avatar_placeholder))
                     .into(view_product_image)
 
             view_product_name.text = product.provideProductName()
@@ -101,49 +109,45 @@ class ProductDetailFragment : BaseActionBarFragment() {
             view_product_price.text = product.provideProductPrice()
             view_product_brand.text = product.provideProductBrand()
             view_product_description.text = product.provideProductShortDescription()
-            view_product_show_more_description.setOnClickListener {
-                val intent = Intent(it.context, FullDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_JSON, Gson().toJson(product))
-                startActivity(intent)
-            }
             view_shop_name.text = product.provideShopName()
             view_shop_region.text = product.provideShopRegion()
-            view_shop_detail.setOnClickListener {
-                if (product is IdentityData) {
-                    // find brand id of this product
-                    val intent = Intent(it.context, ShopDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, Gson().toJson(product))
-                    startActivity(intent)
-                }
-            }
-            view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b>\nSản phẩm mới".asHtml()
-            view_shop_rating.text = "<b>${product.provideShopRateCount()}</b>\nĐánh giá".asHtml()
-            view_shop_call.setOnClickListener {
-                // make call to shop
-            }
-            view_shop_message.setOnClickListener {
-                // send message to shop or switch to ichat
-            }
+            view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm mới".asHtml()
+            view_shop_rating.text = "<b>${product.provideShopRateCount()}</b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${product.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${product.provideProductCommentCount()} bình luận"
             view_product_share_count.text = "${product.provideProductShareCount()} chia sẻ"
-            view_list_comments
-            view_product_show_more_comment.setOnClickListener {
-                // show all comment of this product
-            }
-            more_products_same_shop.setOnClickListener {
-                openProductsByBrand(productId)
-            }
-            view_list_products_same_shop
-            more_favorite.setOnClickListener {
-                openFavoriteProducts()
-            }
-            view_list_favorite
-            more_viewed.setOnClickListener {
-                openViewedProducts()
-            }
-            view_list_viewed
+
+            view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
+            view_shop_call.setOnClickListener { callShop(it.context, product) }
+            view_shop_message.setOnClickListener { messageShop(it.context, product) }
+            view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
+            view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
+            more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, productId) }
+            more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
+            more_viewed.setOnClickListener { openViewedProducts(it.context) }
         }
+    }
+
+    private fun showProductFullDescription(context: Context, product: ProductDetailProvider) {
+        val intent = Intent(context, FullDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Gson().toJson(product))
+        startActivity(intent)
+    }
+
+    private fun showMoreComment(context: Context, product: ProductDetailProvider) {
+        if (product is IdentityData) {
+            val intent = Intent(context, ProductCommentsActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+            startActivityForResult(intent, Const.RequestCode.EDIT_PRODUCT_COMMENT)
+        }
+    }
+
+    private fun messageShop(context: Context, product: ProductDetailProvider) {
+
+    }
+
+    private fun callShop(context: Context, product: ProductDetailProvider) {
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -163,23 +167,57 @@ class ProductDetailFragment : BaseActionBarFragment() {
     private fun setupListeners() {
         favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
             override fun click(position: Int, data: ProductProvider, code: Int) {
-                openProductDetail(data)
+                context?.let { openProductDetail(it, data) }
             }
 
         }
         sameShopProductsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
             override fun click(position: Int, data: ProductProvider, code: Int) {
-                openProductDetail(data)
+                context?.let { openProductDetail(it, data) }
             }
 
         }
         viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
             override fun click(position: Int, data: ProductProvider, code: Int) {
-                openProductDetail(data)
+                context?.let { openProductDetail(it, data) }
             }
 
         }
+    }
 
+    private fun openFavoriteProducts(context: Context) {
+        val intent = Intent(context, FavoriteProductsActivity::class.java)
+        startActivity(intent)
+
+    }
+
+    private fun openViewedProducts(context: Context) {
+        val intent = Intent(context, ViewedProductsActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun openProductDetail(context: Context, product: ProductProvider) {
+        if (product is IdentityData) {
+            val intent = Intent(context, ProductDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+            startActivity(intent)
+        }
+    }
+
+    private fun openProductsOfShop(context: Context, productId: Long) {
+        val intent = Intent(context, ProductsOfShopActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+        startActivity(intent)
+    }
+
+    private fun openShopDetail(context: Context, product: ProductDetailProvider) {
+        // find brand id of this product
+        if (product is IdentityData) {
+            val brandId = product.id
+            val intent = Intent(context, ShopDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
+            startActivity(intent)
+        }
     }
 
     private fun loadData(productId: Long) {
@@ -187,6 +225,7 @@ class ProductDetailFragment : BaseActionBarFragment() {
         viewModel.loadFavoriteProducts(productId)
         viewModel.loadViewedProducts(productId)
         viewModel.loadProductDetail(productId)
+        viewModel.loadProductComments(productId)
     }
 
     private fun setupToolbars() {
@@ -199,7 +238,8 @@ class ProductDetailFragment : BaseActionBarFragment() {
 
     private fun setupProductComments(context: Context) {
         view_list_comments.adapter = productCommentAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        layoutManager.isAutoMeasureEnabled = true
         view_list_comments.layoutManager = layoutManager
         view_list_comments.isNestedScrollingEnabled = false
         view_list_comments.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -227,41 +267,6 @@ class ProductDetailFragment : BaseActionBarFragment() {
         view_list_viewed.layoutManager = layoutManager
         view_list_viewed.isNestedScrollingEnabled = false
         view_list_viewed.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
-    }
-
-    private fun openFavoriteProducts() {
-        context?.let {
-            val intent = Intent(it, FavoriteProductsActivity::class.java)
-            startActivity(intent)
-        }
-
-    }
-
-    private fun openViewedProducts() {
-        context?.let {
-            val intent = Intent(it, ViewedProductsActivity::class.java)
-            startActivity(intent)
-        }
-
-    }
-
-    private fun openProductDetail(product: ProductProvider) {
-        context?.let {
-            if (product is IdentityData) {
-                val intent = Intent(it, ProductDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-                startActivity(intent)
-            }
-        }
-
-    }
-
-    private fun openProductsByBrand(productId: Long) {
-        context?.let {
-            val intent = Intent(it, ProductsByBrandActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
-            startActivity(intent)
-        }
     }
 
 }
