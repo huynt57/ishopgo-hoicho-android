@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.shop
+package ishopgo.com.exhibition.ui.main.profile
 
 import android.os.Bundle
 import android.view.View
@@ -6,18 +6,23 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
-/**
- * Created by xuanhong on 4/20/18. HappyCoding!
- */
-class ProductsOfShopFragment : BaseActionBarFragment() {
+class ProfileFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
 
-        fun newInstance(params: Bundle): ProductsOfShopFragment {
-            val fragment = ProductsOfShopFragment()
+        fun newInstance(params: Bundle): ProfileFragmentActionBar {
+            val fragment = ProfileFragmentActionBar()
             fragment.arguments = params
 
             return fragment
+        }
+    }
+
+    private fun setupToolbars() {
+        toolbar.setCustomTitle("Thông tin cá nhân")
+        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.setLeftButtonClickListener {
+            activity?.finish()
         }
     }
 
@@ -31,15 +36,8 @@ class ProductsOfShopFragment : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ProductsFragment())
+                .replace(R.id.view_main_content, ProfileFragment())
                 .commit()
     }
 
-    private fun setupToolbars() {
-        toolbar.setCustomTitle("Sản phẩm cùng gian hàng")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
-        toolbar.setLeftButtonClickListener {
-            activity?.finish()
-        }
-    }
 }

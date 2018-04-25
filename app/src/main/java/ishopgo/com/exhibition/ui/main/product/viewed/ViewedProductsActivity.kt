@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 class ViewedProductsActivity : BaseSingleFragmentActivity() {
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return ViewedProductsFragment.newInstance(startupOption)
+        return ViewedProductsFragmentActionBar.newInstance(startupOption)
     }
 
 

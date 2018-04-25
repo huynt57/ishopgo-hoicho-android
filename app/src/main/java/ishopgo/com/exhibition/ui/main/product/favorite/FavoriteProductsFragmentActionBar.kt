@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.detail.comment
+package ishopgo.com.exhibition.ui.main.product.favorite
 
 import android.os.Bundle
 import android.view.View
@@ -7,16 +7,17 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
- * Created by xuanhong on 4/22/18. HappyCoding!
+ * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class ProductCommentsFragment : BaseActionBarFragment() {
+class FavoriteProductsFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
-        fun newInstance(params: Bundle): ProductCommentsFragment {
-            val f = ProductCommentsFragment()
-            f.arguments = params
 
-            return f
+        fun newInstance(params: Bundle): FavoriteProductsFragmentActionBar {
+            val fragment = FavoriteProductsFragmentActionBar()
+            fragment.arguments = params
+
+            return fragment
         }
     }
 
@@ -30,12 +31,12 @@ class ProductCommentsFragment : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, CommentFragment())
+                .replace(R.id.view_main_content, FavoriteFragment())
                 .commit()
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Bình luận sản phẩm")
+        toolbar.setCustomTitle("Sản phẩm yêu thích")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()

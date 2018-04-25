@@ -16,6 +16,7 @@ object Const {
 
     object RequestCode {
         const val EDIT_PRODUCT_COMMENT = 1
+        const val CAMERA_PERMISSION = 2
     }
 
     object AccountAction {

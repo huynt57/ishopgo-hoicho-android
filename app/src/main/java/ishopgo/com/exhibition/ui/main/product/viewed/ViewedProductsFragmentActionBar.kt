@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.favorite
+package ishopgo.com.exhibition.ui.main.product.viewed
 
 import android.os.Bundle
 import android.view.View
@@ -9,12 +9,12 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class FavoriteProductsFragment : BaseActionBarFragment() {
+class ViewedProductsFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
 
-        fun newInstance(params: Bundle): FavoriteProductsFragment {
-            val fragment = FavoriteProductsFragment()
+        fun newInstance(params: Bundle): ViewedProductsFragmentActionBar {
+            val fragment = ViewedProductsFragmentActionBar()
             fragment.arguments = params
 
             return fragment
@@ -31,12 +31,12 @@ class FavoriteProductsFragment : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, FavoriteFragment())
+                .replace(R.id.view_main_content, ViewedFragment())
                 .commit()
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Sản phẩm yêu thích")
+        toolbar.setCustomTitle("Sản phẩm đã xem")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()

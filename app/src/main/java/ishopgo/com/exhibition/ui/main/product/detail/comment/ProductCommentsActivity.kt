@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 class ProductCommentsActivity : BaseSingleFragmentActivity() {
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return ProductCommentsFragment.newInstance(startupOption)
+        return ProductCommentsFragmentActionBar.newInstance(startupOption)
     }
 
     override fun startupOptions(): Bundle {

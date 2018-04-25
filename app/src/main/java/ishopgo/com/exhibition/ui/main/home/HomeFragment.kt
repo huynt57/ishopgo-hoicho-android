@@ -8,14 +8,14 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.util.TypedValue
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.banner.BannerImageFragment
-import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
@@ -31,13 +31,13 @@ import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
- * Created by xuanhong on 4/23/18. HappyCoding!
+ * Created by xuanhong on 4/25/18. HappyCoding!
  */
-class MainHomeFragment : BaseActionBarFragment() {
+class HomeFragment : BaseFragment() {
+
 
     private lateinit var viewModel: MainViewModel
 
@@ -65,8 +65,8 @@ class MainHomeFragment : BaseActionBarFragment() {
         }
     }
 
-    override fun contentLayoutRes(): Int {
-        return R.layout.fragment_home
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -160,8 +160,6 @@ class MainHomeFragment : BaseActionBarFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupToolbars()
 
         setupReferencedProducts(view.context)
         setupSponsorsProducts(view.context)
@@ -302,24 +300,6 @@ class MainHomeFragment : BaseActionBarFragment() {
         viewModel.loadViewedProducts()
         viewModel.loadCategories()
         viewModel.loadBanners()
-    }
-
-    private fun setupToolbars() {
-        toolbar.setCustomTitle("Tìm kiếm")
-        val titleView = toolbar.getTitleView()
-        titleView.setBackgroundResource(R.drawable.bg_search_box)
-        titleView.setTextColor(resources.getColor(R.color.md_grey_700))
-        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
-        toolbar.leftButton(R.drawable.ic_drawer_toggle_24dp)
-        toolbar.setLeftButtonClickListener {
-            if (!drawer_layout.isDrawerVisible(Gravity.START))
-                drawer_layout.openDrawer(Gravity.START);
-            else drawer_layout.closeDrawer(Gravity.START);
-        }
-        toolbar.rightButton(R.drawable.ic_search_24dp)
-        toolbar.setRightButtonClickListener {
-            toast("Search screen")
-        }
     }
 
     private fun setupReferencedProducts(context: Context) {

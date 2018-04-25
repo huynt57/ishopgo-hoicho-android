@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
+import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewMode
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
@@ -45,4 +46,5 @@ interface AppComponent {
     fun inject(categoryViewMode: CategoryViewMode)
     fun inject(accountViewModel: AccountViewModel)
     fun inject(profileViewModel: ProfileViewModel)
+    fun inject(scanViewModel: ScanViewModel)
 }

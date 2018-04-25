@@ -14,9 +14,9 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import ishopgo.com.exhibition.ui.main.account.AccountFragment
-import ishopgo.com.exhibition.ui.main.home.MainHomeFragment
-import ishopgo.com.exhibition.ui.main.profile.ProfileFragment
+import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
+import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
+import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
@@ -24,6 +24,14 @@ import kotlinx.android.synthetic.main.fragment_main.*
  * Created by xuanhong on 4/18/18. HappyCoding!
  */
 class MainFragment : BaseFragment() {
+
+    companion object {
+        const val TAB_HOME = 0
+        const val TAB_COMMUNITY = 1
+        const val TAB_SCAN = 2
+        const val TAB_CHAT = 3
+        const val TAB_ACCOUNT = 4
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -99,20 +107,20 @@ class MainFragment : BaseFragment() {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
-                0 -> {
-                    MainHomeFragment()
+                TAB_HOME -> {
+                    HomeFragmentActionBar()
                 }
-                1 -> {
+                TAB_COMMUNITY -> {
                     Fragment()
                 }
-                2 -> {
+                TAB_SCAN -> {
+                    ScanFragmentActionBar.newInstance(Bundle())
+                }
+                TAB_CHAT -> {
                     Fragment()
                 }
-                3 -> {
-                    Fragment()
-                }
-                4 -> {
-                    AccountFragment.newInstance(Bundle())
+                TAB_ACCOUNT -> {
+                    AccountFragmentActionBar.newInstance(Bundle())
                 }
                 else -> {
                     Fragment()

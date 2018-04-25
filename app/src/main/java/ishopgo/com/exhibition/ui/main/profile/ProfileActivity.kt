@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 class ProfileActivity : BaseSingleFragmentActivity() {
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return ProfileFragment.newInstance(startupOption)
+        return ProfileFragmentActionBar.newInstance(startupOption)
     }
 
 
