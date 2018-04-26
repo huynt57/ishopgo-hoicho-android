@@ -24,6 +24,9 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
+
+        const val COMMUNITY_SHARE_PRODUCT = 0
+        const val COMMUNITY_SHARE_IMAGE = 1
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
@@ -70,12 +73,22 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                 tv_community_comment.text = data.provideCommentCount().toString()
                 tv_community_number_share.text = data.provideShareCount().toString()
 
+
                 Glide.with(this).load(data.userAvatar())
                         .apply(RequestOptions.circleCropTransform()
                                 .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_avatar)
 
-                Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
-                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
+                if (data.provideType() == COMMUNITY_SHARE_PRODUCT.toString()) {
+                    img_community_image.visibility = View.GONE
+                    Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
+                            .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
+                } else if (data.provideType() == COMMUNITY_SHARE_IMAGE.toString()) {
+                    img_community_image.visibility = View.VISIBLE
+                    cv_community_product.visibility = View.GONE
+                    Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
+                            .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_image)
+                }
+
             }
         }
     }

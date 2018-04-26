@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.community
 
+import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.request.RequestParams
 import ishopgo.com.exhibition.domain.response.IdentityData
@@ -9,10 +10,13 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComponent.Injectable {
+    var sentShareSuccess = MutableLiveData<Boolean>()
+
     override fun loadData(params: RequestParams) {
         val dummy = mutableListOf<CommunityProvider>()
         for (i in 0..10)
             dummy.add(object : IdentityData(), CommunityProvider {
+
                 init {
                     id = i.toLong()
                 }
@@ -61,6 +65,12 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
                     return "1.000.000đ"
                 }
 
+                override fun provideType(): String {
+                    return if (i % 3 == 0)
+                        COMMUNITY_SHARE_IMAGE.toString()
+                    else COMMUNITY_SHARE_PRODUCT.toString()
+                }
+
                 override fun provideProductListImage(): MutableList<CommunityImageProvider>? {
                     val child = mutableListOf<CommunityImageProvider>()
                     for (i in 0..1)
@@ -76,7 +86,16 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
         dataReturned.postValue(dummy)
     }
 
+    fun sentShareCommunity(share: String) {
+        sentShareSuccess.postValue(true)
+    }
+
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
+    }
+
+    companion object {
+        const val COMMUNITY_SHARE_PRODUCT = 0
+        const val COMMUNITY_SHARE_IMAGE = 1
     }
 }

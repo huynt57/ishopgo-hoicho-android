@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
@@ -74,7 +75,8 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                 override fun click(position: Int, data: CommunityProvider, code: Int) {
                     when (code) {
                         COMMUNITY_SHARE_CLICK -> {
-                            toast("Chia sẻ với cộng đồng")
+                            val intent = Intent(context, CommunityShareActivity::class.java)
+                            startActivity(intent)
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
