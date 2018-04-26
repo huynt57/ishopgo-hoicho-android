@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorPureWhite">
 
     <ImageView
         android:id="@+id/view_back"
@@ -27,13 +28,13 @@
         android:paddingStart="16dp"
         android:paddingTop="8dp"
         android:singleLine="true"
+        android:textColor="@color/md_grey_700"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="@id/view_back"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/view_back"
         app:layout_constraintTop_toTopOf="parent"
         >
-
-        <requestFocus/>
     </EditText>
 
     <View
@@ -57,7 +58,7 @@
         app:tabSelectedTextColor="@color/colorPrimaryDark">
 
         <android.support.design.widget.TabItem
-            android:id="@+id/tab_shop_products"
+            android:id="@+id/tab_products"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sản phẩm"/>

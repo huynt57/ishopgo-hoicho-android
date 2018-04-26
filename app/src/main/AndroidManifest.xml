@@ -105,6 +105,14 @@
             />
 
         <activity
+            android:name=".ui.main.product.branded.ProductsOfBrandActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
+
+        <activity
             android:name=".ui.community.CommunityShareActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
