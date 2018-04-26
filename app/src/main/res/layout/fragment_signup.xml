@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/wallpaper_login_2"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/img_signup_back"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_white_24dp"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/ff_roboto"
+        android:text="Đăng ký"
+        android:textColor="@color/md_white_1000"
+        android:textSize="26sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_signup_back"
+        tools:ignore="HardcodedText" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/mScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Số điện thoại*"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_mail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email*"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Họ và tên*"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_company"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Công ty"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout4">
+
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                    android:id="@+id/tv_signup_birthday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày sinh (dd/mm/yyyy)"
+                    android:inputType="date"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout6"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout5">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_region"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:hint="Chọn khu vực*"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:textColor="@color/md_white_1000"
+                    android:textIsSelectable="false"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout6">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Địa chỉ*"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:textColor="@color/md_white_1000"
+                    android:textIsSelectable="false"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout8"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout7">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mật khẩu*"
+                    android:inputType="textPassword"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout9"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:textColorHint="@color/md_grey_200"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout8">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_signup_retry_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Nhập lại mật khẩu*"
+                    android:imeActionLabel="Đăng ký"
+                    android:inputType="textPassword"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/button_radius_green"
+                android:fontFamily="@font/ff_roboto"
+                android:paddingBottom="16dp"
+                android:paddingEnd="30dp"
+                android:paddingStart="30dp"
+                android:paddingTop="16dp"
+                android:text="Đăng ký"
+                android:textColor="@color/md_white_1000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout9"
+                tools:ignore="HardcodedText" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.43" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

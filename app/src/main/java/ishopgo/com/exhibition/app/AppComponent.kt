@@ -3,6 +3,8 @@ package ishopgo.com.exhibition.app
 import android.app.Application
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
+import ishopgo.com.exhibition.ui.login.LoginViewModel
+import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
@@ -46,5 +48,7 @@ interface AppComponent {
     fun inject(categoryViewMode: CategoryViewMode)
     fun inject(accountViewModel: AccountViewModel)
     fun inject(profileViewModel: ProfileViewModel)
+    fun inject(communityViewModel: CommunityViewModel)
+    fun inject(loginViewModel: LoginViewModel)
     fun inject(scanViewModel: ScanViewModel)
 }

@@ -90,4 +90,10 @@
         <item name="android:focusable">false</item>
     </style>
 
+    <style name="AppTheme.DisableInputField_Transparent" parent="AppTheme">
+        <item name="android:background">@drawable/disable_input_field_transparent</item>
+        <item name="android:focusableInTouchMode">false</item>
+        <item name="android:focusable">false</item>
+    </style>
+
 </resources>

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ishopgo.com.exhibition">
+    package="ishopgo.com.exhibition">
 
     <application
         android:name=".app.MyApp"
@@ -14,74 +14,83 @@
             android:name="ishopgo.com.exhibition.ui.splash.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
-
             <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.detail.ProductDetailActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.shop.ProductsOfShopActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.detail.fulldetail.FullDetailActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.favorite.FavoriteProductsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.viewed.ViewedProductsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
 
         <activity
             android:name=".ui.main.shop.ShopDetailActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.brand.popular.PopularBrandsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.popular.PopularProductsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".ui.main.product.detail.comment.ProductCommentsActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.login.SignupActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.login.ForgetActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.login.LoginSelectOptionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".ui.main.profile.ProfileActivity"

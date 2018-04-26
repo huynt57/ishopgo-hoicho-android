@@ -7,7 +7,7 @@ import android.os.Handler
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActivity
-import ishopgo.com.exhibition.ui.main.MainActivity
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 
 
 class SplashActivity : BaseActivity() {
@@ -29,7 +29,7 @@ class SplashActivity : BaseActivity() {
             UserDataManager.currentUserPhone = "0974427143"
             UserDataManager.currentUserId = 10L
 
-            val intent = Intent(this@SplashActivity, MainActivity::class.java)
+            val intent = Intent(this@SplashActivity, LoginSelectOptionActivity::class.java)
             startActivity(intent)
 
             finish()
