@@ -17,7 +17,6 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
@@ -25,10 +24,10 @@ import ishopgo.com.exhibition.ui.main.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
+import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
-import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -38,8 +37,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomeFragment : BaseFragment() {
 
-
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: HomeViewModel
 
     private val highlightProductAdapter = ProductAdapter()
     private val suggestedProductAdapter = ProductAdapter()
@@ -72,7 +70,7 @@ class HomeFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = obtainViewModel(MainViewModel::class.java, false)
+        viewModel = obtainViewModel(HomeViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.suggestedProducts.observe(this, Observer { p ->
             p?.let {
@@ -199,7 +197,7 @@ class HomeFragment : BaseFragment() {
             view_list_referenced_products.adapter = favoriteProductAdapter
         }
 
-        more_sponsors.setOnClickListener {
+        more_highlight_brand.setOnClickListener {
             openPopularBrands()
         }
 
@@ -312,11 +310,11 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun setupSponsorsProducts(context: Context) {
-        view_list_sponsors.adapter = highlightBrandAdapter
+        view_list_highlight_brand.adapter = highlightBrandAdapter
         val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
-        view_list_sponsors.layoutManager = layoutManager
-        view_list_sponsors.isNestedScrollingEnabled = false
-        view_list_sponsors.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_highlight_brand.layoutManager = layoutManager
+        view_list_highlight_brand.isNestedScrollingEnabled = false
+        view_list_highlight_brand.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun openProductDetail(product: ProductProvider) {
@@ -332,7 +330,7 @@ class HomeFragment : BaseFragment() {
     private fun openProductsByBrand(brand: HighlightBrandProvider) {
         context?.let {
             if (brand is IdentityData) {
-                val intent = Intent(it, ProductsOfShopActivity::class.java)
+                val intent = Intent(it, ProductsOfBrandActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, brand.id)
                 startActivity(intent)
             }

@@ -1,11 +1,13 @@
 package ishopgo.com.exhibition.ui.main.home
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -23,12 +25,16 @@ class HomeFragmentActionBar : BaseActionBarFragment() {
         }
     }
 
+    private lateinit var viewModel: HomeViewModel
+    private lateinit var mainViewModel: MainViewModel
+
     private fun setupToolbars() {
         toolbar.setCustomTitle("Tìm kiếm")
         val titleView = toolbar.getTitleView()
         titleView.setBackgroundResource(R.drawable.bg_search_box)
         titleView.setTextColor(resources.getColor(R.color.md_grey_700))
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+        titleView.setOnClickListener { mainViewModel.enableSearch() }
         toolbar.leftButton(R.drawable.ic_drawer_toggle_24dp)
         toolbar.setLeftButtonClickListener {
             if (!drawer_layout.isDrawerVisible(Gravity.START))
@@ -37,8 +43,19 @@ class HomeFragmentActionBar : BaseActionBarFragment() {
         }
         toolbar.rightButton(R.drawable.ic_search_24dp)
         toolbar.setRightButtonClickListener {
-            toast("Search screen")
+            mainViewModel.enableSearch()
         }
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = obtainViewModel(HomeViewModel::class.java, true)
+        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+
+        mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
     }
 
     override fun contentLayoutRes(): Int {

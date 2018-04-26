@@ -17,7 +17,7 @@ class ProductDetailActivity : BaseSingleFragmentActivity() {
     }
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return ProductDetailFragment.newInstance(startupOption)
+        return ProductDetailFragmentActionBar.newInstance(startupOption)
     }
 
     override fun startupOptions(): Bundle {
@@ -30,7 +30,7 @@ class ProductDetailActivity : BaseSingleFragmentActivity() {
 
         supportFragmentManager.transact {
             setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            add(R.id.fragment_container, ProductDetailFragment.newInstance(intent?.extras
+            add(R.id.fragment_container, ProductDetailFragmentActionBar.newInstance(intent?.extras
                     ?: Bundle()))
             addToBackStack(null)
         }

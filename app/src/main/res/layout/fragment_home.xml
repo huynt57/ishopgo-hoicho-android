@@ -55,7 +55,7 @@
                     android:layout_width="match_parent"/>
 
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/container_sponsors"
+                    android:id="@+id/container_highlight_brand"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -63,7 +63,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/container_banner">
 
                     <TextView
-                        android:id="@+id/label_sponsors"
+                        android:id="@+id/label_highlight_brand"
                         style="@style/AppTheme.SectionLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                         app:layout_constraintTop_toTopOf="parent"/>
 
                     <TextView
-                        android:id="@+id/more_sponsors"
+                        android:id="@+id/more_highlight_brand"
                         style="@style/AppTheme.MoreInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                         app:layout_constraintTop_toTopOf="parent"/>
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/view_list_sponsors"
+                        android:id="@+id/view_list_highlight_brand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -90,7 +90,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/label_sponsors"
+                        app:layout_constraintTop_toBottomOf="@+id/label_highlight_brand"
                         />
 
                 </android.support.constraint.ConstraintLayout>

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -18,6 +19,7 @@ import ishopgo.com.exhibition.ui.community.CommunityFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
+import ishopgo.com.exhibition.ui.main.home.search.SearchFragment
 import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -35,8 +37,42 @@ class MainFragment : BaseFragment() {
         const val TAB_ACCOUNT = 4
     }
 
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        viewModel = obtainViewModel(MainViewModel::class.java, true)
+        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.isSearchEnable.observe(this, Observer {
+            if (it == true) {
+                showSearch()
+            } else {
+                hideSearch()
+            }
+        })
+    }
+
+    private fun showSearch() {
+        val fragment = childFragmentManager.findFragmentByTag(SearchFragment.TAG)
+        if (fragment == null) {
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
+                    .add(R.id.content_main_container, SearchFragment(), SearchFragment.TAG)
+                    .addToBackStack(SearchFragment.TAG)
+                    .commit()
+        }
+    }
+
+    private fun hideSearch() {
+        val fragment = childFragmentManager.findFragmentByTag(SearchFragment.TAG)
+        if (fragment != null) {
+            childFragmentManager.popBackStack(SearchFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

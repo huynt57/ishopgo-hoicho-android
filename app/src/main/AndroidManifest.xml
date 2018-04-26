@@ -104,6 +104,13 @@
             android:screenOrientation="portrait"
             />
 
+        <activity
+            android:name=".ui.main.product.branded.ProductsOfBrandActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            />
+
+
 
     </application>
 </manifest>

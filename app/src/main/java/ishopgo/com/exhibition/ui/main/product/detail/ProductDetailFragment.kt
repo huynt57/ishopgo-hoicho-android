@@ -5,18 +5,21 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
+import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
@@ -25,10 +28,12 @@ import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
 
-class ProductDetailFragment : BaseActionBarFragment() {
+/**
+ * Created by xuanhong on 4/25/18. HappyCoding!
+ */
+class ProductDetailFragment : BaseFragment() {
 
     companion object {
         fun newInstance(params: Bundle): ProductDetailFragment {
@@ -47,8 +52,8 @@ class ProductDetailFragment : BaseActionBarFragment() {
     private val productCommentAdapter = ProductCommentAdapter()
     private var productId: Long = -1L
 
-    override fun contentLayoutRes(): Int {
-        return R.layout.fragment_product_detail
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_product_detail, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -153,8 +158,6 @@ class ProductDetailFragment : BaseActionBarFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupToolbars()
-
         setupProductComments(view.context)
         setupFavoriteProducts(view.context)
         setupSameShopProducts(view.context)
@@ -183,6 +186,13 @@ class ProductDetailFragment : BaseActionBarFragment() {
             }
 
         }
+
+        container_product_brand.setOnClickListener { showProductsOfBrand(productId) }
+    }
+
+    private fun showProductsOfBrand(productId: Long) {
+        val intent = Intent(context, ProductsOfBrandActivity::class.java)
+        startActivity(intent)
     }
 
     private fun openFavoriteProducts(context: Context) {
@@ -228,14 +238,6 @@ class ProductDetailFragment : BaseActionBarFragment() {
         viewModel.loadProductComments(productId)
     }
 
-    private fun setupToolbars() {
-        toolbar.setCustomTitle("Chi tiết sản phẩm")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
-        toolbar.setLeftButtonClickListener {
-            activity?.finish()
-        }
-    }
-
     private fun setupProductComments(context: Context) {
         view_list_comments.adapter = productCommentAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -268,5 +270,4 @@ class ProductDetailFragment : BaseActionBarFragment() {
         view_list_viewed.isNestedScrollingEnabled = false
         view_list_viewed.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
-
 }

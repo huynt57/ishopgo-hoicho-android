@@ -8,6 +8,8 @@ import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
+import ishopgo.com.exhibition.ui.main.home.HomeViewModel
+import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
@@ -41,7 +43,7 @@ interface AppComponent {
     fun inject(viewedProductsViewModel: ViewedProductsViewModel)
     fun inject(popularBrandsViewModel: PopularBrandsViewModel)
     fun inject(popularProductsViewModel: PopularProductsViewModel)
-    fun inject(brandedProductsViewModel: ProductsOfShopViewModel)
+    fun inject(shopProductsViewModel: ProductsOfShopViewModel)
     fun inject(productCommentViewModel: ProductCommentViewModel)
     fun inject(shopDetailViewModel: ShopDetailViewModel)
     fun inject(shopInfoViewModel: ShopInfoViewModel)
@@ -51,4 +53,6 @@ interface AppComponent {
     fun inject(communityViewModel: CommunityViewModel)
     fun inject(loginViewModel: LoginViewModel)
     fun inject(scanViewModel: ScanViewModel)
+    fun inject(productsOfBrandViewModel: ProductsOfBrandViewModel)
+    fun inject(homeViewModel: HomeViewModel)
 }
