@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.login
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -20,6 +21,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.fragment_signup.*
 import java.io.IOException
@@ -69,14 +71,9 @@ class SignupFragment : BaseFragment() {
                             tv_signup_retry_password.text.toString())) {
                 showProgressDialog()
 
-                try {
-                    viewModel.accountRegister(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
-                            tv_signup_company.text.toString(), tv_signup_birthday.text.toString(), tv_signup_region.text.toString(),
-                            tv_signup_address.text.toString(), tv_signup_password.text.toString(), type_Register.toString())
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    hideProgressDialog()
-                }
+                viewModel.accountRegister(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
+                        tv_signup_company.text.toString(), tv_signup_birthday.text.toString(), tv_signup_region.text.toString(),
+                        tv_signup_address.text.toString(), tv_signup_password.text.toString(), type_Register.toString())
             }
         }
     }
@@ -89,6 +86,9 @@ class SignupFragment : BaseFragment() {
         viewModel.registerSuccess.observe(this, Observer {
             hideProgressDialog()
             toast("Đăng ký thành công")
+            activity?.finish()
+            val intent = Intent(context, MainActivity::class.java)
+            startActivity(intent)
         })
 
         viewModel.loadRegion.observe(this, Observer { p ->

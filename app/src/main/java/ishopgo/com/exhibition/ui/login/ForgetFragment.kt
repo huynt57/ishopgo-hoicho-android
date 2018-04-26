@@ -31,12 +31,7 @@ class ForgetFragment : BaseFragment() {
             if (checkRequireFields(tv_forget_phone.text.toString())) {
                 showProgressDialog()
 
-                try {
-                    viewModel.accountForget(tv_forget_phone.text.toString())
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    hideProgressDialog()
-                }
+                viewModel.accountForget(tv_forget_phone.text.toString())
             }
         }
     }

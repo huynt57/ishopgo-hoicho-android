@@ -10,6 +10,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_select_option_login.*
 
 /**
@@ -53,6 +54,8 @@ class LoginSelectOptionFragment : BaseFragment() {
 
         tv_skip_login.setOnClickListener {
             activity?.finish()
+            val intent = Intent(context, MainActivity::class.java)
+            startActivity(intent)
         }
     }
 

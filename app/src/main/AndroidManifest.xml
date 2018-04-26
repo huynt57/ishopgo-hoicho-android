@@ -13,7 +13,13 @@
         <activity
             android:name="ishopgo.com.exhibition.ui.splash.SplashActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.main.MainActivity"
@@ -85,22 +91,6 @@
             android:name=".ui.login.LoginSelectOptionActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
-        <activity
-            android:name=".ui.community.CommunityActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait">
-
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-            android:name=".ui.main.product.detail.comment.ProductCommentsActivity"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            />
 
         <activity
             android:name=".ui.main.profile.ProfileActivity"

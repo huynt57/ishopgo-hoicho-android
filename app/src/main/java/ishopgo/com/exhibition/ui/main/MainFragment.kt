@@ -14,6 +14,8 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.community.CommunityFragment
+import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
 import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
@@ -111,7 +113,7 @@ class MainFragment : BaseFragment() {
                     HomeFragmentActionBar()
                 }
                 TAB_COMMUNITY -> {
-                    Fragment()
+                    CommunityFragmentActionBar.newInstance(Bundle())
                 }
                 TAB_SCAN -> {
                     ScanFragmentActionBar.newInstance(Bundle())

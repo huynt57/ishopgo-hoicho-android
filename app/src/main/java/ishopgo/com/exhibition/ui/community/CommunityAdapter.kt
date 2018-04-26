@@ -87,10 +87,10 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
 
                 Glide.with(this).load(data.userAvatar())
                         .apply(RequestOptions.circleCropTransform()
-                                .placeholder(R.drawable.image_placeholder)).into(img_community_avatar)
+                                .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_avatar)
 
                 Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
-                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)).into(img_community_product)
+                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
             }
         }
     }
@@ -102,7 +102,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
             itemView.apply {
                 Glide.with(this).load(data.currentUserAvatar())
                         .apply(RequestOptions.circleCropTransform()
-                                .placeholder(R.drawable.image_placeholder)).into(img_community_share_avatar)
+                                .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_share_avatar)
             }
         }
     }

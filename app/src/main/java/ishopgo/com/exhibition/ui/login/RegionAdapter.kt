@@ -18,7 +18,7 @@ class RegionAdapter : ClickableAdapter<Region>() {
     }
 
     override fun createHolder(v: View, viewType: Int): BaseRecyclerViewAdapter.ViewHolder<Region> {
-        return PlanHodel(v)
+        return RegionHodel(v)
     }
 
     override fun onBindViewHolder(holder: ViewHolder<Region>, position: Int) {
@@ -29,7 +29,7 @@ class RegionAdapter : ClickableAdapter<Region>() {
         }
     }
 
-    internal inner class PlanHodel(itemView: View) : BaseRecyclerViewAdapter.ViewHolder<Region>(itemView) {
+    internal inner class RegionHodel(itemView: View) : BaseRecyclerViewAdapter.ViewHolder<Region>(itemView) {
 
         @SuppressLint("SetTextI18n")
         override fun populate(data: Region) {

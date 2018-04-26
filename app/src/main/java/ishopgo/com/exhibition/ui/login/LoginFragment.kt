@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 import java.io.IOException
 
@@ -31,13 +32,7 @@ class LoginFragment : BaseFragment() {
         btn_login.setOnClickListener {
             if (checkRequireFields(tv_account.text.toString(), tv_password.text.toString())) {
                 showProgressDialog()
-
-                try {
-                    viewModel.accountLogin(tv_account.text.toString(), tv_password.text.toString())
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                    hideProgressDialog()
-                }
+                viewModel.accountLogin(tv_account.text.toString(), tv_password.text.toString())
             }
         }
 
@@ -55,6 +50,9 @@ class LoginFragment : BaseFragment() {
         viewModel.loginSuccess.observe(this, Observer {
             hideProgressDialog()
             toast("Đăng nhập thành công")
+            activity?.finish()
+            val intent = Intent(context, MainActivity::class.java)
+            startActivity(intent)
         })
     }
 

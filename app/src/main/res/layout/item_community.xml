@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_username"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             app:layout_constraintStart_toEndOf="@+id/img_community_avatar"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_time"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
             app:layout_constraintStart_toEndOf="@+id/img_community_avatar"
             app:layout_constraintTop_toBottomOf="@+id/tv_community_username" />
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/md_white_1000">
 
-                <TextView
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_community_product_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_community_product_code"
                     android:layout_width="0dp"
                     android:layout_height="13dp"
@@ -134,7 +134,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_community_product_name" />
 
-                <TextView
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_community_product_price"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -167,7 +167,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_community_product">
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_like"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -176,7 +176,7 @@
             android:text="0"
             tools:drawableStart="@drawable/ic_like_heath" />
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_comment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -185,7 +185,7 @@
             android:text="0"
             tools:drawableStart="@drawable/ic_comment_black" />
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_number_share"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -194,7 +194,7 @@
             android:text="0"
             tools:drawableStart="@drawable/ic_share_option" />
 
-        <TextView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
@@ -214,7 +214,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical">
 
-                <TextView
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/img_community_share"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
