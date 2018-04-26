@@ -122,13 +122,15 @@
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_community_product_code"
                     android:layout_width="0dp"
-                    android:layout_height="13dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
+                    android:gravity="center|start"
                     android:textColor="@color/colorPrimary"
-                    android:gravity="center_horizontal"
                     android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_barcode"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/tv_community_product_price"
                     app:layout_constraintStart_toStartOf="parent"
@@ -141,12 +143,12 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
-                    android:gravity="center_horizontal"
+                    android:gravity="center|end"
+                    android:textColor="@color/colorPrimary"
                     android:textSize="12sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_community_product_name"
-                    android:textColor="@color/colorPrimary"/>
+                    app:layout_constraintTop_toBottomOf="@+id/tv_community_product_name" />
 
             </android.support.constraint.ConstraintLayout>
 
@@ -174,7 +176,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
-            tools:drawableStart="@drawable/ic_like_heath" />
+            app:drawableStartCompat="@drawable/ic_like_heath" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_comment"
@@ -183,6 +185,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
+            app:drawableStartCompat="@drawable/ic_comment_black"
             tools:drawableStart="@drawable/ic_comment_black" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -192,7 +195,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
-            tools:drawableStart="@drawable/ic_share_option" />
+            app:drawableStartCompat="@drawable/ic_share_option" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:layout_width="0dp"
@@ -222,7 +225,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:text="   Chia sẻ"
                     android:textColor="@color/md_white_1000"
-                    tools:drawableStart="@drawable/ic_share_white" />
+                    app:drawableStartCompat="@drawable/ic_share_white" />
             </LinearLayout>
 
 

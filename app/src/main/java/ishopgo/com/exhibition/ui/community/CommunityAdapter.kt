@@ -60,21 +60,6 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         override fun populate(data: CommunityProvider) {
             super.populate(data)
             itemView.apply {
-                val codeDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_barcode) }
-                tv_community_product_code.setCompoundDrawablesWithIntrinsicBounds(codeDrawable, null, null, null)
-
-                val likeDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_like_heath) }
-                tv_community_like.setCompoundDrawablesWithIntrinsicBounds(likeDrawable, null, null, null)
-
-                val commentDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_comment_black) }
-                tv_community_comment.setCompoundDrawablesWithIntrinsicBounds(commentDrawable, null, null, null)
-
-                val shareDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_share_option) }
-                tv_community_number_share.setCompoundDrawablesWithIntrinsicBounds(shareDrawable, null, null, null)
-
-                val shareWhiteDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_share_white) }
-                img_community_share.setCompoundDrawablesWithIntrinsicBounds(shareWhiteDrawable, null, null, null)
-
                 tv_community_username.text = data.userName()
                 tv_community_time.text = data.provideTime()
                 tv_community_content.text = data.provideContent()

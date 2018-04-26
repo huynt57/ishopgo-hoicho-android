@@ -17,6 +17,7 @@
         android:padding="16dp"
         android:text="Bài viết mới"
         android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_write"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -31,6 +32,7 @@
         android:padding="16dp"
         android:text="Chia sẻ Facebook"
         android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_facebook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_new_post" />
@@ -45,6 +47,9 @@
         android:padding="16dp"
         android:text="Chia sẻ Zalo"
         android:textSize="16sp"
+        app:drawableStartCompat="@drawable/ic_zalo"
+        app:layout_constraintDimensionRatio=""
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_share_facebook" />

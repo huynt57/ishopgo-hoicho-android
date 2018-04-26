@@ -9,6 +9,8 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
  */
 class LoginActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
-        return LoginFragment()
+        val phone = intent.getStringExtra("phone")
+        return if (phone == null || phone == "") LoginFragment.newInstance("")
+        else LoginFragment.newInstance(phone)
     }
 }

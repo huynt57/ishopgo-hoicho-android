@@ -17,6 +17,15 @@ import java.io.IOException
  */
 class LoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
+    private lateinit var phone: String
+
+    companion object {
+        fun newInstance(phone: String): LoginFragment {
+            val f = LoginFragment()
+            f.phone = phone
+            return f
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login, container, false)
@@ -32,13 +41,17 @@ class LoginFragment : BaseFragment() {
         btn_login.setOnClickListener {
             if (checkRequireFields(tv_account.text.toString(), tv_password.text.toString())) {
                 showProgressDialog()
-                viewModel.accountLogin(tv_account.text.toString(), tv_password.text.toString())
+                viewModel.loginAccount(tv_account.text.toString(), tv_password.text.toString())
             }
         }
 
         tv_forget_password.setOnClickListener {
             val intent = Intent(context, ForgetActivity::class.java)
             startActivity(intent)
+        }
+
+        if (phone!=""){
+            tv_account.setText(phone)
         }
     }
 
@@ -50,9 +63,9 @@ class LoginFragment : BaseFragment() {
         viewModel.loginSuccess.observe(this, Observer {
             hideProgressDialog()
             toast("Đăng nhập thành công")
-            activity?.finish()
             val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
+            activity?.finish()
         })
     }
 

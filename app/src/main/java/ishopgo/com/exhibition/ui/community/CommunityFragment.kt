@@ -101,16 +101,10 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
                                 val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
 
-                                val postDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_write) }
-                                tv_new_post.setCompoundDrawablesWithIntrinsicBounds(postDrawable, null, null, null)
                                 tv_new_post.compoundDrawablePadding = 20
 
-                                val fbDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_facebook) }
-                                tv_share_facebook.setCompoundDrawablesWithIntrinsicBounds(fbDrawable, null, null, null)
                                 tv_share_facebook.compoundDrawablePadding = 20
 
-                                val zaloDrawable = context?.let { AppCompatResources.getDrawable(it, R.drawable.ic_zalo) }
-                                tv_share_zalo.setCompoundDrawablesWithIntrinsicBounds(zaloDrawable, null, null, null)
                                 tv_share_zalo.compoundDrawablePadding = 20
 
                                 dialog.show()

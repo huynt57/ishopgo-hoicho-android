@@ -40,12 +40,14 @@ class LoginSelectOptionFragment : BaseFragment() {
                     val intent = Intent(context, SignupActivity::class.java)
                     intent.putExtra("TYPE_REGISTER", REGISTER_MEMBER)
                     startActivity(intent)
+                    dialog.dismiss()
                 }
 
                 tv_register_store.setOnClickListener {
                     val intent = Intent(context, SignupActivity::class.java)
                     intent.putExtra("TYPE_REGISTER", REGISTER_STORE)
                     startActivity(intent)
+                    dialog.dismiss()
                 }
 
                 dialog.show()

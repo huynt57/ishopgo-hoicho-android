@@ -31,7 +31,7 @@ class ForgetFragment : BaseFragment() {
             if (checkRequireFields(tv_forget_phone.text.toString())) {
                 showProgressDialog()
 
-                viewModel.accountForget(tv_forget_phone.text.toString())
+                viewModel.forgetAccount(tv_forget_phone.text.toString())
             }
         }
     }

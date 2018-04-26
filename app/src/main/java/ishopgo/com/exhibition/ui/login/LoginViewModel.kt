@@ -19,16 +19,16 @@ class LoginViewModel : BaseViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    fun accountLogin(account: String, password: String) {
+    fun loginAccount(account: String, password: String) {
         loginSuccess.postValue(true)
     }
 
-    fun accountRegister(phone: String, email: String, fullname: String, company: String, birthday: String,
+    fun registerAccount(phone: String, email: String, fullname: String, company: String, birthday: String,
                         region_id: String, address: String, password: String, register_type: String) {
         registerSuccess.postValue(true)
     }
 
-    fun accountForget(phone: String) {
+    fun forgetAccount(phone: String) {
         forgetSentSuccess.postValue(true)
     }
 
