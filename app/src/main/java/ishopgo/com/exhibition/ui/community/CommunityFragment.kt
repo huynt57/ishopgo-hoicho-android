@@ -96,17 +96,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                         .autoDismiss(false)
                                         .canceledOnTouchOutside(true)
                                         .build()
-
-                                val tv_new_post = dialog.findViewById(R.id.tv_new_post) as VectorSupportTextView
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-
-                                tv_new_post.compoundDrawablePadding = 20
-
-                                tv_share_facebook.compoundDrawablePadding = 20
-
-                                tv_share_zalo.compoundDrawablePadding = 20
-
                                 dialog.show()
                             }
                         }
