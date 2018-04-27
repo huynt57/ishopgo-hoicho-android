@@ -55,9 +55,9 @@ class LoginSelectOptionFragment : BaseFragment() {
         }
 
         tv_skip_login.setOnClickListener {
-            activity?.finish()
             val intent = Intent(context, MainActivity::class.java)
             startActivity(intent)
+            activity?.finish()
         }
     }
 

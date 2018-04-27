@@ -35,6 +35,7 @@
         app:layout_constraintStart_toEndOf="@id/view_back"
         app:layout_constraintTop_toTopOf="parent"
         >
+        <requestFocus/>
     </EditText>
 
     <View

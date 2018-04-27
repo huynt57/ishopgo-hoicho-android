@@ -27,6 +27,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
     }
 
     override fun firstLoad() {
+        super.firstLoad()
         val loadMore = LoadMoreRequestParams()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
@@ -34,6 +35,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
     }
 
     override fun loadMore(currentCount: Int) {
+        super.loadMore(currentCount)
         val loadMore = LoadMoreRequestParams()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount

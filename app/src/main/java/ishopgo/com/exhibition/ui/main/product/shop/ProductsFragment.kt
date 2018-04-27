@@ -42,6 +42,7 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
     }
 
     override fun firstLoad() {
+        super.firstLoad()
         val loadMore = LoadMoreRequestParams()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
@@ -49,6 +50,7 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
     }
 
     override fun loadMore(currentCount: Int) {
+        super.loadMore(currentCount)
         val loadMore = LoadMoreRequestParams()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount

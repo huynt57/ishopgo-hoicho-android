@@ -10,7 +10,7 @@ class PopularBrandsViewModel : BaseListViewModel<List<HighlightBrandProvider>>()
 
     override fun loadData(params: RequestParams) {
         val dummy = mutableListOf<HighlightBrandProvider>()
-        for (i in 0..5)
+        for (i in 0..19)
             dummy.add(object : IdentityData(), HighlightBrandProvider {
 
                 init {
