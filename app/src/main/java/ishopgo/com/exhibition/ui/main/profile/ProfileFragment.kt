@@ -52,7 +52,7 @@ class ProfileFragment : BaseFragment() {
                     .apply(RequestOptions
                             .circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.avatar_placeholder))
+                            .error(R.drawable.error_placeholder))
                     .into(view_avatar)
             view_phone.setText(profile.providePhone())
             view_name.setText(profile.provideName())

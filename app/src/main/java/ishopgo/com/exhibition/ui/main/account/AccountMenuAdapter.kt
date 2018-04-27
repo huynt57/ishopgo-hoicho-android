@@ -119,7 +119,7 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
                         .load(data.provideIcon())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.avatar_placeholder)
-                                .error(R.drawable.avatar_placeholder))
+                                .error(R.drawable.error_placeholder))
                         .into(view_parent_icon)
 
                 view_parent_text.text = data.provideName()
@@ -147,7 +147,7 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
                         .load(data.provideIcon())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.avatar_placeholder)
-                                .error(R.drawable.avatar_placeholder))
+                                .error(R.drawable.error_placeholder))
                         .into(view_child_icon)
 
                 view_child_text.text = data.provideName()

@@ -52,7 +52,7 @@ class HighlightBrandAdapter(private var itemWidthRatio: Float = -1f, private var
                         .load(data.provideImage())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.avatar_placeholder)
-                                .error(R.drawable.avatar_placeholder))
+                                .error(R.drawable.error_placeholder))
                         .into(view_image)
             }
         }

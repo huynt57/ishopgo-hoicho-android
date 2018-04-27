@@ -20,7 +20,7 @@ class CategoryViewMode : BaseListViewModel<List<CategoryProvider>>(), AppCompone
                 }
 
                 override fun provideIcon(): String {
-                    return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
+                    return "https://marketplace.canva.com/MAB60SfE6BE/1/thumbnail/canva-jacket-cloth-fashion-winter-cold-icon.-vector-graphic-MAB60SfE6BE.png"
                 }
 
                 override fun provideName(): String {
@@ -32,7 +32,7 @@ class CategoryViewMode : BaseListViewModel<List<CategoryProvider>>(), AppCompone
                     for (i in 0..4)
                         child.add(object : IdentityData(), CategoryProvider {
                             override fun provideIcon(): String {
-                                return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
+                                return "https://marketplace.canva.com/MAB60SfE6BE/1/thumbnail/canva-jacket-cloth-fashion-winter-cold-icon.-vector-graphic-MAB60SfE6BE.png"
                             }
 
                             override fun provideName(): String {
