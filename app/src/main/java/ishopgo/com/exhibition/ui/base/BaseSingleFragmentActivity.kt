@@ -9,12 +9,15 @@ import ishopgo.com.exhibition.R
  */
 abstract class BaseSingleFragmentActivity : BaseActivity() {
 
+    protected lateinit var currentFragment: Fragment
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_empty)
 
         if (savedInstanceState == null) {
-            replaceFragmentInActivity(createFragment(startupOptions()), R.id.fragment_container)
+            currentFragment = createFragment(startupOptions())
+            replaceFragmentInActivity(currentFragment, R.id.fragment_container)
         }
     }
 

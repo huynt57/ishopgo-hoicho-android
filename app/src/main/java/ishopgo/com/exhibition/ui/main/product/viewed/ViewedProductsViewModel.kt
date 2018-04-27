@@ -10,7 +10,7 @@ class ViewedProductsViewModel : BaseListViewModel<List<ProductProvider>>(), AppC
 
     override fun loadData(params: RequestParams) {
         val dummy = mutableListOf<ProductProvider>()
-        for (i in 0..5)
+        for (i in 0..19)
             dummy.add(object : IdentityData(), ProductProvider {
 
                 init {

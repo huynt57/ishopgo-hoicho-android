@@ -22,6 +22,7 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
 
     protected lateinit var adapter: BaseRecyclerViewAdapter<ITEM>
     protected lateinit var viewModel: BaseListViewModel<DATA>
+    protected lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.content_swipable_recyclerview, container, false)
@@ -36,15 +37,12 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
         val layoutManager = layoutManager(view.context)
         view_recyclerview.layoutManager = layoutManager
 
-        view_recyclerview.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
-
+        scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                reloadData = false
                 loadMore(totalItemsCount)
-
-                swipe.isRefreshing = true
             }
-        })
+        }
+        view_recyclerview.addOnScrollListener(scrollListener)
 
         swipe.setOnRefreshListener(this)
     }
@@ -63,19 +61,17 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
             data?.let {
                 populateData(it)
 
-                swipe.isRefreshing = false
+                finishLoading()
             }
         })
 
-        reloadData = true
+
         firstLoad()
-        swipe.isRefreshing = true
     }
 
     override fun onRefresh() {
         firstLoad()
 
-        swipe.isRefreshing = true
     }
 
     open fun layoutManager(context: Context): RecyclerView.LayoutManager {
@@ -86,9 +82,21 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
 
     abstract fun itemAdapter(): BaseRecyclerViewAdapter<ITEM>
 
-    abstract fun firstLoad()
+    open fun firstLoad() {
+        reloadData = true
+        swipe.isRefreshing = true
+        adapter.clear()
+        scrollListener.resetState()
+    }
 
-    abstract fun loadMore(currentCount: Int)
+    open fun loadMore(currentCount: Int) {
+        reloadData = false
+        swipe.isRefreshing = true
+    }
+
+    open fun finishLoading() {
+        swipe.isRefreshing = false
+    }
 
     abstract fun obtainViewModel(): BaseListViewModel<DATA>
 

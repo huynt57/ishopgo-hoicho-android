@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.Observer
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -14,6 +15,7 @@ import android.view.ViewGroup
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
@@ -27,7 +29,11 @@ import kotlinx.android.synthetic.main.fragment_main.*
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
  */
-class MainFragment : BaseFragment() {
+class MainFragment : BaseFragment(), BackpressConsumable {
+
+    override fun onBackPressConsumed(): Boolean {
+        return childFragmentManager.popBackStackImmediate()
+    }
 
     companion object {
         const val TAB_HOME = 0

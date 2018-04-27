@@ -31,7 +31,6 @@ class SplashActivity : BaseActivity() {
 
             val intent = Intent(this@SplashActivity, LoginSelectOptionActivity::class.java)
             startActivity(intent)
-
             finish()
 
         }, 500)

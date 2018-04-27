@@ -40,6 +40,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     override fun firstLoad() {
+        super.firstLoad()
         val firstLoad = LoadMoreRequestParams()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
@@ -47,6 +48,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     override fun loadMore(currentCount: Int) {
+        super.loadMore(currentCount)
         val loadMore = LoadMoreRequestParams()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount

@@ -132,27 +132,25 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun showBanners(imageUrls: List<String>) {
-        if (fragmentManager != null) {
-            mPagerAdapter = object : FragmentPagerAdapter(fragmentManager) {
+        mPagerAdapter = object : FragmentPagerAdapter(childFragmentManager) {
 
-                override fun getItem(position: Int): Fragment {
-                    val params = Bundle()
-                    params.putString(Const.TransferKey.EXTRA_URL, imageUrls[position])
-                    return BannerImageFragment.newInstance(params)
-                }
-
-                override fun getCount(): Int {
-                    return imageUrls.size
-                }
+            override fun getItem(position: Int): Fragment {
+                val params = Bundle()
+                params.putString(Const.TransferKey.EXTRA_URL, imageUrls[position])
+                return BannerImageFragment.newInstance(params)
             }
-            view_banner_pager.offscreenPageLimit = imageUrls.size
-            view_banner_pager.adapter = mPagerAdapter
-            view_banner_indicator.setViewPager(view_banner_pager)
 
-            view_banner_pager.post {
-                if (imageUrls.size > 1)
-                    doChangeBanner()
+            override fun getCount(): Int {
+                return imageUrls.size
             }
+        }
+        view_banner_pager.offscreenPageLimit = imageUrls.size
+        view_banner_pager.adapter = mPagerAdapter
+        view_banner_indicator.setViewPager(view_banner_pager)
+
+        view_banner_pager.post {
+            if (imageUrls.size > 1)
+                doChangeBanner()
         }
     }
 

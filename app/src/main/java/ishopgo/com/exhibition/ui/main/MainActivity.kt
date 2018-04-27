@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 
 /**
@@ -13,5 +14,14 @@ class MainActivity : BaseSingleFragmentActivity() {
         return MainFragment()
     }
 
+    override fun onBackPressed() {
+        if (currentFragment is BackpressConsumable) {
+            val isConsumed = (currentFragment as BackpressConsumable).onBackPressConsumed()
+            if (isConsumed)
+                return
+            else return super.onBackPressed()
+        } else
+            super.onBackPressed()
+    }
 
 }
