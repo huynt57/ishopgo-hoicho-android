@@ -12,6 +12,8 @@ class LoginViewModel : BaseViewModel(), AppComponent.Injectable {
     var loginSuccess = MutableLiveData<Boolean>()
     var registerSuccess = MutableLiveData<Boolean>()
     var forgetSentSuccess = MutableLiveData<Boolean>()
+    var sentOTP = MutableLiveData<Boolean>()
+    var changNewPassword = MutableLiveData<Boolean>()
     var loadRegion = MutableLiveData<MutableList<Region>>()
 
 
@@ -30,6 +32,14 @@ class LoginViewModel : BaseViewModel(), AppComponent.Injectable {
 
     fun forgetAccount(phone: String) {
         forgetSentSuccess.postValue(true)
+    }
+
+    fun sentOTP(code: String) {
+        sentOTP.postValue(true)
+    }
+
+    fun changeNewPassword(password: String) {
+        changNewPassword.postValue(true)
     }
 
     fun loadRegion(offset: Int, regionName: String) {

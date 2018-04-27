@@ -17,6 +17,8 @@ object Const {
     object RequestCode {
         const val EDIT_PRODUCT_COMMENT = 1
         const val CAMERA_PERMISSION = 2
+        const val RC_PICK_IMAGE = 3
+        const val TAKE_PICTURE = 4
     }
 
     object AccountAction {
@@ -24,5 +26,6 @@ object Const {
         const val ACTION_CHANGE_PASSWORD = 2
         const val ACTION_LOGOUT = 3
     }
+
 
 }

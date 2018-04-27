@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.support.v7.content.res.AppCompatResources
+import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -80,15 +81,23 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
 
                 if (data.provideType() == COMMUNITY_SHARE_PRODUCT.toString()) {
                     img_community_image.visibility = View.GONE
-                    Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
+                    Glide.with(this).load(data.provideProductListImage()[0].url())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
+
+                    if (data.provideProductListImage().size > 0) {
+                        rv_community_image.visibility = View.VISIBLE
+                        val adapter = CommunityImageAdapter()
+                        adapter.replaceAll(data.provideProductListImage())
+                        rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+                        rv_community_image.adapter = adapter
+                    }
                 } else if (data.provideType() == COMMUNITY_SHARE_IMAGE.toString()) {
                     img_community_image.visibility = View.VISIBLE
+                    rv_community_image.visibility = View.GONE
                     cv_community_product.visibility = View.GONE
-                    Glide.with(this).load(data.provideProductListImage()?.get(0)?.url())
+                    Glide.with(this).load(data.provideProductListImage()[0].url())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_image)
                 }
-
             }
         }
     }

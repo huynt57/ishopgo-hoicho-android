@@ -15,6 +15,6 @@ interface CommunityProvider {
     fun provideProductName(): String
     fun provideProductCode(): String
     fun provideProductPrice(): String
-    fun provideProductListImage(): MutableList<CommunityImageProvider>?
+    fun provideProductListImage(): MutableList<CommunityImageProvider>
     fun provideType(): String
 }

@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.request.RequestParams
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
 /**
@@ -71,9 +72,9 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
                     else COMMUNITY_SHARE_PRODUCT.toString()
                 }
 
-                override fun provideProductListImage(): MutableList<CommunityImageProvider>? {
+                override fun provideProductListImage(): MutableList<CommunityImageProvider> {
                     val child = mutableListOf<CommunityImageProvider>()
-                    for (i in 0..1)
+                    for (i in 0..3)
                         child.add(object : IdentityData(), CommunityImageProvider {
                             override fun url(): String {
                                 return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
@@ -86,7 +87,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
         dataReturned.postValue(dummy)
     }
 
-    fun sentShareCommunity(share: String) {
+    fun sentShareCommunity(share: String, postMedias: ArrayList<PostMedia> = ArrayList()) {
         sentShareSuccess.postValue(true)
     }
 
