@@ -44,7 +44,7 @@ class SignupFragment : BaseFragment() {
             return fragment
         }
 
-        const val REGISTER_STORE = 0
+        const val REGISTER_STORE = 2
         const val REGISTER_MEMBER = 1
     }
 
@@ -104,7 +104,12 @@ class SignupFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(LoginViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                resolveError(it)
+                hideProgressDialog()
+            }
+        })
 
         viewModel.registerSuccess.observe(this, Observer {
             hideProgressDialog()

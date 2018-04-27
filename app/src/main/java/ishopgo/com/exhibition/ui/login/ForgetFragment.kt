@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.dialog_otp.*
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 import java.io.IOException
 
@@ -35,7 +34,7 @@ class ForgetFragment : BaseFragment() {
         btn_forget_sent.setOnClickListener {
             if (checkRequireFields(tv_forget_phone.text.toString())) {
                 showProgressDialog()
-                viewModel.forgetAccount(tv_forget_phone.text.toString())
+                viewModel.getOTP(tv_forget_phone.text.toString())
             }
         }
     }
@@ -45,13 +44,9 @@ class ForgetFragment : BaseFragment() {
         viewModel = obtainViewModel(LoginViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
 
-        viewModel.forgetSentSuccess.observe(this, Observer {
+        viewModel.getOTP.observe(this, Observer {
             hideProgressDialog()
             toast("Đã gửi yêu cầu, vui lòng kiểm tra tin nhắn điện thoại")
-            dialogOTP()
-        })
-
-        viewModel.sentOTP.observe(this, Observer {
             dialogChangePassword()
         })
 
@@ -73,16 +68,14 @@ class ForgetFragment : BaseFragment() {
         return true
     }
 
-    private fun checkRequireOTP(view: TextInputEditText): Boolean {
-        if (view.text.toString().trim().isEmpty()) {
+
+    private fun checkRequirePassword(edt_otp: TextInputEditText, edt_password: TextInputEditText, edt_retry_password: TextInputEditText): Boolean {
+        if (edt_otp.text.toString().trim().isEmpty()) {
             toast("Vui lòng nhập mã OTP")
-            view.error = "Trường này còn trống"
+            edt_otp.error = "Trường này còn trống"
             return false
         }
-        return true
-    }
 
-    private fun checkRequirePassword(edt_password: TextInputEditText, edt_retry_password: TextInputEditText): Boolean {
         if (edt_password.text.toString().trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
             edt_password.error = "Trường này còn trống"
@@ -104,32 +97,6 @@ class ForgetFragment : BaseFragment() {
         return true
     }
 
-    private fun dialogOTP() {
-        context?.let {
-            val dialog = MaterialDialog.Builder(it)
-                    .customView(R.layout.dialog_otp, false)
-                    .title("Nhập mã OTP")
-                    .positiveText("Xong")
-                    .onPositive { dialog, _ ->
-                        val edt_forget_password_otp = dialog.findViewById(R.id.edt_forget_password_otp) as TextInputEditText
-                        if (checkRequireOTP(edt_forget_password_otp)) {
-                            viewModel.sentOTP(edt_forget_password_otp.text.toString())
-                            dialog.dismiss()
-                        }
-                    }
-                    .negativeText("Huỷ")
-                    .onNegative { dialog, _ -> dialog.dismiss() }
-                    .autoDismiss(false)
-                    .canceledOnTouchOutside(true)
-                    .build()
-            val tv_retry_otp = dialog.findViewById(R.id.tv_retry_otp) as TextView
-            tv_retry_otp.setOnClickListener {
-                viewModel.forgetAccount(tv_forget_phone.text.toString())
-            }
-            dialog.show()
-        }
-    }
-
     private fun dialogChangePassword() {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
@@ -139,9 +106,11 @@ class ForgetFragment : BaseFragment() {
                     .onPositive { dialog, _ ->
                         val edit_password = dialog.findViewById(R.id.edit_password) as TextInputEditText
                         val edit_retry_password = dialog.findViewById(R.id.edit_retry_password) as TextInputEditText
+                        val edt_forget_password_otp = dialog.findViewById(R.id.edt_forget_password_otp) as TextInputEditText
 
-                        if (checkRequirePassword(edit_password, edit_retry_password)) {
-                            viewModel.changeNewPassword(edit_password.text.toString())
+                        if (checkRequirePassword(edt_forget_password_otp, edit_password, edit_retry_password)) {
+                            viewModel.changeNewPassword(tv_forget_phone.text.toString(),
+                                    edt_forget_password_otp.text.toString(), edit_password.text.toString())
                             dialog.dismiss()
                         }
                     }

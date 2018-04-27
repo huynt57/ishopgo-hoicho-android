@@ -50,7 +50,7 @@ class LoginFragment : BaseFragment() {
             startActivity(intent)
         }
 
-        if (phone!=""){
+        if (phone != "") {
             tv_account.setText(phone)
         }
     }
@@ -58,7 +58,12 @@ class LoginFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(LoginViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                resolveError(it)
+                hideProgressDialog()
+            }
+        })
 
         viewModel.loginSuccess.observe(this, Observer {
             hideProgressDialog()

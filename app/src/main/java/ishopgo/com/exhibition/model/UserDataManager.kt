@@ -14,6 +14,7 @@ object UserDataManager {
     private const val KEY_USER_AVATAR = "user_avatar"
     private const val KEY_USER_PHONE = "user_phone"
     private const val KEY_USER_NAME = "user_name"
+    private const val KEY_USER_TYPE = "type"
 
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")
@@ -30,6 +31,9 @@ object UserDataManager {
     var currentUserName: String
         get() = pref.getString(KEY_USER_NAME, "")
         set(value) = pref.edit().putString(KEY_USER_NAME, value).apply()
+    var currentType: String
+        get() = pref.getString(KEY_USER_TYPE, "")
+        set(value) = pref.edit().putString(KEY_USER_TYPE, value).apply()
 
     var displayWidth: Int = 0
     var displayHeight: Int = 0
