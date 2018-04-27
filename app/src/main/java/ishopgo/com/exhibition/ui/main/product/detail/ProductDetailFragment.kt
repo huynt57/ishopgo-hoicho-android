@@ -104,7 +104,7 @@ class ProductDetailFragment : BaseFragment() {
                     .load(product.provideProductImage())
                     .apply(RequestOptions()
                             .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.avatar_placeholder))
+                            .error(R.drawable.error_placeholder))
                     .into(view_product_image)
 
             view_product_name.text = product.provideProductName()

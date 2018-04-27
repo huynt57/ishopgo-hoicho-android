@@ -36,7 +36,7 @@ class AccountFragment : BaseFragment() {
                 .load(UserDataManager.currentUserAvatar)
                 .apply(RequestOptions.circleCropTransform()
                         .placeholder(R.drawable.avatar_placeholder)
-                        .error(R.drawable.avatar_placeholder))
+                        .error(R.drawable.error_placeholder))
                 .into(view_avatar)
         view_name.text = UserDataManager.currentUserName
         view_introduce.text = "Khách tham quan - ${UserDataManager.currentUserPhone}"
