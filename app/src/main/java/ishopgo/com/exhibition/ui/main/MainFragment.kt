@@ -1,11 +1,9 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.Observer
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.content.res.AppCompatResources
@@ -17,12 +15,13 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import ishopgo.com.exhibition.ui.community.CommunityFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
+import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
 import ishopgo.com.exhibition.ui.main.home.search.SearchFragment
 import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
+import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
@@ -32,6 +31,14 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : BaseFragment(), BackpressConsumable {
 
     override fun onBackPressConsumed(): Boolean {
+        val count = pagerAdapter.count
+        for (i in 0..count) {
+            val item = pagerAdapter.getItem(i)
+            if (item is BackpressConsumable)
+                if (item.onBackPressConsumed())
+                    return true
+        }
+
         return childFragmentManager.popBackStackImmediate()
     }
 
@@ -44,6 +51,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
     }
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var pagerAdapter: MainPagerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -57,8 +65,15 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         viewModel.isSearchEnable.observe(this, Observer {
             if (it == true) {
                 showSearch()
-            } else {
-                hideSearch()
+            }
+        })
+        viewModel.showCategoriedProducts.observe(this, Observer { s ->
+            s?.let {
+                childFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(Bundle()))
+                        .addToBackStack(ProductsByCategoryFragment.TAG)
+                        .commit()
             }
         })
     }
@@ -74,13 +89,6 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         }
     }
 
-    private fun hideSearch() {
-        val fragment = childFragmentManager.findFragmentByTag(SearchFragment.TAG)
-        if (fragment != null) {
-            childFragmentManager.popBackStack(SearchFragment.TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -91,7 +99,8 @@ class MainFragment : BaseFragment(), BackpressConsumable {
     private fun setUpViewPager() {
         view_pager.setPagingEnabled(true)
         view_pager.offscreenPageLimit = 5
-        view_pager.adapter = MainPagerAdapter(childFragmentManager)
+        pagerAdapter = MainPagerAdapter(childFragmentManager)
+        view_pager.adapter = pagerAdapter
         view_pager.addOnPageChangeListener(object : ViewPager.SimpleOnPageChangeListener() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -147,7 +156,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         })
     }
 
-    class MainPagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+    class MainPagerAdapter(fm: FragmentManager) : CountSpecificPager(fm, 5) {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
@@ -171,8 +180,6 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 }
             }
         }
-
-        override fun getCount(): Int = 5
 
     }
 }

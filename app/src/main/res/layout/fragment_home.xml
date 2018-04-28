@@ -2,229 +2,234 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
     >
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
+    <FrameLayout
+        android:id="@+id/view_frame_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             >
 
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                >
 
-                <FrameLayout
-                    android:id="@+id/container_banner"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <android.support.v4.view.ViewPager
-                        android:id="@+id/view_banner_pager"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                    <me.relex.circleindicator.CircleIndicator
-                        android:id="@+id/view_banner_indicator"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_marginBottom="16dp"
-                        android:minWidth="20dp"/>
-
-                </FrameLayout>
-
-                <View
-                    style="@style/AppTheme.DividerFat"
-                    android:layout_width="match_parent"/>
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/container_highlight_brand"
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                    android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/label_highlight_brand"
-                        style="@style/AppTheme.SectionLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Thương hiệu nổi bật"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/more_highlight_brand"
-                        style="@style/AppTheme.MoreInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Xem thêm"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/view_list_highlight_brand"
+                    <FrameLayout
+                        android:id="@+id/container_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:clipToPadding="false"
-                        android:padding="@dimen/item_spacing"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_height="150dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/label_highlight_brand"
-                        />
+                        app:layout_constraintTop_toTopOf="parent">
 
-                </android.support.constraint.ConstraintLayout>
+                        <android.support.v4.view.ViewPager
+                            android:id="@+id/view_banner_pager"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
 
-                <View
-                    style="@style/AppTheme.DividerFat"
-                    android:layout_width="match_parent"/>
+                        <me.relex.circleindicator.CircleIndicator
+                            android:id="@+id/view_banner_indicator"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_horizontal|bottom"
+                            android:layout_marginBottom="16dp"
+                            android:minWidth="20dp"/>
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/container_highlight_products"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/container_banner">
-
-                    <TextView
-                        android:id="@+id/label_highlight_products"
-                        style="@style/AppTheme.SectionLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Sản phẩm nổi bật"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/more_highlight_products"
-                        style="@style/AppTheme.MoreInfo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Xem thêm"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/view_list_highlight_products"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:clipToPadding="false"
-                        android:padding="@dimen/item_spacing"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/label_highlight_products"
-                        />
-
-                </android.support.constraint.ConstraintLayout>
-
-                <View
-                    style="@style/AppTheme.DividerFat"
-                    android:layout_width="match_parent"/>
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/container_viewed_products"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/container_banner">
-
-                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                        android:id="@+id/label_favorite"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_selector_background"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        android:text="Yêu thích"
-                        app:drawableTopCompat="@drawable/ic_heart"
-                        app:layout_constraintEnd_toStartOf="@+id/label_suggest"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                        android:id="@+id/label_suggest"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_selector_background"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        android:text="Gợi ý"
-                        app:drawableTopCompat="@drawable/ic_new"
-                        app:layout_constraintEnd_toStartOf="@+id/label_viewed"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toEndOf="@+id/label_favorite"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                        android:id="@+id/label_viewed"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_selector_background"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:gravity="center"
-                        android:paddingBottom="8dp"
-                        android:paddingTop="8dp"
-                        android:text="Đã xem"
-                        app:drawableTopCompat="@drawable/ic_eye"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/label_suggest"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                    </FrameLayout>
 
                     <View
-                        android:id="@+id/divider_tab"
-                        style="@style/AppTheme.DividerLine"
-                        android:layout_width="0dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/label_suggest"/>
+                        style="@style/AppTheme.DividerFat"
+                        android:layout_width="match_parent"/>
 
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/view_list_referenced_products"
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/container_highlight_brand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:padding="@dimen/item_spacing"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/divider_tab"/>
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
 
-                </android.support.constraint.ConstraintLayout>
+                        <TextView
+                            android:id="@+id/label_highlight_brand"
+                            style="@style/AppTheme.SectionLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Thương hiệu nổi bật"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
 
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-    </android.support.v4.widget.SwipeRefreshLayout>
+                        <TextView
+                            android:id="@+id/more_highlight_brand"
+                            style="@style/AppTheme.MoreInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem thêm"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/view_list_highlight_brand"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:clipToPadding="false"
+                            android:padding="@dimen/item_spacing"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/label_highlight_brand"
+                            />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                    <View
+                        style="@style/AppTheme.DividerFat"
+                        android:layout_width="match_parent"/>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/container_highlight_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+
+                        <TextView
+                            android:id="@+id/label_highlight_products"
+                            style="@style/AppTheme.SectionLabel"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sản phẩm nổi bật"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/more_highlight_products"
+                            style="@style/AppTheme.MoreInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem thêm"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/view_list_highlight_products"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:clipToPadding="false"
+                            android:padding="@dimen/item_spacing"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/label_highlight_products"
+                            />
+
+                    </android.support.constraint.ConstraintLayout>
+
+                    <View
+                        style="@style/AppTheme.DividerFat"
+                        android:layout_width="match_parent"/>
+
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/container_viewed_products"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+
+                        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                            android:id="@+id/label_favorite"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_selector_background"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp"
+                            android:text="Yêu thích"
+                            app:drawableTopCompat="@drawable/ic_heart"
+                            app:layout_constraintEnd_toStartOf="@+id/label_suggest"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                            android:id="@+id/label_suggest"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_selector_background"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp"
+                            android:text="Gợi ý"
+                            app:drawableTopCompat="@drawable/ic_new"
+                            app:layout_constraintEnd_toStartOf="@+id/label_viewed"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/label_favorite"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                            android:id="@+id/label_viewed"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_selector_background"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:gravity="center"
+                            android:paddingBottom="8dp"
+                            android:paddingTop="8dp"
+                            android:text="Đã xem"
+                            app:drawableTopCompat="@drawable/ic_eye"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/label_suggest"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <View
+                            android:id="@+id/divider_tab"
+                            style="@style/AppTheme.DividerLine"
+                            android:layout_width="0dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/label_suggest"/>
+
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/view_list_referenced_products"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:padding="@dimen/item_spacing"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/divider_tab"/>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/drawer_main"

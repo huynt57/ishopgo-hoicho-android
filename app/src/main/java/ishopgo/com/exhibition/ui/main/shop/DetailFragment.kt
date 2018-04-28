@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.comment.CommentFragment
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
+import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_shop_detail.*
 
 /**
@@ -57,7 +57,7 @@ class DetailFragment : BaseFragment() {
         })
     }
 
-    class DetailAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
+    class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -77,11 +77,6 @@ class DetailFragment : BaseFragment() {
                 }
             }
         }
-
-        override fun getCount(): Int {
-            return 4
-        }
-
 
     }
 }

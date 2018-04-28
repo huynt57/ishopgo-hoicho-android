@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
  */
-open class BaseResponse<T: BaseDataResponse> {
+open class BaseResponse<T> {
 
     @SerializedName("status")
     @Expose

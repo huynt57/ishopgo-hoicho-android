@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.category
+package ishopgo.com.exhibition.ui.main.home.category
 
 import android.view.View
 import com.bumptech.glide.Glide

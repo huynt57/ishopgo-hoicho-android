@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPureWhite"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:id="@+id/view_category_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        >
+
+        <LinearLayout
+            android:id="@+id/view_category_navigation_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:drawableEnd="@drawable/ic_chevron_right_24dp"-->
+            <!--android:foreground="?attr/selectableItemBackground"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:padding="8dp"-->
+            <!--android:text="asdasdasd"-->
+            <!--/>-->
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <View
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="match_parent"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/view_child_categories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        />
+
+    <include
+        layout="@layout/content_swipable_recyclerview"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+
+</LinearLayout>

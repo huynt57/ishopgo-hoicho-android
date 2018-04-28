@@ -1,19 +1,16 @@
 package ishopgo.com.exhibition.ui.main.home.search
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -21,6 +18,7 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.ProductResultsFragment
 import ishopgo.com.exhibition.ui.main.home.search.shop.ShopResultsFragment
+import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_home_search.*
 
 /**
@@ -55,7 +53,7 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
 
         view.setOnTouchListener { v, event -> true }
         view_back.setOnClickListener {
-            viewModel.disableSearch()
+            activity?.onBackPressed()
         }
 
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
@@ -90,7 +88,7 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
         searchViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
     }
 
-    inner class ResultAdapter(f: FragmentManager) : FragmentStatePagerAdapter(f) {
+    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 2) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -103,10 +101,6 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
                     Fragment()
                 }
             }
-        }
-
-        override fun getCount(): Int {
-            return 2
         }
 
     }
