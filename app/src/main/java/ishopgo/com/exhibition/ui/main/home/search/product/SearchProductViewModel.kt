@@ -1,17 +1,29 @@
-package ishopgo.com.exhibition.ui.main.product.branded
+package ishopgo.com.exhibition.ui.main.home.search.product
 
+import android.util.Log
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.request.RequestParams
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
+import kotlin.concurrent.thread
 
-class ProductsOfBrandViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
+/**
+ * Created by xuanhong on 4/27/18. HappyCoding!
+ */
+class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(), AppComponent.Injectable {
+
+    companion object {
+        private val TAG = "SearchProductViewModel"
+    }
 
     override fun loadData(params: RequestParams) {
-        val dummy = mutableListOf<ProductProvider>()
+        Log.d(TAG, "loadData: params = [${params}]")
+        val dummy = mutableListOf<SearchProductProvider>()
         for (i in 0..19)
-            dummy.add(object : IdentityData(), ProductProvider {
+            dummy.add(object : IdentityData(), SearchProductProvider {
+                override fun provideCode(): String {
+                    return "12312412312312"
+                }
 
                 init {
                     id = i.toLong()
@@ -22,24 +34,16 @@ class ProductsOfBrandViewModel : BaseListViewModel<List<ProductProvider>>(), App
                 }
 
                 override fun provideName(): String {
-                    return "Kem trị thâm mụn Medi Spotless (Đã xem)"
-                }
-
-                override fun providePrice(): String {
-                    return "520.000 đ"
-                }
-
-                override fun provideMarketPrice(): String {
-                    return "510.000 đ"
+                    return "Kem trị thâm mụn Medi Spotless"
                 }
 
             })
-
-        dataReturned.postValue(dummy)
+        thread { Thread.sleep(1000); dataReturned.postValue(dummy) }.start()
 
     }
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
+
 }

@@ -12,7 +12,7 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
 
     override fun loadData(params: RequestParams) {
         val dummy = mutableListOf<ProductCommentProvider>()
-        for (i in 0..5)
+        for (i in 0..19)
             dummy.add(object : IdentityData(), ProductCommentProvider {
                 override fun provideName(): String {
                     return "Nguyễn Phương Thảo"
