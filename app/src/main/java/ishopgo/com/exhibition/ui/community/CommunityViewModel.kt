@@ -74,12 +74,18 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
 
                 override fun provideProductListImage(): MutableList<CommunityImageProvider> {
                     val child = mutableListOf<CommunityImageProvider>()
-                    for (i in 0..3)
-                        child.add(object : IdentityData(), CommunityImageProvider {
-                            override fun url(): String {
-                                return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
-                            }
-                        })
+                    if (i % 6 == 0)
+                        for (i in 0..3)
+                            child.add(object : IdentityData(), CommunityImageProvider {
+                                override fun url(): String {
+                                    return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
+                                }
+                            })
+                    else child.add(object : IdentityData(), CommunityImageProvider {
+                        override fun url(): String {
+                            return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
+                        }
+                    })
                     return child
                 }
             })

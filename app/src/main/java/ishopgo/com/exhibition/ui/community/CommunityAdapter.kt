@@ -83,20 +83,24 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                     img_community_image.visibility = View.GONE
                     Glide.with(this).load(data.provideProductListImage()[0].url())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
-
-                    if (data.provideProductListImage().size > 0) {
+                } else if (data.provideType() == COMMUNITY_SHARE_IMAGE.toString()) {
+                    cv_community_product.visibility = View.GONE
+                    if (data.provideProductListImage().size > 1) {
                         rv_community_image.visibility = View.VISIBLE
+                        img_community_image.visibility = View.GONE
+
                         val adapter = CommunityImageAdapter()
                         adapter.replaceAll(data.provideProductListImage())
                         rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_community_image.adapter = adapter
+                    } else {
+                        img_community_image.visibility = View.VISIBLE
+                        rv_community_image.visibility = View.GONE
+
+                        Glide.with(this).load(data.provideProductListImage()[0].url())
+                                .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_image)
                     }
-                } else if (data.provideType() == COMMUNITY_SHARE_IMAGE.toString()) {
-                    img_community_image.visibility = View.VISIBLE
-                    rv_community_image.visibility = View.GONE
-                    cv_community_product.visibility = View.GONE
-                    Glide.with(this).load(data.provideProductListImage()[0].url())
-                            .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_image)
+
                 }
             }
         }

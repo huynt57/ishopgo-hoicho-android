@@ -148,20 +148,8 @@ class CommunityShareFragment : BaseActionBarFragment() {
 
             val postMedia = PostMedia()
 
-            if (postMedias.size == 0) {
-                postMedia.uri = data.data
-                postMedias.add(postMedia)
-            } else {
-                for (i in postMedias.indices) {
-                    if (postMedias[i].uri!! == data.data) {
-                        toast("Ảnh này đã tồn tại, vui lòng chọn ảnh khác.")
-                        return
-                    } else {
-                        postMedia.uri = data.data
-                        postMedias.add(postMedia)
-                    }
-                }
-            }
+            postMedia.uri = data.data
+            postMedias.add(postMedia)
 
             adapterImages = ComposingPostMediaAdapter(postMedias)
             adapterImages.notifyItemInserted(postMedias.size - 1)
@@ -171,26 +159,15 @@ class CommunityShareFragment : BaseActionBarFragment() {
 
         if (requestCode == Const.RequestCode.TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
             sendingPhotoUri?.let {
-                val postMedia = PostMedia()
                 if (Toolbox.exceedSize(context, it, (20 * 1024 * 1024).toLong())) {
                     toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
                     return
                 }
+                val postMedia = PostMedia()
 
-                if (postMedias.size == 0) {
-                    postMedia.uri = it
-                    postMedias.add(postMedia)
-                } else {
-                    for (i in postMedias.indices) {
-                        if (postMedias[i].uri!! == it) {
-                            toast("Ảnh này đã tồn tại, vui lòng chọn ảnh khác.")
-                            return
-                        } else {
-                            postMedia.uri = it
-                            postMedias.add(postMedia)
-                        }
-                    }
-                }
+                postMedia.uri = it
+                postMedias.add(postMedia)
+
                 adapterImages = ComposingPostMediaAdapter(postMedias)
                 adapterImages.notifyItemInserted(postMedias.size - 1)
                 rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

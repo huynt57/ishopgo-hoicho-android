@@ -1,12 +1,11 @@
 package ishopgo.com.exhibition.model
 
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.domain.response.BaseDataResponse
 
 /**
  * Created by hoangnh on 4/24/2018.
  */
-class Region(){
+class Region {
     @SerializedName("provinceid")
     var provinceid: String? = null
     @SerializedName("name")

@@ -6,9 +6,7 @@ import android.util.Log
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import ishopgo.com.exhibition.BuildConfig
-import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.domain.BaseErrorSignal
-import javax.inject.Inject
 
 /**
  * @author Steve

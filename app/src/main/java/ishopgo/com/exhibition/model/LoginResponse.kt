@@ -2,19 +2,16 @@ package ishopgo.com.exhibition.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.domain.response.BaseDataResponse
+import ishopgo.com.exhibition.domain.response.IdentityData
 
 
 /**
  * Created by hoangnh on 4/27/2018.
  */
-class LoginResponse : BaseDataResponse() {
+class LoginResponse : IdentityData() {
     @SerializedName("token")
     @Expose
     val token: String = ""
-    @SerializedName("id")
-    @Expose
-    val id: Long = 0
     @SerializedName("name")
     @Expose
     val name: String = ""

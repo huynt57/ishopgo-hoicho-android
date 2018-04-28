@@ -17,11 +17,14 @@ import okhttp3.MultipartBody
 class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var loginSuccess = MutableLiveData<LoginResponse>()
     var registerSuccess = MutableLiveData<Boolean>()
-    var forgetSentSuccess = MutableLiveData<Boolean>()
     var getOTP = MutableLiveData<Boolean>()
     var changNewPassword = MutableLiveData<Boolean>()
     var loadRegion = MutableLiveData<MutableList<Region>>()
-    val id_app = "hoichone"
+
+    companion object {
+        const val id_app = "hoichone"
+    }
+
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -93,9 +96,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
                     override fun success(data: BaseDataResponse?) {
-                        data?.apply {
                             getOTP.postValue(true)
-                        }
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -126,7 +127,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    fun loadRegion(offset: Int, regionName: String) {
+    fun loadRegion() {
         val listRegion = mutableListOf<Region>()
 
         for (i in 0..20) {
