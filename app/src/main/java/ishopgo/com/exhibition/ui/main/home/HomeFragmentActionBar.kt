@@ -6,6 +6,7 @@ import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -14,7 +15,12 @@ import kotlinx.android.synthetic.main.fragment_home.*
 /**
  * Created by xuanhong on 4/23/18. HappyCoding!
  */
-class HomeFragmentActionBar : BaseActionBarFragment() {
+class HomeFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
+
+    override fun onBackPressConsumed(): Boolean {
+        return false
+    }
+
     companion object {
 
         fun newInstance(params: Bundle): HomeFragmentActionBar {

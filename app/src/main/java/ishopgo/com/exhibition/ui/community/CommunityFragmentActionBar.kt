@@ -3,13 +3,19 @@ package ishopgo.com.exhibition.ui.community
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
  * Created by hoangnh on 4/26/2018.
  */
-class CommunityFragmentActionBar : BaseActionBarFragment() {
+class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
+
+    override fun onBackPressConsumed(): Boolean {
+        return false
+    }
+
     companion object {
 
         fun newInstance(params: Bundle): CommunityFragmentActionBar {

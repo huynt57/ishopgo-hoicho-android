@@ -3,13 +3,17 @@ package ishopgo.com.exhibition.ui.main.scan
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
  */
-class ScanFragmentActionBar : BaseActionBarFragment() {
+class ScanFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
+    override fun onBackPressConsumed(): Boolean {
+        return false
+    }
 
     companion object {
 

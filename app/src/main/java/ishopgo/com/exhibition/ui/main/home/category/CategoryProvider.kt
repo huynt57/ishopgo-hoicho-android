@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.category
+package ishopgo.com.exhibition.ui.main.home.category
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!

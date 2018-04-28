@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.domain
 
 import io.reactivex.observers.DisposableSingleObserver
-import ishopgo.com.exhibition.domain.response.BaseDataResponse
 import ishopgo.com.exhibition.domain.response.BaseResponse
 import retrofit2.HttpException
 import java.net.HttpURLConnection
@@ -11,7 +10,7 @@ import java.net.UnknownHostException
 /**
  * Created by xuanhong on 1/6/18. HappyCoding!
  */
-open abstract class BaseSingleObserver<T : BaseDataResponse> : DisposableSingleObserver<BaseResponse<T>>(), IResponse<T> {
+open abstract class BaseSingleObserver<T> : DisposableSingleObserver<BaseResponse<T>>(), IResponse<T> {
 
     override fun onError(e: Throwable?) {
         when (e) {

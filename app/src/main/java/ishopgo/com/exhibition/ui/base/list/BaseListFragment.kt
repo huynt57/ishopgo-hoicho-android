@@ -71,7 +71,6 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
 
     override fun onRefresh() {
         firstLoad()
-
     }
 
     open fun layoutManager(context: Context): RecyclerView.LayoutManager {

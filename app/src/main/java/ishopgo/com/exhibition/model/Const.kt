@@ -27,5 +27,17 @@ object Const {
         const val ACTION_LOGOUT = 3
     }
 
+    val colors = arrayOf(
+            "#845EC2",
+            "#D65DB1",
+            "#FF6F91",
+            "#FF9671",
+            "#2C73D2",
+            "#008E9B",
+            "#008F7A",
+            "#B39CD0",
+            "#C34A36",
+            "#926C00"
+    )
 
 }

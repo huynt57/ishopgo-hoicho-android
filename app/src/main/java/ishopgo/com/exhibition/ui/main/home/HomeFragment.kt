@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,11 +18,12 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
-import ishopgo.com.exhibition.ui.main.category.CategoryAdapter
-import ishopgo.com.exhibition.ui.main.category.CategoryProvider
+import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
+import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -38,6 +40,7 @@ import kotlinx.android.synthetic.main.fragment_home.*
 class HomeFragment : BaseFragment() {
 
     private lateinit var viewModel: HomeViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     private val highlightProductAdapter = ProductAdapter()
     private val suggestedProductAdapter = ProductAdapter()
@@ -70,7 +73,10 @@ class HomeFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = obtainViewModel(HomeViewModel::class.java, false)
+        mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+
+        viewModel = obtainViewModel(HomeViewModel::class.java, true)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.suggestedProducts.observe(this, Observer { p ->
             p?.let {
@@ -212,10 +218,12 @@ class HomeFragment : BaseFragment() {
             override fun click(position: Int, data: CategoryProvider, code: Int) {
                 when (code) {
                     CategoryAdapter.TYPE_CHILD -> {
-
+                        drawer_layout.closeDrawer(Gravity.START)
+                        mainViewModel.showCategoriedProducts(data)
                     }
                     CategoryAdapter.TYPE_PARENT -> {
-
+                        drawer_layout.closeDrawer(Gravity.START)
+                        mainViewModel.showCategoriedProducts(data)
                     }
                     else -> {
 

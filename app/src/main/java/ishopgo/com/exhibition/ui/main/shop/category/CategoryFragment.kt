@@ -5,8 +5,8 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.category.CategoryAdapter
-import ishopgo.com.exhibition.ui.main.category.CategoryProvider
+import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
+import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!

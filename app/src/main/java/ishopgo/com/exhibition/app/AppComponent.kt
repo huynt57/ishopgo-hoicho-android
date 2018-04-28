@@ -3,21 +3,22 @@ package ishopgo.com.exhibition.app
 import android.app.Application
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
-import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
+import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
 import ishopgo.com.exhibition.ui.main.home.HomeViewModel
+import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopHasProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
-import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
+import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
 import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
@@ -61,4 +62,5 @@ interface AppComponent {
     fun inject(searchViewModel: SearchViewModel)
     fun inject(searchProductViewModel: SearchProductViewModel)
     fun inject(searchShopHasProductsViewModel: SearchShopHasProductsViewModel)
+    fun inject(productsByCategoryViewModel: ProductsByCategoryViewModel)
 }

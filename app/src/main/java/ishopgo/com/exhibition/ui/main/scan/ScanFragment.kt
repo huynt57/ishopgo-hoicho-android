@@ -73,7 +73,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         }
     }
 
-    fun pauseCamera() {
+    private fun pauseCamera() {
         zxing_barcode_scanner.post { zxing_barcode_scanner.pauseAndWait() }
     }
 
