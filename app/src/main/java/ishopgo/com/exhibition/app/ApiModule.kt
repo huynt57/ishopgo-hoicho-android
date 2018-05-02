@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.Module
 import dagger.Provides
 import ishopgo.com.exhibition.domain.ApiService
+import ishopgo.com.exhibition.domain.MockNoAuthService
 import ishopgo.com.exhibition.domain.auth.AppAuthenticator
 import ishopgo.com.exhibition.model.UserDataManager
 import okhttp3.*
@@ -11,14 +12,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.mock.MockRetrofit
+import retrofit2.mock.NetworkBehavior
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
-
-/**
- * @author Steve
- * @since 10/22/17
- */
 
 @Module
 class ApiModule {
@@ -67,6 +65,12 @@ class ApiModule {
             val request = original.newBuilder()
                     .header("Authorization", "Bearer " + UserDataManager.accessToken)
                     .method(original.method(), original.body())
+                    .url(original
+                            .url()
+                            .newBuilder()
+                            .addQueryParameter("id_app", UserDataManager.appId)
+                            .build()
+                    )
                     .build()
 
             return@Interceptor chain.proceed(request)
@@ -117,24 +121,57 @@ class ApiModule {
     @Provides
     @Singleton
     @Named("retrofit_no_authenticator")
-    fun provideRetrofitNoAuth(): Retrofit {
+    fun provideRetrofitNoAuth(@Named("okhttp_authenticator") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(BASE_URL)
+                .client(okHttpClient)
                 .build()
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideNoAuthService(@Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit): ApiService.NoAuth {
+//        return retrofitNoAuth.create(ApiService.NoAuth::class.java)
+//    }
+
     @Provides
     @Singleton
-    fun provideApiService(@Named("retrofit_authenticator") retrofit: Retrofit,
-                          @Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit,
-                          auth: Authenticator): ApiService {
-        return retrofit.create(ApiService::class.java)
+    fun provideMockNoAuthService(@Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit): ApiService.NoAuth {
+
+        val networkBehavior = NetworkBehavior.create()
+        // Reduce the delay to make the next calls complete faster.
+        networkBehavior.setDelay(500, TimeUnit.MILLISECONDS)
+        val mockRetrofit = MockRetrofit.Builder(retrofitNoAuth).networkBehavior(networkBehavior).build()
+        val restServiceBehaviorDelegate = mockRetrofit.create(ApiService.NoAuth::class.java)
+        return MockNoAuthService(restServiceBehaviorDelegate)
+    }
+
+//    @Provides
+//    @Singleton
+//    fun provideMockAuthService(@Named("retrofit_authenticator") retrofit: Retrofit): ApiService.Auth {
+//        val networkBehavior = NetworkBehavior.create()
+//        // Reduce the delay to make the next calls complete faster.
+//        networkBehavior.setDelay(500, TimeUnit.MILLISECONDS)
+//        val mockRetrofit = MockRetrofit.Builder(retrofit).networkBehavior(networkBehavior).build()
+//        val restServiceBehaviorDelegate = mockRetrofit.create(ApiService.Auth::class.java)
+//        return MockAuthService(restServiceBehaviorDelegate)
+//    }
+
+    @Provides
+    @Singleton
+    fun provideAuthService(@Named("retrofit_authenticator") retrofit: Retrofit,
+                           auth: Authenticator): ApiService.Auth {
+
+        val authService = retrofit.create(ApiService.Auth::class.java)
+        if (auth is AppAuthenticator)
+            auth.authService = authService
+        return authService
     }
 
     companion object {
         const val TIME_OUT: Long = 30
-        const val BASE_URL = "http://ishopgo.com/api/v1/"
+        const val BASE_URL = "http://ishopgo.com/api/v1/expo/"
     }
 }

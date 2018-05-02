@@ -5,6 +5,8 @@ import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.util.TypedValue
+import java.text.NumberFormat
+import java.util.*
 
 /**
  * Created by xuanhong on 11/6/17. HappyCoding!
@@ -25,6 +27,12 @@ fun String.asNumber(hour: Double): String? {
     if (number[2] > 0) builder.append(number[2]).append(" phút ")
     if (number[3] > 0) builder.append(number[3]).append(" giây ")
     return if (builder.isEmpty()) "0" else builder.toString()
+}
+
+fun Long.asMoney(): String {
+    val numberFormat = NumberFormat.getIntegerInstance(Locale("vi"))
+    val formatted = numberFormat.format(this)
+    return formatted + " đ"
 }
 
 fun Long.asNumber(): String? {

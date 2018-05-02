@@ -6,13 +6,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="?attr/selectableItemBackground"
-    android:paddingBottom="8dp"
-    android:paddingTop="8dp">
+    >
 
     <ImageView
         android:id="@+id/view_parent_icon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +23,7 @@
         style="@style/AppTheme.CategoryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/view_parent_expand"
         app:layout_constraintStart_toEndOf="@+id/view_parent_icon"

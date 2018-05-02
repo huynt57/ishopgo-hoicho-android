@@ -58,6 +58,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofit"
     implementation "com.squareup.retrofit2:converter-gson:$project.ext.retrofit"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$project.ext.retrofit"
+    implementation "com.squareup.retrofit2:retrofit-mock:$project.ext.retrofit"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
 
     // rx android

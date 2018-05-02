@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
 class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvider>() {
+
     override fun populateData(data: List<CategoryProvider>) {
         if (reloadData)
             adapter.replaceAll(data)

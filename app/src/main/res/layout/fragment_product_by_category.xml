@@ -7,27 +7,17 @@
     android:orientation="vertical">
 
     <HorizontalScrollView
-        android:id="@+id/view_category_navigation"
+        android:id="@+id/view_breadcrumb"
         android:layout_width="match_parent"
         android:layout_height="56dp"
         >
 
         <LinearLayout
-            android:id="@+id/view_category_navigation_container"
+            android:id="@+id/view_breadcrumb_container"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             >
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:drawableEnd="@drawable/ic_chevron_right_24dp"-->
-            <!--android:foreground="?attr/selectableItemBackground"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:padding="8dp"-->
-            <!--android:text="asdasdasd"-->
-            <!--/>-->
 
         </LinearLayout>
     </HorizontalScrollView>

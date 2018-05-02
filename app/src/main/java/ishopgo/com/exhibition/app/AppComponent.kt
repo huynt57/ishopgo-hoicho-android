@@ -34,7 +34,9 @@ interface AppComponent {
 
     fun application(): Application
 
-    fun apiService(): ApiService
+    fun authService(): ApiService.Auth
+
+    fun noAuthService(): ApiService.NoAuth
 
     interface Injectable {
         fun inject(appComponent: AppComponent)

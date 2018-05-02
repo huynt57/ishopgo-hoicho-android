@@ -10,6 +10,7 @@ object UserDataManager {
     private const val PREF_NAME = "user_data_manager"
 
     private const val KEY_ACCESS_TOKEN = "access_token"
+    private const val KEY_APP_ID = "app_id"
     private const val KEY_USER_ID = "user_id"
     private const val KEY_USER_AVATAR = "user_avatar"
     private const val KEY_USER_PHONE = "user_phone"
@@ -18,6 +19,9 @@ object UserDataManager {
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")
         set(value) = pref.edit().putString(KEY_ACCESS_TOKEN, value).apply()
+    var appId: String
+        get() = pref.getString(KEY_APP_ID, "")
+        set(value) = pref.edit().putString(KEY_APP_ID, value).apply()
     var currentUserAvatar: String
         get() = pref.getString(KEY_USER_AVATAR, "")
         set(value) = pref.edit().putString(KEY_USER_AVATAR, value).apply()
