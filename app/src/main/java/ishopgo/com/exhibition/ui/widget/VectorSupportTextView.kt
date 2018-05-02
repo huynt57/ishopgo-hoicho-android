@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.widget
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.support.annotation.DrawableRes
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
@@ -12,7 +13,7 @@ import ishopgo.com.exhibition.R
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class VectorSupportTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
+open class VectorSupportTextView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     init {
         initAttrs(context, attrs)
@@ -53,5 +54,23 @@ class VectorSupportTextView @JvmOverloads constructor(context: Context, attrs: A
             setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
             attributeArray.recycle()
         }
+    }
+
+    fun drawableCompat(@DrawableRes startResId: Int = -1, @DrawableRes topResId: Int = -1, @DrawableRes endResId: Int = -1, @DrawableRes bottomResId: Int = -1) {
+        var dStart: Drawable? = null
+        var dEnd: Drawable? = null
+        var dBottom: Drawable? = null
+        var dTop: Drawable? = null
+
+        if (startResId != -1)
+            dStart = AppCompatResources.getDrawable(context, startResId)
+        if (endResId != -1)
+            dEnd = AppCompatResources.getDrawable(context, endResId)
+        if (bottomResId != -1)
+            dBottom = AppCompatResources.getDrawable(context, bottomResId)
+        if (topResId != -1)
+            dTop = AppCompatResources.getDrawable(context, topResId)
+
+        setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
     }
 }

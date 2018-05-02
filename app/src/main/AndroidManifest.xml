@@ -15,7 +15,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
-
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTop"

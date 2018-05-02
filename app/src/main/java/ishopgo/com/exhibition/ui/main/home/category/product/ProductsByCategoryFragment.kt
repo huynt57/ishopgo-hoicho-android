@@ -5,7 +5,10 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.TextView
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -38,11 +41,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     }
 
-    private inner class
-
-    private
-
-    val childAdapter = CategoryChildAdapter()
+    private val childAdapter = CategoryChildAdapter()
     private val productAdapter = ProductAdapter()
     protected lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
@@ -57,8 +56,30 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
         setupProducts(view)
 
-        view_category_navigation_container
+        setupBreadCrumb()
+
         swipe.setOnRefreshListener { firstLoad() }
+    }
+
+    private fun setupBreadCrumb() {
+        context?.let {
+            val item = LayoutInflater.from(it)
+                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, true) as LinearLayout
+            item.tag = "item"
+            val textView = item.getChildAt(0) as TextView
+            textView.text = "item 1"
+            textView.setOnClickListener { }
+
+
+            val item2 = LayoutInflater.from(it)
+                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, true) as LinearLayout
+            item2.tag = "item 1"
+            val textView1 = item2.getChildAt(1) as TextView
+            textView1.text = "item 2"
+            textView1.setOnClickListener { }
+        }
+        view_breadcrumb_container
+
     }
 
     private fun setupProducts(view: View) {

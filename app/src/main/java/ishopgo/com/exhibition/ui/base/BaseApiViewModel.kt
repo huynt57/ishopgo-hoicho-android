@@ -9,6 +9,9 @@ open class BaseApiViewModel : BaseViewModel() {
     }
 
     @Inject
-    lateinit var apiService: ApiService
+    lateinit var authService: ApiService.Auth
+
+    @Inject
+    lateinit var noAuthService: ApiService.NoAuth
 
 }

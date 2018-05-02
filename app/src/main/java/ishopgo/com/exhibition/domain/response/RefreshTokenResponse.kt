@@ -4,12 +4,12 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 /**
- * Created by xuanhong on 4/18/18. HappyCoding!
+ * Created by xuanhong on 5/2/18. HappyCoding!
  */
-open class IdentityData {
+class RefreshTokenResponse {
 
-    @SerializedName("id")
+    @SerializedName("token")
     @Expose
-    var id: Long = -1L
+    var newToken: String = ""
 
 }

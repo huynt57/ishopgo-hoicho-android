@@ -31,7 +31,8 @@ class ProductsOfBrandFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ProductsOfBrandFragment())
+                .replace(R.id.view_main_content, ProductsOfBrandFragment.newInstance(arguments
+                        ?: Bundle()))
                 .commit()
     }
 

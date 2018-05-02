@@ -7,7 +7,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
+import ishopgo.com.exhibition.domain.request.BrandProductsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -24,6 +24,24 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductProvider>() {
+
+    private var brandId: Long = -1L
+
+    companion object {
+        fun newInstance(params: Bundle): ProductsOfBrandFragment {
+            val f = ProductsOfBrandFragment()
+            f.arguments = params
+
+            return f
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        brandId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
@@ -43,17 +61,19 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
 
     override fun firstLoad() {
         super.firstLoad()
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = BrandProductsRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
+        loadMore.brandId = brandId
         viewModel.loadData(loadMore)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = BrandProductsRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
+        loadMore.brandId = brandId
         viewModel.loadData(loadMore)
     }
 

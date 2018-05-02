@@ -45,8 +45,10 @@
 
                         <me.relex.circleindicator.CircleIndicator
                             android:id="@+id/view_banner_indicator"
+                            app:ci_drawable="@drawable/view_pager_indicator_selected"
+                            app:ci_drawable_unselected="@drawable/view_pager_indicator_unselected"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_height="25dp"
                             android:layout_gravity="center_horizontal|bottom"
                             android:layout_marginBottom="16dp"
                             android:minWidth="20dp"/>
