@@ -2,10 +2,9 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseDataResponse
-import ishopgo.com.exhibition.domain.response.BaseListData
 import ishopgo.com.exhibition.domain.response.BaseResponse
 import ishopgo.com.exhibition.model.LoginResponse
-import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.model.Profile
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -36,4 +35,23 @@ interface ApiService{
     fun changePassword(
             @Body body: RequestBody
     ): Single<BaseResponse<BaseDataResponse>>
+
+    @POST("expo/refresh-token")
+    fun refreshToken(): Single<BaseResponse<LoginResponse>>
+
+
+    @GET("expo/logout")
+    fun logout(
+            @Query("type") osType: String
+    ): Single<BaseResponse<BaseDataResponse>>
+
+    @GET("expo/profile")
+    fun getProfile(
+            @Query("account_id") account_id: Long
+    ): Single<BaseResponse<Profile>>
+
+    @POST("expo/profile")
+    fun updateProfile(
+            @Body body: RequestBody
+    ): Single<BaseResponse<Profile>>
 }

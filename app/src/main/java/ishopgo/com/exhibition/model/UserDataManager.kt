@@ -50,4 +50,8 @@ object UserDataManager {
         displayHeight = displayMetrics.heightPixels
     }
 
+    fun delete_user_data_manager() {
+        pref.edit().clear().apply()
+    }
+
 }

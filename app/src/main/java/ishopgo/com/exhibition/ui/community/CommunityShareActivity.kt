@@ -9,6 +9,6 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
  */
 class CommunityShareActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
-        return CommunityShareFragment()
+        return CommunityShareFragmentActionBar()
     }
 }

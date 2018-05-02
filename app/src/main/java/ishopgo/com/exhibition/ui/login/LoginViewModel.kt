@@ -35,21 +35,15 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<LoginResponse>() {
                     override fun success(data: LoginResponse?) {
-                        if (data == null) {
-//                            deleteLoginInfo(info.phone, info.domain)
-                            loginSuccess.postValue(data)
-                        } else {
 
-//                            saveLoginInfo(info)
+                        UserDataManager.accessToken = data?.token ?: ""
+                        UserDataManager.currentUserId = data?.id ?: 0
+                        UserDataManager.currentUserPhone = phone
+                        UserDataManager.currentUserName = data?.name ?: ""
+                        UserDataManager.currentUserAvatar = data?.image ?: ""
+                        UserDataManager.currentType = data?.type ?: ""
 
-                            UserDataManager.accessToken = data.token
-                            UserDataManager.currentUserId = data.id
-                            UserDataManager.currentUserName = data.name
-                            UserDataManager.currentUserAvatar = data.image
-                            UserDataManager.currentType = data.type
-
-                            loginSuccess.postValue(data)
-                        }
+                        loginSuccess.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -96,7 +90,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
                     override fun success(data: BaseDataResponse?) {
-                            getOTP.postValue(true)
+                        getOTP.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {

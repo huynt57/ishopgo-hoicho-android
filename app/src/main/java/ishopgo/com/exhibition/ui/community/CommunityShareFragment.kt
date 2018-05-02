@@ -14,9 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.widget.Toolbox
-import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_share_community.*
 import android.provider.MediaStore
 import java.io.File
@@ -24,6 +22,9 @@ import android.content.pm.PackageManager
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import ishopgo.com.exhibition.ui.base.BaseFragment
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,22 +33,34 @@ import java.util.*
 /**
  * Created by hoangnh on 4/26/2018.
  */
-class CommunityShareFragment : BaseActionBarFragment() {
+class CommunityShareFragment : BaseFragment() {
 
     private lateinit var viewModel: CommunityViewModel
+
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private lateinit var adapterImages: ComposingPostMediaAdapter
-    private val PERMISSIONS_REQUEST_CAMERA = 100
     private var sendingPhotoUri: Uri? = null
 
-    override fun contentLayoutRes(): Int {
-        return R.layout.fragment_share_community
+
+    companion object {
+        const val TAG = "CommunityShareFragmentActionBar"
+
+        fun newInstance(data: Bundle): CommunityShareFragment {
+            val fragment = CommunityShareFragment()
+            fragment.arguments = data
+
+            return fragment
+        }
+
+        const val PERMISSIONS_REQUEST_CAMERA = 100
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_share_community, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupToolbars()
 
         img_select_camera.setOnClickListener {
             takePhoto()
@@ -61,19 +74,6 @@ class CommunityShareFragment : BaseActionBarFragment() {
                 .apply(RequestOptions.circleCropTransform()
                         .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_share_avatar)
 
-    }
-
-    private fun setupToolbars() {
-        toolbar.setCustomTitle("Chia sẻ bài viết")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
-        toolbar.setLeftButtonClickListener { activity?.finish() }
-        toolbar.rightButton(R.drawable.ic_send_24dp)
-        toolbar.setRightButtonClickListener {
-            if (checkRequireFields(edit_share.text.toString())) {
-                showProgressDialog()
-                viewModel.sentShareCommunity(edit_share.text.toString(), postMedias)
-            }
-        }
     }
 
     private fun launchPickPhotoIntent() {
@@ -173,6 +173,13 @@ class CommunityShareFragment : BaseActionBarFragment() {
                 rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
                 rv_share_image.adapter = adapterImages
             }
+        }
+    }
+
+    fun sentShareCommunity() {
+        if (checkRequireFields(edit_share.text.toString())) {
+            showProgressDialog()
+            viewModel.sentShareCommunity(edit_share.text.toString(), postMedias)
         }
     }
 

@@ -19,6 +19,7 @@ object Const {
         const val CAMERA_PERMISSION = 2
         const val RC_PICK_IMAGE = 3
         const val TAKE_PICTURE = 4
+        const val UPDATE_PROFILE = 5
     }
 
     object AccountAction {
