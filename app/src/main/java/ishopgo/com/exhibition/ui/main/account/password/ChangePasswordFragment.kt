@@ -100,7 +100,6 @@ class ChangePasswordFragment : BaseFragment() {
                     .positiveText("Gửi")
                     .onPositive { dialog, _ ->
                         val edt_forget_password_otp = dialog.findViewById(R.id.edt_forget_password_otp) as TextInputEditText
-                        val tv_retry_otp = dialog.findViewById(R.id.tv_retry_otp) as TextView
 
                         if (checkRequireOTP(edt_forget_password_otp.text.toString(), edt_forget_password_otp)) {
                             viewModel.changePassword(UserDataManager.currentUserPhone,
@@ -109,17 +108,20 @@ class ChangePasswordFragment : BaseFragment() {
                             showProgressDialog()
                         }
 
-                        tv_retry_otp.setOnClickListener {
-                            showProgressDialog()
-                            viewModel.getOTP(UserDataManager.currentUserPhone)
-                            dialog.dismiss()
-                        }
+
                     }
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ -> dialog.dismiss() }
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
                     .build()
+
+            val tv_retry_otp = dialog.findViewById(R.id.tv_retry_otp) as TextView
+            tv_retry_otp.setOnClickListener {
+                showProgressDialog()
+                viewModel.getOTP(UserDataManager.currentUserPhone)
+                dialog.dismiss()
+            }
 
             dialog.show()
         }

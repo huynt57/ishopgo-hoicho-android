@@ -73,7 +73,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("id_app", LoginViewModel.id_app)
 
         addDisposable(apiService.changePassword(builder.build())
-                .subscribeOn(Schedulers.single())
+                .subscribeOn(Schedulers.io())
                 .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
                     override fun success(data: BaseDataResponse?) {
                         changePassword.postValue(true)

@@ -94,16 +94,8 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String) {
-        var imagePart: MultipartBody.Part? = null
 
-        if (!image.trim().isEmpty()) {
-            val imageFile = File(context?.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
-            imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(context, Uri.parse(image), 2048, Uri.fromFile(imageFile))
-            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-            imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
-        }
-        viewModel.updateProfile(name, dob, email, company, region, address, imagePart)
+        viewModel.updateProfile(name, dob, email, company, region, address, image)
         showProgressDialog()
     }
 

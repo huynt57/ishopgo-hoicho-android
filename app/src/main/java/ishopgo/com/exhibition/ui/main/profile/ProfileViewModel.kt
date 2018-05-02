@@ -1,6 +1,9 @@
 package ishopgo.com.exhibition.ui.main.profile
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -9,11 +12,18 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by xuanhong on 4/24/18. HappyCoding!
  */
 class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
+
+    @SuppressLint("StaticFieldLeak")
+    @Inject
+    lateinit var appContext: Application
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -80,7 +90,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var profileUpdated = MutableLiveData<ProfileProvider>()
 
-    fun updateProfile(name:String, dob:String, email:String, company:String, region:String, address:String, image:MultipartBody.Part?) {
+    fun updateProfile(name: String, dob: String, email: String, company: String, region: String, address: String, image: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -89,9 +99,16 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("company_store", company)
                 .addFormDataPart("region", region)
                 .addFormDataPart("address", address)
-        if (image != null) {
-            builder.addPart(image)
+
+        if (image.isNotEmpty()) {
+            val imageFile = File(appContext.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
+            imageFile.deleteOnExit()
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+            val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
+            builder.addPart(imagePart)
         }
+        
         addDisposable(apiService.updateProfile(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {

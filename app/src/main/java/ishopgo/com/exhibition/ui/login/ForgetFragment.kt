@@ -4,7 +4,6 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_forget_password.*
-import java.io.IOException
 
 /**
  * Created by hoangnh on 4/24/2018.
@@ -43,7 +41,12 @@ class ForgetFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(LoginViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                hideProgressDialog()
+                resolveError(it)
+            }
+        })
 
         viewModel.getOTP.observe(this, Observer {
             hideProgressDialog()
@@ -52,6 +55,7 @@ class ForgetFragment : BaseFragment() {
         })
 
         viewModel.changNewPassword.observe(this, Observer {
+            hideProgressDialog()
             toast("Đặt lại mật khẩu thành công. Vui lòng đăng nhập.")
             val intent = Intent(context, LoginActivity::class.java)
             intent.putExtra("phone", tv_forget_phone.text.toString())
@@ -112,6 +116,7 @@ class ForgetFragment : BaseFragment() {
                         if (checkRequirePassword(edt_forget_password_otp, edit_password, edit_retry_password)) {
                             viewModel.changeNewPassword(tv_forget_phone.text.toString(),
                                     edt_forget_password_otp.text.toString(), edit_password.text.toString())
+                            showProgressDialog()
                             dialog.dismiss()
                         }
                     }
@@ -121,6 +126,12 @@ class ForgetFragment : BaseFragment() {
                     .canceledOnTouchOutside(true)
                     .build()
 
+            val tv_retry_otp = dialog.findViewById(R.id.tv_retry_otp) as TextView
+            tv_retry_otp.setOnClickListener {
+                showProgressDialog()
+                viewModel.getOTP(tv_forget_phone.text.toString())
+                dialog.dismiss()
+            }
             dialog.show()
         }
     }
