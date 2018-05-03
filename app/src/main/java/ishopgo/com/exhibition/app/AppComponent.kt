@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.ui.main.home.HomeViewModel
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
-import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopHasProductsViewModel
+import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
@@ -63,6 +63,6 @@ interface AppComponent {
     fun inject(homeViewModel: HomeViewModel)
     fun inject(searchViewModel: SearchViewModel)
     fun inject(searchProductViewModel: SearchProductViewModel)
-    fun inject(searchShopHasProductsViewModel: SearchShopHasProductsViewModel)
+    fun inject(searchShopHasProductsViewModel: SearchShopsViewModel)
     fun inject(productsByCategoryViewModel: ProductsByCategoryViewModel)
 }

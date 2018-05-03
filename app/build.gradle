@@ -49,10 +49,10 @@ dependencies {
     implementation "com.android.support:support-vector-drawable:$project.ext.supportLibrary"
     implementation "com.android.support:support-emoji:$project.ext.supportLibrary"
     implementation "com.android.support:customtabs:$project.ext.supportLibrary"
-    implementation "com.android.support.constraint:constraint-layout:1.1.0-beta6"
+    implementation "com.android.support.constraint:constraint-layout:1.1.0"
 
-    implementation "com.google.firebase:firebase-messaging:$project.ext.playServices"
-    implementation "com.google.firebase:firebase-database:$project.ext.playServices"
+//    implementation "com.google.firebase:firebase-messaging:$project.ext.playServices"
+//    implementation "com.google.firebase:firebase-database:$project.ext.playServices"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofit"

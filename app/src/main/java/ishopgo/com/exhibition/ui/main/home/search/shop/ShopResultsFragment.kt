@@ -3,12 +3,17 @@ package ishopgo.com.exhibition.ui.main.home.search.shop
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.animation.AnimationUtils
+import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequestParams
+import ishopgo.com.exhibition.domain.request.SearchShopRequestParams
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
+import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
@@ -26,8 +31,10 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
         Log.d(TAG, "search: key = [${key}]")
         if (keyword == key)
             return
-        else
+        else {
+            keyword = key
             firstLoad()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -43,8 +50,10 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
     }
 
     override fun populateData(data: List<SearchShopResultProvider>) {
-        if (reloadData)
+        if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
+        }
         else
             adapter.addAll(data)
     }
@@ -55,7 +64,7 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
 
     override fun firstLoad() {
         super.firstLoad()
-        val request = SearchProductRequestParams()
+        val request = SearchShopRequestParams()
         request.keyword = keyword
         request.offset = 0
         request.limit = Const.PAGE_LIMIT
@@ -72,8 +81,14 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
 
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
+    }
+
     override fun obtainViewModel(): BaseListViewModel<List<SearchShopResultProvider>> {
-        return obtainViewModel(SearchShopHasProductsViewModel::class.java, false)
+        return obtainViewModel(SearchShopsViewModel::class.java, false)
     }
 
 

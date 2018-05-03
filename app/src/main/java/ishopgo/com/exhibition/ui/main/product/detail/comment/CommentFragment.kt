@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.product.detail.comment
 
 import android.os.Bundle
 import android.view.View
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
 import ishopgo.com.exhibition.model.Const
@@ -16,8 +17,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  */
 class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCommentProvider>() {
     override fun populateData(data: List<ProductCommentProvider>) {
-        if (reloadData)
+        if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
+        }
         else
             adapter.addAll(data)
     }
@@ -46,6 +49,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ProductCommentProvider>> {

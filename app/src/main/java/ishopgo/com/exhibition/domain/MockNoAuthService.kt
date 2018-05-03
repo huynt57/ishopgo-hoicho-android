@@ -11,6 +11,46 @@ import java.util.*
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
 
+    override fun getProductDetail(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<ProductDetail>> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun getRelateProducts(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getRelateProducts(id, params)
+    }
+
+    override fun searchShops(params: MutableMap<String, Any>): Single<BaseResponse<List<Shop>>> {
+        val ps = mutableListOf<Shop>()
+        for (i in 0..5)
+            ps.add(generateShop())
+
+        val response = BaseResponse<List<Shop>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).searchShops(params)
+    }
+
+    override fun searchProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).searchProducts(params)
+    }
+
     private var delegate: BehaviorDelegate<ApiService.NoAuth> = behavior
     private val random = Random()
 
@@ -92,6 +132,17 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         response.data = ps
 
         return delegate.returningResponse(response).getHighlightProducts(params)
+    }
+
+    private fun generateShop(): Shop {
+        val s = Shop()
+        s.id = random.nextInt(1000).toLong()
+        s.banner = "https://static.ishopgo.com/17288/clone-5ac88a12d51431523091986."
+        s.name = "Thảo dược giảm cân Sen Quỳnh"
+        s.createdAt = "2018/04/27 17:55:13"
+        s.hotline = "0985771133"
+        s.numberProduct = 450
+        return s
     }
 
     private fun generateProduct(): Product {

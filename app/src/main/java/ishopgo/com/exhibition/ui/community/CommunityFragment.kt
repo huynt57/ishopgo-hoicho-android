@@ -3,10 +3,10 @@ package ishopgo.com.exhibition.ui.community
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
@@ -16,7 +16,6 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
@@ -30,6 +29,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     override fun populateData(data: List<CommunityProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
         } else {
             adapter.addAll(data)
         }
@@ -111,5 +111,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                 }
             }
         }
+
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
 }

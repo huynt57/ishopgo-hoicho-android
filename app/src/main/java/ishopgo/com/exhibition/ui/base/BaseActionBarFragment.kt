@@ -21,7 +21,7 @@ abstract class BaseActionBarFragment : BaseFragment(), ContentDescription {
         }
 
         // prevent click through fragment
-        view.setOnTouchListener { v, event -> true }
+        view.setOnTouchListener { _, _ -> true }
         return view
     }
 

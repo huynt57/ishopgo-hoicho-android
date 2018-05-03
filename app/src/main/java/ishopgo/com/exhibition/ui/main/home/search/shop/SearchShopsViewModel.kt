@@ -1,34 +1,30 @@
-package ishopgo.com.exhibition.ui.main.home.search.product
+package ishopgo.com.exhibition.ui.main.home.search.shop
 
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.RequestParams
-import ishopgo.com.exhibition.domain.request.SearchProductRequestParams
-import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.request.SearchShopRequestParams
+import ishopgo.com.exhibition.domain.response.Shop
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
-class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(), AppComponent.Injectable {
-
-    companion object {
-        private val TAG = "SearchProductViewModel"
-    }
+class SearchShopsViewModel : BaseListViewModel<List<SearchShopResultProvider>>(), AppComponent.Injectable {
 
     override fun loadData(params: RequestParams) {
-        if (params is SearchProductRequestParams) {
+        if (params is SearchShopRequestParams) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
             fields["q"] = params.keyword
 
-            addDisposable(noAuthService.searchProducts(fields)
+            addDisposable(noAuthService.searchShops(fields)
                     .subscribeOn(Schedulers.io())
-                    .subscribeWith(object : BaseSingleObserver<List<Product>>() {
-                        override fun success(data: List<Product>?) {
-                            dataReturned.postValue(data ?: mutableListOf<Product>())
+                    .subscribeWith(object : BaseSingleObserver<List<Shop>>() {
+                        override fun success(data: List<Shop>?) {
+                            dataReturned.postValue(data ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {
@@ -39,6 +35,7 @@ class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(),
                     })
             )
         }
+
     }
 
     override fun inject(appComponent: AppComponent) {
