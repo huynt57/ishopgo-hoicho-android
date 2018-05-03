@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.community
 
 import android.Manifest
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
@@ -24,6 +25,7 @@ import android.support.v4.content.FileProvider
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -70,9 +72,9 @@ class CommunityShareFragment : BaseFragment() {
             launchPickPhotoIntent()
         }
 
-        Glide.with(this).load("http://www.urhobosocialclublagos.com/wp-content/uploads/2017/07/default-avatar-ginger-guy.png")
+        Glide.with(this).load(UserDataManager.currentUserAvatar)
                 .apply(RequestOptions.circleCropTransform()
-                        .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_share_avatar)
+                        .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_share_avatar)
 
     }
 
@@ -80,6 +82,7 @@ class CommunityShareFragment : BaseFragment() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
@@ -111,11 +114,18 @@ class CommunityShareFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(CommunityViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                hideProgressDialog()
+                resolveError(it)
+            }
+        })
 
         viewModel.sentShareSuccess.observe(this, Observer {
             hideProgressDialog()
-            toast("Đăng thành công")
+            toast("Đăng bài thành công")
+            activity?.setResult(RESULT_OK)
+            activity?.finish()
         })
     }
 
@@ -138,19 +148,27 @@ class CommunityShareFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            if (data.clipData == null) {
+                if (Toolbox.exceedSize(context, data.data, (20 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
+                    return
+                }
+                val postMedia = PostMedia()
+                postMedia.uri = data.data
+                postMedias.add(postMedia)
 
-            Log.d("CommunityShareFragment", data.data.toString())
 
-            if (Toolbox.exceedSize(context, data.data, (20 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
-                return
+            } else {
+                for (i in 0 until data.clipData.itemCount) {
+                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (20 * 1024 * 1024).toLong())) {
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
+                        return
+                    }
+                    val postMedia = PostMedia()
+                    postMedia.uri = data.clipData.getItemAt(i).uri
+                    postMedias.add(postMedia)
+                }
             }
-
-            val postMedia = PostMedia()
-
-            postMedia.uri = data.data
-            postMedias.add(postMedia)
-
             adapterImages = ComposingPostMediaAdapter(postMedias)
             adapterImages.notifyItemInserted(postMedias.size - 1)
             rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

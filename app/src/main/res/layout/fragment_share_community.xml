@@ -59,6 +59,8 @@
         android:id="@+id/cons_share_footer"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:background="@drawable/bg_white_black"
@@ -71,11 +73,13 @@
             android:layout_width="40dp"
             android:layout_height="30dp"
             android:layout_marginBottom="8dp"
-            android:scaleType="center"
+            android:layout_marginTop="8dp"
             android:foreground="?selectableItemBackground"
+            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_photo_camera" />
 
         <ImageView
             android:id="@+id/img_select_picture"
@@ -84,12 +88,12 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:scaleType="center"
             android:foreground="?selectableItemBackground"
+            android:scaleType="center"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_select_camera"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+            app:srcCompat="@drawable/ic_gallery" />
 
     </android.support.constraint.ConstraintLayout>
 

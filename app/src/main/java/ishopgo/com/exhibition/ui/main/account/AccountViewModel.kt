@@ -7,11 +7,9 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.response.BaseDataResponse
 import ishopgo.com.exhibition.model.AccountMenuItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.login.LoginViewModel
 import okhttp3.MultipartBody
 
 class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
@@ -50,7 +48,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var loggedOut = MutableLiveData<Boolean>()
 
     fun logout() {
-        addDisposable(apiService.logout("android")
+        addDisposable(authService.logout("android")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : DisposableSingleObserver<Any>() {
                     override fun onError(e: Throwable?) {
@@ -70,12 +68,11 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("phone", phone)
                 .addFormDataPart("otp", otp)
                 .addFormDataPart("password", password)
-                .addFormDataPart("id_app", LoginViewModel.id_app)
 
-        addDisposable(apiService.changePassword(builder.build())
+        addDisposable(authService.changePassword(builder.build())
                 .subscribeOn(Schedulers.io())
-                .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
-                    override fun success(data: BaseDataResponse?) {
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
                         changePassword.postValue(true)
                     }
 
@@ -87,13 +84,12 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun getOTP(phone: String) {
         val fields = mutableMapOf<String, Any>()
-        fields.put("id_app", LoginViewModel.id_app)
         fields.put("phone", phone)
 
-        addDisposable(apiService.getOTP(fields)
+        addDisposable(authService.getOTP(fields)
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
-                    override fun success(data: BaseDataResponse?) {
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
                         getOTP.postValue(true)
                     }
 

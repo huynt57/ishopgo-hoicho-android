@@ -44,7 +44,7 @@ class AccountFragment : BaseFragment() {
                             .error(R.drawable.error_placeholder))
                     .into(view_avatar)
             view_name.text = UserDataManager.currentUserName
-            view_introduce.text = "Khách tham quan - ${UserDataManager.currentUserPhone}"
+            view_introduce.text = "${UserDataManager.currentType} - ${UserDataManager.currentUserPhone}"
 
             view_recyclerview.adapter = adapter
             val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -75,6 +75,8 @@ class AccountFragment : BaseFragment() {
                 startActivity(intent)
                 activity?.finish()
             }
+
+            view_introduce.visibility = View.GONE
         }
     }
 

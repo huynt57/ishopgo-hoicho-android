@@ -1,9 +1,11 @@
 package ishopgo.com.exhibition.ui.login
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -20,6 +22,10 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import kotlinx.android.synthetic.main.fragment_signup.*
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.widget.Toolbox
 
 
 /**
@@ -41,6 +47,7 @@ class SignupFragment : BaseFragment() {
     private var type_Register: Int = 0
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
+    private var image: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_signup, container, false)
@@ -63,6 +70,10 @@ class SignupFragment : BaseFragment() {
 
         btn_signup.setOnClickListener {
             signupAccount()
+        }
+
+        img_signup_avatar.setOnClickListener {
+            launchPickPhotoIntent()
         }
 
         tv_signup_retry_password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
@@ -220,5 +231,30 @@ class SignupFragment : BaseFragment() {
         view.requestFocus()
         val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager.showSoftInput(view, 0)
+    }
+
+    private fun launchPickPhotoIntent() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                return
+            }
+
+            image = data.data.toString()
+
+            Glide.with(context)
+                    .load(Uri.parse(image))
+                    .apply(RequestOptions.placeholderOf(R.drawable.avatar_placeholder)
+                            .error(R.drawable.avatar_placeholder))
+                    .into(img_signup_avatar)
+        }
     }
 }

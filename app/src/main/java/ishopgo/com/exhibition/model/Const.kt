@@ -6,6 +6,7 @@ package ishopgo.com.exhibition.model
 object Const {
 
     const val PAGE_LIMIT = 20
+    const val ID_APP = "hoichone"
 
     object TransferKey {
         const val EXTRA_STRING_LIST = "string_list"
@@ -20,6 +21,7 @@ object Const {
         const val RC_PICK_IMAGE = 3
         const val TAKE_PICTURE = 4
         const val UPDATE_PROFILE = 5
+        const val SHARE_POST_COMMUNITY = 6
     }
 
     object AccountAction {

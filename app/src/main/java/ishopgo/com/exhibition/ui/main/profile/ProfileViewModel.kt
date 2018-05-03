@@ -33,7 +33,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadUserProfile() {
 
-        addDisposable(apiService.getProfile(UserDataManager.currentUserId)
+        addDisposable(authService.getProfile(UserDataManager.currentUserId)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
@@ -109,7 +109,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
             builder.addPart(imagePart)
         }
         
-        addDisposable(apiService.updateProfile(builder.build())
+        addDisposable(authService.updateProfile(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {

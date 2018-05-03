@@ -1,11 +1,11 @@
 package ishopgo.com.exhibition.ui.community
 
-import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.item_community.view.*
@@ -25,9 +25,6 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
-
-        const val COMMUNITY_SHARE_PRODUCT = 0
-        const val COMMUNITY_SHARE_IMAGE = 1
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
@@ -64,44 +61,50 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         override fun populate(data: CommunityProvider) {
             super.populate(data)
             itemView.apply {
-                tv_community_username.text = data.userName()
+                tv_community_username.text = data.providerUserName()
                 tv_community_time.text = data.provideTime()
                 tv_community_content.text = data.provideContent()
-                tv_community_product_name.text = data.provideProductName()
-                tv_community_product_code.text = data.provideProductCode()
-                tv_community_product_price.text = data.provideProductPrice()
                 tv_community_like.text = data.provideLikeCount().toString()
                 tv_community_comment.text = data.provideCommentCount().toString()
                 tv_community_number_share.text = data.provideShareCount().toString()
 
 
-                Glide.with(this).load(data.userAvatar())
+                Glide.with(this).load(data.providerUserAvatar())
                         .apply(RequestOptions.circleCropTransform()
-                                .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_avatar)
+                                .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_community_avatar)
 
-                if (data.provideType() == COMMUNITY_SHARE_PRODUCT.toString()) {
-                    img_community_image.visibility = View.GONE
-                    Glide.with(this).load(data.provideProductListImage()[0].url())
+                if (data.provideProduct() != null) {
+                    cv_community_product.visibility = View.VISIBLE
+                    tv_community_product_code.visibility = View.GONE
+
+                    Glide.with(this).load(data.provideProduct()?.providerImage())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
-                } else if (data.provideType() == COMMUNITY_SHARE_IMAGE.toString()) {
-                    cv_community_product.visibility = View.GONE
-                    if (data.provideProductListImage().size > 1) {
-                        rv_community_image.visibility = View.VISIBLE
+                    tv_community_product_name.text = data.provideProduct()?.providerName()
+                    tv_community_product_price.text = data.provideProduct()?.providerPrice()
+                } else cv_community_product.visibility = View.GONE
+
+                if (data.provideListImage().isNotEmpty()) {
+                    if (data.provideListImage().size > 1) {
                         img_community_image.visibility = View.GONE
+                        rv_community_image.visibility = View.VISIBLE
 
                         val adapter = CommunityImageAdapter()
-                        adapter.replaceAll(data.provideProductListImage())
+                        adapter.replaceAll(data.provideListImage())
                         rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_community_image.adapter = adapter
                     } else {
                         img_community_image.visibility = View.VISIBLE
                         rv_community_image.visibility = View.GONE
 
-                        Glide.with(this).load(data.provideProductListImage()[0].url())
+                        Glide.with(this).load(data.provideListImage()[0])
                                 .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_image)
                     }
-
+                } else {
+                    img_community_image.visibility = View.GONE
+                    rv_community_image.visibility = View.GONE
                 }
+
+
             }
         }
     }
@@ -111,9 +114,9 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         override fun populate(data: CommunityProvider) {
             super.populate(data)
             itemView.apply {
-                Glide.with(this).load(data.currentUserAvatar())
+                Glide.with(this).load(UserDataManager.currentUserAvatar)
                         .apply(RequestOptions.circleCropTransform()
-                                .placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_share_avatar)
+                                .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_community_share_avatar)
             }
         }
     }

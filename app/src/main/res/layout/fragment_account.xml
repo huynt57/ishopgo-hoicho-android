@@ -12,8 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <ImageView
             android:id="@+id/view_avatar"
@@ -21,20 +20,20 @@
             android:layout_height="40dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/avatar_placeholder"
-            />
+            app:srcCompat="@drawable/avatar_placeholder" />
 
         <TextView
             android:id="@+id/view_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="23dp"
             android:layout_marginStart="16dp"
             android:textSize="16sp"
+            app:layout_constraintBottom_toTopOf="@+id/view_introduce"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Vương Xuân Hồng"
-            />
+            tools:text="Vương Xuân Hồng" />
 
         <TextView
             android:id="@+id/view_introduce"
@@ -44,11 +43,12 @@
             android:textColor="@color/md_grey_700"
             android:textSize="13sp"
             android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/view_avatar"
             app:layout_constraintTop_toBottomOf="@+id/view_name"
-            tools:text="khách tham quan - 0974427143"
-            />
+            tools:text="khách tham quan - 0974427143" />
 
     </android.support.constraint.ConstraintLayout>
 

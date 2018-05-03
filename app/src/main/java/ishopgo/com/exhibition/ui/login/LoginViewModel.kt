@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.response.BaseDataResponse
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.LoginResponse
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.UserDataManager
@@ -21,17 +21,13 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var changNewPassword = MutableLiveData<Boolean>()
     var loadRegion = MutableLiveData<MutableList<Region>>()
 
-    companion object {
-        const val id_app = "hoichone"
-    }
-
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
     fun loginAccount(phone: String, password: String) {
-        addDisposable(apiService.login(phone, password, id_app, "")
+        addDisposable(authService.login(phone, password, Const.ID_APP,"")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<LoginResponse>() {
                     override fun success(data: LoginResponse?) {
@@ -60,7 +56,6 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("phone", phone)
                 .addFormDataPart("email", email)
                 .addFormDataPart("name", fullname)
-                .addFormDataPart("id_app", id_app)
                 .addFormDataPart("company_store", company)
                 .addFormDataPart("birthday", birthday)
                 .addFormDataPart("region", region)
@@ -68,10 +63,10 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("password", password)
                 .addFormDataPart("type", register_type)
 
-        addDisposable(apiService.register(builder.build())
+        addDisposable(authService.register(builder.build())
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
-                    override fun success(data: BaseDataResponse?) {
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
                         registerSuccess.postValue(true)
                     }
 
@@ -83,13 +78,12 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun getOTP(phone: String) {
         val fields = mutableMapOf<String, Any>()
-        fields.put("id_app", id_app)
-        fields.put("phone", phone)
+        fields["phone"] = phone
 
-        addDisposable(apiService.getOTP(fields)
+        addDisposable(authService.getOTP(fields)
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
-                    override fun success(data: BaseDataResponse?) {
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
                         getOTP.postValue(true)
                     }
 
@@ -106,12 +100,11 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("phone", phone)
                 .addFormDataPart("otp", otp)
                 .addFormDataPart("password", password)
-                .addFormDataPart("id_app", id_app)
 
-        addDisposable(apiService.changePassword(builder.build())
+        addDisposable(authService.changePassword(builder.build())
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<BaseDataResponse>() {
-                    override fun success(data: BaseDataResponse?) {
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
                         changNewPassword.postValue(true)
                     }
 
