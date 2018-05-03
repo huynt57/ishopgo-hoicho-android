@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -33,7 +33,7 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
 
     override fun firstLoad() {
         reloadData = true
-        val request = LoadMoreRequestParams()
+        val request = LoadMoreRequest()
         request.offset = 0
         request.limit = Const.PAGE_LIMIT
         viewModel.loadData(request)
@@ -41,7 +41,7 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
 
     override fun loadMore(currentCount: Int) {
         reloadData = false
-        val request = LoadMoreRequestParams()
+        val request = LoadMoreRequest()
         request.offset = currentCount
         request.limit = Const.PAGE_LIMIT
         viewModel.loadData(request)

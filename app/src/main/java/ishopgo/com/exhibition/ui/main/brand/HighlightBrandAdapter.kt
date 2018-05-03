@@ -51,8 +51,8 @@ class HighlightBrandAdapter(private var itemWidthRatio: Float = -1f, private var
                 Glide.with(context)
                         .load(data.provideImage())
                         .apply(RequestOptions()
-                                .placeholder(R.drawable.avatar_placeholder)
-                                .error(R.drawable.error_placeholder))
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder))
                         .into(view_image)
             }
         }

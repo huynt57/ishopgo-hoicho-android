@@ -36,10 +36,16 @@ class ApiService {
         fun searchShops(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Shop>>>
 
         @GET("product/{id}")
-        fun getProductDetail(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<ProductDetail>>
+        fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
 
-        @GET("relate-products/{id}")
-        fun getRelateProducts(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+        @GET("relate-products")
+        fun getRelateProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+
+        @GET("comment-product/{id}")
+        fun getProductComments(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
+
+        @GET("shop_rate/{id}")
+        fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
     }
 
     interface Auth {

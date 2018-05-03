@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.SearchProductRequestParams
+import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -64,7 +64,7 @@ class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, Sea
 
     override fun firstLoad() {
         super.firstLoad()
-        val request = SearchProductRequestParams()
+        val request = SearchProductRequest()
         request.keyword = keyword
         request.offset = 0
         request.limit = Const.PAGE_LIMIT
@@ -73,7 +73,7 @@ class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, Sea
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val request = SearchProductRequestParams()
+        val request = SearchProductRequest()
         request.keyword = keyword
         request.offset = currentCount
         request.limit = Const.PAGE_LIMIT

@@ -93,6 +93,7 @@ class ProductDetailFragment : BaseFragment() {
             c?.let {
                 productCommentAdapter.replaceAll(it)
             }
+
         })
 
         loadData(productId)
@@ -103,8 +104,8 @@ class ProductDetailFragment : BaseFragment() {
             Glide.with(it)
                     .load(product.provideProductImage())
                     .apply(RequestOptions()
-                            .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.error_placeholder))
+                            .placeholder(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
                     .into(view_product_image)
 
             view_product_name.text = product.provideProductName()

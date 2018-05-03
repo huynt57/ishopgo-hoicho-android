@@ -10,7 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.RequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -52,7 +52,7 @@ class ProfileFragment : BaseFragment() {
                     .apply(RequestOptions
                             .circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.error_placeholder))
+                            .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
             view_phone.setText(profile.providePhone())
             view_name.setText(profile.provideName())
@@ -76,7 +76,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun submitChanges() {
-        viewModel.updateProfile(RequestParams())
+        viewModel.updateProfile(Request())
     }
 
     private fun startEditing() {

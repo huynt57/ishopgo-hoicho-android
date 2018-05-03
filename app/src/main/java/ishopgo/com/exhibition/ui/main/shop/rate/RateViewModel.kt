@@ -1,26 +1,27 @@
-package ishopgo.com.exhibition.ui.main.product.detail.comment
+package ishopgo.com.exhibition.ui.main.shop.rate
 
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
 import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.request.ShopRatesRequest
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 
 /**
- * Created by xuanhong on 4/22/18. HappyCoding!
+ * Created by xuanhong on 5/3/18. HappyCoding!
  */
-class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(), AppComponent.Injectable {
+class RateViewModel : BaseListViewModel<List<ProductCommentProvider>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
-        if (params is ProductCommentsRequest) {
+        if (params is ShopRatesRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
-            if (params.lastId != -1L) fields["last_id"] = params.lastId
-            if (params.parentId != -1L) fields["parent_id"] = params.parentId
+            fields["offset"] = params.offset
+            fields["shop_id"] = params.shopId
 
-            addDisposable(noAuthService.getProductComments(params.productId, fields)
+            addDisposable(noAuthService.getShopRatings(10, fields)
                     .subscribeOn(Schedulers.io())
                     .subscribeWith(object : BaseSingleObserver<List<ProductComment>>() {
                         override fun success(data: List<ProductComment>?) {
@@ -40,5 +41,4 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
-
 }

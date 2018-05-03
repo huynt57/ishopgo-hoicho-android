@@ -25,6 +25,7 @@ import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewMode
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
+import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
 import ishopgo.com.exhibition.ui.splash.SplashViewModel
 import javax.inject.Singleton
 
@@ -65,4 +66,5 @@ interface AppComponent {
     fun inject(searchProductViewModel: SearchProductViewModel)
     fun inject(searchShopHasProductsViewModel: SearchShopsViewModel)
     fun inject(productsByCategoryViewModel: ProductsByCategoryViewModel)
+    fun inject(rateViewModel: RateViewModel)
 }

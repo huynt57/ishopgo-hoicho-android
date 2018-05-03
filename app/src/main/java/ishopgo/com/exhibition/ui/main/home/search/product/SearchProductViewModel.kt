@@ -3,8 +3,8 @@ package ishopgo.com.exhibition.ui.main.home.search.product
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.RequestParams
-import ishopgo.com.exhibition.domain.request.SearchProductRequestParams
+import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
@@ -17,8 +17,8 @@ class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(),
         private val TAG = "SearchProductViewModel"
     }
 
-    override fun loadData(params: RequestParams) {
-        if (params is SearchProductRequestParams) {
+    override fun loadData(params: Request) {
+        if (params is SearchProductRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset

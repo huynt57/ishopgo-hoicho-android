@@ -9,7 +9,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -41,7 +41,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun firstLoad() {
         super.firstLoad()
-        val firstLoad = LoadMoreRequestParams()
+        val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
         viewModel.loadData(firstLoad)
@@ -49,7 +49,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
         viewModel.loadData(loadMore)

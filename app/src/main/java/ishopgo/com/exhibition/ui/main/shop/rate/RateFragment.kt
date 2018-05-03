@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.detail.comment
+package ishopgo.com.exhibition.ui.main.shop.rate
 
 import android.os.Bundle
 import android.view.View
@@ -6,35 +6,18 @@ import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCommentProvider>() {
-
-    companion object {
-        fun newInstance(params: Bundle): CommentFragment {
-            val f = CommentFragment()
-            f.arguments = params
-
-            return f
-        }
-    }
-
-    private var productId: Long = -1
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
-    }
-
+class RateFragment : BaseListFragment<List<ProductCommentProvider>, ProductCommentProvider>() {
     override fun populateData(data: List<ProductCommentProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
@@ -52,20 +35,18 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
         val loadMore = ProductCommentsRequest()
         loadMore.lastId = -1L
         loadMore.parentId = -1L
-        loadMore.productId = productId
-        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.productId = 1
         viewModel.loadData(loadMore)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
         val loadMore = ProductCommentsRequest()
-        val item = adapter.getItem(adapter.itemCount - 1)
+        val item = adapter.getItem(adapter.itemCount)
         if (item is IdentityData) {
             loadMore.lastId = item.id
             loadMore.parentId = -1L
-            loadMore.productId = productId
-            loadMore.limit = Const.PAGE_LIMIT
+            loadMore.productId = 1
             viewModel.loadData(loadMore)
         }
     }
@@ -78,7 +59,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ProductCommentProvider>> {
-        return obtainViewModel(ProductCommentViewModel::class.java, false)
+        return obtainViewModel(RateViewModel::class.java, false)
     }
 
 }

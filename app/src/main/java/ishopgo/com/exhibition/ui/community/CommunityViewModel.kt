@@ -2,7 +2,7 @@ package ishopgo.com.exhibition.ui.community
 
 import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
-import ishopgo.com.exhibition.domain.request.RequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComponent.Injectable {
     var sentShareSuccess = MutableLiveData<Boolean>()
 
-    override fun loadData(params: RequestParams) {
+    override fun loadData(params: Request) {
         val dummy = mutableListOf<CommunityProvider>()
         for (i in 0..10)
             dummy.add(object : IdentityData(), CommunityProvider {

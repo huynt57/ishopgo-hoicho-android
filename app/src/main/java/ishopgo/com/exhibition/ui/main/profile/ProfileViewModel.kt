@@ -2,7 +2,7 @@ package ishopgo.com.exhibition.ui.main.profile
 
 import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
-import ishopgo.com.exhibition.domain.request.RequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
 /**
@@ -63,7 +63,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var profileUpdated = MutableLiveData<ProfileProvider>()
 
-    fun updateProfile(params: RequestParams) {
+    fun updateProfile(params: Request) {
         profileUpdated.postValue(object : ProfileProvider {
             override fun provideAvatar(): String {
                 return "https://lh3.googleusercontent.com/-B212qdip-ls/V1a_aouWG1I/AAAAAAAAAfA/pqqn9gV9tcIos_ybMhM_xLmFORG_ZHEowCEwYBhgL/w278-h280-p/10275486_934954516552276_3867031212727261639_o.jpg"

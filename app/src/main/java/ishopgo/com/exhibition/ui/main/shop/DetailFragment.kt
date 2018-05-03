@@ -13,10 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import ishopgo.com.exhibition.ui.main.product.detail.comment.CommentFragment
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
+import ishopgo.com.exhibition.ui.main.shop.rate.RateFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_shop_detail.*
 
@@ -70,7 +70,7 @@ class DetailFragment : BaseFragment() {
                     CategoryFragment()
                 }
                 3 -> {
-                    CommentFragment()
+                    RateFragment()
                 }
                 else -> {
                     Fragment()

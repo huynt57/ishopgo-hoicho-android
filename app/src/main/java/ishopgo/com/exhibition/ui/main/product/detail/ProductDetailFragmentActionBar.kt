@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.ui.main.product.detail
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -28,9 +27,7 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
 
         setupToolbars()
 
-        val params = Bundle()
-        params.putLong(Const.TransferKey.EXTRA_ID, 1L)
-        val fragment = ProductDetailFragment.newInstance(params)
+        val fragment = ProductDetailFragment.newInstance(arguments ?: Bundle())
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, fragment)
                 .commit()

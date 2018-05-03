@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -45,7 +45,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
 
     override fun firstLoad() {
         super.firstLoad()
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
         viewModel.loadData(loadMore)
@@ -53,7 +53,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
         viewModel.loadData(loadMore)

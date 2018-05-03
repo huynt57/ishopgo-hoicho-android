@@ -1,41 +1,38 @@
 package ishopgo.com.exhibition.ui.main.product.shop
 
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
-import ishopgo.com.exhibition.domain.request.RequestParams
-import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.request.SameShopProductsRequest
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
 class ProductsOfShopViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
 
-    override fun loadData(params: RequestParams) {
-        val dummy = mutableListOf<ProductProvider>()
-        for (i in 0..19)
-            dummy.add(object : IdentityData(), ProductProvider {
+    override fun loadData(params: Request) {
+        if (params is SameShopProductsRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["product_id"] = params.productId
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
 
-                init {
-                    id = i.toLong()
-                }
+            addDisposable(noAuthService.getRelateProducts(fields)
+                    .subscribeOn(Schedulers.io())
+                    .subscribeWith(object : BaseSingleObserver<List<Product>>() {
+                        override fun success(data: List<Product>?) {
+                            dataReturned.postValue(data ?: listOf())
+                        }
 
-                override fun provideImage(): String {
-                    return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-                }
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
 
-                override fun provideName(): String {
-                    return "Kem trị thâm mụn Medi Spotless (Đã xem)"
-                }
 
-                override fun providePrice(): String {
-                    return "520.000 đ"
-                }
-
-                override fun provideMarketPrice(): String {
-                    return "510.000 đ"
-                }
-
-            })
-
-        dataReturned.postValue(dummy)
+                    })
+            )
+        }
 
     }
 

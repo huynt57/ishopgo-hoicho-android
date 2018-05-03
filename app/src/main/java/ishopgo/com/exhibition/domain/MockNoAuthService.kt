@@ -11,11 +11,82 @@ import java.util.*
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
 
-    override fun getProductDetail(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<ProductDetail>> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getShopRatings(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>> {
+        val c = ProductComment()
+        c.id = 462
+        c.content = "Sản phẩm dùng rất tốt, có hiệu quả ngay lần sử dụng thứ 2. Sẽ còn quay lại shop."
+        c.accountName = "Vương Xuân Hồng"
+        c.accountImage = "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
+        c.status = 2
+        c.updatedAt = "2018/04/09 14:18:35"
+        c.commentCount = 0
+        c.lastComment = null
+
+        val result = mutableListOf<ProductComment>()
+        for (i in 0..3)
+            result.add(c)
+
+        val response = BaseResponse<List<ProductComment>>()
+        response.status = 1
+        response.data = result
+
+        return delegate.returningResponse(response).getProductComments(id, params)
     }
 
-    override fun getRelateProducts(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+    override fun getProductComments(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>> {
+        val c = ProductComment()
+        c.id = 462
+        c.content = "Sản phẩm dùng rất tốt, có hiệu quả ngay lần sử dụng thứ 2. Sẽ còn quay lại shop."
+        c.accountName = "Vương Xuân Hồng"
+        c.accountImage = "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
+        c.status = 2
+        c.updatedAt = "2018/04/09 14:18:35"
+        c.commentCount = 0
+        c.lastComment = null
+
+        val result = mutableListOf<ProductComment>()
+        for (i in 0..3)
+            result.add(c)
+
+        val response = BaseResponse<List<ProductComment>>()
+        response.status = 1
+        response.data = result
+
+        return delegate.returningResponse(response).getProductComments(id, params)
+    }
+
+    override fun getProductDetail(id: Long): Single<BaseResponse<ProductDetail>> {
+        val detail = ProductDetail()
+        detail.id = 16110
+        detail.name = "Balo Nữ Thời Trang Naza"
+        detail.price = 590000
+        detail.ttPrice = 590000
+        detail.description = "<!--?xml encoding=\\\"utf-8\\\" ?-->\\r\\n<p><strong>TH&Ocirc;NG TIN SẢN PHẨM</strong></p>\\r\\n\\r\\n<p>Balo thời trang, tặng k&egrave;m gấu b&ocirc;ng<br />\\r\\n-Chất liệu: da PU cấp bền đẹp, bề mặt t&uacute;i được dập v&acirc;n tinh xảo<br />\\r\\n-D&acirc;y đeo vai c&oacute; thể điều chỉnh độ d&agrave;i ngắn<br />\\r\\n-Ngăn t&uacute;i đủ rộng để đựng c&aacute;c đồ vật cần thiết ra ngo&agrave;i: ipad,điện tho<br />\\r\\n-Kh&oacute;a k&eacute;o chống gỉ<br />\\r\\n-Chi tiết t&uacute;i được l&agrave;m tinh xảo, đường may cẩn thận<br />\\r\\n-Sử dụng nhiều mục đ&iacute;ch: đi chơi, đi học,..<br />\\r\\n-K&iacute;ch thước: d&agrave;i 29cm, cao 31cm, rộng 12cm</p>\\r\\n"
+        detail.image = "https://static.ishopgo.com/17288/657de7dc98abeddf23a80b3ac3a9bbc7contactpng.png"
+        val department = Department()
+        department.name = "Cafe trà sữa"
+        department.id = 752
+        detail.department = department
+        val booth = Booth()
+        booth.id = 17365
+        booth.name = "GIAN HÀNG TRƯNG BÀY"
+        booth.intro = "th&ocirc;ng tin gian h&agrave;ng 232"
+        booth.info = "th&ocirc;ng tin gian h&agrave;ng23"
+        booth.image = "https://static.ishopgo.com/17288/99bbfb5e747949d53d0eaeb5c4f3ee92.png"
+        booth.hotline = "12345"
+        booth.address = null
+        booth.count = 4
+        detail.booth = booth
+        detail.linkAffiliate = "http://hoicho.ishopgo.com/san-pham/balo-nu-thoi-trang-naza-16110"
+
+        val response = BaseResponse<ProductDetail>()
+        response.status = 1
+        response.data = detail
+
+        return delegate.returningResponse(response).getProductDetail(id)
+    }
+
+    override fun getRelateProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
         val ps = mutableListOf<Product>()
         for (i in 0..5)
             ps.add(generateProduct())
@@ -24,7 +95,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         response.status = 1
         response.data = ps
 
-        return delegate.returningResponse(response).getRelateProducts(id, params)
+        return delegate.returningResponse(response).getRelateProducts(params)
     }
 
     override fun searchShops(params: MutableMap<String, Any>): Single<BaseResponse<List<Shop>>> {
