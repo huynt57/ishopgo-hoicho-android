@@ -59,7 +59,6 @@ class AccountFragment : BaseFragment() {
                 override fun click(position: Int, data: AccountMenuProvider, code: Int) {
                     handleClick(data)
                 }
-
             }
         } else {
             Glide.with(view.context)

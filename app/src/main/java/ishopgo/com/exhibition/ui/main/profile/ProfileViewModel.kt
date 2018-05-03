@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody

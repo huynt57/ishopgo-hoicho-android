@@ -4,14 +4,14 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.BrandProductsRequest
-import ishopgo.com.exhibition.domain.request.RequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
 class ProductsOfBrandViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
 
-    override fun loadData(params: RequestParams) {
+    override fun loadData(params: Request) {
         if (params is BrandProductsRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit

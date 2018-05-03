@@ -3,7 +3,7 @@ package ishopgo.com.exhibition.domain.request
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
-class SearchProductRequestParams : LoadMoreRequestParams() {
+class SearchShopRequest : LoadMoreRequest() {
 
     var keyword: String = ""
 

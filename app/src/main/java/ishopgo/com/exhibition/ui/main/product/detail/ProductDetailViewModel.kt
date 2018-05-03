@@ -1,8 +1,13 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.ProductComment
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
@@ -19,33 +24,22 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var sameShopProducts = MutableLiveData<List<ProductProvider>>()
 
     fun loadSameShopProducts(productId: Long) {
-        val dummy = mutableListOf<ProductProvider>()
-        for (i in 0..5)
-            dummy.add(object : IdentityData(), ProductProvider {
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = 10
+        fields["offset"] = 0
+        fields["product_id"] = productId
+        addDisposable(noAuthService.getRelateProducts(fields)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<List<Product>>() {
+                    override fun success(data: List<Product>?) {
+                        sameShopProducts.postValue(data ?: mutableListOf())
+                    }
 
-                init {
-                    id = i.toLong()
-                }
-
-                override fun provideImage(): String {
-                    return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-                }
-
-                override fun provideName(): String {
-                    return "Kem trị thâm mụn Medi Spotless"
-                }
-
-                override fun providePrice(): String {
-                    return "520.000 đ"
-                }
-
-                override fun provideMarketPrice(): String {
-                    return "510.000 đ"
-                }
-
-            })
-
-        sameShopProducts.postValue(dummy)
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     var viewedProducts = MutableLiveData<List<ProductProvider>>()
@@ -115,100 +109,42 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var detail = MutableLiveData<ProductDetailProvider>()
 
     fun loadProductDetail(productId: Long) {
+        addDisposable(noAuthService.getProductDetail(productId)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
+                    override fun success(data: ProductDetail?) {
+                        data?.let {
+                            detail.postValue(it)
+                        }
+                    }
 
-        detail.postValue(object : IdentityData(), ProductDetailProvider {
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
 
-            init {
-                id = 100
-            }
-
-            override fun provideProductImage(): String {
-                return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-            }
-
-            override fun provideProductName(): String {
-                return "Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless"
-            }
-
-            override fun provideProductPrice(): String {
-                return "530.000 đ"
-            }
-
-            override fun provideProductBrand(): String {
-                return "Medi White"
-            }
-
-            override fun provideProductShortDescription(): String {
-                return "✎ Kem trị thâm mụn Medi White đánh bay mọi vết thâm, sạm da do sẹo mụn để lại, làm trắng da, giúp dưỡng da tươi trẻ và mịn màng không tỳ vết.\n" +
-                        "\n" +
-                        "✎ Xóa mờ các vết thâm sẹo, thâm do té xe, thâm da do bỏng bô, côn trùng chích, dời leo, mụn nhọt, làm đều tông màu da\n" +
-                        "\n"
-            }
-
-            override fun provideShopName(): String {
-                return "Mua Đồ Tốt"
-            }
-
-            override fun provideShopRegion(): String {
-                return "Hồ Chí Minh"
-            }
-
-            override fun provideShopProductCount(): Int {
-                return 40
-            }
-
-            override fun provideShopRateCount(): Int {
-                return 10
-            }
-
-            override fun provideShopPhone(): String {
-                return "0974427143"
-            }
-
-            override fun provideProductLikeCount(): Int {
-                return 90
-            }
-
-            override fun provideProductCommentCount(): Int {
-                return 80
-            }
-
-            override fun provideProductShareCount(): Int {
-                return 50
-            }
-
-        })
+                })
+        )
     }
 
     var productComments = MutableLiveData<List<ProductCommentProvider>>()
 
     fun loadProductComments(productId: Long) {
-        val dummy = mutableListOf<ProductCommentProvider>()
-        for (i in 0..3)
-            dummy.add(object : IdentityData(), ProductCommentProvider {
-                override fun provideName(): String {
-                    return "Vương Xuân Hồng"
-                }
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = 5
+        addDisposable(noAuthService.getProductComments(productId, fields)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<List<ProductComment>>() {
+                    override fun success(data: List<ProductComment>?) {
+                        productComments.postValue(data ?: listOf())
+                    }
 
-                override fun provideAvatar(): String {
-                    return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-                }
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
 
-                override fun provideTime(): String {
-                    return "1 giờ trước"
-                }
 
-                override fun provideContent(): String {
-                    return "Sản phẩm dùng rất tốt, có hiệu quả ngay lần sử dụng thứ 2. Sẽ còn quay lại shop."
-                }
-
-                init {
-                    id = i.toLong()
-                }
-
-            })
-
-        productComments.postValue(dummy)
+                })
+        )
     }
 
 }

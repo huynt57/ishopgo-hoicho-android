@@ -62,7 +62,6 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
 
         view_search_field.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                Log.d(TAG, "afterTextChanged: s = [${s}]")
                 searchKey = s.toString()
                 view_search_field.handler.removeCallbacks(searchRunnable)
                 view_search_field.handler.postDelayed(searchRunnable, 500)

@@ -12,6 +12,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
@@ -86,26 +87,31 @@ class HomeFragment : BaseFragment() {
         viewModel.favoriteProducts.observe(this, Observer { p ->
             p?.let {
                 favoriteProductAdapter.replaceAll(it)
+                view_list_referenced_products.scheduleLayoutAnimation()
             }
         })
         viewModel.viewedProducts.observe(this, Observer { p ->
             p?.let {
                 viewedProductAdapter.replaceAll(it)
+                view_list_referenced_products.scheduleLayoutAnimation()
             }
         })
         viewModel.highlightProducts.observe(this, Observer { p ->
             p?.let {
                 highlightProductAdapter.replaceAll(it)
+                view_list_highlight_products.scheduleLayoutAnimation()
             }
         })
         viewModel.highlightBrand.observe(this, Observer { b ->
             b?.let {
                 highlightBrandAdapter.replaceAll(it)
+                view_list_highlight_brand.scheduleLayoutAnimation()
             }
         })
         viewModel.categories.observe(this, Observer { c ->
             c?.let {
                 categoriesAdapter.replaceAll(it)
+                rv_categories.scheduleLayoutAnimation()
 
                 swipe.isRefreshing = false
             }
@@ -313,6 +319,7 @@ class HomeFragment : BaseFragment() {
         view_list_referenced_products.layoutManager = layoutManager
         view_list_referenced_products.isNestedScrollingEnabled = false
         view_list_referenced_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_referenced_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
     }
 
     private fun setupSponsorsProducts(context: Context) {
@@ -321,6 +328,7 @@ class HomeFragment : BaseFragment() {
         view_list_highlight_brand.layoutManager = layoutManager
         view_list_highlight_brand.isNestedScrollingEnabled = false
         view_list_highlight_brand.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_highlight_brand.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
     }
 
     private fun openProductDetail(product: ProductProvider) {
@@ -350,6 +358,7 @@ class HomeFragment : BaseFragment() {
         view_list_highlight_products.layoutManager = layoutManager
         view_list_highlight_products.isNestedScrollingEnabled = false
         view_list_highlight_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_highlight_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
     }
 
     private fun setupCategories(context: Context) {
@@ -357,5 +366,6 @@ class HomeFragment : BaseFragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_categories.layoutManager = layoutManager
         rv_categories.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        rv_categories.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 }

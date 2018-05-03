@@ -11,6 +11,8 @@ import java.util.*
 /**
  * Created by xuanhong on 11/6/17. HappyCoding!
  */
+
+
 fun String.asNumber(hour: Double): String? {
     var total_sec = hour * 60.0 * 60.0
     var i = 4
@@ -27,6 +29,22 @@ fun String.asNumber(hour: Double): String? {
     if (number[2] > 0) builder.append(number[2]).append(" phút ")
     if (number[3] > 0) builder.append(number[3]).append(" giây ")
     return if (builder.isEmpty()) "0" else builder.toString()
+}
+
+fun String.asDate(): String? {
+    return try {
+        Toolbox.displayDateFormat.format(Toolbox.apiDateFormat.parse(this))
+    } catch (e: Exception) {
+        this
+    }
+}
+
+fun String.asDateTime(): String? {
+    return try {
+        Toolbox.displayDateTimeFormat.format(Toolbox.apiDateFormat.parse(this))
+    } catch (e: Exception) {
+        this
+    }
 }
 
 fun Long.asMoney(): String {

@@ -19,9 +19,6 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_profile.*
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
 
 class ProfileFragment : BaseFragment() {
 
@@ -69,7 +66,7 @@ class ProfileFragment : BaseFragment() {
                     .apply(RequestOptions
                             .circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.error_placeholder))
+                            .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
             view_phone.setText(profile.providePhone())
             view_name.setText(profile.provideName())
@@ -94,7 +91,6 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String) {
-
         viewModel.updateProfile(name, dob, email, company, region, address, image)
         showProgressDialog()
     }

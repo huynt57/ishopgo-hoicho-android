@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import android.widget.TextView
 import ishopgo.com.exhibition.R
@@ -88,6 +89,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         val layoutManager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
         view_recyclerview.layoutManager = layoutManager
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
 
         scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -129,8 +131,10 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         })
         viewModel.products.observe(this, Observer { p ->
             p?.let {
-                if (reloadData)
+                if (reloadData) {
                     productAdapter.replaceAll(it)
+                    view_recyclerview.scheduleLayoutAnimation()
+                }
                 else
                     productAdapter.addAll(it)
 

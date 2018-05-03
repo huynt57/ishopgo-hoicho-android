@@ -1,14 +1,14 @@
 package ishopgo.com.exhibition.ui.main.brand.popular
 
 import ishopgo.com.exhibition.app.AppComponent
-import ishopgo.com.exhibition.domain.request.RequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 
 class PopularBrandsViewModel : BaseListViewModel<List<HighlightBrandProvider>>(), AppComponent.Injectable {
 
-    override fun loadData(params: RequestParams) {
+    override fun loadData(params: Request) {
         val dummy = mutableListOf<HighlightBrandProvider>()
         for (i in 0..19)
             dummy.add(object : IdentityData(), HighlightBrandProvider {

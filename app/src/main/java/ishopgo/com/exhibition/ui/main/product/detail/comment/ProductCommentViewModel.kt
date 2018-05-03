@@ -1,8 +1,11 @@
 package ishopgo.com.exhibition.ui.main.product.detail.comment
 
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
-import ishopgo.com.exhibition.domain.request.RequestParams
-import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
+import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
 /**
@@ -10,33 +13,28 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
  */
 class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(), AppComponent.Injectable {
 
-    override fun loadData(params: RequestParams) {
-        val dummy = mutableListOf<ProductCommentProvider>()
-        for (i in 0..19)
-            dummy.add(object : IdentityData(), ProductCommentProvider {
-                override fun provideName(): String {
-                    return "Nguyễn Phương Thảo"
-                }
+    override fun loadData(params: Request) {
+        if (params is ProductCommentsRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            if (params.lastId != -1L) fields["last_id"] = params.lastId
+            if (params.parentId != -1L) fields["parent_id"] = params.parentId
 
-                override fun provideAvatar(): String {
-                    return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-                }
+            addDisposable(noAuthService.getProductComments(params.productId, fields)
+                    .subscribeOn(Schedulers.io())
+                    .subscribeWith(object : BaseSingleObserver<List<ProductComment>>() {
+                        override fun success(data: List<ProductComment>?) {
+                            dataReturned.postValue(data ?: listOf())
+                        }
 
-                override fun provideTime(): String {
-                    return "1 giờ trước"
-                }
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
 
-                override fun provideContent(): String {
-                    return "Sản phẩm dùng rất tốt, có hiệu quả ngay lần sử dụng thứ 2. Sẽ còn quay lại shop."
-                }
 
-                init {
-                    id = i.toLong()
-                }
-
-            })
-
-        dataReturned.postValue(dummy)
+                    })
+            )
+        }
     }
 
     override fun inject(appComponent: AppComponent) {

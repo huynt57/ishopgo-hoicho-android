@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.ui.main.home.HomeViewModel
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
-import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopHasProductsViewModel
+import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
@@ -25,6 +25,7 @@ import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewMode
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
+import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
 import ishopgo.com.exhibition.ui.splash.SplashViewModel
 import javax.inject.Singleton
 
@@ -63,6 +64,7 @@ interface AppComponent {
     fun inject(homeViewModel: HomeViewModel)
     fun inject(searchViewModel: SearchViewModel)
     fun inject(searchProductViewModel: SearchProductViewModel)
-    fun inject(searchShopHasProductsViewModel: SearchShopHasProductsViewModel)
+    fun inject(searchShopHasProductsViewModel: SearchShopsViewModel)
     fun inject(productsByCategoryViewModel: ProductsByCategoryViewModel)
+    fun inject(rateViewModel: RateViewModel)
 }

@@ -6,8 +6,9 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequestParams
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -32,6 +33,7 @@ class ViewedFragment : BaseListFragment<List<ProductProvider>, ProductProvider>(
     override fun populateData(data: List<ProductProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
         } else {
             adapter.addAll(data)
         }
@@ -43,7 +45,7 @@ class ViewedFragment : BaseListFragment<List<ProductProvider>, ProductProvider>(
 
     override fun firstLoad() {
         super.firstLoad()
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
         viewModel.loadData(loadMore)
@@ -51,7 +53,7 @@ class ViewedFragment : BaseListFragment<List<ProductProvider>, ProductProvider>(
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequestParams()
+        val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
         viewModel.loadData(loadMore)
@@ -73,7 +75,7 @@ class ViewedFragment : BaseListFragment<List<ProductProvider>, ProductProvider>(
                 }
             }
         }
-
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ProductProvider>> {

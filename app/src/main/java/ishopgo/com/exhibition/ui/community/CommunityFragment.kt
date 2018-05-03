@@ -7,9 +7,9 @@ import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreLastIdRequestParams
@@ -42,6 +42,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         if (reloadData) {
             adapter.replaceAll(data)
             adapter.addData(0, Community())
+            view_recyclerview.scheduleLayoutAnimation()
         } else {
             adapter.addAll(data)
         }
@@ -150,6 +151,8 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                 }
             }
         }
+
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

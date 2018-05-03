@@ -79,8 +79,8 @@ class PhotoAlbumViewActivity : AppCompatActivity() {
 
             val url = arguments?.getString(ARG_URL) ?: ""
             Glide.with(this).load(url).apply(RequestOptions()
-                    .placeholder(R.drawable.avatar_placeholder)
-                    .error(R.drawable.error_placeholder)).into(iv_image)
+                    .placeholder(R.drawable.image_placeholder)
+                    .error(R.drawable.image_placeholder)).into(iv_image)
         }
 
         companion object {

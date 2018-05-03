@@ -1,7 +1,7 @@
 package ishopgo.com.exhibition.ui.main.shop.category
 
 import ishopgo.com.exhibition.app.AppComponent
-import ishopgo.com.exhibition.domain.request.RequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
 class CategoryViewMode : BaseListViewModel<List<CategoryProvider>>(), AppComponent.Injectable {
-    override fun loadData(params: RequestParams) {
+    override fun loadData(params: Request) {
         val dummy = mutableListOf<CategoryProvider>()
         for (i in 0..5)
             dummy.add(object : IdentityData(), CategoryProvider {

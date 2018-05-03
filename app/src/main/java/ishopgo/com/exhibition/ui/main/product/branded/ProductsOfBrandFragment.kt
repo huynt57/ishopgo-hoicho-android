@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.BrandProductsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
@@ -50,6 +51,7 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
     override fun populateData(data: List<ProductProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
         } else {
             adapter.addAll(data)
         }
@@ -94,6 +96,7 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
                 }
             }
         }
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
 
     }
 

@@ -9,9 +9,9 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreLastIdRequestParams
-import ishopgo.com.exhibition.domain.request.RequestParams
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
@@ -29,7 +29,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
     @Inject
     lateinit var appContext: Application
 
-    override fun loadData(params: RequestParams) {
+    override fun loadData(params: Request) {
         if (params is LoadMoreLastIdRequestParams) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit

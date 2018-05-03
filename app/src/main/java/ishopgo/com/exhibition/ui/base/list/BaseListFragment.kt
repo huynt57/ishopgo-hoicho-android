@@ -83,14 +83,12 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
 
     open fun firstLoad() {
         reloadData = true
-        swipe.isRefreshing = true
         adapter.clear()
         scrollListener.resetState()
     }
 
     open fun loadMore(currentCount: Int) {
         reloadData = false
-        swipe.isRefreshing = true
     }
 
     open fun finishLoading() {

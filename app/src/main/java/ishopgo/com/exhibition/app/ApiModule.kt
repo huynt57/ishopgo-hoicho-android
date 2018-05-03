@@ -4,7 +4,6 @@ import android.app.Application
 import dagger.Module
 import dagger.Provides
 import ishopgo.com.exhibition.domain.ApiService
-import ishopgo.com.exhibition.domain.MockNoAuthService
 import ishopgo.com.exhibition.domain.auth.AppAuthenticator
 import ishopgo.com.exhibition.model.UserDataManager
 import okhttp3.*
@@ -12,8 +11,6 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.mock.MockRetrofit
-import retrofit2.mock.NetworkBehavior
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
@@ -58,7 +55,7 @@ class ApiModule {
     @Provides
     @Singleton
     @Named("header")
-    fun provideHeaderInterceptor(app: Application): Interceptor {
+    fun provideHeaderInterceptor(): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
 
@@ -132,22 +129,18 @@ class ApiModule {
 
 //    @Provides
 //    @Singleton
-//    fun provideNoAuthService(@Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit): ApiService.NoAuth {
-//        return retrofitNoAuth.create(ApiService.NoAuth::class.java)
+//    fun provideMockNoAuthService(@Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit): ApiService.NoAuth {
+//
+//        val networkBehavior = NetworkBehavior.create()
+//        // Reduce the delay to make the next calls complete faster.
+//        networkBehavior.setDelay(500, TimeUnit.MILLISECONDS)
+//        networkBehavior.setFailurePercent(0)
+//        networkBehavior.setErrorPercent(0)
+//        val mockRetrofit = MockRetrofit.Builder(retrofitNoAuth).networkBehavior(networkBehavior).build()
+//        val restServiceBehaviorDelegate = mockRetrofit.create(ApiService.NoAuth::class.java)
+//        return MockNoAuthService(restServiceBehaviorDelegate)
 //    }
-
-    @Provides
-    @Singleton
-    fun provideMockNoAuthService(@Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit): ApiService.NoAuth {
-
-        val networkBehavior = NetworkBehavior.create()
-        // Reduce the delay to make the next calls complete faster.
-        networkBehavior.setDelay(500, TimeUnit.MILLISECONDS)
-        val mockRetrofit = MockRetrofit.Builder(retrofitNoAuth).networkBehavior(networkBehavior).build()
-        val restServiceBehaviorDelegate = mockRetrofit.create(ApiService.NoAuth::class.java)
-        return MockNoAuthService(restServiceBehaviorDelegate)
-    }
-
+//
 //    @Provides
 //    @Singleton
 //    fun provideMockAuthService(@Named("retrofit_authenticator") retrofit: Retrofit): ApiService.Auth {
@@ -158,6 +151,12 @@ class ApiModule {
 //        val restServiceBehaviorDelegate = mockRetrofit.create(ApiService.Auth::class.java)
 //        return MockAuthService(restServiceBehaviorDelegate)
 //    }
+
+    @Provides
+    @Singleton
+    fun provideNoAuthService(@Named("retrofit_no_authenticator") retrofitNoAuth: Retrofit): ApiService.NoAuth {
+        return retrofitNoAuth.create(ApiService.NoAuth::class.java)
+    }
 
     @Provides
     @Singleton
