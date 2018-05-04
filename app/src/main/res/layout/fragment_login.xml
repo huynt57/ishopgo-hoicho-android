@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_back_white_24dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="ContentDescription,MissingConstraints" />
 
     <TextView
         android:id="@+id/textView"
@@ -50,7 +50,8 @@
             android:inputType="phone"
             android:singleLine="true"
             android:textColor="@color/md_white_1000"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -72,10 +73,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Mật khẩu"
+            android:imeActionLabel="Đăng nhập"
             android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="@color/md_white_1000"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:ignore="HardcodedText" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -122,5 +125,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        tools:ignore="HardcodedText" />
 </android.support.constraint.ConstraintLayout>

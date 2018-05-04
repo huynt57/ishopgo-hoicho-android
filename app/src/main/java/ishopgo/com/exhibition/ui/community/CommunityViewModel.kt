@@ -1,10 +1,23 @@
 package ishopgo.com.exhibition.ui.community
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import android.net.Uri
+import android.util.Log
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.LoadMoreLastIdRequestParams
+import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.widget.Toolbox
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -12,90 +25,65 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComponent.Injectable {
     var sentShareSuccess = MutableLiveData<Boolean>()
 
+    @SuppressLint("StaticFieldLeak")
+    @Inject
+    lateinit var appContext: Application
+
     override fun loadData(params: Request) {
-        val dummy = mutableListOf<CommunityProvider>()
-        for (i in 0..10)
-            dummy.add(object : IdentityData(), CommunityProvider {
+        if (params is LoadMoreLastIdRequestParams) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["last_id"] = params.last_id
 
-                init {
-                    id = i.toLong()
-                }
+            addDisposable(authService.getCommunity(fields)
+                    .subscribeOn(Schedulers.io())
+                    .subscribeWith(object : BaseSingleObserver<List<Community>>() {
+                        override fun success(data: List<Community>?) {
+                            dataReturned.postValue(data ?: mutableListOf())
+                        }
 
-                override fun userName(): String {
-                    return "Nguyễn Huy Hoàng"
-                }
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
 
-                override fun userAvatar(): String {
-                    return "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlNQ2yyZICBI_pcqc_KxT55FYvlpE8TtOKTlVuNuVyjbr1BSwLhw"
-                }
 
-                override fun currentUserAvatar(): String {
-                    return "http://www.urhobosocialclublagos.com/wp-content/uploads/2017/07/default-avatar-ginger-guy.png"
-                }
-
-                override fun provideContent(): String {
-                    return "Xin chào"
-                }
-
-                override fun provideTime(): String {
-                    return "23/04/2018 4:02:50"
-                }
-
-                override fun provideLikeCount(): Int {
-                    return 10
-                }
-
-                override fun provideCommentCount(): Int {
-                    return 5
-                }
-
-                override fun provideShareCount(): Int {
-                    return 15
-                }
-
-                override fun provideProductName(): String {
-                    return "Mỹ phẩm làm đẹp da Hồng Thảo"
-                }
-
-                override fun provideProductCode(): String {
-                    return "0123456789"
-                }
-
-                override fun provideProductPrice(): String {
-                    return "1.000.000đ"
-                }
-
-                override fun provideType(): String {
-                    return if (i % 3 == 0)
-                        COMMUNITY_SHARE_IMAGE.toString()
-                    else COMMUNITY_SHARE_PRODUCT.toString()
-                }
-
-                override fun provideProductListImage(): MutableList<CommunityImageProvider>? {
-                    val child = mutableListOf<CommunityImageProvider>()
-                    for (i in 0..4)
-                        child.add(object : IdentityData(), CommunityImageProvider {
-                            override fun url(): String {
-                                return "http://theme.hstatic.net/1000122548/1000237689/14/leftmenu_icon_4.png?v=127"
-                            }
-                        })
-                    return child
-                }
-            })
-
-        dataReturned.postValue(dummy)
+                    })
+            )
+        }
     }
 
-    fun sentShareCommunity(share: String) {
-        sentShareSuccess.postValue(true)
+    fun sentShareCommunity(share: String, postMedias: ArrayList<PostMedia> = ArrayList()) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("content", share)
+
+        if (postMedias.isNotEmpty()) {
+            for (i in postMedias.indices) {
+                val uri = postMedias[i].uri
+                Log.d("listImage[]", uri.toString())
+
+                val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                imageFile.deleteOnExit()
+                Toolbox.reEncodeBitmap(appContext, uri, 2048, Uri.fromFile(imageFile))
+                val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                builder.addFormDataPart("images[]", imageFile.name, imageBody)
+            }
+        }
+
+        addDisposable(authService.sentPostCommunity(builder.build())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        sentShareSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
-    }
-
-    companion object {
-        const val COMMUNITY_SHARE_PRODUCT = 0
-        const val COMMUNITY_SHARE_IMAGE = 1
     }
 }

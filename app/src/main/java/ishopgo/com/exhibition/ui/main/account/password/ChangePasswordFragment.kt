@@ -1,46 +1,49 @@
-package ishopgo.com.exhibition.ui.login
+package ishopgo.com.exhibition.ui.community
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
-import android.view.LayoutInflater
 import android.view.View
+import ishopgo.com.exhibition.R
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
-import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_forget_password.*
+import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.account.AccountViewModel
+import kotlinx.android.synthetic.main.fragment_change_password.*
 
 /**
- * Created by hoangnh on 4/24/2018.
+ * Created by hoangnh on 4/26/2018.
  */
-class ForgetFragment : BaseFragment() {
-    private lateinit var viewModel: LoginViewModel
+class ChangePasswordFragment : BaseFragment() {
+
+    private lateinit var viewModel: AccountViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_forget_password, container, false)
+        return inflater.inflate(R.layout.fragment_change_password, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        img_forget_back.setOnClickListener {
-            activity?.finish()
-        }
-
-        btn_forget_sent.setOnClickListener {
-            if (checkRequireFields(tv_forget_phone.text.toString())) {
+        btn_change_password.setOnClickListener {
+            if (checkRequireFields(edt_password.text.toString(), edt_retry_password.text.toString())) {
                 showProgressDialog()
-                viewModel.getOTP(tv_forget_phone.text.toString())
+                viewModel.getOTP(UserDataManager.currentUserPhone)
             }
         }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = obtainViewModel(LoginViewModel::class.java, false)
+        viewModel = obtainViewModel(AccountViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
                 hideProgressDialog()
@@ -54,49 +57,36 @@ class ForgetFragment : BaseFragment() {
             dialogChangePassword()
         })
 
-        viewModel.changNewPassword.observe(this, Observer {
+        viewModel.changePassword.observe(this, Observer {
             hideProgressDialog()
-            toast("Đặt lại mật khẩu thành công. Vui lòng đăng nhập.")
+            toast("Đổi mật khẩu thành công, vui lòng đăng nhập lại")
             val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra("phone", tv_forget_phone.text.toString())
+            intent.putExtra("phone", UserDataManager.currentUserPhone)
             startActivity(intent)
             activity?.finish()
         })
     }
 
-    private fun checkRequireFields(phone: String): Boolean {
-        if (phone.trim().isEmpty()) {
-            toast("Số điện thoại không được để trống")
-            tv_forget_phone.error = "Trường này còn trống"
-            return false
-        }
-        return true
-    }
-
-
-    private fun checkRequirePassword(edt_otp: TextInputEditText, edt_password: TextInputEditText, edt_retry_password: TextInputEditText): Boolean {
-        if (edt_otp.text.toString().trim().isEmpty()) {
-            toast("Vui lòng nhập mã OTP")
-            edt_otp.error = "Trường này còn trống"
-            return false
-        }
-
-        if (edt_password.text.toString().trim().isEmpty()) {
+    private fun checkRequireFields(password: String, retry_password: String): Boolean {
+        if (password.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
             edt_password.error = "Trường này còn trống"
+            requestFocusEditText(edt_password)
             return false
         }
 
-        if (edt_retry_password.text.toString().trim().isEmpty()) {
+        if (retry_password.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
             edt_retry_password.error = "Trường này còn trống"
+            requestFocusEditText(edt_retry_password)
             return false
         }
 
-        if (edt_password.text.toString() != edt_retry_password.text.toString()) {
+        if (password != retry_password) {
             toast("Mật khẩu nhập vào không giống nhau")
             edt_password.error = "Mật không không giống nhau"
             edt_retry_password.error = "Mật không không giống nhau"
+            requestFocusEditText(edt_password)
             return false
         }
         return true
@@ -105,20 +95,20 @@ class ForgetFragment : BaseFragment() {
     private fun dialogChangePassword() {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
-                    .customView(R.layout.dialog_change_password, false)
+                    .customView(R.layout.dialog_otp, false)
                     .title("Đặt lại mật khẩu")
-                    .positiveText("Hoàn tất")
+                    .positiveText("Gửi")
                     .onPositive { dialog, _ ->
-                        val edit_password = dialog.findViewById(R.id.edit_password) as TextInputEditText
-                        val edit_retry_password = dialog.findViewById(R.id.edit_retry_password) as TextInputEditText
                         val edt_forget_password_otp = dialog.findViewById(R.id.edt_forget_password_otp) as TextInputEditText
 
-                        if (checkRequirePassword(edt_forget_password_otp, edit_password, edit_retry_password)) {
-                            viewModel.changeNewPassword(tv_forget_phone.text.toString(),
-                                    edt_forget_password_otp.text.toString(), edit_password.text.toString())
+                        if (checkRequireOTP(edt_forget_password_otp.text.toString(), edt_forget_password_otp)) {
+                            viewModel.changePassword(UserDataManager.currentUserPhone,
+                                    edt_forget_password_otp.text.toString(), edt_password.text.toString())
+
                             showProgressDialog()
-                            dialog.dismiss()
                         }
+
+
                     }
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ -> dialog.dismiss() }
@@ -129,10 +119,27 @@ class ForgetFragment : BaseFragment() {
             val tv_retry_otp = dialog.findViewById(R.id.tv_retry_otp) as TextView
             tv_retry_otp.setOnClickListener {
                 showProgressDialog()
-                viewModel.getOTP(tv_forget_phone.text.toString())
+                viewModel.getOTP(UserDataManager.currentUserPhone)
                 dialog.dismiss()
             }
+
             dialog.show()
         }
+    }
+
+    private fun checkRequireOTP(otp: String, view: TextInputEditText): Boolean {
+        if (otp.trim().isEmpty()) {
+            toast("Mã OTP không được để trống")
+            view.error = "Trường này còn trống"
+            requestFocusEditText(view)
+            return false
+        }
+        return true
+    }
+
+    private fun requestFocusEditText(view: View) {
+        view.requestFocus()
+        val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(view, 0)
     }
 }

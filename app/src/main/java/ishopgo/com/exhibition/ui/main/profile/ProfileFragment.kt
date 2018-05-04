@@ -1,7 +1,12 @@
 package ishopgo.com.exhibition.ui.main.profile
 
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,14 +15,16 @@ import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment() {
 
     private lateinit var viewModel: ProfileViewModel
     private var isEditMode = false
+    private var image: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_profile, container, false)
@@ -27,13 +34,20 @@ class ProfileFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = obtainViewModel(ProfileViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                hideProgressDialog()
+                resolveError(it)
+            }
+        })
         viewModel.profileUpdated.observe(this, Observer { p ->
             p?.let {
                 toast("Cập nhật thành công")
                 showData(it)
                 stopEditing()
                 isEditMode = false
+                activity?.setResult(RESULT_OK)
+                hideProgressDialog()
             }
         })
         viewModel.userInfo.observe(this, Observer { i ->
@@ -68,19 +82,24 @@ class ProfileFragment : BaseFragment() {
                     startEditing()
                     isEditMode = true
                 } else {
-                    submitChanges()
+                    submitChanges(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
+                            view_company.text.toString(), view_region.text.toString(), view_address.text.toString())
                 }
             }
         }
 
     }
 
-    private fun submitChanges() {
-        viewModel.updateProfile(Request())
+    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String) {
+        viewModel.updateProfile(name, dob, email, company, region, address, image)
+        showProgressDialog()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun startEditing() {
-        view_avatar.setOnClickListener(null)
+        view_avatar.setOnClickListener {
+            launchPickPhotoIntent()
+        }
         view_name.isFocusable = true
         view_name.isFocusableInTouchMode = true
         view_dob.isFocusable = true
@@ -103,6 +122,7 @@ class ProfileFragment : BaseFragment() {
         view_submit.text = "Xong"
     }
 
+    @SuppressLint("SetTextI18n")
     private fun stopEditing() {
         view_avatar.setOnClickListener(null)
         view_name.isFocusable = false
@@ -120,5 +140,29 @@ class ProfileFragment : BaseFragment() {
 
         view_scrollview.smoothScrollTo(0, 0)
         view_submit.text = "Cập nhật"
+    }
+
+    private fun launchPickPhotoIntent() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                return
+            }
+
+            image = data.data.toString()
+
+            Glide.with(context)
+                    .load(Uri.parse(image))
+                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                    .into(view_avatar)
+        }
     }
 }

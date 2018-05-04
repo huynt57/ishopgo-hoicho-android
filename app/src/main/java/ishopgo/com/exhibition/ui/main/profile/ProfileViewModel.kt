@@ -1,14 +1,30 @@
 package ishopgo.com.exhibition.ui.main.profile
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import android.net.Uri
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.model.Profile
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.widget.Toolbox
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by xuanhong on 4/24/18. HappyCoding!
  */
 class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
+
+    @SuppressLint("StaticFieldLeak")
+    @Inject
+    lateinit var appContext: Application
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -17,95 +33,137 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var userInfo = MutableLiveData<ProfileProvider>()
 
     fun loadUserProfile() {
-        userInfo.postValue(object : ProfileProvider {
-            override fun provideAvatar(): String {
-                return "https://lh3.googleusercontent.com/-B212qdip-ls/V1a_aouWG1I/AAAAAAAAAfA/pqqn9gV9tcIos_ybMhM_xLmFORG_ZHEowCEwYBhgL/w278-h280-p/10275486_934954516552276_3867031212727261639_o.jpg"
-            }
 
-            override fun providePhone(): String {
-                return "0974427143"
-            }
+        addDisposable(authService.getProfile(UserDataManager.currentUserId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Profile>() {
+                    override fun success(data: Profile?) {
+                        userInfo.postValue(object : ProfileProvider {
+                            override fun provideAvatar(): String {
+                                return data?.image ?: ""
+                            }
 
-            override fun provideName(): String {
-                return "Vương Xuân Hồng"
-            }
+                            override fun providePhone(): String {
+                                return data?.phone ?: ""
+                            }
 
-            override fun provideDob(): String {
-                return "28/05/1991"
-            }
+                            override fun provideName(): String {
+                                return data?.name ?: ""
+                            }
 
-            override fun provideEmail(): String {
-                return "vuongxuanhong@gmail.com"
-            }
+                            override fun provideDob(): String {
+                                return Toolbox.formatApiDate(data?.birthday ?: "")
+                            }
 
-            override fun provideCompany(): String {
-                return "iShopgo"
-            }
+                            override fun provideEmail(): String {
+                                return data?.email ?: ""
+                            }
 
-            override fun provideRegion(): String {
-                return "Hà Nội"
-            }
+                            override fun provideCompany(): String {
+                                return data?.company ?: ""
+                            }
 
-            override fun provideAddress(): String {
-                return "68 Dương Đình Nghệ, Nam Từ Liêm, Hà Nội"
-            }
+                            override fun provideRegion(): String {
+                                return data?.region ?: ""
+                            }
 
-            override fun provideAccountType(): String {
-                return "Chủ gian hàng"
-            }
+                            override fun provideAddress(): String {
+                                return data?.address ?: ""
+                            }
 
-            override fun provideJoinedDate(): String {
-                return "14/04/2018"
-            }
+                            override fun provideAccountType(): String {
+                                return data?.typeText ?: ""
+                            }
 
-        })
+                            override fun provideJoinedDate(): String {
+                                return Toolbox.formatApiDateTime(data?.createdAt ?: "")
+                            }
+
+                        })
+                    }
+
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 
     var profileUpdated = MutableLiveData<ProfileProvider>()
 
-    fun updateProfile(params: Request) {
-        profileUpdated.postValue(object : ProfileProvider {
-            override fun provideAvatar(): String {
-                return "https://lh3.googleusercontent.com/-B212qdip-ls/V1a_aouWG1I/AAAAAAAAAfA/pqqn9gV9tcIos_ybMhM_xLmFORG_ZHEowCEwYBhgL/w278-h280-p/10275486_934954516552276_3867031212727261639_o.jpg"
-            }
+    fun updateProfile(name: String, dob: String, email: String, company: String, region: String, address: String, image: String) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name", name)
+                .addFormDataPart("birthday", dob)
+                .addFormDataPart("email", email)
+                .addFormDataPart("company_store", company)
+                .addFormDataPart("region", region)
+                .addFormDataPart("address", address)
 
-            override fun providePhone(): String {
-                return "0974427143"
-            }
+        if (image.isNotEmpty()) {
+            val imageFile = File(appContext.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
+            imageFile.deleteOnExit()
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+            val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
+            builder.addPart(imagePart)
+        }
+        
+        addDisposable(authService.updateProfile(builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Profile>() {
+                    override fun success(data: Profile?) {
+                        profileUpdated.postValue(object : ProfileProvider {
+                            override fun provideAvatar(): String {
+                                UserDataManager.currentUserAvatar = data?.image ?: ""
+                                return data?.image ?: ""
+                            }
 
-            override fun provideName(): String {
-                return "Vương Xuân Hồng"
-            }
+                            override fun providePhone(): String {
+                                UserDataManager.currentUserPhone = data?.phone ?: ""
+                                return data?.phone ?: ""
+                            }
 
-            override fun provideDob(): String {
-                return "28/05/1991"
-            }
+                            override fun provideName(): String {
+                                UserDataManager.currentUserName = data?.name ?: ""
+                                return data?.name ?: ""
+                            }
 
-            override fun provideEmail(): String {
-                return "vuongxuanhong@gmail.com"
-            }
+                            override fun provideDob(): String {
+                                return Toolbox.formatApiDate(data?.birthday ?: "")
+                            }
 
-            override fun provideCompany(): String {
-                return "iShopgo"
-            }
+                            override fun provideEmail(): String {
+                                return data?.email ?: ""
+                            }
 
-            override fun provideRegion(): String {
-                return "Hà Nội"
-            }
+                            override fun provideCompany(): String {
+                                return data?.company ?: ""
+                            }
 
-            override fun provideAddress(): String {
-                return "68 Dương Đình Nghệ, Nam Từ Liêm, Hà Nội"
-            }
+                            override fun provideRegion(): String {
+                                return data?.region ?: ""
+                            }
 
-            override fun provideAccountType(): String {
-                return "Chủ gian hàng"
-            }
+                            override fun provideAddress(): String {
+                                return data?.address ?: ""
+                            }
 
-            override fun provideJoinedDate(): String {
-                return "14/04/2018"
-            }
+                            override fun provideAccountType(): String {
+                                return data?.typeText ?: ""
+                            }
 
-        })
+                            override fun provideJoinedDate(): String {
+                                return Toolbox.formatApiDateTime(data?.createdAt ?: "")
+                            }
 
+                        })
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 }

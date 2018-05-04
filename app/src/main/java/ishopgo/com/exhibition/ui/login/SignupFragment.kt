@@ -1,18 +1,15 @@
 package ishopgo.com.exhibition.ui.login
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.os.MemoryFile
-import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,14 +19,13 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.main.MainActivity
-import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.fragment_signup.*
-import java.io.IOException
-import android.text.method.ScrollingMovementMethod
-import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.widget.Toolbox
 
 
 /**
@@ -44,13 +40,14 @@ class SignupFragment : BaseFragment() {
             return fragment
         }
 
-        const val REGISTER_STORE = 0
+        const val REGISTER_STORE = 2
         const val REGISTER_MEMBER = 1
     }
 
     private var type_Register: Int = 0
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
+    private var image: String = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_signup, container, false)
@@ -73,6 +70,10 @@ class SignupFragment : BaseFragment() {
 
         btn_signup.setOnClickListener {
             signupAccount()
+        }
+
+        img_signup_avatar.setOnClickListener {
+            launchPickPhotoIntent()
         }
 
         tv_signup_retry_password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
@@ -104,7 +105,12 @@ class SignupFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(LoginViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                resolveError(it)
+                hideProgressDialog()
+            }
+        })
 
         viewModel.registerSuccess.observe(this, Observer {
             hideProgressDialog()
@@ -124,7 +130,7 @@ class SignupFragment : BaseFragment() {
             }
         })
 
-        viewModel.loadRegion(0, requestRegion)
+        viewModel.loadRegion()
         reloadData = true
     }
 
@@ -134,49 +140,49 @@ class SignupFragment : BaseFragment() {
         if (phone.trim().isEmpty()) {
             toast("Số điện thoại không được để trống")
             tv_signup_phone.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_phone)
+            requestFocusEditText(tv_signup_phone)
             return false
         }
 
         if (email.trim().isEmpty()) {
             toast("Email không được để trống")
             tv_signup_mail.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_mail)
+            requestFocusEditText(tv_signup_mail)
             return false
         }
 
         if (fullname.trim().isEmpty()) {
             toast("Họ và tên không được để trống")
             tv_signup_name.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_name)
+            requestFocusEditText(tv_signup_name)
             return false
         }
 
         if (region.trim().isEmpty()) {
             toast("Khu vực không được để trống")
             tv_signup_region.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_region)
+            requestFocusEditText(tv_signup_region)
             return false
         }
 
         if (address.trim().isEmpty()) {
             toast("Địa chỉ không được để trống")
             tv_signup_address.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_address)
+            requestFocusEditText(tv_signup_address)
             return false
         }
 
         if (password.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
             tv_signup_password.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_password)
+            requestFocusEditText(tv_signup_password)
             return false
         }
 
         if (retry_password.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
             tv_signup_retry_password.error = "Trường này còn trống"
-            scrollToTextview(tv_signup_retry_password)
+            requestFocusEditText(tv_signup_retry_password)
             return false
         }
 
@@ -184,18 +190,13 @@ class SignupFragment : BaseFragment() {
             toast("Mật khẩu nhập vào không giống nhau")
             tv_signup_password.error = "Mật không không giống nhau"
             tv_signup_retry_password.error = "Mật không không giống nhau"
-            scrollToTextview(tv_signup_password)
+            requestFocusEditText(tv_signup_password)
             return false
         }
         return true
     }
 
-    private var requestRegion = ""
-    private var region_id: Long = 0
-    private val handler = Handler(Looper.getMainLooper())
-
     private fun getRegion(view: TextView) {
-        requestRegion = ""
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn khu vực")
@@ -207,28 +208,11 @@ class SignupFragment : BaseFragment() {
                     .build()
 
             val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
-            val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
-            edt_search.hint = "Nhập khu vực"
-            edt_search.addTextChangedListener(object : TextWatcher {
-                override fun afterTextChanged(s: Editable?) {
-                    requestRegion = s.toString()
-                    handler.removeCallbacks(searchRunnable)
-                    handler.postDelayed(searchRunnable, 300)
-                }
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
 
-                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
 
-                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-            })
-
-            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
-            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
-                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                    reloadData = false
-                    viewModel.loadRegion(totalItemsCount, requestRegion)
-                }
-            })
             rv_search.adapter = adapterRegion
             adapterRegion.listener = object : ClickableAdapter.BaseAdapterAction<Region> {
                 override fun click(position: Int, data: Region, code: Int) {
@@ -243,18 +227,34 @@ class SignupFragment : BaseFragment() {
         }
     }
 
-    private fun scrollToTextview(view: View) {
-        mScrollView.post({ mScrollView.scrollTo(0, view.scrollY) })
+    private fun requestFocusEditText(view: View) {
+        view.requestFocus()
+        val inputMethodManager = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(view, 0)
     }
 
-    private var searchRunnable = object : Runnable {
-        override fun run() {
-            // perform new search, remove all previous
-            handler.removeCallbacks(this)
+    private fun launchPickPhotoIntent() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
+    }
 
-            // real perform search
-            reloadData = true
-            viewModel.loadRegion(0, requestRegion)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                return
+            }
+
+            image = data.data.toString()
+
+            Glide.with(context)
+                    .load(Uri.parse(image))
+                    .apply(RequestOptions.placeholderOf(R.drawable.avatar_placeholder)
+                            .error(R.drawable.avatar_placeholder))
+                    .into(img_signup_avatar)
         }
     }
 }

@@ -101,4 +101,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+    // Apache Commons IO for file utilities
+    implementation 'commons-io:commons-io:2.5'
 }

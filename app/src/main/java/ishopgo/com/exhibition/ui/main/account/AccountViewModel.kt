@@ -1,19 +1,26 @@
 package ishopgo.com.exhibition.ui.main.account
 
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
+import io.reactivex.observers.DisposableSingleObserver
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.AccountMenuItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import okhttp3.MultipartBody
 
 class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
-
+    val TAG = "AccountViewModel"
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
     var menu = MutableLiveData<List<AccountMenuProvider>>()
+    var changePassword = MutableLiveData<Boolean>()
+    var getOTP = MutableLiveData<Boolean>()
 
     fun loadMenu() {
         val items = mutableListOf<AccountMenuProvider>()
@@ -41,7 +48,56 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var loggedOut = MutableLiveData<Boolean>()
 
     fun logout() {
-        loggedOut.postValue(true)
+        addDisposable(authService.logout("android")
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : DisposableSingleObserver<Any>() {
+                    override fun onError(e: Throwable?) {
+                        Log.d(TAG, e.toString())
+                    }
+
+                    override fun onSuccess(t: Any?) {
+                        loggedOut.postValue(true)
+                    }
+                })
+        )
+    }
+
+    fun changePassword(phone: String, otp: String, password: String) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("phone", phone)
+                .addFormDataPart("otp", otp)
+                .addFormDataPart("password", password)
+
+        addDisposable(authService.changePassword(builder.build())
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        changePassword.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    fun getOTP(phone: String) {
+        val fields = mutableMapOf<String, Any>()
+        fields.put("phone", phone)
+
+        addDisposable(authService.getOTP(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        getOTP.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                }))
     }
 
 }
