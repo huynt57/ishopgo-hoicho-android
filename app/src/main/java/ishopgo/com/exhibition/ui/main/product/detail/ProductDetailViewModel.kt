@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
@@ -147,4 +148,37 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var getProductLike = MutableLiveData<ProductLike>()
+
+    fun getProductLike(productId: Long) {
+        addDisposable(authService.getProductLike(productId)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<ProductLike>() {
+                    override fun success(data: ProductLike?) {
+                        getProductLike.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var postLikeSuccess = MutableLiveData<Any>()
+
+    fun postProductLike(productId: Long) {
+        addDisposable(authService.postProductLike(productId)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        postLikeSuccess.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
 }

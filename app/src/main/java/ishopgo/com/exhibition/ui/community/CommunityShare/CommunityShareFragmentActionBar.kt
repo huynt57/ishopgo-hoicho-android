@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.community
+package ishopgo.com.exhibition.ui.community.CommunityShare
 
 import android.os.Bundle
 import android.view.View

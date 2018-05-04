@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout16"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/bg_white_black_bottom"
+    android:baselineAligned="false"
+    android:paddingBottom="16dp"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="25dp">
+
+    <ImageView
+        android:id="@+id/img_avatar_comment"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/tv_comment_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif"
+        android:maxLines="3"
+        android:singleLine="true"
+        android:textColor="#424242"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tv_comment_time"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/tv_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="#aa000000"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_width="40dp" />
+
+    <ImageView
+        android:id="@+id/img_comment"
+        android:layout_width="0dp"
+        android:layout_height="150dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_name" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_comment_image"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
+        app:layout_constraintTop_toBottomOf="@+id/img_comment" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/tv_comment_content"
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#aa000000"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
+        app:layout_constraintTop_toBottomOf="@+id/rv_comment_image" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_delete"
+        android:layout_width="0dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Xoá"
+        android:textColor="@color/md_blue_500"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_content" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_reply"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:text="Trả lời"
+        android:textColor="@color/md_blue_500"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintStart_toEndOf="@+id/view_delete"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_content" />
+
+</android.support.constraint.ConstraintLayout>

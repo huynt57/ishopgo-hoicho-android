@@ -117,7 +117,12 @@
 
 
         <activity
-            android:name=".ui.community.CommunityShareActivity"
+            android:name=".ui.community.CommunityShare.CommunityShareActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.community.CommunityComment.CommunityCommentActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 

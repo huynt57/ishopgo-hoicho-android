@@ -3,7 +3,9 @@ package ishopgo.com.exhibition.ui.main.product.detail
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +16,11 @@ import com.google.gson.Gson
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -96,6 +100,28 @@ class ProductDetailFragment : BaseFragment() {
 
         })
 
+        viewModel.getProductLike.observe(this, Observer { c ->
+            c?.let {
+                if (it.status == 0)
+                    Glide.with(context)
+                            .load(R.drawable.ic_added_to_favorite_24dp)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_favorite)
+                else Glide.with(context)
+                        .load(R.drawable.ic_add_to_favorite_24dp)
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder))
+                        .into(view_favorite)
+            }
+        })
+
+        viewModel.postLikeSuccess.observe(this, Observer {
+            viewModel.getProductLike(productId)
+        })
+
         loadData(productId)
     }
 
@@ -109,8 +135,14 @@ class ProductDetailFragment : BaseFragment() {
                     .into(view_product_image)
 
             view_product_name.text = product.provideProductName()
-            view_favorite
-            view_share
+            if (UserDataManager.currentUserId > 0) {
+                view_favorite.setOnClickListener { viewModel.postProductLike(productId) }
+                view_share.setOnClickListener { }
+            } else {
+                view_favorite.setOnClickListener { showAlertDialog() }
+                view_share.setOnClickListener { showAlertDialog() }
+            }
+
 
             view_product_price.text = product.provideProductPrice()
             view_product_brand.text = product.provideProductBrand()
@@ -131,6 +163,32 @@ class ProductDetailFragment : BaseFragment() {
             more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, productId) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
+        }
+    }
+
+    private fun showAlertDialog() {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder?.setTitle("Thông báo")
+            builder?.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
+            builder?.setPositiveButton("Đăng nhập") { dialog, _ ->
+                dialog.dismiss()
+                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+
+            builder?.setNegativeButton("Bỏ qua") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder?.create()
+            dialog?.show()
+
+            val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+            positiveButton?.setTextColor(Color.parseColor("#00c853"))
+
+            val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
+            negativeButton?.setTextColor(Color.parseColor("#00c853"))
         }
     }
 
@@ -237,6 +295,7 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.loadViewedProducts(productId)
         viewModel.loadProductDetail(productId)
         viewModel.loadProductComments(productId)
+        viewModel.getProductLike(productId)
     }
 
     private fun setupProductComments(context: Context) {

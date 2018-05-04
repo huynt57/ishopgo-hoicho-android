@@ -75,7 +75,6 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
 
                 if (data.provideProduct() != null) {
                     cv_community_product.visibility = View.VISIBLE
-                    tv_community_product_code.visibility = View.GONE
 
                     Glide.with(this).load(data.provideProduct()?.providerImage())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)

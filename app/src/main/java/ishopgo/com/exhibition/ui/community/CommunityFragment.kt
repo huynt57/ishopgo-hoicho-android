@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -20,14 +21,21 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.community.CommunityComment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.community.CommunityShare.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.fragment_comment_community.*
 
 /**
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
+
+    private lateinit var viewModelCommunity: CommunityViewModel
+
+
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -60,6 +68,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.last_id = 0
         viewModel.loadData(firstLoad)
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     override fun loadMore(currentCount: Int) {
@@ -68,6 +77,13 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.last_id = last_id
         viewModel.loadData(loadMore)
+    }
+
+    fun reload() {
+        val reload = LoadMoreCommunityRequest()
+        reload.limit = Const.PAGE_LIMIT
+        reload.last_id = last_id
+        viewModel.loadData(reload)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<CommunityProvider>> {
@@ -96,37 +112,41 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
                             } else {
-                                val builder = context?.let { AlertDialog.Builder(it) }
-                                builder?.setTitle("Thông báo")
-                                builder?.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
-                                builder?.setPositiveButton("Đăng nhập") { dialog, _ ->
-                                    dialog.dismiss()
-                                    val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                                    startActivity(intent)
-                                    activity?.finish()
+                                context?.let {
+                                    val builder = AlertDialog.Builder(it)
+                                    builder.setTitle("Thông báo")
+                                    builder.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
+                                    builder.setPositiveButton("Đăng nhập") { dialog, _ ->
+                                        dialog.dismiss()
+                                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                                        startActivity(intent)
+                                        activity?.finish()
+                                    }
+
+                                    builder.setNegativeButton("Bỏ qua") { dialog, _ ->
+                                        dialog.dismiss()
+                                    }
+                                    val dialog = builder.create()
+                                    dialog?.show()
+
+                                    val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+                                    positiveButton?.setTextColor(Color.parseColor("#00c853"))
+
+                                    val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
+                                    negativeButton?.setTextColor(Color.parseColor("#00c853"))
+
                                 }
-
-                                builder?.setNegativeButton("Bỏ qua") { dialog, _ ->
-                                    dialog.dismiss()
-                                }
-                                val dialog = builder?.create()
-                                dialog?.show()
-
-                                val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
-                                positiveButton?.setTextColor(Color.parseColor("#00c853"))
-
-                                val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
-                                negativeButton?.setTextColor(Color.parseColor("#00c853"))
-
                             }
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            toast("Vào xem chi tiết sản phẩm")
+                            viewModelCommunity.postCommunityLike(data.providerId())
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
-                            toast("Vào xem chi tiết sản phẩm")
+                            val intent = Intent(context, CommunityCommentActivity::class.java)
+                            intent.putExtra("post_id", data.providerId())
+                            startActivity(intent)
                         }
 
                         COMMUNITY_SHARE_NUMBER_CLICK -> {
@@ -151,8 +171,18 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                 }
             }
         }
+    }
 
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModelCommunity = obtainViewModel(CommunityViewModel::class.java, false)
+        viewModelCommunity.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+
+        viewModelCommunity.postLikeSuccess.observe(this, Observer { p ->
+            p.let {
+                toast("Đã like")
+            }
+        })
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

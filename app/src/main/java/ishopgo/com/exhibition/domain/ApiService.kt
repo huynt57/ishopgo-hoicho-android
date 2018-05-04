@@ -3,7 +3,9 @@ package ishopgo.com.exhibition.domain
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.LoginResponse
+import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
 import okhttp3.RequestBody
 import retrofit2.http.*
@@ -102,6 +104,33 @@ class ApiService {
         fun sentPostCommunity(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
+
+        @POST("like/product/{id}")
+        fun postProductLike(
+                @Path("id") product_id: Long
+                ): Single<BaseResponse<Any>>
+
+        @GET("like/product/{id}")
+        fun getProductLike(
+                @Path("id") product_id: Long
+        ): Single<BaseResponse<ProductLike>>
+
+        @POST("community/like-post/{post-id}")
+        fun postCommunityLike(
+                @Path("post-id") post_id: Long
+        ): Single<BaseResponse<Any>>
+
+        @POST("community/comment-post/{id}")
+        fun postCommentCommunity(
+                @Path("id") post_id: Long,
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
+
+        @GET("community/list-comment/{id}")
+        fun getCommentCommunity(
+                @Path("id") post_id: Long,
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<MutableList<CommunityComment>>>
     }
 
 }
