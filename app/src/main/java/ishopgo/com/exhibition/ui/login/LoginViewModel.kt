@@ -27,7 +27,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun loginAccount(phone: String, password: String) {
-        addDisposable(authService.login(phone, password, Const.ID_APP,"")
+        addDisposable(noAuthService.login(phone, password, Const.ID_APP,"")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<LoginResponse>() {
                     override fun success(data: LoginResponse?) {
@@ -63,7 +63,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("password", password)
                 .addFormDataPart("type", register_type)
 
-        addDisposable(authService.register(builder.build())
+        addDisposable(noAuthService.register(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
@@ -80,7 +80,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val fields = mutableMapOf<String, Any>()
         fields["phone"] = phone
 
-        addDisposable(authService.getOTP(fields)
+        addDisposable(noAuthService.getOTP(fields)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {

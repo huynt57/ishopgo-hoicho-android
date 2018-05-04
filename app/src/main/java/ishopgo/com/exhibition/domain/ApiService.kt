@@ -47,9 +47,6 @@ class ApiService {
 
         @GET("shop_rate/{id}")
         fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
-    }
-
-    interface Auth {
 
         @FormUrlEncoded
         @POST("login")
@@ -65,16 +62,22 @@ class ApiService {
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
+        @GET("get-otp")
+        fun getOTP(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<Any>>
+
+        @GET("community")
+        fun getCommunity(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<List<Community>>>
+    }
+
+    interface Auth {
 
         @POST("change-password")
         fun changePassword(
                 @Body body: RequestBody
-        ): Single<BaseResponse<Any>>
-
-
-        @GET("get-otp")
-        fun getOTP(
-                @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
 
         @POST("refresh-token")
@@ -99,11 +102,6 @@ class ApiService {
         fun sentPostCommunity(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
-
-        @GET("community")
-        fun getCommunity(
-                @QueryMap fields: MutableMap<String, Any>
-        ): Single<BaseResponse<List<Community>>>
     }
 
 }

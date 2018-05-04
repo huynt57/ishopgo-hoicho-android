@@ -29,11 +29,11 @@ class CommunityProduct : IdentityData(), CommunityProductProvider {
 
     @SerializedName("name")
     @Expose
-    val name: String = ""
+    var name: String = ""
     @SerializedName("price")
     @Expose
-    val price: Long = 0
+    var price: Long = 0
     @SerializedName("image")
     @Expose
-    val image: String = ""
+    var image: String = ""
 }

@@ -53,35 +53,35 @@ class Community : IdentityData(), CommunityProvider {
 
     @SerializedName("created_at")
     @Expose
-    private val createdAt: String = ""
+    var createdAt: String = ""
     @SerializedName("shop_id")
     @Expose
-    private val shopId: Int = 0
+    var shopId: Long = 0
     @SerializedName("content")
     @Expose
-    private val content: String = ""
+    var content: String = ""
     @SerializedName("account_id")
     @Expose
-    private val accountId: Int = 0
+    var accountId: Long = 0
     @SerializedName("account_name")
     @Expose
-    private val accountName: String = ""
+    var accountName: String = ""
     @SerializedName("account_image")
     @Expose
-    private val accountImage: String = ""
+    var accountImage: String = ""
     @SerializedName("product")
     @Expose
-    private val product: CommunityProduct? = null
+    var product: CommunityProduct? = null
     @SerializedName("images")
     @Expose
-    private val images: MutableList<String> = mutableListOf()
+    var images: MutableList<String> = mutableListOf()
     @SerializedName("like_count")
     @Expose
-    private val likeCount: Int = 0
+    var likeCount: Int = 0
     @SerializedName("comment_count")
     @Expose
-    private val commentCount: Int = 0
+    var commentCount: Int = 0
     @SerializedName("share_count")
     @Expose
-    private val shareCount: Int = 0
+    var shareCount: Int = 0
 }

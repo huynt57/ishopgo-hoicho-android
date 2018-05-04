@@ -86,7 +86,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val fields = mutableMapOf<String, Any>()
         fields.put("phone", phone)
 
-        addDisposable(authService.getOTP(fields)
+        addDisposable(noAuthService.getOTP(fields)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {

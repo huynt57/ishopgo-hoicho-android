@@ -3,6 +3,10 @@ package ishopgo.com.exhibition.domain
 import android.util.Log
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.Community.CommunityProduct
+import ishopgo.com.exhibition.model.LoginResponse
+import okhttp3.RequestBody
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
 
@@ -10,6 +14,44 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getCommunity(fields: MutableMap<String, Any>): Single<BaseResponse<List<Community>>> {
+        val ps = mutableListOf<Community>()
+        for (i in 0..5)
+            ps.add(generateCommunity(i))
+
+        val response = BaseResponse<List<Community>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getCommunity(fields)
+    }
+
+    override fun login(phone: String, password: String, domain: String, token: String): Single<BaseResponse<LoginResponse>> {
+        val c = LoginResponse()
+        c.id = 18398
+        c.name = "Nnguyễn Huy Hoàng"
+        c.image = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
+        c.type = "Chủ gian hàng"
+        c.token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjE4Mzk4LCJpc3MiOiJodHRwOi8vaXNob3Bnby5jb20vYXBpL3YxL2V4cG8vbG9naW4iLCJpYXQiOjE1MjU0MDAxMjUsImV4cCI6MTUyNTQwNzMyNSwibmJmIjoxNTI1NDAwMTI1LCJqdGkiOiJsdmdNd2d0OU1NQkxiM3oyIn0.WNXo3TGwPUxLahefEK15bevWNKsYt_6xMPsh4124bog"
+
+        val response = BaseResponse<LoginResponse>()
+        response.status = 1
+        response.data = c
+
+        return delegate.returningResponse(response).login(phone, password, domain, token)
+    }
+
+    override fun register(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).register(body)
+    }
+
+    override fun getOTP(fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).getOTP(fields)
+    }
 
     override fun getShopRatings(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>> {
         val c = ProductComment()
@@ -231,6 +273,45 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         b.id = random.nextInt(1000).toLong()
         b.logo = "https://static.ishopgo.com/17288/clone-5ac88a12d51431523091986."
         b.name = "Thảo dược giảm cân Sen Quỳnh"
+        return b
+    }
+
+    private fun generateCommunity(i: Int): Community {
+        val b = Community()
+        b.id = random.nextInt(1000).toLong()
+        b.createdAt = "2018/04/28 12:42:08"
+        b.shopId = 17288
+        b.content = "Chào các bạn"
+        b.accountId = 18396
+        b.accountName = "Nguyễn Nam Phong"
+        b.accountImage = "http://uptheme.ishopgo.com/files//tmp/phpzwxAWr"
+
+        if (i % 3 == 0) {
+            val c = CommunityProduct()
+            c.name = "Trĩ Medi Medi Happy"
+            c.price = 390000
+            c.image = "https://static.ishopgo.com/17288/clone-5ac88a1b532731523091995.jpg"
+            c.id = 16352
+            b.product = c
+        } else b.product = null
+
+        if (i % 2 == 0) {
+            val c = mutableListOf<String>()
+            c.add("https://static.ishopgo.com/17288/fe0eb451a22ca727e6b2bd91baf8f3b4ozed-4e29d62a55f4dae4fc69899975657ab5wd-melasma-projpgjpg.jpg")
+            b.images = c
+        }
+
+        if (i % 5 == 0) {
+            val c = mutableListOf<String>()
+            for (i in 0..1) {
+                c.add("https://static.ishopgo.com/17288/fe0eb451a22ca727e6b2bd91baf8f3b4ozed-4e29d62a55f4dae4fc69899975657ab5wd-melasma-projpgjpg.jpg")
+            }
+            b.images = c
+        }
+
+        b.likeCount = 2
+        b.commentCount = 0
+        b.shareCount = 10
         return b
     }
 

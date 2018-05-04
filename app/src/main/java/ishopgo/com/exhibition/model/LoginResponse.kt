@@ -11,14 +11,14 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 class LoginResponse : IdentityData() {
     @SerializedName("token")
     @Expose
-    val token: String = ""
+    var token: String = ""
     @SerializedName("name")
     @Expose
-    val name: String = ""
+    var name: String = ""
     @SerializedName("image")
     @Expose
-    val image: String = ""
+    var image: String = ""
     @SerializedName("type")
     @Expose
-    val type: String = ""
+    var type: String = ""
 }

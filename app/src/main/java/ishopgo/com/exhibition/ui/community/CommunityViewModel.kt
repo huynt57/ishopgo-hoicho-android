@@ -8,7 +8,7 @@ import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.LoadMoreLastIdRequestParams
+import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.domain.request.Request
@@ -30,12 +30,12 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
     lateinit var appContext: Application
 
     override fun loadData(params: Request) {
-        if (params is LoadMoreLastIdRequestParams) {
+        if (params is LoadMoreCommunityRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["last_id"] = params.last_id
 
-            addDisposable(authService.getCommunity(fields)
+            addDisposable(noAuthService.getCommunity(fields)
                     .subscribeOn(Schedulers.io())
                     .subscribeWith(object : BaseSingleObserver<List<Community>>() {
                         override fun success(data: List<Community>?) {
