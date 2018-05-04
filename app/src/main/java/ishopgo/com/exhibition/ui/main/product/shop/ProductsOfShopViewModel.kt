@@ -19,7 +19,7 @@ class ProductsOfShopViewModel : BaseListViewModel<List<ProductProvider>>(), AppC
             fields["offset"] = params.offset
 
             addDisposable(noAuthService.getRelateProducts(fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                         override fun success(data: List<Product>?) {
                             dataReturned.postValue(data ?: listOf())

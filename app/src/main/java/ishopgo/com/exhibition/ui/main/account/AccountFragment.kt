@@ -19,7 +19,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
-import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -41,7 +40,7 @@ class AccountFragment : BaseFragment() {
                     .load(UserDataManager.currentUserAvatar)
                     .apply(RequestOptions.circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.error_placeholder))
+                            .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
             view_name.text = UserDataManager.currentUserName
             view_introduce.text = "${UserDataManager.currentType} - ${UserDataManager.currentUserPhone}"
@@ -49,7 +48,7 @@ class AccountFragment : BaseFragment() {
             view_recyclerview.adapter = adapter
             val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             view_recyclerview.layoutManager = layoutManager
-            view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing, false))
+//            view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing, true, false))
 
             view_profile_current.setOnClickListener {
                 openProfile()
@@ -65,7 +64,7 @@ class AccountFragment : BaseFragment() {
                     .load(UserDataManager.currentUserAvatar)
                     .apply(RequestOptions.circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.error_placeholder))
+                            .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
             view_name.text = "Bạn chưa đăng nhập"
 

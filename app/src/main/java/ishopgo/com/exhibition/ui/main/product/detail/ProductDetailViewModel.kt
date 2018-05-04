@@ -29,7 +29,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         fields["offset"] = 0
         fields["product_id"] = productId
         addDisposable(noAuthService.getRelateProducts(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                     override fun success(data: List<Product>?) {
                         sameShopProducts.postValue(data ?: mutableListOf())
@@ -110,7 +110,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadProductDetail(productId: Long) {
         addDisposable(noAuthService.getProductDetail(productId)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
                     override fun success(data: ProductDetail?) {
                         data?.let {
@@ -132,7 +132,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val fields = mutableMapOf<String, Any>()
         fields["limit"] = 5
         addDisposable(noAuthService.getProductComments(productId, fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<ProductComment>>() {
                     override fun success(data: List<ProductComment>?) {
                         productComments.postValue(data ?: listOf())

@@ -29,7 +29,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, DetailFragment())
+                .replace(R.id.view_main_content, DetailFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
 

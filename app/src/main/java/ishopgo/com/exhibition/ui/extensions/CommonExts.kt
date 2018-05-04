@@ -5,13 +5,21 @@ import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.util.TypedValue
+import java.io.PrintWriter
+import java.io.StringWriter
 import java.text.NumberFormat
 import java.util.*
+
 
 /**
  * Created by xuanhong on 11/6/17. HappyCoding!
  */
-
+fun Throwable.showStackTrace(): String {
+    val sw = StringWriter()
+    val pw = PrintWriter(sw)
+    this.printStackTrace(pw)
+    return sw.toString()
+}
 
 fun String.asNumber(hour: Double): String? {
     var total_sec = hour * 60.0 * 60.0

@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.observers.DisposableSingleObserver
 import ishopgo.com.exhibition.domain.response.BaseResponse
+import ishopgo.com.exhibition.ui.extensions.showStackTrace
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
@@ -31,7 +32,7 @@ open abstract class BaseSingleObserver<T> : DisposableSingleObserver<BaseRespons
                 failure(BaseErrorSignal.ERROR_NETWORK, e.message ?: "")
             }
             else -> {
-                failure(BaseErrorSignal.ERROR_UNKNOWN, e?.message ?: "")
+                failure(BaseErrorSignal.ERROR_UNKNOWN, e?.showStackTrace() ?: "")
             }
         }
     }

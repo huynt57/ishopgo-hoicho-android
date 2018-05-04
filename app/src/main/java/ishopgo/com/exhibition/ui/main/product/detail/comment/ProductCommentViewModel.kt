@@ -21,7 +21,7 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
             if (params.parentId != -1L) fields["parent_id"] = params.parentId
 
             addDisposable(noAuthService.getProductComments(params.productId, fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<ProductComment>>() {
                         override fun success(data: List<ProductComment>?) {
                             dataReturned.postValue(data ?: listOf())

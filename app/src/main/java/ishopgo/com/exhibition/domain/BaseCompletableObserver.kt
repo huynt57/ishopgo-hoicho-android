@@ -1,8 +1,7 @@
 package ishopgo.com.exhibition.domain
 
 import io.reactivex.observers.DisposableCompletableObserver
-import ishopgo.com.exhibition.domain.BaseErrorSignal
-import ishopgo.com.exhibition.domain.IResponse
+import ishopgo.com.exhibition.ui.extensions.showStackTrace
 import retrofit2.HttpException
 import java.net.HttpURLConnection
 import java.net.SocketTimeoutException
@@ -36,7 +35,7 @@ abstract class BaseCompletableObserver : DisposableCompletableObserver(), IRespo
                 failure(BaseErrorSignal.ERROR_NETWORK, e.message ?: "")
             }
             else -> {
-                failure(BaseErrorSignal.ERROR_UNKNOWN, e?.message ?: "")
+                failure(BaseErrorSignal.ERROR_UNKNOWN, e?.showStackTrace() ?: "")
             }
         }
 

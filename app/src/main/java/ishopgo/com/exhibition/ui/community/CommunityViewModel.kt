@@ -9,9 +9,9 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreLastIdRequestParams
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
@@ -36,7 +36,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
             fields["last_id"] = params.last_id
 
             addDisposable(authService.getCommunity(fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<Community>>() {
                         override fun success(data: List<Community>?) {
                             dataReturned.postValue(data ?: mutableListOf())
@@ -71,7 +71,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
         }
 
         addDisposable(authService.sentPostCommunity(builder.build())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         sentShareSuccess.postValue(true)

@@ -15,7 +15,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideProductName(): String {
-        return name ?: "unknown"
+        return name?.trim() ?: "unknown"
     }
 
     override fun provideProductPrice(): String {
@@ -23,7 +23,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideProductBrand(): String {
-        return department?.name ?: ""
+        return department?.name?.trim() ?: ""
     }
 
     override fun provideProductShortDescription(): String {
@@ -31,11 +31,11 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideShopName(): String {
-        return booth?.name ?: ""
+        return booth?.name?.trim() ?: ""
     }
 
     override fun provideShopRegion(): String {
-        return booth?.address ?: ""
+        return booth?.address?.trim() ?: ""
     }
 
     override fun provideShopProductCount(): Int {
@@ -43,7 +43,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideShopRateCount(): Int {
-        return rate
+        return booth?.rate ?: 0
     }
 
     override fun provideShopPhone(): String {
@@ -65,21 +65,6 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("title")
     @Expose
     var title: String? = null
-    @SerializedName("provider_price")
-    @Expose
-    var providerPrice: Long = 0
-    @SerializedName("dvt")
-    @Expose
-    var dvt: String? = null
-    @SerializedName("madeIn")
-    @Expose
-    var madeIn: String? = null
-    @SerializedName("tags")
-    @Expose
-    var tags: String? = null
-    @SerializedName("is_featured")
-    @Expose
-    var isFeatured: Int? = null
     @SerializedName("status")
     @Expose
     var status: Int? = null
@@ -101,9 +86,6 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("code")
     @Expose
     var code: String? = null
-    @SerializedName("provider_id")
-    @Expose
-    var providerId: Int? = null
     @SerializedName("shares")
     @Expose
     var shares: Int = 0
@@ -113,12 +95,6 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("comments")
     @Expose
     var comments: Int = 0
-    @SerializedName("rate")
-    @Expose
-    var rate: Int = 0
-    @SerializedName("images")
-    @Expose
-    var images: List<String>? = null
     @SerializedName("department")
     @Expose
     var department: Department? = null

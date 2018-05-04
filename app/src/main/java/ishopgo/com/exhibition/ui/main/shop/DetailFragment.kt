@@ -28,6 +28,14 @@ class DetailFragment : BaseFragment() {
     private lateinit var viewModel: ShopDetailViewModel
     private lateinit var adapter: PagerAdapter
 
+    companion object {
+        fun newInstance(params: Bundle): DetailFragment {
+            val fragment = DetailFragment()
+            fragment.arguments = params
+            return fragment
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_shop_detail, container, false)
     }
@@ -57,7 +65,7 @@ class DetailFragment : BaseFragment() {
         })
     }
 
-    class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {
+    inner class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -70,7 +78,7 @@ class DetailFragment : BaseFragment() {
                     CategoryFragment()
                 }
                 3 -> {
-                    RateFragment()
+                    RateFragment.newInstance(arguments ?: Bundle())
                 }
                 else -> {
                     Fragment()
