@@ -10,6 +10,10 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
+    override fun provideProductLinkAffiliate(): String {
+        return linkAffiliate ?: ""
+    }
+
     override fun provideProductImage(): String {
         return image ?: ""
     }

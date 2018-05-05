@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -12,7 +13,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreLastIdRequestParams
+import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -20,14 +21,22 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.community.CommunityComment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.community.CommunityShare.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import android.net.Uri
 
 /**
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
+
+    private lateinit var viewModelCommunity: CommunityViewModel
+
+
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -56,18 +65,26 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun firstLoad() {
         super.firstLoad()
-        val firstLoad = LoadMoreLastIdRequestParams()
+        val firstLoad = LoadMoreCommunityRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.last_id = 0
         viewModel.loadData(firstLoad)
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreLastIdRequestParams()
+        val loadMore = LoadMoreCommunityRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.last_id = last_id
         viewModel.loadData(loadMore)
+    }
+
+    fun reload() {
+        val reload = LoadMoreCommunityRequest()
+        reload.limit = Const.PAGE_LIMIT
+        reload.last_id = last_id
+        viewModel.loadData(reload)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<CommunityProvider>> {
@@ -96,41 +113,37 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
                             } else {
-                                val builder = context?.let { AlertDialog.Builder(it) }
-                                builder?.setTitle("Thông báo")
-                                builder?.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
-                                builder?.setPositiveButton("Đăng nhập") { dialog, _ ->
-                                    dialog.dismiss()
-                                    val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                                    startActivity(intent)
-                                    activity?.finish()
-                                }
-
-                                builder?.setNegativeButton("Bỏ qua") { dialog, _ ->
-                                    dialog.dismiss()
-                                }
-                                val dialog = builder?.create()
-                                dialog?.show()
-
-                                val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
-                                positiveButton?.setTextColor(Color.parseColor("#00c853"))
-
-                                val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
-                                negativeButton?.setTextColor(Color.parseColor("#00c853"))
-
+                                showDiglogLogin()
                             }
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            toast("Vào xem chi tiết sản phẩm")
+                            viewModelCommunity.postCommunityLike(data.providerId())
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
-                            toast("Vào xem chi tiết sản phẩm")
+                            val intent = Intent(context, CommunityCommentActivity::class.java)
+                            intent.putExtra("post_id", data.providerId())
+                            startActivity(intent)
                         }
 
                         COMMUNITY_SHARE_NUMBER_CLICK -> {
-                            toast("Vào xem chi tiết sản phẩm")
+                            context?.let {
+                                val dialog = MaterialDialog.Builder(it)
+                                        .customView(R.layout.dialog_community_share, false)
+                                        .autoDismiss(false)
+                                        .canceledOnTouchOutside(true)
+                                        .build()
+                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+                                tv_share_facebook.setOnClickListener {
+                                    shareFacebook(data)
+                                }
+                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+                                tv_share_zalo.setOnClickListener {
+                                    shareApp(data)
+                                }
+                                dialog.show()
+                            }
                         }
 
                         COMMUNITY_SHARE_PRODUCT_CLICK -> {
@@ -140,6 +153,14 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                         .autoDismiss(false)
                                         .canceledOnTouchOutside(true)
                                         .build()
+                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+                                tv_share_facebook.setOnClickListener {
+                                    shareFacebook(data)
+                                }
+                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+                                tv_share_zalo.setOnClickListener {
+                                    shareApp(data)
+                                }
                                 dialog.show()
                             }
                         }
@@ -151,8 +172,79 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                 }
             }
         }
+    }
 
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModelCommunity = obtainViewModel(CommunityViewModel::class.java, false)
+        viewModelCommunity.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+
+        viewModelCommunity.postLikeSuccess.observe(this, Observer { p ->
+            p.let {
+                toast("Đã like")
+            }
+        })
+    }
+
+    private fun shareFacebook(data: CommunityProvider) {
+        val urlToShare = data.provideProduct()?.providerLink()
+        var intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+
+        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
+
+        var facebookAppFound = false
+        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
+        for (info in matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
+                intent.`package` = info.activityInfo.packageName
+                facebookAppFound = true
+                break
+            }
+        }
+
+        if (!facebookAppFound) {
+            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
+        }
+
+        startActivity(intent)
+    }
+
+    private fun shareApp(data: CommunityProvider) {
+        val urlToShare = data.provideProduct()?.providerLink()
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlToShare)
+        startActivity(shareIntent)
+    }
+
+    private fun showDiglogLogin() {
+        context?.let {
+            val builder = AlertDialog.Builder(it)
+            builder.setTitle("Thông báo")
+            builder.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
+            builder.setPositiveButton("Đăng nhập") { dialog, _ ->
+                dialog.dismiss()
+                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+
+            builder.setNegativeButton("Bỏ qua") { dialog, _ ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog?.show()
+
+            val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
+            positiveButton?.setTextColor(Color.parseColor("#00c853"))
+
+            val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
+            negativeButton?.setTextColor(Color.parseColor("#00c853"))
+
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -3,6 +3,8 @@ package ishopgo.com.exhibition.domain
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.Community.CommunityComment
+import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.User
 import okhttp3.RequestBody
@@ -47,9 +49,6 @@ class ApiService {
 
         @GET("shop/{id}/rates")
         fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ShopRate>>>
-    }
-
-    interface Auth {
 
         @FormUrlEncoded
         @POST("login")
@@ -65,16 +64,29 @@ class ApiService {
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
+        @GET("community")
+        fun getCommunity(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<List<Community>>>
 
-        @POST("change-password")
-        fun changePassword(
-                @Body body: RequestBody
-        ): Single<BaseResponse<Any>>
 
+        @GET("community/list-comment/{id}")
+        fun getCommentCommunity(
+                @Path("id") post_id: Long,
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<MutableList<CommunityComment>>>
 
         @GET("get-otp")
         fun getOTP(
                 @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<Any>>
+    }
+
+    interface Auth {
+
+        @POST("change-password")
+        fun changePassword(
+                @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
         @POST("refresh-token")
@@ -100,10 +112,37 @@ class ApiService {
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @GET("community")
-        fun getCommunity(
-                @QueryMap fields: MutableMap<String, Any>
-        ): Single<BaseResponse<List<Community>>>
+        @POST("like/product/{id}")
+        fun postProductLike(
+                @Path("id") product_id: Long
+        ): Single<BaseResponse<Any>>
+
+        @GET("like/product/{id}")
+        fun getProductLike(
+                @Path("id") product_id: Long
+        ): Single<BaseResponse<ProductLike>>
+
+        @POST("community/like-post/{post-id}")
+        fun postCommunityLike(
+                @Path("post-id") post_id: Long
+        ): Single<BaseResponse<Any>>
+
+        @POST("community/comment-post/{id}")
+        fun postCommentCommunity(
+                @Path("id") post_id: Long,
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
+
+        @POST("share-product/{id}")
+        fun postProductShare(
+                @Path("id") id: Long
+        ): Single<BaseResponse<Any>>
+
+        @POST("comment-product/{id}")
+        fun postCommentProduct(
+                @Path("id") product_id: Long,
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
     }
 
 }

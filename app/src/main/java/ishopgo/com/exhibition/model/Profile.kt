@@ -11,65 +11,65 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 class Profile : IdentityData() {
     @SerializedName("name")
     @Expose
-    val name: String = ""
+    var name: String = ""
     @SerializedName("phone")
     @Expose
-    val phone: String = ""
+    var phone: String = ""
     @SerializedName("facebook_url")
     @Expose
-    val facebookUrl: String = ""
+    var facebookUrl: String = ""
     @SerializedName("facebook_name")
     @Expose
-    val facebookName: String = ""
+    var facebookName: String = ""
     @SerializedName("birthday")
     @Expose
-    val birthday: String = ""
+    var birthday: String = ""
     @SerializedName("email")
     @Expose
-    val email: String = ""
+    var email: String = ""
     @SerializedName("company")
     @Expose
-    val company: String = ""
+    var company: String = ""
     @SerializedName("region")
     @Expose
-    val region: String = ""
+    var region: String = ""
     @SerializedName("address")
     @Expose
-    val address: String = ""
+    var address: String = ""
     @SerializedName("created_at")
     @Expose
-    val createdAt: String = ""
+    var createdAt: String = ""
     @SerializedName("updated_at")
     @Expose
-    val updatedAt: String = ""
+    var updatedAt: String = ""
     @SerializedName("status")
     @Expose
-    val status: String = ""
+    var status: String = ""
     @SerializedName("bank_number")
     @Expose
-    val bankNumber: String = ""
+    var bankNumber: String = ""
     @SerializedName("bank_name")
     @Expose
-    val bankName: String = ""
+    var bankName: String = ""
     @SerializedName("bank_account_name")
     @Expose
-    val bankAccountName: String = ""
+    var bankAccountName: String = ""
     @SerializedName("bank_address")
     @Expose
-    val bankAddress: String = ""
+    var bankAddress: String = ""
     @SerializedName("image")
     @Expose
-    val image: String = ""
+    var image: String = ""
     @SerializedName("type")
     @Expose
-    val type: Int = 0
+    var type: Int = 0
     @SerializedName("type_text")
     @Expose
-    val typeText: String = ""
+    var typeText: String = ""
     @SerializedName("tax_code")
     @Expose
-    val taxCode: String = ""
+    var taxCode: String = ""
     @SerializedName("title")
     @Expose
-    val title: String = ""
+    var title: String = ""
 }

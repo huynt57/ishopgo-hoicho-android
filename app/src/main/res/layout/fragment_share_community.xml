@@ -32,14 +32,27 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/bg_transparent_background"
                 android:gravity="top|start"
                 android:hint="Chia sẻ với cộng đồng"
                 android:textSize="14sp"
-                android:background="@drawable/bg_transparent_background"
-                app:layout_constraintBottom_toTopOf="@+id/rv_share_image"
+                app:layout_constraintBottom_toTopOf="@+id/item_community_product"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_share_avatar"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/item_community_product"
+                layout="@layout/item_community_product"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/rv_share_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_share_image"

@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.AccountMenuItem
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import okhttp3.MultipartBody
 
@@ -29,6 +30,160 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 R.drawable.ic_menu_profile,
                 "Thông tin cá nhân"
         ))
+
+        if (UserDataManager.currentType == "Chủ gian hàng") {
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Cầu hình gian hàng"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Khách hàng tham quan"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý sản phẩm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý thông báo"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Gian hàng quan tâm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý điểm bán"
+            ))
+        }
+
+        if (UserDataManager.currentType == "Thành viên") {
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Gian hàng quan tâm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Sản phẩm quan tâm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý vé thăm quan"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý thông báo"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý điểm bán"
+            ))
+        }
+
+        if (UserDataManager.currentType == "Chủ hội chợ") {
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_CHANGE_PASSWORD,
+                    R.drawable.ic_finger,
+                    "Quản lý thành viên"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý gian hàng"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý thương hiệu"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý sản phẩm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý tham quan"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý thông báo"
+            ))
+
+            val childs = ArrayList<AccountMenuItem>()
+            childs.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý tin tức"
+            ))
+
+            childs.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý thông tin chung"
+            ))
+
+            childs.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý hỏi đáp"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý thổng hợp",
+                    childs
+            ))
+
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Quản lý quản trị viên"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    R.drawable.ic_finger,
+                    "Cấu hình giao diện"
+            ))
+        }
+
+        items.add(AccountMenuItem(
+                Const.AccountAction.ACTION_NOT_AVALIBLE,
+                R.drawable.ic_finger,
+                "Báo lỗi - Đóng góp - Cộng đồng"
+        ))
+
         items.add(AccountMenuItem(
                 Const.AccountAction.ACTION_CHANGE_PASSWORD,
                 R.drawable.ic_menu_change_password,
@@ -86,7 +241,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val fields = mutableMapOf<String, Any>()
         fields.put("phone", phone)
 
-        addDisposable(authService.getOTP(fields)
+        addDisposable(noAuthService.getOTP(fields)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {

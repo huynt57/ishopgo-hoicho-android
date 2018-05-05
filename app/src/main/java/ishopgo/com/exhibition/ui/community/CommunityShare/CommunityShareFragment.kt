@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.community
+package ishopgo.com.exhibition.ui.community.CommunityShare
 
 import android.Manifest
 import android.app.Activity
@@ -27,6 +27,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.community.CommunityViewModel
+import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
