@@ -30,5 +30,8 @@ class Booth : IdentityData() {
     @SerializedName("count")
     @Expose
     var count: Int? = null
+    @SerializedName("rate")
+    @Expose
+    var rate: Int? = null
 
 }

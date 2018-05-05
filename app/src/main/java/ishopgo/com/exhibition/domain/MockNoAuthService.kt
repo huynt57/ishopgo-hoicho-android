@@ -6,7 +6,7 @@ import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.Community.CommunityProduct
-import ishopgo.com.exhibition.model.LoginResponse
+import ishopgo.com.exhibition.model.User
 import okhttp3.RequestBody
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
@@ -65,15 +65,15 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getCommunity(fields)
     }
 
-    override fun login(phone: String, password: String, domain: String, token: String): Single<BaseResponse<LoginResponse>> {
-        val c = LoginResponse()
+    override fun login(phone: String, password: String, domain: String, token: String): Single<BaseResponse<User>> {
+        val c = User()
         c.id = 18398
         c.name = "Nnguyễn Huy Hoàng"
         c.image = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
         c.type = "Chủ gian hàng"
         c.token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjE4Mzk4LCJpc3MiOiJodHRwOi8vaXNob3Bnby5jb20vYXBpL3YxL2V4cG8vbG9naW4iLCJpYXQiOjE1MjU0MDAxMjUsImV4cCI6MTUyNTQwNzMyNSwibmJmIjoxNTI1NDAwMTI1LCJqdGkiOiJsdmdNd2d0OU1NQkxiM3oyIn0.WNXo3TGwPUxLahefEK15bevWNKsYt_6xMPsh4124bog"
 
-        val response = BaseResponse<LoginResponse>()
+        val response = BaseResponse<User>()
         response.status = 1
         response.data = c
 
@@ -92,26 +92,25 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getOTP(fields)
     }
 
-    override fun getShopRatings(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>> {
-        val c = ProductComment()
+    override fun getShopRatings(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<ShopRate>>> {
+        val c = ShopRate()
         c.id = 462
         c.content = "Sản phẩm dùng rất tốt, có hiệu quả ngay lần sử dụng thứ 2. Sẽ còn quay lại shop."
-        c.accountName = "Vương Xuân Hồng"
-        c.accountImage = "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-        c.status = 2
-        c.updatedAt = "2018/04/09 14:18:35"
-        c.commentCount = 0
-        c.lastComment = null
+        val user = User()
+        user.name = "Vương Xuân Hồng"
+        user.image = "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
+        c.account = user
+        c.ratePoint = 4
 
-        val result = mutableListOf<ProductComment>()
+        val result = mutableListOf<ShopRate>()
         for (i in 0..3)
             result.add(c)
 
-        val response = BaseResponse<List<ProductComment>>()
+        val response = BaseResponse<List<ShopRate>>()
         response.status = 1
         response.data = result
 
-        return delegate.returningResponse(response).getProductComments(id, params)
+        return delegate.returningResponse(response).getShopRatings(id, params)
     }
 
     override fun getProductComments(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>> {
@@ -262,7 +261,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return b
     }
 
-    override fun getHighlightBrands(params: MutableMap<String, Any>): Single<BaseResponse<List<Brand>>> {
+    override fun getHighlightBrands(): Single<BaseResponse<List<Brand>>> {
         val ps = mutableListOf<Brand>()
         for (i in 0..5)
             ps.add(generateBrand())
@@ -271,7 +270,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         response.status = 1
         response.data = ps
 
-        return delegate.returningResponse(response).getHighlightBrands(params)
+        return delegate.returningResponse(response).getHighlightBrands()
     }
 
     override fun getHighlightProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {

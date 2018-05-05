@@ -73,7 +73,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
         }
 
         addDisposable(authService.sentPostCommunity(builder.build())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         sentShareSuccess.postValue(true)

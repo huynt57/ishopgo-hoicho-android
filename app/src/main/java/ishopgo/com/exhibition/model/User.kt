@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 /**
  * Created by hoangnh on 4/27/2018.
  */
-class LoginResponse : IdentityData() {
+class User : IdentityData() {
     @SerializedName("token")
     @Expose
     var token: String = ""

@@ -4,9 +4,9 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.Community.CommunityComment
-import ishopgo.com.exhibition.model.LoginResponse
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
+import ishopgo.com.exhibition.model.User
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -24,7 +24,7 @@ class ApiService {
         fun getBanners(): Single<BaseResponse<List<Banner>>>
 
         @GET("highlight-brands")
-        fun getHighlightBrands(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Brand>>>
+        fun getHighlightBrands(): Single<BaseResponse<List<Brand>>>
 
         @GET("highlight-products")
         fun getHighlightProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
@@ -47,8 +47,8 @@ class ApiService {
         @GET("comment-product/{id}")
         fun getProductComments(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
 
-        @GET("shop_rate/{id}")
-        fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
+        @GET("shop/{id}/rates")
+        fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ShopRate>>>
 
         @FormUrlEncoded
         @POST("login")
@@ -57,16 +57,11 @@ class ApiService {
                 @Field("password") password: String,
                 @Field("id_app") domain: String,
                 @Field("device_token_android") token: String
-        ): Single<BaseResponse<LoginResponse>>
+        ): Single<BaseResponse<User>>
 
         @POST("register")
         fun register(
                 @Body body: RequestBody
-        ): Single<BaseResponse<Any>>
-
-        @GET("get-otp")
-        fun getOTP(
-                @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
 
         @GET("community")
@@ -80,6 +75,11 @@ class ApiService {
                 @Path("id") post_id: Long,
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<MutableList<CommunityComment>>>
+
+        @GET("get-otp")
+        fun getOTP(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<Any>>
     }
 
     interface Auth {
@@ -115,7 +115,7 @@ class ApiService {
         @POST("like/product/{id}")
         fun postProductLike(
                 @Path("id") product_id: Long
-                ): Single<BaseResponse<Any>>
+        ): Single<BaseResponse<Any>>
 
         @GET("like/product/{id}")
         fun getProductLike(

@@ -5,8 +5,8 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.LoginResponse
 import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.model.User
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import okhttp3.MultipartBody
@@ -15,7 +15,7 @@ import okhttp3.MultipartBody
  * Created by hoangnh on 4/23/2018.
  */
 class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
-    var loginSuccess = MutableLiveData<LoginResponse>()
+    var loginSuccess = MutableLiveData<User>()
     var registerSuccess = MutableLiveData<Boolean>()
     var getOTP = MutableLiveData<Boolean>()
     var changNewPassword = MutableLiveData<Boolean>()
@@ -29,8 +29,8 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun loginAccount(phone: String, password: String) {
         addDisposable(noAuthService.login(phone, password, Const.ID_APP,"")
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<LoginResponse>() {
-                    override fun success(data: LoginResponse?) {
+                .subscribeWith(object : BaseSingleObserver<User>() {
+                    override fun success(data: User?) {
 
                         UserDataManager.accessToken = data?.token ?: ""
                         UserDataManager.currentUserId = data?.id ?: 0

@@ -25,7 +25,7 @@ class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(),
             fields["q"] = params.keyword
 
             addDisposable(noAuthService.searchProducts(fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                         override fun success(data: List<Product>?) {
                             dataReturned.postValue(data ?: mutableListOf<Product>())

@@ -22,12 +22,8 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var highlightBrand = MutableLiveData<List<HighlightBrandProvider>>()
 
     fun loadHighlightBrands() {
-        val params = mutableMapOf<String, Any>()
-        params["limit"] = 10
-        params["offset"] = 0
-
-        addDisposable(noAuthService.getHighlightBrands(params)
-                .subscribeOn(Schedulers.io())
+        addDisposable(noAuthService.getHighlightBrands()
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Brand>>() {
                     override fun success(data: List<Brand>?) {
                         data?.let {
@@ -53,7 +49,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         params["offset"] = 0
 
         addDisposable(noAuthService.getHighlightProducts(params)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                     override fun success(data: List<Product>?) {
                         data?.let {
@@ -171,7 +167,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadCategories() {
         addDisposable(noAuthService.getCategories()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Category>>() {
                     override fun success(data: List<Category>?) {
                         categories.postValue(data ?: mutableListOf())
@@ -190,7 +186,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadBanners() {
         addDisposable(noAuthService.getBanners()
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Banner>>() {
                     override fun success(data: List<Banner>?) {
                         val bannerImages = mutableListOf<String>()

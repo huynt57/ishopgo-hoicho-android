@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.profile
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
@@ -9,7 +8,6 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
@@ -22,7 +20,6 @@ import javax.inject.Inject
  */
 class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
-    @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
 
@@ -33,7 +30,6 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var userInfo = MutableLiveData<ProfileProvider>()
 
     fun loadUserProfile() {
-
         addDisposable(authService.getProfile(UserDataManager.currentUserId)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {

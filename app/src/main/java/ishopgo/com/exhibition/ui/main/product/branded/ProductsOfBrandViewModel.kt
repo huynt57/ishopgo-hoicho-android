@@ -18,7 +18,7 @@ class ProductsOfBrandViewModel : BaseListViewModel<List<ProductProvider>>(), App
             fields["offset"] = params.offset
 
             addDisposable(noAuthService.getBrandProducts(params.brandId, fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                         override fun success(data: List<Product>?) {
                             dataReturned.postValue(data ?: mutableListOf())
