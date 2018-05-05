@@ -30,7 +30,7 @@ class ProductCommentsFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, CommentFragment.newInstance(arguments ?: Bundle()))
+                .replace(R.id.view_main_content, CommentProductFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
 

@@ -4,6 +4,7 @@ import android.util.Log
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.Community.CommunityProduct
 import ishopgo.com.exhibition.model.LoginResponse
 import okhttp3.RequestBody
@@ -14,6 +15,44 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getCommentCommunity(post_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<CommunityComment>>> {
+        val ps = mutableListOf<CommunityComment>()
+        for (i in 0..5)
+            ps.add(generateCommunityComment(i))
+
+        val response = BaseResponse<CommunityComment>()
+        response.status = 1
+        return delegate.returningResponse(response).getCommentCommunity(post_id, fields)
+    }
+
+    private fun generateCommunityComment(i: Int): CommunityComment {
+        val c = CommunityComment()
+        c.id = 707
+        c.content = "rất hay"
+        c.accountName = "Nguyễn Huy Hoàng"
+        c.accountImage = "https://static.ishopgo.com/17288/a95b6071b5578a862d1890de0e96c11favatarjpg.jpg"
+        c.postId = 934
+        c.status = 2
+
+        if (i % 2 == 0) {
+            val b = mutableListOf<String>()
+            b.add("https://static.ishopgo.com/17288/fe0eb451a22ca727e6b2bd91baf8f3b4ozed-4e29d62a55f4dae4fc69899975657ab5wd-melasma-projpgjpg.jpg")
+            c.images = b
+        }
+
+        if (i % 5 == 0) {
+            val b = mutableListOf<String>()
+            for (i in 0..1) {
+                b.add("https://static.ishopgo.com/17288/fe0eb451a22ca727e6b2bd91baf8f3b4ozed-4e29d62a55f4dae4fc69899975657ab5wd-melasma-projpgjpg.jpg")
+            }
+            c.images = b
+        }
+        c.updatedAt = "2018/05/04 15:16:56"
+        c.createdAt = "2018/05/04 15:16:56"
+        c.commentCount = 0
+        return c
+    }
+
     override fun getCommunity(fields: MutableMap<String, Any>): Single<BaseResponse<List<Community>>> {
         val ps = mutableListOf<Community>()
         for (i in 0..5)

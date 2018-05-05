@@ -19,5 +19,6 @@ interface ProductDetailProvider {
     fun provideProductLikeCount(): Int
     fun provideProductCommentCount(): Int
     fun provideProductShareCount(): Int
+    fun provideProductLinkAffiliate(): String
 
 }

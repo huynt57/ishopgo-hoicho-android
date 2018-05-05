@@ -25,6 +25,7 @@ object Const {
     }
 
     object AccountAction {
+        const val ACTION_NOT_AVALIBLE = 0
         const val ACTION_PROFILE = 1
         const val ACTION_CHANGE_PASSWORD = 2
         const val ACTION_LOGOUT = 3

@@ -11,12 +11,16 @@ import ishopgo.com.exhibition.ui.extensions.asMoney
  * Created by hoangnh on 5/3/2018.
  */
 class CommunityProduct : IdentityData(), CommunityProductProvider {
+    override fun providerLink(): String {
+        return link
+    }
+
     override fun providerName(): String {
         return name
     }
 
-    override fun providerPrice(): String {
-        return price.asMoney()
+    override fun providerPrice(): Long {
+        return price
     }
 
     override fun providerImage(): String {
@@ -36,4 +40,7 @@ class CommunityProduct : IdentityData(), CommunityProductProvider {
     @SerializedName("image")
     @Expose
     var image: String = ""
+    @SerializedName("link")
+    @Expose
+    var link: String = ""
 }

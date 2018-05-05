@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.community.CommunityComment
+package ishopgo.com.exhibition.ui.main.product.detail.comment
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -11,22 +11,24 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
+import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_comment_community.*
 
 /**
  * Created by hoangnh on 5/4/2018.
  */
-class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
+class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         reloadData = true
         firstLoad()
@@ -34,26 +36,27 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
 
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private lateinit var adapterImages: ComposingPostMediaAdapter
-    private var adapter = CommunityCommentAdapter()
+    private var adapter = ProductCommentAdapter()
     private lateinit var scroller: LinearSmoothScroller
-    private lateinit var viewModel: CommunityViewModel
-    private var post_id: Long = 0
+    private lateinit var viewModel: ProductCommentViewModel
+    private var productId: Long = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_comment_community, container, false)
+        return inflater.inflate(R.layout.fragment_comment_product, container, false)
     }
 
-    private var last_id: Long = 0
-
     companion object {
-        const val TAG = "CommunityShareFragmentActionBar"
+        fun newInstance(params: Bundle): CommentProductFragment {
+            val f = CommentProductFragment()
+            f.arguments = params
 
-        fun newInstance(post_id: Long): CommunityCommentFragment {
-            val fragment = CommunityCommentFragment()
-            fragment.post_id = post_id
-
-            return fragment
+            return f
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -83,12 +86,13 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         img_comment_sent.setOnClickListener {
             if (checkRequireFields(edt_comment.text.toString())) {
                 showProgressDialog()
-                viewModel.postCommentCommunity(post_id, edt_comment.text.toString(), postMedias)
+                viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
             }
         }
 
         swipe.setOnRefreshListener(this)
-
+        rv_comment_community.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        rv_comment_community.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     private fun launchPickPhotoIntent() {
@@ -101,7 +105,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = obtainViewModel(CommunityViewModel::class.java, false)
+        viewModel = obtainViewModel(ProductCommentViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
                 hideProgressDialog()
@@ -109,7 +113,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
             }
         })
 
-        viewModel.postCommentSusscess.observe(this, Observer { c ->
+        viewModel.postCommentSuccess.observe(this, Observer { c ->
             c?.let {
                 firstLoad()
 
@@ -127,12 +131,8 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
             }
         })
 
-        viewModel.loadCommentSusscess.observe(this, Observer { p ->
+        viewModel.dataReturned.observe(this, Observer { p ->
             p?.let {
-                if (it.isNotEmpty()) {
-                    last_id = it[it.size - 1].id
-                }
-
                 if (reloadData) {
                     adapter.replaceAll(it)
                     hideProgressDialog()
@@ -142,6 +142,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
                 swipe.isRefreshing = false
             }
         })
+
         reloadData = true
         swipe.isRefreshing = true
         firstLoad()
@@ -149,18 +150,27 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
 
     fun firstLoad() {
         reloadData = true
-        val firstLoad = LoadMoreCommunityRequest()
-        firstLoad.limit = Const.PAGE_LIMIT
-        firstLoad.last_id = 0
-        viewModel.loadCommentCommunity(post_id, 0, firstLoad)
+        val loadMore = ProductCommentsRequest()
+        loadMore.lastId = -1L
+        loadMore.parentId = -1L
+        loadMore.productId = productId
+        loadMore.limit = Const.PAGE_LIMIT
+        viewModel.loadData(loadMore)
+        rv_comment_community.scheduleLayoutAnimation()
+
     }
 
     fun loadMore() {
         reloadData = false
-        val loadMore = LoadMoreCommunityRequest()
-        loadMore.limit = Const.PAGE_LIMIT
-        loadMore.last_id = last_id
-        viewModel.loadData(loadMore)
+        val loadMore = ProductCommentsRequest()
+        val item = adapter.getItem(adapter.itemCount - 1)
+        if (item is IdentityData) {
+            loadMore.lastId = item.id
+            loadMore.parentId = -1L
+            loadMore.productId = productId
+            loadMore.limit = Const.PAGE_LIMIT
+            viewModel.loadData(loadMore)
+        }
     }
 
     private fun checkRequireFields(content: String): Boolean {

@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -29,6 +31,15 @@ public class Toolbox {
     public static final SimpleDateFormat displayDateFormat = new SimpleDateFormat("dd/MM/yyyy", new Locale("vi", "VN"));
     public static final SimpleDateFormat displayDateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", new Locale("vi", "VN"));
     public static final SimpleDateFormat apiDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", new Locale("vi", "VN"));
+    private static Gson defaultGson;
+
+    static {
+        defaultGson = new Gson();
+    }
+
+    public static Gson getDefaultGson() {
+        return defaultGson;
+    }
 
     public static boolean exceedSize(Context context, Uri uri, long maxSize) {
         boolean isExceed = false;
@@ -163,4 +174,5 @@ public class Toolbox {
             FileUtils.deleteQuietly(sourceFile);
         }
     }
+
 }

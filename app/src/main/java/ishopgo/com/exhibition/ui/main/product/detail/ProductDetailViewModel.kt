@@ -165,11 +165,29 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+
+
+
+    fun postShareProduct(productId: Long) {
+        addDisposable(authService.postProductShare(productId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
     var postLikeSuccess = MutableLiveData<Any>()
 
     fun postProductLike(productId: Long) {
         addDisposable(authService.postProductLike(productId)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         postLikeSuccess.postValue(data)

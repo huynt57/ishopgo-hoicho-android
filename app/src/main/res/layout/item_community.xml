@@ -167,15 +167,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_community_product">
 
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/tv_community_like"
+        <LinearLayout
+            android:id="@+id/linear_like"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:foreground="?selectableItemBackground"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="0"
-            app:drawableStartCompat="@drawable/ic_like_heath" />
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/img_community_like"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_circle_red"
+                android:scaleType="center"
+                app:srcCompat="@drawable/ic_added_to_favorite_24dp" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_community_like"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal|center_vertical"
+                android:text="0" /></LinearLayout>
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_comment"

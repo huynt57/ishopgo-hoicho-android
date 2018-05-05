@@ -4,12 +4,14 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
@@ -32,6 +34,7 @@ import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_detail.*
 
 /**
@@ -137,10 +140,10 @@ class ProductDetailFragment : BaseFragment() {
             view_product_name.text = product.provideProductName()
             if (UserDataManager.currentUserId > 0) {
                 view_favorite.setOnClickListener { viewModel.postProductLike(productId) }
-                view_share.setOnClickListener { }
+                view_share.setOnClickListener { showDialogShare(product) }
             } else {
-                view_favorite.setOnClickListener { showAlertDialog() }
-                view_share.setOnClickListener { showAlertDialog() }
+                view_favorite.setOnClickListener { showDialogLogin() }
+                view_share.setOnClickListener { showDialogLogin() }
             }
 
 
@@ -166,12 +169,12 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
-    private fun showAlertDialog() {
+    private fun showDialogLogin() {
         context?.let {
             val builder = AlertDialog.Builder(it)
-            builder?.setTitle("Thông báo")
-            builder?.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
-            builder?.setPositiveButton("Đăng nhập") { dialog, _ ->
+            builder.setTitle("Thông báo")
+            builder.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
+            builder.setPositiveButton("Đăng nhập") { dialog, _ ->
                 dialog.dismiss()
                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
                 startActivity(intent)
@@ -181,7 +184,7 @@ class ProductDetailFragment : BaseFragment() {
             builder?.setNegativeButton("Bỏ qua") { dialog, _ ->
                 dialog.dismiss()
             }
-            val dialog = builder?.create()
+            val dialog = builder.create()
             dialog?.show()
 
             val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
@@ -190,6 +193,61 @@ class ProductDetailFragment : BaseFragment() {
             val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
             negativeButton?.setTextColor(Color.parseColor("#00c853"))
         }
+    }
+
+    private fun showDialogShare(product: ProductDetailProvider) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_community_share, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+            tv_share_facebook.setOnClickListener {
+                shareFacebook(product)
+                viewModel.postShareProduct(productId)
+            }
+            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+            tv_share_zalo.setOnClickListener {
+                shareApp(product)
+                viewModel.postShareProduct(productId)
+            }
+            dialog.show()
+        }
+    }
+
+    private fun shareFacebook(product: ProductDetailProvider) {
+        val urlToShare = product.provideProductLinkAffiliate()
+        var intent = Intent(Intent.ACTION_SEND)
+        intent.type = "text/plain"
+
+        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
+
+        var facebookAppFound = false
+        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
+        for (info in matches) {
+            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
+                intent.`package` = info.activityInfo.packageName
+                facebookAppFound = true
+                break
+            }
+        }
+
+        if (!facebookAppFound) {
+            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
+        }
+
+        startActivity(intent)
+    }
+
+    private fun shareApp(product: ProductDetailProvider) {
+        val urlToShare = product.provideProductLinkAffiliate()
+        val shareIntent = Intent(Intent.ACTION_SEND)
+        shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        shareIntent.type = "text/plain"
+        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlToShare)
+        startActivity(shareIntent)
     }
 
     private fun showProductFullDescription(context: Context, product: ProductDetailProvider) {

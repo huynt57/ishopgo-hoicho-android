@@ -12,6 +12,10 @@ import ishopgo.com.exhibition.ui.widget.Toolbox
  * Created by hoangnh on 5/3/2018.
  */
 class Community : IdentityData(), CommunityProvider {
+    override fun provideLiked(): Int {
+        return liked
+    }
+
     override fun providerId(): Long {
         return id
     }
@@ -76,6 +80,9 @@ class Community : IdentityData(), CommunityProvider {
     @SerializedName("images")
     @Expose
     var images: MutableList<String> = mutableListOf()
+    @SerializedName("liked")
+    @Expose
+    var liked: Int = 0
     @SerializedName("like_count")
     @Expose
     var likeCount: Int = 0

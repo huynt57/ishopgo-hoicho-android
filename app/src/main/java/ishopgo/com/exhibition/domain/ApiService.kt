@@ -73,6 +73,13 @@ class ApiService {
         fun getCommunity(
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<List<Community>>>
+
+
+        @GET("community/list-comment/{id}")
+        fun getCommentCommunity(
+                @Path("id") post_id: Long,
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<MutableList<CommunityComment>>>
     }
 
     interface Auth {
@@ -126,11 +133,16 @@ class ApiService {
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @GET("community/list-comment/{id}")
-        fun getCommentCommunity(
-                @Path("id") post_id: Long,
-                @QueryMap fields: MutableMap<String, Any>
-        ): Single<BaseResponse<MutableList<CommunityComment>>>
+        @POST("share-product/{id}")
+        fun postProductShare(
+                @Path("id") id: Long
+        ): Single<BaseResponse<Any>>
+
+        @POST("comment-product/{id}")
+        fun postCommentProduct(
+                @Path("id") product_id: Long,
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
     }
 
 }
