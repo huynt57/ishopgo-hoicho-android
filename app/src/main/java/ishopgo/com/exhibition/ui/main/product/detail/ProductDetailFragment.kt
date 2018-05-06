@@ -152,7 +152,7 @@ class ProductDetailFragment : BaseFragment() {
             view_product_brand.text = product.provideProductBrand()
             view_product_description.text = product.provideProductShortDescription()
             view_shop_name.text = product.provideShopName()
-            view_shop_region.text = product.provideShopRegion()
+            view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"
             view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm mới".asHtml()
             view_shop_rating.text = "<b>${product.provideShopRateCount()}</b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${product.provideProductLikeCount()} thích"
@@ -266,11 +266,15 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun messageShop(context: Context, product: ProductDetailProvider) {
-
+        // gui tin nhan cho shop
     }
 
     private fun callShop(context: Context, product: ProductDetailProvider) {
-
+        val phoneNumber = product.provideShopPhone()
+        val call = Uri.parse("tel:" + phoneNumber)
+        val intent = Intent(Intent.ACTION_DIAL, call)
+        if (intent.resolveActivity(context.packageManager) != null)
+            startActivity(intent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

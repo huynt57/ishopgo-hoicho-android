@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toStartOf="@+id/view_option_end"
         app:layout_constraintStart_toEndOf="@+id/view_toolbar_start"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_goneMarginEnd="?attr/actionBarSize"
+        app:layout_goneMarginEnd="8dp"
         app:layout_goneMarginStart="?attr/actionBarSize"
         tools:text="Title"/>
 
@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_goneMarginEnd="?attr/actionBarSize"
-        tools:visibility="visible"
+        tools:visibility="gone"
         >
 
         <ImageView
