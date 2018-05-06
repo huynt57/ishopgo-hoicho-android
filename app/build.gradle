@@ -16,7 +16,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
@@ -25,9 +25,28 @@ android {
 
         multiDexEnabled true
     }
+
+    signingConfigs {
+        config {
+            keyAlias 'ishopgo_expo'
+            keyPassword '123456'
+            storeFile file('keystore.jks')
+            storePassword '123456'
+        }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.config
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
