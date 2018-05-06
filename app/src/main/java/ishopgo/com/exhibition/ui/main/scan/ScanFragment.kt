@@ -26,6 +26,7 @@ import com.journeyapps.barcodescanner.CaptureManager
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import kotlinx.android.synthetic.main.fragment_scan.*
 
 /**
@@ -57,11 +58,13 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     override fun onPause() {
         super.onPause()
+        Log.d(TAG, "onPause: ")
         pauseCamera()
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d(TAG, "onResume: ")
 
         context?.let {
             if (hasCameraPermission(it)) {
@@ -73,11 +76,13 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         }
     }
 
-    private fun pauseCamera() {
+    fun pauseCamera() {
+        Log.d(TAG, "pauseCamera: ")
         zxing_barcode_scanner.post { zxing_barcode_scanner.pauseAndWait() }
     }
 
     fun resumeCamera() {
+        Log.d(TAG, "resumeCamera: ")
         zxing_barcode_scanner.post {
             zxing_barcode_scanner.decodeSingle(this)
             zxing_barcode_scanner.resume()
@@ -173,10 +178,22 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     private fun processData(qrCode: String?) {
         Log.d(TAG, "processData: qrCode = [${qrCode}]")
+        val uri = Uri.parse(qrCode)
+        val boothId = uri.getQueryParameter("booth")
+        if (boothId != null && boothId.isNotBlank()) {
+            openShopDetail(boothId.toLong())
+        } else
+            toast("Không hợp lệ")
+    }
+
+    private fun openShopDetail(shopId: Long) {
+        val intent = Intent(context, ShopDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
+        startActivity(intent)
     }
 
     override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {
-        Log.d(TAG, "possibleResultPoints: resultPoints = [${resultPoints}]")
+//        Log.d(TAG, "    possibleResultPoints: resultPoints = [${resultPoints}]")
     }
 
 }

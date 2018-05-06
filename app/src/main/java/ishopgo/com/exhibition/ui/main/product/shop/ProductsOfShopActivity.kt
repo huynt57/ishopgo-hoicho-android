@@ -13,5 +13,9 @@ class ProductsOfShopActivity : BaseSingleFragmentActivity() {
         return ProductsOfShopFragmentActionBar.newInstance(startupOption)
     }
 
+    override fun startupOptions(): Bundle {
+        return intent?.extras ?: Bundle()
+    }
+
 
 }

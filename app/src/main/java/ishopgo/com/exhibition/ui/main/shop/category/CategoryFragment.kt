@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -18,12 +18,27 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  */
 class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvider>() {
 
+    companion object {
+        fun newInstance(params: Bundle): CategoryFragment {
+            val fragment = CategoryFragment()
+            fragment.arguments = params
+            return fragment
+        }
+    }
+
+    private var boothId = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        boothId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+    }
+
     override fun populateData(data: List<CategoryProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
-        }
-        else
+        } else
             adapter.addAll(data)
     }
 
@@ -33,19 +48,13 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
 
     override fun firstLoad() {
         reloadData = true
-        val request = LoadMoreRequest()
-        request.offset = 0
-        request.limit = Const.PAGE_LIMIT
+        val request = Request()
+        // we do not support get category of a shop now
         viewModel.loadData(request)
     }
 
     override fun loadMore(currentCount: Int) {
-        reloadData = false
-        val request = LoadMoreRequest()
-        request.offset = currentCount
-        request.limit = Const.PAGE_LIMIT
-        viewModel.loadData(request)
-
+        // no support loadmore
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,6 +64,6 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<CategoryProvider>> {
-        return obtainViewModel(CategoryViewMode::class.java, false)
+        return obtainViewModel(CategoryViewModel::class.java, false)
     }
 }

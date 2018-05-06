@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.SameShopProductsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -25,6 +25,22 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider>() {
+
+    companion object {
+        fun newInstance(params: Bundle): ProductsFragment {
+            val fragment = ProductsFragment()
+            fragment.arguments = params
+            return fragment
+        }
+    }
+
+    private var boothId = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        boothId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
@@ -45,17 +61,19 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
 
     override fun firstLoad() {
         super.firstLoad()
-        val loadMore = LoadMoreRequest()
+        val loadMore = SameShopProductsRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
+        loadMore.boothId = boothId
         viewModel.loadData(loadMore)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequest()
+        val loadMore = SameShopProductsRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
+        loadMore.boothId = boothId
         viewModel.loadData(loadMore)
     }
 

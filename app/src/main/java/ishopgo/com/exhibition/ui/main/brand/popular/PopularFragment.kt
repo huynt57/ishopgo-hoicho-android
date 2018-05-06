@@ -17,7 +17,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
-import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
+import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
@@ -62,7 +62,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
                 override fun click(position: Int, data: HighlightBrandProvider, code: Int) {
                     context?.let {
                         if (data is IdentityData) {
-                            val intent = Intent(it, ProductsOfShopActivity::class.java)
+                            val intent = Intent(it, ProductsOfBrandActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                             startActivity(intent)
                         }

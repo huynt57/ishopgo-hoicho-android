@@ -12,7 +12,8 @@ import ishopgo.com.exhibition.ui.main.shop.rate.ShopRateProvider
  */
 class ShopRate : IdentityData(), ShopRateProvider {
     override fun provideName(): String {
-        return account?.name ?: "unknown"
+        val name = account?.name
+        return if (name.isNullOrBlank()) "Người dùng ẩn danh" else name!!
     }
 
     override fun provideAvatar(): String {

@@ -69,13 +69,13 @@ class DetailFragment : BaseFragment() {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
-                    ShopInfoFragment.newInstance(Bundle())
+                    ShopInfoFragment.newInstance(arguments ?: Bundle())
                 }
                 1 -> {
-                    ProductsFragment()
+                    ProductsFragment.newInstance(arguments ?: Bundle())
                 }
                 2 -> {
-                    CategoryFragment()
+                    CategoryFragment.newInstance(arguments ?: Bundle())
                 }
                 3 -> {
                     RateFragment.newInstance(arguments ?: Bundle())

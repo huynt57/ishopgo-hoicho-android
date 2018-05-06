@@ -15,6 +15,36 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getBoothProducts(boothId: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getBoothProducts(boothId, params)
+    }
+
+    override fun getShopInfo(id: Long): Single<BaseResponse<ShopDetail>> {
+        val d = ShopDetail()
+        d.id = 17354
+        d.name = "Gian hàng hội chợ"
+        d.introduction = "Gian hàng trưng bày các sản phẩm mỹ phẩm chất lượng cao"
+        d.hotline = "0917577795"
+        d.info = "Thông tin thì cùng không có gì nhiều."
+        d.banner = "https://static.ishopgo.com/17288/32cc917eabe0af0d905421071f4804f7bannerjpg.jpg"
+        d.address = null
+        d.productCount = 8
+        d.rate = 4
+
+        val response = BaseResponse<ShopDetail>()
+        response.status = 1
+        response.data = d
+        return delegate.returningResponse(response).getShopInfo(id)
+    }
+
     override fun getCommentCommunity(post_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<CommunityComment>>> {
         val ps = mutableListOf<CommunityComment>()
         for (i in 0..5)

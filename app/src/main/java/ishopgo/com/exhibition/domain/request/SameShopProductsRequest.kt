@@ -6,5 +6,6 @@ package ishopgo.com.exhibition.domain.request
 class SameShopProductsRequest : LoadMoreRequest() {
 
     var productId: Long = -1L
+    var boothId: Long = -1L
 
 }

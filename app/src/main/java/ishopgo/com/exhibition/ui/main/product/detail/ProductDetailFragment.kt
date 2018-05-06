@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -338,11 +339,10 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun openShopDetail(context: Context, product: ProductDetailProvider) {
-        // find brand id of this product
-        if (product is IdentityData) {
-            val brandId = product.id
+        if (product is ProductDetail) {
+            val boothId = product.booth?.id
             val intent = Intent(context, ShopDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
             startActivity(intent)
         }
     }
