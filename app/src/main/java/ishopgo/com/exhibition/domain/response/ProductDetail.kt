@@ -10,6 +10,10 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
+    override fun provideLiked(): Boolean {
+        return liked == 1
+    }
+
     override fun provideProductLinkAffiliate(): String {
         return linkAffiliate ?: ""
     }
@@ -96,6 +100,9 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("likes")
     @Expose
     var likes: Int = 0
+    @SerializedName("liked")
+    @Expose
+    var liked: Int = 0
     @SerializedName("comments")
     @Expose
     var comments: Int = 0
