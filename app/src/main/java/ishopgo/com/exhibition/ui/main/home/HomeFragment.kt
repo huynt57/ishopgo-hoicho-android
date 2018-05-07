@@ -294,9 +294,29 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun openProductDetail(product: ProductProvider) {
+        context?.let {
+            if (product is IdentityData) {
+                val intent = Intent(it, ProductDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+                startActivity(intent)
+            }
+        }
+    }
+
+    private fun openProductsByBrand(brand: HighlightBrandProvider) {
+        context?.let {
+            if (brand is IdentityData) {
+                val intent = Intent(it, ProductsOfBrandActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, brand.id)
+                startActivity(intent)
+            }
+        }
+    }
+
     private fun setupReferencedProducts(context: Context) {
         view_list_suggest_products.adapter = suggestedProductAdapter
-        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         layoutManager.isAutoMeasureEnabled = true
         view_list_suggest_products.layoutManager = layoutManager
         view_list_suggest_products.isNestedScrollingEnabled = false
@@ -331,27 +351,6 @@ class HomeFragment : BaseFragment() {
         view_list_favorite_products.isNestedScrollingEnabled = false
         view_list_favorite_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
         view_list_favorite_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
-    }
-
-
-    private fun openProductDetail(product: ProductProvider) {
-        context?.let {
-            if (product is IdentityData) {
-                val intent = Intent(it, ProductDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-                startActivity(intent)
-            }
-        }
-    }
-
-    private fun openProductsByBrand(brand: HighlightBrandProvider) {
-        context?.let {
-            if (brand is IdentityData) {
-                val intent = Intent(it, ProductsOfBrandActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, brand.id)
-                startActivity(intent)
-            }
-        }
     }
 
     private fun setupHighlightProducts(context: Context) {

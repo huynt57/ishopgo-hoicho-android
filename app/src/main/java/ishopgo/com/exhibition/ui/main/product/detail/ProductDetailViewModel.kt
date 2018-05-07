@@ -165,9 +165,6 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-
-
-
     fun postShareProduct(productId: Long) {
         addDisposable(authService.postProductShare(productId)
                 .subscribeOn(Schedulers.single())
