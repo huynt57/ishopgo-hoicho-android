@@ -33,9 +33,6 @@ import android.net.Uri
  */
 class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
 
-    private lateinit var viewModelCommunity: CommunityViewModel
-
-
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -79,13 +76,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         viewModel.loadData(loadMore)
     }
 
-    fun reload() {
-        val reload = LoadMoreCommunityRequest()
-        reload.limit = Const.PAGE_LIMIT
-        reload.last_id = last_id
-        viewModel.loadData(reload)
-    }
-
     override fun obtainViewModel(): BaseListViewModel<List<CommunityProvider>> {
         return obtainViewModel(CommunityViewModel::class.java, false)
     }
@@ -117,7 +107,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            viewModelCommunity.postCommunityLike(data.providerId())
+                            if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.providerId())
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
@@ -175,14 +165,13 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModelCommunity = obtainViewModel(CommunityViewModel::class.java, false)
-        viewModelCommunity.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-
-        viewModelCommunity.postLikeSuccess.observe(this, Observer { p ->
-            p.let {
-                toast("Đã like")
-            }
-        })
+        if (viewModel is CommunityViewModel) {
+            (viewModel as CommunityViewModel).postLikeSuccess.observe(this, Observer { p ->
+                p.let {
+                    toast("Đã like")
+                }
+            })
+        }
     }
 
     private fun shareFacebook(data: CommunityProvider) {

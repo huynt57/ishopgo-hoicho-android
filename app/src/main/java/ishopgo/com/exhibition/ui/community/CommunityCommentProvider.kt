@@ -12,6 +12,6 @@ interface CommunityCommentProvider {
     fun providerUpdatedAt(): String
     fun providerCreatedAt(): String
     fun providerImages(): MutableList<String>
-    fun provideCommentCount(): Long
+    fun provideCommentCount(): Int
 //    fun provideProduct(): CommunityProductProvider?
 }

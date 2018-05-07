@@ -107,7 +107,7 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
             })
 
             (viewModel as NotificationViewModel).markNotificationSuccess.observe(this, Observer {
-                toast("Xem chi tiết thông báo")
+                toast("Đang phát triển")
 //            val intent = Intent(context, NotificationDetailActivity::class.java)
 //            startActivityForResult(intent, Const.RequestCode.NOTIFICATION_DETAIL)
             })

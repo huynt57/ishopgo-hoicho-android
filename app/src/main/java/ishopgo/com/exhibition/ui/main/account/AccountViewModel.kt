@@ -35,7 +35,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SETTING_BOTTH,
                     R.drawable.ic_finger,
-                    "Câu hình gian hàng"
+                    "Cấu hình gian hàng"
             ))
 
             items.add(AccountMenuItem(

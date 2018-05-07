@@ -36,7 +36,7 @@ class NotificationAdapter : ClickableAdapter<NotificationProvider>() {
                 tv_title.text = data.provideTitle()
                 tv_short_desc.text = data.provideShortDescription()
                 tv_timestamp.text = data.provideCreatedAt().asDate()
-                if (data.provideIsRead() == 1) {
+                if (data.provideWasRed()) {
                     tv_title.setTypeface(null, Typeface.NORMAL)
                 } else {
                     tv_title.setTypeface(null, Typeface.BOLD)

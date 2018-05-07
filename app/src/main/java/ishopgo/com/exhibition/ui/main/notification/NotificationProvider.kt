@@ -12,5 +12,5 @@ interface NotificationProvider {
     fun provideShortDescription(): String
     fun provideCreatedAt(): String
     fun provideSender(): String
-    fun provideIsRead(): Int
+    fun provideWasRed(): Boolean
 }

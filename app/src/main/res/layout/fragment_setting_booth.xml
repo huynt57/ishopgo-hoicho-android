@@ -2,8 +2,9 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:windowSoftInputMode="adjustResize"
+    android:orientation="vertical"
+    android:id="@+id/view_scrollview">
 
 
     <LinearLayout
@@ -23,7 +24,7 @@
             android:paddingEnd="16dp"
             android:paddingStart="16dp"
             android:paddingTop="8dp"
-            android:text="Thông tin sản phẩm"
+            android:text="Thông tin gian hàng"
             android:textColor="@color/md_white_1000"
             android:textSize="16sp" />
 
@@ -46,7 +47,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_name"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tên gian hàng*"
@@ -65,7 +66,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_hotline"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Số hotline"
@@ -83,7 +84,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_infor"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Thông tin gian hàng"
@@ -101,7 +102,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_introduction"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Giới thiệu gian hàng"
@@ -120,7 +121,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_address"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Địa chỉ"

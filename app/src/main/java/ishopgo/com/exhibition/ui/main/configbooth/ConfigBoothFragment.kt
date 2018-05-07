@@ -1,13 +1,16 @@
 package ishopgo.com.exhibition.ui.main.configbooth
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -26,17 +29,22 @@ class ConfigBoothFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_setting_booth, container, false)
     }
 
+    private var isEditMode = false
+
     private lateinit var viewModel: ConfigBoothViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        img_setting_booth.setOnClickListener { launchPickPhotoIntent() }
-
         btn_create_booth.setOnClickListener {
-            if (checkRequireFields(image, tv_setting_booth_name.text.toString())) {
-                showProgressDialog()
-                viewModel.editConfigBooth(tv_setting_booth_name.text.toString(), tv_setting_booth_hotline.text.toString(),
-                        tv_setting_booth_infor.text.toString(), tv_setting_booth_introduction.text.toString(), tv_setting_booth_address.text.toString(), image)
+            if (!isEditMode) {
+                startEditing()
+                isEditMode = true
+            } else {
+                if (checkRequireFields(tv_setting_booth_name.text.toString())) {
+                    showProgressDialog()
+                    viewModel.editConfigBooth(tv_setting_booth_name.text.toString(), tv_setting_booth_hotline.text.toString(),
+                            tv_setting_booth_infor.text.toString(), tv_setting_booth_introduction.text.toString(), tv_setting_booth_address.text.toString(), image)
+                }
             }
         }
     }
@@ -62,7 +70,9 @@ class ConfigBoothFragment : BaseFragment() {
         viewModel.editSusscess.observe(this, Observer {
             it?.let {
                 hideProgressDialog()
-                toast("Tạo thành thành công")
+                stopEditing()
+                isEditMode = false
+                toast("Cập nhật thành thành công")
             }
         })
 
@@ -73,7 +83,6 @@ class ConfigBoothFragment : BaseFragment() {
                 tv_setting_booth_introduction.setText(it.provideIntroduction())
                 tv_setting_booth_infor.setText(it.provideInfo())
                 tv_setting_booth_address.setText(it.provideAddress())
-                image = it.provideBanner()
 
                 Glide.with(context)
                         .load(it.provideBanner())
@@ -104,17 +113,55 @@ class ConfigBoothFragment : BaseFragment() {
         }
     }
 
-    private fun checkRequireFields(image: String, name: String): Boolean {
-        if (image.trim().isEmpty()) {
-            toast("Ảnh sản phẩm không được để trống")
-            return false
-        }
-
+    private fun checkRequireFields(name: String): Boolean {
         if (name.trim().isEmpty()) {
             toast("Tên gian hàng không được để trống")
             tv_setting_booth_name.error = "Trường này còn trống"
             return false
         }
         return true
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun stopEditing() {
+        img_setting_booth.setOnClickListener(null)
+        tv_setting_booth_name.isFocusable = false
+        tv_setting_booth_name.isFocusableInTouchMode = false
+        tv_setting_booth_hotline.isFocusable = false
+        tv_setting_booth_hotline.isFocusableInTouchMode = false
+        tv_setting_booth_introduction.isFocusable = false
+        tv_setting_booth_introduction.isFocusableInTouchMode = false
+        tv_setting_booth_infor.isFocusable = false
+        tv_setting_booth_infor.isFocusableInTouchMode = false
+        tv_setting_booth_address.isFocusable = false
+        tv_setting_booth_address.isFocusableInTouchMode = false
+
+        view_scrollview.smoothScrollTo(0, 0)
+        btn_create_booth.text = "Cập nhật"
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun startEditing() {
+        img_setting_booth.setOnClickListener {
+            launchPickPhotoIntent()
+        }
+        tv_setting_booth_name.isFocusable = true
+        tv_setting_booth_name.isFocusableInTouchMode = true
+        tv_setting_booth_hotline.isFocusable = true
+        tv_setting_booth_hotline.isFocusableInTouchMode = true
+        tv_setting_booth_introduction.isFocusable = true
+        tv_setting_booth_introduction.isFocusableInTouchMode = true
+        tv_setting_booth_infor.isFocusable = true
+        tv_setting_booth_infor.isFocusableInTouchMode = true
+        tv_setting_booth_address.isFocusable = true
+        tv_setting_booth_address.isFocusableInTouchMode = true
+
+        tv_setting_booth_name.requestFocus()
+        val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(tv_setting_booth_name, 0)
+
+        view_scrollview.smoothScrollTo(0, 0)
+
+        btn_create_booth.text = "Xong"
     }
 }
