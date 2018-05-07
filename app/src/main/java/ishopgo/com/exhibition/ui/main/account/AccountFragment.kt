@@ -22,6 +22,7 @@ import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
+import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
