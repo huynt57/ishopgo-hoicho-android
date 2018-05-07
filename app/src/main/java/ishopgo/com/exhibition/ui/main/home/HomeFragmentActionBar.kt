@@ -41,15 +41,12 @@ class HomeFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
         titleView.setTextColor(resources.getColor(R.color.md_grey_700))
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
         titleView.setOnClickListener { mainViewModel.enableSearch() }
+        titleView.drawableCompat(0, 0, R.drawable.ic_search_24dp, 0)
         toolbar.leftButton(R.drawable.ic_drawer_toggle_24dp)
         toolbar.setLeftButtonClickListener {
             if (!drawer_layout.isDrawerVisible(Gravity.START))
                 drawer_layout.openDrawer(Gravity.START);
             else drawer_layout.closeDrawer(Gravity.START);
-        }
-        toolbar.rightButton(R.drawable.ic_search_24dp)
-        toolbar.setRightButtonClickListener {
-            mainViewModel.enableSearch()
         }
     }
 

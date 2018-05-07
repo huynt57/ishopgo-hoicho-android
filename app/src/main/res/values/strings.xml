@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Exhibition</string>
+    <string name="app_name">iShopgo EXPO</string>
     <string name="error_no_connection">No Connection</string>
     <string name="waiting">loading ...</string>
     <string name="tab_message">Tin nhắn</string>

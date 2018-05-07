@@ -58,7 +58,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
         val loadMore = ShopRatesRequest()
-        val item = adapter.getItem(adapter.itemCount)
+        val item = adapter.getItem(adapter.itemCount - 1)
         if (item is IdentityData) {
             loadMore.limit = Const.PAGE_LIMIT
             loadMore.offset = currentCount

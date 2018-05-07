@@ -11,7 +11,7 @@ import java.net.UnknownHostException
 /**
  * Created by xuanhong on 1/6/18. HappyCoding!
  */
-open abstract class BaseSingleObserver<T> : DisposableSingleObserver<BaseResponse<T>>(), IResponse<T> {
+abstract class BaseSingleObserver<T> : DisposableSingleObserver<BaseResponse<T>>(), IResponse<T> {
 
     override fun onError(e: Throwable?) {
         when (e) {

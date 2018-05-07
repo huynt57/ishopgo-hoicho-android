@@ -25,7 +25,7 @@ import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothViewModel
 import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
-import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewMode
+import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
 import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
 import ishopgo.com.exhibition.ui.splash.SplashViewModel
@@ -40,6 +40,8 @@ interface AppComponent {
     fun authService(): ApiService.Auth
 
     fun noAuthService(): ApiService.NoAuth
+
+    fun isgService(): ApiService.ISGApi
 
     interface Injectable {
         fun inject(appComponent: AppComponent)
@@ -56,7 +58,7 @@ interface AppComponent {
     fun inject(productCommentViewModel: ProductCommentViewModel)
     fun inject(shopDetailViewModel: ShopDetailViewModel)
     fun inject(shopInfoViewModel: ShopInfoViewModel)
-    fun inject(categoryViewMode: CategoryViewMode)
+    fun inject(categoryViewMode: CategoryViewModel)
     fun inject(accountViewModel: AccountViewModel)
     fun inject(profileViewModel: ProfileViewModel)
     fun inject(communityViewModel: CommunityViewModel)

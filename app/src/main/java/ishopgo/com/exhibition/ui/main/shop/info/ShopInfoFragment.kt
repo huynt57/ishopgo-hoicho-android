@@ -63,7 +63,6 @@ class ShopInfoFragment : BaseFragment() {
         sharedViewModel.updateShopImage(info.provideImage())
 
         view_name.text = "Tên: <b>${info.provideName()}</b>".asHtml()
-        view_pic.text = "Người phụ trách: <b>${info.providePIC()}</b>".asHtml()
         view_product_count.text = "Số sản phẩm: <b>${info.provideProductCount()} sản phẩm</b>".asHtml()
         view_joined_date.text = "Ngày tham gia: <b>${info.provideJoinedDate()}</b>".asHtml()
         view_region.text = "Khu vực: <b>${info.provideRegion()}</b>".asHtml()

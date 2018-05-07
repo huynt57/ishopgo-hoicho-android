@@ -14,4 +14,6 @@ open class BaseApiViewModel : BaseViewModel() {
     @Inject
     lateinit var noAuthService: ApiService.NoAuth
 
+    @Inject
+    lateinit var isgService: ApiService.ISGApi
 }

@@ -45,6 +45,9 @@ class ApiService {
         @GET("relate-products")
         fun getRelateProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
+        @GET("get-product-booth/{id}")
+        fun getBoothProducts(@Path("id") boothId: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+
         @GET("comment-product/{id}")
         fun getProductComments(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
 
@@ -81,6 +84,9 @@ class ApiService {
         fun getOTP(
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
+
+        @GET("shop/{id}")
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
     }
 
     interface Auth {
@@ -152,6 +158,15 @@ class ApiService {
         fun editConfigBooth(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
+    }
+
+    interface ISGApi {
+
+        @POST("refresh-token")
+        fun refreshToken(): Single<BaseResponse<RefreshTokenResponse>>
+
+        @GET("notifications")
+        fun getNotifications(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Notification>>>
     }
 
 }

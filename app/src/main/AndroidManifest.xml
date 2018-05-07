@@ -18,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="b82480c69b88e0d7fc2629ac7e2b90d14e5bfdc8"/>
+
         <activity
             android:name="ishopgo.com.exhibition.ui.splash.SplashActivity"
             android:launchMode="singleTop"
