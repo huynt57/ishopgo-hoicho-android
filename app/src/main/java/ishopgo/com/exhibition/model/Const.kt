@@ -33,8 +33,8 @@ object Const {
         const val ACTION_CHANGE_PASSWORD = 2
         const val ACTION_LOGOUT = 3
         const val ACTION_REPORT = 4
-        const val ACTION_SETTING_BOTTH = 4
-        const val ACTION_NOTIFICATION = 5
+        const val ACTION_SETTING_BOTTH = 5
+        const val ACTION_NOTIFICATION = 6
     }
 
     val colors = arrayOf(
