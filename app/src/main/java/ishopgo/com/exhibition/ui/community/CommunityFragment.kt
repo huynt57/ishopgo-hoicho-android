@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
@@ -27,7 +28,6 @@ import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
-import android.net.Uri
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -228,6 +228,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
             builder.setPositiveButton("Đăng nhập") { dialog, _ ->
                 dialog.dismiss()
                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
             }

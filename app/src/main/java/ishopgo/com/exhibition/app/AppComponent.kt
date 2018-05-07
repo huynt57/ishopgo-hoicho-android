@@ -39,6 +39,8 @@ interface AppComponent {
 
     fun noAuthService(): ApiService.NoAuth
 
+    fun isgService(): ApiService.ISGApi
+
     interface Injectable {
         fun inject(appComponent: AppComponent)
     }

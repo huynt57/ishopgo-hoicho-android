@@ -70,6 +70,7 @@ class AccountFragment : BaseFragment() {
 
             view_profile_current.setOnClickListener {
                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
             }
@@ -125,9 +126,10 @@ class AccountFragment : BaseFragment() {
         })
         viewModel.loggedOut.observe(this, Observer { m ->
             m?.let {
-                UserDataManager.delete_user_data_manager()
+                UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
             }

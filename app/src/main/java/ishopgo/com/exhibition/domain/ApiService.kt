@@ -151,4 +151,13 @@ class ApiService {
         ): Single<BaseResponse<Any>>
     }
 
+    interface ISGApi {
+
+        @POST("refresh-token")
+        fun refreshToken(): Single<BaseResponse<RefreshTokenResponse>>
+
+        @GET("notifications")
+        fun getNotifications(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Notification>>>
+    }
+
 }

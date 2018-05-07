@@ -178,6 +178,7 @@ class ProductDetailFragment : BaseFragment() {
             builder.setPositiveButton("Đăng nhập") { dialog, _ ->
                 dialog.dismiss()
                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
             }

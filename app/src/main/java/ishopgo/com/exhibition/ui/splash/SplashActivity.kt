@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
@@ -35,6 +36,7 @@ class SplashActivity : BaseActivity() {
                 finish()
             } else {
                 val intent = Intent(this@SplashActivity, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 finish()
             }

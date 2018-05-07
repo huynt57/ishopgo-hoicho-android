@@ -69,6 +69,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         context?.let {
             if (hasCameraPermission(it)) {
                 view_request_camera_permission.visibility = View.GONE
+                view_notice_permission.visibility = View.GONE
                 resumeCamera()
             } else {
                 requestCameraPermission()
@@ -95,23 +96,10 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     private fun requestCameraPermission() {
         activity?.let {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(it, Manifest.permission.CAMERA)) {
-                MaterialDialog.Builder(it)
-                        .title("Chú ý")
-                        .positiveText("OK")
-                        .content("Quét mã vạch cần quyền truy cập camera!")
-                        .onPositive { _, _ ->
-                            requestPermissions(arrayOf(Manifest.permission.CAMERA), Const.RequestCode.CAMERA_PERMISSION)
-                        }
-                        .show()
-            } else {
-                view_request_camera_permission.visibility = View.VISIBLE
-                view_request_camera_permission.setOnClickListener {
-                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                            Uri.fromParts("package", it.context.packageName, null))
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                }
+            view_request_camera_permission.visibility = View.VISIBLE
+            view_notice_permission.visibility = View.VISIBLE
+            view_request_camera_permission.setOnClickListener {
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), Const.RequestCode.CAMERA_PERMISSION)
             }
         }
     }
@@ -123,6 +111,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             val hasCallPermission = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             if (hasCallPermission) {
                 view_request_camera_permission.visibility = View.GONE
+                view_notice_permission.visibility = View.GONE
                 resumeCamera()
             } else {
                 context?.let {

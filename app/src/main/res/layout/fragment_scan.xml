@@ -52,6 +52,18 @@
         app:layout_constraintTop_toTopOf="@+id/guideline3"
         app:srcCompat="@drawable/bg_rounded_rectangle"/>
 
+    <TextView
+        android:id="@+id/view_notice_permission"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Quét mã vạch cần quyền truy cập camera"
+        app:layout_constraintBottom_toTopOf="@id/guideline3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
     <android.support.constraint.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
