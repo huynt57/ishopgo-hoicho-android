@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.ProductLike
@@ -35,7 +36,7 @@ class ApiService {
         @GET("search-product")
         fun searchProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("search-booth")
+        @GET("search-BOOTH")
         fun searchShops(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Shop>>>
 
         @GET("product/{id}")
@@ -141,6 +142,14 @@ class ApiService {
         @POST("comment-product/{id}")
         fun postCommentProduct(
                 @Path("id") product_id: Long,
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
+
+        @GET("config")
+        fun getConfigBooth(): Single<BaseResponse<Booth>>
+
+        @POST("config/update")
+        fun editConfigBooth(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
     }

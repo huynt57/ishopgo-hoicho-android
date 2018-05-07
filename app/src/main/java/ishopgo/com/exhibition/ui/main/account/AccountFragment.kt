@@ -18,7 +18,9 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
+import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -90,6 +92,12 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_LOGOUT -> {
                 logout()
             }
+            Const.AccountAction.ACTION_SETTING_BOTTH -> {
+                openSettingBoothActivity()
+            }
+            Const.AccountAction.ACTION_NOTIFICATION -> {
+                openNotificationActivity()
+            }
             else -> {
             }
         }
@@ -102,6 +110,20 @@ class AccountFragment : BaseFragment() {
     private fun openChangePassword() {
         context?.let {
             val intent = Intent(it, ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openSettingBoothActivity() {
+        context?.let {
+            val intent = Intent(it, ConfigBoothActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openNotificationActivity() {
+        context?.let {
+            val intent = Intent(it, NotificationActivity::class.java)
             startActivity(intent)
         }
     }
