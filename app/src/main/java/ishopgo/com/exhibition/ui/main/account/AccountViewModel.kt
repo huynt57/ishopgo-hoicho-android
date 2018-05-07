@@ -103,7 +103,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_CHANGE_PASSWORD,
+                    Const.AccountAction.ACTION_NOT_AVALIBLE,
                     R.drawable.ic_finger,
                     "Quản lý thành viên"
             ))
@@ -179,9 +179,9 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
 
         items.add(AccountMenuItem(
-                Const.AccountAction.ACTION_NOT_AVALIBLE,
+                Const.AccountAction.ACTION_REPORT,
                 R.drawable.ic_finger,
-                "Báo lỗi - Đóng góp - Cộng đồng"
+                "Báo lỗi - Đóng góp"
         ))
 
         items.add(AccountMenuItem(

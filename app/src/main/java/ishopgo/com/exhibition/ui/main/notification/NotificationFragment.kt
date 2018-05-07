@@ -18,7 +18,6 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.notification.add.NotificationAddActivity
-import ishopgo.com.exhibition.ui.main.notification.detail.NotificationDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
@@ -26,8 +25,6 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  * Created by hoangnh on 5/7/2018.
  */
 class NotificationFragment : BaseListFragment<List<NotificationProvider>, NotificationProvider>() {
-
-    private lateinit var viewModelNotification: NotificationViewModel
 
     companion object {
         const val TAG = "NotificationAddFragment"
@@ -79,7 +76,9 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
     }
 
     fun marksAllAsRead() {
-        viewModelNotification.marksAllAsRead()
+        if (viewModel is NotificationViewModel) {
+            (viewModel as NotificationViewModel).marksAllAsRead()
+        }
         showProgressDialog()
     }
 
@@ -90,7 +89,9 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
         if (adapter is ClickableAdapter<NotificationProvider>) {
             (adapter as ClickableAdapter<NotificationProvider>).listener = object : ClickableAdapter.BaseAdapterAction<NotificationProvider> {
                 override fun click(position: Int, data: NotificationProvider, code: Int) {
-                    viewModelNotification.markAsReadThenShowDetail(data.provideId())
+                    if (viewModel is NotificationViewModel) {
+                        (viewModel as NotificationViewModel).markAsReadThenShowDetail(data.provideId())
+                    }
                 }
             }
         }
@@ -98,24 +99,19 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModelNotification = obtainViewModel(NotificationViewModel::class.java, false)
-        viewModelNotification.errorSignal.observe(this, Observer { error ->
-            error?.let {
+
+        if (viewModel is NotificationViewModel) {
+            (viewModel as NotificationViewModel).marksAllSuccess.observe(this, Observer {
                 hideProgressDialog()
-                resolveError(it)
-            }
-        })
+                firstLoad()
+            })
 
-        viewModelNotification.marksAllSuccess.observe(this, Observer {
-            hideProgressDialog()
-            firstLoad()
-        })
-
-        viewModelNotification.markNotificationSuccess.observe(this, Observer {
-            toast("Xem chi tiết thông báo")
+            (viewModel as NotificationViewModel).markNotificationSuccess.observe(this, Observer {
+                toast("Xem chi tiết thông báo")
 //            val intent = Intent(context, NotificationDetailActivity::class.java)
 //            startActivityForResult(intent, Const.RequestCode.NOTIFICATION_DETAIL)
-        })
+            })
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

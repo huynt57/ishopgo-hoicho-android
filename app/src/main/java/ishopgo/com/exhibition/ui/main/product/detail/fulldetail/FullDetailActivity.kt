@@ -13,5 +13,9 @@ class FullDetailActivity : BaseSingleFragmentActivity() {
         return FullDetailFragment.newInstance(startupOption)
     }
 
+    override fun startupOptions(): Bundle {
+        return intent?.extras ?: Bundle()
+    }
+
 
 }

@@ -21,6 +21,7 @@ import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
+import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -90,6 +91,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_CHANGE_PASSWORD -> {
                 openChangePassword()
             }
+            Const.AccountAction.ACTION_REPORT -> {
+                openReportActivity()
+            }
             Const.AccountAction.ACTION_LOGOUT -> {
                 logout()
             }
@@ -100,7 +104,15 @@ class AccountFragment : BaseFragment() {
                 openNotificationActivity()
             }
             else -> {
+                toast("Đang phát triển")
             }
+        }
+    }
+
+    private fun openReportActivity() {
+        context?.let {
+            val intent = Intent(it, ReportActivity::class.java)
+            startActivity(intent)
         }
     }
 

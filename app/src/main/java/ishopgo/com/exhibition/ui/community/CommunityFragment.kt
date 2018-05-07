@@ -20,8 +20,8 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.community.CommunityComment.CommunityCommentActivity
-import ishopgo.com.exhibition.ui.community.CommunityShare.CommunityShareActivity
+import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
