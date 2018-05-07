@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.community.CommunityComment
+package ishopgo.com.exhibition.ui.community.comment
 
 import android.support.v7.widget.GridLayoutManager
 import android.view.View

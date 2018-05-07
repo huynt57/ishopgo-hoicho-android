@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.product.detail.fulldetail
+package ishopgo.com.exhibition.ui.main.report
 
 import android.os.Bundle
 import android.view.View
@@ -7,14 +7,14 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
- * Created by xuanhong on 4/21/18. HappyCoding!
+ * Created by xuanhong on 5/7/18. HappyCoding!
  */
-class FullDetailFragment : BaseActionBarFragment() {
+class ReportFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
 
-        fun newInstance(params: Bundle): FullDetailFragment {
-            val fragment = FullDetailFragment()
+        fun newInstance(params: Bundle): ReportFragmentActionBar {
+            val fragment = ReportFragmentActionBar()
             fragment.arguments = params
 
             return fragment
@@ -31,18 +31,17 @@ class FullDetailFragment : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, WebViewFragment.newInstance(arguments
+                .replace(R.id.view_main_content, ReportFragment.newInstance(arguments
                         ?: Bundle()))
                 .commit()
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Thông tin chi tiết")
+        toolbar.setCustomTitle("Bão lỗi - Đóng góp")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }
     }
-
 
 }

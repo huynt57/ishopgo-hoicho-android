@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.Gson
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductDetail
@@ -36,6 +35,7 @@ import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_detail.*
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
@@ -148,7 +148,7 @@ class ProductDetailFragment : BaseFragment() {
                     .into(view_favorite)
             view_product_price.text = product.provideProductPrice()
             view_product_brand.text = product.provideProductBrand()
-            view_product_description.text = product.provideProductShortDescription()
+            view_product_description.setHtml(product.provideProductShortDescription(), HtmlHttpImageGetter(view_product_description))
             view_shop_name.text = product.provideShopName()
             view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"
             view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm mới".asHtml()
@@ -165,6 +165,13 @@ class ProductDetailFragment : BaseFragment() {
             more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, productId) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
+            container_product_brand.setOnClickListener {
+                if (product is ProductDetail) {
+                    val brandId = product.department?.id ?: -1L
+                    if (brandId != -1L)
+                        showProductsOfBrand(brandId)
+                }
+            }
         }
     }
 
@@ -246,7 +253,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun showProductFullDescription(context: Context, product: ProductDetailProvider) {
         val intent = Intent(context, FullDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_JSON, Gson().toJson(product))
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, product.provideProductShortDescription())
         startActivity(intent)
     }
 
@@ -301,12 +308,11 @@ class ProductDetailFragment : BaseFragment() {
             }
 
         }
-
-        container_product_brand.setOnClickListener { showProductsOfBrand(productId) }
     }
 
-    private fun showProductsOfBrand(productId: Long) {
+    private fun showProductsOfBrand(brandId: Long) {
         val intent = Intent(context, ProductsOfBrandActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
         startActivity(intent)
     }
 

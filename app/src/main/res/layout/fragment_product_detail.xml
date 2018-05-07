@@ -151,7 +151,7 @@
             android:layout_width="match_parent"
             />
 
-        <TextView
+        <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/view_product_description"
             android:layout_width="match_parent"
             android:layout_height="250dp"

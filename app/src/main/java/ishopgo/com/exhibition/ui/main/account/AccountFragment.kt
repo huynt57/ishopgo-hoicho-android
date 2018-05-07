@@ -19,6 +19,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -88,11 +89,22 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_CHANGE_PASSWORD -> {
                 openChangePassword()
             }
+            Const.AccountAction.ACTION_REPORT -> {
+                openReportActivity()
+            }
             Const.AccountAction.ACTION_LOGOUT -> {
                 logout()
             }
             else -> {
+                toast("Đang phát triển")
             }
+        }
+    }
+
+    private fun openReportActivity() {
+        context?.let {
+            val intent = Intent(it, ReportActivity::class.java)
+            startActivity(intent)
         }
     }
 
