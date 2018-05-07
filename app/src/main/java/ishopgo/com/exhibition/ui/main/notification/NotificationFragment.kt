@@ -1,24 +1,34 @@
 package ishopgo.com.exhibition.ui.main.notification
 
+import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.Notification
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.Notification
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.notification.add.NotificationAddActivity
+import ishopgo.com.exhibition.ui.main.notification.detail.NotificationDetailActivity
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
  * Created by hoangnh on 5/7/2018.
  */
 class NotificationFragment : BaseListFragment<List<NotificationProvider>, NotificationProvider>() {
+
+    private lateinit var viewModelNotification: NotificationViewModel
+
     companion object {
         const val TAG = "NotificationAddFragment"
     }
@@ -66,5 +76,52 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
     fun openNotificationAdd() {
         val intent = Intent(context, NotificationAddActivity::class.java)
         startActivityForResult(intent, Const.RequestCode.NOTIFICATION_ADD)
+    }
+
+    fun marksAllAsRead() {
+        viewModelNotification.marksAllAsRead()
+        showProgressDialog()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        if (adapter is ClickableAdapter<NotificationProvider>) {
+            (adapter as ClickableAdapter<NotificationProvider>).listener = object : ClickableAdapter.BaseAdapterAction<NotificationProvider> {
+                override fun click(position: Int, data: NotificationProvider, code: Int) {
+                    viewModelNotification.markAsReadThenShowDetail(data.provideId())
+                }
+            }
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModelNotification = obtainViewModel(NotificationViewModel::class.java, false)
+        viewModelNotification.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                hideProgressDialog()
+                resolveError(it)
+            }
+        })
+
+        viewModelNotification.marksAllSuccess.observe(this, Observer {
+            hideProgressDialog()
+            firstLoad()
+        })
+
+        viewModelNotification.markNotificationSuccess.observe(this, Observer {
+            toast("Xem chi tiết thông báo")
+//            val intent = Intent(context, NotificationDetailActivity::class.java)
+//            startActivityForResult(intent, Const.RequestCode.NOTIFICATION_DETAIL)
+        })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.NOTIFICATION_DETAIL && resultCode == Activity.RESULT_OK) {
+            firstLoad()
+        }
     }
 }

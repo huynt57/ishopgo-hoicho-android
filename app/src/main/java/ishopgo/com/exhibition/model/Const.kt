@@ -24,6 +24,7 @@ object Const {
         const val UPDATE_PROFILE = 5
         const val SHARE_POST_COMMUNITY = 6
         const val NOTIFICATION_ADD = 7
+        const val NOTIFICATION_DETAIL = 8
     }
 
     object AccountAction {

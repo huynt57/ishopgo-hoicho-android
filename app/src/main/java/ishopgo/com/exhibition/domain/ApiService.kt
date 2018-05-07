@@ -36,7 +36,7 @@ class ApiService {
         @GET("search-product")
         fun searchProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("search-BOOTH")
+        @GET("search-booth")
         fun searchShops(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Shop>>>
 
         @GET("product/{id}")
@@ -167,6 +167,9 @@ class ApiService {
 
         @GET("notifications")
         fun getNotifications(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Notification>>>
+
+        @POST("read-notifications")
+        fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
 }

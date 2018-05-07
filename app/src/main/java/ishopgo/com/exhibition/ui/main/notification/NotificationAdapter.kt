@@ -13,10 +13,18 @@ import kotlinx.android.synthetic.main.item_notification.view.*
  */
 class NotificationAdapter : ClickableAdapter<NotificationProvider>() {
     override fun getChildLayoutResource(viewType: Int): Int {
-        return R.layout.item_notification    }
+        return R.layout.item_notification
+    }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<NotificationProvider> {
         return Holder(v)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder<NotificationProvider>, position: Int) {
+        super.onBindViewHolder(holder, position)
+        holder.apply {
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+        }
     }
 
     inner class Holder(v: View) : BaseRecyclerViewAdapter.ViewHolder<NotificationProvider>(v) {

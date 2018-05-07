@@ -46,6 +46,11 @@ class NotificationFragmentActionBar : BaseActionBarFragment() {
 
         toolbar.rightButton2(R.drawable.ic_done_all_black_24dp)
         toolbar.setRight2ButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(NotificationFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as NotificationFragment
+                shareFragment.marksAllAsRead()
+            }
         }
     }
 }
