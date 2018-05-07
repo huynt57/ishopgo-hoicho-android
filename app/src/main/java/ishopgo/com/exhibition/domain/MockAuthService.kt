@@ -7,7 +7,6 @@ import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
-import ishopgo.com.exhibition.model.User
 import okhttp3.RequestBody
 import retrofit2.mock.BehaviorDelegate
 import java.util.*

@@ -14,11 +14,10 @@ class ProductsOfShopViewModel : BaseListViewModel<List<ProductProvider>>(), AppC
     override fun loadData(params: Request) {
         if (params is SameShopProductsRequest) {
             val fields = mutableMapOf<String, Any>()
-            fields["product_id"] = params.productId
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
-            addDisposable(noAuthService.getRelateProducts(fields)
+            addDisposable(noAuthService.getBoothProducts(params.boothId, fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                         override fun success(data: List<Product>?) {

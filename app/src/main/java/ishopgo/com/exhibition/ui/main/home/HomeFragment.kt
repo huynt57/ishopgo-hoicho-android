@@ -14,8 +14,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -43,10 +45,10 @@ class HomeFragment : BaseFragment() {
     private lateinit var viewModel: HomeViewModel
     private lateinit var mainViewModel: MainViewModel
 
-    private val highlightProductAdapter = ProductAdapter()
+    private val highlightProductAdapter = ProductAdapter(0.4f)
     private val suggestedProductAdapter = ProductAdapter()
-    private val viewedProductAdapter = ProductAdapter()
-    private val favoriteProductAdapter = ProductAdapter()
+    private val viewedProductAdapter = ProductAdapter(0.4f)
+    private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val highlightBrandAdapter = HighlightBrandAdapter(0.4f)
     private val categoriesAdapter = CategoryAdapter()
     private var mPagerAdapter: FragmentPagerAdapter? = null
@@ -87,13 +89,13 @@ class HomeFragment : BaseFragment() {
         viewModel.favoriteProducts.observe(this, Observer { p ->
             p?.let {
                 favoriteProductAdapter.replaceAll(it)
-                view_list_referenced_products.scheduleLayoutAnimation()
+                view_list_favorite_products.scheduleLayoutAnimation()
             }
         })
         viewModel.viewedProducts.observe(this, Observer { p ->
             p?.let {
                 viewedProductAdapter.replaceAll(it)
-                view_list_referenced_products.scheduleLayoutAnimation()
+                view_list_viewed_products.scheduleLayoutAnimation()
             }
         })
         viewModel.highlightProducts.observe(this, Observer { p ->
@@ -173,40 +175,13 @@ class HomeFragment : BaseFragment() {
         setupSponsorsProducts(view.context)
         setupHighlightProducts(view.context)
         setupCategories(view.context)
+        setupViewedProducts(view.context)
+        setupFavoriteProducts(view.context)
 
         setupListeners()
-
-        startupParams()
-    }
-
-    private fun startupParams() {
-        label_favorite.isSelected = true
-        label_viewed.isSelected = false
-        label_suggest.isSelected = false
     }
 
     private fun setupListeners() {
-        label_suggest.setOnClickListener {
-            label_suggest.isSelected = true
-            label_viewed.isSelected = false
-            label_favorite.isSelected = false
-            view_list_referenced_products.adapter = suggestedProductAdapter
-        }
-
-        label_viewed.setOnClickListener {
-            label_suggest.isSelected = false
-            label_viewed.isSelected = true
-            label_favorite.isSelected = false
-            view_list_referenced_products.adapter = viewedProductAdapter
-        }
-
-        label_favorite.setOnClickListener {
-            label_suggest.isSelected = false
-            label_viewed.isSelected = false
-            label_favorite.isSelected = true
-            view_list_referenced_products.adapter = favoriteProductAdapter
-        }
-
         more_highlight_brand.setOnClickListener {
             openPopularBrands()
         }
@@ -310,25 +285,13 @@ class HomeFragment : BaseFragment() {
         viewModel.loadViewedProducts()
         viewModel.loadCategories()
         viewModel.loadBanners()
-    }
 
-    private fun setupReferencedProducts(context: Context) {
-        view_list_referenced_products.adapter = favoriteProductAdapter
-        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        layoutManager.isAutoMeasureEnabled = true
-        view_list_referenced_products.layoutManager = layoutManager
-        view_list_referenced_products.isNestedScrollingEnabled = false
-        view_list_referenced_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
-        view_list_referenced_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
-    }
-
-    private fun setupSponsorsProducts(context: Context) {
-        view_list_highlight_brand.adapter = highlightBrandAdapter
-        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
-        view_list_highlight_brand.layoutManager = layoutManager
-        view_list_highlight_brand.isNestedScrollingEnabled = false
-        view_list_highlight_brand.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
-        view_list_highlight_brand.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
+        if (UserDataManager.currentUserId > 0) {
+            val dummy = LoadMoreRequest()
+            dummy.limit = 20
+            dummy.offset = 0
+            viewModel.loadNotifications(dummy)
+        }
     }
 
     private fun openProductDetail(product: ProductProvider) {
@@ -351,14 +314,53 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    private fun setupReferencedProducts(context: Context) {
+        view_list_suggest_products.adapter = suggestedProductAdapter
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        layoutManager.isAutoMeasureEnabled = true
+        view_list_suggest_products.layoutManager = layoutManager
+        view_list_suggest_products.isNestedScrollingEnabled = false
+        view_list_suggest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_suggest_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
+    }
+
+    private fun setupSponsorsProducts(context: Context) {
+        view_list_highlight_brand.adapter = highlightBrandAdapter
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
+        view_list_highlight_brand.layoutManager = layoutManager
+        view_list_highlight_brand.isNestedScrollingEnabled = false
+        view_list_highlight_brand.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_highlight_brand.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
+    }
+
+    private fun setupViewedProducts(context: Context) {
+        view_list_viewed_products.adapter = viewedProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager.isAutoMeasureEnabled = true
+        view_list_viewed_products.layoutManager = layoutManager
+        view_list_viewed_products.isNestedScrollingEnabled = false
+        view_list_viewed_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_viewed_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
+    }
+
+    private fun setupFavoriteProducts(context: Context) {
+        view_list_favorite_products.adapter = favoriteProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager.isAutoMeasureEnabled = true
+        view_list_favorite_products.layoutManager = layoutManager
+        view_list_favorite_products.isNestedScrollingEnabled = false
+        view_list_favorite_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_favorite_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
+    }
+
     private fun setupHighlightProducts(context: Context) {
         view_list_highlight_products.adapter = highlightProductAdapter
-        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         layoutManager.isAutoMeasureEnabled = true
         view_list_highlight_products.layoutManager = layoutManager
         view_list_highlight_products.isNestedScrollingEnabled = false
         view_list_highlight_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
-        view_list_highlight_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
+        view_list_highlight_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 
     private fun setupCategories(context: Context) {

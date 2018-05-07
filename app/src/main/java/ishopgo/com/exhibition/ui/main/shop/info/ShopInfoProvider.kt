@@ -7,7 +7,6 @@ interface ShopInfoProvider {
 
     fun provideName(): String
     fun provideImage(): String
-    fun providePIC(): String
     fun provideProductCount(): Int
     fun provideJoinedDate(): String
     fun provideRegion(): String

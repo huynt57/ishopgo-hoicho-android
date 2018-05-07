@@ -12,6 +12,7 @@ object UserDataManager {
     private const val KEY_ACCESS_TOKEN = "access_token"
     private const val KEY_APP_ID = "app_id"
     private const val KEY_USER_ID = "user_id"
+    private const val KEY_PASS_LOGIN_SCREEN = "pass_login_screen"
     private const val KEY_USER_AVATAR = "user_avatar"
     private const val KEY_USER_PHONE = "user_phone"
     private const val KEY_USER_NAME = "user_name"
@@ -38,6 +39,10 @@ object UserDataManager {
     var currentType: String
         get() = pref.getString(KEY_USER_TYPE, "")
         set(value) = pref.edit().putString(KEY_USER_TYPE, value).apply()
+    var passLoginScreen: Long
+        get() = pref.getLong(KEY_PASS_LOGIN_SCREEN, -1L)
+        set(value) = pref.edit().putLong(KEY_PASS_LOGIN_SCREEN, value).apply()
+
 
     var displayWidth: Int = 0
     var displayHeight: Int = 0
@@ -54,8 +59,15 @@ object UserDataManager {
         displayHeight = displayMetrics.heightPixels
     }
 
-    fun delete_user_data_manager() {
-        pref.edit().clear().apply()
+    fun deleteUserInfo() {
+        val edit = pref.edit()
+        edit.remove(KEY_ACCESS_TOKEN)
+        edit.remove(KEY_USER_AVATAR)
+        edit.remove(KEY_USER_ID)
+        edit.remove(KEY_USER_NAME)
+        edit.remove(KEY_USER_PHONE)
+        edit.remove(KEY_USER_TYPE)
+        edit.apply()
     }
 
 }

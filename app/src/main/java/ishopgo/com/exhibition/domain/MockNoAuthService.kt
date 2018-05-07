@@ -15,6 +15,36 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getBoothProducts(boothId: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getBoothProducts(boothId, params)
+    }
+
+    override fun getShopInfo(id: Long): Single<BaseResponse<ShopDetail>> {
+        val d = ShopDetail()
+        d.id = 17354
+        d.name = "Gian hàng hội chợ"
+        d.introduction = "Gian hàng trưng bày các sản phẩm mỹ phẩm chất lượng cao"
+        d.hotline = "0917577795"
+        d.info = "Thông tin thì cùng không có gì nhiều."
+        d.banner = "https://static.ishopgo.com/17288/32cc917eabe0af0d905421071f4804f7bannerjpg.jpg"
+        d.address = null
+        d.productCount = 8
+        d.rate = 4
+
+        val response = BaseResponse<ShopDetail>()
+        response.status = 1
+        response.data = d
+        return delegate.returningResponse(response).getShopInfo(id)
+    }
+
     override fun getCommentCommunity(post_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<CommunityComment>>> {
         val ps = mutableListOf<CommunityComment>()
         for (i in 0..5)
@@ -299,8 +329,8 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
     private fun generateProduct(): Product {
         val p = Product()
         p.id = random.nextInt(1000).toLong()
-        p.image = "https://static.ishopgo.com/17288/clone-5ac88a12d51431523091986."
-        p.name = "Thảo dược giảm cân Sen Quỳnh"
+        p.image = "https://ishopgo.com/local/files/11793/clone-5a3c7e16148537e649a88ce4d2f28da1a1ae9ab1c48d2lotion-duong-da-toan-than-napie-skinjpg.jpg"
+        p.name = "Lotion dưỡng trắng da toàn thân NAPIE SKIN WHITENING BODY LOTION"
         p.ttPrice = 50000
         p.price = 45000
         return p
@@ -309,8 +339,8 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
     private fun generateBrand(): Brand {
         val b = Brand()
         b.id = random.nextInt(1000).toLong()
-        b.logo = "https://static.ishopgo.com/17288/clone-5ac88a12d51431523091986."
-        b.name = "Thảo dược giảm cân Sen Quỳnh"
+        b.logo = "https://s3-ap-southeast-1.amazonaws.com/ishopgo/11793/d2deb19a06df9d842fb60a966f1d2b9amy-pham-cao-cap-tphcm-napie-skinpng.png"
+        b.name = "Mỹ phẩm cao cấp Napie Skin"
         return b
     }
 
@@ -321,7 +351,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         b.shopId = 17288
         b.content = "Chào các bạn"
         b.accountId = 18396
-        b.accountName = "Nguyễn Nam Phong"
+        b.accountName = "Vương Xuân Hồng"
         b.accountImage = "http://uptheme.ishopgo.com/files//tmp/phpzwxAWr"
 
         if (i % 3 == 0) {
@@ -368,8 +398,8 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
 
     companion object {
         private val images = mutableListOf(
-                "http://1.bp.blogspot.com/-y1UTm1XVdbI/U0eBjHlNymI/AAAAAAAABFg/IMtJO_CEf0o/s1600/Revlon+Lipstick+Banner+3.jpg",
-                "http://winkandasmilemakeup.com/wp-content/uploads/parser/makeup-banner-1.png",
+                "https://s3-ap-southeast-1.amazonaws.com/ishopgo/11793/f769e1fef23eaafe759aec2279a08162np7jpg.jpg",
+                "https://s3-ap-southeast-1.amazonaws.com/ishopgo/11793/25ceed8b8b8b1462d3b205b671379771np4jpg.jpg",
                 "https://s3.amazonaws.com/pikpsdnw/wp-content/uploads/2017/11/19123047/91.jpg",
                 "http://corp.sasa.com/wps/wcm/connect/c5057d3f-34fa-4460-9aff-e46559c9ec42/CYB_Rosy+Makeup+line_Lipstick_Web+banner_20161125-01.jpg?MOD=AJPERES&CACHEID=c5057d3f-34fa-4460-9aff-e46559c9ec42"
         )

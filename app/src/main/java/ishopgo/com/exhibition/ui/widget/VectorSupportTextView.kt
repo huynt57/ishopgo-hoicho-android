@@ -35,18 +35,18 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
                 dBottom = attributeArray.getDrawable(R.styleable.VectorSupportTextView_drawableBottomCompat)
                 dTop = attributeArray.getDrawable(R.styleable.VectorSupportTextView_drawableTopCompat)
             } else {
-                val drawableStartId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableStartCompat, -1)
-                val drawableEndId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableEndCompat, -1)
-                val drawableBottomId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableBottomCompat, -1)
-                val drawableTopId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableTopCompat, -1)
+                val drawableStartId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableStartCompat, 0)
+                val drawableEndId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableEndCompat, 0)
+                val drawableBottomId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableBottomCompat, 0)
+                val drawableTopId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableTopCompat, 0)
 
-                if (drawableStartId != -1)
+                if (drawableStartId != 0)
                     dStart = AppCompatResources.getDrawable(context, drawableStartId)
-                if (drawableEndId != -1)
+                if (drawableEndId != 0)
                     dEnd = AppCompatResources.getDrawable(context, drawableEndId)
-                if (drawableBottomId != -1)
+                if (drawableBottomId != 0)
                     dBottom = AppCompatResources.getDrawable(context, drawableBottomId)
-                if (drawableTopId != -1)
+                if (drawableTopId != 0)
                     dTop = AppCompatResources.getDrawable(context, drawableTopId)
             }
 
@@ -56,19 +56,19 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
         }
     }
 
-    fun drawableCompat(@DrawableRes startResId: Int = -1, @DrawableRes topResId: Int = -1, @DrawableRes endResId: Int = -1, @DrawableRes bottomResId: Int = -1) {
+    fun drawableCompat(@DrawableRes startResId: Int = 0, @DrawableRes topResId: Int = 0, @DrawableRes endResId: Int = 0, @DrawableRes bottomResId: Int = 0) {
         var dStart: Drawable? = null
         var dEnd: Drawable? = null
         var dBottom: Drawable? = null
         var dTop: Drawable? = null
 
-        if (startResId != -1)
+        if (startResId != 0)
             dStart = AppCompatResources.getDrawable(context, startResId)
-        if (endResId != -1)
+        if (endResId != 0)
             dEnd = AppCompatResources.getDrawable(context, endResId)
-        if (bottomResId != -1)
+        if (bottomResId != 0)
             dBottom = AppCompatResources.getDrawable(context, bottomResId)
-        if (topResId != -1)
+        if (topResId != 0)
             dTop = AppCompatResources.getDrawable(context, topResId)
 
         setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)

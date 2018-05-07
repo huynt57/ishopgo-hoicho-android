@@ -11,12 +11,12 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
  * Created by xuanhong on 4/25/18. HappyCoding!
  */
 class ScanFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
+
     override fun onBackPressConsumed(): Boolean {
         return false
     }
 
     companion object {
-
         fun newInstance(params: Bundle): ScanFragmentActionBar {
             val fragment = ScanFragmentActionBar()
             fragment.arguments = params
@@ -42,5 +42,16 @@ class ScanFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
                 .replace(R.id.view_main_content, ScanFragment())
                 .commit()
     }
+
+    fun pauseCamera() {
+//        if (scanFragment.isAdded)
+//            scanFragment.pauseCamera()
+    }
+
+    fun resumeCamera() {
+//        if (scanFragment.isAdded)
+//            scanFragment.resumeCamera()
+    }
+
 
 }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.gson.Gson
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -105,15 +105,8 @@ class ProductDetailFragment : BaseFragment() {
 
         viewModel.getProductLike.observe(this, Observer { c ->
             c?.let {
-                if (it.status == 0)
-                    Glide.with(context)
-                            .load(R.drawable.ic_added_to_favorite_24dp)
-                            .apply(RequestOptions()
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.image_placeholder))
-                            .into(view_favorite)
-                else Glide.with(context)
-                        .load(R.drawable.ic_add_to_favorite_24dp)
+                Glide.with(context)
+                        .load(if (it.status == 1) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder))
@@ -122,7 +115,8 @@ class ProductDetailFragment : BaseFragment() {
         })
 
         viewModel.postLikeSuccess.observe(this, Observer {
-            viewModel.getProductLike(productId)
+            if (UserDataManager.currentUserId > 0)
+                viewModel.getProductLike(productId)
         })
 
         loadData(productId)
@@ -146,12 +140,17 @@ class ProductDetailFragment : BaseFragment() {
                 view_share.setOnClickListener { showDialogLogin() }
             }
 
-
+            Glide.with(context)
+                    .load(if (product.provideLiked()) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
+                    .apply(RequestOptions()
+                            .placeholder(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
+                    .into(view_favorite)
             view_product_price.text = product.provideProductPrice()
             view_product_brand.text = product.provideProductBrand()
             view_product_description.text = product.provideProductShortDescription()
             view_shop_name.text = product.provideShopName()
-            view_shop_region.text = product.provideShopRegion()
+            view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"
             view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm mới".asHtml()
             view_shop_rating.text = "<b>${product.provideShopRateCount()}</b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${product.provideProductLikeCount()} thích"
@@ -171,27 +170,22 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun showDialogLogin() {
         context?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Thông báo")
-            builder.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
-            builder.setPositiveButton("Đăng nhập") { dialog, _ ->
-                dialog.dismiss()
-                val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-            }
+            val builder = MaterialDialog.Builder(it)
+            builder.title("Thông báo")
+                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
+                    .positiveText("Đăng nhập")
+                    .positiveColor(Color.parseColor("#00c853"))
+                    .onPositive { dialog, _ ->
+                        dialog.dismiss()
+                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                    .negativeText("Bỏ qua")
+                    .negativeColor(Color.parseColor("#00c853"))
+                    .show()
 
-            builder?.setNegativeButton("Bỏ qua") { dialog, _ ->
-                dialog.dismiss()
-            }
-            val dialog = builder.create()
-            dialog?.show()
-
-            val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
-            positiveButton?.setTextColor(Color.parseColor("#00c853"))
-
-            val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
-            negativeButton?.setTextColor(Color.parseColor("#00c853"))
         }
     }
 
@@ -265,11 +259,15 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun messageShop(context: Context, product: ProductDetailProvider) {
-
+        // gui tin nhan cho shop
     }
 
     private fun callShop(context: Context, product: ProductDetailProvider) {
-
+        val phoneNumber = product.provideShopPhone()
+        val call = Uri.parse("tel:" + phoneNumber)
+        val intent = Intent(Intent.ACTION_DIAL, call)
+        if (intent.resolveActivity(context.packageManager) != null)
+            startActivity(intent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -338,11 +336,10 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun openShopDetail(context: Context, product: ProductDetailProvider) {
-        // find brand id of this product
-        if (product is IdentityData) {
-            val brandId = product.id
+        if (product is ProductDetail) {
+            val boothId = product.booth?.id
             val intent = Intent(context, ShopDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
             startActivity(intent)
         }
     }
@@ -353,7 +350,6 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.loadViewedProducts(productId)
         viewModel.loadProductDetail(productId)
         viewModel.loadProductComments(productId)
-        viewModel.getProductLike(productId)
     }
 
     private fun setupProductComments(context: Context) {

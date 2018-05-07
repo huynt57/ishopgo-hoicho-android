@@ -17,12 +17,12 @@
             android:layout_height="wrap_content"
             tools:text="Tên: "/>
 
-        <TextView
-            android:id="@+id/view_pic"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Nguoi phu trach: "/>
+        <!--<TextView-->
+        <!--android:id="@+id/view_pic"-->
+        <!--style="@style/AppTheme.ShopInfo"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--tools:text="Nguoi phu trach: "/>-->
 
 
         <TextView

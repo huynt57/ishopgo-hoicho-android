@@ -5,8 +5,8 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -27,7 +27,6 @@ import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
-import android.net.Uri
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -222,28 +221,21 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     private fun showDiglogLogin() {
         context?.let {
-            val builder = AlertDialog.Builder(it)
-            builder.setTitle("Thông báo")
-            builder.setMessage("Bạn cần đăng nhập để sử dụng tính năng này!")
-            builder.setPositiveButton("Đăng nhập") { dialog, _ ->
-                dialog.dismiss()
-                val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-            }
-
-            builder.setNegativeButton("Bỏ qua") { dialog, _ ->
-                dialog.dismiss()
-            }
-            val dialog = builder.create()
-            dialog?.show()
-
-            val positiveButton = dialog?.getButton(AlertDialog.BUTTON_POSITIVE)
-            positiveButton?.setTextColor(Color.parseColor("#00c853"))
-
-            val negativeButton = dialog?.getButton(AlertDialog.BUTTON_NEGATIVE)
-            negativeButton?.setTextColor(Color.parseColor("#00c853"))
-
+            val builder = MaterialDialog.Builder(it)
+            builder.title("Thông báo")
+                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
+                    .positiveText("Đăng nhập")
+                    .positiveColor(Color.parseColor("#00c853"))
+                    .onPositive { dialog, _ ->
+                        dialog.dismiss()
+                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                    .negativeText("Bỏ qua")
+                    .negativeColor(Color.parseColor("#00c853"))
+                    .show()
         }
     }
 

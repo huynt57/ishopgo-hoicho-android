@@ -15,6 +15,7 @@ interface ProductDetailProvider {
     fun provideShopProductCount(): Int
     fun provideShopRateCount(): Int
     fun provideShopPhone(): String
+    fun provideLiked(): Boolean
 
     fun provideProductLikeCount(): Int
     fun provideProductCommentCount(): Int

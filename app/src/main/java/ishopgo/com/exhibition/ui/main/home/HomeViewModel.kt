@@ -1,9 +1,11 @@
 package ishopgo.com.exhibition.ui.main.home
 
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
@@ -201,5 +203,29 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
                 })
         )
+    }
+
+    var notifications = MutableLiveData<List<Notification>>()
+
+    fun loadNotifications(params: LoadMoreRequest) {
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = params.limit
+        fields["offset"] = params.offset
+
+        addDisposable(isgService.getNotifications(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<Notification>>() {
+                    override fun success(data: List<Notification>?) {
+                        Log.d("Hong", "success: data = [${data}]")
+                        notifications.postValue(data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+
     }
 }

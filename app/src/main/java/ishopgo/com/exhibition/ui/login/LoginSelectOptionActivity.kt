@@ -18,11 +18,14 @@ class LoginSelectOptionActivity : BaseSingleFragmentActivity() {
 
         UserDataManager.appId = Const.ID_APP
 
-        if (UserDataManager.currentUserId > 0) {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
+        val require = intent?.getBooleanExtra(Const.TransferKey.EXTRA_REQUIRE, false) ?: false
+        if (require) {
+        } else
+            if (UserDataManager.currentUserId > 0 || UserDataManager.passLoginScreen > 0) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
 
     }
 
