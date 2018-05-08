@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.model.Community
+package ishopgo.com.exhibition.model.community
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

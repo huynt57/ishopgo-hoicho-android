@@ -27,7 +27,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun loginAccount(phone: String, password: String) {
-        addDisposable(noAuthService.login(phone, password, Const.ID_APP,"")
+        addDisposable(noAuthService.login(phone, password, Const.ID_APP, "")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<User>() {
                     override fun success(data: User?) {
@@ -115,16 +115,16 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun loadRegion() {
-        val listRegion = mutableListOf<Region>()
+        addDisposable(isgService.getRegions()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
+                    override fun success(data: MutableList<Region>?) {
+                        loadRegion.postValue(data)
+                    }
 
-        for (i in 0..20) {
-            val region = Region()
-            region.name = "Khu vực $i"
-            region.provinceid = i.toString()
-            region.type = i.toString()
-            listRegion.add(region)
-        }
-
-        loadRegion.postValue(listRegion)
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 }

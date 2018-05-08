@@ -2,12 +2,11 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
-import ishopgo.com.exhibition.model.Community.Community
-import ishopgo.com.exhibition.model.Community.CommunityComment
-import ishopgo.com.exhibition.model.ProductLike
-import ishopgo.com.exhibition.model.Profile
-import ishopgo.com.exhibition.model.User
+import ishopgo.com.exhibition.model.community.Community
+import ishopgo.com.exhibition.model.community.CommunityComment
+import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -25,7 +24,7 @@ class ApiService {
         fun getBanners(): Single<BaseResponse<List<Banner>>>
 
         @GET("highlight-brands")
-        fun getHighlightBrands(): Single<BaseResponse<List<Brand>>>
+        fun getHighlightBrands(): Single<BaseResponse<List<ishopgo.com.exhibition.domain.response.Brand>>>
 
         @GET("highlight-products")
         fun getHighlightProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
@@ -170,6 +169,22 @@ class ApiService {
 
         @POST("read-notifications")
         fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+
+        @GET("get-products")
+        fun getProductManager(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageProduct>>
+
+        @GET("get-cities")
+        fun getRegions(): Single<BaseResponse<MutableList<Region>>>
+
+        @GET("providers")
+        fun getProviders(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Provider>>>
+
+        @GET("brands")
+        fun getBrands(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<ishopgo.com.exhibition.model.Brand>>>
+
+        @POST("add-product")
+        fun createProductManager(@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
 }

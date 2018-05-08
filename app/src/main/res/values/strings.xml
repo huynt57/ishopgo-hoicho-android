@@ -7,4 +7,5 @@
     <string name="tab_community">Cộng đồng</string>
     <string name="tab_home">Hội chợ</string>
     <string name="tab_profile">Tài khoản</string>
+    <string name="error_field_required">Trường này còn trống</string>
 </resources>

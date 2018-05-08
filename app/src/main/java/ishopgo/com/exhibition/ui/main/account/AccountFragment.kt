@@ -21,6 +21,7 @@ import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
+import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -103,6 +104,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_NOTIFICATION -> {
                 openNotificationActivity()
             }
+            Const.AccountAction.ACTION_PRODUCT_MANAGER -> {
+                openProductManager()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -144,6 +148,13 @@ class AccountFragment : BaseFragment() {
     private fun openProfile() {
         context?.let {
             val intent = Intent(it, ProfileActivity::class.java)
+            startActivityForResult(intent, Const.RequestCode.UPDATE_PROFILE)
+        }
+    }
+
+    private fun openProductManager() {
+        context?.let {
+            val intent = Intent(it, ProductManagerActivity::class.java)
             startActivityForResult(intent, Const.RequestCode.UPDATE_PROFILE)
         }
     }

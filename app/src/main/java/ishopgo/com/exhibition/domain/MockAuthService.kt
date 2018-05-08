@@ -4,7 +4,6 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseResponse
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
 import ishopgo.com.exhibition.model.Booth
-import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
 import okhttp3.RequestBody
