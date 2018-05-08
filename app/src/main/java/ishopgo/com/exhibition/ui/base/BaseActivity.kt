@@ -1,20 +1,30 @@
 package ishopgo.com.exhibition.ui.base
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
+import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.firebase.database.FirebaseDatabase
+import ishopgo.com.exhibition.BuildConfig
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
 import ishopgo.com.exhibition.domain.BaseErrorSignal
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.extensions.transact
 
@@ -29,6 +39,78 @@ open class BaseActivity : AppCompatActivity() {
         hideKeyboard()
         onBackPressed()
         return true
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val checkingViewModel = obtainViewModel(VersionCheckingViewModel::class.java)
+        checkingViewModel
+                .versionChecking(FirebaseDatabase.getInstance().getReference("expo/app_version/android"))
+                .observe(this, Observer { v ->
+                    v?.let {
+                        val message = it.child("message")?.getValue(String::class.java) ?: ""
+                        val latestVersion = it.child("ver")?.getValue(String::class.java) ?: ""
+                        val latest = latestVersion.split(".")
+                        Log.d("EXPO Version", "latest version = $latest")
+
+                        val apkVersion = BuildConfig.VERSION_NAME
+                        val apk = apkVersion.split(".")
+                        Log.d("EXPO Version", "apk version = $apk")
+
+                        if (apkVersion.equals(latestVersion, true)) {
+                            // version valid, do nothing
+                            Log.d("EXPO Version", "version is the same")
+                            return@Observer
+                        }
+
+                        if (apk[0].toInt() < latest[0].toInt() || apk[1].toInt() < latest[1].toInt()) {
+                            // major version is old. should force update
+                            showDialogUpdateVersion(this, latestVersion, message, true)
+                            return@Observer
+                        }
+
+                        if (apk[2].toInt() < latest[2].toInt()) {
+                            // minor update, should message user only
+                            if (!UserDataManager.skipUpdate)
+                                showDialogUpdateVersion(this, latestVersion, message, false)
+                            return@Observer
+                        }
+                    }
+
+                })
+    }
+
+    private fun showDialogUpdateVersion(context: Context, latestVersion: String, message: String, forceUpdate: Boolean) {
+        Handler().postDelayed({
+            val builder = MaterialDialog.Builder(context)
+            builder
+                    .title("Phiên bản: $latestVersion")
+                    .content(message)
+                    .positiveText("Cập nhật")
+                    .onPositive { dialog, _ ->
+                        var intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=ishopgo%20expo"))
+                        if (intent.resolveActivity(packageManager) != null) {
+                            dialog.dismiss()
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            dialog.dismiss()
+                            intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=ishopgo%20expo&c=apps"))
+                            startActivity(intent)
+                            finish()
+                        }
+                    }
+            if (!forceUpdate) {
+                builder.negativeText("Để sau")
+                        .onNegative { _, _ -> UserDataManager.skipUpdate = true }
+                builder.cancelable(true)
+            } else {
+                builder.cancelable(false)
+            }
+
+            builder.show()
+        }, 1500)
     }
 
     fun resolveError(error: BaseErrorSignal) {

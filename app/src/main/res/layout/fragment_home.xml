@@ -145,6 +145,10 @@
 
                     </android.support.constraint.ConstraintLayout>
 
+                    <View
+                        style="@style/AppTheme.DividerFat"
+                        android:layout_width="match_parent"/>
+
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_favorite_products"
                         android:layout_width="match_parent"
@@ -230,6 +234,10 @@
                             />
 
                     </android.support.constraint.ConstraintLayout>
+
+                    <View
+                        style="@style/AppTheme.DividerFat"
+                        android:layout_width="match_parent"/>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_suggest_products"

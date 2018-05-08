@@ -24,12 +24,9 @@ class MainActivity : BaseSingleFragmentActivity() {
     }
 
     override fun onBackPressed() {
-        if (currentFragment is BackpressConsumable) {
-            val isConsumed = (currentFragment as BackpressConsumable).onBackPressConsumed()
-            if (isConsumed)
-                return
-            else return super.onBackPressed()
-        } else {
+        if (currentFragment is BackpressConsumable && (currentFragment as BackpressConsumable).onBackPressConsumed())
+            return
+        else {
             if (backpressCount == 2)
                 super.onBackPressed()
             else {

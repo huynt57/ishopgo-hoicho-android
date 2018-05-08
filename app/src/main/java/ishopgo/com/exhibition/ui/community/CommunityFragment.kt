@@ -24,6 +24,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -165,7 +166,16 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_PRODUCT_CLICK -> {
-                            toast("Vào xem chi tiết sản phẩm")
+                            if (data is Community) {
+                                val productId = data.product?.id ?: -1L
+                                if (productId != -1L) {
+                                    context?.let {
+                                        val intent = Intent(it, ProductDetailActivity::class.java)
+                                        intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+                                        startActivity(intent)
+                                    }
+                                }
+                            }
                         }
                     }
                 }

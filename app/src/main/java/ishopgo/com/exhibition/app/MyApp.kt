@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.app
 
 import android.support.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
+import com.google.firebase.FirebaseApp
 import io.fabric.sdk.android.Fabric
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -16,6 +17,8 @@ class MyApp : MultiDexApplication() {
 
     override fun onCreate() {
         super.onCreate()
+
+        FirebaseApp.initializeApp(this)
 
         // we only need crashlytic for release version, so enable it later
 //        if (!BuildConfig.DEBUG)
