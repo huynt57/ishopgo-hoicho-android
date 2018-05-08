@@ -267,6 +267,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun messageShop(context: Context, product: ProductDetailProvider) {
         // gui tin nhan cho shop
+
     }
 
     private fun callShop(context: Context, product: ProductDetailProvider) {

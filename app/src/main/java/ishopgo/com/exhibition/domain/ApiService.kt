@@ -30,6 +30,9 @@ class ApiService {
         @GET("highlight-products")
         fun getHighlightProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
+        @GET("viewed-products")
+        fun getViewedProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+
         @GET("brand-products/{brand-id}")
         fun getBrandProducts(@Path("brand-id") brandId: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
