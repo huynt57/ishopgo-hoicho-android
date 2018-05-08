@@ -13,7 +13,7 @@ import ishopgo.com.exhibition.ui.widget.Toolbox
  */
 class Community : IdentityData(), CommunityProvider {
     override fun provideLiked(): Int {
-        return liked
+        return liked ?: 0
     }
 
     override fun providerId(): Long {
@@ -21,15 +21,15 @@ class Community : IdentityData(), CommunityProvider {
     }
 
     override fun providerUserName(): String {
-        return accountName
+        return accountName ?: ""
     }
 
     override fun providerUserAvatar(): String {
-        return accountImage
+        return accountImage ?: ""
     }
 
     override fun provideContent(): String {
-        return content
+        return content ?: ""
     }
 
     override fun provideTime(): String {
@@ -37,15 +37,15 @@ class Community : IdentityData(), CommunityProvider {
     }
 
     override fun provideLikeCount(): Int {
-        return likeCount
+        return likeCount ?: 0
     }
 
     override fun provideCommentCount(): Int {
-        return commentCount
+        return commentCount ?: 0
     }
 
     override fun provideShareCount(): Int {
-        return shareCount
+        return shareCount ?: 0
     }
 
     override fun provideProduct(): CommunityProductProvider? {
@@ -53,43 +53,43 @@ class Community : IdentityData(), CommunityProvider {
     }
 
     override fun provideListImage(): MutableList<String> {
-        return images
+        return images ?: mutableListOf()
     }
 
     @SerializedName("created_at")
     @Expose
-    var createdAt: String = ""
+    var createdAt: String? = null
     @SerializedName("shop_id")
     @Expose
-    var shopId: Long = 0
+    var shopId: Long? = null
     @SerializedName("content")
     @Expose
-    var content: String = ""
+    var content: String? = null
     @SerializedName("account_id")
     @Expose
-    var accountId: Long = 0
+    var accountId: Long? = null
     @SerializedName("account_name")
     @Expose
-    var accountName: String = ""
+    var accountName: String? = null
     @SerializedName("account_image")
     @Expose
-    var accountImage: String = ""
+    var accountImage: String? = null
     @SerializedName("product")
     @Expose
     var product: CommunityProduct? = null
     @SerializedName("images")
     @Expose
-    var images: MutableList<String> = mutableListOf()
+    var images: MutableList<String>? = null
     @SerializedName("liked")
     @Expose
-    var liked: Int = 0
+    var liked: Int? = null
     @SerializedName("like_count")
     @Expose
-    var likeCount: Int = 0
+    var likeCount: Int? = null
     @SerializedName("comment_count")
     @Expose
-    var commentCount: Int = 0
+    var commentCount: Int? = null
     @SerializedName("share_count")
     @Expose
-    var shareCount: Int = 0
+    var shareCount: Int? = null
 }

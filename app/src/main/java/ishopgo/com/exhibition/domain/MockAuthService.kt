@@ -3,6 +3,8 @@ package ishopgo.com.exhibition.domain
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseResponse
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
+import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
 import okhttp3.RequestBody
@@ -13,6 +15,27 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getConfigBooth(): Single<BaseResponse<Booth>> {
+        val c = Booth()
+        c.name = "Nguyễn Huy Hoàng"
+        c.hotline = "0989013403"
+        c.introduction = "Chào các bạn"
+        c.info = "Chào các bạn"
+        c.address = "Dương Đình Nghệ, Cầu Giấy, Hà Nội"
+        c.banner = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
+
+
+        val response = BaseResponse<Booth>()
+        response.status = 1
+        response.data = c
+
+        return delegate.returningResponse(response).getConfigBooth()    }
+
+    override fun editConfigBooth(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).editConfigBooth(body)
+    }
 
     override fun postCommentProduct(product_id: Long, body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
