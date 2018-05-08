@@ -22,6 +22,8 @@ class Category : IdentityData(), CategoryProvider {
 
     @SerializedName("name")
     var name: String? = null
+    @SerializedName("count")
+    var count: Int? = 0
     @SerializedName("subCate")
     var subs: List<Category>? = null
 

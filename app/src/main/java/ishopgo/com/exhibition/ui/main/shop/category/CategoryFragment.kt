@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.request.BoothCategoriesRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -48,8 +48,8 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
 
     override fun firstLoad() {
         reloadData = true
-        val request = Request()
-        // we do not support get category of a shop now
+        val request = BoothCategoriesRequest()
+        request.boothId = boothId
         viewModel.loadData(request)
     }
 

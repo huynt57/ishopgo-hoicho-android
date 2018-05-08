@@ -15,6 +15,33 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getBoothCategories(boothId: Long): Single<BaseResponse<List<Category>>> {
+        val dummy = mutableListOf<Category>()
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+
+        val response = BaseResponse<List<Category>>()
+        response.status = 1
+        response.data = dummy
+
+        return delegate.returningResponse(response).getBoothCategories(boothId)
+    }
+
+    override fun getSuggestedProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getSuggestedProducts(params)
+    }
+
     override fun getViewedProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
         val ps = mutableListOf<Product>()
         for (i in 0..5)
@@ -248,7 +275,6 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
     private val random = Random()
 
     override fun getCategories(): Single<BaseResponse<List<Category>>> {
-        Log.d(TAG, "getCategories: ")
         val dummy = mutableListOf<Category>()
         dummy.add(generateCategory(random.nextInt(5)))
         dummy.add(generateCategory(random.nextInt(5)))

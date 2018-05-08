@@ -21,6 +21,9 @@ class ApiService {
         @GET("categories")
         fun getCategories(): Single<BaseResponse<List<Category>>>
 
+        @GET("booth/get-category/{id}")
+        fun getBoothCategories(@Path("id") boothId: Long): Single<BaseResponse<List<Category>>>
+
         @GET("get-banners")
         fun getBanners(): Single<BaseResponse<List<Banner>>>
 
@@ -29,6 +32,9 @@ class ApiService {
 
         @GET("highlight-products")
         fun getHighlightProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+
+        @GET("suggested-products")
+        fun getSuggestedProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
         @GET("viewed-products")
         fun getViewedProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
