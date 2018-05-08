@@ -6,7 +6,7 @@ package ishopgo.com.exhibition.ui.community
 interface CommunityProductProvider {
     fun providerId(): Long
     fun providerName(): String
-    fun providerPrice(): Long
+    fun providerPrice(): String
     fun providerImage(): String
     fun providerLink(): String
 }

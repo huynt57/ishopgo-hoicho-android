@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.Community.Community
 import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.ProductLike
@@ -149,6 +150,14 @@ class ApiService {
                 @Path("id") product_id: Long,
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
+
+        @GET("config")
+        fun getConfigBooth(): Single<BaseResponse<Booth>>
+
+        @POST("config/update")
+        fun editConfigBooth(
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -158,6 +167,9 @@ class ApiService {
 
         @GET("notifications")
         fun getNotifications(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Notification>>>
+
+        @POST("read-notifications")
+        fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
 }

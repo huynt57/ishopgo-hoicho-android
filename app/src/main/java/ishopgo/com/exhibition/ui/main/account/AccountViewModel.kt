@@ -33,9 +33,9 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         if (UserDataManager.currentType == "Chủ gian hàng") {
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_SETTING_BOTTH,
                     R.drawable.ic_finger,
-                    "Cầu hình gian hàng"
+                    "Cấu hình gian hàng"
             ))
 
             items.add(AccountMenuItem(
@@ -51,7 +51,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_NOTIFICATION,
                     R.drawable.ic_finger,
                     "Quản lý thông báo"
             ))
@@ -89,7 +89,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_NOTIFICATION,
                     R.drawable.ic_finger,
                     "Quản lý thông báo"
             ))
@@ -133,7 +133,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_NOTIFICATION,
                     R.drawable.ic_finger,
                     "Quản lý thông báo"
             ))

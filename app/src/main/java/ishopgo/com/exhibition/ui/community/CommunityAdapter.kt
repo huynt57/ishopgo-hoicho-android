@@ -98,7 +98,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                     Glide.with(this).load(data.provideProduct()?.providerImage())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
                     tv_community_product_name.text = data.provideProduct()?.providerName()
-                    tv_community_product_price.text = data.provideProduct()?.providerPrice()?.asMoney() ?: "0 đ"
+                    tv_community_product_price.text = data.provideProduct()?.providerPrice()
                 } else cv_community_product.visibility = View.GONE
 
                 if (data.provideListImage().isNotEmpty()) {

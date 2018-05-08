@@ -12,11 +12,11 @@ import ishopgo.com.exhibition.ui.widget.Toolbox
  */
 class CommunityComment : IdentityData(), CommunityCommentProvider {
     override fun providerAccountImage(): String {
-        return accountImage
+        return accountImage ?: ""
     }
 
     override fun providerAccountName(): String {
-        return accountName
+        return accountName ?: ""
     }
 
     override fun providerAccountId(): Long {
@@ -24,57 +24,57 @@ class CommunityComment : IdentityData(), CommunityCommentProvider {
     }
 
     override fun providerPostId(): Long {
-        return postId
+        return postId ?: 0
     }
 
     override fun providerUpdatedAt(): String {
-        return  Toolbox.formatApiDateTime(updatedAt)
+        return Toolbox.formatApiDateTime(updatedAt)
 
     }
 
     override fun providerCreatedAt(): String {
-        return  Toolbox.formatApiDateTime(createdAt)
+        return Toolbox.formatApiDateTime(createdAt)
     }
 
     override fun providerImages(): MutableList<String> {
-        return images
+        return images ?: mutableListOf()
     }
 
-    override fun provideCommentCount(): Long {
-        return commentCount
+    override fun provideCommentCount(): Int {
+        return commentCount ?: 0
     }
 
     override fun providerContent(): String {
-        return content
+        return content ?: ""
     }
 
     @SerializedName("content")
     @Expose
-    var content: String = ""
+    var content: String? = null
     @SerializedName("account_name")
     @Expose
-    var accountName: String = ""
+    var accountName: String? = null
     @SerializedName("account_image")
     @Expose
-    var accountImage: String = ""
+    var accountImage: String? = null
     @SerializedName("post_id")
     @Expose
-    var postId: Long = 0
+    var postId: Long? = null
     @SerializedName("status")
     @Expose
-    var status: Long = 0
+    var status: Int? = null
     @SerializedName("updated_at")
     @Expose
-    var updatedAt: String = ""
+    var updatedAt: String? = null
     @SerializedName("created_at")
     @Expose
-    var createdAt: String = ""
+    var createdAt: String? = null
     @SerializedName("images")
     @Expose
-    var images = mutableListOf<String>()
+    var images: MutableList<String>? = null
     @SerializedName("comment_count")
     @Expose
-    var commentCount: Long = 0
+    var commentCount: Int? = null
 //    @SerializedName("last_comment")
 //    @Expose
 //    var lastComment: Long = 0

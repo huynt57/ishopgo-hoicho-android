@@ -5,7 +5,6 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -28,14 +27,12 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import android.net.Uri
 
 /**
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
-
-    private lateinit var viewModelCommunity: CommunityViewModel
-
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -80,13 +77,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         viewModel.loadData(loadMore)
     }
 
-    fun reload() {
-        val reload = LoadMoreCommunityRequest()
-        reload.limit = Const.PAGE_LIMIT
-        reload.last_id = last_id
-        viewModel.loadData(reload)
-    }
-
     override fun obtainViewModel(): BaseListViewModel<List<CommunityProvider>> {
         return obtainViewModel(CommunityViewModel::class.java, false)
     }
@@ -118,7 +108,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            viewModelCommunity.postCommunityLike(data.providerId())
+                            if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.providerId())
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
@@ -185,14 +175,13 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModelCommunity = obtainViewModel(CommunityViewModel::class.java, false)
-        viewModelCommunity.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-
-        viewModelCommunity.postLikeSuccess.observe(this, Observer { p ->
-            p.let {
-                toast("Đã like")
-            }
-        })
+        if (viewModel is CommunityViewModel) {
+            (viewModel as CommunityViewModel).postLikeSuccess.observe(this, Observer { p ->
+                p.let {
+                    toast("Đã like")
+                }
+            })
+        }
     }
 
     private fun shareFacebook(data: CommunityProvider) {

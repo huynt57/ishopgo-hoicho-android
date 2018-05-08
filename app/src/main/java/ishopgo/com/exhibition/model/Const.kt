@@ -23,6 +23,8 @@ object Const {
         const val TAKE_PICTURE = 4
         const val UPDATE_PROFILE = 5
         const val SHARE_POST_COMMUNITY = 6
+        const val NOTIFICATION_ADD = 7
+        const val NOTIFICATION_DETAIL = 8
     }
 
     object AccountAction {
@@ -31,6 +33,8 @@ object Const {
         const val ACTION_CHANGE_PASSWORD = 2
         const val ACTION_LOGOUT = 3
         const val ACTION_REPORT = 4
+        const val ACTION_SETTING_BOTTH = 5
+        const val ACTION_NOTIFICATION = 6
     }
 
     val colors = arrayOf(
