@@ -27,7 +27,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideProductPrice(): String {
-        return ttPrice.asMoney()
+        return price.asMoney()
     }
 
     override fun provideProductBrand(): String {

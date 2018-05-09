@@ -53,6 +53,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.main.product.suggested.SuggestedProductsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
             android:name=".ui.main.product.viewed.ViewedProductsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

@@ -101,6 +101,9 @@ class ApiService {
 
     interface Auth {
 
+        @GET("favorite-products")
+        fun getFavoriteProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+        
         @POST("change-password")
         fun changePassword(
                 @Body body: RequestBody
