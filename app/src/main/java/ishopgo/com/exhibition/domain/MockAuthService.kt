@@ -2,9 +2,9 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseResponse
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
 import ishopgo.com.exhibition.model.Booth
-import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
 import okhttp3.RequestBody
@@ -15,6 +15,18 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getFavoriteProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getFavoriteProducts(params)
+    }
+
     override fun getConfigBooth(): Single<BaseResponse<Booth>> {
         val c = Booth()
         c.name = "Nguyễn Huy Hoàng"
@@ -29,7 +41,8 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         response.status = 1
         response.data = c
 
-        return delegate.returningResponse(response).getConfigBooth()    }
+        return delegate.returningResponse(response).getConfigBooth()
+    }
 
     override fun editConfigBooth(body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
@@ -157,6 +170,16 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         response.data = c
 
         return delegate.returningResponse(response).updateProfile(body)
+    }
+
+    private fun generateProduct(): Product {
+        val p = Product()
+        p.id = random.nextInt(1000).toLong()
+        p.image = "https://ishopgo.com/local/files/11793/clone-5a3c7e16148537e649a88ce4d2f28da1a1ae9ab1c48d2lotion-duong-da-toan-than-napie-skinjpg.jpg"
+        p.name = "Lotion dưỡng trắng da toàn thân NAPIE SKIN WHITENING BODY LOTION"
+        p.ttPrice = 50000
+        p.price = 45000
+        return p
     }
 
     private var delegate: BehaviorDelegate<ApiService.Auth> = behavior

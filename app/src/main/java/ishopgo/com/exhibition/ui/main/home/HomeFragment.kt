@@ -14,7 +14,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -83,29 +82,35 @@ class HomeFragment : BaseFragment() {
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.suggestedProducts.observe(this, Observer { p ->
             p?.let {
+                container_suggest_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 suggestedProductAdapter.replaceAll(it)
+                view_list_suggest_products.scheduleLayoutAnimation()
             }
         })
         viewModel.favoriteProducts.observe(this, Observer { p ->
             p?.let {
+                container_favorite_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 favoriteProductAdapter.replaceAll(it)
                 view_list_favorite_products.scheduleLayoutAnimation()
             }
         })
         viewModel.viewedProducts.observe(this, Observer { p ->
             p?.let {
+                container_viewed_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 viewedProductAdapter.replaceAll(it)
                 view_list_viewed_products.scheduleLayoutAnimation()
             }
         })
         viewModel.highlightProducts.observe(this, Observer { p ->
             p?.let {
+                container_highlight_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 highlightProductAdapter.replaceAll(it)
                 view_list_highlight_products.scheduleLayoutAnimation()
             }
         })
         viewModel.highlightBrand.observe(this, Observer { b ->
             b?.let {
+                container_highlight_brand.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 highlightBrandAdapter.replaceAll(it)
                 view_list_highlight_brand.scheduleLayoutAnimation()
             }
@@ -171,8 +176,8 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupReferencedProducts(view.context)
-        setupSponsorsProducts(view.context)
+        setupSuggestedProducts(view.context)
+        setupHighlightBrands(view.context)
         setupHighlightProducts(view.context)
         setupCategories(view.context)
         setupViewedProducts(view.context)
@@ -185,15 +190,21 @@ class HomeFragment : BaseFragment() {
         more_highlight_brand.setOnClickListener {
             openPopularBrands()
         }
-
         more_highlight_products.setOnClickListener {
             openHighlightProducts()
         }
-
+        more_viewed_products.setOnClickListener {
+            openViewedProducts()
+        }
+        more_favorite_products.setOnClickListener {
+            openFavoriteProducts()
+        }
+        more_suggest_products.setOnClickListener {
+            openSuggestedProducts()
+        }
         swipe.setOnRefreshListener {
             loadData()
         }
-
         categoriesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
 
             override fun click(position: Int, data: CategoryProvider, code: Int) {
@@ -277,21 +288,29 @@ class HomeFragment : BaseFragment() {
 
     }
 
+    private fun openSuggestedProducts() {
+        context?.let {
+            val intent = Intent(it, FavoriteProductsActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
     private fun loadData() {
         viewModel.loadHighlightBrands()
         viewModel.loadHighlightProducts()
-        viewModel.loadFavoriteProducts()
         viewModel.loadSuggestedProducts()
-        viewModel.loadViewedProducts()
         viewModel.loadCategories()
         viewModel.loadBanners()
 
-        if (UserDataManager.currentUserId > 0) {
-            val dummy = LoadMoreRequest()
-            dummy.limit = 20
-            dummy.offset = 0
-            viewModel.loadNotifications(dummy)
+        val isUserLoggedIn = UserDataManager.currentUserId > 0
+        if (isUserLoggedIn) {
+            viewModel.loadViewedProducts()
+            viewModel.loadFavoriteProducts()
         }
+
+        container_viewed_products.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
+        container_favorite_products.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
     }
 
     private fun openProductDetail(product: ProductProvider) {
@@ -314,7 +333,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun setupReferencedProducts(context: Context) {
+    private fun setupSuggestedProducts(context: Context) {
         view_list_suggest_products.adapter = suggestedProductAdapter
         val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
         layoutManager.isAutoMeasureEnabled = true
@@ -324,7 +343,7 @@ class HomeFragment : BaseFragment() {
         view_list_suggest_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
     }
 
-    private fun setupSponsorsProducts(context: Context) {
+    private fun setupHighlightBrands(context: Context) {
         view_list_highlight_brand.adapter = highlightBrandAdapter
         val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_highlight_brand.layoutManager = layoutManager

@@ -353,10 +353,17 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun loadData(productId: Long) {
         viewModel.loadSameShopProducts(productId)
-        viewModel.loadFavoriteProducts(productId)
-        viewModel.loadViewedProducts(productId)
         viewModel.loadProductDetail(productId)
         viewModel.loadProductComments(productId)
+
+        val isUserLoggedIn = UserDataManager.currentUserId > 0
+        if (isUserLoggedIn) {
+            viewModel.loadViewedProducts(productId)
+            viewModel.loadFavoriteProducts(productId)
+        }
+
+        container_viewed.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
+        container_favorite.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
     }
 
     private fun setupProductComments(context: Context) {

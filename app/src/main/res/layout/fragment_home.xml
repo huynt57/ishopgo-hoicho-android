@@ -45,19 +45,15 @@
 
                         <me.relex.circleindicator.CircleIndicator
                             android:id="@+id/view_banner_indicator"
-                            app:ci_drawable="@drawable/view_pager_indicator_selected"
-                            app:ci_drawable_unselected="@drawable/view_pager_indicator_unselected"
                             android:layout_width="wrap_content"
                             android:layout_height="25dp"
                             android:layout_gravity="center_horizontal|bottom"
                             android:layout_marginBottom="16dp"
-                            android:minWidth="20dp"/>
+                            android:minWidth="20dp"
+                            app:ci_drawable="@drawable/view_pager_indicator_selected"
+                            app:ci_drawable_unselected="@drawable/view_pager_indicator_unselected"/>
 
                     </FrameLayout>
-
-                    <View
-                        style="@style/AppTheme.DividerFat"
-                        android:layout_width="match_parent"/>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_highlight_brand"
@@ -89,7 +85,6 @@
                             android:id="@+id/view_list_highlight_brand"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:clipToPadding="false"
                             android:padding="@dimen/item_spacing"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -99,10 +94,6 @@
                             />
 
                     </android.support.constraint.ConstraintLayout>
-
-                    <View
-                        style="@style/AppTheme.DividerFat"
-                        android:layout_width="match_parent"/>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_highlight_products"
@@ -134,7 +125,6 @@
                             android:id="@+id/view_list_highlight_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:clipToPadding="false"
                             android:padding="@dimen/item_spacing"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -144,10 +134,6 @@
                             />
 
                     </android.support.constraint.ConstraintLayout>
-
-                    <View
-                        style="@style/AppTheme.DividerFat"
-                        android:layout_width="match_parent"/>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_favorite_products"
@@ -179,7 +165,6 @@
                             android:id="@+id/view_list_favorite_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:clipToPadding="false"
                             android:padding="@dimen/item_spacing"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -189,10 +174,6 @@
                             />
 
                     </android.support.constraint.ConstraintLayout>
-
-                    <View
-                        style="@style/AppTheme.DividerFat"
-                        android:layout_width="match_parent"/>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_viewed_products"
@@ -224,7 +205,6 @@
                             android:id="@+id/view_list_viewed_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:clipToPadding="false"
                             android:padding="@dimen/item_spacing"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -234,10 +214,6 @@
                             />
 
                     </android.support.constraint.ConstraintLayout>
-
-                    <View
-                        style="@style/AppTheme.DividerFat"
-                        android:layout_width="match_parent"/>
 
                     <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_suggest_products"
@@ -269,7 +245,6 @@
                             android:id="@+id/view_list_suggest_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
                             android:clipToPadding="false"
                             android:padding="@dimen/item_spacing"
                             app:layout_constraintBottom_toBottomOf="parent"
