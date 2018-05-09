@@ -1,0 +1,144 @@
+{
+  "project_info": {
+    "project_number": "288608153817",
+    "firebase_url": "https://ishopgo-51f56.firebaseio.com",
+    "project_id": "ishopgo-51f56",
+    "storage_bucket": "ishopgo-51f56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288608153817:android:036662e8b655e97f",
+        "android_client_info": {
+          "package_name": "com.exhibition.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288608153817-8pku8pk3hsoinonds43a3q4dmqa53eb2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.exhibition.android",
+            "certificate_hash": "c1796e59e4a2fabc2369e10a957fd3d89c484508"
+          }
+        },
+        {
+          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288608153817-ej5ub0el3r5m0q8dmfml8vtah70rh1rh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.ishopgo"
+              }
+            },
+            {
+              "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288608153817:android:a28ff6ea5dba1551",
+        "android_client_info": {
+          "package_name": "com.ishopgo.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288608153817:android:e2c7705dc4243da2",
+        "android_client_info": {
+          "package_name": "ishopgo.com.exhibition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288608153817-qv0pmvlfh2pr7k4qteg16hroo6bl1ovo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ishopgo.com.exhibition",
+            "certificate_hash": "c1796e59e4a2fabc2369e10a957fd3d89c484508"
+          }
+        },
+        {
+          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288608153817-ej5ub0el3r5m0q8dmfml8vtah70rh1rh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.ishopgo"
+              }
+            },
+            {
+              "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

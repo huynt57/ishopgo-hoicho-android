@@ -13,6 +13,7 @@ object UserDataManager {
     private const val KEY_APP_ID = "app_id"
     private const val KEY_USER_ID = "user_id"
     private const val KEY_PASS_LOGIN_SCREEN = "pass_login_screen"
+    private const val KEY_SKIP_UPDATE = "skip_update"
     private const val KEY_USER_AVATAR = "user_avatar"
     private const val KEY_USER_PHONE = "user_phone"
     private const val KEY_USER_NAME = "user_name"
@@ -42,6 +43,9 @@ object UserDataManager {
     var passLoginScreen: Long
         get() = pref.getLong(KEY_PASS_LOGIN_SCREEN, -1L)
         set(value) = pref.edit().putLong(KEY_PASS_LOGIN_SCREEN, value).apply()
+    var skipUpdate: Boolean
+        get() = pref.getBoolean(KEY_SKIP_UPDATE, false)
+        set(value) = pref.edit().putBoolean(KEY_SKIP_UPDATE, value).apply()
 
 
     var displayWidth: Int = 0

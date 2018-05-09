@@ -8,15 +8,29 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'io.fabric'
 
+project.ext {
+    playServices = "15.0.2"
+    supportLibrary = "27.1.1"
+    dagger = '2.11'
+    glide = '4.4.0'
+    javax = '1.0'
+    rxandroid = '2.0.1'
+    okhttp = '3.8.1'
+    retrofit = '2.3.0'
+    materialDialog = '0.9.6.0'
+    archextension = '1.1.1'
+    archCompiler = '1.1.1'
+}
+
 android {
-    compileSdkVersion project.ext.compileSdk
-    buildToolsVersion project.ext.buildTools
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "ishopgo.com.exhibition"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "1.0.0"
+        versionCode 2
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
@@ -72,8 +86,8 @@ dependencies {
     implementation "com.android.support:customtabs:$project.ext.supportLibrary"
     implementation "com.android.support.constraint:constraint-layout:1.1.0"
 
-//    implementation "com.google.firebase:firebase-messaging:$project.ext.playServices"
-//    implementation "com.google.firebase:firebase-database:$project.ext.playServices"
+    implementation "com.google.firebase:firebase-messaging:$project.ext.playServices"
+    implementation "com.google.firebase:firebase-database:15.0.1"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofit"
@@ -104,7 +118,7 @@ dependencies {
     kapt "com.github.bumptech.glide:compiler:$project.ext.glide"
 
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:$project.ext.archExtension"
+    implementation "android.arch.lifecycle:extensions:$project.ext.archextension"
     kapt "android.arch.lifecycle:compiler:$project.ext.archCompiler"
 
     // qrcode
@@ -113,7 +127,7 @@ dependencies {
 
     // fabric
     implementation ('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
-        transitive = true;
+        transitive = true
     }
 
     // utilities
@@ -134,3 +148,5 @@ dependencies {
     //Tag flow
     implementation 'com.hyman:flowlayout-lib:1.1.2'
 }
+
+apply plugin: 'com.google.gms.google-services'
