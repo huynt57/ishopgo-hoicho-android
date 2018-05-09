@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.productmanager.add
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
@@ -24,11 +25,10 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
-import ishopgo.com.exhibition.model.Brand
+import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
-import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -43,7 +43,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private val adapterBrands = BrandsAdapter()
     private val adapterProvider = ProviderAdapter()
-    private lateinit var adapterProductRelatedImage: ProductManagerRelatedImageAdapter
+    private lateinit var adapterProductRelatedImage: ProductManagerRelatedCollapseAdapter
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
 
     private var reloadBrands = false
@@ -64,6 +64,7 @@ class ProductManagerAddFragment : BaseFragment() {
         const val TAG = "ProductManagerFragment"
         const val STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
         const val STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dang landing page
+        const val STATUS_DISPLAY_HIDDEN: Int = 0 //Không hiển thị
 
         const val STATUS_FEAUTURED: Int = 1 //Sp nổi bật
         const val STATUS_NOT_FEAUTURED: Int = 0 //Sp bình thường
@@ -96,8 +97,40 @@ class ProductManagerAddFragment : BaseFragment() {
             CASE_PICK_IMAGE = false
             launchPickPhotoIntent()
         }
+        edit_product_status.setText("Hiển thị dạng chuẩn")
+        edit_product_status.setOnClickListener {
+            context?.let {
+                val dialog = MaterialDialog.Builder(it)
+                        .customView(R.layout.dialog_product_status, false)
+                        .autoDismiss(false)
+                        .canceledOnTouchOutside(true)
+                        .build()
 
-        sw_status.setOnCheckedChangeListener { _, _ -> status = if (sw_status.isChecked) STATUS_DISPLAY_SHOW else STATUS_DISPLAY_LANDING_PAGE }
+                val tv_status_standard = dialog.findViewById(R.id.tv_status_standard) as TextView
+                val tv_status_landing_padding = dialog.findViewById(R.id.tv_status_landing_padding) as TextView
+                val tv_status_hidden = dialog.findViewById(R.id.tv_status_hidden) as TextView
+
+                tv_status_standard.setOnClickListener {
+                    status = STATUS_DISPLAY_SHOW
+                    edit_product_status.setText(tv_status_standard.text)
+                    dialog.dismiss()
+                }
+
+                tv_status_landing_padding.setOnClickListener {
+                    status = STATUS_DISPLAY_LANDING_PAGE
+                    edit_product_status.setText(tv_status_landing_padding.text)
+                    dialog.dismiss()
+                }
+
+                tv_status_hidden.setOnClickListener {
+                    status = STATUS_DISPLAY_HIDDEN
+                    edit_product_status.setText(tv_status_hidden.text)
+                    dialog.dismiss()
+                }
+
+                dialog.show()
+            }
+        }
         sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
 
         btn_product_add.setOnClickListener {
@@ -165,7 +198,7 @@ class ProductManagerAddFragment : BaseFragment() {
         firstLoadBrand()
         firstLoadProvider()
         firstLoadProductRelated()
-        adapterProductRelatedImage = ProductManagerRelatedImageAdapter(listProductRelated)
+        adapterProductRelatedImage = ProductManagerRelatedCollapseAdapter(listProductRelated)
     }
 
     private fun firstLoadBrand() {
@@ -367,7 +400,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
     private fun getSanPhamLienQuan() {
         context?.let {
-            adapterProductRelatedImage = ProductManagerRelatedImageAdapter(listProductRelated)
+            adapterProductRelatedImage = ProductManagerRelatedCollapseAdapter(listProductRelated)
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_related_products.adapter = adapterProductRelatedImage
             adapterDialogProduct.notifyItemInserted(listProductRelated.size - 1)

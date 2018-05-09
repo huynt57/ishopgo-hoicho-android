@@ -26,6 +26,7 @@ object Const {
         const val NOTIFICATION_ADD = 7
         const val NOTIFICATION_DETAIL = 8
         const val PRODUCT_MANAGER_ADD = 9
+        const val PRODUCT_MANAGER_DETAIL = 10
     }
 
     object AccountAction {

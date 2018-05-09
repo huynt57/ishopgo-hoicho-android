@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.TextView
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.Brand
+import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 

@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_setting_booth.*
 
@@ -47,13 +48,20 @@ class ConfigBoothFragment : BaseFragment() {
                 }
             }
         }
+
+        img_setting_booth.setOnClickListener {
+            val listImage = mutableListOf<String>()
+            listImage.add(imageOld)
+            val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImage.toTypedArray())
+            startActivity(intent)
+        }
     }
 
     private fun launchPickPhotoIntent() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
@@ -83,7 +91,7 @@ class ConfigBoothFragment : BaseFragment() {
                 tv_setting_booth_introduction.setText(it.provideIntroduction())
                 tv_setting_booth_infor.setText(it.provideInfo())
                 tv_setting_booth_address.setText(it.provideAddress())
-
+                imageOld = it.provideBanner()
                 Glide.with(context)
                         .load(it.provideBanner())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
@@ -95,6 +103,7 @@ class ConfigBoothFragment : BaseFragment() {
     }
 
     private var image = ""
+    private var imageOld = ""
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -124,7 +133,26 @@ class ConfigBoothFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun stopEditing() {
-        img_setting_booth.setOnClickListener(null)
+
+        if (image.isNotEmpty()) {
+            val listImage = mutableListOf<String>()
+            listImage.add(image)
+            img_setting_booth.setOnClickListener {
+                val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImage.toTypedArray())
+                startActivity(intent)
+            }
+        } else {
+            val listImage = mutableListOf<String>()
+            listImage.add(imageOld)
+            img_setting_booth.setOnClickListener {
+                val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImage.toTypedArray())
+                startActivity(intent)
+            }
+        }
+
+
         tv_setting_booth_name.isFocusable = false
         tv_setting_booth_name.isFocusableInTouchMode = false
         tv_setting_booth_hotline.isFocusable = false

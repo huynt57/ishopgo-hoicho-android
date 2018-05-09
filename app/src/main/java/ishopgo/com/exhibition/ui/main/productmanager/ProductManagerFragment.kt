@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.View
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
@@ -16,8 +17,11 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.productmanager.add.ProductManagerAddActivity
+import ishopgo.com.exhibition.ui.main.productmanager.detail.ProductManagerDetailActivity
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, ProductManagerProvider>() {
@@ -122,6 +126,21 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
         startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_ADD)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        if (adapter is ClickableAdapter<ProductManagerProvider>) {
+            (adapter as ClickableAdapter<ProductManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
+                override fun click(position: Int, data: ProductManagerProvider, code: Int) {
+                    val intent = Intent(context, ProductManagerDetailActivity::class.java)
+                    intent.putExtra("product_Id", data.provideId())
+                    startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
+                }
+
+            }
+            }
+    }
+
     companion object {
         const val TAG = "ProductManagerFragment"
         fun newInstance(params: Bundle): ProductManagerFragment {
@@ -135,6 +154,11 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.PRODUCT_MANAGER_ADD && resultCode == Activity.RESULT_OK) {
+            showProgressDialog()
+            firstLoad()
+        }
+
+        if (requestCode == Const.RequestCode.PRODUCT_MANAGER_DETAIL && resultCode == Activity.RESULT_OK) {
             showProgressDialog()
             firstLoad()
         }

@@ -12,11 +12,12 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.model.Brand
+import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
-import ishopgo.com.exhibition.model.product_manager.ProductManager
+import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
@@ -63,7 +64,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
 
     fun createProductManager(name: String, code: String, title: String, tt_price: String, price: String, provider_price: String, dvt: String,
                              provider_id: String, brand_id: String, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
-                             description: String, status: Int, meta_description: String, meta_keyword: String, tag:String,
+                             description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
                              listCategory: ArrayList<String>?, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int) {
 
         val builder = MultipartBody.Builder()
@@ -187,5 +188,25 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
                         }
                     }))
         }
+    }
+
+    var dataProductDetail = MutableLiveData<ProductManagerDetail>()
+
+    fun getProductDetail(product_Id: Long) {
+
+        addDisposable(isgService.getProductManagerDetail(product_Id)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<ProductManagerDetail>() {
+                    override fun success(data: ProductManagerDetail?) {
+                        data?.let {
+                            dataProductDetail.postValue(it)
+                        }
+                    }
+
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 }
