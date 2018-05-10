@@ -123,15 +123,11 @@ class SignupFragment : BaseFragment() {
 
         viewModel.loadRegion.observe(this, Observer { p ->
             p?.let {
-                if (reloadData)
-                    adapterRegion.replaceAll(it)
-                else
-                    adapterRegion.addAll(it)
+                adapterRegion.replaceAll(it)
             }
         })
 
         viewModel.loadRegion()
-        reloadData = true
     }
 
     private fun checkRequireFields(phone: String, email: String, fullname: String, region: String, address: String,

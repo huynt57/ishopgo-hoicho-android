@@ -59,7 +59,6 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
         viewModel.loadData(firstLoad)
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     override fun loadMore(currentCount: Int) {
@@ -84,7 +83,7 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         if (adapter is ClickableAdapter<NotificationProvider>) {
             (adapter as ClickableAdapter<NotificationProvider>).listener = object : ClickableAdapter.BaseAdapterAction<NotificationProvider> {

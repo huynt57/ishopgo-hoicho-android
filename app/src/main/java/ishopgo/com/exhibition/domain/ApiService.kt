@@ -103,7 +103,7 @@ class ApiService {
 
         @GET("favorite-products")
         fun getFavoriteProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
-        
+
         @POST("change-password")
         fun changePassword(
                 @Body body: RequestBody
@@ -171,6 +171,15 @@ class ApiService {
         fun editConfigBooth(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
+
+        @GET("booth/get-sale-point")
+        fun getSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>>
+
+        @POST("booth/add-sale-point")
+        fun createSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("sale-point/change-status/{id}")
+        fun changeStatusSalePoint(@Path("id") salePoint_id: Long): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -190,6 +199,9 @@ class ApiService {
 
         @GET("get-cities")
         fun getRegions(): Single<BaseResponse<MutableList<Region>>>
+
+        @GET("get-districts")
+        fun getDistricts(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<District>>>
 
         @GET("providers")
         fun getProviders(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Provider>>>

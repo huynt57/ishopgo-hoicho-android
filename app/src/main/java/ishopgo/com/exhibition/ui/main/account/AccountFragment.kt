@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
+import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
@@ -107,6 +108,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_PRODUCT_MANAGER -> {
                 openProductManager()
             }
+            Const.AccountAction.ACTION_SALE_POINT -> {
+                openSalePoint()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -156,6 +160,13 @@ class AccountFragment : BaseFragment() {
         context?.let {
             val intent = Intent(it, ProductManagerActivity::class.java)
             startActivityForResult(intent, Const.RequestCode.UPDATE_PROFILE)
+        }
+    }
+
+    private fun openSalePoint() {
+        context?.let {
+            val intent = Intent(it, SalePointActivity::class.java)
+            startActivity(intent)
         }
     }
 

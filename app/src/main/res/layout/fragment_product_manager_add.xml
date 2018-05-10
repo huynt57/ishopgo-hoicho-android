@@ -252,7 +252,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Miêu tả chi tiết "
+                android:hint="Mô tả chi tiết "
                 android:inputType="textMultiLine"
                 android:lines="3" />
 

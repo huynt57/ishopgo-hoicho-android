@@ -80,7 +80,7 @@ class ConfigBoothFragment : BaseFragment() {
                 hideProgressDialog()
                 stopEditing()
                 isEditMode = false
-                toast("Cập nhật thành thành công")
+                toast("Cập nhật thành công")
             }
         })
 

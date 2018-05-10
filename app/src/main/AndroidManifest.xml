@@ -179,7 +179,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.main.WebViewer.WebViewActivity"
+            android:name=".ui.main.salepoint.SalePointActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.salepoint.add.SalePointAddActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 

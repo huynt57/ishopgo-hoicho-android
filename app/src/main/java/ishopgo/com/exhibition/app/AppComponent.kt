@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothViewModel
 import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
+import ishopgo.com.exhibition.ui.main.salepoint.SalePointViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
@@ -77,4 +78,5 @@ interface AppComponent {
     fun inject(notificationViewModel: NotificationViewModel)
     fun inject(productManagerViewModel: ProductManagerViewModel)
     fun inject(suggestedProductsViewModel: SuggestedProductsViewModel)
+    fun inject(salePointViewModel: SalePointViewModel)
 }
