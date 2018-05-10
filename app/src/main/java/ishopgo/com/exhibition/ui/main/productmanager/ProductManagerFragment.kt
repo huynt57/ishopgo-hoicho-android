@@ -44,7 +44,6 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
         firstLoad.name = name
         firstLoad.code = code
         viewModel.loadData(firstLoad)
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     override fun loadMore(currentCount: Int) {
@@ -103,7 +102,6 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
                         dialog.dismiss()
 
                         showProgressDialog()
-                        reloadData = true
                         firstLoad()
                     }
                     .negativeText("Huỷ")
@@ -128,6 +126,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         if (adapter is ClickableAdapter<ProductManagerProvider>) {
             (adapter as ClickableAdapter<ProductManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {

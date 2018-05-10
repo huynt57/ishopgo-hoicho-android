@@ -43,7 +43,7 @@
             style="@style/AppTheme.EnableInputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Tìm theo tên sản phẩm" />
+            android:hint="Tìm mã tên sản phẩm" />
 
     </android.support.design.widget.TextInputLayout>
 
