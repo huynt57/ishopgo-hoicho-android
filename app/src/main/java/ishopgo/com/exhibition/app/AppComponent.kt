@@ -8,13 +8,11 @@ import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
-import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothViewModel
 import ishopgo.com.exhibition.ui.main.home.HomeViewModel
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
-import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel

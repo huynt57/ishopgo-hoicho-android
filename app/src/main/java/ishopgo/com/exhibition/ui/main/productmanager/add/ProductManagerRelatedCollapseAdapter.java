@@ -23,11 +23,11 @@ import java.util.List;
  */
 
 public class ProductManagerRelatedCollapseAdapter extends RecyclerView.Adapter<ProductManagerRelatedCollapseAdapter.ViewHolder> {
-    static List<ProductManagerProvider> ProductList;
+    static List<ProductManagerProvider> listProduct;
     static ArrayList<ProductManagerProvider> removeProductList;
 
-    public ProductManagerRelatedCollapseAdapter(List<ProductManagerProvider> ProductList) {
-        ProductManagerRelatedCollapseAdapter.ProductList = ProductList;
+    public ProductManagerRelatedCollapseAdapter(List<ProductManagerProvider> listProduct) {
+        ProductManagerRelatedCollapseAdapter.listProduct = listProduct;
         removeProductList = new ArrayList<>();
 
     }
@@ -45,7 +45,7 @@ public class ProductManagerRelatedCollapseAdapter extends RecyclerView.Adapter<P
             @Override
             public void onClick(View view) {
                 int position = vh.getLayoutPosition();
-               ProductManagerProvider removedItem = ProductList.remove(position);
+                ProductManagerProvider removedItem = listProduct.remove(position);
                 notifyItemRemoved(position);
 
                 removeProductList.add(removedItem);
@@ -56,20 +56,20 @@ public class ProductManagerRelatedCollapseAdapter extends RecyclerView.Adapter<P
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (ProductList != null) {
-            holder.bind(ProductList.get(position));
+        if (listProduct != null) {
+            holder.bind(listProduct.get(position));
         }
     }
 
     @Override
     public int getItemCount() {
-        return ProductList == null ? 0 : ProductList.size();
+        return listProduct == null ? 0 : listProduct.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-                private ImageView iv_spk_product_related_image, btn_spk_product_related_delete;
-                private TextView tv_spk_product_related_name, tv_spk_product_related_price;
+        private ImageView iv_spk_product_related_image, btn_spk_product_related_delete;
+        private TextView tv_spk_product_related_name, tv_spk_product_related_price;
 
 
         ViewHolder(View view) {
@@ -86,5 +86,5 @@ public class ProductManagerRelatedCollapseAdapter extends RecyclerView.Adapter<P
             tv_spk_product_related_name.setText(product.provideName());
             tv_spk_product_related_price.setText(product.providePrice());
         }
-        }
+    }
 }

@@ -7,14 +7,12 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class ProductManagerDetailFragmentActionBar : BaseActionBarFragment() {
-    private var product_Id = -1L
 
     companion object {
 
-        fun newInstance(product_Id: Long, params: Bundle): ProductManagerDetailFragmentActionBar {
+        fun newInstance(params: Bundle): ProductManagerDetailFragmentActionBar {
             val fragment = ProductManagerDetailFragmentActionBar()
             fragment.arguments = params
-            fragment.product_Id = product_Id
 
             return fragment
         }
@@ -30,7 +28,7 @@ class ProductManagerDetailFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ProductManagerDetailFragment.newInstance(product_Id, Bundle())).commit()
+                .replace(R.id.view_main_content, ProductManagerDetailFragment.newInstance(arguments ?: Bundle())).commit()
     }
 
     private fun setupToolbars() {

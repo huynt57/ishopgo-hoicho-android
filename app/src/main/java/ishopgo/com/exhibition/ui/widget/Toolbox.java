@@ -176,13 +176,4 @@ public class Toolbox {
             FileUtils.deleteQuietly(sourceFile);
         }
     }
-
-    public static String getStackTrace(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        return sw.toString();
-    }
-
-
 }

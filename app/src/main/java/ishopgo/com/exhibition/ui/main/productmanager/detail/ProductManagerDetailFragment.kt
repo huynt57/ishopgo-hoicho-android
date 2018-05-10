@@ -29,7 +29,8 @@ import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
-import ishopgo.com.exhibition.ui.main.WebViewer.WebViewActivity
+import ishopgo.com.exhibition.ui.extensions.showStackTrace
+import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.BrandsAdapter
 import ishopgo.com.exhibition.ui.main.productmanager.add.ProductManagerAddFragment
@@ -60,6 +61,12 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_manager_detail, container, false)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        product_Id = arguments?.getLong("product_Id", -1L) ?: -1L
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -201,20 +208,20 @@ class ProductManagerDetailFragment : BaseFragment() {
                 )
                 webView_spk_detail_description.loadData(fullHtml, "text/html; charset=UTF-8", null)
             } catch (e: IOException) {
-                CrashlyticsCore.getInstance().log(Toolbox.getStackTrace(e))
+                CrashlyticsCore.getInstance().log(e.showStackTrace())
                 webView_spk_detail_description.loadData(info.provideDescription(), "text/html; charset=UTF-8", null)
             }
         }
 
         tv_view_details.setOnClickListener({
-            val i = Intent(context, WebViewActivity::class.java)
-            i.putExtra(WebViewActivity.EXTRA_HTML, info.provideDescription())
+            val i = Intent(context, FullDetailActivity::class.java)
+            i.putExtra(Const.TransferKey.EXTRA_JSON, info.provideDescription())
             startActivity(i)
         })
 
 
         if (info.collectionProducts != null) {
-            val productsRelatedAdapter = ProductsManagerDetailRelatedAdapter()
+            val productsRelatedAdapter = ProductManagerDetailRelatedAdapter()
             info.collectionProducts!!.products?.let { productsRelatedAdapter.replaceAll(it) }
             rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_product_related_products.adapter = productsRelatedAdapter
@@ -407,7 +414,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
     }
 
-    private fun getStatus(view:TextView){
+    private fun getStatus(view: TextView) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .customView(R.layout.dialog_product_status, false)
@@ -538,10 +545,9 @@ class ProductManagerDetailFragment : BaseFragment() {
         const val STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dang landing page
         const val STATUS_DISPLAY_HIDDEN: Int = 0 //Không hiển thị
 
-        fun newInstance(product_Id: Long, params: Bundle): ProductManagerDetailFragment {
+        fun newInstance(params: Bundle): ProductManagerDetailFragment {
             val fragment = ProductManagerDetailFragment()
             fragment.arguments = params
-            fragment.product_Id = product_Id
 
             return fragment
         }
