@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.ui.community
 import android.annotation.SuppressLint
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -29,8 +28,6 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         const val COMMUNITY_PRODUCT_CLICK = 6
         const val COMMUNITY_IMAGE_CLICK = 7
     }
-
-    private var currentLikeCount = 0
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return if (viewType == COMMUNITY_SHARE) R.layout.item_community_share else R.layout.item_community
@@ -62,25 +59,22 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
 
                 if (UserDataManager.currentUserId > 0) {
                     itemView.toggle_community_like.setOnClickListener {
-//                        if (itemView.toggle_community_like.isChecked) {
-//                            if (currentLikeCount == getItem(adapterPosition).provideLikeCount()){
-//                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
-//                            } else itemView.toggle_community_like.text = (currentLikeCount + 1).toString()
-//                        }
-//                        else {
-//                           if (currentLikeCount == getItem(adapterPosition).provideLikeCount()){
-//                               itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
-//                           } else itemView.toggle_community_like.text = (currentLikeCount - 1).toString()
-//                        }
-
-//                        when {
-//                            itemView.toggle_community_like.isChecked -> {
-//                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
-//                                currentLikeCount = getItem(adapterPosition).provideLikeCount() + 1
-//                            }
-//                            currentLikeCount == getItem(adapterPosition).provideLikeCount() -> itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
-//                            else -> itemView.toggle_community_like.text = (currentLikeCount - 1).toString()
-//                        }
+                        if (itemView.toggle_community_like.isChecked) {
+                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                            } else {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                            }
+                        } else
+                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                            } else {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                            }
 
                         listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK)
                     }
@@ -102,7 +96,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                 tv_community_number_share.text = data.provideShareCount().toString()
                 toggle_community_like.isChecked = data.provideLiked()
                 toggle_community_like.text = data.provideLikeCount().toString()
-                currentLikeCount = data.provideLikeCount()
+                tv_community_like.text = data.provideLikeCount().toString()
 
                 Glide.with(this).load(data.providerUserAvatar())
                         .apply(RequestOptions.circleCropTransform()
@@ -125,8 +119,8 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                     tv_community_product_price.text = data.provideProduct()?.providerPrice()
                 } else {
                     cv_community_product.visibility = View.GONE
-                    tv_community_like.visibility = View.GONE
                     toggle_community_like.visibility = View.VISIBLE
+                    tv_community_like.visibility = View.GONE
                 }
 
                 if (data.provideListImage().isNotEmpty()) {
