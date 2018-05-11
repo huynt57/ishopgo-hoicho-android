@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.banner
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +8,11 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
+import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_banner_image.*
 
 /**
@@ -16,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_banner_image.*
  */
 class BannerImageFragment : BaseFragment() {
 
-    private var imageUrl: String? = null
+    private var banner: Banner? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_banner_image, container, false)
@@ -25,17 +29,24 @@ class BannerImageFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        imageUrl = arguments?.getString(Const.TransferKey.EXTRA_URL)
+        val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
+        banner = Toolbox.getDefaultGson().fromJson(json, Banner::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Glide.with(view.context)
-                .load(imageUrl)
+                .load(banner?.image)
                 .apply(RequestOptions().centerCrop().placeholder(R.drawable.image_placeholder)
                         .error(R.drawable.image_placeholder))
                 .into(view_banner_image)
+
+        view_banner_image.setOnClickListener {
+            val intent = Intent(it.context, FullDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_URL, banner?.url ?: "")
+            startActivity(intent)
+        }
     }
 
     companion object {

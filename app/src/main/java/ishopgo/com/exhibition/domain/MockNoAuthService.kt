@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.Community.CommunityComment
 import ishopgo.com.exhibition.model.Community.CommunityProduct
 import ishopgo.com.exhibition.model.User
 import okhttp3.RequestBody
+import retrofit2.http.QueryMap
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
 
@@ -15,6 +16,33 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getSubCategories(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Category>>> {
+        val dummy = mutableListOf<Category>()
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+        dummy.add(generateCategory(random.nextInt(5)))
+
+        val response = BaseResponse<List<Category>>()
+        response.status = 1
+        response.data = dummy
+
+        return delegate.returningResponse(response).getSubCategories(params)
+    }
+
+    override fun getCategoriedProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getCategoriedProducts(params)
+    }
+
     override fun getBoothCategories(boothId: Long): Single<BaseResponse<List<Category>>> {
         val dummy = mutableListOf<Category>()
         dummy.add(generateCategory(random.nextInt(5)))

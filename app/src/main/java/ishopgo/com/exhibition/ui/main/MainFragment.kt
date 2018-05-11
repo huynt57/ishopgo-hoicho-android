@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
@@ -22,6 +24,7 @@ import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFr
 import ishopgo.com.exhibition.ui.main.home.search.SearchFragment
 import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
+import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
@@ -69,11 +72,15 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         })
         viewModel.showCategoriedProducts.observe(this, Observer { s ->
             s?.let {
-                childFragmentManager.beginTransaction()
-                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                        .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(Bundle()))
-                        .addToBackStack(ProductsByCategoryFragment.TAG)
-                        .commit()
+                if (it is Category) {
+                    val params = Bundle()
+                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(it))
+                    childFragmentManager.beginTransaction()
+                            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                            .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(params))
+                            .addToBackStack(ProductsByCategoryFragment.TAG)
+                            .commit()
+                }
             }
         })
     }

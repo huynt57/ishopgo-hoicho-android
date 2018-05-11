@@ -8,15 +8,19 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.LinearLayout
 import android.widget.TextView
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
+import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_by_category.*
@@ -42,6 +46,17 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     }
 
+    private lateinit var category: Category
+    private lateinit var mainViewModel: MainViewModel
+    private lateinit var scrollToEndScroller: RecyclerView.SmoothScroller
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        category = Toolbox.getDefaultGson().fromJson(json, Category::class.java)
+    }
+
     private val childAdapter = CategoryChildAdapter()
     private val productAdapter = ProductAdapter()
     protected lateinit var scrollListener: EndlessRecyclerViewScrollListener
@@ -62,25 +77,34 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         swipe.setOnRefreshListener { firstLoad() }
     }
 
-    private fun setupBreadCrumb() {
+    private fun addCategoryBreadCrumb(category: Category) {
         context?.let {
             val item = LayoutInflater.from(it)
-                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, true) as LinearLayout
-            item.tag = "item"
-            val textView = item.getChildAt(0) as TextView
-            textView.text = "item 1"
-            textView.setOnClickListener { }
+                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, false) as TextView
+            item.id = category.id.toInt()
+            item.text = category.name
+            item.setOnClickListener {
+                if (this.category != category) {
+                    this.category = category
+                    setupBreadCrumb()
 
+                    viewModel.loadChildCategory(category)
+                    firstLoad()
+                }
+            }
 
-            val item2 = LayoutInflater.from(it)
-                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, true) as LinearLayout
-            item2.tag = "item 1"
-            val textView1 = item2.getChildAt(1) as TextView
-            textView1.text = "item 2"
-            textView1.setOnClickListener { }
+            view_breadcrumb_container.addView(item, 0)
+
+            category.parent?.let {
+                addCategoryBreadCrumb(it)
+            }
         }
-        view_breadcrumb_container
+    }
 
+    private fun setupBreadCrumb() {
+        view_breadcrumb_container.removeAllViews()
+        addCategoryBreadCrumb(category)
+        view_breadcrumb_container.post { view_breadcrumb.fullScroll(View.FOCUS_RIGHT) }
     }
 
     private fun setupProducts(view: View) {
@@ -105,7 +129,13 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         view_child_categories.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         childAdapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
             override fun click(position: Int, data: CategoryProvider, code: Int) {
+                if (data is Category) {
+                    category = data
+                    setupBreadCrumb()
 
+                    viewModel.loadChildCategory(category)
+                    firstLoad()
+                }
             }
 
         }
@@ -122,10 +152,13 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+
         viewModel = obtainViewModel(ProductsByCategoryViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.childCategories.observe(this, Observer { c ->
             c?.let {
+                view_child_categories.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 childAdapter.replaceAll(it)
             }
         })
@@ -134,15 +167,14 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
                 if (reloadData) {
                     productAdapter.replaceAll(it)
                     view_recyclerview.scheduleLayoutAnimation()
-                }
-                else
+                } else
                     productAdapter.addAll(it)
 
                 finishLoading()
             }
         })
 
-        viewModel.loadChildCategory(0)
+        viewModel.loadChildCategory(category)
 
         firstLoad()
     }
@@ -153,14 +185,22 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         productAdapter.clear()
         scrollListener.resetState()
 
-        viewModel.loadProductsByCategory(0)
+        val request = CategoriedProductsRequest()
+        request.limit = Const.PAGE_LIMIT
+        request.offset = 0
+        request.categoryId = category.id
+        viewModel.loadProductsByCategory(request)
     }
 
     private fun loadMore(currentCount: Int) {
         reloadData = false
         swipe.isRefreshing = true
 
-        viewModel.loadProductsByCategory(currentCount.toLong())
+        val request = CategoriedProductsRequest()
+        request.limit = Const.PAGE_LIMIT
+        request.offset = currentCount
+        request.categoryId = category.id
+        viewModel.loadProductsByCategory(request)
     }
 
     private fun finishLoading() {

@@ -13,4 +13,6 @@ interface CategoryProvider {
 
     fun provideIsParent(): Boolean
 
+    fun provideLevel(): Int
+
 }

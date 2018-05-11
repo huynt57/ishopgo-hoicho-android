@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -34,6 +35,7 @@ import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -150,25 +152,25 @@ class HomeFragment : BaseFragment() {
         view_banner_pager.handler?.removeCallbacks(changePage)
     }
 
-    private fun showBanners(imageUrls: List<String>) {
+    private fun showBanners(bannerImages: List<Banner>) {
         mPagerAdapter = object : FragmentPagerAdapter(childFragmentManager) {
 
             override fun getItem(position: Int): Fragment {
                 val params = Bundle()
-                params.putString(Const.TransferKey.EXTRA_URL, imageUrls[position])
+                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(bannerImages[position]))
                 return BannerImageFragment.newInstance(params)
             }
 
             override fun getCount(): Int {
-                return imageUrls.size
+                return bannerImages.size
             }
         }
-        view_banner_pager.offscreenPageLimit = imageUrls.size
+        view_banner_pager.offscreenPageLimit = bannerImages.size
         view_banner_pager.adapter = mPagerAdapter
         view_banner_indicator.setViewPager(view_banner_pager)
 
         view_banner_pager.post {
-            if (imageUrls.size > 1)
+            if (bannerImages.size > 1)
                 doChangeBanner()
         }
     }

@@ -121,8 +121,8 @@
             android:id="@+id/container_product_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:background="?attr/selectableItemBackground"
+            android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
@@ -175,17 +175,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_divider_111"/>
 
-        <View
-            style="@style/AppTheme.DividerFat"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            />
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_shop_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
             tools:visibility="visible">
+
+            <View
+                android:id="@+id/view_divider_shop_info"
+                style="@style/AppTheme.DividerFat"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/view_shop_name"
@@ -197,7 +201,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
                 tools:text="Công ty TNHH Mua đồ tốt"/>
 
             <TextView
@@ -221,7 +225,7 @@
                 android:padding="8dp"
                 android:text="Xem gian hàng"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"/>
 
             <View
                 android:id="@+id/textView4"
@@ -330,14 +334,7 @@
 
             </LinearLayout>
 
-
         </android.support.constraint.ConstraintLayout>
-
-        <View
-            style="@style/AppTheme.DividerFat"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_comment"
@@ -345,19 +342,26 @@
             android:layout_height="wrap_content"
             tools:visibility="visible">
 
+            <View
+                android:id="@+id/view_divider_comment"
+                style="@style/AppTheme.DividerFat"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:text="Bình luận"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_comment"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_like_count"
@@ -432,20 +436,15 @@
                 android:id="@+id/view_product_show_more_comment"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:gravity="center"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
                 android:text="Xem thêm bình luận"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_divider_111"/>
         </android.support.constraint.ConstraintLayout>
-
-        <View
-            style="@style/AppTheme.DividerFat"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_products_same_shop"
@@ -455,6 +454,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_banner">
 
+            <View
+                android:id="@+id/view_divider_same_shop"
+                style="@style/AppTheme.DividerFat"
+                android:layout_width="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
             <TextView
                 android:id="@+id/label_products_same_shop"
                 style="@style/AppTheme.SectionLabel"
@@ -462,7 +470,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm cùng gian hàng"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"/>
 
             <TextView
                 android:id="@+id/more_products_same_shop"
@@ -471,7 +479,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_products_same_shop"
@@ -488,12 +496,6 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <View
-            style="@style/AppTheme.DividerFat"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            />
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_favorite"
             android:layout_width="match_parent"
@@ -502,6 +504,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_banner">
 
+            <View
+                android:id="@+id/view_divider_favorite"
+                style="@style/AppTheme.DividerFat"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
             <TextView
                 android:id="@+id/label_favorite"
                 style="@style/AppTheme.SectionLabel"
@@ -509,7 +520,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm yêu thích"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"/>
 
             <TextView
                 android:id="@+id/more_favorite"
@@ -518,7 +529,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_favorite"
@@ -535,13 +546,6 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <View
-            style="@style/AppTheme.DividerFat"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            />
-
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_viewed"
             android:layout_width="match_parent"
@@ -550,6 +554,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/container_banner">
 
+            <View
+                android:id="@+id/view_divider_viewed"
+                style="@style/AppTheme.DividerFat"
+                android:layout_width="0dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                />
+
             <TextView
                 android:id="@+id/label_viewed"
                 style="@style/AppTheme.SectionLabel"
@@ -557,7 +570,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm đã xem"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"/>
 
             <TextView
                 android:id="@+id/more_viewed"
@@ -566,7 +579,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_viewed"

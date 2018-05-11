@@ -20,6 +20,7 @@ class CategoryViewModel : BaseListViewModel<List<CategoryProvider>>(), AppCompon
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<Category>>() {
                         override fun success(data: List<Category>?) {
+                            data?.map { it.level = 1 }
                             dataReturned.postValue(data ?: mutableListOf())
                         }
 

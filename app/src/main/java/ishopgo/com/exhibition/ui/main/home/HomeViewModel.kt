@@ -152,6 +152,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Category>>() {
                     override fun success(data: List<Category>?) {
+                        data?.map { it.level = 1 }
                         categories.postValue(data ?: mutableListOf())
                     }
 
@@ -164,17 +165,14 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var banners = MutableLiveData<List<String>>()
+    var banners = MutableLiveData<List<Banner>>()
 
     fun loadBanners() {
         addDisposable(noAuthService.getBanners()
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Banner>>() {
                     override fun success(data: List<Banner>?) {
-                        val bannerImages = mutableListOf<String>()
-                        data?.map { it.image?.let { bannerImages.add(it) } }
-
-                        banners.postValue(bannerImages)
+                        banners.postValue(data ?: listOf())
                     }
 
                     override fun failure(status: Int, message: String) {

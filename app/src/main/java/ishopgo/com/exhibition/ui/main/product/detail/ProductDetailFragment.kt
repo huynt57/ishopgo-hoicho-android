@@ -83,21 +83,25 @@ class ProductDetailFragment : BaseFragment() {
         })
         viewModel.sameShopProducts.observe(this, Observer { p ->
             p?.let {
+                container_products_same_shop.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 sameShopProductsAdapter.replaceAll(it)
             }
         })
         viewModel.favoriteProducts.observe(this, Observer { p ->
             p?.let {
+                container_favorite.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 favoriteProductAdapter.replaceAll(it)
             }
         })
         viewModel.viewedProducts.observe(this, Observer { p ->
             p?.let {
+                container_viewed.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 viewedProductAdapter.replaceAll(it)
             }
         })
         viewModel.productComments.observe(this, Observer { c ->
             c?.let {
+                view_list_comments.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 productCommentAdapter.replaceAll(it)
             }
 
@@ -162,7 +166,7 @@ class ProductDetailFragment : BaseFragment() {
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
-            more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, productId) }
+            more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, product) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
             container_product_brand.setOnClickListener {
@@ -336,10 +340,13 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
-    private fun openProductsOfShop(context: Context, productId: Long) {
-        val intent = Intent(context, ProductsOfShopActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
-        startActivity(intent)
+    private fun openProductsOfShop(context: Context, product: ProductDetailProvider) {
+        if (product is ProductDetail) {
+            val boothId = product.booth?.id
+            val intent = Intent(context, ProductsOfShopActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
+            startActivity(intent)
+        }
     }
 
     private fun openShopDetail(context: Context, product: ProductDetailProvider) {

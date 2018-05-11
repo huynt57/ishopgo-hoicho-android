@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 class Category : IdentityData(), CategoryProvider {
+    override fun provideLevel(): Int {
+        return level
+    }
+
     override fun provideIcon(): String {
         return ""
     }
@@ -17,8 +21,24 @@ class Category : IdentityData(), CategoryProvider {
     }
 
     override fun provideIsParent(): Boolean {
-        return subs != null
+        return level == 1
     }
+
+    var level: Int = 1
+        set(value) {
+            field = value
+            subs?.onEach {
+                it.level = field + 1
+
+                // prevent recursive problem because of gson
+                val p = Category()
+                p.id = id
+                p.name = name
+                it.parent = p
+            }
+        }
+
+    var parent: Category? = null
 
     @SerializedName("name")
     var name: String? = null
@@ -26,5 +46,4 @@ class Category : IdentityData(), CategoryProvider {
     var count: Int? = 0
     @SerializedName("subCate")
     var subs: List<Category>? = null
-
 }
