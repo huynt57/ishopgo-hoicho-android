@@ -16,10 +16,6 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
         var IS_FEATURED: Int = 1  //Sản phẩm nổi bật
     }
 
-    override fun provideId(): Long {
-        return id
-    }
-
     override fun provideName(): String {
         return name ?: ""
     }
@@ -73,10 +69,6 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
 
     override fun provideMetaDescription(): String {
         return metaDescription ?: ""
-    }
-
-    override fun provideParentId(): String {
-        return parentId.toString()
     }
 
     override fun provideCollectionProducts(): ProductRelated? {

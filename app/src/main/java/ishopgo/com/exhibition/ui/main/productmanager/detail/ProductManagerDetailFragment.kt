@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
@@ -65,7 +66,7 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        product_Id = arguments?.getLong("product_Id", -1L) ?: -1L
+        product_Id = arguments?.getLong(EXTRA_ID, -1L) ?: -1L
 
     }
 
@@ -193,8 +194,9 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_provider.setText(info.providerAccount?.name ?: "")
         edit_product_status.setText(info.provideStatus())
 
-        if (info.provideDepartments()?.isNotEmpty()!!) edit_product_brand.setText(info.provideDepartments()?.get(0)?.name
-                ?: "") else edit_product_brand.setText("")
+        if (info.provideDepartments() != null)
+            if (info.provideDepartments()!!.isNotEmpty()) edit_product_brand.setText(info.provideDepartments()?.get(0)?.name
+                    ?: "") else edit_product_brand.setText("")
 
 
         container_product_detail.visibility = if (info.provideDescription().isEmpty()) View.GONE else View.VISIBLE

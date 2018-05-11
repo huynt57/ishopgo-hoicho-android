@@ -40,10 +40,5 @@ class SalePointAdapter : ClickableAdapter<SalePointProvider>() {
                 btn_status.text = data.provideStatus()
             }
         }
-
-    }
-
-    companion object {
-        val STATUS_SHOW = 1
     }
 }

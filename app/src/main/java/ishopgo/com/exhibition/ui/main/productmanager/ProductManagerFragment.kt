@@ -132,7 +132,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
             (adapter as ClickableAdapter<ProductManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
                 override fun click(position: Int, data: ProductManagerProvider, code: Int) {
                     val intent = Intent(context, ProductManagerDetailActivity::class.java)
-                    intent.putExtra("product_Id", data.provideId())
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.provideId())
                     startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
                 }
 

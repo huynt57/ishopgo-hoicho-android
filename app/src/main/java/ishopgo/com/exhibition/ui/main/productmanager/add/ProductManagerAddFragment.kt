@@ -43,7 +43,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private val adapterBrands = BrandsAdapter()
     private val adapterProvider = ProviderAdapter()
-    private lateinit var adapterProductRelatedImage: ProductManagerRelatedCollapseAdapter
+    private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
 
     private var reloadBrands = false
@@ -198,7 +198,7 @@ class ProductManagerAddFragment : BaseFragment() {
         firstLoadBrand()
         firstLoadProvider()
         firstLoadProductRelated()
-        adapterProductRelatedImage = ProductManagerRelatedCollapseAdapter(listProductRelated)
+//        adapterProductRelatedImage = ProductManagerRelatedCollapseAdapter(listProductRelated)
     }
 
     private fun firstLoadBrand() {
@@ -400,10 +400,15 @@ class ProductManagerAddFragment : BaseFragment() {
 
     private fun getSanPhamLienQuan() {
         context?.let {
-            adapterProductRelatedImage = ProductManagerRelatedCollapseAdapter(listProductRelated)
+            adapterProductRelatedImage.replaceAll(listProductRelated)
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_related_products.adapter = adapterProductRelatedImage
-            adapterDialogProduct.notifyItemInserted(listProductRelated.size - 1)
+            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
+                override fun click(position: Int, data: ProductManagerProvider, code: Int) {
+                    listProductRelated.remove(data)
+                    adapterProductRelatedImage.replaceAll(listProductRelated)
+                }
+            }
         }
     }
 

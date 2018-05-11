@@ -5,7 +5,6 @@ import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
 
 interface ProductManagerDetailProvider {
-    fun provideId(): Long
     fun provideName(): String
     fun provideTitle(): String
     fun provideDVT(): String
@@ -18,7 +17,6 @@ interface ProductManagerDetailProvider {
     fun provideTags(): String
     fun provideDescription(): String
     fun provideMetaDescription(): String
-    fun provideParentId(): String
     fun provideCollectionProducts(): ProductRelated?
     fun provideProviderAccount(): Provider?
     fun provideImages(): List<String>
