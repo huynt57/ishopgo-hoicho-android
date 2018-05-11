@@ -81,7 +81,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
 
         if (viewModel is ProductManagerViewModel) {
             (viewModel as ProductManagerViewModel).totalProduct.observe(this, Observer {
-//                tv_number_item.setText(it ?: 0)
+                //                tv_number_item.setText(it ?: 0)
             })
         }
     }
@@ -131,13 +131,15 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
         if (adapter is ClickableAdapter<ProductManagerProvider>) {
             (adapter as ClickableAdapter<ProductManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
                 override fun click(position: Int, data: ProductManagerProvider, code: Int) {
-                    val intent = Intent(context, ProductManagerDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.provideId())
-                    startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
+                    if (data is ProductManager) {
+                        val intent = Intent(context, ProductManagerDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
+                    }
                 }
 
             }
-            }
+        }
     }
 
     companion object {

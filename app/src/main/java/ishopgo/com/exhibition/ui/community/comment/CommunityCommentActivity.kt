@@ -9,6 +9,10 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
  */
 class CommunityCommentActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
-        return CommunityCommentFragmentActionBar.newInstance(intent.getLongExtra("post_id", 0))
+        return CommunityCommentFragmentActionBar.newInstance(startupOption)
+    }
+
+    override fun startupOptions(): Bundle {
+        return intent?.extras ?: Bundle()
     }
 }

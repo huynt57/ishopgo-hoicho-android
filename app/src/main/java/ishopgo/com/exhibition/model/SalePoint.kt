@@ -7,8 +7,8 @@ import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointProvider
 
 class SalePoint : IdentityData(), SalePointProvider {
-    override fun provideWasStatus(): Boolean {
-        return status()
+    override fun provideIsShowing(): Boolean {
+        return isShowing()
     }
 
     override fun provideCity(): String {
@@ -24,7 +24,7 @@ class SalePoint : IdentityData(), SalePointProvider {
     }
 
     override fun provideStatus(): String {
-        return if (status()) "Hiển thị" else "Ẩn"
+        return if (isShowing()) "Hiển thị" else "Ẩn"
     }
 
     override fun provideProductName(): String {
@@ -80,5 +80,5 @@ class SalePoint : IdentityData(), SalePointProvider {
         val STATUS_SHOW = 1
     }
 
-    fun status() = status == STATUS_SHOW
+    private fun isShowing() = status == STATUS_SHOW
 }

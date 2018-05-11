@@ -36,7 +36,7 @@ class SalePointAdapter : ClickableAdapter<SalePointProvider>() {
                 tv_sale_point_address.text = data.provideAddress()
                 tv_sale_point_district.text = data.provideDistrict()
                 tv_sale_point_city.text = data.provideCity()
-                btn_status.isChecked = data.provideWasStatus()
+                btn_status.isChecked = data.provideIsShowing()
                 btn_status.text = data.provideStatus()
             }
         }

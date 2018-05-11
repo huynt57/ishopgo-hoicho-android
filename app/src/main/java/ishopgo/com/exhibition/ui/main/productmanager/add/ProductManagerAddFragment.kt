@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
@@ -198,7 +199,6 @@ class ProductManagerAddFragment : BaseFragment() {
         firstLoadBrand()
         firstLoadProvider()
         firstLoadProductRelated()
-//        adapterProductRelatedImage = ProductManagerRelatedCollapseAdapter(listProductRelated)
     }
 
     private fun firstLoadBrand() {
@@ -368,16 +368,20 @@ class ProductManagerAddFragment : BaseFragment() {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
                                 } else {
-                                    for (i in listProductRelated.indices) {
-                                        if (listProductRelated[i].provideId() == data.provideId()) {
-                                            toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
-                                            return
-                                        } else {
-                                            listProductRelated.add(data)
-                                        }
+                                    val isContained = listProductRelated.any {
+                                        if (it is IdentityData && data is IdentityData)
+                                            return@any it.id == data.id
+                                        return@any false
+                                    }
+
+                                    if (isContained) {
+                                        toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                                        return
+                                    } else {
+                                        listProductRelated.add(data)
                                     }
                                 }
-                                getSanPhamLienQuan()
+                                loadSanPhamLienQuan()
                                 dialog.dismiss()
                             }
                         }
@@ -398,7 +402,7 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
-    private fun getSanPhamLienQuan() {
+    private fun loadSanPhamLienQuan() {
         context?.let {
             adapterProductRelatedImage.replaceAll(listProductRelated)
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -416,8 +420,8 @@ class ProductManagerAddFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && !CASE_PICK_IMAGE) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                     return
                 }
                 val postMedia = PostMedia()
@@ -427,8 +431,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (2 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                         return
                     }
                     val postMedia = PostMedia()
@@ -443,8 +447,8 @@ class ProductManagerAddFragment : BaseFragment() {
         }
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && CASE_PICK_IMAGE) {
-            if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+            if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                 return
             }
 

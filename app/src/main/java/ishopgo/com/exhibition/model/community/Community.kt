@@ -12,8 +12,8 @@ import ishopgo.com.exhibition.ui.widget.Toolbox
  * Created by hoangnh on 5/3/2018.
  */
 class Community : IdentityData(), CommunityProvider {
-    override fun provideLiked(): Int {
-        return liked ?: 0
+    override fun provideLiked(): Boolean {
+        return isLiked()
     }
 
     override fun providerId(): Long {
@@ -92,4 +92,11 @@ class Community : IdentityData(), CommunityProvider {
     @SerializedName("share_count")
     @Expose
     var shareCount: Int? = null
+
+    companion object {
+        val LIKED = 1
+    }
+
+    private fun isLiked() = liked == LIKED
+
 }

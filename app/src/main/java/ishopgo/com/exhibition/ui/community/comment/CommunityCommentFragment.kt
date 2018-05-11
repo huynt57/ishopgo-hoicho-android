@@ -38,22 +38,27 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
     private lateinit var scroller: LinearSmoothScroller
     private lateinit var viewModel: CommunityViewModel
     private var post_id: Long = 0
+    private var last_id: Long = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_comment_community, container, false)
     }
 
-    private var last_id: Long = 0
 
     companion object {
         const val TAG = "CommunityShareFragmentActionBar"
 
-        fun newInstance(post_id: Long): CommunityCommentFragment {
+        fun newInstance(params: Bundle): CommunityCommentFragment {
             val fragment = CommunityCommentFragment()
-            fragment.post_id = post_id
+            fragment.arguments = params
 
             return fragment
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        post_id = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

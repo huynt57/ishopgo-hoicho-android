@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main.productmanager.add
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -40,7 +39,6 @@ return R.layout.item_product_retated_horizontal   }
 
                 tv_spk_product_related_name.text = data.provideName()
                 tv_spk_product_related_price.text = data.providePrice()
-                iv_spk_product_related_image.setBackgroundColor(Color.TRANSPARENT)
             }
         }
     }

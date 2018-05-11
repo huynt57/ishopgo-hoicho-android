@@ -9,7 +9,7 @@ interface SalePointProvider {
     fun provideDistrict(): String
     fun providePrice(): String
     fun provideStatus(): String
-    fun provideWasStatus(): Boolean
+    fun provideIsShowing(): Boolean
     fun provideProductName(): String
     fun provideManagerPhone(): String
 }

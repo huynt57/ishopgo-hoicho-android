@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
  * Created by hoangnh on 5/4/2018.
  */
 class CommunityCommentFragmentActionBar : BaseActionBarFragment() {
-    private var post_id: Long = 0
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_single_content
     }
@@ -21,7 +20,7 @@ class CommunityCommentFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, CommunityCommentFragment.newInstance(post_id)).commit()
+                .replace(R.id.view_main_content, CommunityCommentFragment.newInstance(arguments ?: Bundle())).commit()
     }
 
     private fun setupToolbars() {
@@ -31,9 +30,9 @@ class CommunityCommentFragmentActionBar : BaseActionBarFragment() {
     }
 
     companion object {
-        fun newInstance(post_id: Long): CommunityCommentFragmentActionBar {
+        fun newInstance(params: Bundle): CommunityCommentFragmentActionBar {
             val fragment = CommunityCommentFragmentActionBar()
-            fragment.post_id = post_id
+            fragment.arguments = params
             return fragment
         }
     }

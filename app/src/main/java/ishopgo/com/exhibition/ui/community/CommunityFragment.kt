@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import android.net.Uri
+import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 
 /**
@@ -110,13 +111,17 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.providerId())
+                            if (data is Community) {
+                                if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.id)
+                            }
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
-                            val intent = Intent(context, CommunityCommentActivity::class.java)
-                            intent.putExtra("post_id", data.providerId())
-                            startActivity(intent)
+                            if (data is Community) {
+                                val intent = Intent(context, CommunityCommentActivity::class.java)
+                                intent.putExtra(EXTRA_ID, data.id)
+                                startActivity(intent)
+                            }
                         }
 
                         COMMUNITY_SHARE_NUMBER_CLICK -> {
@@ -177,17 +182,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     }
                 }
             }
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (viewModel is CommunityViewModel) {
-            (viewModel as CommunityViewModel).postLikeSuccess.observe(this, Observer { p ->
-                p.let {
-                    toast("Đã like")
-                }
-            })
         }
     }
 

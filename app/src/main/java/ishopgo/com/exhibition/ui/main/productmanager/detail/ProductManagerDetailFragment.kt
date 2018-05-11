@@ -194,10 +194,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_provider.setText(info.providerAccount?.name ?: "")
         edit_product_status.setText(info.provideStatus())
 
-        if (info.provideDepartments() != null)
-            if (info.provideDepartments()!!.isNotEmpty()) edit_product_brand.setText(info.provideDepartments()?.get(0)?.name
-                    ?: "") else edit_product_brand.setText("")
-
+        edit_product_brand.setText(info.provideDepartments()?.get(0)?.name ?: "")
 
         container_product_detail.visibility = if (info.provideDescription().isEmpty()) View.GONE else View.VISIBLE
         if (container_product_detail.visibility == View.VISIBLE) {
