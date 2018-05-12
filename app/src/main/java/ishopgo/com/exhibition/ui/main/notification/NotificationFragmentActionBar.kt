@@ -34,11 +34,11 @@ class NotificationFragmentActionBar : BaseActionBarFragment() {
 
             toolbar.rightButton(R.drawable.ic_add_green_24dp)
             toolbar.setRightButtonClickListener {
-
+                toast("Đang phát triển")
                 val fragment = childFragmentManager.findFragmentByTag(NotificationFragment.TAG)
                 if (fragment != null) {
                     val shareFragment = fragment as NotificationFragment
-                    shareFragment.openNotificationAdd()
+//                    shareFragment.openNotificationAdd()
                 }
             }
         }

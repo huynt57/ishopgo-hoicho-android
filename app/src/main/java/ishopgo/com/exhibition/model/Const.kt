@@ -25,6 +25,9 @@ object Const {
         const val SHARE_POST_COMMUNITY = 6
         const val NOTIFICATION_ADD = 7
         const val NOTIFICATION_DETAIL = 8
+        const val PRODUCT_MANAGER_ADD = 9
+        const val PRODUCT_MANAGER_DETAIL = 10
+        const val SALE_POINT_ADD = 11
     }
 
     object AccountAction {
@@ -35,6 +38,8 @@ object Const {
         const val ACTION_REPORT = 4
         const val ACTION_SETTING_BOTTH = 5
         const val ACTION_NOTIFICATION = 6
+        const val ACTION_PRODUCT_MANAGER = 7
+        const val ACTION_SALE_POINT = 8
     }
 
     val colors = arrayOf(

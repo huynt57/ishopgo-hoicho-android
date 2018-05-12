@@ -9,4 +9,5 @@
     android:paddingTop="@dimen/default_margin"
     android:singleLine="true"
     android:ellipsize="end"
+    android:background="@drawable/bg_white_black"
     tools:text="item"/>

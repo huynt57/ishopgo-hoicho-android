@@ -45,7 +45,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_PRODUCT_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý sản phẩm"
             ))
@@ -63,7 +63,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_SALE_POINT,
                     R.drawable.ic_finger,
                     "Quản lý điểm bán"
             ))
@@ -95,7 +95,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_SALE_POINT,
                     R.drawable.ic_finger,
                     "Quản lý điểm bán"
             ))
@@ -121,7 +121,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_PRODUCT_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý sản phẩm"
             ))

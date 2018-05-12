@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:singleLine="true"
-            tools:drawableEnd="@drawable/ic_search_black_24dp" />
+            tools:drawableEnd="@drawable/ic_search_24dp" />
 
     </android.support.design.widget.TextInputLayout>
 

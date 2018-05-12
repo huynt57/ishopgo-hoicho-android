@@ -2,12 +2,13 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
-import ishopgo.com.exhibition.model.Community.Community
-import ishopgo.com.exhibition.model.Community.CommunityComment
-import ishopgo.com.exhibition.model.ProductLike
-import ishopgo.com.exhibition.model.Profile
-import ishopgo.com.exhibition.model.User
+import ishopgo.com.exhibition.model.community.Community
+import ishopgo.com.exhibition.model.community.CommunityComment
+import ishopgo.com.exhibition.model.product_manager.ManageProduct
+import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -108,7 +109,7 @@ class ApiService {
 
         @GET("favorite-products")
         fun getFavoriteProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
-        
+
         @POST("change-password")
         fun changePassword(
                 @Body body: RequestBody
@@ -176,6 +177,15 @@ class ApiService {
         fun editConfigBooth(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
+
+        @GET("booth/get-sale-point")
+        fun getSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>>
+
+        @POST("booth/add-sale-point")
+        fun createSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("sale-point/change-status/{id}")
+        fun changeStatusSalePoint(@Path("id") salePoint_id: Long): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -188,6 +198,28 @@ class ApiService {
 
         @POST("read-notifications")
         fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+
+        @GET("get-products")
+        fun getProductManager(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageProduct>>
+
+        @GET("get-cities")
+        fun getRegions(): Single<BaseResponse<MutableList<Region>>>
+
+        @GET("get-districts")
+        fun getDistricts(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<District>>>
+
+        @GET("providers")
+        fun getProviders(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Provider>>>
+
+        @GET("brands")
+        fun getBrands(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Brand>>>
+
+        @POST("add-product")
+        fun createProductManager(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @GET("product")
+        fun getProductManagerDetail(@Query("product_id") productID: Long): Single<BaseResponse<ProductManagerDetail>>
     }
 
 }

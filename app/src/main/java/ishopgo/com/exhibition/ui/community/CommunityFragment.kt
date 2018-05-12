@@ -13,7 +13,7 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
-import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -28,6 +28,8 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import android.net.Uri
+import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
+import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -88,6 +90,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
+        const val COMMUNITY_IMAGE_CLICK = 7
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -108,13 +111,17 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.providerId())
+                            if (data is Community) {
+                                if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.id)
+                            }
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
-                            val intent = Intent(context, CommunityCommentActivity::class.java)
-                            intent.putExtra("post_id", data.providerId())
-                            startActivity(intent)
+                            if (data is Community) {
+                                val intent = Intent(context, CommunityCommentActivity::class.java)
+                                intent.putExtra(EXTRA_ID, data.id)
+                                startActivity(intent)
+                            }
                         }
 
                         COMMUNITY_SHARE_NUMBER_CLICK -> {
@@ -167,20 +174,14 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 }
                             }
                         }
+                        COMMUNITY_IMAGE_CLICK -> {
+                            val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
+                            startActivity(intent)
+                        }
                     }
                 }
             }
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (viewModel is CommunityViewModel) {
-            (viewModel as CommunityViewModel).postLikeSuccess.observe(this, Observer { p ->
-                p.let {
-                    toast("Đã like")
-                }
-            })
         }
     }
 

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.community
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.bumptech.glide.Glide
@@ -8,7 +9,6 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_community.view.*
 import kotlinx.android.synthetic.main.item_community_share.view.*
 
@@ -26,6 +26,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
+        const val COMMUNITY_IMAGE_CLICK = 7
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
@@ -48,40 +49,54 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
             }
         } else if (holder is ProductHolder) {
             holder.apply {
-                itemView.linear_like.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK) }
-                itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
+                if (UserDataManager.currentUserId > 0) {
+                    itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
+                }
                 itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
                 itemView.cv_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
                 itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
+                itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
+
+                if (UserDataManager.currentUserId > 0) {
+                    itemView.toggle_community_like.setOnClickListener {
+                        if (itemView.toggle_community_like.isChecked) {
+                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                            } else {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                            }
+                        } else
+                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                            } else {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                            }
+
+                        listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK)
+                    }
+                } else itemView.toggle_community_like.isEnabled = false
             }
         }
     }
 
     inner class ProductHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<CommunityProvider>(v) {
 
+        @SuppressLint("SetTextI18n")
         override fun populate(data: CommunityProvider) {
             super.populate(data)
             itemView.apply {
                 tv_community_username.text = data.providerUserName()
                 tv_community_time.text = data.provideTime()
                 tv_community_content.text = data.provideContent()
-                tv_community_like.text = data.provideLikeCount().toString()
                 tv_community_comment.text = data.provideCommentCount().toString()
                 tv_community_number_share.text = data.provideShareCount().toString()
-
-                if (data.provideLiked() == 0)
-                    Glide.with(context)
-                            .load(R.drawable.ic_added_to_favorite_24dp)
-                            .apply(RequestOptions()
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.image_placeholder))
-                            .into(img_community_like)
-                else Glide.with(context)
-                        .load(R.drawable.ic_add_to_favorite_24dp)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
-                        .into(img_community_like)
+                toggle_community_like.isChecked = data.provideLiked()
+                toggle_community_like.text = data.provideLikeCount().toString()
+                tv_community_like.text = data.provideLikeCount().toString()
 
                 Glide.with(this).load(data.providerUserAvatar())
                         .apply(RequestOptions.circleCropTransform()
@@ -94,12 +109,19 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                     cv_community_product.visibility = View.VISIBLE
                     cv_community_share.visibility = View.VISIBLE
                     tv_community_number_share.visibility = View.VISIBLE
+                    tv_community_like.visibility = View.VISIBLE
+                    tv_community_like.text = "${data.provideLikeCount()} lượt thích"
+                    toggle_community_like.visibility = View.GONE
 
                     Glide.with(this).load(data.provideProduct()?.providerImage())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
                     tv_community_product_name.text = data.provideProduct()?.providerName()
                     tv_community_product_price.text = data.provideProduct()?.providerPrice()
-                } else cv_community_product.visibility = View.GONE
+                } else {
+                    cv_community_product.visibility = View.GONE
+                    toggle_community_like.visibility = View.VISIBLE
+                    tv_community_like.visibility = View.GONE
+                }
 
                 if (data.provideListImage().isNotEmpty()) {
                     if (data.provideListImage().size > 1) {
@@ -110,6 +132,11 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                         adapter.replaceAll(data.provideListImage())
                         rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_community_image.adapter = adapter
+                        (adapter as ClickableAdapter<String>).listener = object : ClickableAdapter.BaseAdapterAction<String> {
+                            override fun click(position: Int, data: String, code: Int) {
+                                listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK)
+                            }
+                        }
                     } else {
                         img_community_image.visibility = View.VISIBLE
                         rv_community_image.visibility = View.GONE

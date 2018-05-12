@@ -97,7 +97,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@color/md_blue_grey_200"
-        android:foreground="?selectableItemBackground"
+        android:foreground="?android:attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_community_image">
@@ -154,76 +154,78 @@
 
     </android.support.v7.widget.CardView>
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:weightSum="7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cv_community_product">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/linear_like"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:foreground="?selectableItemBackground"
-            android:layout_weight="1">
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintStart_toStartOf="parent">
 
-            <ImageView
-                android:id="@+id/img_community_like"
-                android:layout_width="wrap_content"
+            <ToggleButton
+                android:id="@+id/toggle_community_like"
+                android:layout_width="50dp"
                 android:layout_height="match_parent"
-                android:background="@drawable/bg_circle_red"
-                android:scaleType="center"
-                app:srcCompat="@drawable/ic_added_to_favorite_24dp" />
+                android:background="@null"
+                android:button="@drawable/ic_toggle"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/tv_community_like"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="0" /></LinearLayout>
+                android:text="0 lượt thích"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </android.support.constraint.ConstraintLayout>
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_comment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:foreground="?selectableItemBackground"
+            android:layout_marginStart="8dp"
+            android:drawablePadding="8dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
-            app:drawableStartCompat="@drawable/ic_comment" />
+            app:drawableStartCompat="@drawable/ic_comment"
+            app:layout_constraintStart_toEndOf="@+id/linear_like" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/tv_community_number_share"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:foreground="?selectableItemBackground"
+            android:layout_marginStart="8dp"
+            android:drawablePadding="8dp"
+            android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
-            app:drawableStartCompat="@drawable/ic_share_option" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2.2"
-            android:visibility="invisible" />
+            app:drawableStartCompat="@drawable/ic_share_option"
+            app:layout_constraintStart_toEndOf="@+id/tv_community_comment" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/cv_community_share"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_weight="1.8"
-            android:foreground="?selectableItemBackground"
+            android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/colorPrimary"
-            app:cardCornerRadius="15dp">
+            app:cardCornerRadius="15dp"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -244,6 +246,6 @@
 
 
         </android.support.v7.widget.CardView>
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>

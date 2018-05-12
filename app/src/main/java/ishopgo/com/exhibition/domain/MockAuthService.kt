@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.model.Profile
+import ishopgo.com.exhibition.model.SalePoint
 import okhttp3.RequestBody
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
@@ -15,6 +16,43 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun changeStatusSalePoint(salePoint_id: Long): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).changeStatusSalePoint(salePoint_id)    }
+
+    override fun getSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>> {
+        val ps = mutableListOf<SalePoint>()
+        for (i in 0..5)
+            ps.add(generateSalePoint())
+
+        val response = BaseResponse<List<SalePoint>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getSalePoint(fields)
+    }
+
+    private fun generateSalePoint(): SalePoint {
+        val c = SalePoint()
+        c.id = random.nextInt(1000).toLong()
+        c.name = "test điểm bán"
+        c.city = "Hà Nội"
+        c.district = "Hoàn Kiếm"
+        c.address = "333"
+        c.price = 590000
+        c.phone = "0985771140"
+        c.status = 1
+        c.productName = "Balo Nữ Thời Trang Naza"
+        return c
+    }
+
+    override fun createSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createSalePoint(fields)
+    }
+
     override fun getFavoriteProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
         val ps = mutableListOf<Product>()
         for (i in 0..5)

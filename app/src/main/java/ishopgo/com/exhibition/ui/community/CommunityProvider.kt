@@ -10,7 +10,7 @@ interface CommunityProvider {
     fun provideContent(): String
     fun provideTime(): String
     fun provideLikeCount(): Int
-    fun provideLiked(): Int
+    fun provideLiked(): Boolean
     fun provideCommentCount(): Int
     fun provideShareCount(): Int
     fun provideProduct(): CommunityProductProvider?

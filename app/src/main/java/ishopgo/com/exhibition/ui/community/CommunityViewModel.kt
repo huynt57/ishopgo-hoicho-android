@@ -9,11 +9,10 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
-import ishopgo.com.exhibition.model.Community.Community
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.model.Community.CommunityComment
-import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
