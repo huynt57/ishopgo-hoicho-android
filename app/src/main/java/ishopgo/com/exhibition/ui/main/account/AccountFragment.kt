@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
+import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
@@ -111,6 +112,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_SALE_POINT -> {
                 openSalePoint()
             }
+            Const.AccountAction.ACTION_BOOTH_MANAGER -> {
+                openBoothManager()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -120,6 +124,13 @@ class AccountFragment : BaseFragment() {
     private fun openReportActivity() {
         context?.let {
             val intent = Intent(it, ReportActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openBoothManager() {
+        context?.let {
+            val intent = Intent(it, BoothManagerActivity::class.java)
             startActivity(intent)
         }
     }

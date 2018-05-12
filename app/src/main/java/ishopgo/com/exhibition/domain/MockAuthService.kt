@@ -4,10 +4,7 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseResponse
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
-import ishopgo.com.exhibition.model.Booth
-import ishopgo.com.exhibition.model.ProductLike
-import ishopgo.com.exhibition.model.Profile
-import ishopgo.com.exhibition.model.SalePoint
+import ishopgo.com.exhibition.model.*
 import okhttp3.RequestBody
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
@@ -16,10 +13,40 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getBooth(fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>> {
+        val ps = mutableListOf<BoothManager>()
+        for (i in 0..5)
+            ps.add(generateBoothManager())
+
+        val response = BaseResponse<List<BoothManager>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getBooth(fields)
+    }
+
+    private fun generateBoothManager(): BoothManager {
+        val c = BoothManager()
+        c.id = random.nextInt(1000).toLong()
+        c.name = "Lê Đại Dương"
+        c.phone = "0985771189"
+        c.companyStore = "Ebc Viet Nam"
+        c.region = "Khu vực 5"
+        c.numberProduct = 0
+        c.memberCnt = 0
+        return c
+    }
+
+    override fun createBooth(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createBooth(body)    }
+
     override fun changeStatusSalePoint(salePoint_id: Long): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1
-        return delegate.returningResponse(response).changeStatusSalePoint(salePoint_id)    }
+        return delegate.returningResponse(response).changeStatusSalePoint(salePoint_id)
+    }
 
     override fun getSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>> {
         val ps = mutableListOf<SalePoint>()
