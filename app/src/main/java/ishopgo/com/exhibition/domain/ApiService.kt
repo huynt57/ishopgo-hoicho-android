@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
+import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import okhttp3.RequestBody
@@ -192,6 +193,9 @@ class ApiService {
 
         @POST("booth/add")
         fun createBooth(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @DELETE("booth/{id}")
+        fun deleteBooth(@Path("id") booth_id: Long): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -226,6 +230,24 @@ class ApiService {
 
         @GET("product")
         fun getProductManagerDetail(@Query("product_id") productID: Long): Single<BaseResponse<ProductManagerDetail>>
+
+        @GET("members")
+        fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
+
+        @DELETE("delete-members/{id}")
+        fun deleteMember(@Path("id") member_id: Long): Single<BaseResponse<Any>>
+
+        @GET("brands")
+        fun getBrand(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Brand>>>
+
+        @POST("update-brands/{id}")
+        fun updateBrand(@Path("id") brand_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("create-brands")
+        fun createBrand(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @DELETE("delete-brands/{id}")
+        fun deleteBrand(@Path("id") brand_id: Long): Single<BaseResponse<Any>>
     }
 
 }

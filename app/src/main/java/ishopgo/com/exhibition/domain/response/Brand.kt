@@ -2,11 +2,28 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
+import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerProvider
 
 /**
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
-class Brand : IdentityData(), HighlightBrandProvider {
+class Brand : IdentityData(), HighlightBrandProvider, BrandManagerProvider {
+    companion object {
+        var IS_FEATURED: Int = 1  //Thương hiệu nổi bật
+    }
+
+    override fun provideName(): String {
+        return name ?: ""
+    }
+
+    override fun provideLogo(): String {
+        return logo ?: ""
+    }
+
+    override fun provideIsFeatured(): Boolean {
+        return wasIsFeatured()
+    }
+
     override fun provideImage(): String {
         return logo ?: ""
     }
@@ -29,4 +46,7 @@ class Brand : IdentityData(), HighlightBrandProvider {
     var isFeatured: Int = 0
     @SerializedName("shop_id")
     var shopId: Int = 0
+
+    private fun wasIsFeatured() = isFeatured == IS_FEATURED
+
 }

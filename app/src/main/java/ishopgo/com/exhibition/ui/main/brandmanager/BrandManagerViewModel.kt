@@ -1,16 +1,16 @@
-package ishopgo.com.exhibition.ui.main.boothmanager
+package ishopgo.com.exhibition.ui.main.brandmanager
 
 import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
+import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.model.BoothManager
-import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
@@ -18,7 +18,7 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), AppComponent.Injectable {
+class BrandManagerViewModel : BaseListViewModel<List<BrandManagerProvider>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
@@ -33,10 +33,10 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), A
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
-            addDisposable(authService.getBooth(fields)
+            addDisposable(isgService.getBrand(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
+                    .subscribeWith(object : BaseSingleObserver<List<Brand>>() {
+                        override fun success(data: List<Brand>?) {
                             dataReturned.postValue(data ?: mutableListOf())
                         }
 
@@ -48,33 +48,63 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), A
         }
     }
 
-    var createSusscess = MutableLiveData<Boolean>()
+    var updateSusscess = MutableLiveData<Boolean>()
 
-    fun createBoothManager(phone: String, email: String, name: String, birthday: String, address: String, region: String, image: String) {
+    fun updateBrand(brand_Id: Long, name:String, logo:String, is_featured:String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("phone", phone)
-                .addFormDataPart("email", email)
                 .addFormDataPart("name", name)
-                .addFormDataPart("birthday", birthday)
-                .addFormDataPart("address", address)
-                .addFormDataPart("region", region)
+                .addFormDataPart("is_featured", is_featured)
 
         var imagePart: MultipartBody.Part? = null
 
-        if (image.trim().isNotEmpty()) {
-            val imageFile = File(appContext.cacheDir, "booth_" + System.currentTimeMillis() + ".jpg")
+        if (logo.trim().isNotEmpty()) {
+            val imageFile = File(appContext.cacheDir, "brand_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(logo), 2048, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-            imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
+            imagePart = MultipartBody.Part.createFormData("logo", imageFile.name, imageBody)
         }
 
         if (imagePart != null) {
             builder.addPart(imagePart)
         }
+        addDisposable(isgService.updateBrand(brand_Id, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        updateSusscess.postValue(true)
+                    }
 
-        addDisposable(authService.createBooth(builder.build())
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var createSusscess = MutableLiveData<Boolean>()
+
+    fun createBrand(name:String, logo:String, is_featured:String) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("name", name)
+                .addFormDataPart("is_featured", is_featured)
+
+        var imagePart: MultipartBody.Part? = null
+
+        if (logo.trim().isNotEmpty()) {
+            val imageFile = File(appContext.cacheDir, "brand_" + System.currentTimeMillis() + ".jpg")
+            imageFile.deleteOnExit()
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(logo), 2048, Uri.fromFile(imageFile))
+            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+            imagePart = MultipartBody.Part.createFormData("logo", imageFile.name, imageBody)
+        }
+
+        if (imagePart != null) {
+            builder.addPart(imagePart)
+        }
+        addDisposable(isgService.createBrand(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
@@ -88,27 +118,11 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), A
         )
     }
 
-    var loadRegion = MutableLiveData<MutableList<Region>>()
-
-    fun loadRegion() {
-        addDisposable(isgService.getRegions()
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
-                    override fun success(data: MutableList<Region>?) {
-                        loadRegion.postValue(data)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                }))
-    }
-
     var deleteSusscess = MutableLiveData<Boolean>()
 
-    fun deleteBooth(booth_Id: Long) {
+    fun deleteMember(brand_Id: Long) {
 
-        addDisposable(authService.deleteBooth(booth_Id)
+        addDisposable(isgService.deleteBrand(brand_Id)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {

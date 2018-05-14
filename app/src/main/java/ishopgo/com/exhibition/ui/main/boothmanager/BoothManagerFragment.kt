@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.boothmanager
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -64,7 +65,7 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
                 @SuppressLint("SetTextI18n")
                 override fun click(position: Int, data: BoothManagerProvider, code: Int) {
                     if (data is BoothManager) {
-                        toast("Đang phát triển")
+                        if (viewModel is BoothManagerViewModel) (viewModel as BoothManagerViewModel).deleteBooth(data.id)
                     }
                 }
 
@@ -72,6 +73,7 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun openAddBoothManager() {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
@@ -95,6 +97,16 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
             }
 
             dialog.show()
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if (viewModel is BoothManagerViewModel) {
+            (viewModel as BoothManagerViewModel).deleteSusscess.observe(this, Observer {
+                toast("Xoá thành công")
+                firstLoad()
+            })
         }
     }
 

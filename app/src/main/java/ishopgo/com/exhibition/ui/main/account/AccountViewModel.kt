@@ -103,7 +103,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_MEMBER_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý thành viên"
             ))
@@ -115,7 +115,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_BRAND_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý thương hiệu"
             ))

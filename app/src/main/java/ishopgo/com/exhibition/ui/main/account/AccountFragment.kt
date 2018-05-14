@@ -19,9 +19,11 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
+import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
+import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
@@ -115,6 +117,12 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_BOOTH_MANAGER -> {
                 openBoothManager()
             }
+            Const.AccountAction.ACTION_MEMBER_MANAGER -> {
+                openMemberManager()
+            }
+            Const.AccountAction.ACTION_BRAND_MANAGER -> {
+                openBrandManager()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -131,6 +139,20 @@ class AccountFragment : BaseFragment() {
     private fun openBoothManager() {
         context?.let {
             val intent = Intent(it, BoothManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openBrandManager() {
+        context?.let {
+            val intent = Intent(it, BrandManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openMemberManager() {
+        context?.let {
+            val intent = Intent(it, MemberManagerActivity::class.java)
             startActivity(intent)
         }
     }
