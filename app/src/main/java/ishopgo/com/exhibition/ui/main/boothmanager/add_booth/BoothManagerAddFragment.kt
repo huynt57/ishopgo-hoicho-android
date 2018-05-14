@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.boothmanager.add_booth
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -51,8 +52,12 @@ class BoothManagerAddFragment : BaseFragment() {
             getRegion(edit_booth_region)
         }
 
+        view_image_add_booth.setOnClickListener {
+            launchPickPhotoIntent()
+        }
+
         btn_product_add.setOnClickListener {
-            if (checkRequireFields(image, edit_booth_name.text.toString(), edit_booth_email.text.toString(), edit_booth_address.text.toString(), edit_booth_region.text.toString(), edit_booth_birthday.text.toString())) {
+            if (checkRequireFields(image, edit_booth_name.text.toString(), edit_booth_phone.text.toString(), edit_booth_email.text.toString(), edit_booth_address.text.toString(), edit_booth_region.text.toString(), edit_booth_birthday.text.toString())) {
                 showProgressDialog()
                 viewModel.createBoothManager(edit_booth_phone.text.toString(), edit_booth_email.text.toString(), edit_booth_name.text.toString(),
                         edit_booth_birthday.text.toString(), edit_booth_address.text.toString(), edit_booth_region.text.toString(), image)
@@ -76,17 +81,30 @@ class BoothManagerAddFragment : BaseFragment() {
             }
         })
 
+        viewModel.createSusscess.observe(this, Observer {
+            toast("Thêm thành công")
+            activity?.setResult(RESULT_OK)
+            activity?.finish()
+        })
+
         viewModel.loadRegion()
     }
 
-    private fun checkRequireFields(image: String, name: String, email: String, address: String, region: String, birthday: String): Boolean {
+    private fun checkRequireFields(image: String, phone: String, name: String, email: String, address: String, region: String, birthday: String): Boolean {
         if (image.trim().isEmpty()) {
             toast("Ảnh sản phẩm không được để trống")
             return false
         }
 
+        if (phone.trim().isEmpty()) {
+            toast("Số điện thoại không được để trống")
+            edit_booth_phone.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_booth_phone)
+            return false
+        }
+
         if (email.trim().isEmpty()) {
-            toast("Giá bản lẻ không được để trống")
+            toast("Email không được để trống")
             edit_booth_email.error = getString(R.string.error_field_required)
             requestFocusEditText(edit_booth_email)
             return false
@@ -177,8 +195,6 @@ class BoothManagerAddFragment : BaseFragment() {
                     .into(view_image_add_booth)
         }
     }
-
-    //    createBoothManager
 
     private fun launchPickPhotoIntent() {
         val intent = Intent()

@@ -190,7 +190,7 @@ class ApiService {
         @GET("booths")
         fun getBooth(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>>
 
-        @GET("booth/add")
+        @POST("booth/add")
         fun createBooth(@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 

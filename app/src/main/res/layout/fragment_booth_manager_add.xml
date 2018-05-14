@@ -27,7 +27,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edit_booth_phone"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Số điẹn thoại*"
@@ -68,7 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Họ và tên*"
-                android:inputType="text"
+                android:inputType="textPersonName"
                 android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
@@ -131,9 +131,7 @@
             style="@style/AppTheme.ActionButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp"
+            android:layout_margin="@dimen/default_margin"
             android:text="Thêm"
             android:textColor="@color/md_white_1000" />
 
