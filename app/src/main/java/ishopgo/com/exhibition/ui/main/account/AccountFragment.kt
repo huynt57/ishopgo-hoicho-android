@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
@@ -123,6 +124,15 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_BRAND_MANAGER -> {
                 openBrandManager()
             }
+            Const.AccountAction.ACTION_NEWS_MANAGER -> {
+                openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
+            }
+            Const.AccountAction.ACTION_GENEREL_MANAGER -> {
+                openPostManager(Const.AccountAction.ACTION_GENEREL_MANAGER)
+            }
+            Const.AccountAction.ACTION_QUESTION_MANAGER -> {
+                openPostManager(Const.AccountAction.ACTION_QUESTION_MANAGER)
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -146,6 +156,14 @@ class AccountFragment : BaseFragment() {
     private fun openBrandManager() {
         context?.let {
             val intent = Intent(it, BrandManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openPostManager(typeManager: Int) {
+        context?.let {
+            val intent = Intent(it, PostManagerActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
             startActivity(intent)
         }
     }

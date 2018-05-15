@@ -140,19 +140,19 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             val childs = ArrayList<AccountMenuItem>()
             childs.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_NEWS_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý tin tức"
             ))
 
             childs.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_GENEREL_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý thông tin chung"
             ))
 
             childs.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_QUESTION_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý hỏi đáp"
             ))
@@ -160,7 +160,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
                     R.drawable.ic_finger,
-                    "Quản lý thổng hợp",
+                    "Quản lý tổng hợp",
                     childs
             ))
 

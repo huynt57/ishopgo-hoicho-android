@@ -31,6 +31,8 @@ object Const {
         const val BOOTH_MANAGER_ADD = 12
         const val BRAND_MANAGER_UPDATE = 13
         const val BRAND_MANAGER_ADD = 14
+        const val NEWS_MANAGER_ADD = 15
+        const val NEWS_MANAGER_EDIT = 16
     }
 
     object AccountAction {
@@ -46,6 +48,9 @@ object Const {
         const val ACTION_BOOTH_MANAGER = 9
         const val ACTION_MEMBER_MANAGER = 10
         const val ACTION_BRAND_MANAGER = 11
+        const val ACTION_NEWS_MANAGER = 12
+        const val ACTION_GENEREL_MANAGER = 13
+        const val ACTION_QUESTION_MANAGER = 14
     }
 
     val colors = arrayOf(

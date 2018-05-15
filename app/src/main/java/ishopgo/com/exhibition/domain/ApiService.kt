@@ -8,6 +8,9 @@ import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.member.ManageMember
+import ishopgo.com.exhibition.model.post.PostCategory
+import ishopgo.com.exhibition.model.post.PostContent
+import ishopgo.com.exhibition.model.post.PostsManager
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import okhttp3.RequestBody
@@ -248,6 +251,15 @@ class ApiService {
 
         @DELETE("delete-brands/{id}")
         fun deleteBrand(@Path("id") brand_id: Long): Single<BaseResponse<Any>>
+
+        @GET("general-info/get-posts")
+        fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostsManager>>
+
+        @GET("general-info/get-posts/{id}")
+        fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
+
+        @GET("general-info/get-categories")
+        fun getPostCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>>
     }
 
 }
