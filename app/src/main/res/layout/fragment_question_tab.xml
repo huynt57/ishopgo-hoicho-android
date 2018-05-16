@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <View
+        android:id="@+id/view_divider_search"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/divider_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_back"
+        />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/view_tab_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar"
+        app:tabIndicatorColor="@color/colorPrimaryDark"
+        app:tabSelectedTextColor="@color/colorPrimaryDark">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_products"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Đã duyệt" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chờ duyệt" />
+
+    </android.support.design.widget.TabLayout>
+
+    <View
+        android:id="@+id/view_divider_search_result"
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:background="@color/divider_line"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_tab_layout"
+        />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_divider_search_result"/>
+
+</android.support.constraint.ConstraintLayout>

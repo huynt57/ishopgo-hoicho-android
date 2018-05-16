@@ -223,6 +223,16 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.main.questmanager.QuestionManagerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.postmanager.detail.QuestionManagerDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="ishopgo.com.exhibition"
