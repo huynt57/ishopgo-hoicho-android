@@ -40,8 +40,6 @@ class PostManagerFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Quản lý tin tức")
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
             toolbar.setCustomTitle("Quản lý thông tin chung")
-        if (typeManager == Const.AccountAction.ACTION_QUESTION_MANAGER)
-            toolbar.setCustomTitle("Quản lý hỏi đáp")
 
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
@@ -52,6 +50,15 @@ class PostManagerFragmentActionBar : BaseActionBarFragment() {
             if (fragment != null) {
                 val shareFragment = fragment as PostManagerFragment
                 shareFragment.performSearching()
+            }
+        }
+
+        toolbar.rightButton2(R.drawable.ic_add_green_24dp)
+        toolbar.setRight2ButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(PostManagerFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as PostManagerFragment
+                shareFragment.openDialogCreateOption()
             }
         }
     }

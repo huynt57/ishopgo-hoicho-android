@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.postmanager
+package ishopgo.com.exhibition.ui.main.questmanager
 
 import android.annotation.SuppressLint
 import android.app.Application
@@ -6,16 +6,16 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.PostCategoryRequest
-import ishopgo.com.exhibition.domain.request.PostRequest
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.QuestionRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.model.post.PostCategory
-import ishopgo.com.exhibition.model.post.PostContent
-import ishopgo.com.exhibition.model.post.PostsManager
+import ishopgo.com.exhibition.model.question.QuestionCategory
+import ishopgo.com.exhibition.model.question.QuestionDetail
+import ishopgo.com.exhibition.model.question.QuestionManager
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import javax.inject.Inject
 
-class PostViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.Injectable {
+class QuestionViewModel : BaseListViewModel<List<QuestProvider>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
@@ -25,18 +25,18 @@ class PostViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.Inje
     lateinit var appContext: Application
 
     override fun loadData(params: Request) {
-        if (params is PostRequest) {
+        if (params is QuestionRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            fields["name"] = params.name
-            fields["type"] = params.type
+            fields["key_search"] = params.key_search
             fields["category_id"] = params.category_id
+            fields["status"] = params.status
 
-            addDisposable(isgService.getPost(fields)
+            addDisposable(isgService.getQuestion(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<PostsManager>() {
-                        override fun success(data: PostsManager?) {
+                    .subscribeWith(object : BaseSingleObserver<QuestionManager>() {
+                        override fun success(data: QuestionManager?) {
                             dataReturned.postValue(data?.objects ?: mutableListOf())
                         }
 
@@ -48,13 +48,13 @@ class PostViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.Inje
         }
     }
 
-    var getContentSusscess = MutableLiveData<PostContent>()
+    var getContentSusscess = MutableLiveData<QuestionDetail>()
 
     fun getPostContent(post_id: Long) {
-        addDisposable(isgService.getPostDetail(post_id)
+        addDisposable(isgService.getQuestionDetail(post_id)
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<PostContent>() {
-                    override fun success(data: PostContent?) {
+                .subscribeWith(object : BaseSingleObserver<QuestionDetail>() {
+                    override fun success(data: QuestionDetail?) {
                         getContentSusscess.postValue(data)
                     }
 
@@ -65,19 +65,18 @@ class PostViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.Inje
         )
     }
 
-    var getCategorySusscess = MutableLiveData<List<PostCategory>>()
+    var getCategorySusscess = MutableLiveData<List<QuestionCategory>>()
 
     fun loadCategory(params: Request) {
-        if (params is PostCategoryRequest) {
+        if (params is LoadMoreRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            fields["type"] = params.type
 
-            addDisposable(isgService.getPostCategory(fields)
+            addDisposable(isgService.getQuestionCategory(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<PostCategory>>() {
-                        override fun success(data: List<PostCategory>?) {
+                    .subscribeWith(object : BaseSingleObserver<List<QuestionCategory>>() {
+                        override fun success(data: List<QuestionCategory>?) {
                             getCategorySusscess.postValue(data)
                         }
 
@@ -87,26 +86,5 @@ class PostViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.Inje
                     })
             )
         }
-    }
-
-    var createCategorySusscess = MutableLiveData<Boolean>()
-
-    fun createPostCategory(name: String, type: Int) {
-        val fields = mutableMapOf<String, Any>()
-        fields["name"] = name
-        fields["type"] = type
-
-        addDisposable(isgService.createPostGategory(fields)
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<Any>() {
-                    override fun success(data: Any?) {
-                        createCategorySusscess.postValue(true)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                })
-        )
     }
 }

@@ -13,6 +13,9 @@ import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostsManager
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
+import ishopgo.com.exhibition.model.question.QuestionCategory
+import ishopgo.com.exhibition.model.question.QuestionDetail
+import ishopgo.com.exhibition.model.question.QuestionManager
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -260,6 +263,19 @@ class ApiService {
 
         @GET("general-info/get-categories")
         fun getPostCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>>
+
+        @POST("general-info/create-categories")
+        fun createPostGategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @GET("question/get-posts")
+        fun getQuestion(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<QuestionManager>>
+
+        @GET("question/get-posts/{id}")
+        fun getQuestionDetail(@Path("id") question_id: Long): Single<BaseResponse<QuestionDetail>>
+
+        @GET("question/get-categories")
+        fun getQuestionCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>>
+
     }
 
 }

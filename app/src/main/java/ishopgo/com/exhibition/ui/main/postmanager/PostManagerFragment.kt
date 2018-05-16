@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.generalmanager.news
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -68,12 +69,10 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
         val firstLoad = PostRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
-//        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
-//            firstLoad.type = NEWS_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
-//            firstLoad.type = GENERAL_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_QUESTION_MANAGER)
-            firstLoad.type = QUESTION_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
+            firstLoad.type = NEWS_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
+            firstLoad.type = GENERAL_MANAGER
 
         firstLoad.category_id = categoryId
         firstLoad.name = name
@@ -85,12 +84,10 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
         val loadMore = PostRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-//        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
-//            loadMore.type = NEWS_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
-//            loadMore.type = GENERAL_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_QUESTION_MANAGER)
-            loadMore.type = QUESTION_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
+            loadMore.type = NEWS_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
+            loadMore.type = GENERAL_MANAGER
 
         loadMore.category_id = categoryId
         loadMore.name = name
@@ -102,12 +99,10 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
         val firstLoad = PostCategoryRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
-//        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
-//            firstLoad.type = NEWS_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
-//            firstLoad.type = GENERAL_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_QUESTION_MANAGER)
-            firstLoad.type = QUESTION_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
+            firstLoad.type = NEWS_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
+            firstLoad.type = GENERAL_MANAGER
 
         (viewModel as PostViewModel).loadCategory(firstLoad)
     }
@@ -117,12 +112,10 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
         val loadMore = PostCategoryRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-//        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
-//            loadMore.type = NEWS_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
-//            loadMore.type = GENERAL_MANAGER
-//        if (typeManager == Const.AccountAction.ACTION_QUESTION_MANAGER)
-            loadMore.type = QUESTION_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
+            loadMore.type = NEWS_MANAGER
+        if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
+            loadMore.type = GENERAL_MANAGER
 
         (viewModel as PostViewModel).loadCategory(loadMore)
     }
@@ -156,6 +149,13 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
             }
         })
 
+        (viewModel as PostViewModel).createCategorySusscess.observe(this, Observer { p ->
+            p.let {
+                toast("Tạo thành công")
+                hideProgressDialog()
+                firstLoadCategory()
+            }
+        })
 
         (viewModel as PostViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
@@ -177,7 +177,7 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
                     .onPositive { dialog, _ ->
                         val edit_post_name = dialog.findViewById(R.id.edit_post_name) as TextInputEditText
                         val edit_post_category = dialog.findViewById(R.id.edit_post_category) as TextInputEditText
-//
+
                         name = edit_post_name.text.toString().trim { it <= ' ' }
                         categoryName = edit_post_category.text.toString().trim { it <= ' ' }
 
@@ -200,6 +200,73 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
 
             dialog.show()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    fun openDialogCreateOption() {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_select_register, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+
+            val tv_register_member = dialog.findViewById(R.id.tv_register_member) as TextView
+            val tv_register_store = dialog.findViewById(R.id.tv_register_store) as TextView
+            tv_register_member.text = if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER) "Tạo tin tức" else "Tạo thông tin chung"
+
+            tv_register_store.text = "Tạo danh mục"
+            tv_register_member.setOnClickListener {
+                toast("Đang phát triển")
+            }
+
+            tv_register_store.setOnClickListener {
+                openDialogCreateCategory()
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
+
+    private fun openDialogCreateCategory() {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Tìm kiếm")
+                    .customView(R.layout.dialog_search_post, false)
+                    .positiveText("Lọc")
+                    .onPositive { dialog, _ ->
+                        val edit_post_name = dialog.findViewById(R.id.edit_post_name) as TextInputEditText
+                        val typeCategory = if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER) NEWS_MANAGER else GENERAL_MANAGER
+
+                        if (checkRequireFields(edit_post_name.text.toString(), edit_post_name)) {
+                            (viewModel as PostViewModel).createPostCategory(edit_post_name.text.toString(), typeCategory)
+                            showProgressDialog()
+                            dialog.dismiss()
+                        }
+                    }
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val edit_post_category = dialog.findViewById(R.id.edit_post_category) as TextInputEditText
+            edit_post_category.visibility = View.GONE
+
+            dialog.show()
+        }
+    }
+
+    private fun checkRequireFields(name: String, view: TextInputEditText): Boolean {
+
+        if (name.trim().isEmpty()) {
+            toast("Tên danh mục không được để trống")
+            view.error = getString(R.string.error_field_required)
+            return false
+        }
+
+        return true
     }
 
     private fun loadCategory(view: TextView) {
@@ -251,7 +318,6 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
 
         const val NEWS_MANAGER = 1
         const val GENERAL_MANAGER = 7
-        const val QUESTION_MANAGER = 3
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
