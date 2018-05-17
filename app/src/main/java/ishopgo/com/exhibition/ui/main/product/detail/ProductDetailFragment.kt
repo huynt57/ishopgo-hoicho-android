@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -17,9 +18,11 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
@@ -33,6 +36,7 @@ import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.Toolbox
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_detail.*
 import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
@@ -57,6 +61,8 @@ class ProductDetailFragment : BaseFragment() {
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
+    private var postMedias: ArrayList<PostMedia> = ArrayList()
+    private lateinit var adapterImages: ComposingPostMediaAdapter
     private var productId: Long = -1L
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -105,6 +111,17 @@ class ProductDetailFragment : BaseFragment() {
                 productCommentAdapter.replaceAll(it)
             }
 
+        })
+
+        viewModel.postCommentSuccess.observe(this, Observer {
+            toast("Tạo thảo luận thành công")
+            hideProgressDialog()
+            edt_comment.setText("")
+            postMedias.clear()
+            adapterImages = ComposingPostMediaAdapter(postMedias)
+            rv_comment_community_image.adapter = adapterImages
+            rv_comment_community_image.visibility = View.GONE
+            viewModel.loadProductComments(productId)
         })
 
         viewModel.getProductLike.observe(this, Observer { c ->
@@ -176,7 +193,33 @@ class ProductDetailFragment : BaseFragment() {
                         showProductsOfBrand(brandId)
                 }
             }
+
+
+            img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
+
+            img_comment_sent.setOnClickListener {
+                if (checkRequireFields(edt_comment.text.toString())) {
+                    showProgressDialog()
+                    viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+                }
+            }
         }
+    }
+
+    private fun launchPickPhotoIntent() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
+        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
+    }
+
+    private fun checkRequireFields(content: String): Boolean {
+        if (content.trim().isEmpty()) {
+            toast("Nội dung quá ngắn hoặc chưa đầy đủ")
+            return false
+        }
+        return true
     }
 
     private fun showDialogLogin() {
@@ -404,5 +447,39 @@ class ProductDetailFragment : BaseFragment() {
         view_list_viewed.layoutManager = layoutManager
         view_list_viewed.isNestedScrollingEnabled = false
         view_list_viewed.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
+            if (data.clipData == null) {
+                if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                    return
+                }
+                val postMedia = PostMedia()
+                postMedia.uri = data.data
+                postMedias.add(postMedia)
+
+
+            } else {
+                for (i in 0 until data.clipData.itemCount) {
+                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (2 * 1024 * 1024).toLong())) {
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                        return
+                    }
+                    val postMedia = PostMedia()
+                    postMedia.uri = data.clipData.getItemAt(i).uri
+                    postMedias.add(postMedia)
+                }
+            }
+            adapterImages = ComposingPostMediaAdapter(postMedias)
+            adapterImages.notifyItemInserted(postMedias.size - 1)
+            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_comment_community_image.adapter = adapterImages
+
+            rv_comment_community_image.visibility = View.VISIBLE
+        }
     }
 }

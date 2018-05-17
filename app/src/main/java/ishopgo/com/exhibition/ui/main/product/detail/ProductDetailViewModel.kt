@@ -1,6 +1,10 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import android.net.Uri
+import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -8,10 +12,16 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
+import ishopgo.com.exhibition.ui.widget.Toolbox
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
@@ -179,6 +189,44 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         postLikeSuccess.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    @Inject
+    lateinit var appContext: Application
+
+    var postCommentSuccess = MutableLiveData<Boolean>()
+
+    fun postCommentProduct(productId: Long, content: String, parentId: Long, postMedias: ArrayList<PostMedia> = ArrayList()) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("content", content)
+                .addFormDataPart("parent_id", parentId.toString())
+
+        if (postMedias.isNotEmpty()) {
+            for (i in postMedias.indices) {
+                val uri = postMedias[i].uri
+                Log.d("listImage[]", uri.toString())
+
+                val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                imageFile.deleteOnExit()
+                Toolbox.reEncodeBitmap(appContext, uri, 2048, Uri.fromFile(imageFile))
+                val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                builder.addFormDataPart("images[]", imageFile.name, imageBody)
+            }
+        }
+        addDisposable(authService.postCommentProduct(productId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        postCommentSuccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {
