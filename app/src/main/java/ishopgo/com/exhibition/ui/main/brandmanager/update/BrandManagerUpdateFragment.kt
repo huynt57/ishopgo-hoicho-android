@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -62,8 +63,19 @@ class BrandManagerUpdateFragment : BaseFragment() {
     }
 
     fun deleteBrand() {
-        viewModel.deleteMember(data?.id ?: -1L)
-        showProgressDialog()
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .content("Bạn có muốn xoá thương hiệu này không?")
+                    .positiveText("Có")
+                    .onPositive { _, _ ->
+                        viewModel.deleteMember(data?.id ?: -1L)
+                        showProgressDialog()
+                    }
+                    .negativeText("Không")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
+        }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

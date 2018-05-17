@@ -33,6 +33,7 @@ object Const {
         const val BRAND_MANAGER_ADD = 14
         const val NEWS_MANAGER_ADD = 15
         const val NEWS_MANAGER_EDIT = 16
+        const val DELETED_MEMBER_RESTORE = 17
     }
 
     object AccountAction {
