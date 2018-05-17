@@ -186,6 +186,12 @@ class ApiService {
 
         @POST("sale-point/change-status/{id}")
         fun changeStatusSalePoint(@Path("id") salePoint_id: Long): Single<BaseResponse<Any>>
+
+        @GET("booths")
+        fun getBooth(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>>
+
+        @POST("booth/add")
+        fun createBooth(@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
+import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
 import ishopgo.com.exhibition.ui.main.home.HomeViewModel
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
@@ -79,4 +80,5 @@ interface AppComponent {
     fun inject(productManagerViewModel: ProductManagerViewModel)
     fun inject(suggestedProductsViewModel: SuggestedProductsViewModel)
     fun inject(salePointViewModel: SalePointViewModel)
+    fun inject(boothManagerViewModel: BoothManagerViewModel)
 }

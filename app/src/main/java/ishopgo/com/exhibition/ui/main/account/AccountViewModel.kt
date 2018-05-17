@@ -109,7 +109,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_BOOTH_MANAGER,
                     R.drawable.ic_finger,
                     "Quản lý gian hàng"
             ))
