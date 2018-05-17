@@ -27,44 +27,44 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val items = mutableListOf<AccountMenuProvider>()
         items.add(AccountMenuItem(
                 Const.AccountAction.ACTION_PROFILE,
-                R.drawable.ic_menu_profile,
+                R.drawable.ic_account_white,
                 "Thông tin cá nhân"
         ))
 
         if (UserDataManager.currentType == "Chủ gian hàng") {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SETTING_BOTTH,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_booth_manager,
                     "Cấu hình gian hàng"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_shop_customer_white,
                     "Khách hàng tham quan"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_PRODUCT_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_shopping_white,
                     "Quản lý sản phẩm"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOTIFICATION,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_notification,
                     "Quản lý thông báo"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_star_white,
                     "Gian hàng quan tâm"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SALE_POINT,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_sale_point,
                     "Quản lý điểm bán"
             ))
         }
@@ -72,31 +72,31 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (UserDataManager.currentType == "Thành viên") {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_star_white,
                     "Gian hàng quan tâm"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_shopping_white,
                     "Sản phẩm quan tâm"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_ticket,
                     "Quản lý vé thăm quan"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOTIFICATION,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_notification,
                     "Quản lý thông báo"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SALE_POINT,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_sale_point,
                     "Quản lý điểm bán"
             ))
         }
@@ -104,62 +104,62 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (UserDataManager.currentType == "Chủ hội chợ") {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_MEMBER_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_customer_white,
                     "Quản lý thành viên"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_BOOTH_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_store_white,
                     "Quản lý gian hàng"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_BRAND_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_brands,
                     "Quản lý thương hiệu"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_PRODUCT_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_shopping_white,
                     "Quản lý sản phẩm"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_sight_seeing,
                     "Quản lý tham quan"
             ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOTIFICATION,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_notification,
                     "Quản lý thông báo"
             ))
 
             val childs = ArrayList<AccountMenuItem>()
             childs.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NEWS_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_news_pager,
                     "Quản lý tin tức"
             ))
 
             childs.add(AccountMenuItem(
                     Const.AccountAction.ACTION_GENEREL_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_affiliate_order_white,
                     "Quản lý thông tin chung"
             ))
 
             childs.add(AccountMenuItem(
                     Const.AccountAction.ACTION_QUESTION_MANAGER,
-                    R.drawable.ic_finger,
+                    R.drawable.ic_question,
                     "Quản lý hỏi đáp"
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
+                    Const.AccountAction.ACTION_SYNTHETIC_MANAGER,
+                    R.drawable.ic_general,
                     "Quản lý tổng hợp",
                     childs
             ))
@@ -167,31 +167,25 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
-                    "Quản lý quản trị viên"
-            ))
-
-            items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_finger,
-                    "Cấu hình giao diện"
+                    R.drawable.ic_authorities,
+                    "Phân quyền quản trị viên"
             ))
         }
 
         items.add(AccountMenuItem(
                 Const.AccountAction.ACTION_REPORT,
-                R.drawable.ic_finger,
+                R.drawable.ic_feedback,
                 "Báo lỗi - Đóng góp"
         ))
 
         items.add(AccountMenuItem(
                 Const.AccountAction.ACTION_CHANGE_PASSWORD,
-                R.drawable.ic_menu_change_password,
+                R.drawable.ic_password_white,
                 "Đổi mật khẩu"
         ))
         items.add(AccountMenuItem(
                 Const.AccountAction.ACTION_LOGOUT,
-                R.drawable.ic_menu_logout,
+                R.drawable.ic_logout,
                 "Đăng xuất",
                 textColor = R.color.md_red_500
         ))
