@@ -13,6 +13,11 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun deleteBooth(booth_id: Long): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).deleteBooth(booth_id)    }
+
     override fun getBooth(fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>> {
         val ps = mutableListOf<BoothManager>()
         for (i in 0..5)

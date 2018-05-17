@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -70,6 +71,7 @@ class ProfileFragment : BaseFragment() {
                     .into(view_avatar)
             view_phone.setText(profile.providePhone())
             view_name.setText(profile.provideName())
+            tv_profile_name.text = profile.provideName()
             view_dob.setText(profile.provideDob())
             view_email.setText(profile.provideEmail())
             view_company.setText(profile.provideCompany())
@@ -87,7 +89,17 @@ class ProfileFragment : BaseFragment() {
                 }
             }
         }
+        chooseProfileOption()
+    }
 
+    private fun chooseProfileOption() {
+        tv_profile_write.setOnClickListener {
+            val intent = Intent(context, CommunityShareActivity::class.java)
+            startActivity(intent)
+        }
+        tv_profile_group.setOnClickListener { toast("Đang phát triển") }
+        tv_profile_newsfeed.setOnClickListener { toast("Đang phát triển") }
+        tv_profile_setting.setOnClickListener { toast("Đang phát triển") }
     }
 
     private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String) {
@@ -100,6 +112,12 @@ class ProfileFragment : BaseFragment() {
         view_avatar.setOnClickListener {
             launchPickPhotoIntent()
         }
+
+        tv_profile_write.setOnClickListener(null)
+        tv_profile_group.setOnClickListener(null)
+        tv_profile_newsfeed.setOnClickListener(null)
+        tv_profile_setting.setOnClickListener(null)
+
         view_name.isFocusable = true
         view_name.isFocusableInTouchMode = true
         view_dob.isFocusable = true
@@ -137,6 +155,7 @@ class ProfileFragment : BaseFragment() {
         view_region.isFocusableInTouchMode = false
         view_address.isFocusable = false
         view_address.isFocusableInTouchMode = false
+        chooseProfileOption()
 
         view_scrollview.smoothScrollTo(0, 0)
         view_submit.text = "Cập nhật"

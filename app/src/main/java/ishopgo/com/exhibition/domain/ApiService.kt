@@ -7,8 +7,15 @@ import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
+import ishopgo.com.exhibition.model.member.ManageMember
+import ishopgo.com.exhibition.model.post.PostCategory
+import ishopgo.com.exhibition.model.post.PostContent
+import ishopgo.com.exhibition.model.post.PostsManager
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
+import ishopgo.com.exhibition.model.question.QuestionCategory
+import ishopgo.com.exhibition.model.question.QuestionDetail
+import ishopgo.com.exhibition.model.question.QuestionManager
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -192,6 +199,9 @@ class ApiService {
 
         @POST("booth/add")
         fun createBooth(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @DELETE("booth/{id}")
+        fun deleteBooth(@Path("id") booth_id: Long): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -226,6 +236,46 @@ class ApiService {
 
         @GET("product")
         fun getProductManagerDetail(@Query("product_id") productID: Long): Single<BaseResponse<ProductManagerDetail>>
+
+        @GET("members")
+        fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
+
+        @DELETE("delete-members/{id}")
+        fun deleteMember(@Path("id") member_id: Long): Single<BaseResponse<Any>>
+
+        @GET("brands")
+        fun getBrand(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Brand>>>
+
+        @POST("update-brands/{id}")
+        fun updateBrand(@Path("id") brand_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("create-brands")
+        fun createBrand(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @DELETE("delete-brands/{id}")
+        fun deleteBrand(@Path("id") brand_id: Long): Single<BaseResponse<Any>>
+
+        @GET("general-info/get-posts")
+        fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostsManager>>
+
+        @GET("general-info/get-posts/{id}")
+        fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
+
+        @GET("general-info/get-categories")
+        fun getPostCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>>
+
+        @POST("general-info/create-categories")
+        fun createPostGategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @GET("question/get-posts")
+        fun getQuestion(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<QuestionManager>>
+
+        @GET("question/get-posts/{id}")
+        fun getQuestionDetail(@Path("id") question_id: Long): Single<BaseResponse<QuestionDetail>>
+
+        @GET("question/get-categories")
+        fun getQuestionCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>>
+
     }
 
 }

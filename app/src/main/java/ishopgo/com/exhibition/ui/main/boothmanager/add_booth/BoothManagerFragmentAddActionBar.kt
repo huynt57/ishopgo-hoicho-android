@@ -27,7 +27,7 @@ class BoothManagerFragmentAddActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, BoothManagerAddFragment.newInstance(Bundle())).commit()
+                .replace(R.id.view_main_content, BoothManagerAddFragment.newInstance(arguments ?: Bundle())).commit()
     }
 
     private fun setupToolbars() {

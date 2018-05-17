@@ -17,12 +17,16 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
+import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
+import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
+import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -115,6 +119,21 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_BOOTH_MANAGER -> {
                 openBoothManager()
             }
+            Const.AccountAction.ACTION_MEMBER_MANAGER -> {
+                openMemberManager()
+            }
+            Const.AccountAction.ACTION_BRAND_MANAGER -> {
+                openBrandManager()
+            }
+            Const.AccountAction.ACTION_NEWS_MANAGER -> {
+                openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
+            }
+            Const.AccountAction.ACTION_GENEREL_MANAGER -> {
+                openPostManager(Const.AccountAction.ACTION_GENEREL_MANAGER)
+            }
+            Const.AccountAction.ACTION_QUESTION_MANAGER -> {
+                openQuestionManager()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -131,6 +150,35 @@ class AccountFragment : BaseFragment() {
     private fun openBoothManager() {
         context?.let {
             val intent = Intent(it, BoothManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openBrandManager() {
+        context?.let {
+            val intent = Intent(it, BrandManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openPostManager(typeManager: Int) {
+        context?.let {
+            val intent = Intent(it, PostManagerActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
+            startActivity(intent)
+        }
+    }
+
+    private fun openQuestionManager() {
+        context?.let {
+            val intent = Intent(it, QuestionManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openMemberManager() {
+        context?.let {
+            val intent = Intent(it, MemberManagerActivity::class.java)
             startActivity(intent)
         }
     }
