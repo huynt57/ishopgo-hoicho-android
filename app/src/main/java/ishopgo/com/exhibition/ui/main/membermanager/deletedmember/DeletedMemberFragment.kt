@@ -1,9 +1,8 @@
-package ishopgo.com.exhibition.ui.main.membermanager
+package ishopgo.com.exhibition.ui.main.membermanager.deletedmember
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
@@ -11,10 +10,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.MemberRequest
+import ishopgo.com.exhibition.domain.request.DeletedMemberRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.member.MemberManager
@@ -23,12 +22,13 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.login.RegionAdapter
-import ishopgo.com.exhibition.ui.main.membermanager.deletedmember.DeletedMemberActivity
+import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerProvider
+import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerViewModel
 import ishopgo.com.exhibition.ui.widget.DateInputEditText
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
-class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, MemberManagerProvider>() {
+class DeletedMemberFragment : BaseListFragment<List<MemberManagerProvider>, MemberManagerProvider>() {
     private var startTime = ""
     private var endTime = ""
     private var phone = ""
@@ -47,7 +47,7 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
 
     override fun firstLoad() {
         super.firstLoad()
-        val firstLoad = MemberRequest()
+        val firstLoad = DeletedMemberRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
         firstLoad.start_time = startTime
@@ -55,12 +55,13 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         firstLoad.phone = phone
         firstLoad.name = name
         firstLoad.region = region
-        viewModel.loadData(firstLoad)
+        firstLoad.deleted_at = true
+        (viewModel as MemberManagerViewModel).loadDeletedMember(firstLoad)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = MemberRequest()
+        val loadMore = DeletedMemberRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
         loadMore.start_time = startTime
@@ -68,22 +69,18 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         loadMore.phone = phone
         loadMore.name = name
         loadMore.region = region
-        viewModel.loadData(loadMore)
+        loadMore.deleted_at = true
+        (viewModel as MemberManagerViewModel).loadDeletedMember(loadMore)
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<MemberManagerProvider> {
-        val adapter = MemberManagerAdapter()
+        val adapter = DeletedMemberAdapter()
         adapter.addData(MemberManager())
         return adapter
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<MemberManagerProvider>> {
         return obtainViewModel(MemberManagerViewModel::class.java, false)
-    }
-
-    fun openRestoreMember() {
-        val intent = Intent(context, DeletedMemberActivity::class.java)
-        startActivityForResult(intent, Const.RequestCode.DELETED_MEMBER_RESTORE)
     }
 
     fun performFilter() {
@@ -159,10 +156,10 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
                     if (data is MemberManager) {
                         context?.let {
                             MaterialDialog.Builder(it)
-                                    .content("Bạn có muốn xoá thành viên này không?")
+                                    .content("Bạn có muốn khôi phục thành viên này không?")
                                     .positiveText("Có")
                                     .onPositive { _, _ ->
-                                        if (viewModel is MemberManagerViewModel) (viewModel as MemberManagerViewModel).deleteMember(data.id)
+                                        if (viewModel is MemberManagerViewModel) (viewModel as MemberManagerViewModel).restoreMembers(data.id)
                                         showProgressDialog()
                                     }
                                     .negativeText("Không")
@@ -178,9 +175,10 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         if (viewModel is MemberManagerViewModel) {
-            (viewModel as MemberManagerViewModel).deleteSusscess.observe(this, Observer {
-                toast("Xoá thành công")
+            (viewModel as MemberManagerViewModel).restoreSusscess.observe(this, Observer {
+                toast("Khôi phục thành công")
                 hideProgressDialog()
+                activity?.setResult(RESULT_OK)
                 firstLoad()
             })
 
@@ -191,11 +189,6 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
             (viewModel as MemberManagerViewModel).loadRegion()
 
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Const.RequestCode.DELETED_MEMBER_RESTORE && resultCode == RESULT_OK) firstLoad()
     }
 
     private fun getRegion(view: TextView) {
@@ -230,9 +223,9 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
     }
 
     companion object {
-        const val TAG = "MemberManagerFragment"
-        fun newInstance(params: Bundle): MemberManagerFragment {
-            val fragment = MemberManagerFragment()
+        const val TAG = "DeletedMemberFragment"
+        fun newInstance(params: Bundle): DeletedMemberFragment {
+            val fragment = DeletedMemberFragment()
             fragment.arguments = params
 
             return fragment
