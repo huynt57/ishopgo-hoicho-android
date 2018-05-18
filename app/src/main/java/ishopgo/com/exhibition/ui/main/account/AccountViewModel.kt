@@ -71,6 +71,13 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         if (UserDataManager.currentType == "Thành viên") {
             items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_REGISTER_BOOTH,
+                    R.drawable.ic_register,
+                    "Đăng ký gian hàng"
+            ))
+
+
+            items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
                     R.drawable.ic_star_white,
                     "Gian hàng quan tâm"

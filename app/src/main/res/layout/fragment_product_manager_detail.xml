@@ -309,6 +309,7 @@
                 android:text="SEO"
                 android:textColor="@color/md_white_1000"
                 android:textSize="16sp"
+                android:visibility="gone"
                 tools:ignore="HardcodedText" />
 
             <android.support.design.widget.TextInputLayout
@@ -316,7 +317,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_title"
@@ -334,7 +336,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_meta_description"
@@ -352,7 +355,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:visibility="gone">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_tags"

@@ -34,17 +34,15 @@ import ishopgo.com.exhibition.ui.widget.Toolbox
 class SignupFragment : BaseFragment() {
 
     companion object {
-        fun newInstance(type_Register: Int): SignupFragment {
+        fun newInstance(params: Bundle): SignupFragment {
             val fragment = SignupFragment()
-            fragment.type_Register = type_Register
+            fragment.arguments = params
             return fragment
         }
 
-        const val REGISTER_STORE = 2
         const val REGISTER_MEMBER = 1
     }
 
-    private var type_Register: Int = 0
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
     private var image: String = ""
@@ -64,9 +62,6 @@ class SignupFragment : BaseFragment() {
         tv_signup_region.setOnClickListener {
             getRegion(tv_signup_region)
         }
-
-        if (type_Register == REGISTER_MEMBER) textView.text = "Đăng ký thành viên"
-        if (type_Register == REGISTER_STORE) textView.text = "Đăng ký gian hàng"
 
         btn_signup.setOnClickListener {
             signupAccount()
@@ -98,7 +93,7 @@ class SignupFragment : BaseFragment() {
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                     tv_signup_company.text.toString(), tv_signup_birthday.text.toString(), tv_signup_region.text.toString(),
-                    tv_signup_address.text.toString(), tv_signup_password.text.toString(), type_Register.toString())
+                    tv_signup_address.text.toString(), tv_signup_password.text.toString(), REGISTER_MEMBER.toString())
         }
     }
 
@@ -239,8 +234,8 @@ class SignupFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+            if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                 return
             }
 

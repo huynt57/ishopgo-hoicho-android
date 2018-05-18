@@ -202,6 +202,9 @@ class ApiService {
 
         @DELETE("booth/{id}")
         fun deleteBooth(@Path("id") booth_id: Long): Single<BaseResponse<Any>>
+
+        @POST("booth/add-from-member/{id}")
+        fun registerBooth(@Path("id") account_id: Long,@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

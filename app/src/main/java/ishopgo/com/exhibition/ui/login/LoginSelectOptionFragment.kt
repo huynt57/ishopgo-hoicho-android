@@ -26,32 +26,8 @@ class LoginSelectOptionFragment : BaseFragment() {
         }
 
         btn_sigup.setOnClickListener {
-            context?.let {
-                val dialog = MaterialDialog.Builder(it)
-                        .customView(R.layout.dialog_select_register, false)
-                        .autoDismiss(false)
-                        .canceledOnTouchOutside(true)
-                        .build()
-
-                val tv_register_member = dialog.findViewById(R.id.tv_register_member) as TextView
-                val tv_register_store = dialog.findViewById(R.id.tv_register_store) as TextView
-
-                tv_register_member.setOnClickListener {
-                    val intent = Intent(context, SignupActivity::class.java)
-                    intent.putExtra("TYPE_REGISTER", REGISTER_MEMBER)
-                    startActivity(intent)
-                    dialog.dismiss()
-                }
-
-                tv_register_store.setOnClickListener {
-                    val intent = Intent(context, SignupActivity::class.java)
-                    intent.putExtra("TYPE_REGISTER", REGISTER_STORE)
-                    startActivity(intent)
-                    dialog.dismiss()
-                }
-
-                dialog.show()
-            }
+            val intent = Intent(context, SignupActivity::class.java)
+            startActivity(intent)
         }
 
         tv_skip_login.setOnClickListener {
@@ -62,11 +38,6 @@ class LoginSelectOptionFragment : BaseFragment() {
             startActivity(intent)
             activity?.finish()
         }
-    }
-
-    companion object {
-        const val REGISTER_STORE = 0
-        const val REGISTER_MEMBER = 1
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
