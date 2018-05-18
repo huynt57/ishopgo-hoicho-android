@@ -159,7 +159,13 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
 
         (viewModel as PostViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
-                if (reloadCategory) it?.let { it1 -> adapterCategory.replaceAll(it1) }
+                if (reloadCategory) it?.let { it1 ->
+                    adapterCategory.replaceAll(it1)
+                    val category = PostCategory()
+                    category.id = 0
+                    category.name = "Tất cả danh mục"
+                    adapterCategory.addData(0, category)
+                }
                 else it?.let { it1 -> adapterCategory.addAll(it1) }
             }
         })
@@ -168,6 +174,7 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
         firstLoadCategory()
     }
 
+    @SuppressLint("SetTextI18n")
     fun performSearching() {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
@@ -196,7 +203,10 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
             val edit_post_category = dialog.findViewById(R.id.edit_post_category) as TextInputEditText
             edit_post_category.setOnClickListener { loadCategory(edit_post_category) }
             edit_post_name.setText(name)
-            edit_post_category.setText(categoryName)
+
+            if (categoryName.isNotEmpty())
+                edit_post_category.setText(categoryName)
+            else edit_post_category.setText("Tất cả danh mục")
 
             dialog.show()
         }

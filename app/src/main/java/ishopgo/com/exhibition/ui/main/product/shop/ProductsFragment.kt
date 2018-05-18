@@ -16,8 +16,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter
-import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.BoothCategoriesRequest
 import ishopgo.com.exhibition.domain.request.SameShopProductsRequest
@@ -56,6 +54,8 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
 
     private var boothId = 0L
     private var categoryId: Long = 0
+    private var sortValue: String = ""
+    private var sortBy: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,6 +87,8 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         loadMore.offset = 0
         loadMore.boothId = boothId
         loadMore.categoryId = categoryId
+        loadMore.sortValue = sortValue
+        loadMore.sortBy = sortBy
         viewModel.loadData(loadMore)
     }
 
@@ -97,6 +99,8 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         loadMore.offset = currentCount
         loadMore.boothId = boothId
         loadMore.categoryId = categoryId
+        loadMore.sortValue = sortValue
+        loadMore.sortBy = sortBy
         viewModel.loadData(loadMore)
     }
 
@@ -188,24 +192,28 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
                         .build()
 
                 val tv_filter_news = dialog.findViewById(R.id.tv_filter_news) as TextView
-                val tv_filter_hot = dialog.findViewById(R.id.tv_filter_hot) as TextView
                 val tv_filter_down_to_up = dialog.findViewById(R.id.tv_filter_down_to_up) as TextView
                 val tv_filter_up_to_down = dialog.findViewById(R.id.tv_filter_up_to_down) as TextView
 
                 tv_filter_news.setOnClickListener {
                     view.text = "Mới nhất"
-                    dialog.dismiss()
-                }
-                tv_filter_hot.setOnClickListener {
-                    view.text = "HOT nhất"
+                    sortValue = "created_at"
+                    sortBy = ""
+                    firstLoad()
                     dialog.dismiss()
                 }
                 tv_filter_down_to_up.setOnClickListener {
                     view.text = "Giá từ thấp tới cao"
+                    sortValue = "price"
+                    sortBy = "asc"
+                    firstLoad()
                     dialog.dismiss()
                 }
                 tv_filter_up_to_down.setOnClickListener {
                     view.text = "Giá từ cao tới thấp"
+                    sortValue = "price"
+                    sortBy = "desc"
+                    firstLoad()
                     dialog.dismiss()
                 }
 

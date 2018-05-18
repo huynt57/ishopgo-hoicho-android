@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -33,7 +34,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
     }
 
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private lateinit var adapterImages: ComposingPostMediaAdapter
+    private var adapterImages = ComposingPostMediaAdapter()
     private var adapter = CommunityCommentAdapter()
     private lateinit var scroller: LinearSmoothScroller
     private lateinit var viewModel: CommunityViewModel
@@ -93,6 +94,19 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         }
 
         swipe.setOnRefreshListener(this)
+        setupImageRecycleview()
+    }
+
+    private fun setupImageRecycleview() {
+        rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_comment_community_image.adapter = adapterImages
+        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+            override fun click(position: Int, data: PostMedia, code: Int) {
+                postMedias.remove(data)
+                if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
+                adapterImages.replaceAll(postMedias)
+            }
+        }
 
     }
 
@@ -121,7 +135,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
                 hideProgressDialog()
                 edt_comment.setText("")
                 postMedias.clear()
-                adapterImages = ComposingPostMediaAdapter(postMedias)
+                adapterImages.replaceAll(postMedias)
                 rv_comment_community_image.adapter = adapterImages
                 rv_comment_community_image.visibility = View.GONE
 
@@ -201,11 +215,8 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
                     postMedias.add(postMedia)
                 }
             }
-            adapterImages = ComposingPostMediaAdapter(postMedias)
-            adapterImages.notifyItemInserted(postMedias.size - 1)
-            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_comment_community_image.adapter = adapterImages
 
+            adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.VISIBLE
         }
     }

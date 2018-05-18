@@ -21,6 +21,8 @@ class ProductsOfShopViewModel : BaseListViewModel<List<ProductProvider>>(), AppC
             fields["limit"] = params.limit
             fields["offset"] = params.offset
             fields["category_id"] = params.categoryId
+            fields["sort_value"] = params.sortValue
+            fields["sort_by"] = params.sortBy
 
             addDisposable(noAuthService.getBoothProducts(params.boothId, fields)
                     .subscribeOn(Schedulers.single())

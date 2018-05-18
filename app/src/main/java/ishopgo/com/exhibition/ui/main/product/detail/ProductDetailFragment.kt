@@ -62,12 +62,13 @@ class ProductDetailFragment : BaseFragment() {
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private lateinit var adapterImages: ComposingPostMediaAdapter
+    private var adapterImages = ComposingPostMediaAdapter()
     private var productId: Long = -1L
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_detail, container, false)
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -118,8 +119,7 @@ class ProductDetailFragment : BaseFragment() {
             hideProgressDialog()
             edt_comment.setText("")
             postMedias.clear()
-            adapterImages = ComposingPostMediaAdapter(postMedias)
-            rv_comment_community_image.adapter = adapterImages
+            adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.GONE
             viewModel.loadProductComments(productId)
         })
@@ -332,8 +332,21 @@ class ProductDetailFragment : BaseFragment() {
         setupFavoriteProducts(view.context)
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
-
+        setupImageRecycleview()
         setupListeners()
+
+    }
+
+    private fun setupImageRecycleview() {
+        rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_comment_community_image.adapter = adapterImages
+        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+            override fun click(position: Int, data: PostMedia, code: Int) {
+                postMedias.remove(data)
+                if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
+                adapterImages.replaceAll(postMedias)
+            }
+        }
 
     }
 
@@ -454,8 +467,8 @@ class ProductDetailFragment : BaseFragment() {
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                     return
                 }
                 val postMedia = PostMedia()
@@ -474,11 +487,7 @@ class ProductDetailFragment : BaseFragment() {
                     postMedias.add(postMedia)
                 }
             }
-            adapterImages = ComposingPostMediaAdapter(postMedias)
-            adapterImages.notifyItemInserted(postMedias.size - 1)
-            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_comment_community_image.adapter = adapterImages
-
+            adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.VISIBLE
         }
     }
