@@ -39,6 +39,7 @@ object Const {
         const val RC_CAPTURE_IMAGE = 18
         const val RC_SHOW_DETAIL = 19
         const val RC_ADD_NEW = 20
+        const val DELETED_MEMBER_RESTORE = 21
 
     }
 
@@ -58,6 +59,7 @@ object Const {
         const val ACTION_NEWS_MANAGER = 12
         const val ACTION_GENEREL_MANAGER = 13
         const val ACTION_QUESTION_MANAGER = 14
+        const val ACTION_SYNTHETIC_MANAGER = 15
     }
 
     object Chat {

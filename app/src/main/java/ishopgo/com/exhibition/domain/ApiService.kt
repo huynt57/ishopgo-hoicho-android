@@ -245,6 +245,12 @@ class ApiService {
         @GET("members")
         fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
 
+        @GET("members")
+        fun getDeletedMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
+
+        @POST("restore-members/{id}")
+        fun restoreMembers(@Path("id") member_id: Long): Single<BaseResponse<Any>>
+
         @DELETE("delete-members/{id}")
         fun deleteMember(@Path("id") member_id: Long): Single<BaseResponse<Any>>
 
