@@ -114,6 +114,11 @@ class ApiService {
 
     interface Auth {
 
+        @GET("members/{id}")
+        fun getMemberDetail(
+                @Path("id") memberId: Long
+        ): Single<BaseResponse<Member>>
+
         @GET("favorite-products")
         fun getFavoriteProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
@@ -240,12 +245,6 @@ class ApiService {
         @GET("members")
         fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
 
-        @GET("members")
-        fun getDeletedMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
-
-        @POST("restore-members/{id}")
-        fun restoreMembers(@Path("id") member_id: Long): Single<BaseResponse<Any>>
-
         @DELETE("delete-members/{id}")
         fun deleteMember(@Path("id") member_id: Long): Single<BaseResponse<Any>>
 
@@ -282,6 +281,56 @@ class ApiService {
         @GET("question/get-categories")
         fun getQuestionCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>>
 
+        @FormUrlEncoded
+        @POST("chat/update-sample-messages")
+        fun chat_updateSampleMessages(
+                @FieldMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<TextPattern>>
+
+        @DELETE("chat/delete-sample-messages/{id}")
+        fun chat_removeSampleMessage(
+                @Path("id") id: Long
+        ): Single<BaseResponse<Any>>
+
+        @POST("chat/send-chat")
+        fun chat_sendChat(
+                @Body body: RequestBody
+        ): Single<BaseResponse<Any>>
+
+        @GET("chat/get-message")
+        fun inbox_getMessages(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<List<LocalMessageItem>>>
+
+        @GET("chat/get-info-group")
+        fun chat_conversationInfo(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ConversationInfo>>
+
+        @GET("chat/get-sample-messages")
+        fun inbox_getPatterns(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<List<TextPattern>>>
+
+        @GET("chat/get-image-warehouse")
+        fun chat_getImageInventory(
+                @QueryMap fields: Map<String, Any>
+        ): Single<BaseResponse<List<ImageInventory>>>
+
+        @POST("chat/update-info-group")
+        @FormUrlEncoded
+        fun chat_updateInfoGroup(
+                @FieldMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<ConversationInfo>>
+
+        @GET("chat/get-contact")
+        fun inbox_getContact(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<List<ContactItem>>>
+
+        @FormUrlEncoded
+        @POST("chat/add-member-group")
+        fun inbox_addMemberGroup(
+                @FieldMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<Any>>
     }
 
 }

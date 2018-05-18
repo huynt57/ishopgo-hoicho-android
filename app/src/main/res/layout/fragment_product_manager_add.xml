@@ -402,7 +402,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_add_black" />
+                app:srcCompat="@drawable/ic_add_black_24dp" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
@@ -439,7 +439,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="8dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_add_black" />
+                app:srcCompat="@drawable/ic_add_black_24dp" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

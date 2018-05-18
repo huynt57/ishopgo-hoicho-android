@@ -12,7 +12,7 @@ import android.view.ViewGroup
 
 abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerViewAdapter.ViewHolder<T>>() {
 
-    protected lateinit var mData: MutableList<T>
+    protected var mData: MutableList<T> = mutableListOf()
 
     /**
      * Running count of how many items are currently checked
@@ -27,9 +27,10 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         protected set
 
     init {
-        mData = mutableListOf()
         checkedItems = SparseBooleanArray()
     }
+
+    fun getData() = mData
 
     fun updateData(position: Int, newData: T) {
         if (position < 0 || position >= mData.size)

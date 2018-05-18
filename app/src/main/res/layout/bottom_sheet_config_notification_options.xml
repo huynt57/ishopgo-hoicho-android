@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:paddingBottom="8dp"
+              android:paddingTop="8dp">
+
+    <ishopgo.com.exhibition.ui.widget.SimpleBottomSheetItem
+        android:id="@+id/option_turn_on"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_notifications_active_black_24dp"
+        app:text="Bật"
+        />
+
+    <ishopgo.com.exhibition.ui.widget.SimpleBottomSheetItem
+        android:id="@+id/option_turn_off_for15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_notifications_off_black_24dp"
+        app:text="Tắt trong 15 phút"
+        />
+
+    <ishopgo.com.exhibition.ui.widget.SimpleBottomSheetItem
+        android:id="@+id/option_turn_off_for30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_notifications_off_black_24dp"
+        app:text="Tắt trong 30 phút"
+        />
+
+    <ishopgo.com.exhibition.ui.widget.SimpleBottomSheetItem
+        android:id="@+id/option_turn_off_for60"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_notifications_off_black_24dp"
+        app:text="Tắt trong 1 giờ"
+        />
+
+    <ishopgo.com.exhibition.ui.widget.SimpleBottomSheetItem
+        android:id="@+id/option_turn_off_for8x60"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_notifications_off_black_24dp"
+        app:text="Tắt trong 8 giờ"
+        />
+
+    <ishopgo.com.exhibition.ui.widget.SimpleBottomSheetItem
+        android:id="@+id/option_turn_off_for_next_turnon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_notifications_paused_black_24dp"
+        app:text="Tắt tới khi tôi bật lại"
+        />
+
+</LinearLayout>

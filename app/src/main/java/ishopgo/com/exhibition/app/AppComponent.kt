@@ -1,8 +1,15 @@
 package ishopgo.com.exhibition.app
 
 import android.app.Application
+import ishopgo.com.exhibition.ui.chat.local.conversation.pattern.PatternChooserViewModel
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationSharedViewModel
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
+import ishopgo.com.exhibition.domain.db.MessageRepository
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationViewModel
+import ishopgo.com.exhibition.ui.chat.local.group.addmember.MemberViewModel
+import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryViewModel
+import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
@@ -30,7 +37,6 @@ import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerViewModel
 import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
-import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
@@ -41,7 +47,7 @@ import ishopgo.com.exhibition.ui.splash.SplashViewModel
 import javax.inject.Singleton
 
 @Singleton
-@Component(modules = arrayOf(AppModule::class, ApiModule::class))
+@Component(modules = arrayOf(AppModule::class, ApiModule::class, RepositoryModule::class))
 interface AppComponent {
 
     fun application(): Application
@@ -51,6 +57,8 @@ interface AppComponent {
     fun noAuthService(): ApiService.NoAuth
 
     fun isgService(): ApiService.ISGApi
+
+    fun appdb(): MessageRepository
 
     interface Injectable {
         fun inject(appComponent: AppComponent)
@@ -90,5 +98,11 @@ interface AppComponent {
     fun inject(brandManagerViewModel: BrandManagerViewModel)
     fun inject(postViewModel: PostViewModel)
     fun inject(questionViewModel: QuestionViewModel)
-    fun inject(questionSearchViewModel: QuestionSearchViewModel)
+    fun inject(profileViewModel: ishopgo.com.exhibition.ui.chat.local.profile.ProfileViewModel)
+    fun inject(conversationSharedViewModel: ConversationSharedViewModel)
+    fun inject(conversationViewModel: ConversationViewModel)
+    fun inject(patternChooserViewModel: PatternChooserViewModel)
+    fun inject(imageInventoryViewModel: ImageInventoryViewModel)
+    fun inject(memberInfoViewModel: MemberInfoViewModel)
+    fun inject(memberViewModel: MemberViewModel)
 }

@@ -24,7 +24,6 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
-import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.widget.Toolbox
@@ -43,7 +42,7 @@ class CommunityShareFragment : BaseFragment() {
     private lateinit var viewModel: CommunityViewModel
 
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private var adapterImages = ComposingPostMediaAdapter()
+    private lateinit var adapterImages: ComposingPostMediaAdapter
     private var sendingPhotoUri: Uri? = null
 
 
@@ -78,21 +77,6 @@ class CommunityShareFragment : BaseFragment() {
         Glide.with(this).load(UserDataManager.currentUserAvatar)
                 .apply(RequestOptions.circleCropTransform()
                         .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_share_avatar)
-
-        setupImageRecycleview()
-
-    }
-
-    private fun setupImageRecycleview() {
-        rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_share_image.adapter = adapterImages
-        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-            override fun click(position: Int, data: PostMedia, code: Int) {
-                postMedias.remove(data)
-                if (postMedias.isEmpty()) rv_share_image.visibility = View.GONE
-                adapterImages.replaceAll(postMedias)
-            }
-        }
 
     }
 
@@ -187,8 +171,10 @@ class CommunityShareFragment : BaseFragment() {
                     postMedias.add(postMedia)
                 }
             }
-            adapterImages.replaceAll(postMedias)
-            rv_share_image.visibility = View.VISIBLE
+            adapterImages = ComposingPostMediaAdapter(postMedias)
+            adapterImages.notifyItemInserted(postMedias.size - 1)
+            rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_share_image.adapter = adapterImages
         }
 
         if (requestCode == Const.RequestCode.TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
@@ -202,8 +188,10 @@ class CommunityShareFragment : BaseFragment() {
                 postMedia.uri = it
                 postMedias.add(postMedia)
 
-                adapterImages.replaceAll(postMedias)
-                rv_share_image.visibility = View.VISIBLE
+                adapterImages = ComposingPostMediaAdapter(postMedias)
+                adapterImages.notifyItemInserted(postMedias.size - 1)
+                rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                rv_share_image.adapter = adapterImages
             }
         }
     }

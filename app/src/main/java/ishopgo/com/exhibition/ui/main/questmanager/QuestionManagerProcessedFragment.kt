@@ -34,8 +34,6 @@ class QuestionManagerProcessedFragment : BaseListFragment<List<QuestProvider>, Q
     private var key_search = ""
     private var categoryId: Long = 0
     private var categoryName = ""
-    private lateinit var viewModelSearch: QuestionSearchViewModel
-
 
     override fun populateData(data: List<QuestProvider>) {
         if (reloadData) {
@@ -118,11 +116,6 @@ class QuestionManagerProcessedFragment : BaseListFragment<List<QuestProvider>, Q
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModelSearch = obtainViewModel(QuestionSearchViewModel::class.java, true)
-        viewModelSearch.errorSignal.observe(this, Observer {
-            it?.let { resolveError(it) }
-        })
-
         (viewModel as QuestionViewModel).dataReturned.observe(this, Observer { p ->
             p.let {
                 hideProgressDialog()
@@ -135,32 +128,20 @@ class QuestionManagerProcessedFragment : BaseListFragment<List<QuestProvider>, Q
 
         (viewModel as QuestionViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
-                if (reloadCategory) it?.let { it1 ->
-                    adapterCategory.replaceAll(it1)
-                    val category = QuestionCategory()
-                    category.id = 0
-                    category.name = "Tất cả danh mục"
-                    adapterCategory.addData(0, category)
-                }
+                if (reloadCategory) it?.let { it1 -> adapterCategory.replaceAll(it1) }
                 else it?.let { it1 -> adapterCategory.addAll(it1) }
             }
-        })
-
-        viewModelSearch.searchKey.observe(this, Observer {
-            if (it == TAG)
-                performSearching()
         })
 
         reloadCategory = true
         firstLoadCategory()
     }
 
-    @SuppressLint("SetTextI18n")
     fun performSearching() {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Tìm kiếm")
-                    .customView(R.layout.dialog_search_question, false)
+                    .customView(R.layout.dialog_search_post, false)
                     .positiveText("Lọc")
                     .onPositive { dialog, _ ->
                         val edit_post_name = dialog.findViewById(R.id.edit_post_name) as TextInputEditText
@@ -183,11 +164,9 @@ class QuestionManagerProcessedFragment : BaseListFragment<List<QuestProvider>, Q
             val edit_post_name = dialog.findViewById(R.id.edit_post_name) as TextInputEditText
             val edit_post_category = dialog.findViewById(R.id.edit_post_category) as TextInputEditText
             edit_post_category.setOnClickListener { loadCategory(edit_post_category) }
+            edit_post_name.hint = "Tìm theo từ khoá"
             edit_post_name.setText(key_search)
-
-            if (categoryName.isNotEmpty())
-                edit_post_category.setText(categoryName)
-            else edit_post_category.setText("Tất cả danh mục")
+            edit_post_category.setText(categoryName)
 
             dialog.show()
         }

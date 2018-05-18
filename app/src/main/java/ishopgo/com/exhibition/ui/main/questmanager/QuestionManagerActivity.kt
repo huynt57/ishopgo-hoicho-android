@@ -6,6 +6,6 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 
 class QuestionManagerActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
-        return QuestionManagerTabFragment.newInstance(startupOption)
+        return QuestionManagerFragmentActionBar.newInstance(startupOption)
     }
 }

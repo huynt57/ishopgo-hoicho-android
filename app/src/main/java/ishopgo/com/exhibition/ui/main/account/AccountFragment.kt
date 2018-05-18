@@ -134,8 +134,6 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_QUESTION_MANAGER -> {
                 openQuestionManager()
             }
-            Const.AccountAction.ACTION_SYNTHETIC_MANAGER -> {
-            }
             else -> {
                 toast("Đang phát triển")
             }

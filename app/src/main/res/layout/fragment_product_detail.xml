@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -23,7 +24,7 @@
                 app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:src="@tools:sample/avatars" />
+                tools:src="@tools:sample/avatars"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/view_favorite"
@@ -34,37 +35,29 @@
                 app:layout_constraintBottom_toBottomOf="@id/view_product_image"
                 app:layout_constraintEnd_toStartOf="@+id/view_share"
                 app:layout_constraintTop_toBottomOf="@id/view_product_image"
-                app:srcCompat="@drawable/ic_added_to_favorite_24dp" />
+                app:srcCompat="@drawable/ic_added_to_favorite_24dp"/>
 
-            <LinearLayout
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_share"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_marginEnd="16dp"
+                android:layout_marginStart="8dp"
                 android:background="@drawable/bg_rounded_rectangle"
-                android:orientation="horizontal"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp"
+                android:drawablePadding="4dp"
+                android:gravity="center"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:text="Chia sẻ"
+                android:foreground="?attr/selectableItemBackground"
+                android:textColor="@color/colorPureWhite"
+                android:textSize="16sp"
+                app:drawableStartCompat="@drawable/ic_share_24dp"
                 app:layout_constraintBottom_toBottomOf="@id/view_product_image"
                 app:layout_constraintEnd_toEndOf="@id/view_product_image"
-                app:layout_constraintTop_toBottomOf="@id/view_product_image">
-
-                <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    app:srcCompat="@drawable/ic_share_24dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginStart="8dp"
-                    android:text="Chia sẻ"
-                    android:textColor="@color/colorPureWhite"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
+                app:layout_constraintTop_toBottomOf="@id/view_product_image"
+                />
 
             <TextView
                 android:id="@+id/view_product_name"
@@ -77,7 +70,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_favorite"
-                tools:text="Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless" />
+                tools:text="Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless"
+                />
 
             <ImageView
                 android:id="@+id/view_icon_price"
@@ -87,7 +81,8 @@
                 android:layout_marginTop="8dp"
                 android:src="@drawable/price_tag"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_product_name" />
+                app:layout_constraintTop_toBottomOf="@id/view_product_name"
+                />
 
             <TextView
                 android:id="@+id/view_product_price"
@@ -101,7 +96,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/view_icon_price"
                 app:layout_constraintTop_toTopOf="@id/view_icon_price"
-                tools:text="280.000 đ" />
+                tools:text="280.000 đ"
+                />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -109,7 +105,8 @@
             android:id="@+id/view_divider_product_info"
             style="@style/AppTheme.DividerLine"
             android:layout_width="match_parent"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            />
 
         <LinearLayout
             android:id="@+id/container_product_brand"
@@ -119,12 +116,13 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:paddingBottom="8dp"
-            android:paddingTop="8dp">
+            android:paddingTop="8dp"
+            >
 
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_badge" />
+                android:src="@drawable/ic_badge"/>
 
             <TextView
                 android:id="@+id/view_product_brand"
@@ -134,14 +132,15 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="Medi White" />
+                tools:text="Medi White"/>
 
         </LinearLayout>
 
         <View
             android:id="@+id/view_divider_product_brand"
             style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent" />
+            android:layout_width="match_parent"
+            />
 
         <org.sufficientlysecure.htmltextview.HtmlTextView
             android:id="@+id/view_product_description"
@@ -151,7 +150,8 @@
             android:paddingStart="16dp"
             android:paddingTop="16dp"
             tools:text="@tools:sample/lorem/random"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            />
 
         <TextView
             android:id="@+id/view_product_show_more_description"
@@ -164,7 +164,7 @@
             android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
+            app:layout_constraintTop_toBottomOf="@+id/view_divider_111"/>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_shop_info"
@@ -179,7 +179,8 @@
                 android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/view_shop_name"
@@ -192,7 +193,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
-                tools:text="Công ty TNHH Mua đồ tốt" />
+                tools:text="Công ty TNHH Mua đồ tốt"/>
 
             <TextView
                 android:id="@+id/view_shop_region"
@@ -202,7 +203,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_shop_name"
-                tools:text="Khu vực: HCM" />
+                tools:text="Khu vực: HCM"/>
 
             <TextView
                 android:id="@+id/view_shop_detail"
@@ -215,7 +216,7 @@
                 android:padding="8dp"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"/>
 
             <View
                 android:id="@+id/textView4"
@@ -224,7 +225,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_shop_region" />
+                app:layout_constraintTop_toBottomOf="@+id/view_shop_region"/>
 
             <TextView
                 android:id="@+id/view_shop_product_count"
@@ -236,7 +237,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
-                tools:text="54\nSản phẩm mới" />
+                tools:text="54\nSản phẩm mới"/>
 
             <TextView
                 android:id="@+id/view_shop_rating"
@@ -248,7 +249,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_shop_product_count"
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
-                tools:text="5\nĐánh giá" />
+                tools:text="5\nĐánh giá"/>
 
             <View
                 android:id="@+id/textView7"
@@ -257,7 +258,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_shop_product_count" />
+                app:layout_constraintTop_toBottomOf="@+id/view_shop_product_count"/>
 
             <LinearLayout
                 android:id="@+id/view_shop_call"
@@ -279,14 +280,15 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_phone_24dp" />
+                    app:srcCompat="@drawable/ic_phone_24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:gravity="center"
-                    android:text="Gọi điện" />
+                    android:text="Gọi điện"
+                    />
 
             </LinearLayout>
 
@@ -311,14 +313,15 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_comment" />
+                    app:srcCompat="@drawable/ic_comment"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:gravity="center"
-                    android:text="Nhắn tin" />
+                    android:text="Nhắn tin"
+                    />
 
             </LinearLayout>
 
@@ -336,7 +339,8 @@
                 android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/textView9"
@@ -348,7 +352,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_comment" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_comment"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_like_count"
@@ -361,7 +365,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/view_product_comment_count"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_comment_count"
@@ -374,7 +378,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/view_product_share_count"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_product_like_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_share_count"
@@ -387,7 +391,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_product_comment_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/textView9"/>
 
             <View
                 android:id="@+id/textView13"
@@ -396,7 +400,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_product_comment_count" />
+                app:layout_constraintTop_toBottomOf="@+id/view_product_comment_count"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_comments"
@@ -408,7 +412,7 @@
                 android:padding="@dimen/item_spacing"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+                app:layout_constraintTop_toBottomOf="@+id/textView13"/>
 
             <View
                 android:id="@+id/view_divider_111"
@@ -417,7 +421,7 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_list_comments" />
+                app:layout_constraintTop_toBottomOf="@+id/view_list_comments"/>
 
             <TextView
                 android:id="@+id/view_product_show_more_comment"
@@ -430,76 +434,7 @@
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_comment_community_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/linearLayout"
-                android:layout_alignParentStart="true"
-                android:background="@color/md_grey_200"
-                android:paddingBottom="8dp"
-                android:paddingEnd="@dimen/default_margin"
-                android:paddingStart="@dimen/default_margin"
-                android:paddingTop="8dp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
-
-            <View
-                android:id="@+id/view"
-                android:layout_width="0dp"
-                android:layout_height="1px"
-                android:layout_marginTop="16dp"
-                android:background="@color/divider_line"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_comment_community_image" />
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:background="@drawable/bg_boder"
-                android:weightSum="2"
-                app:layout_constraintTop_toBottomOf="@+id/view">
-
-                <ImageView
-                    android:id="@+id/img_comment_gallery"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/ic_gallery" />
-
-                <EditText
-                    android:id="@+id/edt_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:inputType="text"
-                    android:lines="1" />
-
-                <ImageView
-                    android:id="@+id/img_comment_sent"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:scaleType="center"
-                    app:srcCompat="@android:drawable/ic_menu_send" />
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view2"
-                android:layout_width="0dp"
-                android:layout_height="1px"
-                android:background="@color/divider_line"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_111"/>
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -516,7 +451,8 @@
                 android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/label_products_same_shop"
@@ -525,7 +461,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm cùng gian hàng"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"/>
 
             <TextView
                 android:id="@+id/more_products_same_shop"
@@ -534,7 +470,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_products_same_shop"
@@ -546,7 +482,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_products_same_shop" />
+                app:layout_constraintTop_toBottomOf="@+id/label_products_same_shop"
+                />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -564,7 +501,8 @@
                 android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/label_favorite"
@@ -573,7 +511,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm yêu thích"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"/>
 
             <TextView
                 android:id="@+id/more_favorite"
@@ -582,7 +520,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_favorite"
@@ -594,7 +532,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_favorite" />
+                app:layout_constraintTop_toBottomOf="@+id/label_favorite"
+                />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -612,7 +551,8 @@
                 android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                />
 
             <TextView
                 android:id="@+id/label_viewed"
@@ -621,7 +561,7 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm đã xem"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"/>
 
             <TextView
                 android:id="@+id/more_viewed"
@@ -630,7 +570,7 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_viewed"
@@ -642,7 +582,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_viewed" />
+                app:layout_constraintTop_toBottomOf="@+id/label_viewed"
+                />
 
         </android.support.constraint.ConstraintLayout>
 

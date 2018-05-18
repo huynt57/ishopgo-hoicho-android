@@ -50,7 +50,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var status: Int = STATUS_DISPLAY_SHOW
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private var adapterImages = ComposingPostMediaAdapter()
+    private lateinit var adapterImages: ComposingPostMediaAdapter
     private var image: String = ""
     private var imageOld = ""
     private var requestBrands = ""
@@ -67,24 +67,6 @@ class ProductManagerDetailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         product_Id = arguments?.getLong(EXTRA_ID, -1L) ?: -1L
-
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupImageRecycleview()
-    }
-
-    private fun setupImageRecycleview() {
-        rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_product_images.adapter = adapterImages
-        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-            override fun click(position: Int, data: PostMedia, code: Int) {
-                postMedias.remove(data)
-                if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
-                adapterImages.replaceAll(postMedias)
-            }
-        }
 
     }
 
@@ -351,8 +333,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && !ProductManagerAddFragment.CASE_PICK_IMAGE) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                     return
                 }
                 val postMedia = PostMedia()
@@ -362,8 +344,8 @@ class ProductManagerDetailFragment : BaseFragment() {
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (2 * 1024 * 1024).toLong())) {
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                         return
                     }
                     val postMedia = PostMedia()
@@ -371,8 +353,10 @@ class ProductManagerDetailFragment : BaseFragment() {
                     postMedias.add(postMedia)
                 }
             }
-            adapterImages.replaceAll(postMedias)
-            rv_product_images.visibility = View.VISIBLE
+            adapterImages = ComposingPostMediaAdapter(postMedias)
+            adapterImages.notifyItemInserted(postMedias.size - 1)
+            rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_images.adapter = adapterImages
         }
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && ProductManagerAddFragment.CASE_PICK_IMAGE) {

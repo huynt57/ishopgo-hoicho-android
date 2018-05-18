@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main.membermanager
 
 import android.annotation.SuppressLint
-import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -23,7 +22,6 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.login.RegionAdapter
-import ishopgo.com.exhibition.ui.main.membermanager.deletedmember.DeletedMemberActivity
 import ishopgo.com.exhibition.ui.widget.DateInputEditText
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -82,8 +80,7 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
     }
 
     fun openRestoreMember() {
-        val intent = Intent(context, DeletedMemberActivity::class.java)
-        startActivityForResult(intent, Const.RequestCode.DELETED_MEMBER_RESTORE)
+        toast("Đang phát triển")
     }
 
     fun performFilter() {
@@ -157,18 +154,7 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
                 @SuppressLint("SetTextI18n")
                 override fun click(position: Int, data: MemberManagerProvider, code: Int) {
                     if (data is MemberManager) {
-                        context?.let {
-                            MaterialDialog.Builder(it)
-                                    .content("Bạn có muốn xoá thành viên này không?")
-                                    .positiveText("Có")
-                                    .onPositive { _, _ ->
-                                        if (viewModel is MemberManagerViewModel) (viewModel as MemberManagerViewModel).deleteMember(data.id)
-                                        showProgressDialog()
-                                    }
-                                    .negativeText("Không")
-                                    .onNegative { dialog, _ -> dialog.dismiss() }
-                                    .show()
-                        }
+                        if (viewModel is MemberManagerViewModel) (viewModel as MemberManagerViewModel).deleteMember(data.id)
                     }
                 }
             }
@@ -180,7 +166,6 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         if (viewModel is MemberManagerViewModel) {
             (viewModel as MemberManagerViewModel).deleteSusscess.observe(this, Observer {
                 toast("Xoá thành công")
-                hideProgressDialog()
                 firstLoad()
             })
 
@@ -191,11 +176,6 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
             (viewModel as MemberManagerViewModel).loadRegion()
 
         }
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Const.RequestCode.DELETED_MEMBER_RESTORE && resultCode == RESULT_OK) firstLoad()
     }
 
     private fun getRegion(view: TextView) {

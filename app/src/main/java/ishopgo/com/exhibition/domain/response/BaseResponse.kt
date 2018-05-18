@@ -20,5 +20,4 @@ open class BaseResponse<T> {
     @Expose
     var message: String? = null
 
-
 }

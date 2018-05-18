@@ -54,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:tabIndicatorColor="@color/colorPrimaryDark"
+                app:tabMode="scrollable"
                 app:tabSelectedTextColor="@color/colorPrimaryDark"
                 app:tabTextColor="@color/md_grey_800">
 
@@ -69,11 +70,11 @@
                     android:layout_height="wrap_content"
                     android:text="Sản phẩm"/>
 
-                <!--<android.support.design.widget.TabItem-->
-                    <!--android:id="@+id/tab_shop_sections"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Danh mục"/>-->
+                <android.support.design.widget.TabItem
+                    android:id="@+id/tab_shop_sections"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Danh mục"/>
 
                 <android.support.design.widget.TabItem
                     android:id="@+id/tab_shop_rating"
