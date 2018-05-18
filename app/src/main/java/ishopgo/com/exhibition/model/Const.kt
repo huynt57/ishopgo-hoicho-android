@@ -35,11 +35,11 @@ object Const {
         const val BRAND_MANAGER_ADD = 14
         const val NEWS_MANAGER_ADD = 15
         const val NEWS_MANAGER_EDIT = 16
-        const val RC_PICK_IMAGES = 17
-        const val RC_CAPTURE_IMAGE = 18
-        const val RC_SHOW_DETAIL = 19
-        const val RC_ADD_NEW = 20
-        const val DELETED_MEMBER_RESTORE = 21
+        const val DELETED_MEMBER_RESTORE = 17
+        const val RC_PICK_IMAGES = 18
+        const val RC_CAPTURE_IMAGE = 19
+        const val RC_SHOW_DETAIL = 20
+        const val RC_ADD_NEW = 21
 
     }
 
