@@ -45,7 +45,7 @@ class ShopDetailFragment : BaseFragment() {
 
         adapter = DetailAdapter(childFragmentManager)
         view_pager.adapter = adapter
-        view_pager.offscreenPageLimit = 4
+        view_pager.offscreenPageLimit = 3
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
     }
@@ -74,10 +74,10 @@ class ShopDetailFragment : BaseFragment() {
                 1 -> {
                     ProductsFragment.newInstance(arguments ?: Bundle())
                 }
+//                2 -> {
+//                    CategoryFragment.newInstance(arguments ?: Bundle())
+//                }
                 2 -> {
-                    CategoryFragment.newInstance(arguments ?: Bundle())
-                }
-                3 -> {
                     RateFragment.newInstance(arguments ?: Bundle())
                 }
                 else -> {

@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.productmanager.add
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
@@ -58,7 +57,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private var brand_id: String = ""
     private var provider_id: String = ""
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private lateinit var adapterImages: ComposingPostMediaAdapter
+    private var adapterImages = ComposingPostMediaAdapter()
     private var listProductRelated: ArrayList<ProductManagerProvider> = ArrayList()
 
     companion object {
@@ -143,6 +142,21 @@ class ProductManagerAddFragment : BaseFragment() {
                         edit_product_tag.text.toString(), null, listProductRelated, feautured)
             }
         }
+
+        setupImageRecycleview()
+    }
+
+    private fun setupImageRecycleview() {
+        rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_product_images.adapter = adapterImages
+        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+            override fun click(position: Int, data: PostMedia, code: Int) {
+                postMedias.remove(data)
+                if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
+                adapterImages.replaceAll(postMedias)
+            }
+        }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -440,10 +454,8 @@ class ProductManagerAddFragment : BaseFragment() {
                     postMedias.add(postMedia)
                 }
             }
-            adapterImages = ComposingPostMediaAdapter(postMedias)
-            adapterImages.notifyItemInserted(postMedias.size - 1)
-            rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_product_images.adapter = adapterImages
+            adapterImages.replaceAll(postMedias)
+            rv_product_images.visibility = View.VISIBLE
         }
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && CASE_PICK_IMAGE) {

@@ -19,6 +19,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -35,7 +36,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
     }
 
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private lateinit var adapterImages: ComposingPostMediaAdapter
+    private var adapterImages = ComposingPostMediaAdapter()
     private var adapter = ProductCommentAdapter()
     private lateinit var scroller: LinearSmoothScroller
     private lateinit var viewModel: ProductCommentViewModel
@@ -93,6 +94,21 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         swipe.setOnRefreshListener(this)
         rv_comment_community.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         rv_comment_community.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
+
+        setupImageRecycleview()
+    }
+
+    private fun setupImageRecycleview() {
+        rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_comment_community_image.adapter = adapterImages
+        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+            override fun click(position: Int, data: PostMedia, code: Int) {
+                postMedias.remove(data)
+                if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
+                adapterImages.replaceAll(postMedias)
+            }
+        }
+
     }
 
     private fun launchPickPhotoIntent() {
@@ -120,8 +136,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
                 hideProgressDialog()
                 edt_comment.setText("")
                 postMedias.clear()
-                adapterImages = ComposingPostMediaAdapter(postMedias)
-                rv_comment_community_image.adapter = adapterImages
+                adapterImages.replaceAll(postMedias)
                 rv_comment_community_image.visibility = View.GONE
 
                 rv_comment_community.post {
@@ -206,11 +221,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
                     postMedias.add(postMedia)
                 }
             }
-            adapterImages = ComposingPostMediaAdapter(postMedias)
-            adapterImages.notifyItemInserted(postMedias.size - 1)
-            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_comment_community_image.adapter = adapterImages
-
+            adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.VISIBLE
         }
     }

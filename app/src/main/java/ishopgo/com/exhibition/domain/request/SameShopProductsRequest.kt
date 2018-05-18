@@ -7,5 +7,8 @@ class SameShopProductsRequest : LoadMoreRequest() {
 
     var productId: Long = -1L
     var boothId: Long = -1L
+    var categoryId: Long = -1L
+    var sortValue: String = ""
+    var sortBy: String = ""
 
 }
