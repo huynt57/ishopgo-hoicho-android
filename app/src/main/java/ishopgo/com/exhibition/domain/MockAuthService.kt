@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseResponse
+import ishopgo.com.exhibition.domain.response.Member
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
 import ishopgo.com.exhibition.model.*
@@ -13,10 +14,18 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+
+    override fun getMemberDetail(memberId: Long): Single<BaseResponse<Member>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).getMemberDetail(memberId)
+    }
+
     override fun deleteBooth(booth_id: Long): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1
-        return delegate.returningResponse(response).deleteBooth(booth_id)    }
+        return delegate.returningResponse(response).deleteBooth(booth_id)
+    }
 
     override fun getBooth(fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>> {
         val ps = mutableListOf<BoothManager>()
@@ -45,7 +54,8 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
     override fun createBooth(body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1
-        return delegate.returningResponse(response).createBooth(body)    }
+        return delegate.returningResponse(response).createBooth(body)
+    }
 
     override fun changeStatusSalePoint(salePoint_id: Long): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()

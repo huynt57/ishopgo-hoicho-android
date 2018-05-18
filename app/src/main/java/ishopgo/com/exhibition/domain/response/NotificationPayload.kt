@@ -17,4 +17,8 @@ class NotificationPayload {
 
     @field:SerializedName("phone")
     val phone: String? = null
+
+    companion object {
+        const val TYPE_PRODUCT = "san_pham"
+    }
 }

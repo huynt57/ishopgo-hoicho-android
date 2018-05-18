@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:background="?attr/selectableItemBackground"
+                                             tools:layout_editor_absoluteY="25dp">
+
+    <ImageView
+        android:id="@+id/view_avatar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/avatar_placeholder"/>
+
+    <TextView
+        android:id="@+id/view_name"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_description"
+        app:layout_constraintStart_toEndOf="@+id/view_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_goneMarginBottom="16dp"
+        tools:text="Nguyễn Phương Thảo"/>
+
+    <TextView
+        android:id="@+id/view_description"
+        android:layout_width="285dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:textColor="@color/md_grey_800"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_divider_basic"
+        app:layout_constraintStart_toStartOf="@+id/view_name"
+        app:layout_constraintTop_toBottomOf="@+id/view_name"
+        tools:text="0974427143 - Active 10 minutes ago"/>
+
+    <View
+        android:id="@+id/view_divider_basic"
+        android:layout_width="360dp"
+        android:layout_height="1px"
+        android:background="@color/md_grey_400"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="72dp"/>
+
+</android.support.constraint.ConstraintLayout>

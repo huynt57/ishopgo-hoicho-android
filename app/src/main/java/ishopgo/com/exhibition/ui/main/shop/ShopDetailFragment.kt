@@ -23,14 +23,14 @@ import kotlinx.android.synthetic.main.fragment_shop_detail.*
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class DetailFragment : BaseFragment() {
+class ShopDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: ShopDetailViewModel
     private lateinit var adapter: PagerAdapter
 
     companion object {
-        fun newInstance(params: Bundle): DetailFragment {
-            val fragment = DetailFragment()
+        fun newInstance(params: Bundle): ShopDetailFragment {
+            val fragment = ShopDetailFragment()
             fragment.arguments = params
             return fragment
         }

@@ -8,4 +8,15 @@
         <attr name="drawableBottomCompat" format="reference"/>
     </declare-styleable>
 
+    <declare-styleable name="SimpleBottomSheetItem">
+        <attr name="icon" format="reference"/>
+        <attr name="text" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="SimpleMenuItem">
+        <attr name="menuIcon" format="reference"/>
+        <attr name="menuText" format="string"/>
+        <attr name="menuSecondaryText" format="string"/>
+        <attr name="menuShowBottomDivider" format="boolean"/>
+    </declare-styleable>
 </resources>

@@ -40,7 +40,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, DetailFragment.newInstance(arguments ?: Bundle()))
+                .replace(R.id.view_main_content, ShopDetailFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
 
