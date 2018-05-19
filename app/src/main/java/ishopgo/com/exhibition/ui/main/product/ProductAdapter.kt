@@ -13,10 +13,10 @@ import kotlinx.android.synthetic.main.item_product_grid.view.*
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
  */
-class ProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<ProductProvider>() {
+class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<ProductProvider>() {
 
-    var screenWidth: Int = UserDataManager.displayWidth
-    var screenHeight: Int = UserDataManager.displayHeight
+    private var screenWidth: Int = UserDataManager.displayWidth
+    private var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_product_grid

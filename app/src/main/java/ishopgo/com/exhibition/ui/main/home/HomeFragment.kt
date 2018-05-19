@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
+import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -50,6 +51,7 @@ class HomeFragment : BaseFragment() {
     private val suggestedProductAdapter = ProductAdapter()
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
+    private val categoryStage1Adapter = CategoryStage1Adapter(0.3f)
     private val highlightBrandAdapter = HighlightBrandAdapter(0.4f)
     private val categoriesAdapter = CategoryAdapter()
     private var mPagerAdapter: FragmentPagerAdapter? = null
@@ -122,6 +124,9 @@ class HomeFragment : BaseFragment() {
                 categoriesAdapter.replaceAll(it)
                 rv_categories.scheduleLayoutAnimation()
 
+                categoryStage1Adapter.replaceAll(it)
+                view_list_category_stage1.scheduleLayoutAnimation()
+
                 swipe.isRefreshing = false
             }
         })
@@ -182,6 +187,7 @@ class HomeFragment : BaseFragment() {
         setupHighlightBrands(view.context)
         setupHighlightProducts(view.context)
         setupCategories(view.context)
+        setupCategoryStage1(view.context)
         setupViewedProducts(view.context)
         setupFavoriteProducts(view.context)
 
@@ -235,6 +241,12 @@ class HomeFragment : BaseFragment() {
         favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
             override fun click(position: Int, data: ProductProvider, code: Int) {
                 openProductDetail(data)
+            }
+
+        }
+        categoryStage1Adapter.listener = object: ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+            override fun click(position: Int, data: CategoryProvider, code: Int) {
+                mainViewModel.showCategoriedProducts(data)
             }
 
         }
@@ -357,7 +369,6 @@ class HomeFragment : BaseFragment() {
     private fun setupViewedProducts(context: Context) {
         view_list_viewed_products.adapter = viewedProductAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        layoutManager.isAutoMeasureEnabled = true
         view_list_viewed_products.layoutManager = layoutManager
         view_list_viewed_products.isNestedScrollingEnabled = false
         view_list_viewed_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -367,17 +378,24 @@ class HomeFragment : BaseFragment() {
     private fun setupFavoriteProducts(context: Context) {
         view_list_favorite_products.adapter = favoriteProductAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        layoutManager.isAutoMeasureEnabled = true
         view_list_favorite_products.layoutManager = layoutManager
         view_list_favorite_products.isNestedScrollingEnabled = false
         view_list_favorite_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
         view_list_favorite_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 
+    private fun setupCategoryStage1(context: Context) {
+        view_list_category_stage1.adapter = categoryStage1Adapter
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
+        view_list_category_stage1.layoutManager = layoutManager
+        view_list_category_stage1.isNestedScrollingEnabled = false
+        view_list_category_stage1.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_category_stage1.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
+    }
+
     private fun setupHighlightProducts(context: Context) {
         view_list_highlight_products.adapter = highlightProductAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        layoutManager.isAutoMeasureEnabled = true
         view_list_highlight_products.layoutManager = layoutManager
         view_list_highlight_products.isNestedScrollingEnabled = false
         view_list_highlight_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
