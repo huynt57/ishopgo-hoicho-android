@@ -183,16 +183,29 @@
                 />
 
             <TextView
-                android:id="@+id/view_shop_name"
+                android:id="@+id/view_label_shop_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:textStyle="bold"
+                android:textAllCaps="true"
                 app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
+                android:text="Gian hàng trưng bày"/>
+
+            <TextView
+                android:id="@+id/view_shop_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_label_shop_name"
                 tools:text="Công ty TNHH Mua đồ tốt"/>
 
             <TextView
@@ -213,7 +226,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_button_stroked_rounded_rectangle"
                 android:foreground="?attr/selectableItemBackground"
-                android:padding="8dp"
+                android:padding="4dp"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"/>
@@ -448,13 +461,13 @@
                 android:paddingStart="@dimen/default_margin"
                 android:paddingTop="8dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
 
             <View
                 android:id="@+id/view"
                 android:layout_width="0dp"
                 style="@style/AppTheme.DividerLine"
-                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rv_comment_community_image" />
