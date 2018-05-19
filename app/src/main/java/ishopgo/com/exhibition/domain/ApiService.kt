@@ -205,6 +205,16 @@ class ApiService {
 
         @POST("booth/add-from-member/{id}")
         fun registerBooth(@Path("id") account_id: Long,@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("follow")
+        fun postProductPollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ProductFollow>>
+
+        @GET("get-sale-point/{id}")
+        fun getProductSalePoint(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ProductSalePoint>>>
+
+
+        @POST("add-sale-point")
+        fun createProductSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

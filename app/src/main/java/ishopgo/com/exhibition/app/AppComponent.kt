@@ -29,6 +29,7 @@ import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothViewModel
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerViewModel
 import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
@@ -93,4 +94,5 @@ interface AppComponent {
     fun inject(questionViewModel: QuestionViewModel)
     fun inject(questionSearchViewModel: QuestionSearchViewModel)
     fun inject(registerBoothViewModel: RegisterBoothViewModel)
+    fun inject(productSalePointViewModel: ProductSalePointViewModel)
 }

@@ -27,11 +27,26 @@ class Booth : IdentityData() {
     @SerializedName("address")
     @Expose
     var address: String? = null
+    @SerializedName("city")
+    @Expose
+    var city: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
     @SerializedName("count")
     @Expose
     var count: Int? = null
+    @SerializedName("followed")
+    @Expose
+    var followed: Int = 0
     @SerializedName("rate")
     @Expose
     var rate: Int? = null
+
+    companion object {
+        val FOllWED = 1
+    }
+
+    fun isFollowed() = followed == FOllWED
 
 }

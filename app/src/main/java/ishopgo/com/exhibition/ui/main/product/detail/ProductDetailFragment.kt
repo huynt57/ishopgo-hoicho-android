@@ -15,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
@@ -28,9 +29,11 @@ import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
+import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
+import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
@@ -63,6 +66,7 @@ class ProductDetailFragment : BaseFragment() {
     private val productCommentAdapter = ProductCommentAdapter()
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
+    private var adapterSalePoint = ProductSalePointAdapter()
     private var productId: Long = -1L
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -76,6 +80,14 @@ class ProductDetailFragment : BaseFragment() {
         productId = arguments?.getLong(Const.TransferKey.EXTRA_ID) ?: -1L
         if (productId == -1L)
             throw RuntimeException("Sai dinh dang")
+    }
+
+    private fun firstLoadSalePoint() {
+        val firstLoad = ProductSalePointRequest()
+        firstLoad.limit = 3
+        firstLoad.offset = 0
+        firstLoad.productId = productId
+        viewModel.getProductSalePoint(firstLoad)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -140,7 +152,26 @@ class ProductDetailFragment : BaseFragment() {
                 viewModel.getProductLike(productId)
         })
 
+        viewModel.postFollow.observe(this, Observer { p ->
+            p.let {
+                if (it?.status ?: 0 == 1) {
+                    tv_shop_follow.text = "Bỏ theo dõi"
+                    toast("Theo dõi gian hàng thành công")
+                } else {
+                    tv_shop_follow.text = "Theo dõi"
+                    toast("Bỏ theo dõi gian hàng thành công")
+                }
+            }
+        })
+
+        viewModel.productSalePoint.observe(this, Observer { p ->
+            p.let {
+                it?.let { it1 -> adapterSalePoint.replaceAll(it1) }
+            }
+        })
+
         loadData(productId)
+        firstLoadSalePoint()
     }
 
     private fun showProductDetail(product: ProductDetailProvider) {
@@ -177,12 +208,14 @@ class ProductDetailFragment : BaseFragment() {
             view_product_like_count.text = "${product.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${product.provideProductCommentCount()} bình luận"
             view_product_share_count.text = "${product.provideProductShareCount()} chia sẻ"
-
+            tv_shop_phone.text = "Số điện thoại: <b>${product.provideShopPhone()}</b>".asHtml()
+            tv_shop_address.text = "Địa chỉ: <b>${product.provideShopAddress()}</b>".asHtml()
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
+            view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }
             more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, product) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
@@ -194,6 +227,16 @@ class ProductDetailFragment : BaseFragment() {
                 }
             }
 
+            view_shop_follow.setOnClickListener {
+                if (product is ProductDetail) {
+                    val boothId = product.booth?.id ?: -1L
+                    if (boothId != -1L)
+                        viewModel.postProductFollow(boothId)
+                }
+
+            }
+
+            if (product.provideFollowed()) tv_shop_follow.text = "Bỏ theo dõi" else tv_shop_follow.text = "Theo dõi"
 
             img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
@@ -202,6 +245,10 @@ class ProductDetailFragment : BaseFragment() {
                     showProgressDialog()
                     viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
                 }
+            }
+
+            view_shop_add_sale_point.setOnClickListener {
+                openAddSalePoint(it.context, product)
             }
         }
     }
@@ -312,6 +359,14 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
+    private fun showMoreSalePoint(context: Context, product: ProductDetailProvider) {
+        if (product is IdentityData) {
+            val intent = Intent(context, ProductSalePointActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(product))
+            startActivityForResult(intent, Const.RequestCode.PRODUCT_SALE_POINT_DETAIL)
+        }
+    }
+
     private fun messageShop(context: Context, product: ProductDetailProvider) {
         // gui tin nhan cho shop
 
@@ -333,6 +388,7 @@ class ProductDetailFragment : BaseFragment() {
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
         setupImageRecycleview()
+        setupSalePointRecycleview()
         setupListeners()
 
     }
@@ -348,6 +404,11 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
 
+    }
+
+    private fun setupSalePointRecycleview() {
+        rv_product_sale_point.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_product_sale_point.adapter = adapterSalePoint
     }
 
     private fun setupListeners() {
@@ -386,6 +447,12 @@ class ProductDetailFragment : BaseFragment() {
     private fun openViewedProducts(context: Context) {
         val intent = Intent(context, ViewedProductsActivity::class.java)
         startActivity(intent)
+    }
+
+    private fun openAddSalePoint(context: Context, product: ProductDetailProvider) {
+        val intent = Intent(context, ProductSalePointAddActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(product))
+            startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
     }
 
     private fun openProductDetail(context: Context, product: ProductProvider) {
@@ -464,6 +531,12 @@ class ProductDetailFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == Const.RequestCode.PRODUCT_SALE_POINT_DETAIL && resultCode == Activity.RESULT_OK)
+            firstLoadSalePoint()
+
+        if (requestCode == Const.RequestCode.SALE_POINT_ADD && resultCode == Activity.RESULT_OK)
+            firstLoadSalePoint()
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {

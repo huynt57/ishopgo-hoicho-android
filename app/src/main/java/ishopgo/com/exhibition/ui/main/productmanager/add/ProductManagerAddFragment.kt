@@ -134,7 +134,7 @@ class ProductManagerAddFragment : BaseFragment() {
         sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
 
         btn_product_add.setOnClickListener {
-            if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_title.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString())) {
+            if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString())) {
                 showProgressDialog()
                 viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.text.toString(),
                         edit_product_price.text.toString(), edit_product_provider_price.text.toString(), edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
@@ -473,7 +473,7 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
-    private fun checkRequireFields(image: String, name: String, title: String, price: String, code: String): Boolean {
+    private fun checkRequireFields(image: String, name: String, price: String, code: String): Boolean {
         if (image.trim().isEmpty()) {
             toast("Ảnh sản phẩm không được để trống")
             return false
@@ -486,12 +486,12 @@ class ProductManagerAddFragment : BaseFragment() {
             return false
         }
 
-        if (title.trim().isEmpty()) {
-            toast("Tiêu đề không được để trống")
-            edit_product_title.error = getString(R.string.error_field_required)
-            requestFocusEditText(edit_product_title)
-            return false
-        }
+//        if (title.trim().isEmpty()) {
+//            toast("Tiêu đề không được để trống")
+//            edit_product_title.error = getString(R.string.error_field_required)
+//            requestFocusEditText(edit_product_title)
+//            return false
+//        }
 
         if (price.trim().isEmpty()) {
             toast("Giá bản lẻ không được để trống")
