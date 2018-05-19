@@ -22,7 +22,7 @@
 
     <item>
         <inset xmlns:android="http://schemas.android.com/apk/res/android"
-               android:drawable="@drawable/ic_add_black"
+               android:drawable="@drawable/ic_add_black_24dp"
                android:insetBottom="100dp"
                android:insetLeft="100dp"
                android:insetRight="100dp"

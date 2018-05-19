@@ -1,0 +1,60 @@
+package ishopgo.com.exhibition.domain.response
+
+import com.google.gson.annotations.Expose
+import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.model.chat.ChatImageMessage
+import ishopgo.com.exhibition.model.chat.ChatTextMessage
+import ishopgo.com.exhibition.model.chat.IChatMessage
+
+/**
+ * Created by xuanhong on 5/17/18. HappyCoding!
+ */
+class LocalMessageItem : ChatTextMessage, ChatImageMessage {
+
+    override fun getText(): CharSequence = content.replace("<br>", "\n")
+
+    override fun getMessageId(): Long = id
+
+    override fun getMessageUid(): String = "$id"
+
+    override fun getCreatedTime(): String = time
+
+    override fun getConversationId(): String = idConversation
+
+    override fun getOwnerId(): Long = from
+
+    override fun getOwnerName(): String = accountName
+
+    override fun getOwnerAvatar(): String = accountAvatar
+
+    override fun getSendStatus(): Int = IChatMessage.STATUS_SENT
+
+    override fun getImageUrls(): List<String> = images ?: listOf()
+
+    @SerializedName("id")
+    @Expose
+    var id: Long = 0
+    @SerializedName("id_conversion")
+    @Expose
+    var idConversation: String = ""
+    @SerializedName("content")
+    @Expose
+    var content: String = ""
+    @SerializedName("from")
+    @Expose
+    var from: Long = 0
+    @SerializedName("images")
+    @Expose
+    var images: MutableList<String>? = null
+    @SerializedName("account_name")
+    @Expose
+    var accountName: String = ""
+    @SerializedName("account_avatar")
+    @Expose
+    var accountAvatar: String = ""
+    @SerializedName("created_at")
+    @Expose
+    var time: String = ""
+    @SerializedName("type")
+    var type: Int = 0
+}

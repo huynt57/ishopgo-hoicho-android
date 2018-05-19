@@ -121,6 +121,8 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.productComments.observe(this, Observer { c ->
             c?.let {
                 view_list_comments.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                view_divider_111.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                view_product_show_more_comment.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 productCommentAdapter.replaceAll(it)
             }
 
@@ -199,7 +201,10 @@ class ProductDetailFragment : BaseFragment() {
                             .error(R.drawable.image_placeholder))
                     .into(view_favorite)
             view_product_price.text = product.provideProductPrice()
+
+            container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = product.provideProductBrand()
+
             view_product_description.setHtml(product.provideProductShortDescription(), HtmlHttpImageGetter(view_product_description))
             view_shop_name.text = product.provideShopName()
             view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"

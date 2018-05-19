@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_gravity="center"
+    android:padding="8dp"
+    tools:background="#000">
+
+    <ImageView
+        android:id="@+id/view_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:duplicateParentState="true"
+        android:src="@drawable/image_placeholder"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_checked"
+        android:duplicateParentState="true"/>
+
+    <ImageView
+        android:id="@+id/view_checked"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|end"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:duplicateParentState="true"
+        android:src="@drawable/checkbox"
+        />
+
+
+</FrameLayout>

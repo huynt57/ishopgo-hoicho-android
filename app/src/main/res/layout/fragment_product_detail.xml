@@ -6,12 +6,12 @@
     android:layout_height="match_parent"
     android:background="@color/colorPureWhite">
 
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/scrollView"
+    <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/constraintLayout"
-        android:background="@drawable/bg_white_black">
+        android:background="@color/colorPureWhite">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -570,7 +570,6 @@
                     style="@style/AppTheme.SectionLabel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:text="Sản phẩm cùng gian hàng"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop" />
@@ -693,7 +692,10 @@
                     app:layout_constraintTop_toBottomOf="@+id/label_viewed" />
 
             </android.support.constraint.ConstraintLayout>
+
+
         </LinearLayout>
+
     </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout

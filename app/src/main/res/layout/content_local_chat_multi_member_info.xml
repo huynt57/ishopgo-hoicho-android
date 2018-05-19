@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/view_config_avatar"
+            layout="@layout/layout_container_local_chat_avatar"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/ff_roboto"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:text="Cấu hình"
+            android:textColor="@color/md_grey_700"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_divider_basic"
+            />
+
+        <ishopgo.com.exhibition.ui.widget.SimpleMenuItem
+            android:id="@+id/view_config_change_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menuIcon="@drawable/ic_label_green_24dp"
+            app:menuShowBottomDivider="false"
+            app:menuText="Đổi tên nhóm"/>
+
+        <ishopgo.com.exhibition.ui.widget.SimpleMenuItem
+            android:id="@+id/view_config_notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menuIcon="@drawable/ic_notifications_green_24dp"
+            app:menuSecondaryText="Bật"
+            app:menuShowBottomDivider="false"
+            app:menuText="Thông báo"/>
+
+        <ishopgo.com.exhibition.ui.widget.SimpleMenuItem
+            android:id="@+id/view_config_add_member"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menuIcon="@drawable/ic_person_add_green_24dp"
+            app:menuShowBottomDivider="false"
+            app:menuText="Thêm thành viên"/>
+
+        <ishopgo.com.exhibition.ui.widget.SimpleMenuItem
+            android:id="@+id/view_config_show_members"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:menuIcon="@drawable/ic_group_green_24dp"
+            app:menuShowBottomDivider="false"
+            app:menuText="Thành viên"/>
+
+    </LinearLayout>
+</ScrollView>

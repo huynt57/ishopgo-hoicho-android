@@ -12,8 +12,10 @@ object Const {
         const val EXTRA_STRING_LIST = "string_list"
         const val EXTRA_JSON = "json"
         const val EXTRA_ID = "id"
+        const val EXTRA_CONVERSATION_ID = "conversation_id"
         const val EXTRA_REQUIRE = "required"
         const val EXTRA_URL = "url"
+        const val EXTRA_ENABLE_CREATE_GROUP = "can_create_group"
     }
 
     object RequestCode {
@@ -34,7 +36,11 @@ object Const {
         const val NEWS_MANAGER_ADD = 15
         const val NEWS_MANAGER_EDIT = 16
         const val DELETED_MEMBER_RESTORE = 17
-        const val PRODUCT_SALE_POINT_DETAIL = 18
+        const val RC_PICK_IMAGES = 18
+        const val RC_CAPTURE_IMAGE = 19
+        const val RC_SHOW_DETAIL = 20
+        const val RC_ADD_NEW = 21
+        const val PRODUCT_SALE_POINT_DETAIL = 22
     }
 
     object AccountAction {
@@ -55,6 +61,20 @@ object Const {
         const val ACTION_QUESTION_MANAGER = 14
         const val ACTION_SYNTHETIC_MANAGER = 15
         const val ACTION_REGISTER_BOOTH = 16
+    }
+
+    object Chat {
+        const val FILTER_NEW_MESSAGE = "chat.pusher.new_message"
+        const val EXTRA_MESSAGE = "message_content"
+        const val EXTRA_EVENT_NAME = "event_name"
+        const val EXTRA_CHANNEL_NAME = "channel_name"
+        const val BROADCAST_NOTIFICATION = "ishopgo.com.exhibition.ui.chat.local.service.BROADCAST_NOTIFICATION"
+        const val PUSHER_MESSAGE = "ishopgo.com.exhibition.ui.chat.local.service.PUSHER_MESSAGE"
+
+        val PUSHER_CLUSTER = "ap1"
+        val PUSHER_AUTH_ENDPOINT = "http://ishopgo.com/api/v1/chat/pusher-auth"
+        val PUSHER_API_KEY = "23b43a03aec7a3b476d6"
+
     }
 
     val colors = arrayOf(

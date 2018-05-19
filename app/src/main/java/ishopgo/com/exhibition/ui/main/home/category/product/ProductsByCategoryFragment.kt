@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.home.category.product
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -12,12 +13,15 @@ import android.widget.TextView
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
+import ishopgo.com.exhibition.ui.main.product.ProductProvider
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.Toolbox
@@ -107,8 +111,24 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         view_breadcrumb_container.post { view_breadcrumb.fullScroll(View.FOCUS_RIGHT) }
     }
 
+    private fun openProductDetail(product: ProductProvider) {
+        context?.let {
+            if (product is IdentityData) {
+                val intent = Intent(it, ProductDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+                startActivity(intent)
+            }
+        }
+    }
+
     private fun setupProducts(view: View) {
         view_recyclerview.adapter = productAdapter
+        productAdapter.listener = object: ClickableAdapter.BaseAdapterAction<ProductProvider> {
+            override fun click(position: Int, data: ProductProvider, code: Int) {
+                openProductDetail(data)
+            }
+
+        }
         view_recyclerview.setHasFixedSize(true)
         val layoutManager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
         view_recyclerview.layoutManager = layoutManager

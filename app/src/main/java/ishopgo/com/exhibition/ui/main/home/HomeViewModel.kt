@@ -4,7 +4,10 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.domain.response.Banner
+import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
@@ -116,33 +119,23 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var favoriteProducts = MutableLiveData<List<ProductProvider>>()
 
     fun loadFavoriteProducts() {
-        val dummy = mutableListOf<ProductProvider>()
-        for (i in 0..5)
-            dummy.add(object : IdentityData(), ProductProvider {
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = 10
+        fields["offset"] = 0
 
-                init {
-                    id = i.toLong()
-                }
+        addDisposable(authService.getFavoriteProducts(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<Product>>() {
+                    override fun success(data: List<Product>?) {
+                        favoriteProducts.postValue(data ?: mutableListOf())
+                    }
 
-                override fun provideImage(): String {
-                    return "https://s3-ap-southeast-1.amazonaws.com/ishopgo/1000/ozed-be8f7a057577f05861d0ccfa1ad1dbb921793748fe07e1b870584ab452283e36medi-spotlessjpgjpg.jpg"
-                }
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
 
-                override fun provideName(): String {
-                    return "Kem trị thâm mụn Medi Spotlessý (Yêu thích)"
-                }
-
-                override fun providePrice(): String {
-                    return "520.000 đ"
-                }
-
-                override fun provideMarketPrice(): String {
-                    return "510.000 đ"
-                }
-
-            })
-
-        favoriteProducts.postValue(dummy)
+                })
+        )
     }
 
     var categories = MutableLiveData<List<CategoryProvider>>()

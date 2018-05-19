@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            style="@style/AppTheme.Label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:text="Thông tin cá nhân"
+            android:textColor="@color/md_white_1000"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/view_member_avatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            app:srcCompat="@drawable/avatar_placeholder"/>
+
+        <TextView
+            android:id="@+id/member_detail_name"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Họ tên: Hong"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_phone"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            android:paddingBottom="0dp"
+            tools:text="SĐT: 012312412312"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_email"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Email: 01/02/2017"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_dob"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Ngày sinh nhật: 01/01/1985"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_ngay_thamgia"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Ngày tham gia: 01/02/2017"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_chucdanh"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Chức danh: Nhân viên"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_khuvuc"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Khu vực: Hà nội"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_company"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Công ty: Hà nội"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_tax_code"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Mã số thuế: Hà nội"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_address"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Địa chỉ: Hà nội"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_name_phutrach"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="Người phụ trách: U23"
+            />
+
+        <TextView
+            android:id="@+id/member_detail_phone_phutrach"
+            style="@style/AppTheme.ContentLine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="0dp"
+            tools:text="SĐT Người phụ trách: 091231231"
+            />
+
+        <include
+            layout="@layout/layout_container_date_care"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"/>
+
+        <include
+            layout="@layout/layout_container_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

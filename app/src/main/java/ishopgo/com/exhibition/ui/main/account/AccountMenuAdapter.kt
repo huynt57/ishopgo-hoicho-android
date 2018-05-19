@@ -1,14 +1,13 @@
 package ishopgo.com.exhibition.ui.main.account
 
-import android.support.v4.content.res.ResourcesCompat
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.item_category_child.view.*
-import kotlinx.android.synthetic.main.item_category_parent.view.*
+import kotlinx.android.synthetic.main.item_account_menu_child.view.*
+import kotlinx.android.synthetic.main.item_account_menu_parent.view.*
 
 /**
  * Created by xuanhong on 4/23/18. HappyCoding!
@@ -31,10 +30,10 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
     override fun getChildLayoutResource(viewType: Int): Int {
         return when (viewType) {
             TYPE_PARENT -> {
-                R.layout.item_category_parent
+                R.layout.item_account_menu_parent
             }
             else -> {
-                R.layout.item_category_child
+                R.layout.item_account_menu_child
             }
         }
     }

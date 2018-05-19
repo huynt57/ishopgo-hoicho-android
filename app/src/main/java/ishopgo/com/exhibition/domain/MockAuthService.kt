@@ -57,6 +57,13 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).registerBooth(account_id, body)
     }
 
+
+    override fun getMemberDetail(memberId: Long): Single<BaseResponse<Member>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).getMemberDetail(memberId)
+    }
+
     override fun deleteBooth(booth_id: Long): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

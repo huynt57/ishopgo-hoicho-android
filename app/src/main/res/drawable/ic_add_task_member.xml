@@ -11,6 +11,6 @@
 
     </item>
 
-    <item android:drawable="@drawable/ic_add_black"/>
+    <item android:drawable="@drawable/ic_add_black_24dp"/>
 
 </layer-list>
