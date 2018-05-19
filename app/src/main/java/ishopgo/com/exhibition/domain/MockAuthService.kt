@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.BaseResponse
+import ishopgo.com.exhibition.domain.response.Member
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
 import ishopgo.com.exhibition.model.*
