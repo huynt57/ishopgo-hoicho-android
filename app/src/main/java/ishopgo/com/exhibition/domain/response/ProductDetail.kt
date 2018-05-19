@@ -31,6 +31,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideProductBrand(): String {
+        if (department?.id == 0L) return ""
         return department?.name?.trim() ?: ""
     }
 
