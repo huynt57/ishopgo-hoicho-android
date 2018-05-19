@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.widget
 
 import android.content.Context
+import android.support.v7.appcompat.R
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
@@ -12,7 +13,7 @@ import android.util.AttributeSet
 class MoneyEditText @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+        defStyleAttr: Int = R.attr.editTextStyle
 ) : android.support.v7.widget.AppCompatEditText(context, attrs, defStyleAttr) {
 
     private val MAX_LENGTH = 19

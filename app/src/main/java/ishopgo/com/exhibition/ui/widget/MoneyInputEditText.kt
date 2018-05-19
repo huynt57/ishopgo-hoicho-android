@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.widget
 
 import android.content.Context
 import android.support.design.widget.TextInputEditText
+import android.support.v7.appcompat.R
 import android.text.InputFilter
 import android.text.InputType
 import android.util.AttributeSet
@@ -13,7 +14,7 @@ import android.util.AttributeSet
 class MoneyInputEditText @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+        defStyleAttr: Int = R.attr.editTextStyle
 ) : TextInputEditText(context, attrs, defStyleAttr) {
 
     init {
