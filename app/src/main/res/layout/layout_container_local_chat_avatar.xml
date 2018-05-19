@@ -21,12 +21,14 @@
 
     <TextView
         android:id="@+id/view_name"
-        android:layout_width="285dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/view_description"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/view_avatar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
@@ -35,21 +37,22 @@
 
     <TextView
         android:id="@+id/view_description"
-        android:layout_width="285dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
         android:textColor="@color/md_grey_800"
         android:textSize="13sp"
         app:layout_constraintBottom_toTopOf="@+id/view_divider_basic"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/view_name"
         app:layout_constraintTop_toBottomOf="@+id/view_name"
         tools:text="0974427143 - Active 10 minutes ago"/>
 
     <View
         android:id="@+id/view_divider_basic"
-        android:layout_width="360dp"
-        android:layout_height="1px"
-        android:background="@color/md_grey_400"
+        android:layout_width="0dp"
+        style="@style/AppTheme.DividerLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

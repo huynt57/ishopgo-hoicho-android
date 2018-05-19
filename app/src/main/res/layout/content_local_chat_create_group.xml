@@ -26,9 +26,8 @@
         <View
             android:id="@+id/view_divider"
             android:layout_width="0dp"
-            android:layout_height="1px"
+            style="@style/AppTheme.DividerLine"
             android:layout_marginTop="28dp"
-            android:background="@color/md_grey_700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>

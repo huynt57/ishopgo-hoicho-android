@@ -44,8 +44,7 @@
 
         <View
             android:layout_width="0dp"
-            android:background="@color/md_grey_400"
-            android:layout_height="1px"/>
+            style="@style/AppTheme.DividerLine"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_added_members"

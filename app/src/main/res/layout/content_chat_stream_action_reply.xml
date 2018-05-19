@@ -10,8 +10,7 @@
     <View
         android:id="@+id/view_divider_reply_content"
         android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/md_grey_400"
+        style="@style/AppTheme.DividerLine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
