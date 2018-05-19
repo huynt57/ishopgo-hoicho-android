@@ -142,19 +142,22 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             childs.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NEWS_MANAGER,
                     R.drawable.ic_news_pager,
-                    "Quản lý tin tức"
+                    "Quản lý tin tức",
+                    isParent = false
             ))
 
             childs.add(AccountMenuItem(
                     Const.AccountAction.ACTION_GENEREL_MANAGER,
                     R.drawable.ic_affiliate_order_white,
-                    "Quản lý thông tin chung"
+                    "Quản lý thông tin chung",
+                    isParent = false
             ))
 
             childs.add(AccountMenuItem(
                     Const.AccountAction.ACTION_QUESTION_MANAGER,
                     R.drawable.ic_question,
-                    "Quản lý hỏi đáp"
+                    "Quản lý hỏi đáp",
+                    isParent = false
             ))
 
             items.add(AccountMenuItem(

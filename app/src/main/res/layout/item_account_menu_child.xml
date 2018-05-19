@@ -5,32 +5,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
     android:foreground="?attr/selectableItemBackground"
     >
 
     <ImageView
-        android:id="@+id/view_parent_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="8dp"
+        android:id="@+id/view_child_icon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars"/>
 
     <TextView
-        android:id="@+id/view_parent_text"
+        android:id="@+id/view_child_text"
         style="@style/AppTheme.CategoryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/view_parent_icon"
+        app:layout_constraintStart_toEndOf="@+id/view_child_icon"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Ten danh muc san pham"/>
+
+    <View
+        android:id="@+id/view_divider"
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/view_child_text"
+        />
 
 </android.support.constraint.ConstraintLayout>

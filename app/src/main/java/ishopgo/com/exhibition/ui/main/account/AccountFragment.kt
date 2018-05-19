@@ -17,15 +17,15 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
-import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
-import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
-import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
+import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
+import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
+import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
@@ -58,7 +58,6 @@ class AccountFragment : BaseFragment() {
             view_recyclerview.adapter = adapter
             val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             view_recyclerview.layoutManager = layoutManager
-//            view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing, true, false))
 
             view_profile_current.setOnClickListener {
                 openProfile()
