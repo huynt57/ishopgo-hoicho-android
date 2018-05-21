@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
 import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
+import ishopgo.com.exhibition.ui.main.myqr.MyQrActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
@@ -105,6 +106,9 @@ class AccountFragment : BaseFragment() {
             }
             Const.AccountAction.ACTION_SETTING_BOTTH -> {
                 openSettingBoothActivity()
+            }
+            Const.AccountAction.ACTION_MY_QR -> {
+                openMyQrActivity()
             }
             Const.AccountAction.ACTION_NOTIFICATION -> {
                 openNotificationActivity()
@@ -198,6 +202,13 @@ class AccountFragment : BaseFragment() {
     private fun openSettingBoothActivity() {
         context?.let {
             val intent = Intent(it, ConfigBoothActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openMyQrActivity() {
+        context?.let {
+            val intent = Intent(it, MyQrActivity::class.java)
             startActivity(intent)
         }
     }

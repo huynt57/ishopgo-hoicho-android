@@ -84,4 +84,7 @@ class ShopDetail : IdentityData(), ShopInfoProvider {
     @SerializedName("rate")
     @Expose
     var rate: Int = 0
+    @SerializedName("qrcode")
+    @Expose
+    var qrcode: String? = null
 }
