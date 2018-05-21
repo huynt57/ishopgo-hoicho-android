@@ -104,7 +104,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp">
 
-            <android.support.design.widget.TextInputEditText
+            <ishopgo.com.exhibition.ui.widget.MoneyEditText
                 android:id="@+id/edit_product_provider_price"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
@@ -122,7 +122,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp">
 
-            <android.support.design.widget.TextInputEditText
+            <ishopgo.com.exhibition.ui.widget.MoneyEditText
                 android:id="@+id/edit_product_price"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
@@ -139,7 +139,7 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp">
 
-            <android.support.design.widget.TextInputEditText
+            <ishopgo.com.exhibition.ui.widget.MoneyEditText
                 android:id="@+id/edit_produt_ttprice"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
@@ -167,42 +167,85 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <!--<android.support.design.widget.TextInputLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp">-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_category_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
 
-        <!--<android.support.design.widget.TextInputEditText-->
-        <!--android:id="@+id/tv_spk_add_provider"-->
-        <!--style="@style/AppTheme.EnableInputField.DisableInput"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Nhà cung cấp"-->
-        <!--tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />-->
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_product_categories_1"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Danh mục cấp 1"
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
 
-        <!--</android.support.design.widget.TextInputLayout>-->
+        </android.support.design.widget.TextInputLayout>
 
-        <!--<android.support.design.widget.TextInputLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginEnd="@dimen/default_margin"-->
-        <!--android:layout_marginStart="@dimen/default_margin"-->
-        <!--android:layout_marginTop="16dp">-->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_category_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
 
-        <!--<android.support.design.widget.TextInputEditText-->
-        <!--android:id="@+id/san_pham_kho_add_department"-->
-        <!--style="@style/AppTheme.EnableInputField.DisableInput"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:hint="Thương hiệu "-->
-        <!--android:text="Chọn thương hiệu"-->
-        <!--tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp"/>-->
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_product_categories_2"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Danh mục cấp 2"
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
 
-        <!--</android.support.design.widget.TextInputLayout>-->
+        </android.support.design.widget.TextInputLayout>
 
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_category_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_product_categories_3"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Danh mục cấp 3"
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/til_category_4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp"
+            android:visibility="gone">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_product_categories_4"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Danh mục cấp 4"
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

@@ -142,6 +142,10 @@ class RegisterBoothFragment : BaseFragment() {
 
         viewModel.registerSusscess.observe(this, Observer {
             hideProgressDialog()
+            viewModel.logout()
+        })
+
+        viewModel.loggedOut.observe(this, Observer {
             toast("Nâng cấp thành công, vui lòng đăng nhập lại để sử dụng hệ thống")
             UserDataManager.deleteUserInfo()
             val intent = Intent(context, LoginSelectOptionActivity::class.java)

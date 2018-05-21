@@ -708,95 +708,122 @@
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <LinearLayout
+        <ImageView
             android:id="@+id/view_shop_follow"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_button_stroked_rounded_rectangle"
+            android:scaleType="centerInside"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/view_shop_call"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
+            app:srcCompat="@drawable/ic_heart" />
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:srcCompat="@drawable/ic_follow" />
-
-            <TextView
-                android:id="@+id/tv_shop_follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:text="Theo dõi" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
             android:id="@+id/view_shop_call"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_button_stroked_rounded_rectangle"
+            android:scaleType="center"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
+            app:srcCompat="@drawable/ic_phone_24dp" />
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:srcCompat="@drawable/ic_phone_24dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:text="Gọi điện" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
             android:id="@+id/view_shop_message"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_button_stroked_rounded_rectangle"
+            android:scaleType="center"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
+            app:srcCompat="@drawable/ic_comment" />
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                app:srcCompat="@drawable/ic_comment" />
+        <!--<LinearLayout-->
+            <!--android:id="@+id/view_shop_follow"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/bg_button_stroked_rounded_rectangle"-->
+            <!--android:foreground="?attr/selectableItemBackground"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:padding="8dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/view_shop_call"-->
+            <!--app:layout_constraintHorizontal_chainStyle="packed"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textView7">-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:text="Nhắn tin" />
+            <!--<ImageView-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--app:srcCompat="@drawable/ic_follow" />-->
 
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/tv_shop_follow"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="Theo dõi" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/view_shop_call"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/bg_button_stroked_rounded_rectangle"-->
+            <!--android:foreground="?attr/selectableItemBackground"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:padding="8dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textView7">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--app:srcCompat="@drawable/ic_phone_24dp" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="Gọi điện" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/view_shop_message"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="8dp"-->
+            <!--android:layout_weight="1"-->
+            <!--android:background="@drawable/bg_button_stroked_rounded_rectangle"-->
+            <!--android:foreground="?attr/selectableItemBackground"-->
+            <!--android:gravity="center"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:padding="8dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintHorizontal_chainStyle="packed"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/textView7">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="25dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--app:srcCompat="@drawable/ic_comment" />-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:gravity="center"-->
+                <!--android:text="Nhắn tin" />-->
+
+        <!--</LinearLayout>-->
     </LinearLayout>
 
 </RelativeLayout>

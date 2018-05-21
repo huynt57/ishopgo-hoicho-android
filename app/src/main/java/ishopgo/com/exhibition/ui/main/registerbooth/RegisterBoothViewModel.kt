@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
+import android.util.Log
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -100,5 +102,21 @@ class RegisterBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    var loggedOut = MutableLiveData<Boolean>()
+
+    fun logout() {
+        addDisposable(authService.logout("android")
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : DisposableSingleObserver<Any>() {
+                    override fun onError(e: Throwable?) {
+                    }
+
+                    override fun onSuccess(t: Any?) {
+                        loggedOut.postValue(true)
+                    }
+                })
+        )
     }
 }

@@ -13,12 +13,13 @@ import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -63,9 +64,9 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
     var createProductSusscess = MutableLiveData<Boolean>()
 
     fun createProductManager(name: String, code: String, title: String, tt_price: String, price: String, provider_price: String, dvt: String,
-                             provider_id: String, brand_id: String, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
+                             provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                              description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                             listCategory: ArrayList<String>?, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int) {
+                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -77,8 +78,8 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         builder.addFormDataPart("price", price)
         builder.addFormDataPart("provider_price", provider_price)
         builder.addFormDataPart("dvt", dvt)
-        builder.addFormDataPart("provider_id", provider_id)
-        builder.addFormDataPart("department_id", brand_id)
+        builder.addFormDataPart("provider_id", provider_id.toString())
+        builder.addFormDataPart("department_id", brand_id.toString())
         builder.addFormDataPart("madeIn", madeIn)
         builder.addFormDataPart("description", description)
         builder.addFormDataPart("status", status.toString())
@@ -99,6 +100,13 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
             for (i in listProducts_bsp.indices) {
                 builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
                 Log.d("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
+            }
+        }
+
+        if (listCategory.isNotEmpty()) {
+            for (i in listCategory.indices) {
+                builder.addFormDataPart("categories[]", listCategory[i].id.toString())
+                Log.d("categories[]", listCategory[i].id.toString())
             }
         }
 
@@ -208,5 +216,59 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
                         resolveError(status, message)
                     }
                 }))
+    }
+
+
+    var categories = MutableLiveData<List<CategoryProvider>>()
+
+    fun loadCategories() {
+        addDisposable(noAuthService.getCategories()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<Category>>() {
+                    override fun success(data: List<Category>?) {
+                        categories.postValue(data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var childCategories = MutableLiveData<List<CategoryProvider>>()
+    var childCategories_1 = MutableLiveData<List<CategoryProvider>>()
+    var childCategories_2 = MutableLiveData<List<CategoryProvider>>()
+    var childCategories_3 = MutableLiveData<List<CategoryProvider>>()
+
+    fun loadChildCategory(category: Category, level: Int) {
+        val fields = mutableMapOf<String, Any>()
+        fields["category_id"] = category.id
+        addDisposable(noAuthService.getSubCategories(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<Category>>() {
+                    override fun success(data: List<Category>?) {
+                        if (level == CATEGORY_LEVEL_1)
+                            childCategories.postValue(data ?: mutableListOf())
+                        if (level == CATEGORY_LEVEL_2)
+                            childCategories_1.postValue(data ?: mutableListOf())
+                        if (level == CATEGORY_LEVEL_3)
+                            childCategories_2.postValue(data ?: mutableListOf())
+                        if (level == CATEGORY_LEVEL_4)
+                            childCategories_3.postValue(data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    companion object {
+        const val CATEGORY_LEVEL_1: Int = 1
+        const val CATEGORY_LEVEL_2: Int = 2
+        const val CATEGORY_LEVEL_3: Int = 3
+        const val CATEGORY_LEVEL_4: Int = 4
     }
 }

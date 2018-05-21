@@ -157,10 +157,22 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.postFollow.observe(this, Observer { p ->
             p.let {
                 if (it?.status ?: 0 == 1) {
-                    tv_shop_follow.text = "Bỏ theo dõi"
+                    Glide.with(context)
+                            .load(R.drawable.ic_heart_checked)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_shop_follow)
+//                    tv_shop_follow.text = "Bỏ theo dõi"
                     toast("Theo dõi gian hàng thành công")
                 } else {
-                    tv_shop_follow.text = "Theo dõi"
+                    Glide.with(context)
+                            .load(R.drawable.ic_heart)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_shop_follow)
+//                    tv_shop_follow.text = "Theo dõi"
                     toast("Bỏ theo dõi gian hàng thành công")
                 }
             }
@@ -241,7 +253,12 @@ class ProductDetailFragment : BaseFragment() {
 
             }
 
-            if (product.provideFollowed()) tv_shop_follow.text = "Bỏ theo dõi" else tv_shop_follow.text = "Theo dõi"
+            Glide.with(context)
+                    .load(if (product.provideFollowed()) R.drawable.ic_heart_checked else R.drawable.ic_heart)
+                    .apply(RequestOptions()
+                            .placeholder(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
+                    .into(view_shop_follow)
 
             img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
@@ -253,7 +270,9 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             view_shop_add_sale_point.setOnClickListener {
-                openAddSalePoint(it.context, product)
+                if (UserDataManager.currentUserId > 0)
+                    openAddSalePoint(it.context, product)
+                else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
             }
         }
     }
@@ -456,8 +475,8 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun openAddSalePoint(context: Context, product: ProductDetailProvider) {
         val intent = Intent(context, ProductSalePointAddActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(product))
-            startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(product))
+        startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
     }
 
     private fun openProductDetail(context: Context, product: ProductProvider) {

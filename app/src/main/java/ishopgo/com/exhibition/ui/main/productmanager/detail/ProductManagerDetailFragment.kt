@@ -197,6 +197,28 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         }
 
+        if (info.categories != null && info.categories!!.isNotEmpty()) {
+            for (i in info.categories!!.indices) {
+                if (i == 0) edt_product_categories.setText(info.categories!![i].name)
+                if (i == 1) {
+                    til_category_1.visibility = View.VISIBLE
+                    edt_product_categories_1.setText(info.categories!![i].name)
+                }
+                if (i == 2) {
+                    til_category_2.visibility = View.VISIBLE
+                    edt_product_categories_2.setText(info.categories!![i].name)
+                }
+                if (i == 3) {
+                    til_category_3.visibility = View.VISIBLE
+                    edt_product_categories_3.setText(info.categories!![i].name)
+                }
+                if (i == 4) {
+                    til_category_4.visibility = View.VISIBLE
+                    edt_product_categories_4.setText(info.categories!![i].name)
+                }
+            }
+        }
+
         sw_featured.isChecked = info.wasIsFeatured()
 
         edit_product_name.setText(info.provideName())
@@ -212,7 +234,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_provider.setText(info.providerAccount?.name ?: "")
         edit_product_status.setText(info.provideStatus())
 
-        edit_product_brand.setText(info.provideDepartments()?.get(0)?.name ?: "")
+        if (info.provideDepartments() != null && info.provideDepartments()!!.isNotEmpty())
+            edit_product_brand.setText(info.provideDepartments()?.get(0)?.name ?: "")
 
         container_product_detail.visibility = if (info.provideDescription().isEmpty()) View.GONE else View.VISIBLE
         if (container_product_detail.visibility == View.VISIBLE) {

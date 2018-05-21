@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.product.detail.sale_point
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -35,12 +36,14 @@ class ProductSalePointFragmentActionBar : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_add_green_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(ProductSalePointFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as ProductSalePointFragment
-                shareFragment.openAddSalePoint()
+        if (UserDataManager.currentUserId > 0) {
+            toolbar.rightButton(R.drawable.ic_add_green_24dp)
+            toolbar.setRightButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(ProductSalePointFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as ProductSalePointFragment
+                    shareFragment.openAddSalePoint()
+                }
             }
         }
     }

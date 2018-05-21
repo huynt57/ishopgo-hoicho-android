@@ -65,13 +65,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp">
 
-            <android.support.design.widget.TextInputEditText
+            <ishopgo.com.exhibition.ui.widget.MoneyEditText
                 android:id="@+id/edit_product_price"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Giá sản phẩm*"
-                android:inputType="number"
                 android:singleLine="true" />
 
         </android.support.design.widget.TextInputLayout>
