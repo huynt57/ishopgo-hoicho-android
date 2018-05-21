@@ -27,7 +27,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_share_community.*
 import java.io.File
 import java.io.IOException
@@ -167,7 +167,7 @@ class CommunityShareFragment : BaseFragment() {
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context, data.data, (20 * 1024 * 1024).toLong())) {
+                if (Toolbox.exceedSize(context!!, data.data, (20 * 1024 * 1024).toLong())) {
                     toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
                     return
                 }
@@ -178,7 +178,7 @@ class CommunityShareFragment : BaseFragment() {
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (20 * 1024 * 1024).toLong())) {
+                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (20 * 1024 * 1024).toLong())) {
                         toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
                         return
                     }
@@ -193,7 +193,7 @@ class CommunityShareFragment : BaseFragment() {
 
         if (requestCode == Const.RequestCode.TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
             sendingPhotoUri?.let {
-                if (Toolbox.exceedSize(context, it, (20 * 1024 * 1024).toLong())) {
+                if (Toolbox.exceedSize(context!!, it, (20 * 1024 * 1024).toLong())) {
                     toast("Chỉ đính kèm được ảnh có dung lượng dưới 20 MB. Hãy chọn file khác.")
                     return
                 }

@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File

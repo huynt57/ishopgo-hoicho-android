@@ -3,8 +3,8 @@ package ishopgo.com.exhibition.model.question
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.questmanager.QuestProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
 
 
 class QuestionObject : IdentityData(), QuestProvider {

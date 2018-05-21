@@ -3,8 +3,8 @@ package ishopgo.com.exhibition.model.post
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
 
 
 class PostObject : IdentityData(), PostProvider {

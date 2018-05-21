@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
-import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -14,9 +13,9 @@ import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductLike
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -203,13 +202,13 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {
                 val uri = postMedias[i].uri
-                Log.d("listImage[]", uri.toString())
-
-                val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
-                imageFile.deleteOnExit()
-                Toolbox.reEncodeBitmap(appContext, uri, 2048, Uri.fromFile(imageFile))
-                val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-                builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                }
             }
         }
         addDisposable(authService.postCommentProduct(productId, builder.build())

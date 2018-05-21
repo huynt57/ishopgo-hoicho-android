@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.community.CommunityProductProvider
 import ishopgo.com.exhibition.ui.community.CommunityProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 
 
 /**
@@ -33,7 +33,7 @@ class Community : IdentityData(), CommunityProvider {
     }
 
     override fun provideTime(): String {
-        return Toolbox.formatApiDateTime(createdAt)
+        return createdAt?.asDateTime() ?: ""
     }
 
     override fun provideLikeCount(): Int {

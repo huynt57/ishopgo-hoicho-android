@@ -2,8 +2,8 @@ package ishopgo.com.exhibition.model.question
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.questmanager.detail.QuestDetailProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
 
 
 class QuestionDetail : QuestDetailProvider {

@@ -21,6 +21,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
@@ -36,7 +37,6 @@ import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -162,7 +162,7 @@ class HomeFragment : BaseFragment() {
 
             override fun getItem(position: Int): Fragment {
                 val params = Bundle()
-                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(bannerImages[position]))
+                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(bannerImages[position]))
                 return BannerImageFragment.newInstance(params)
             }
 

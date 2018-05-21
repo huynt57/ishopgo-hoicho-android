@@ -7,7 +7,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 import ishopgo.com.exhibition.ui.chat.local.info.multi.MultiMemberInfoFragment
 import ishopgo.com.exhibition.ui.chat.local.info.single.SingleMemberInfoFragment
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 
 /**
  * Created by xuanhong on 4/7/18. HappyCoding!
@@ -17,7 +17,7 @@ class ConversationInfoActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
         val json = startupOption.getString(Const.TransferKey.EXTRA_JSON)
         val info = try {
-            Toolbox.getDefaultGson().fromJson(json, ConversationInfo::class.java)
+            Toolbox.gson.fromJson(json, ConversationInfo::class.java)
         } catch (e: Exception) {
             throw RuntimeException("sai dinh dang")
         }

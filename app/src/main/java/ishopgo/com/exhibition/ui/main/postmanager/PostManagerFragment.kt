@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.ui.main.generalmanager.news
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -24,13 +23,13 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.postmanager.PostManagerCategoryAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
 import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
@@ -130,7 +129,7 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
                 override fun click(position: Int, data: PostProvider, code: Int) {
                     if (data is PostObject) {
                         val i = Intent(context, PostManagerDetailActivity::class.java)
-                        i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(data))
+                        i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                         startActivity(i)
                     }
                 }

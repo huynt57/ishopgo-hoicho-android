@@ -18,13 +18,13 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
 import ishopgo.com.exhibition.ui.main.home.search.SearchFragment
 import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_main.*
 
 
@@ -74,7 +74,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
             s?.let {
                 if (it is Category) {
                     val params = Bundle()
-                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(it))
+                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
                     childFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                             .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(params))

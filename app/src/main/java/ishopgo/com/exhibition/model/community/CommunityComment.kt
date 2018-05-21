@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.community.CommunityCommentProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 
 
 /**
@@ -28,12 +28,12 @@ class CommunityComment : IdentityData(), CommunityCommentProvider {
     }
 
     override fun providerUpdatedAt(): String {
-        return Toolbox.formatApiDateTime(updatedAt)
+        return updatedAt?.asDateTime() ?: ""
 
     }
 
     override fun providerCreatedAt(): String {
-        return Toolbox.formatApiDateTime(createdAt)
+        return createdAt?.asDateTime() ?: ""
     }
 
     override fun providerImages(): MutableList<String> {
