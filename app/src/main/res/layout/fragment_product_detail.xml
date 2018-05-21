@@ -89,9 +89,11 @@
                     android:id="@+id/view_icon_price"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/price_tag"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_product_name" />
 
@@ -205,14 +207,14 @@
                 <TextView
                     android:id="@+id/view_shop_name"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="16dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
+                    app:layout_constraintTop_toBottomOf="@+id/view_label_shop_name"
                     tools:text="Công ty TNHH Mua đồ tốt" />
 
                 <TextView
