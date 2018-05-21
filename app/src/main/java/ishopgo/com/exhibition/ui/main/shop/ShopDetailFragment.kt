@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
-import ishopgo.com.exhibition.ui.main.shop.category.CategoryFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
 import ishopgo.com.exhibition.ui.main.shop.rate.RateFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
@@ -59,7 +58,9 @@ class ShopDetailFragment : BaseFragment() {
             i?.let {
                 Glide.with(view_image.context)
                         .load(it)
-                        .apply(RequestOptions().centerInside())
+                        .apply(RequestOptions().centerCrop()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder))
                         .into(view_image)
             }
         })

@@ -35,7 +35,13 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SETTING_BOTTH,
                     R.drawable.ic_booth_manager,
-                    "Cấu hình gian hàng"
+                    "Gian hàng của tôi"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_MY_QR,
+                    R.drawable.ic_my_qr,
+                    "Mã QR gian hàng"
             ))
 
             items.add(AccountMenuItem(

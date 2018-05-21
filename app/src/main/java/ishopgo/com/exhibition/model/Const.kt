@@ -60,7 +60,8 @@ object Const {
         const val ACTION_GENEREL_MANAGER = 13
         const val ACTION_QUESTION_MANAGER = 14
         const val ACTION_SYNTHETIC_MANAGER = 15
-        const val ACTION_REGISTER_BOOTH = 16
+        const val ACTION_MY_QR = 16
+        const val ACTION_REGISTER_BOOTH = 17
     }
 
     object Chat {

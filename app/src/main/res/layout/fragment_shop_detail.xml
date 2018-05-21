@@ -29,10 +29,6 @@
                     android:id="@+id/view_image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintDimensionRatio="3:2"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +44,12 @@
             android:id="@+id/pinable_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <View
+                android:layout_width="match_parent"
+                style="@style/AppTheme.DividerLine"
+                android:layout_gravity="top"
+                />
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/view_tab_layout"
@@ -83,6 +85,12 @@
                     android:text="Đánh giá"/>
 
             </android.support.design.widget.TabLayout>
+
+            <View
+                android:layout_width="match_parent"
+                style="@style/AppTheme.DividerLine"
+                android:layout_gravity="bottom"
+                />
         </FrameLayout>
 
     </android.support.design.widget.AppBarLayout>
