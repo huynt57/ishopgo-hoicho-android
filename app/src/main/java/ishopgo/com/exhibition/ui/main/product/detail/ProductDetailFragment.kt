@@ -150,6 +150,7 @@ class ProductDetailFragment : BaseFragment() {
             Glide.with(it)
                     .load(product.provideProductImage())
                     .apply(RequestOptions()
+                            .centerCrop()
                             .placeholder(R.drawable.image_placeholder)
                             .error(R.drawable.image_placeholder))
                     .into(view_product_image)

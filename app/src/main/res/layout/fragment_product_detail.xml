@@ -21,9 +21,11 @@
                 android:id="@+id/view_product_image"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintDimensionRatio="h,1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                tools:ignore="ContentDescription"
                 tools:src="@tools:sample/avatars"/>
 
             <android.support.design.widget.FloatingActionButton
@@ -46,18 +48,18 @@
                 android:layout_marginStart="8dp"
                 android:background="@drawable/bg_rounded_rectangle"
                 android:drawablePadding="4dp"
+                android:foreground="?attr/selectableItemBackground"
                 android:gravity="center"
                 android:paddingEnd="8dp"
                 android:paddingStart="8dp"
                 android:text="Chia sẻ"
-                android:foreground="?attr/selectableItemBackground"
                 android:textColor="@color/colorPureWhite"
                 android:textSize="16sp"
                 app:drawableStartCompat="@drawable/ic_share_24dp"
                 app:layout_constraintBottom_toBottomOf="@id/view_product_image"
                 app:layout_constraintEnd_toEndOf="@id/view_product_image"
                 app:layout_constraintTop_toBottomOf="@id/view_product_image"
-                />
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/view_product_name"
@@ -82,7 +84,7 @@
                 android:src="@drawable/price_tag"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/view_product_name"
-                />
+                tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/view_product_price"
@@ -122,7 +124,8 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_badge"/>
+                android:src="@drawable/ic_badge"
+                tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/view_product_brand"
@@ -164,7 +167,8 @@
             android:textColor="@color/colorPrimary"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider_111"/>
+            app:layout_constraintTop_toBottomOf="@+id/view_divider_111"
+            tools:ignore="HardcodedText"/>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/container_shop_info"
@@ -189,12 +193,13 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:textStyle="bold"
+                android:text="Gian hàng trưng bày"
                 android:textAllCaps="true"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
-                android:text="Gian hàng trưng bày"/>
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/view_shop_name"
@@ -229,7 +234,8 @@
                 android:padding="4dp"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
+                tools:ignore="HardcodedText"/>
 
             <View
                 android:id="@+id/textView4"
@@ -293,7 +299,8 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_phone_24dp"/>
+                    app:srcCompat="@drawable/ic_phone_24dp"
+                    tools:ignore="ContentDescription"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -301,7 +308,7 @@
                     android:layout_marginStart="8dp"
                     android:gravity="center"
                     android:text="Gọi điện"
-                    />
+                    tools:ignore="HardcodedText"/>
 
             </LinearLayout>
 
@@ -326,7 +333,8 @@
                 <ImageView
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_comment"/>
+                    app:srcCompat="@drawable/ic_comment"
+                    tools:ignore="ContentDescription"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -334,7 +342,7 @@
                     android:layout_marginStart="8dp"
                     android:gravity="center"
                     android:text="Nhắn tin"
-                    />
+                    tools:ignore="HardcodedText"/>
 
             </LinearLayout>
 
@@ -365,7 +373,8 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_comment"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_comment"
+                tools:ignore="HardcodedText"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_like_count"
@@ -378,7 +387,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/view_product_comment_count"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                tools:ignore="HardcodedText"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_comment_count"
@@ -391,7 +401,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/view_product_share_count"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_product_like_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                tools:ignore="HardcodedText"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_share_count"
@@ -404,7 +415,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_product_comment_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView9"
+                tools:ignore="HardcodedText"/>
 
             <View
                 android:id="@+id/textView13"
@@ -447,7 +459,8 @@
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_111"
+                tools:ignore="HardcodedText"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_comment_community_image"
@@ -461,16 +474,16 @@
                 android:paddingStart="@dimen/default_margin"
                 android:paddingTop="8dp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
+                app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment"
+                tools:visibility="visible"/>
 
             <View
                 android:id="@+id/view"
-                android:layout_width="0dp"
                 style="@style/AppTheme.DividerLine"
+                android:layout_width="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_comment_community_image" />
+                app:layout_constraintTop_toBottomOf="@+id/rv_comment_community_image"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout"
@@ -488,7 +501,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
                     android:scaleType="center"
-                    app:srcCompat="@drawable/ic_gallery" />
+                    app:srcCompat="@drawable/ic_gallery"
+                    tools:ignore="ContentDescription"/>
 
                 <EditText
                     android:id="@+id/edt_comment"
@@ -496,7 +510,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1.5"
                     android:inputType="text"
-                    android:lines="1" />
+                    android:lines="1"
+                    tools:ignore="LabelFor"/>
 
                 <ImageView
                     android:id="@+id/img_comment_sent"
@@ -504,18 +519,19 @@
                     android:layout_height="match_parent"
                     android:layout_weight="0.3"
                     android:scaleType="center"
-                    app:srcCompat="@android:drawable/ic_menu_send" />
+                    app:srcCompat="@android:drawable/ic_menu_send"
+                    tools:ignore="ContentDescription"/>
 
             </LinearLayout>
 
             <View
                 android:id="@+id/view2"
-                android:layout_width="0dp"
                 style="@style/AppTheme.DividerLine"
+                android:layout_width="0dp"
                 android:background="@color/divider_line"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
@@ -542,7 +558,8 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm cùng gian hàng"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/more_products_same_shop"
@@ -551,7 +568,8 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"
+                tools:ignore="HardcodedText"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_products_same_shop"
@@ -580,8 +598,8 @@
                 android:id="@+id/view_divider_favorite"
                 style="@style/AppTheme.DividerFat"
                 android:layout_width="0dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
@@ -592,7 +610,8 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm yêu thích"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/more_favorite"
@@ -601,7 +620,8 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"
+                tools:ignore="HardcodedText"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_favorite"
@@ -630,8 +650,8 @@
                 android:id="@+id/view_divider_viewed"
                 style="@style/AppTheme.DividerFat"
                 android:layout_width="0dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
@@ -642,7 +662,8 @@
                 android:layout_height="wrap_content"
                 android:text="Sản phẩm đã xem"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"
+                tools:ignore="HardcodedText"/>
 
             <TextView
                 android:id="@+id/more_viewed"
@@ -651,7 +672,8 @@
                 android:layout_height="wrap_content"
                 android:text="Xem thêm"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"/>
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"
+                tools:ignore="HardcodedText"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/view_list_viewed"
