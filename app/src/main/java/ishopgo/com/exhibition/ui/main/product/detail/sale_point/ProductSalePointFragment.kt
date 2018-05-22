@@ -13,11 +13,11 @@ import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>, ProductSalePointProvider>() {

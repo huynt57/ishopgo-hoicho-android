@@ -26,6 +26,10 @@ object Toolbox {
 
     private val defaultGson = Gson()
 
+    fun getDefaultGson(): Gson {
+        return defaultGson
+    }
+
     val LOCALE_VN = Locale("vi", "VN")
     val displayDateFormat = SimpleDateFormat("dd/MM/yyyy", LOCALE_VN)
     val displayDateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", LOCALE_VN)

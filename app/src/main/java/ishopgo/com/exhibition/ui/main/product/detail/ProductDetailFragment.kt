@@ -246,12 +246,12 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             view_shop_follow.setOnClickListener {
-                if (product is ProductDetail) {
-                    val boothId = product.booth?.id ?: -1L
-                    if (boothId != -1L)
-                        viewModel.postProductFollow(boothId)
-                }
-
+                if (UserDataManager.currentUserId > 0)
+                    if (product is ProductDetail) {
+                        val boothId = product.booth?.id ?: -1L
+                        if (boothId != -1L)
+                            viewModel.postProductFollow(boothId)
+                    } else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
             }
 
             Glide.with(context)

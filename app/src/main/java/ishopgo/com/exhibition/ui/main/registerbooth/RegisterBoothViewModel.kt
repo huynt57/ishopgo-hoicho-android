@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
-import android.util.Log
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
@@ -13,7 +12,7 @@ import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
