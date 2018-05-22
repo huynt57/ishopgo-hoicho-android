@@ -1,9 +1,6 @@
 package ishopgo.com.exhibition.ui.main.membermanager
 
-import android.annotation.SuppressLint
-import android.app.Application
 import android.arch.lifecycle.MutableLiveData
-import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -13,11 +10,6 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.widget.Toolbox
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
-import java.io.File
-import javax.inject.Inject
 
 class MemberManagerViewModel : BaseListViewModel<List<MemberManagerProvider>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {

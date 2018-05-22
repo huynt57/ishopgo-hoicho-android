@@ -11,8 +11,8 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_banner_image.*
 
 /**
@@ -30,7 +30,7 @@ class BannerImageFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
-        banner = Toolbox.getDefaultGson().fromJson(json, Banner::class.java)
+        banner = Toolbox.gson.fromJson(json, Banner::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

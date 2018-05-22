@@ -14,10 +14,10 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.brandmanager.add.BrandManagerAddActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.update.BrandManagerUpdateActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class BrandManagerFragment : BaseListFragment<List<BrandManagerProvider>, BrandManagerProvider>() {
@@ -68,7 +68,7 @@ class BrandManagerFragment : BaseListFragment<List<BrandManagerProvider>, BrandM
                         BRAND_EDIT_CLICK -> {
                             if (data is Brand) {
                                 val intent = Intent(context, BrandManagerUpdateActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(data))
+                                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                                 startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
                             }
                         }

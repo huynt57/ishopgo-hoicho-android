@@ -20,7 +20,7 @@ import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -113,13 +113,14 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {
                 val uri = postMedias[i].uri
-                Log.d("listImage[]", uri.toString())
-                val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
-                imageFile.deleteOnExit()
-                Toolbox.reEncodeBitmap(appContext, uri, 2048, Uri.fromFile(imageFile))
-                val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-                builder.addFormDataPart("images[]", imageFile.name, imageBody)
-                Log.d("listImage[]", imageBody.toString())
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                }
+
             }
         }
 

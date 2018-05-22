@@ -13,8 +13,8 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import kotlinx.android.synthetic.main.fragment_product_full_detail.*
 
@@ -38,7 +38,7 @@ class PostManagerDetailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
-        data = Toolbox.getDefaultGson().fromJson(json, PostObject::class.java)
+        data = Toolbox.gson.fromJson(json, PostObject::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

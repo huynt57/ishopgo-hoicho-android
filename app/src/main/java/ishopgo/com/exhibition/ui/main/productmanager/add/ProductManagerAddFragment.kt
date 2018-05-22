@@ -13,7 +13,6 @@ import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,12 +34,12 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_product_manager_add.*
-import java.util.ArrayList
+import java.util.*
 
 class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
@@ -648,7 +647,7 @@ class ProductManagerAddFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && !CASE_PICK_IMAGE) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
                     toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                     return
                 }
@@ -659,7 +658,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
+                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
                         toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                         return
                     }
@@ -673,7 +672,7 @@ class ProductManagerAddFragment : BaseFragment() {
         }
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && CASE_PICK_IMAGE) {
-            if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
                 toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                 return
             }

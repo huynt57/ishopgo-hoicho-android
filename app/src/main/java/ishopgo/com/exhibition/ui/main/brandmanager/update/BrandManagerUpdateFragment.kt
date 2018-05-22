@@ -18,8 +18,8 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerViewModel
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_brand_update.*
 
 class BrandManagerUpdateFragment : BaseFragment() {
@@ -35,7 +35,7 @@ class BrandManagerUpdateFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
-        data = Toolbox.getDefaultGson().fromJson(json, Brand::class.java)
+        data = Toolbox.gson.fromJson(json, Brand::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,7 +121,7 @@ class BrandManagerUpdateFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context, data.data, (5 * 1024 * 1024).toLong())) {
+            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
                 toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                 return
             }

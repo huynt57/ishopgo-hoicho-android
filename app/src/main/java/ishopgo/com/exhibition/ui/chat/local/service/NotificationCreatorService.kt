@@ -9,11 +9,11 @@ import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 
 
 /**
@@ -37,7 +37,7 @@ class NotificationCreatorService : IntentService("NotificationCreatorService") {
     }
 
     private fun sendNotification(json: String, extras: Bundle) {
-        val gson = Toolbox.getDefaultGson()
+        val gson = Toolbox.gson
         val pusherChatMessage = gson.fromJson(json, PusherChatMessage::class.java)
 
         val builder = NotificationCompat.Builder(this, "")

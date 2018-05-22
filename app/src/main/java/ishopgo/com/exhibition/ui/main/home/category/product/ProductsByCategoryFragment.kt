@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
@@ -24,7 +25,6 @@ import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_by_category.*
@@ -58,7 +58,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         super.onCreate(savedInstanceState)
 
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        category = Toolbox.getDefaultGson().fromJson(json, Category::class.java)
+        category = Toolbox.gson.fromJson(json, Category::class.java)
     }
 
     private val childAdapter = CategoryChildAdapter()

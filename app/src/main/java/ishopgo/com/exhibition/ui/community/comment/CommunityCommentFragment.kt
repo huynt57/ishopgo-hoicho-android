@@ -20,8 +20,8 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_comment_community.*
 
 /**
@@ -195,7 +195,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context, data.data, (2 * 1024 * 1024).toLong())) {
+                if (Toolbox.exceedSize(context!!, data.data, (2 * 1024 * 1024).toLong())) {
                     toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                     return
                 }
@@ -206,7 +206,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context, data.clipData.getItemAt(i).uri, (2 * 1024 * 1024).toLong())) {
+                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (2 * 1024 * 1024).toLong())) {
                         toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                         return
                     }

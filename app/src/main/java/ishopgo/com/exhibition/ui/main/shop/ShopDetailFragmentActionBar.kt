@@ -8,8 +8,8 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
-import ishopgo.com.exhibition.ui.widget.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -53,7 +53,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
             s?.let {
                 if (it is Category) {
                     val params = Bundle()
-                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(it))
+                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
                     childFragmentManager.beginTransaction()
                             .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                             .add(R.id.frame_main_content, ProductsByCategoryFragment.newInstance(params))

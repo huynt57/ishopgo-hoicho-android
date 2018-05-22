@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
-import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -13,7 +12,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.widget.Toolbox
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -62,13 +61,14 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {
                 val uri = postMedias[i].uri
-                Log.d("listImage[]", uri.toString())
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                }
 
-                val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
-                imageFile.deleteOnExit()
-                Toolbox.reEncodeBitmap(appContext, uri, 2048, Uri.fromFile(imageFile))
-                val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-                builder.addFormDataPart("images[]", imageFile.name, imageBody)
             }
         }
         addDisposable(authService.postCommentProduct(productId, builder.build())
