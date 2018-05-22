@@ -151,8 +151,8 @@ class ProductManagerAddFragment : BaseFragment() {
             if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                             edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
                 showProgressDialog()
-                viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.text.toString(),
-                        edit_product_price.text.toString(), edit_product_provider_price.text.toString(), edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money ?:0,
+                        edit_product_price?.money ?:0, edit_product_provider_price.money ?:0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
                         image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                         edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
             }

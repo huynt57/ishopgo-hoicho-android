@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.shop.rate
 
+import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -34,6 +35,28 @@ class RateViewModel : BaseListViewModel<List<ShopRateProvider>>(), AppComponent.
                     })
             )
         }
+    }
+
+    var createRateSusscess = MutableLiveData<Boolean>()
+
+    fun createProductSalePoint(shopId: Long, content: String, rate_point: Int) {
+        val fields = mutableMapOf<String, Any>()
+        fields["content"] = content
+        fields["rate_point"] = rate_point
+
+
+        addDisposable(authService.createRatingShop(shopId, fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createRateSusscess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     override fun inject(appComponent: AppComponent) {

@@ -63,7 +63,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
 
     var createProductSusscess = MutableLiveData<Boolean>()
 
-    fun createProductManager(name: String, code: String, title: String, tt_price: String, price: String, provider_price: String, dvt: String,
+    fun createProductManager(name: String, code: String, title: String, tt_price: Long, price: Long, provider_price: Long, dvt: String,
                              provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                              description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
                              listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int) {
@@ -74,9 +74,9 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         builder.addFormDataPart("name", name)
         builder.addFormDataPart("code", code)
         builder.addFormDataPart("title", title)
-        builder.addFormDataPart("tt_price", tt_price)
-        builder.addFormDataPart("price", price)
-        builder.addFormDataPart("provider_price", provider_price)
+        builder.addFormDataPart("tt_price", tt_price.toString())
+        builder.addFormDataPart("price", price.toString())
+        builder.addFormDataPart("provider_price", provider_price.toString())
         builder.addFormDataPart("dvt", dvt)
         builder.addFormDataPart("provider_id", provider_id.toString())
         builder.addFormDataPart("department_id", brand_id.toString())

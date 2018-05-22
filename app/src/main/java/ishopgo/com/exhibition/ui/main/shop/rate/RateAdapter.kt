@@ -35,6 +35,7 @@ class RateAdapter : BaseRecyclerViewAdapter<ShopRateProvider>() {
                 view_name.text = data.provideName()
                 view_time.text = data.provideTime()
                 view_content.text = data.provideContent()
+                view_rate_point.rating = data.provideRating()
             }
         }
     }

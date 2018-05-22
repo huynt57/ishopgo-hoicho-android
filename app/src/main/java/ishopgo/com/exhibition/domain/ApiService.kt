@@ -220,7 +220,8 @@ class ApiService {
         @POST("add-sale-point")
         fun createProductSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-//        booth/get-category/{id}
+        @POST("shop/{id}/rate")
+        fun createRatingShop(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

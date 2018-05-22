@@ -14,6 +14,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun createRatingShop(product_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createRatingShop(product_id, fields)
+    }
+
     override fun createProductSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

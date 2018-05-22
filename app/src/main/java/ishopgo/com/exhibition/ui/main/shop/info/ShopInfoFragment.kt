@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -60,7 +61,8 @@ class ShopInfoFragment : BaseFragment() {
     }
 
     private fun showInfo(info: ShopInfoProvider) {
-        sharedViewModel.updateShopImage(info.provideImage())
+        if (info is ShopDetail)
+            sharedViewModel.updateShopImage(info.id, info.provideName(), info.provideImage())
 
         view_name.text = "Tên: <b>${info.provideName()}</b>".asHtml()
         view_product_count.text = "Số sản phẩm: <b>${info.provideProductCount()} sản phẩm</b>".asHtml()
