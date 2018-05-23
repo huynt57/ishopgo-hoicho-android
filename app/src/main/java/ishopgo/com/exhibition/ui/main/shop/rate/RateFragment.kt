@@ -81,9 +81,14 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
-        ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            if (UserDataManager.currentUserId > 0) showDialogRating(rating) else ratingBar.visibility=View.GONE
-        }
+
+        ratingBar.visibility = if (UserDataManager.currentUserId > 0) View.VISIBLE else View.GONE
+        ratingBar.onRatingBarChangeListener = rateListener
+    }
+
+    private val rateListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
+        ratingBar.onRatingBarChangeListener = null
+        showDialogRating(rating)
     }
 
     private fun showDialogRating(rating: Float) {
@@ -102,7 +107,11 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
                     }
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ ->
+                        ratingBar.rating = 0.0f
                         dialog.dismiss()
+                    }
+                    .dismissListener {
+                        ratingBar.onRatingBarChangeListener = rateListener
                     }
                     .autoDismiss(false)
                     .canceledOnTouchOutside(false)
