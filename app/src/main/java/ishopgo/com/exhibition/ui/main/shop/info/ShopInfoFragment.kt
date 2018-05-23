@@ -4,11 +4,9 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ShopDetail
@@ -17,8 +15,6 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
-import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-import kotlinx.android.synthetic.main.dialog_change_shop_description.*
 import kotlinx.android.synthetic.main.fragment_shop_info.*
 
 /**
@@ -80,15 +76,15 @@ class ShopInfoFragment : BaseFragment() {
         view_rating.text = "Đánh giá shop: <b>${info.provideRating()}/5 điểm</b>".asHtml()
         view_click_count.text = "Số lượt click: <b>${info.provideClickCount()} lượt</b>".asHtml()
         view_share_count.text = "Số lượt share: <b>${info.provideShareCount()} lượt</b>".asHtml()
-        view_description.text = info.provideDescription()
+        view_description.text = info.provideDescription().asHtml()
         salePointAdapter.replaceAll(info.provideSalePoints())
 
         if (info is ShopDetail) {
             sharedViewModel.updateShopImage(info.id, info.provideName(), info.provideImage())
             if (UserDataManager.currentUserId == info.id) {
-                view_name.setCompoundDrawablesWithIntrinsicBounds(null, null, resources.getDrawable(R.drawable.ic_edit_black_24dp), null)
+                view_name.drawableCompat(0, 0, R.drawable.ic_edit_black_24dp, 0)
                 view_name.setOnClickListener { showDialogChangeName(info.name ?: "") }
-                textView11.setCompoundDrawablesWithIntrinsicBounds(null, null, resources.getDrawable(R.drawable.ic_edit_black_24dp), null)
+                textView11.drawableCompat(0, 0, R.drawable.ic_edit_black_24dp, 0)
                 textView11.setOnClickListener {
                     showDialogChangeDescription(info.introduction ?: "")
                 }
