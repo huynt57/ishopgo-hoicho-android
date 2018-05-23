@@ -137,7 +137,6 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     }
 
                     override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
                     }
                 }))
     }

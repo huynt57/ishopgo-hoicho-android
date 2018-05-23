@@ -290,27 +290,11 @@ class SignupFragment : BaseFragment() {
     }
 
     private fun fillInfo(user: PhoneInfo?) {
-        if (user != null) {
-            tv_signup_mail.setText(user.email)
-            tv_signup_name.setText(user.name)
-            var dob = user.birthday
-            try {
-                dob = Toolbox.displayDateFormat.format(Toolbox.apiDateFormat.parse(user.birthday))
-            } catch (e: Exception) {
-            }
-
-            tv_signup_birthday.setText(dob)
-            tv_signup_region.setText(user.region)
-            tv_signup_company.setText(user.company)
-            tv_signup_address.setText(user.address)
-        } else {
-            tv_signup_phone.text = null
-            tv_signup_address.text = null
-            tv_signup_mail.text = null
-            tv_signup_name.text = null
-            tv_signup_company.text = null
-            tv_signup_birthday.text = null
-            tv_signup_region.text = null
-        }
+        tv_signup_mail.setText(user?.email ?: "")
+        tv_signup_name.setText(user?.name ?: "")
+        tv_signup_birthday.setText(Toolbox.formatApiDate(user?.birthday ?: ""))
+        tv_signup_region.setText(user?.region ?: "")
+        tv_signup_company.setText(user?.company ?: "")
+        tv_signup_address.setText(user?.address ?: "")
     }
 }
