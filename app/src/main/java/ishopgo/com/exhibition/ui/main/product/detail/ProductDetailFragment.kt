@@ -387,7 +387,7 @@ class ProductDetailFragment : BaseFragment() {
     private fun showMoreSalePoint(context: Context, product: ProductDetailProvider) {
         if (product is IdentityData) {
             val intent = Intent(context, ProductSalePointActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(product))
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
             startActivityForResult(intent, Const.RequestCode.PRODUCT_SALE_POINT_DETAIL)
         }
     }
@@ -476,7 +476,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun openAddSalePoint(context: Context, product: ProductDetailProvider) {
         val intent = Intent(context, ProductSalePointAddActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(product))
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
         startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
     }
 

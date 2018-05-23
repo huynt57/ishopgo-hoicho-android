@@ -2,7 +2,7 @@ package ishopgo.com.exhibition.model.question
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.main.questmanager.detail.QuestDetailProvider
 
 
@@ -12,7 +12,7 @@ class QuestionDetail : QuestDetailProvider {
     }
 
     override fun provideTime(): String {
-        return Toolbox.formatApiDateTime(createdAt ?: "")
+        return createdAt?.asDateTime() ?: ""
     }
 
     override fun provideAnswer(): String {

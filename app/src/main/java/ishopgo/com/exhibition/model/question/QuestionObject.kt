@@ -3,7 +3,7 @@ package ishopgo.com.exhibition.model.question
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.main.questmanager.QuestProvider
 
 
@@ -13,8 +13,7 @@ class QuestionObject : IdentityData(), QuestProvider {
     }
 
     override fun provideTime(): String {
-        val time = Toolbox.formatApiDateTime(createdAt ?: "")
-        return "$time | Đăng bởi $accountName"
+        return "${createdAt?.asDateTime() ?: ""} | Đăng bởi $accountName"
     }
 
     override fun provideCategoryName(): String {

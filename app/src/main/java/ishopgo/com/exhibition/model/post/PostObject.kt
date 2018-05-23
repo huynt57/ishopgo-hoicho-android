@@ -3,7 +3,7 @@ package ishopgo.com.exhibition.model.post
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
 
 
@@ -13,8 +13,7 @@ class PostObject : IdentityData(), PostProvider {
     }
 
     override fun provideTime(): String {
-        val time = Toolbox.formatApiDateTime(createdAt ?: "")
-        return "$time | Đăng bởi $accountName | $statusText"
+        return "${createdAt?.asDateTime() ?: ""} | Đăng bởi $accountName | $statusText"
     }
 
     override fun provideCategoryName(): String {

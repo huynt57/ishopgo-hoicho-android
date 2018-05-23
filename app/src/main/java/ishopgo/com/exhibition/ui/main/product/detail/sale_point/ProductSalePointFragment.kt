@@ -14,8 +14,8 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -53,7 +53,7 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        data = Toolbox.getDefaultGson().fromJson(json, ProductDetail::class.java)
+        data = Toolbox.gson.fromJson(json, ProductDetail::class.java)
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<ProductSalePointProvider> {
@@ -74,7 +74,7 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
 
     fun openAddSalePoint() {
         val intent = Intent(context, ProductSalePointAddActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.getDefaultGson().toJson(data))
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
         startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
     }
 

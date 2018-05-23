@@ -8,13 +8,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.support.annotation.Nullable
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,10 +26,10 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PhoneInfo
 import ishopgo.com.exhibition.model.Region
-import ishopgo.com.exhibition.model.User
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.fragment_signup.*
 
 
@@ -292,7 +290,7 @@ class SignupFragment : BaseFragment() {
     private fun fillInfo(user: PhoneInfo?) {
         tv_signup_mail.setText(user?.email ?: "")
         tv_signup_name.setText(user?.name ?: "")
-        tv_signup_birthday.setText(Toolbox.formatApiDate(user?.birthday ?: ""))
+        tv_signup_birthday.setText(user?.birthday?.asDateTime())
         tv_signup_region.setText(user?.region ?: "")
         tv_signup_company.setText(user?.company ?: "")
         tv_signup_address.setText(user?.address ?: "")

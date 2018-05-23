@@ -14,7 +14,6 @@ import org.apache.commons.io.IOUtils
 import java.io.Closeable
 import java.io.File
 import java.io.IOException
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -25,10 +24,6 @@ object Toolbox {
     const val TAG = "Toolbox"
 
     private val defaultGson = Gson()
-
-    fun getDefaultGson(): Gson {
-        return defaultGson
-    }
 
     val LOCALE_VN = Locale("vi", "VN")
     val displayDateFormat = SimpleDateFormat("dd/MM/yyyy", LOCALE_VN)
@@ -61,24 +56,6 @@ object Toolbox {
         }
 
         return isExceed
-    }
-
-    fun formatApiDateTime(apiTime: String): String {
-        try {
-            return Toolbox.displayDateTimeFormat.format(apiDateFormat.parse(apiTime))
-        } catch (e: ParseException) {
-            return apiTime
-        }
-
-    }
-
-    fun formatApiDate(apiTime: String): String {
-        try {
-            return Toolbox.displayDateFormat.format(apiDateFormat.parse(apiTime))
-        } catch (e: ParseException) {
-            return apiTime
-        }
-
     }
 
     @Throws(IOException::class)

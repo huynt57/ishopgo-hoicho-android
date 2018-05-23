@@ -51,7 +51,7 @@ class ProductSalePointAddFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        data = Toolbox.getDefaultGson().fromJson(json, ProductDetail::class.java)
+        data = Toolbox.gson.fromJson(json, ProductDetail::class.java)
 
     }
 
