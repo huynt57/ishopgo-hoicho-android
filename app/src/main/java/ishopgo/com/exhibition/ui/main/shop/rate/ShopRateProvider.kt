@@ -8,4 +8,5 @@ interface ShopRateProvider {
     fun provideAvatar(): String
     fun provideTime(): String
     fun provideContent(): String
+    fun provideRating(): Float
 }

@@ -9,8 +9,6 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
  */
 class SignupActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
-        val type_Register = intent.getIntExtra("TYPE_REGISTER", 0)
-        val signupFragment = SignupFragment.newInstance(type_Register)
-        return signupFragment
+        return SignupFragment.newInstance(startupOption)
     }
 }

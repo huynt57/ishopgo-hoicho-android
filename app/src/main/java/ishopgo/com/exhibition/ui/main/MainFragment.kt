@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.chat.local.ChatFragmentActionBar
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
@@ -193,7 +194,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                     ScanFragmentActionBar.newInstance(Bundle())
                 }
                 TAB_CHAT -> {
-                    Fragment()
+                    ChatFragmentActionBar.newInstance(Bundle())
                 }
                 TAB_ACCOUNT -> {
                     AccountFragmentActionBar.newInstance(Bundle())

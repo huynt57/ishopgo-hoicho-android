@@ -46,6 +46,11 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
             fragment.arguments = params
             return fragment
         }
+
+        const val SORT_VALUE_CREATE_AT = "created_at"
+        const val SORT_VALUE_PRICE = "price"
+        const val SORT_BY_ASC = "asc"
+        const val SORT_BY_DESC = "desc"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -197,22 +202,22 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
 
                 tv_filter_news.setOnClickListener {
                     view.text = "Mới nhất"
-                    sortValue = "created_at"
+                    sortValue = SORT_VALUE_CREATE_AT
                     sortBy = ""
                     firstLoad()
                     dialog.dismiss()
                 }
                 tv_filter_down_to_up.setOnClickListener {
                     view.text = "Giá từ thấp tới cao"
-                    sortValue = "price"
-                    sortBy = "asc"
+                    sortValue = SORT_VALUE_PRICE
+                    sortBy = SORT_BY_ASC
                     firstLoad()
                     dialog.dismiss()
                 }
                 tv_filter_up_to_down.setOnClickListener {
                     view.text = "Giá từ cao tới thấp"
-                    sortValue = "price"
-                    sortBy = "desc"
+                    sortValue = SORT_VALUE_PRICE
+                    sortBy = SORT_BY_DESC
                     firstLoad()
                     dialog.dismiss()
                 }

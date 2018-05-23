@@ -207,6 +207,21 @@ class ApiService {
 
         @DELETE("booth/{id}")
         fun deleteBooth(@Path("id") booth_id: Long): Single<BaseResponse<Any>>
+
+        @POST("booth/add-from-member/{id}")
+        fun registerBooth(@Path("id") account_id: Long,@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("follow")
+        fun postProductPollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ProductFollow>>
+
+        @GET("get-sale-point/{id}")
+        fun getProductSalePoint(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ProductSalePoint>>>
+
+        @POST("add-sale-point")
+        fun createProductSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("shop/{id}/rate")
+        fun createRatingShop(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -337,6 +352,9 @@ class ApiService {
         fun inbox_addMemberGroup(
                 @FieldMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
+
+        @GET("find-info")
+        fun getUserByPhone(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PhoneInfo>>
     }
 
 }

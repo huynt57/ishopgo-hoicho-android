@@ -3,12 +3,17 @@ package ishopgo.com.exhibition.model.product_manager
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.productmanager.detail.ProductManagerDetailProvider
 
 class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
+    override fun provideCategory(): List<Category>? {
+        return categories ?: mutableListOf()
+    }
+
     companion object {
         var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
         var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
@@ -164,6 +169,9 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     @SerializedName("departments")
     @Expose
     var departments: List<Brand>? = null
+    @SerializedName("categories")
+    @Expose
+    var categories: List<Category>? = null
     @SerializedName("relate")
     @Expose
     var relate: List<Any>? = null

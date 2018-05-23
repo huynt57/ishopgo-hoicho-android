@@ -10,6 +10,8 @@ import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDate
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -48,7 +50,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                             }
 
                             override fun provideDob(): String {
-                                return Toolbox.formatApiDate(data?.birthday ?: "")
+                                return data?.birthday?.asDate() ?: ""
                             }
 
                             override fun provideEmail(): String {
@@ -72,7 +74,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                             }
 
                             override fun provideJoinedDate(): String {
-                                return Toolbox.formatApiDateTime(data?.createdAt ?: "")
+                                return data?.createdAt?.asDateTime() ?: ""
                             }
 
                         })
@@ -105,7 +107,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
             val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
             builder.addPart(imagePart)
         }
-        
+
         addDisposable(authService.updateProfile(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
@@ -127,7 +129,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                             }
 
                             override fun provideDob(): String {
-                                return Toolbox.formatApiDate(data?.birthday ?: "")
+                                return data?.birthday?.asDate() ?: ""
                             }
 
                             override fun provideEmail(): String {
@@ -151,7 +153,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                             }
 
                             override fun provideJoinedDate(): String {
-                                return Toolbox.formatApiDateTime(data?.createdAt ?: "")
+                                return data?.createdAt?.asDateTime() ?: ""
                             }
 
                         })

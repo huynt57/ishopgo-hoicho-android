@@ -14,6 +14,56 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun createRatingShop(product_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createRatingShop(product_id, fields)
+    }
+
+    override fun createProductSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createProductSalePoint(fields)
+    }
+
+    override fun getProductSalePoint(product_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<List<ProductSalePoint>>> {
+        val ps = mutableListOf<ProductSalePoint>()
+        for (i in 0..5)
+            ps.add(generateProductSalePoint())
+
+        val response = BaseResponse<List<ProductSalePoint>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getProductSalePoint(product_id, fields)
+    }
+
+    private fun generateProductSalePoint(): ProductSalePoint {
+        val c = ProductSalePoint()
+        c.id = random.nextInt(1000).toLong()
+        c.name = "test điểm bán"
+        c.phone = "0985771189"
+        c.city = "Hà Nội"
+        c.district = "Đống dá"
+        c.address = "ABC"
+        c.price = 2950000
+        c.status = 1
+        c.productName = "Vợt Cầu Lông LiNing Chính Hãng 3D BREAK FREE 80TD (Màu Đồng)"
+        return c
+    }
+
+    override fun postProductPollow(fields: MutableMap<String, Any>): Single<BaseResponse<ProductFollow>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).postProductPollow(fields)
+    }
+
+    override fun registerBooth(account_id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).registerBooth(account_id, body)
+    }
+
 
     override fun getMemberDetail(memberId: Long): Single<BaseResponse<Member>> {
         val response = BaseResponse<Any>()

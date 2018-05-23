@@ -7,9 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,10 +24,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.PhoneInfo
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.fragment_signup.*
 
 
@@ -34,20 +39,32 @@ import kotlinx.android.synthetic.main.fragment_signup.*
 class SignupFragment : BaseFragment() {
 
     companion object {
-        fun newInstance(type_Register: Int): SignupFragment {
+        fun newInstance(params: Bundle): SignupFragment {
             val fragment = SignupFragment()
-            fragment.type_Register = type_Register
+            fragment.arguments = params
             return fragment
         }
 
-        const val REGISTER_STORE = 2
         const val REGISTER_MEMBER = 1
     }
 
-    private var type_Register: Int = 0
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
     private var image: String = ""
+    private var searchKeyword = ""
+    private val handler = Handler()
+    private val searchRunnable = object : Runnable {
+        override fun run() {
+            handler.removeCallbacks(this)
+
+            reloadData = true
+            if (!searchKeyword.isEmpty()) {
+                viewModel.loadUserByPhone(searchKeyword)
+            } else {
+                fillInfo(null)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_signup, container, false)
@@ -65,9 +82,6 @@ class SignupFragment : BaseFragment() {
             getRegion(tv_signup_region)
         }
 
-        if (type_Register == REGISTER_MEMBER) textView.text = "Đăng ký thành viên"
-        if (type_Register == REGISTER_STORE) textView.text = "Đăng ký gian hàng"
-
         btn_signup.setOnClickListener {
             signupAccount()
         }
@@ -75,6 +89,19 @@ class SignupFragment : BaseFragment() {
         img_signup_avatar.setOnClickListener {
             launchPickPhotoIntent()
         }
+
+        tv_signup_phone.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                searchKeyword = s.toString()
+                tv_signup_phone.handler.removeCallbacks(searchRunnable)
+                tv_signup_phone.handler.postDelayed(searchRunnable, 500)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        })
 
         tv_signup_retry_password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_NULL) {
@@ -98,7 +125,7 @@ class SignupFragment : BaseFragment() {
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                     tv_signup_company.text.toString(), tv_signup_birthday.text.toString(), tv_signup_region.text.toString(),
-                    tv_signup_address.text.toString(), tv_signup_password.text.toString(), type_Register.toString())
+                    tv_signup_address.text.toString(), tv_signup_password.text.toString(), REGISTER_MEMBER.toString())
         }
     }
 
@@ -124,6 +151,12 @@ class SignupFragment : BaseFragment() {
         viewModel.loadRegion.observe(this, Observer { p ->
             p?.let {
                 adapterRegion.replaceAll(it)
+            }
+        })
+
+        viewModel.getUserByPhone.observe(this, Observer { p ->
+            p?.let {
+                fillInfo(it)
             }
         })
 
@@ -239,8 +272,8 @@ class SignupFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context!!, data.data, (2 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                 return
             }
 
@@ -252,5 +285,14 @@ class SignupFragment : BaseFragment() {
                             .error(R.drawable.avatar_placeholder))
                     .into(img_signup_avatar)
         }
+    }
+
+    private fun fillInfo(user: PhoneInfo?) {
+        tv_signup_mail.setText(user?.email ?: "")
+        tv_signup_name.setText(user?.name ?: "")
+        tv_signup_birthday.setText(user?.birthday?.asDateTime())
+        tv_signup_region.setText(user?.region ?: "")
+        tv_signup_company.setText(user?.company ?: "")
+        tv_signup_address.setText(user?.address ?: "")
     }
 }

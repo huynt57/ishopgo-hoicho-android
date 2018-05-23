@@ -40,7 +40,7 @@ object Const {
         const val RC_CAPTURE_IMAGE = 19
         const val RC_SHOW_DETAIL = 20
         const val RC_ADD_NEW = 21
-
+        const val PRODUCT_SALE_POINT_DETAIL = 22
     }
 
     object AccountAction {
@@ -61,6 +61,7 @@ object Const {
         const val ACTION_QUESTION_MANAGER = 14
         const val ACTION_SYNTHETIC_MANAGER = 15
         const val ACTION_MY_QR = 16
+        const val ACTION_REGISTER_BOOTH = 17
     }
 
     object Chat {

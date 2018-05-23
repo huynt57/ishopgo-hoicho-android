@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
+import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -139,6 +140,9 @@ class AccountFragment : BaseFragment() {
             }
             Const.AccountAction.ACTION_SYNTHETIC_MANAGER -> {
             }
+            Const.AccountAction.ACTION_REGISTER_BOOTH -> {
+                openRegisterBooth()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -177,6 +181,13 @@ class AccountFragment : BaseFragment() {
     private fun openQuestionManager() {
         context?.let {
             val intent = Intent(it, QuestionManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openRegisterBooth() {
+        context?.let {
+            val intent = Intent(it, RegisterBoothActivity::class.java)
             startActivity(intent)
         }
     }

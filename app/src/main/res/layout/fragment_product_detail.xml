@@ -1,696 +1,754 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPureWhite">
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:visibility="visible">
-
-            <ImageView
-                android:id="@+id/view_product_image"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="h,1:1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:ignore="ContentDescription"
-                tools:src="@tools:sample/avatars"/>
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/view_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:fabSize="mini"
-                app:layout_constraintBottom_toBottomOf="@id/view_product_image"
-                app:layout_constraintEnd_toStartOf="@+id/view_share"
-                app:layout_constraintTop_toBottomOf="@id/view_product_image"
-                app:srcCompat="@drawable/ic_added_to_favorite_24dp"/>
-
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/view_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="8dp"
-                android:background="@drawable/bg_rounded_rectangle"
-                android:drawablePadding="4dp"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:paddingEnd="8dp"
-                android:paddingStart="8dp"
-                android:text="Chia sẻ"
-                android:textColor="@color/colorPureWhite"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_share_24dp"
-                app:layout_constraintBottom_toBottomOf="@id/view_product_image"
-                app:layout_constraintEnd_toEndOf="@id/view_product_image"
-                app:layout_constraintTop_toBottomOf="@id/view_product_image"
-                tools:ignore="HardcodedText"/>
-
-            <TextView
-                android:id="@+id/view_product_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_favorite"
-                tools:text="Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless"
-                />
-
-            <ImageView
-                android:id="@+id/view_icon_price"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/price_tag"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_product_name"
-                tools:ignore="ContentDescription"/>
-
-            <TextView
-                android:id="@+id/view_product_price"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@id/view_icon_price"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/view_icon_price"
-                app:layout_constraintTop_toTopOf="@id/view_icon_price"
-                tools:text="280.000 đ"
-                />
-
-        </android.support.constraint.ConstraintLayout>
-
-        <View
-            android:id="@+id/view_divider_product_info"
-            style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/constraintLayout"
+        android:background="@drawable/bg_white_black">
 
         <LinearLayout
-            android:id="@+id/container_product_brand"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="8dp"
-            android:paddingTop="8dp"
-            >
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_badge"
-                tools:ignore="ContentDescription"/>
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:id="@+id/view_product_image"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="h,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:src="@tools:sample/avatars" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/view_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    app:fabSize="mini"
+                    app:layout_constraintBottom_toBottomOf="@id/view_product_image"
+                    app:layout_constraintEnd_toStartOf="@+id/view_share"
+                    app:layout_constraintTop_toBottomOf="@id/view_product_image"
+                    app:srcCompat="@drawable/ic_added_to_favorite_24dp" />
+
+                <LinearLayout
+                    android:id="@+id/view_share"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_rounded_rectangle"
+                    android:orientation="horizontal"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/view_product_image"
+                    app:layout_constraintEnd_toEndOf="@id/view_product_image"
+                    app:layout_constraintTop_toBottomOf="@id/view_product_image">
+
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_gravity="center_vertical"
+                        app:srcCompat="@drawable/ic_share_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:text="Chia sẻ"
+                        android:textColor="@color/colorPureWhite"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/view_product_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_favorite"
+                    tools:text="Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless" />
+
+                <ImageView
+                    android:id="@+id/view_icon_price"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/price_tag"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/view_product_name" />
+
+                <TextView
+                    android:id="@+id/view_product_price"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@id/view_icon_price"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view_icon_price"
+                    app:layout_constraintTop_toTopOf="@id/view_icon_price"
+                    tools:text="280.000 đ" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                android:id="@+id/view_divider_product_info"
+                style="@style/AppTheme.DividerLine"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp" />
+
+            <LinearLayout
+                android:id="@+id/container_product_brand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp">
+
+                <ImageView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_badge" />
+
+                <TextView
+                    android:id="@+id/view_product_brand"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="Medi White" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/view_divider_product_brand"
+                style="@style/AppTheme.DividerLine"
+                android:layout_width="match_parent" />
+
+            <org.sufficientlysecure.htmltextview.HtmlTextView
+                android:id="@+id/view_product_description"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                tools:text="@tools:sample/lorem/random"
+                tools:visibility="visible" />
 
             <TextView
-                android:id="@+id/view_product_brand"
-                android:layout_width="wrap_content"
+                android:id="@+id/view_product_show_more_description"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="+ Xem chi tiết"
                 android:textColor="@color/colorPrimary"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="Medi White"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/container_shop_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/view_divider_shop_info"
+                    style="@style/AppTheme.DividerFat"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/view_label_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Gian hàng trưng bày"
+                    android:textAllCaps="true"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
+                    tools:ignore="HardcodedText"/>
+
+                <TextView
+                    android:id="@+id/view_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_label_shop_name"
+                    tools:text="Công ty TNHH Mua đồ tốt" />
+
+                <TextView
+                    android:id="@+id/view_shop_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_shop_name"
+                    tools:text="Khu vực: HCM" />
+
+                <TextView
+                    android:id="@+id/view_shop_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg_button_stroked_rounded_rectangle"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:padding="8dp"
+                    android:text="Xem thêm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info" />
+
+                <View
+                    android:id="@+id/textView4"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_shop_region" />
+
+                <TextView
+                    android:id="@+id/view_shop_product_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toStartOf="@+id/view_shop_rating"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4"
+                    tools:text="54\nSản phẩm mới" />
+
+                <TextView
+                    android:id="@+id/view_shop_rating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view_shop_product_count"
+                    app:layout_constraintTop_toBottomOf="@+id/textView4"
+                    tools:text="5\nĐánh giá" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/bg_stroked_rounded_rectangle"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_shop_rating">
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/tv_shop_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        app:drawableStartCompat="@drawable/ic_phone_24dp"
+                        tools:text="Số điện thoại: 0985771135" />
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/tv_shop_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        app:drawableStartCompat="@drawable/ic_home_green_24dp"
+                        tools:text="Địa chỉ: 68 Dương Đình Nghệ, Cầu Giấy, Hà Nội" />
+                </LinearLayout>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/container_shop_sale_point"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="16dp"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/view_divider_shop_sale_point"
+                    style="@style/AppTheme.DividerFat"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    style="@style/AppTheme.SectionLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Điểm bán"
+                    app:layout_constraintEnd_toStartOf="@+id/view_shop_add_sale_point"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_sale_point" />
+
+                <TextView
+                    android:id="@+id/view_shop_add_sale_point"
+                    style="@style/AppTheme.MoreInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Thêm điểm bán"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/textView3"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_sale_point" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:text="Hỗ trợ thêm thông tin nhiều điểm bán - sản phẩm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_product_sale_point"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+                <TextView
+                    android:id="@+id/view_product_show_more_sale_point"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="Xem thêm điểm bán"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_product_sale_point" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/container_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/view_divider_comment"
+                    style="@style/AppTheme.DividerFat"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:text="Bình luận"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_comment" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:text="90 Thích"
+                    app:drawableStartCompat="@drawable/ic_heart_checked"
+                    app:layout_constraintEnd_toStartOf="@+id/view_product_comment_count"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_comment_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:text="10 bình luận"
+                    app:drawableStartCompat="@drawable/ic_comment"
+                    app:layout_constraintEnd_toStartOf="@+id/view_product_share_count"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view_product_like_count"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_share_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:text="10 chia sẻ"
+                    app:drawableStartCompat="@drawable/ic_share"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view_product_comment_count"
+                    app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+                <View
+                    android:id="@+id/textView13"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_comment_count" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/view_list_comments"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:clipToPadding="false"
+                    android:padding="@dimen/item_spacing"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+                <View
+                    android:id="@+id/view_divider_111"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_list_comments" />
+
+                <TextView
+                    android:id="@+id/view_product_show_more_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="Xem thêm bình luận"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_comment_community_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/linearLayout"
+                    android:layout_alignParentStart="true"
+                    android:background="@color/md_grey_200"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="@dimen/default_margin"
+                    android:paddingStart="@dimen/default_margin"
+                    android:paddingTop="8dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
+
+                <View
+                    android:id="@+id/view"
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:layout_marginTop="16dp"
+                    android:background="@color/divider_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_comment_community_image" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:background="@drawable/bg_boder"
+                    android:weightSum="2"
+                    app:layout_constraintTop_toBottomOf="@+id/view">
+
+                    <ImageView
+                        android:id="@+id/img_comment_gallery"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.2"
+                        android:scaleType="center"
+                        app:srcCompat="@drawable/ic_gallery" />
+
+                    <EditText
+                        android:id="@+id/edt_comment"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1.5"
+                        android:inputType="text"
+                        android:lines="1" />
+
+                    <ImageView
+                        android:id="@+id/img_comment_sent"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.3"
+                        android:scaleType="center"
+                        app:srcCompat="@android:drawable/ic_menu_send" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view2"
+                    android:layout_width="0dp"
+                    android:layout_height="1px"
+                    android:background="@color/divider_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/container_products_same_shop"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_banner">
+
+                <View
+                    android:id="@+id/view_divider_same_shop"
+                    style="@style/AppTheme.DividerFat"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/label_products_same_shop"
+                    style="@style/AppTheme.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sản phẩm cùng gian hàng"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop" />
+
+                <TextView
+                    android:id="@+id/more_products_same_shop"
+                    style="@style/AppTheme.MoreInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/view_list_products_same_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:clipToPadding="false"
+                    android:padding="@dimen/item_spacing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_products_same_shop" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/container_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_banner">
+
+                <View
+                    android:id="@+id/view_divider_favorite"
+                    style="@style/AppTheme.DividerFat"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/label_favorite"
+                    style="@style/AppTheme.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sản phẩm yêu thích"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite" />
+
+                <TextView
+                    android:id="@+id/more_favorite"
+                    style="@style/AppTheme.MoreInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/view_list_favorite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:clipToPadding="false"
+                    android:padding="@dimen/item_spacing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_favorite" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/container_viewed"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_banner">
+
+                <View
+                    android:id="@+id/view_divider_viewed"
+                    style="@style/AppTheme.DividerFat"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/label_viewed"
+                    style="@style/AppTheme.SectionLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sản phẩm đã xem"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed" />
+
+                <TextView
+                    android:id="@+id/more_viewed"
+                    style="@style/AppTheme.MoreInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Xem thêm"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/view_list_viewed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:clipToPadding="false"
+                    android:padding="@dimen/item_spacing"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/label_viewed" />
+
+            </android.support.constraint.ConstraintLayout>
+
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/view_divider_product_brand"
-            style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent"
-            />
+    </android.support.v4.widget.NestedScrollView>
 
-        <org.sufficientlysecure.htmltextview.HtmlTextView
-            android:id="@+id/view_product_description"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:paddingEnd="16dp"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            tools:text="@tools:sample/lorem/random"
-            tools:visibility="visible"
-            />
+    <LinearLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:orientation="horizontal"
+        android:weightSum="3">
 
-        <TextView
-            android:id="@+id/view_product_show_more_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="+ Xem chi tiết"
-            android:textColor="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_divider_111"
-            tools:ignore="HardcodedText"/>
+        <ImageView
+            android:id="@+id/view_shop_follow"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:foreground="?attr/selectableItemBackground"
+            app:srcCompat="@drawable/ic_heart_checked" />
 
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/container_shop_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            tools:visibility="visible">
+        <ImageView
+            android:id="@+id/view_shop_call"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:foreground="?attr/selectableItemBackground"
+            app:srcCompat="@drawable/ic_phone_24dp" />
 
-            <View
-                android:id="@+id/view_divider_shop_info"
-                style="@style/AppTheme.DividerFat"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/view_label_shop_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Gian hàng trưng bày"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
-                tools:ignore="HardcodedText"/>
-
-            <TextView
-                android:id="@+id/view_shop_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_label_shop_name"
-                tools:text="Công ty TNHH Mua đồ tốt"/>
-
-            <TextView
-                android:id="@+id/view_shop_region"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_shop_name"
-                tools:text="Khu vực: HCM"/>
-
-            <TextView
-                android:id="@+id/view_shop_detail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_button_stroked_rounded_rectangle"
-                android:foreground="?attr/selectableItemBackground"
-                android:padding="4dp"
-                android:text="Xem thêm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
-                tools:ignore="HardcodedText"/>
-
-            <View
-                android:id="@+id/textView4"
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="0dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_shop_region"/>
-
-            <TextView
-                android:id="@+id/view_shop_product_count"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                app:layout_constraintEnd_toStartOf="@+id/view_shop_rating"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                tools:text="54\nSản phẩm mới"/>
-
-            <TextView
-                android:id="@+id/view_shop_rating"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view_shop_product_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView4"
-                tools:text="5\nĐánh giá"/>
-
-            <View
-                android:id="@+id/textView7"
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="0dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_shop_product_count"/>
-
-            <LinearLayout
-                android:id="@+id/view_shop_call"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_button_stroked_rounded_rectangle"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view_shop_message"
-                app:layout_constraintTop_toBottomOf="@+id/textView7">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_phone_24dp"
-                    tools:ignore="ContentDescription"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center"
-                    android:text="Gọi điện"
-                    tools:ignore="HardcodedText"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/view_shop_message"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg_button_stroked_rounded_rectangle"
-                android:foreground="?attr/selectableItemBackground"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:padding="8dp"
-                app:layout_constraintEnd_toStartOf="@+id/view_shop_call"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    app:srcCompat="@drawable/ic_comment"
-                    tools:ignore="ContentDescription"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:gravity="center"
-                    android:text="Nhắn tin"
-                    tools:ignore="HardcodedText"/>
-
-            </LinearLayout>
-
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/container_comment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:visibility="visible">
-
-            <View
-                android:id="@+id/view_divider_comment"
-                style="@style/AppTheme.DividerFat"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center"
-                android:text="Bình luận"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_comment"
-                tools:ignore="HardcodedText"/>
-
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/view_product_like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="4dp"
-                android:text="90 Thích"
-                app:drawableStartCompat="@drawable/ic_heart"
-                app:layout_constraintEnd_toStartOf="@+id/view_product_comment_count"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
-                tools:ignore="HardcodedText"/>
-
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/view_product_comment_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="4dp"
-                android:text="10 bình luận"
-                app:drawableStartCompat="@drawable/ic_comment"
-                app:layout_constraintEnd_toStartOf="@+id/view_product_share_count"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view_product_like_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
-                tools:ignore="HardcodedText"/>
-
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/view_product_share_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:drawablePadding="4dp"
-                android:text="10 chia sẻ"
-                app:drawableStartCompat="@drawable/ic_share"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/view_product_comment_count"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
-                tools:ignore="HardcodedText"/>
-
-            <View
-                android:id="@+id/textView13"
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="0dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_product_comment_count"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/view_list_comments"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:clipToPadding="false"
-                android:padding="@dimen/item_spacing"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView13"/>
-
-            <View
-                android:id="@+id/view_divider_111"
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="0dp"
-                android:layout_marginTop="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_list_comments"/>
-
-            <TextView
-                android:id="@+id/view_product_show_more_comment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingBottom="8dp"
-                android:paddingTop="8dp"
-                android:text="Xem thêm bình luận"
-                android:textColor="@color/colorPrimary"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_111"
-                tools:ignore="HardcodedText"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_comment_community_image"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/linearLayout"
-                android:layout_alignParentStart="true"
-                android:background="@color/md_grey_200"
-                android:paddingBottom="8dp"
-                android:paddingEnd="@dimen/default_margin"
-                android:paddingStart="@dimen/default_margin"
-                android:paddingTop="8dp"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment"
-                tools:visibility="visible"/>
-
-            <View
-                android:id="@+id/view"
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_comment_community_image"/>
-
-            <LinearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:background="@drawable/bg_boder"
-                android:weightSum="2"
-                app:layout_constraintTop_toBottomOf="@+id/view">
-
-                <ImageView
-                    android:id="@+id/img_comment_gallery"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:scaleType="center"
-                    app:srcCompat="@drawable/ic_gallery"
-                    tools:ignore="ContentDescription"/>
-
-                <EditText
-                    android:id="@+id/edt_comment"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:inputType="text"
-                    android:lines="1"
-                    tools:ignore="LabelFor"/>
-
-                <ImageView
-                    android:id="@+id/img_comment_sent"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.3"
-                    android:scaleType="center"
-                    app:srcCompat="@android:drawable/ic_menu_send"
-                    tools:ignore="ContentDescription"/>
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/view2"
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="0dp"
-                android:background="@color/divider_line"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout"/>
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/container_products_same_shop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_banner">
-
-            <View
-                android:id="@+id/view_divider_same_shop"
-                style="@style/AppTheme.DividerFat"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/label_products_same_shop"
-                style="@style/AppTheme.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sản phẩm cùng gian hàng"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"
-                tools:ignore="HardcodedText"/>
-
-            <TextView
-                android:id="@+id/more_products_same_shop"
-                style="@style/AppTheme.MoreInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Xem thêm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop"
-                tools:ignore="HardcodedText"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/view_list_products_same_shop"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:clipToPadding="false"
-                android:padding="@dimen/item_spacing"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_products_same_shop"
-                />
-
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/container_favorite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_banner">
-
-            <View
-                android:id="@+id/view_divider_favorite"
-                style="@style/AppTheme.DividerFat"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/label_favorite"
-                style="@style/AppTheme.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sản phẩm yêu thích"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"
-                tools:ignore="HardcodedText"/>
-
-            <TextView
-                android:id="@+id/more_favorite"
-                style="@style/AppTheme.MoreInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Xem thêm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_favorite"
-                tools:ignore="HardcodedText"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/view_list_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:clipToPadding="false"
-                android:padding="@dimen/item_spacing"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_favorite"
-                />
-
-        </android.support.constraint.ConstraintLayout>
-
-        <android.support.constraint.ConstraintLayout
-            android:id="@+id/container_viewed"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_banner">
-
-            <View
-                android:id="@+id/view_divider_viewed"
-                style="@style/AppTheme.DividerFat"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/label_viewed"
-                style="@style/AppTheme.SectionLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sản phẩm đã xem"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"
-                tools:ignore="HardcodedText"/>
-
-            <TextView
-                android:id="@+id/more_viewed"
-                style="@style/AppTheme.MoreInfo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Xem thêm"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_divider_viewed"
-                tools:ignore="HardcodedText"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/view_list_viewed"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:clipToPadding="false"
-                android:padding="@dimen/item_spacing"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_viewed"
-                />
-
-        </android.support.constraint.ConstraintLayout>
-
-
+        <ImageView
+            android:id="@+id/view_shop_message"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:scaleType="center"
+            android:foreground="?attr/selectableItemBackground"
+            app:srcCompat="@drawable/ic_comment" />
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

@@ -35,12 +35,14 @@ import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
-import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
+import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
+import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
+import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointViewModel
-import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
@@ -108,5 +110,7 @@ interface AppComponent {
     fun inject(imageInventoryViewModel: ImageInventoryViewModel)
     fun inject(memberInfoViewModel: MemberInfoViewModel)
     fun inject(memberViewModel: MemberViewModel)
+    fun inject(registerBoothViewModel: RegisterBoothViewModel)
+    fun inject(productSalePointViewModel: ProductSalePointViewModel)
     fun inject(myQrViewModel: MyQrViewModel)
 }

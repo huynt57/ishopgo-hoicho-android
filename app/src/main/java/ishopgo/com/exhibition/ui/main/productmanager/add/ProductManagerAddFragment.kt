@@ -25,6 +25,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -32,6 +33,7 @@ import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
+import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
@@ -43,8 +45,14 @@ class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private val adapterBrands = BrandsAdapter()
     private val adapterProvider = ProviderAdapter()
+    private val adapterCategory = CategoryAdapter()
+    private val adapterCategory_1 = CategoryAdapter()
+    private val adapterCategory_2 = CategoryAdapter()
+    private val adapterCategory_3 = CategoryAdapter()
+    private val adapterCategory_4 = CategoryAdapter()
     private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
+    private var listCategory = ArrayList<Category>()
 
     private var reloadBrands = false
     private var reloadProvider = false
@@ -54,8 +62,8 @@ class ProductManagerAddFragment : BaseFragment() {
     private var status: Int = STATUS_DISPLAY_SHOW
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var image: String = ""
-    private var brand_id: String = ""
-    private var provider_id: String = ""
+    private var brand_id: Long = 0L
+    private var provider_id: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
     private var listProductRelated: ArrayList<ProductManagerProvider> = ArrayList()
@@ -69,6 +77,12 @@ class ProductManagerAddFragment : BaseFragment() {
         const val STATUS_FEAUTURED: Int = 1 //Sp nổi bật
         const val STATUS_NOT_FEAUTURED: Int = 0 //Sp bình thường
         var CASE_PICK_IMAGE: Boolean = true // true = Ảnh sản phẩm, false = Nhiều ảnh
+
+        const val CATEGORY_LEVEL_PARENT: Int = 0
+        const val CATEGORY_LEVEL_1: Int = 1
+        const val CATEGORY_LEVEL_2: Int = 2
+        const val CATEGORY_LEVEL_3: Int = 3
+        const val CATEGORY_LEVEL_4: Int = 4
 
         fun newInstance(params: Bundle): ProductManagerAddFragment {
             val fragment = ProductManagerAddFragment()
@@ -134,14 +148,21 @@ class ProductManagerAddFragment : BaseFragment() {
         sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
 
         btn_product_add.setOnClickListener {
-            if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_title.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString())) {
+            if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                            edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
                 showProgressDialog()
-                viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.text.toString(),
-                        edit_product_price.text.toString(), edit_product_provider_price.text.toString(), edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money ?:0,
+                        edit_product_price?.money ?:0, edit_product_provider_price.money ?:0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
                         image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                        edit_product_tag.text.toString(), null, listProductRelated, feautured)
+                        edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
             }
         }
+
+        edt_product_categories.setOnClickListener { getCategory(edt_product_categories, CATEGORY_LEVEL_PARENT) }
+        edt_product_categories_1.setOnClickListener { getCategory(edt_product_categories_1, CATEGORY_LEVEL_1) }
+        edt_product_categories_2.setOnClickListener { getCategory(edt_product_categories_2, CATEGORY_LEVEL_2) }
+        edt_product_categories_3.setOnClickListener { getCategory(edt_product_categories_3, CATEGORY_LEVEL_3) }
+        edt_product_categories_4.setOnClickListener { getCategory(edt_product_categories_4, CATEGORY_LEVEL_4) }
 
         setupImageRecycleview()
     }
@@ -207,10 +228,41 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         })
 
+        viewModel.categories.observe(this, Observer { p ->
+            p?.let {
+                adapterCategory.replaceAll(it)
+            }
+        })
+
+        viewModel.childCategories.observe(this, Observer { p ->
+            p?.let {
+                adapterCategory_1.replaceAll(it)
+            }
+        })
+
+        viewModel.childCategories_1.observe(this, Observer { p ->
+            p?.let {
+                adapterCategory_2.replaceAll(it)
+            }
+        })
+
+        viewModel.childCategories_2.observe(this, Observer { p ->
+            p?.let {
+                adapterCategory_3.replaceAll(it)
+            }
+        })
+
+        viewModel.childCategories_3.observe(this, Observer { p ->
+            p?.let {
+                adapterCategory_4.replaceAll(it)
+            }
+        })
+
         reloadBrands = true
         reloadProvider = true
 
         firstLoadBrand()
+        firstLoadCategory()
         firstLoadProvider()
         firstLoadProductRelated()
     }
@@ -267,6 +319,14 @@ class ProductManagerAddFragment : BaseFragment() {
         viewModel.loadData(loadMore)
     }
 
+    private fun firstLoadCategory() {
+        viewModel.loadCategories()
+    }
+
+    private fun firstLoadCategoryChild(category: Category, level: Int) {
+        viewModel.loadChildCategory(category, level)
+    }
+
     private fun launchPickPhotoIntent() {
         val intent = Intent()
         intent.type = "image/*"
@@ -305,11 +365,163 @@ class ProductManagerAddFragment : BaseFragment() {
                 override fun click(position: Int, data: Brand, code: Int) {
                     context?.let {
                         dialog.dismiss()
+                        brand_id = data.id
                         view.text = data.name ?: ""
                         view.error = null
                     }
                 }
             }
+            dialog.show()
+        }
+    }
+
+    private fun getCategory(view: TextView, level: Int) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn danh mục")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_search.layoutManager = layoutManager
+
+            if (level == CATEGORY_LEVEL_PARENT) {
+                rv_search.adapter = adapterCategory
+                adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                        context?.let {
+                            dialog.dismiss()
+                            view.text = data.provideName()
+                            view.error = null
+                            if (data is Category) {
+                                listCategory.clear()
+                                firstLoadCategoryChild(data, CATEGORY_LEVEL_1)
+                                listCategory.add(data)
+                                til_category_1.visibility = View.VISIBLE
+                                edt_product_categories_1.setText("")
+                                til_category_2.visibility = View.GONE
+                                edt_product_categories_2.setText("")
+                                til_category_3.visibility = View.GONE
+                                edt_product_categories_3.setText("")
+                                til_category_4.visibility = View.GONE
+                                edt_product_categories_4.setText("")
+                            }
+                        }
+                    }
+                }
+            }
+            if (level == CATEGORY_LEVEL_1) {
+                rv_search.adapter = adapterCategory_1
+                adapterCategory_1.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                        context?.let {
+                            dialog.dismiss()
+                            if (listCategory.size >= 2)
+                                for (i in 1 until listCategory.size) {
+                                    if (i == 1)
+                                        listCategory.removeAt(i)
+                                    if (i == 2)
+                                        listCategory.removeAt(i - 1)
+                                    if (i == 3)
+                                        listCategory.removeAt(i - 2)
+                                    if (i == 4)
+                                        listCategory.removeAt(i - 3)
+                                }
+                            view.text = data.provideName()
+                            view.error = null
+                            if (data is Category) {
+                                firstLoadCategoryChild(data, CATEGORY_LEVEL_2)
+                                listCategory.add(data)
+                                til_category_2.visibility = View.VISIBLE
+                                edt_product_categories_2.setText("")
+                                til_category_3.visibility = View.GONE
+                                edt_product_categories_3.setText("")
+                                til_category_4.visibility = View.GONE
+                                edt_product_categories_4.setText("")
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (level == CATEGORY_LEVEL_2) {
+                rv_search.adapter = adapterCategory_2
+                adapterCategory_2.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                        context?.let {
+                            dialog.dismiss()
+                            if (listCategory.size >= 3)
+                                for (i in 2 until listCategory.size) {
+                                    if (i == 2)
+                                        listCategory.removeAt(i)
+                                    if (i == 3)
+                                        listCategory.removeAt(i - 1)
+                                    if (i == 4)
+                                        listCategory.removeAt(i - 2)
+                                }
+                            view.text = data.provideName()
+                            view.error = null
+                            if (data is Category) {
+                                firstLoadCategoryChild(data, CATEGORY_LEVEL_3)
+                                listCategory.add(data)
+                                til_category_3.visibility = View.VISIBLE
+                                edt_product_categories_3.setText("")
+                                til_category_4.visibility = View.GONE
+                                edt_product_categories_4.setText("")
+                            }
+                        }
+                    }
+                }
+            }
+            if (level == CATEGORY_LEVEL_3) {
+                rv_search.adapter = adapterCategory_3
+                adapterCategory_3.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                        context?.let {
+                            dialog.dismiss()
+                            if (listCategory.size >= 4)
+                                for (i in 3 until listCategory.size) {
+                                    if (i == 3)
+                                        listCategory.removeAt(i)
+                                    if (i == 4)
+                                        listCategory.removeAt(i - 1)
+                                }
+                            view.text = data.provideName()
+                            view.error = null
+                            if (data is Category) {
+                                firstLoadCategoryChild(data, CATEGORY_LEVEL_4)
+                                listCategory.add(data)
+                                til_category_4.visibility = View.VISIBLE
+                                edt_product_categories_4.setText("")
+                            }
+                        }
+                    }
+                }
+            }
+            if (level == CATEGORY_LEVEL_4) {
+                rv_search.adapter = adapterCategory_4
+                adapterCategory_4.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                        context?.let {
+                            dialog.dismiss()
+                            view.text = data.provideName()
+                            view.error = null
+                            if (data is Category) {
+                                listCategory.add(data)
+                            }
+                        }
+                    }
+                }
+            }
+
             dialog.show()
         }
     }
@@ -343,6 +555,7 @@ class ProductManagerAddFragment : BaseFragment() {
                 override fun click(position: Int, data: Provider, code: Int) {
                     context?.let {
                         dialog.dismiss()
+                        provider_id = data.id
                         view.text = data.name ?: ""
                         view.error = null
                     }
@@ -473,7 +686,7 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
-    private fun checkRequireFields(image: String, name: String, title: String, price: String, code: String): Boolean {
+    private fun checkRequireFields(image: String, name: String, price: String, code: String, category: String, provider: String, brand: String): Boolean {
         if (image.trim().isEmpty()) {
             toast("Ảnh sản phẩm không được để trống")
             return false
@@ -486,12 +699,12 @@ class ProductManagerAddFragment : BaseFragment() {
             return false
         }
 
-        if (title.trim().isEmpty()) {
-            toast("Tiêu đề không được để trống")
-            edit_product_title.error = getString(R.string.error_field_required)
-            requestFocusEditText(edit_product_title)
-            return false
-        }
+//        if (title.trim().isEmpty()) {
+//            toast("Tiêu đề không được để trống")
+//            edit_product_title.error = getString(R.string.error_field_required)
+//            requestFocusEditText(edit_product_title)
+//            return false
+//        }
 
         if (price.trim().isEmpty()) {
             toast("Giá bản lẻ không được để trống")
@@ -504,6 +717,27 @@ class ProductManagerAddFragment : BaseFragment() {
             toast("Mã sản phẩm không được để trống")
             edit_product_code.error = getString(R.string.error_field_required)
             requestFocusEditText(edit_product_code)
+            return false
+        }
+
+        if (category.trim().isEmpty()) {
+            toast("Danh mục không được để trống")
+            edt_product_categories.error = getString(R.string.error_field_required)
+            edt_product_categories.requestFocus()
+            return false
+        }
+
+        if (provider.trim().isEmpty()) {
+            toast("Nhà cung cấp không được để trống")
+            edit_product_provider.error = getString(R.string.error_field_required)
+            edit_product_provider.requestFocus()
+            return false
+        }
+
+        if (brand.trim().isEmpty()) {
+            toast("Thương hiệu không được để trống")
+            edit_product_brand.error = getString(R.string.error_field_required)
+            edit_product_brand.requestFocus()
             return false
         }
         return true

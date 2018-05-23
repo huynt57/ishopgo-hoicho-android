@@ -7,11 +7,14 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
+import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
-import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.model.ProductLike
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
@@ -187,6 +190,48 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var postFollow = MutableLiveData<ProductFollow>()
+
+    fun postProductFollow(productId: Long) {
+        val fields = mutableMapOf<String, Any>()
+        fields["id"] = productId
+        addDisposable(authService.postProductPollow(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<ProductFollow>() {
+                    override fun success(data: ProductFollow?) {
+                        postFollow.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var productSalePoint = MutableLiveData<List<ProductSalePoint>>()
+
+    fun getProductSalePoint(params: Request) {
+        if (params is ProductSalePointRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+
+            addDisposable(authService.getProductSalePoint(params.productId, fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<List<ProductSalePoint>>() {
+                        override fun success(data: List<ProductSalePoint>?) {
+                            productSalePoint.postValue(data ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
+    }
+
     @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
@@ -223,5 +268,67 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     }
                 })
         )
+    }
+
+    var createSalePointSuccess = MutableLiveData<Boolean>()
+
+    fun createProductSalePoint(productId: Long, price: String, phone: String, name: String, city: String, district: String, address: String) {
+        val fields = mutableMapOf<String, Any>()
+        fields["product_id"] = productId
+        fields["price"] = price
+        fields["phone"] = phone
+        fields["name"] = name
+        fields["city"] = city
+        fields["district"] = district
+        fields["address"] = address
+
+        addDisposable(authService.createProductSalePoint(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createSalePointSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var loadRegion = MutableLiveData<MutableList<Region>>()
+
+    fun loadRegion() {
+        addDisposable(isgService.getRegions()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
+                    override fun success(data: MutableList<Region>?) {
+                        loadRegion.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+
+    var loadDistrict = MutableLiveData<MutableList<District>>()
+
+    fun loadDistrict(province_id: String) {
+        val fields = mutableMapOf<String, Any>()
+        fields["province_id"] = province_id
+
+        addDisposable(isgService.getDistricts(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<District>>() {
+                    override fun success(data: MutableList<District>?) {
+                        loadDistrict.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 }

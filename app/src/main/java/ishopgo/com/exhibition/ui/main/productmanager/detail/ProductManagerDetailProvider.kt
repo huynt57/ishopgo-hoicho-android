@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.productmanager.detail
 
 import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
 
@@ -21,6 +22,7 @@ interface ProductManagerDetailProvider {
     fun provideProviderAccount(): Provider?
     fun provideImages(): List<String>
     fun provideDepartments(): List<Brand>?
+    fun provideCategory(): List<Category>?
     fun provideLink(): String
     fun provideIsFeatured(): Boolean
 

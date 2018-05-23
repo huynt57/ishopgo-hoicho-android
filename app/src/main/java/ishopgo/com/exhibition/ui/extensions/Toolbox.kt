@@ -14,7 +14,6 @@ import org.apache.commons.io.IOUtils
 import java.io.Closeable
 import java.io.File
 import java.io.IOException
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -57,24 +56,6 @@ object Toolbox {
         }
 
         return isExceed
-    }
-
-    fun formatApiDateTime(apiTime: String): String {
-        try {
-            return Toolbox.displayDateTimeFormat.format(apiDateFormat.parse(apiTime))
-        } catch (e: ParseException) {
-            return apiTime
-        }
-
-    }
-
-    fun formatApiDate(apiTime: String): String {
-        try {
-            return Toolbox.displayDateFormat.format(apiDateFormat.parse(apiTime))
-        } catch (e: ParseException) {
-            return apiTime
-        }
-
     }
 
     @Throws(IOException::class)

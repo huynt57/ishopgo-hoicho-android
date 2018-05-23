@@ -10,6 +10,10 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
+    override fun provideShopAddress(): String {
+        return "${booth?.address}, ${booth?.district}, ${booth?.city}"
+    }
+
     override fun provideLiked(): Boolean {
         return liked == 1
     }
@@ -71,6 +75,11 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
         return shares
     }
 
+    override fun provideFollowed(): Boolean {
+        return booth?.isFollowed() ?: false
+    }
+
+
     @SerializedName("title")
     @Expose
     var title: String? = null
@@ -104,6 +113,9 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("liked")
     @Expose
     var liked: Int = 0
+    @SerializedName("followed")
+    @Expose
+    var followed: Int = 0
     @SerializedName("comments")
     @Expose
     var comments: Int = 0
@@ -116,5 +128,4 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("link_affiliate")
     @Expose
     var linkAffiliate: String? = null
-
 }

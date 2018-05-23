@@ -11,6 +11,10 @@ import ishopgo.com.exhibition.ui.main.shop.rate.ShopRateProvider
  * Created by xuanhong on 5/3/18. HappyCoding!
  */
 class ShopRate : IdentityData(), ShopRateProvider {
+    override fun provideRating(): Float {
+        return ratePoint?.toFloat() ?: 0.0F
+    }
+
     override fun provideName(): String {
         val name = account?.name
         return if (name.isNullOrBlank()) "Người dùng ẩn danh" else name!!
