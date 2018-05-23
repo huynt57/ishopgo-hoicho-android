@@ -101,13 +101,15 @@ class ShopDetailFragment : BaseFragment() {
 
         viewModel.shopId.observe(this, Observer { i ->
             i?.let {
-                if (UserDataManager.currentUserId == it)
+                if (UserDataManager.currentUserId == it) {
+                    tv_edit_image.visibility = View.VISIBLE
                     view_image.setOnClickListener {
                         val intent = Intent()
                         intent.type = "image/*"
                         intent.action = Intent.ACTION_GET_CONTENT
                         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
                     }
+                } else tv_edit_image.visibility = View.GONE
             }
         })
 

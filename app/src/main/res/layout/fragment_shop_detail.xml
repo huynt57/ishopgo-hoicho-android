@@ -35,6 +35,20 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/image_placeholder" />
 
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/tv_edit_image"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Chỉnh sửa"
+                    android:drawablePadding="8dp"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="@drawable/custom_edit_image"
+                    app:drawableStartCompat="@drawable/ic_edit_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_image"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
             </android.support.constraint.ConstraintLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>
