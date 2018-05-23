@@ -82,10 +82,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
         ratingBar.setOnRatingBarChangeListener { _, rating, _ ->
-            if (UserDataManager.currentUserId > 0) showDialogRating(rating) else {
-                toast("Bạn vui lòng đăng nhập để sử dụng tính năng này")
-                ratingBar.rating = 0.0F
-            }
+            if (UserDataManager.currentUserId > 0) showDialogRating(rating) else ratingBar.visibility=View.GONE
         }
     }
 
@@ -100,14 +97,12 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
                         val ratingBar_dialog = dialog.findViewById(R.id.ratingBar) as RatingBar
                         if (checkRequireFields(edit_shop_rating)) {
                             (viewModel as RateViewModel).createProductSalePoint(shopId, edit_shop_rating.text.toString(), ratingBar_dialog.numStars)
-                            ratingBar.rating = 0.0F
                             dialog.dismiss()
                         }
                     }
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ ->
                         dialog.dismiss()
-                        ratingBar.rating = 0.0F
                     }
                     .autoDismiss(false)
                     .canceledOnTouchOutside(false)

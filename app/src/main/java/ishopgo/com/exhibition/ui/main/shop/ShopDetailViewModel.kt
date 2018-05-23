@@ -39,12 +39,15 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var editSusscess = MutableLiveData<Boolean>()
 
 
-    fun editConfigBooth(name: String, image: String) {
+    fun editConfigBooth(name: String, description:String, image: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
 
         if (name != "")
             builder.addFormDataPart("name", name)
+
+        if (description != "")
+            builder.addFormDataPart("introduction", description)
 
         var imagePart: MultipartBody.Part? = null
 

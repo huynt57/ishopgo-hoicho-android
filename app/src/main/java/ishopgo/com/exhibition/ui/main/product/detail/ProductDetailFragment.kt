@@ -158,7 +158,7 @@ class ProductDetailFragment : BaseFragment() {
             p.let {
                 if (it?.status ?: 0 == 1) {
                     Glide.with(context)
-                            .load(R.drawable.ic_heart_checked)
+                            .load(R.drawable.ic_heart)
                             .apply(RequestOptions()
                                     .placeholder(R.drawable.image_placeholder)
                                     .error(R.drawable.image_placeholder))
@@ -167,7 +167,7 @@ class ProductDetailFragment : BaseFragment() {
                     toast("Theo dõi gian hàng thành công")
                 } else {
                     Glide.with(context)
-                            .load(R.drawable.ic_heart)
+                            .load(R.drawable.ic_heart_checked)
                             .apply(RequestOptions()
                                     .placeholder(R.drawable.image_placeholder)
                                     .error(R.drawable.image_placeholder))
@@ -255,7 +255,7 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             Glide.with(context)
-                    .load(if (product.provideFollowed()) R.drawable.ic_heart_checked else R.drawable.ic_heart)
+                    .load(if (product.provideFollowed()) R.drawable.ic_heart else R.drawable.ic_heart_checked)
                     .apply(RequestOptions()
                             .placeholder(R.drawable.image_placeholder)
                             .error(R.drawable.image_placeholder))
