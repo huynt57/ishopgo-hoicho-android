@@ -352,6 +352,9 @@ class ApiService {
         fun inbox_addMemberGroup(
                 @FieldMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
+
+        @GET("find-info")
+        fun getUserByPhone(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PhoneInfo>>
     }
 
 }

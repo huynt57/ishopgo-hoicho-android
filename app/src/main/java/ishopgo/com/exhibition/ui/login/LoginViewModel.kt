@@ -4,10 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.Region
-import ishopgo.com.exhibition.model.User
-import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import okhttp3.MultipartBody
 
@@ -20,6 +17,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var getOTP = MutableLiveData<Boolean>()
     var changNewPassword = MutableLiveData<Boolean>()
     var loadRegion = MutableLiveData<MutableList<Region>>()
+    var getUserByPhone = MutableLiveData<PhoneInfo>()
 
 
     override fun inject(appComponent: AppComponent) {
@@ -120,6 +118,22 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
                     override fun success(data: MutableList<Region>?) {
                         loadRegion.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    fun loadUserByPhone(phone:String) {
+        val fields = mutableMapOf<String, Any>()
+        fields["phone"] = phone
+        addDisposable(isgService.getUserByPhone(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<PhoneInfo>() {
+                    override fun success(data: PhoneInfo?) {
+                        getUserByPhone.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {
