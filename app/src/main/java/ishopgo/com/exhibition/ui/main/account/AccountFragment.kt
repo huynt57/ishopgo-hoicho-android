@@ -270,6 +270,7 @@ class AccountFragment : BaseFragment() {
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
+                activity?.finishAffinity()
             }
         })
 

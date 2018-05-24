@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.base
 import android.app.ProgressDialog
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -10,10 +11,12 @@ import android.support.v4.app.Fragment
 import android.widget.TextView
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
-import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
 import ishopgo.com.exhibition.domain.BaseErrorSignal
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 
 /**
  * @author Steve
@@ -65,6 +68,10 @@ open class BaseFragment : Fragment() {
                 }
                 BaseErrorSignal.ERROR_401 -> {
                     Toast.makeText(it, "Xin vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(it, LoginSelectOptionActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                    it.startActivity(intent)
 
                     it.finish()
                     it.finishAffinity()

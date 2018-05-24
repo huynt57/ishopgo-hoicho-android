@@ -2,11 +2,27 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
  */
-class LocalConversationItem {
+class LocalConversationItem : InboxProvider {
+    override fun provideName(): String {
+        return name ?: ""
+    }
+
+    override fun provideAvatar(): String {
+        return image ?: ""
+    }
+
+    override fun provideMessage(): String {
+        return content ?: ""
+    }
+
+    override fun provideTime(): String {
+        return time ?: ""
+    }
 
     @SerializedName("id")
     @Expose
