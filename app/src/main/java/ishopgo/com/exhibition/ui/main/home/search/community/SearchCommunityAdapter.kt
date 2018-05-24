@@ -12,8 +12,9 @@ import ishopgo.com.exhibition.ui.community.CommunityImageAdapter
 import ishopgo.com.exhibition.ui.community.CommunityProvider
 import kotlinx.android.synthetic.main.item_community.view.*
 
-class SearchCommunityAdapter (var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
+class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
     companion object {
+        const val COMMUNITY_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
@@ -44,39 +45,38 @@ class SearchCommunityAdapter (var itemWidthRatio: Float = -1f, var itemHeightRat
     override fun onBindViewHolder(holder: ViewHolder<CommunityProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
 
-        holder.itemView.setOnClickListener {
-            holder.apply {
-                if (UserDataManager.currentUserId > 0) {
-                    itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
-                }
-                itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
-                itemView.cv_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
-                itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
-                itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
-
-                if (UserDataManager.currentUserId > 0) {
-                    itemView.toggle_community_like.setOnClickListener {
-                        if (itemView.toggle_community_like.isChecked) {
-                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
-                            } else {
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
-                            }
-                        } else
-                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
-                            } else {
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
-                            }
-
-                        listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK)
-                    }
-                } else itemView.toggle_community_like.isEnabled = false
+        holder.apply {
+            if (UserDataManager.currentUserId > 0) {
+                itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
             }
+            itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
+            itemView.cv_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
+            itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
+            itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_CLICK) }
+
+            if (UserDataManager.currentUserId > 0) {
+                itemView.toggle_community_like.setOnClickListener {
+                    if (itemView.toggle_community_like.isChecked) {
+                        if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
+                            itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                            itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                        } else {
+                            itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                            itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                        }
+                    } else
+                        if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
+                            itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                            itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                        } else {
+                            itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                            itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                        }
+
+                    listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK)
+                }
+            } else itemView.toggle_community_like.isEnabled = false
         }
     }
 
