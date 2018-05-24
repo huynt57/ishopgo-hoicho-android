@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.inbox
 
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
-import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -39,7 +38,7 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
         val request = LoadMoreRequest()
         request.offset = currentCount
         request.limit = Const.PAGE_LIMIT
-        viewModel.loadData(Request())
+        viewModel.loadData(request)
     }
 
 }

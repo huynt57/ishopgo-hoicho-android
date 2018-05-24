@@ -51,7 +51,7 @@ class ChatFragment : BaseFragment(), BackpressConsumable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        fragmentManager?.let {
+        childFragmentManager.let {
             mSectionsPagerAdapter = LocalPagerAdapter(it)
             view_pager.setPagingEnabled(true)
             view_pager.offscreenPageLimit = view_tab_layout.tabCount

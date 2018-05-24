@@ -19,8 +19,8 @@ class ContactViewModel : BaseListViewModel<List<ContactProvider>>(), AppComponen
     override fun loadData(params: Request) {
         if (params is LoadMoreRequest) {
             val fields = HashMap<String, Any>()
-            fields.put("offset", params.offset)
-            fields.put("limit", params.limit)
+            fields["offset"] = params.offset
+            fields["limit"] = params.limit
 
             addDisposable(isgService.inbox_getContact(fields)
                     .subscribeOn(Schedulers.single())
@@ -43,8 +43,11 @@ class ContactViewModel : BaseListViewModel<List<ContactProvider>>(), AppComponen
 
                                 })
 
-                            dataReturned.postValue(dummy)
-//                        dataReturned.postValue(data ?: mutableListOf())
+                            val list = mutableListOf<ContactProvider>()
+                            data?.let { list.addAll(it) }
+                            list.addAll(dummy)
+
+                            dataReturned.postValue(list)
                         }
 
                         override fun failure(status: Int, message: String) {

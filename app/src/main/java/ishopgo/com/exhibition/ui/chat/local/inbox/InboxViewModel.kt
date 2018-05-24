@@ -43,8 +43,11 @@ class InboxViewModel : BaseListViewModel<List<InboxProvider>>(), AppComponent.In
 
                                 })
 
-                            dataReturned.postValue(dummy)
-//                            dataReturned.postValue(data ?: listOf())
+                            val list = mutableListOf<InboxProvider>()
+                            data?.let { list.addAll(it) }
+                            list.addAll(dummy)
+
+                            dataReturned.postValue(list)
                         }
 
                         override fun failure(status: Int, message: String) {

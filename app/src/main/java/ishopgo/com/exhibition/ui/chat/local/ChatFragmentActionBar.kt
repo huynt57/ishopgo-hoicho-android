@@ -31,7 +31,7 @@ class ChatFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ChatFragment())
+                .replace(R.id.view_main_content, ChatFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
 
