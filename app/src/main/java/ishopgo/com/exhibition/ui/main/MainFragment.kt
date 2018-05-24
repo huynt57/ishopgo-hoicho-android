@@ -18,6 +18,8 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.chat.local.ChatFragment
+import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
+import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
@@ -71,6 +73,17 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 showSearch()
             }
         })
+        viewModel.enableSearchInbox.observe(this, Observer {
+            if (it == true) {
+                showSearchInbox()
+            }
+        })
+        viewModel.enableSearchContact.observe(this, Observer {
+            if (it == true) {
+                showSearchContact()
+            }
+        })
+
         viewModel.showCategoriedProducts.observe(this, Observer { s ->
             s?.let {
                 if (it is Category) {
@@ -93,6 +106,28 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                     .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
                     .add(R.id.content_main_container, SearchFragment(), SearchFragment.TAG)
                     .addToBackStack(SearchFragment.TAG)
+                    .commit()
+        }
+    }
+
+    private fun showSearchInbox() {
+        val fragment = childFragmentManager.findFragmentByTag(SearchInboxFragment.TAG)
+        if (fragment == null) {
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
+                    .add(R.id.content_main_container, SearchInboxFragment(), SearchInboxFragment.TAG)
+                    .addToBackStack(SearchInboxFragment.TAG)
+                    .commit()
+        }
+    }
+
+    private fun showSearchContact() {
+        val fragment = childFragmentManager.findFragmentByTag(SearchContactFragment.TAG)
+        if (fragment == null) {
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
+                    .add(R.id.content_main_container, SearchContactFragment(), SearchContactFragment.TAG)
+                    .addToBackStack(SearchContactFragment.TAG)
                     .commit()
         }
     }

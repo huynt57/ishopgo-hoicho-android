@@ -27,7 +27,6 @@ class ChatFragmentActionBar : BaseActionBarFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setupToolbars()
 
         childFragmentManager.beginTransaction()

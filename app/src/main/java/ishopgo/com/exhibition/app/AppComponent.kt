@@ -6,12 +6,14 @@ import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.domain.db.MessageRepository
 import ishopgo.com.exhibition.ui.chat.local.ChatViewModel
 import ishopgo.com.exhibition.ui.chat.local.contact.ContactViewModel
+import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactViewModel
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationSharedViewModel
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationViewModel
 import ishopgo.com.exhibition.ui.chat.local.conversation.pattern.PatternChooserViewModel
 import ishopgo.com.exhibition.ui.chat.local.group.addmember.MemberViewModel
 import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryViewModel
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxViewModel
+import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxViewModel
 import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
@@ -119,4 +121,6 @@ interface AppComponent {
     fun inject(chatViewModel: ChatViewModel)
     fun inject(inboxViewModel: InboxViewModel)
     fun inject(contactViewModel: ContactViewModel)
+    fun inject(searchInboxViewModel: SearchInboxViewModel)
+    fun inject(searchContactViewModel: SearchContactViewModel)
 }
