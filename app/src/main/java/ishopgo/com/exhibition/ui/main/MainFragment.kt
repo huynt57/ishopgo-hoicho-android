@@ -15,6 +15,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.chat.local.ChatFragment
@@ -22,6 +23,7 @@ import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.login.require.RequireLoginFragment
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
@@ -229,7 +231,10 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                     ScanFragmentActionBar.newInstance(Bundle())
                 }
                 TAB_CHAT -> {
-                    ChatFragment.newInstance(Bundle())
+                    if (UserDataManager.currentUserId > 0)
+                        ChatFragment.newInstance(Bundle())
+                    else
+                        RequireLoginFragment()
                 }
                 TAB_ACCOUNT -> {
                     AccountFragmentActionBar.newInstance(Bundle())
