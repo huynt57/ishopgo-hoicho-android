@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
+import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
@@ -37,9 +38,9 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
 
             addDisposable(noAuthService.getCommunity(fields)
                     .subscribeOn(Schedulers.io())
-                    .subscribeWith(object : BaseSingleObserver<List<Community>>() {
-                        override fun success(data: List<Community>?) {
-                            dataReturned.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
+                        override fun success(data: ManagerCommunity?) {
+                            dataReturned.postValue(data?.post ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {

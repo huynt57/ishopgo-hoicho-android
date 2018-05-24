@@ -59,6 +59,7 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
 
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
+        view_pager.offscreenPageLimit = 3
         view_pager.adapter = ResultAdapter(childFragmentManager)
 
         view_search_field.addTextChangedListener(object : TextWatcher {

@@ -6,6 +6,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.community.Community
+import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.community.CommunityProvider
 
@@ -24,9 +25,9 @@ class SearchCommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), A
 
             addDisposable(noAuthService.getCommunity(fields)
                     .subscribeOn(Schedulers.io())
-                    .subscribeWith(object : BaseSingleObserver<List<Community>>() {
-                        override fun success(data: List<Community>?) {
-                            dataReturned.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
+                        override fun success(data: ManagerCommunity?) {
+                            dataReturned.postValue(data?.post ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {

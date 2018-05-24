@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
+import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.post.PostCategory
 import ishopgo.com.exhibition.model.post.PostContent
@@ -94,7 +95,7 @@ class ApiService {
         @GET("community")
         fun getCommunity(
                 @QueryMap fields: MutableMap<String, Any>
-        ): Single<BaseResponse<List<Community>>>
+        ): Single<BaseResponse<ManagerCommunity>>
 
 
         @GET("community/list-comment/{id}")

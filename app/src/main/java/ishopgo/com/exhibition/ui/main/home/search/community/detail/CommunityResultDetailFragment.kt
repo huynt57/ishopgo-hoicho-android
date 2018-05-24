@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -67,10 +68,11 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
         img_comment_sent.setOnClickListener {
-            if (checkRequireFields(edt_comment.text.toString())) {
-                showProgressDialog()
-                viewModel.postCommentCommunity(data.id, edt_comment.text.toString(), postMedias)
-            }
+            if (UserDataManager.currentUserId > 0)
+                if (checkRequireFields(edt_comment.text.toString())) {
+                    showProgressDialog()
+                    viewModel.postCommentCommunity(data.id, edt_comment.text.toString(), postMedias)
+                } else showDiglogLogin()
         }
 
         swipe.setOnRefreshListener(this)
@@ -89,7 +91,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         val loadMore = LoadMoreCommunityRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.last_id = last_id
-        viewModel.loadData(loadMore)
+        viewModel.loadCommentCommunity(data.id, 0, loadMore)
     }
 
     private fun checkRequireFields(content: String): Boolean {
@@ -293,7 +295,12 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         })
         reloadData = true
         swipe.isRefreshing = true
-        firstLoad()
+
+        if (UserDataManager.currentUserId > 0){
+            firstLoad()
+            include_content.visibility = View.VISIBLE
+        }
+        else include_content.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

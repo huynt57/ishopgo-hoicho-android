@@ -56,7 +56,9 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
 
     override fun populateData(data: List<CommunityProvider>) {
         if (data.isNotEmpty()) {
-            last_id = data[data.size - 1].providerId()
+            val community = data[data.size - 1]
+            if (community is Community)
+                last_id = community.id
         }
 
         if (reloadData) {
@@ -101,14 +103,14 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
                 override fun click(position: Int, data: CommunityProvider, code: Int) {
                     when (code) {
                         COMMUNITY_CLICK -> {
-                            if (data is Community){
+                            if (data is Community) {
                                 val intent = Intent(context, CommunityResultDetailActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                                 startActivity(intent)
                             }
                         }
                         else -> {
-                            if (data is Community){
+                            if (data is Community) {
                                 val intent = Intent(context, CommunityResultDetailActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                                 startActivity(intent)

@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.User
+import ishopgo.com.exhibition.model.community.ManagerCommunity
 import okhttp3.RequestBody
 import retrofit2.http.QueryMap
 import retrofit2.mock.BehaviorDelegate
@@ -150,7 +151,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return c
     }
 
-    override fun getCommunity(fields: MutableMap<String, Any>): Single<BaseResponse<List<Community>>> {
+    override fun getCommunity(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerCommunity>> {
         val ps = mutableListOf<Community>()
         for (i in 0..5)
             ps.add(generateCommunity(i))
