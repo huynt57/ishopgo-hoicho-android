@@ -39,15 +39,15 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         return if (viewType == COMMUNITY_TOTAL) {
             TotalHodel(v)
         } else {
-            val productHolder = ProductHolder(v)
-            val layoutParams = productHolder.itemView.layoutParams
+            val communityHodel = CommunityHolder(v)
+            val layoutParams = communityHodel.itemView.layoutParams
 
             if (itemWidthRatio > 0)
                 layoutParams.width = (screenWidth * itemWidthRatio).toInt()
             if (itemHeightRatio > 0)
                 layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
-            productHolder
+            communityHodel
         }
     }
 
@@ -58,7 +58,7 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
             holder.apply {
 
             }
-        } else if (holder is ProductHolder) {
+        } else if (holder is CommunityHolder) {
             holder.apply {
                 itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_CLICK) }
 
@@ -100,7 +100,7 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         }
     }
 
-    internal inner class ProductHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<CommunityProvider>(view) {
+    internal inner class CommunityHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<CommunityProvider>(view) {
 
         @SuppressLint("SetTextI18n")
         override fun populate(data: CommunityProvider) {

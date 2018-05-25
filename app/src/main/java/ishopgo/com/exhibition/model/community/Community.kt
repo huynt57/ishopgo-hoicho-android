@@ -16,10 +16,6 @@ class Community : IdentityData(), CommunityProvider {
         return isLiked()
     }
 
-    override fun providerId(): Long {
-        return id
-    }
-
     override fun providerUserName(): String {
         return accountName ?: ""
     }

@@ -276,26 +276,27 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getRelateProducts(params)
     }
 
-    override fun searchShops(params: MutableMap<String, Any>): Single<BaseResponse<List<Shop>>> {
+    override fun searchShops(params: MutableMap<String, Any>): Single<BaseResponse<ManagerShop>> {
         val ps = mutableListOf<Shop>()
         for (i in 0..5)
             ps.add(generateShop())
 
-        val response = BaseResponse<List<Shop>>()
+        val response = BaseResponse<ManagerShop>()
         response.status = 1
-        response.data = ps
+        response.data?.total = ps.size
+        response.data?.booth = ps
 
         return delegate.returningResponse(response).searchShops(params)
     }
 
-    override fun searchProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+    override fun searchProducts(params: MutableMap<String, Any>): Single<BaseResponse<ManagerProduct>> {
         val ps = mutableListOf<Product>()
         for (i in 0..5)
             ps.add(generateProduct())
 
-        val response = BaseResponse<List<Product>>()
-        response.status = 1
-        response.data = ps
+        val response = BaseResponse<ManagerProduct>()
+        response.data?.total = ps.size
+        response.data?.product = ps
 
         return delegate.returningResponse(response).searchProducts(params)
     }
