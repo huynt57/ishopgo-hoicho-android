@@ -30,6 +30,7 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
     private lateinit var sharedViewModel: SearchViewModel
     private var keyword = ""
     private var last_id: Long = 0
+    private var total: Int = 0
 
     private fun search(key: String) {
         Log.d(TAG, "search: key = [${key}]")
@@ -52,6 +53,13 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
                 search(it)
             }
         })
+
+        (viewModel as SearchCommunityViewModel).total.observe(this, Observer { p ->
+            p.let {
+                if (it != null)
+                    total = it
+            }
+        })
     }
 
     override fun populateData(data: List<CommunityProvider>) {
@@ -63,6 +71,9 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
 
         if (reloadData) {
             adapter.replaceAll(data)
+            val community = Community()
+            community.id = total.toLong()
+            adapter.addData(0, community)
             view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)
@@ -93,6 +104,7 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
         request.limit = Const.PAGE_LIMIT
         viewModel.loadData(request)
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

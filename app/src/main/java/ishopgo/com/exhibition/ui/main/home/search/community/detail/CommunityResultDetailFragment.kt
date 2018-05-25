@@ -39,7 +39,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
     private var adapterImages = ComposingPostMediaAdapter()
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterComment = CommunityCommentAdapter()
-    private var adapterParent = SearchCommunityAdapter()
+    private var adapterParent = CommunityParentAdapter()
     private lateinit var viewModel: CommunityViewModel
     private lateinit var data: Community
     private var last_id: Long = 0

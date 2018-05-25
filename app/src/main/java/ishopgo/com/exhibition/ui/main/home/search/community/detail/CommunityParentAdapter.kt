@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.home.search.community
+package ishopgo.com.exhibition.ui.main.home.search.community.detail
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.GridLayoutManager
@@ -15,51 +15,48 @@ import ishopgo.com.exhibition.ui.community.CommunityProvider
 import kotlinx.android.synthetic.main.item_community.view.*
 import kotlinx.android.synthetic.main.item_search_total.view.*
 
-class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
+class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
     companion object {
         const val COMMUNITY_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
-
-        const val COMMUNITY_TOTAL = 0
-        const val COMMUNITY_LIST = 1
+        const val COMMUNITY_COMMENT_CLICK = 3
+        const val COMMUNITY_SHARE_NUMBER_CLICK = 4
+        const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
+        const val COMMUNITY_PRODUCT_CLICK = 6
+        const val COMMUNITY_IMAGE_CLICK = 7
     }
 
     var screenWidth: Int = UserDataManager.displayWidth
     var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return if (viewType == COMMUNITY_TOTAL) R.layout.item_search_total else R.layout.item_community
+        return R.layout.item_community
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (position == COMMUNITY_TOTAL) COMMUNITY_TOTAL else COMMUNITY_LIST
-    }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<CommunityProvider> {
-        return if (viewType == COMMUNITY_TOTAL) {
-            TotalHodel(v)
-        } else {
-            val productHolder = ProductHolder(v)
-            val layoutParams = productHolder.itemView.layoutParams
+        val productHolder = ProductHolder(v)
+        val layoutParams = productHolder.itemView.layoutParams
 
-            if (itemWidthRatio > 0)
-                layoutParams.width = (screenWidth * itemWidthRatio).toInt()
-            if (itemHeightRatio > 0)
-                layoutParams.height = (screenHeight * itemHeightRatio).toInt()
+        if (itemWidthRatio > 0)
+            layoutParams.width = (screenWidth * itemWidthRatio).toInt()
+        if (itemHeightRatio > 0)
+            layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
-            productHolder
-        }
+        return productHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder<CommunityProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
-
-        if (holder is TotalHodel) {
+        if (holder is ProductHolder) {
             holder.apply {
-
-            }
-        } else if (holder is ProductHolder) {
-            holder.apply {
+                if (UserDataManager.currentUserId > 0) {
+                    itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
+                }
+                itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
+                itemView.cv_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
+                itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
+                itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
                 itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_CLICK) }
 
                 if (UserDataManager.currentUserId > 0) {
@@ -84,18 +81,6 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                         listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK)
                     }
                 } else itemView.toggle_community_like.isEnabled = false
-            }
-        }
-    }
-
-    inner class TotalHodel(v: View) : BaseRecyclerViewAdapter.ViewHolder<CommunityProvider>(v) {
-
-        @SuppressLint("SetTextI18n")
-        override fun populate(data: CommunityProvider) {
-            super.populate(data)
-            itemView.apply {
-                if (data is Community)
-                    tv_total.text = "${data.id} kết quả được tìm thấy"
             }
         }
     }
@@ -150,6 +135,11 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                         adapter.replaceAll(data.provideListImage())
                         rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_community_image.adapter = adapter
+                        (adapter as ClickableAdapter<String>).listener = object : ClickableAdapter.BaseAdapterAction<String> {
+                            override fun click(position: Int, data: String, code: Int) {
+                                listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK)
+                            }
+                        }
                     } else {
                         img_community_image.visibility = View.VISIBLE
                         rv_community_image.visibility = View.GONE
