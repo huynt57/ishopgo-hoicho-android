@@ -149,6 +149,7 @@ class RegisterBoothFragment : BaseFragment() {
             toast("Nâng cấp thành công, vui lòng đăng nhập lại để sử dụng hệ thống")
             UserDataManager.deleteUserInfo()
             val intent = Intent(context, LoginSelectOptionActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
             startActivity(intent)
             activity?.finish()
