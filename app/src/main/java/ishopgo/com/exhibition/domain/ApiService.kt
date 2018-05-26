@@ -2,8 +2,6 @@ package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
-import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.ManagerShop
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.community.CommunityComment

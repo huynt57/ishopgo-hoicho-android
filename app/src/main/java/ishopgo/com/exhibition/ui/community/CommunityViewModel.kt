@@ -10,7 +10,6 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel

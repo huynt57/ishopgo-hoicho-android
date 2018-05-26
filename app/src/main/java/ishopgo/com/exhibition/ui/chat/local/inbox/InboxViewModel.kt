@@ -18,36 +18,12 @@ class InboxViewModel : BaseListViewModel<List<InboxProvider>>(), AppComponent.In
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
+
             addDisposable(isgService.inbox_getConversations(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<LocalConversationItem>>() {
                         override fun success(data: List<LocalConversationItem>?) {
-                            val dummy = mutableListOf<InboxProvider>()
-                            for (i in 0..5)
-                                dummy.add(object : InboxProvider {
-                                    override fun provideName(): String {
-                                        return "sample"
-                                    }
-
-                                    override fun provideAvatar(): String {
-                                        return "a"
-                                    }
-
-                                    override fun provideMessage(): String {
-                                        return "sample message"
-                                    }
-
-                                    override fun provideTime(): String {
-                                        return "10:00"
-                                    }
-
-                                })
-
-                            val list = mutableListOf<InboxProvider>()
-                            data?.let { list.addAll(it) }
-                            list.addAll(dummy)
-
-                            dataReturned.postValue(list)
+                            dataReturned.postValue(data ?: listOf())
                         }
 
                         override fun failure(status: Int, message: String) {

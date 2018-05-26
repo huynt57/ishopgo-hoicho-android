@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchInboxRequest
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -52,11 +53,32 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
     private val searchRunnable = Runnable {
         Log.d(TAG, "start searching: $searchKey");
 
+        firstLoad()
+    }
+
+    override fun firstLoad() {
+        super.firstLoad()
+
         val request = SearchInboxRequest()
         request.keyword = searchKey
+        request.limit = Const.PAGE_LIMIT
+        request.offset = 0
 
         if (viewModel is SearchInboxViewModel) {
             reloadData = true
+            viewModel.loadData(request)
+        }
+    }
+
+    override fun loadMore(currentCount: Int) {
+        super.loadMore(currentCount)
+
+        val request = SearchInboxRequest()
+        request.keyword = searchKey
+        request.limit = Const.PAGE_LIMIT
+        request.offset = currentCount
+
+        if (viewModel is SearchInboxViewModel) {
             viewModel.loadData(request)
         }
     }

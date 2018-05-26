@@ -9,7 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.SearchInboxRequest
+import ishopgo.com.exhibition.domain.request.SearchContactRequest
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -28,8 +29,7 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
         if (reloadData) {
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
-        }
-        else
+        } else
             adapter.addAll(data)
     }
 
@@ -51,13 +51,34 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
 
     private var searchKey: String = ""
     private val searchRunnable = Runnable {
-        Log.d(TAG, "start searching: $searchKey");
+        Log.d(TAG, "start searching: $searchKey")
 
-        val request = SearchInboxRequest()
+        firstLoad()
+    }
+
+    override fun firstLoad() {
+        super.firstLoad()
+
+        val request = SearchContactRequest()
         request.keyword = searchKey
+        request.limit = Const.PAGE_LIMIT
+        request.offset = 0
 
         if (viewModel is SearchContactViewModel) {
             reloadData = true
+            viewModel.loadData(request)
+        }
+    }
+
+    override fun loadMore(currentCount: Int) {
+        super.loadMore(currentCount)
+
+        val request = SearchContactRequest()
+        request.keyword = searchKey
+        request.limit = Const.PAGE_LIMIT
+        request.offset = currentCount
+
+        if (viewModel is SearchContactViewModel) {
             viewModel.loadData(request)
         }
     }
