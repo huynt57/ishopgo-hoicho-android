@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.inbox.search
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchInboxRequest
 import ishopgo.com.exhibition.model.Const
@@ -83,11 +85,6 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
         }
     }
 
-    override fun onDestroyView() {
-        hideKeyboard()
-        super.onDestroyView()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home_search_inbox, container, false)
     }
@@ -97,6 +94,9 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
 
         view.setOnTouchListener { v, event -> true }
         view_back.setOnClickListener {
+            val inputMethodManager = view_search_field.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            inputMethodManager?.hideSoftInputFromWindow(view_search_field.windowToken, InputMethodManager.SHOW_IMPLICIT)
+
             activity?.onBackPressed()
         }
 
@@ -112,11 +112,13 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
         })
+        view_search_field.post {
+            val inputMethodManager = view_search_field.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+            inputMethodManager?.showSoftInput(view_search_field, InputMethodManager.SHOW_IMPLICIT)
+        }
 
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
-//        val inputMethodManager = view_search_field.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.showSoftInput(view_search_field, InputMethodManager.SHOW_IMPLICIT)
     }
 
 }

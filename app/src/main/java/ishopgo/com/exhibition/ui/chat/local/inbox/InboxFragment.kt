@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
@@ -16,6 +17,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainViewModel
+import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_inbox.*
 
 /**
@@ -28,6 +30,7 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
     override fun populateData(data: List<InboxProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)
     }
@@ -38,6 +41,8 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
         view_search.setOnClickListener {
             mainViewModel.enableSearchInbox()

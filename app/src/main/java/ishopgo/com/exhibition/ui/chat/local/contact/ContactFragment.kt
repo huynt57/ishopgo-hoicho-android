@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
@@ -12,6 +13,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
+import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_chat_contact.*
 
 /**
@@ -22,8 +24,10 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
     private lateinit var mainViewModel: MainViewModel
 
     override fun populateData(data: List<ContactProvider>) {
-        if (reloadData)
+        if (reloadData) {
             adapter.replaceAll(data)
+            view_recyclerview.scheduleLayoutAnimation()
+        }
         else
             adapter.addAll(data)
     }
@@ -38,6 +42,8 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
         view_search.setOnClickListener {
             mainViewModel.enableSearchContact()
