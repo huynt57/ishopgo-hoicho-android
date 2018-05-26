@@ -8,6 +8,7 @@ import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.request.SearchShopRequest
+import ishopgo.com.exhibition.domain.response.Shop
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -26,6 +27,7 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
 
     private var keyword = ""
     private lateinit var sharedViewModel: SearchViewModel
+    private var total: Int = 0
 
     private fun search(key: String) {
         Log.d(TAG, "search: key = [${key}]")
@@ -47,11 +49,21 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
                 search(it)
             }
         })
+
+        (viewModel as SearchShopsViewModel).total.observe(this, Observer { p ->
+            p.let {
+                if (it != null)
+                    total = it
+            }
+        })
     }
 
     override fun populateData(data: List<SearchShopResultProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
+            val shop = Shop()
+            shop.id = total.toLong()
+            adapter.addData(0, shop)
             view_recyclerview.scheduleLayoutAnimation()
         }
         else

@@ -44,7 +44,9 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun populateData(data: List<CommunityProvider>) {
         if (data.isNotEmpty()) {
-            last_id = data[data.size - 1].providerId()
+            val community = data[data.size - 1]
+            if (community is Community)
+                last_id = community.id
         }
 
         if (reloadData) {
