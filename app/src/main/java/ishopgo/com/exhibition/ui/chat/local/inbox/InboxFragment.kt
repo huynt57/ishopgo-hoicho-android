@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.chat.local.inbox
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +11,10 @@ import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_inbox.*
 
@@ -48,7 +52,17 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<InboxProvider> {
-        return InboxAdapter()
+        val inboxAdapter = InboxAdapter()
+        inboxAdapter.listener = object: ClickableAdapter.BaseAdapterAction<InboxProvider> {
+            override fun click(position: Int, data: InboxProvider, code: Int) {
+                val notifyIntent = Intent(context, ConversationActivity::class.java)
+                notifyIntent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                notifyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(notifyIntent)
+            }
+
+        }
+        return inboxAdapter
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<InboxProvider>> {

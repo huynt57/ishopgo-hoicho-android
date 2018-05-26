@@ -29,7 +29,7 @@ class FcmService : FirebaseMessagingService() {
             Log.d(TAG, "onMessageReceived: looper = " + Looper.myLooper())
             // Check if message contains a data payload.
             if (data.isNotEmpty()) {
-                Log.d(TAG, "Message data payload: " + data)
+                Log.d(TAG, "Message data payload: $data")
             }
 
             // Check if message contains a notification payload.
@@ -43,8 +43,8 @@ class FcmService : FirebaseMessagingService() {
                 } catch (e: Exception) {
                     System.currentTimeMillis().toInt()
                 }
-                val title = data.get("title")
-                val body = data.get("body")
+                val title = data["title"]
+                val body = data["body"]
 
                 if (!title.isNullOrEmpty() && !body.isNullOrEmpty()) {
                     val i = Intent(this@FcmService, NotificationClickReceiver::class.java)
@@ -52,7 +52,7 @@ class FcmService : FirebaseMessagingService() {
                     data.keys.forEach { s: String? -> s?.let { i.putExtra(it, data[it]) } }
                     val pendingIntent = PendingIntent.getBroadcast(this@FcmService, notificationId, i, PendingIntent.FLAG_UPDATE_CURRENT)
 
-                    val notification = NotificationCompat.Builder(this@FcmService)
+                    val notification = NotificationCompat.Builder(this@FcmService, "")
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setContentTitle(title)
                             .setStyle(NotificationCompat.BigTextStyle().bigText(body))

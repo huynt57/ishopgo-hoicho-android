@@ -26,28 +26,7 @@ class ContactViewModel : BaseListViewModel<List<ContactProvider>>(), AppComponen
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<ContactItem>>() {
                         override fun success(data: List<ContactItem>?) {
-                            val dummy = mutableListOf<ContactProvider>()
-                            for (i in 0..5)
-                                dummy.add(object : ContactProvider {
-                                    override fun provideAvatar(): String {
-                                        return ""
-                                    }
-
-                                    override fun provideName(): String {
-                                        return "sample"
-                                    }
-
-                                    override fun providePhone(): String {
-                                        return "0974427143"
-                                    }
-
-                                })
-
-                            val list = mutableListOf<ContactProvider>()
-                            data?.let { list.addAll(it) }
-                            list.addAll(dummy)
-
-                            dataReturned.postValue(list)
+                            dataReturned.postValue(data ?: listOf())
                         }
 
                         override fun failure(status: Int, message: String) {
