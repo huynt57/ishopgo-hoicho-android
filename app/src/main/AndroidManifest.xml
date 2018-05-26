@@ -348,5 +348,10 @@
             android:screenOrientation="portrait">
         </activity>
 
+        <activity
+            android:name=".ui.main.home.search.community.detail.CommunityResultDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
     </application>
 </manifest>

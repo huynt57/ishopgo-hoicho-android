@@ -51,6 +51,7 @@
         android:id="@+id/view_tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:tabMode="fixed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view_divider_search"
@@ -68,6 +69,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Gian hàng"/>
+
+        <!--<android.support.design.widget.TabItem-->
+            <!--android:id="@+id/tab_sale_point"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Điểm bán"/>-->
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_community"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bài viết"/>
+
+        <!--<android.support.design.widget.TabItem-->
+            <!--android:id="@+id/tab_member"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Thành viên"/>-->
 
     </android.support.design.widget.TabLayout>
 

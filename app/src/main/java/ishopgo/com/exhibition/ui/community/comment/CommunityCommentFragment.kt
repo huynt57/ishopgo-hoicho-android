@@ -179,7 +179,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         val loadMore = LoadMoreCommunityRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.last_id = last_id
-        viewModel.loadData(loadMore)
+        viewModel.loadCommentCommunity(post_id, 0, loadMore)
     }
 
     private fun checkRequireFields(content: String): Boolean {
