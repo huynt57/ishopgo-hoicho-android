@@ -6,7 +6,11 @@ import ishopgo.com.exhibition.domain.response.Member
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.survey.CheckSurvey
+import ishopgo.com.exhibition.model.survey.Survey
 import okhttp3.RequestBody
+import retrofit2.http.Path
+import retrofit2.http.QueryMap
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
 
@@ -14,6 +18,24 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).postSurvey(id, fields)
+    }
+
+    override fun getSurvey(): Single<BaseResponse<Survey>> {
+        val response = BaseResponse<Survey>()
+        response.status = 1
+        return delegate.returningResponse(response).getSurvey()    }
+
+    override fun checkSurvey(): Single<BaseResponse<CheckSurvey>> {
+        val response = BaseResponse<CheckSurvey>()
+        response.status = 1
+        response.data?.status = 1
+        return delegate.returningResponse(response).checkSurvey()
+    }
+
     override fun createRatingShop(product_id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

@@ -75,13 +75,18 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
         }
 
+        items.add(AccountMenuItem(
+                Const.AccountAction.ACTION_NOT_AVALIBLE,
+                R.drawable.ic_question,
+                "Bảng khảo sát"
+        ))
+
         if (UserDataManager.currentType == "Thành viên") {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_REGISTER_BOOTH,
                     R.drawable.ic_register,
                     "Đăng ký gian hàng"
             ))
-
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
@@ -98,13 +103,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
                     R.drawable.ic_ticket,
-                    "Quản lý vé thăm quan"
-            ))
-
-            items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOTIFICATION,
-                    R.drawable.ic_notification,
-                    "Quản lý thông báo"
+                    "Vé thăm quan của tôi"
             ))
 
             items.add(AccountMenuItem(

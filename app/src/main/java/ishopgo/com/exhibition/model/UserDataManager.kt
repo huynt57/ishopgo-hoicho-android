@@ -18,6 +18,7 @@ object UserDataManager {
     private const val KEY_USER_PHONE = "user_phone"
     private const val KEY_USER_NAME = "user_name"
     private const val KEY_USER_TYPE = "type"
+    private const val KEY_USER_SURVEY = "survey"
     private const val KEY_BOOTH_ID= "type"
 
     var accessToken: String
@@ -41,6 +42,9 @@ object UserDataManager {
     var currentType: String
         get() = pref.getString(KEY_USER_TYPE, "")
         set(value) = pref.edit().putString(KEY_USER_TYPE, value).apply()
+    var currentSurvey: Int
+        get() = pref.getInt(KEY_USER_SURVEY, 0)
+        set(value) = pref.edit().putInt(KEY_USER_SURVEY, value).apply()
     var passLoginScreen: Long
         get() = pref.getLong(KEY_PASS_LOGIN_SCREEN, -1L)
         set(value) = pref.edit().putLong(KEY_PASS_LOGIN_SCREEN, value).apply()
@@ -72,6 +76,7 @@ object UserDataManager {
         edit.remove(KEY_USER_NAME)
         edit.remove(KEY_USER_PHONE)
         edit.remove(KEY_USER_TYPE)
+        edit.remove(KEY_USER_SURVEY)
         edit.apply()
     }
 
