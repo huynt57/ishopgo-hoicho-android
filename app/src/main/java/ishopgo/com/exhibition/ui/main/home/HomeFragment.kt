@@ -35,6 +35,7 @@ import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
+import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -304,7 +305,7 @@ class HomeFragment : BaseFragment() {
 
     private fun openSuggestedProducts() {
         context?.let {
-            val intent = Intent(it, FavoriteProductsActivity::class.java)
+            val intent = Intent(it, SuggestedProductsActivity::class.java)
             startActivity(intent)
         }
 
@@ -342,6 +343,7 @@ class HomeFragment : BaseFragment() {
             if (brand is IdentityData) {
                 val intent = Intent(it, ProductsOfBrandActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, brand.id)
+                intent.putExtra(Const.TransferKey.EXTRA_TITLE, brand.provideName())
                 startActivity(intent)
             }
         }

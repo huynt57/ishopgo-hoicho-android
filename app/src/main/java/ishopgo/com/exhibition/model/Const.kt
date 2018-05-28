@@ -12,6 +12,7 @@ object Const {
         const val EXTRA_STRING_LIST = "string_list"
         const val EXTRA_JSON = "json"
         const val EXTRA_ID = "id"
+        const val EXTRA_TITLE = "title"
         const val EXTRA_CONVERSATION_ID = "conversation_id"
         const val EXTRA_REQUIRE = "required"
         const val EXTRA_URL = "url"

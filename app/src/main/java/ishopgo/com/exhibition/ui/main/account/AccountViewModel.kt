@@ -25,12 +25,6 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadMenu() {
         val items = mutableListOf<AccountMenuProvider>()
-        items.add(AccountMenuItem(
-                Const.AccountAction.ACTION_PROFILE,
-                R.drawable.ic_account_white,
-                "Thông tin cá nhân"
-        ))
-
         if (UserDataManager.currentType == "Chủ gian hàng") {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SETTING_BOTTH,
