@@ -1,7 +1,7 @@
 package ishopgo.com.exhibition.app
 
 import android.support.multidex.MultiDexApplication
-import com.crashlytics.android.Crashlytics
+import com.crashlytics.android.core.CrashlyticsCore
 import com.google.firebase.FirebaseApp
 import io.fabric.sdk.android.Fabric
 import ishopgo.com.exhibition.BuildConfig
@@ -23,7 +23,7 @@ class MyApp : MultiDexApplication() {
 
         // we only need crashlytic for release version, so enable it later
         if (!BuildConfig.DEBUG)
-            Fabric.with(this, Crashlytics())
+            Fabric.with(this, CrashlyticsCore())
 
         appComponent = DaggerAppComponent.builder()
                 .appModule(AppModule(this))

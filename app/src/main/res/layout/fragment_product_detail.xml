@@ -211,7 +211,6 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_label_shop_name"
@@ -259,7 +258,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4"
-                    tools:text="54\nSản phẩm mới" />
+                    tools:text="54\nSản phẩm" />
 
                 <TextView
                     android:id="@+id/view_shop_rating"
@@ -543,6 +542,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
                         android:inputType="text"
+                        android:hint="Viết bình luận"
                         android:lines="1" />
 
                     <ImageView
