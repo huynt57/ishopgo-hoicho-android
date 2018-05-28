@@ -5,6 +5,8 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +18,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.survey.PostAnswer
 import ishopgo.com.exhibition.model.survey.PostSurvey
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_survey.*
@@ -32,6 +35,7 @@ class SurveyFragment : BaseFragment() {
 
     private lateinit var viewModel: SurveyViewModel
     private lateinit var adapterSurvey: SurveyAdapter
+    private var adapterQuestionQuick = SurveyQuickListAdapter()
     private var listQuestion = mutableListOf<SurveyQuestion>()
     private var listAnswer = mutableListOf<PostSurvey>()
     private var position = 0
@@ -50,6 +54,29 @@ class SurveyFragment : BaseFragment() {
         btn_start.setOnClickListener {
             showProgressDialog()
             viewModel.getSurvey()
+        }
+
+        imb_question_quick.setOnClickListener {
+            if (layout_question_quick.visibility == View.GONE) {
+                layout_question_quick.visibility = View.VISIBLE
+                viewpager.visibility = View.GONE
+            } else {
+                layout_question_quick.visibility = View.GONE
+                viewpager.visibility = View.VISIBLE
+            }
+        }
+        setupRecycleViewQuestionQuick()
+    }
+
+    private fun setupRecycleViewQuestionQuick() {
+        rv_question_quick.layoutManager = GridLayoutManager(context,5)
+        rv_question_quick.adapter = adapterQuestionQuick
+        adapterQuestionQuick.listener = object : ClickableAdapter.BaseAdapterAction<SurveyQuestion> {
+            override fun click(position: Int, data: SurveyQuestion, code: Int) {
+                layout_question_quick.visibility = View.GONE
+                viewpager.visibility = View.VISIBLE
+                viewpager.setCurrentItem(position, false)
+            }
         }
     }
 
@@ -70,6 +97,7 @@ class SurveyFragment : BaseFragment() {
                 hideProgressDialog()
                 listQuestion = it.questions ?: mutableListOf()
                 adapterSurvey = SurveyAdapter(listQuestion)
+                adapterQuestionQuick.replaceAll(listQuestion)
                 surveyId = it.id
                 viewpager.adapter = adapterSurvey
                 viewpager.offscreenPageLimit = it.questions?.size ?: 0
@@ -107,6 +135,7 @@ class SurveyFragment : BaseFragment() {
                             listAnswer.removeAt(position)
                         }
                         listAnswer.add(position, listResult[0])
+                        adapterQuestionQuick.replaceAll(listQuestion)
                     }
                 }
                 imb_end.setOnClickListener {
@@ -114,8 +143,6 @@ class SurveyFragment : BaseFragment() {
                         viewModel.postSurvey(surveyId, listAnswer)
                     else toast("Bạn vui lòng trả lời câu hỏi khảo sát")
                 }
-
-                imb_question_quick.setOnClickListener { toast("Đang phát triển") }
             }
         })
         viewModel.postSusscess.observe(this, Observer {

@@ -51,7 +51,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
         tv_question_number.text = "Câu ${position + 1}:"
         tv_question.text = listQuestion[position].title
         rb_checked.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 if (buttonView.isChecked) {
                     edt_answer.isFocusableInTouchMode = true
                     edt_answer.isFocusable = true
@@ -66,6 +66,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 postAnswer.content = edt_answer.text.toString()
                 postAnswer.idAnswer = listQuestion[position].answers!![0].id
                 postAnswer.idQuestion = listQuestion[position].id
+                listQuestion[position].answered = true
                 postSurvey.suvey = postAnswer
                 listResult.clear()
                 listResult.add(postSurvey)
@@ -74,7 +75,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
         }
 
         rb_checked_2.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 if (buttonView.isChecked) {
                     edt_answer_2.isFocusableInTouchMode = true
                     edt_answer_2.isFocusable = true
@@ -88,6 +89,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 postAnswer.content = edt_answer_2.text.toString()
                 postAnswer.idAnswer = listQuestion[position].answers!![1].id
                 postAnswer.idQuestion = listQuestion[position].id
+                listQuestion[position].answered = true
                 postSurvey.suvey = postAnswer
                 listResult.clear()
                 listResult.add(postSurvey)
@@ -110,6 +112,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 postAnswer.content = edt_answer_3.text.toString()
                 postAnswer.idAnswer = listQuestion[position].answers!![2].id
                 postAnswer.idQuestion = listQuestion[position].id
+                listQuestion[position].answered = true
                 postSurvey.suvey = postAnswer
                 listResult.clear()
                 listResult.add(postSurvey)
@@ -119,7 +122,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
 
 
         rb_checked_4.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
+            if (isChecked) {
                 if (buttonView.isChecked) {
                     edt_answer_4.isFocusableInTouchMode = true
                     edt_answer_4.isFocusable = true
@@ -133,6 +136,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 postAnswer.content = edt_answer_4.text.toString()
                 postAnswer.idAnswer = listQuestion[position].answers!![3].id
                 postAnswer.idQuestion = listQuestion[position].id
+                listQuestion[position].answered = true
                 postSurvey.suvey = postAnswer
                 listResult.clear()
                 listResult.add(postSurvey)

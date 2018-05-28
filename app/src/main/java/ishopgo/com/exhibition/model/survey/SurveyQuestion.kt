@@ -12,4 +12,10 @@ class SurveyQuestion : IdentityData() {
     @SerializedName("answers")
     @Expose
     var answers: MutableList<SurveyAnswer>? = null
+
+    var answered: Boolean = false
+
+    fun isAnswered(): Boolean {
+        return answered
+    }
 }

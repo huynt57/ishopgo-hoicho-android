@@ -26,15 +26,22 @@ class LoginSelectOptionActivity : BaseSingleFragmentActivity() {
         if (require) {
         } else
             if (UserDataManager.currentUserId > 0 || UserDataManager.passLoginScreen > 0) {
-                if (UserDataManager.currentType != "Thành viên" && UserDataManager.currentSurvey != 0){
+                if (UserDataManager.currentType != "Thành viên"){
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 } else {
-                    val intent = Intent(this, SurveyActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                    finish()
+                    if (UserDataManager.currentSurvey == 0){
+                        val intent = Intent(this, SurveyActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
                 }
             }
 
