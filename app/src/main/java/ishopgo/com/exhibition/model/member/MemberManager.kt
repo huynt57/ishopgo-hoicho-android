@@ -8,11 +8,11 @@ import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerProvider
 
 class MemberManager : IdentityData(), MemberManagerProvider {
     override fun provideName(): String {
-        return "Tên thành viên: $name"
+        return name ?: ""
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return "SĐT: ${phone?: ""} "
     }
 
     override fun provideEmail(): String {

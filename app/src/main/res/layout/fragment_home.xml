@@ -292,35 +292,150 @@
 
     </FrameLayout>
 
-    <LinearLayout
+    <ScrollView
         android:id="@+id/drawer_main"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorPureWhite"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:fitsSystemWindows="true">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:padding="8dp"
-            android:text="Danh mục sản phẩm"
-            android:textAllCaps="true"
-            android:textColor="@color/md_grey_800"/>
+            android:orientation="vertical">
 
-        <View
-            style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Danh mục sản phẩm"
+                android:textAllCaps="true"
+                android:textColor="@color/md_grey_800"/>
 
-        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
-            android:id="@+id/rv_categories"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            />
+            <View
+                style="@style/AppTheme.DividerLine"
+                android:layout_width="match_parent"/>
 
-    </LinearLayout>
+            <ishopgo.com.exhibition.ui.widget.GridRecyclerView
+                android:id="@+id/rv_categories"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Thông tin hội chợ"
+                android:textAllCaps="true"
+                android:textColor="@color/md_grey_800"/>
+
+            <View
+                style="@style/AppTheme.DividerLine"
+                android:layout_width="match_parent"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/view_open_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:foreground="?attr/selectableItemBackground"
+                >
+
+                <ImageView
+                    android:id="@+id/view_expo_new_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/newspaper" />
+
+                <TextView
+                    android:id="@+id/view_expo_news"
+                    style="@style/AppTheme.CategoryTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view_expo_new_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Tin tức hội chợ"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/view_open_quesions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:foreground="?attr/selectableItemBackground"
+                >
+
+                <ImageView
+                    android:id="@+id/view_expo_qa_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/question" />
+
+                <TextView
+                    android:id="@+id/view_expo_qa"
+                    style="@style/AppTheme.CategoryTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view_expo_qa_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Hỏi đáp"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/view_open_commons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:foreground="?attr/selectableItemBackground"
+                >
+
+                <ImageView
+                    android:id="@+id/view_expo_common_icon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/info" />
+
+                <TextView
+                    android:id="@+id/view_expo_common"
+                    style="@style/AppTheme.CategoryTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view_expo_common_icon"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="Thông tin chung"/>
+
+            </android.support.constraint.ConstraintLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.v4.widget.DrawerLayout>

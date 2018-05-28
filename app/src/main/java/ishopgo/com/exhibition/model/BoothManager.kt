@@ -8,11 +8,11 @@ import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerProvider
 
 class BoothManager : IdentityData(), BoothManagerProvider {
     override fun provideName(): String {
-        return "Chủ gian hàng: $name"
+        return name ?: ""
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return "SĐT: ${phone ?: ""}"
     }
 
     override fun provideCompanyStore(): String {

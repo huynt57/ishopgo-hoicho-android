@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
+import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
@@ -37,6 +38,7 @@ import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
+import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -195,6 +197,14 @@ class HomeFragment : BaseFragment() {
         setupListeners()
     }
 
+    private fun openPostManager(typeManager: Int) {
+        context?.let {
+            val intent = Intent(it, PostManagerActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
+            startActivity(intent)
+        }
+    }
+
     private fun setupListeners() {
         more_highlight_brand.setOnClickListener {
             openPopularBrands()
@@ -213,6 +223,16 @@ class HomeFragment : BaseFragment() {
         }
         swipe.setOnRefreshListener {
             loadData()
+        }
+
+        view_open_news.setOnClickListener {
+            openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
+        }
+        view_open_commons.setOnClickListener {
+            openPostManager(Const.AccountAction.ACTION_GENEREL_MANAGER)
+        }
+        view_open_quesions.setOnClickListener {
+            openQuestionAnswer()
         }
         categoriesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
 
@@ -270,6 +290,13 @@ class HomeFragment : BaseFragment() {
 
         }
 
+    }
+
+    private fun openQuestionAnswer() {
+        context?.let {
+            val intent = Intent(it, QuestionManagerActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun openHighlightProducts() {

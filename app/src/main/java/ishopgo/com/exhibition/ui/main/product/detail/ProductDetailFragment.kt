@@ -231,6 +231,7 @@ class ProductDetailFragment : BaseFragment() {
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
+            view_product_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
             view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }
