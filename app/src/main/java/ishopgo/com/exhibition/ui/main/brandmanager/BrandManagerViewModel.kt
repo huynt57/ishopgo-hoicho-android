@@ -60,7 +60,7 @@ class BrandManagerViewModel : BaseListViewModel<List<BrandManagerProvider>>(), A
         if (logo.trim().isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "brand_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(logo), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(logo), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             imagePart = MultipartBody.Part.createFormData("logo", imageFile.name, imageBody)
         }
@@ -95,7 +95,7 @@ class BrandManagerViewModel : BaseListViewModel<List<BrandManagerProvider>>(), A
         if (logo.trim().isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "brand_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(logo), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(logo), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             imagePart = MultipartBody.Part.createFormData("logo", imageFile.name, imageBody)
         }

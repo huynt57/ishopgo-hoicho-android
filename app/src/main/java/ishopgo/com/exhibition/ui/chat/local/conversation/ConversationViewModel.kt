@@ -122,7 +122,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         val imageFile = File(application.cacheDir, "postImage_${SystemClock.currentThreadTimeMillis()}}.jpg")
         imageFile.deleteOnExit()
-        Toolbox.reEncodeBitmap(application, imageUri, 2048, Uri.fromFile(imageFile))
+        Toolbox.reEncodeBitmap(application, imageUri, 640, Uri.fromFile(imageFile))
         val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
         builder.addFormDataPart("image", imageFile.name, imageBody)
 

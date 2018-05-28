@@ -7,10 +7,8 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
@@ -250,7 +248,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 uri?.let {
                     val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
                     imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                     val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
                 }

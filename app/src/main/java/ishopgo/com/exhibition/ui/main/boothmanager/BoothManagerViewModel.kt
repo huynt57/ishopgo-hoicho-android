@@ -65,7 +65,7 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), A
         if (image.trim().isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "booth_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
         }

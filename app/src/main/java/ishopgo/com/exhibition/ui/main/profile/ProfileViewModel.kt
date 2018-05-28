@@ -102,7 +102,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (image.isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             val imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
             builder.addPart(imagePart)
