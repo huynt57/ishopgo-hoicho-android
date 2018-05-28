@@ -8,11 +8,11 @@ import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerProvider
 
 class MemberManager : IdentityData(), MemberManagerProvider {
     override fun provideName(): String {
-        return "Tên thành viên: $name"
+        return name ?: ""
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return "SĐT: ${phone?: ""} "
     }
 
     override fun provideEmail(): String {
@@ -68,13 +68,13 @@ class MemberManager : IdentityData(), MemberManagerProvider {
     var status: String? = null
     @SerializedName("ck_mh")
     @Expose
-    var ckMh: Int = 0
+    var ckMh: String? = ""
     @SerializedName("ck_si")
     @Expose
-    var ckSi: Int = 0
+    var ckSi: String? = ""
     @SerializedName("ck_le")
     @Expose
-    var ckLe: Int = 0
+    var ckLe: String? = ""
     @SerializedName("bank_number")
     @Expose
     var bankNumber: Any? = null

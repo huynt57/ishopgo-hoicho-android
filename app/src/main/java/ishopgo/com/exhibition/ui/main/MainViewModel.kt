@@ -11,6 +11,8 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var isSearchEnable = MutableLiveData<Boolean>()
+    var enableSearchInbox = MutableLiveData<Boolean>()
+    var enableSearchContact = MutableLiveData<Boolean>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -25,5 +27,14 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun showCategoriedProducts(category: CategoryProvider) {
         showCategoriedProducts.postValue(category)
     }
+
+    fun enableSearchInbox() {
+        enableSearchInbox.postValue(true)
+    }
+
+    fun enableSearchContact() {
+        enableSearchContact.postValue(true)
+    }
+
 
 }

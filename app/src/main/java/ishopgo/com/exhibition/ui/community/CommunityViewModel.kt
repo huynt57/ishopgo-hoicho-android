@@ -10,7 +10,6 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -64,7 +63,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
                 uri?.let {
                     val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
                     imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                     val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
                 }
@@ -97,7 +96,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
                 uri?.let {
                     val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
                     imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                     val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
                 }

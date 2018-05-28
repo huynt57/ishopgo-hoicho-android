@@ -36,7 +36,6 @@ class AppAuthenticator(app: Application) : Authenticator {
         authService.refreshToken()
                 .subscribeWith(object : BaseSingleObserver<RefreshTokenResponse>() {
                     override fun success(data: RefreshTokenResponse?) {
-                        Log.d(TAG, "onNext() called with dat: $data")
                         data?.let {
                             obtained = true
                             UserDataManager.accessToken = it.newToken
@@ -58,7 +57,7 @@ class AppAuthenticator(app: Application) : Authenticator {
 
     private fun responseCount(response: Response): Int {
         var result = 1
-        var failed: Response? = response
+        var failed:  Response? = response
         while (failed?.priorResponse() != null) {
             result++
             failed = failed.priorResponse()

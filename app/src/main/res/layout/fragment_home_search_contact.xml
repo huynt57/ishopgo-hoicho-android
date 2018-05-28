@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPureWhite">
+
+    <ImageView
+        android:id="@+id/view_back"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="16dp"
+        app:srcCompat="@drawable/ic_arrow_back_24dp"
+        />
+
+    <EditText
+        android:id="@+id/view_search_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_search_box"
+        android:hint="tìm kiếm trong danh bạ"
+        android:inputType="text"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="8dp"
+        android:singleLine="true"
+        android:textColor="@color/md_grey_700"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@id/view_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/view_back"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+        <requestFocus/>
+    </EditText>
+
+    <View
+        android:id="@+id/view_divider_search"
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_back"
+        />
+
+    <include
+        android:id="@+id/swipe"
+        layout="@layout/content_swipable_recyclerview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_divider_search"/>
+
+</android.support.constraint.ConstraintLayout>

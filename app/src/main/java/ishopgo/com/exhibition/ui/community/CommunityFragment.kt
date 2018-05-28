@@ -1,10 +1,10 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.app.Activity
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,9 +13,10 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
-import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -24,12 +25,10 @@ import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
-import android.net.Uri
-import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
-import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 
 /**
  * Created by hoangnh on 4/23/2018.

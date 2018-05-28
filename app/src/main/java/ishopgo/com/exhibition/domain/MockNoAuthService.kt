@@ -3,10 +3,10 @@ package ishopgo.com.exhibition.domain
 import android.util.Log
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.User
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.CommunityProduct
-import ishopgo.com.exhibition.model.User
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import okhttp3.RequestBody
 import retrofit2.http.QueryMap

@@ -3,10 +3,12 @@ package ishopgo.com.exhibition.ui.base
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.util.Log
+import com.crashlytics.android.core.CrashlyticsCore
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import ishopgo.com.exhibition.BuildConfig
 import ishopgo.com.exhibition.domain.BaseErrorSignal
+import ishopgo.com.exhibition.model.UserDataManager
 
 /**
  * @author Steve
@@ -59,9 +61,11 @@ open class BaseViewModel : ViewModel() {
 
     private fun reportBug(e: Exception) {
         if (!BuildConfig.DEBUG) {
-//            val crashlytic = CrashlyticsCore.getInstance()
-//            crashlytic.setUserIdentifier(UserDataManager.currentUserId.toString())
-//            crashlytic.setUserName(UserDataManager.currentUserPhone)
+            val crashlytic = CrashlyticsCore.getInstance()
+            crashlytic.setUserIdentifier(UserDataManager.currentUserId.toString())
+            crashlytic.setUserName(UserDataManager.currentUserPhone)
+
+            crashlytic.logException(e)
         }
     }
 }

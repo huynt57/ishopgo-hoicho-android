@@ -24,9 +24,12 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
 import ishopgo.com.exhibition.domain.BaseErrorSignal
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.extensions.transact
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+
 
 /**
  * @author Steve
@@ -120,6 +123,12 @@ open class BaseActivity : AppCompatActivity() {
             }
             BaseErrorSignal.ERROR_401 -> {
                 Toast.makeText(this, "Xin vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show()
+                UserDataManager.deleteUserInfo()
+
+                val intent = Intent(this, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                startActivity(intent)
+
                 finish()
                 finishAffinity()
             }

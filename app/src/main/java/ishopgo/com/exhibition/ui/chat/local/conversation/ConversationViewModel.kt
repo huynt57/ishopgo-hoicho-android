@@ -5,7 +5,6 @@ import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
 import android.os.SystemClock
 import android.util.Log
-import com.crashlytics.android.core.CrashlyticsCore
 import io.reactivex.observers.DisposableCompletableObserver
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
@@ -123,7 +122,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         val imageFile = File(application.cacheDir, "postImage_${SystemClock.currentThreadTimeMillis()}}.jpg")
         imageFile.deleteOnExit()
-        Toolbox.reEncodeBitmap(application, imageUri, 2048, Uri.fromFile(imageFile))
+        Toolbox.reEncodeBitmap(application, imageUri, 640, Uri.fromFile(imageFile))
         val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
         builder.addFormDataPart("image", imageFile.name, imageBody)
 
@@ -268,7 +267,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         }
 
                         override fun onError(e: Throwable?) {
-                            CrashlyticsCore.getInstance().logException(e)
+                            e?.printStackTrace()
                         }
 
                     }))

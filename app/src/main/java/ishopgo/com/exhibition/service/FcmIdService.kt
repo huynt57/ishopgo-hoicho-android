@@ -26,6 +26,6 @@ class FcmIdService : FirebaseInstanceIdService() {
 
     companion object {
 
-        val TAG = "MDT"
+        val TAG = "FcmIdService"
     }
 }

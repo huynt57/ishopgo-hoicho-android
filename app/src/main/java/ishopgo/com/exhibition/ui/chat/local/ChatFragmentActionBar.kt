@@ -27,11 +27,10 @@ class ChatFragmentActionBar : BaseActionBarFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ChatFragment())
+                .replace(R.id.view_main_content, ChatFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
 

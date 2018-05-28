@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.product.branded
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -37,7 +38,8 @@ class ProductsOfBrandFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Sản phẩm cùng thương hiệu")
+        val title = arguments?.getString(Const.TransferKey.EXTRA_TITLE) ?: ""
+        toolbar.setCustomTitle(if (title.isBlank()) "Sản phẩm cùng thương hiệu" else title)
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()

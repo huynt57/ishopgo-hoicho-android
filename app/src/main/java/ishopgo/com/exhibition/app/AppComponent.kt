@@ -4,11 +4,16 @@ import android.app.Application
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.domain.db.MessageRepository
+import ishopgo.com.exhibition.ui.chat.local.ChatViewModel
+import ishopgo.com.exhibition.ui.chat.local.contact.ContactViewModel
+import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactViewModel
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationSharedViewModel
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationViewModel
 import ishopgo.com.exhibition.ui.chat.local.conversation.pattern.PatternChooserViewModel
 import ishopgo.com.exhibition.ui.chat.local.group.addmember.MemberViewModel
 import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryViewModel
+import ishopgo.com.exhibition.ui.chat.local.inbox.InboxViewModel
+import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxViewModel
 import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
@@ -31,19 +36,19 @@ import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
-import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
-import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
-import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
+import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointViewModel
+import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
@@ -115,4 +120,9 @@ interface AppComponent {
     fun inject(productSalePointViewModel: ProductSalePointViewModel)
     fun inject(myQrViewModel: MyQrViewModel)
     fun inject(searchCommunityViewModel: SearchCommunityViewModel)
+    fun inject(chatViewModel: ChatViewModel)
+    fun inject(inboxViewModel: InboxViewModel)
+    fun inject(contactViewModel: ContactViewModel)
+    fun inject(searchInboxViewModel: SearchInboxViewModel)
+    fun inject(searchContactViewModel: SearchContactViewModel)
 }

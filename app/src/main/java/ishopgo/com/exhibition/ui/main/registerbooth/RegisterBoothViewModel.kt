@@ -44,7 +44,7 @@ class RegisterBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (banner.trim().isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "booth_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(banner), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(banner), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             imagePart = MultipartBody.Part.createFormData("banner", imageFile.name, imageBody)
         }

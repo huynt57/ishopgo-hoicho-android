@@ -120,10 +120,10 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     var status: Int? = null
     @SerializedName("ck_mh")
     @Expose
-    var ckMh: Int? = null
+    var ckMh: String? = null
     @SerializedName("ck_bl")
     @Expose
-    var ckBl: Int? = null
+    var ckBl: String? = null
     @SerializedName("local_image")
     @Expose
     var localImage: String? = null
