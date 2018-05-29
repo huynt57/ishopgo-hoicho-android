@@ -101,20 +101,64 @@ class ShopDetailFragment : BaseFragment() {
 
         viewModel.shopId.observe(this, Observer { i ->
             i?.let {
-                if (UserDataManager.currentUserId == it) {
+                val boothId = it
+                if (UserDataManager.currentUserId == boothId) {
                     tv_edit_image.visibility = View.VISIBLE
+                    view_favorite.visibility = View.GONE
                     view_image.setOnClickListener {
                         val intent = Intent()
                         intent.type = "image/*"
                         intent.action = Intent.ACTION_GET_CONTENT
                         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
                     }
-                } else tv_edit_image.visibility = View.GONE
+                } else {
+                    tv_edit_image.visibility = View.GONE
+                    view_favorite.visibility = View.VISIBLE
+                }
+                view_favorite.setOnClickListener {
+                    if (UserDataManager.currentUserId > 0) {
+                        if (boothId != -1L)
+                            viewModel.postProductFollow(boothId)
+                    } else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
+                }
+            }
+        })
+
+        viewModel.shopFollow.observe(this, Observer { i ->
+            i?.let {
+                Glide.with(context)
+                        .load(if (it) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder))
+                        .into(view_favorite)
             }
         })
 
         viewModel.editSusscess.observe(this, Observer {
             toast("Cập nhật thành công")
+        })
+
+        viewModel.postFollow.observe(this, Observer { p ->
+            p.let {
+                if (it?.status ?: 0 == 1) {
+                    Glide.with(context)
+                            .load(R.drawable.ic_added_to_favorite_24dp)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_favorite)
+                    toast("Theo dõi gian hàng thành công")
+                } else {
+                    Glide.with(context)
+                            .load(R.drawable.ic_add_to_favorite_24dp)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_favorite)
+                    toast("Bỏ theo dõi gian hàng thành công")
+                }
+            }
         })
     }
 

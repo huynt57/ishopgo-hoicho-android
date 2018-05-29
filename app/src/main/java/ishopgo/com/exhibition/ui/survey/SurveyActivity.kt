@@ -8,4 +8,8 @@ class SurveyActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
         return SurveyFragmentActionBar.newInstance(startupOption)
     }
+
+    override fun startupOptions(): Bundle {
+        return intent?.extras ?: Bundle()
+    }
 }

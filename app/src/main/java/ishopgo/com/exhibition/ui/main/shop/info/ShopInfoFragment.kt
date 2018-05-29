@@ -80,7 +80,7 @@ class ShopInfoFragment : BaseFragment() {
         salePointAdapter.replaceAll(info.provideSalePoints())
 
         if (info is ShopDetail) {
-            sharedViewModel.updateShopImage(info.id, info.provideName(), info.provideImage())
+            sharedViewModel.updateShopImage(info.id, info.follow ?: false, info.provideImage())
             if (UserDataManager.currentUserId == info.id) {
                 view_name.drawableCompat(0, 0, R.drawable.ic_edit_black_24dp, 0)
                 view_name.setOnClickListener { showDialogChangeName(info.name ?: "") }

@@ -26,14 +26,11 @@ class LoginSelectOptionActivity : BaseSingleFragmentActivity() {
         if (require) {
         } else
             if (UserDataManager.currentUserId > 0 || UserDataManager.passLoginScreen > 0) {
-                if (UserDataManager.currentType != "Thành viên"){
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    if (UserDataManager.currentSurvey == 0){
+                if (UserDataManager.currentType == "Thành viên") {
+                    if (UserDataManager.currentSurvey == 0) {
                         val intent = Intent(this, SurveyActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, "")
                         startActivity(intent)
                         finish()
                     } else {
@@ -41,7 +38,10 @@ class LoginSelectOptionActivity : BaseSingleFragmentActivity() {
                         startActivity(intent)
                         finish()
                     }
-
+                } else {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }
             }
 

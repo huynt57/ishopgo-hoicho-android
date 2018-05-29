@@ -62,6 +62,7 @@ object Const {
         const val ACTION_SYNTHETIC_MANAGER = 15
         const val ACTION_MY_QR = 16
         const val ACTION_REGISTER_BOOTH = 17
+        const val ACTION_SURVEY = 18
     }
 
     object Chat {

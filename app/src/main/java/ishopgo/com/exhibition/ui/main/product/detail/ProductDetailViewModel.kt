@@ -190,25 +190,6 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var postFollow = MutableLiveData<ProductFollow>()
-
-    fun postProductFollow(productId: Long) {
-        val fields = mutableMapOf<String, Any>()
-        fields["id"] = productId
-        addDisposable(authService.postProductPollow(fields)
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<ProductFollow>() {
-                    override fun success(data: ProductFollow?) {
-                        postFollow.postValue(data)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                })
-        )
-    }
-
     var productSalePoint = MutableLiveData<List<ProductSalePoint>>()
 
     fun getProductSalePoint(params: Request) {

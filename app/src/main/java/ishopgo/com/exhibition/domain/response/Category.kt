@@ -4,6 +4,10 @@ import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 class Category : IdentityData(), CategoryProvider {
+    override fun provideCount(): Int {
+        return count ?: 0
+    }
+
     override fun provideLevel(): Int {
         return level
     }

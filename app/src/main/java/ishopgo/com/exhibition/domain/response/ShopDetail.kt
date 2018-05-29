@@ -87,4 +87,7 @@ class ShopDetail : IdentityData(), ShopInfoProvider {
     @SerializedName("qrcode")
     @Expose
     var qrcode: String? = null
+    @SerializedName("follow")
+    @Expose
+    var follow: Boolean? = false
 }

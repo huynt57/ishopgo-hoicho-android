@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v4.view.PagerAdapter
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,6 +49,7 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
         val textInputLayout2: TextInputLayout = view.findViewById(R.id.textInputLayout2)
         val textInputLayout3: TextInputLayout = view.findViewById(R.id.textInputLayout3)
         val textInputLayout4: TextInputLayout = view.findViewById(R.id.textInputLayout4)
+        val rv_answer: RecyclerView = view.findViewById(R.id.rv_answer)
 
         tv_question_number.text = "Câu ${position + 1}:"
         tv_question.text = listQuestion[position].title
@@ -55,9 +58,12 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 if (buttonView.isChecked) {
                     edt_answer.isFocusableInTouchMode = true
                     edt_answer.isFocusable = true
-                } else {
-                    edt_answer.isFocusableInTouchMode = false
-                    edt_answer.isFocusable = false
+                    edt_answer_2.isFocusableInTouchMode = false
+                    edt_answer_2.isFocusable = false
+                    edt_answer_3.isFocusableInTouchMode = false
+                    edt_answer_3.isFocusable = false
+                    edt_answer_4.isFocusableInTouchMode = false
+                    edt_answer_4.isFocusable = false
                 }
                 val postAnswer = PostAnswer()
                 val postSurvey = PostSurvey()
@@ -79,9 +85,12 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 if (buttonView.isChecked) {
                     edt_answer_2.isFocusableInTouchMode = true
                     edt_answer_2.isFocusable = true
-                } else {
-                    edt_answer_2.isFocusableInTouchMode = false
-                    edt_answer_2.isFocusable = false
+                    edt_answer.isFocusableInTouchMode = false
+                    edt_answer.isFocusable = false
+                    edt_answer_3.isFocusableInTouchMode = false
+                    edt_answer_3.isFocusable = false
+                    edt_answer_4.isFocusableInTouchMode = false
+                    edt_answer_4.isFocusable = false
                 }
                 val postAnswer = PostAnswer()
                 val postSurvey = PostSurvey()
@@ -102,9 +111,12 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 if (buttonView.isChecked) {
                     edt_answer_3.isFocusableInTouchMode = true
                     edt_answer_3.isFocusable = true
-                } else {
-                    edt_answer_3.isFocusableInTouchMode = false
-                    edt_answer_3.isFocusable = false
+                    edt_answer_2.isFocusableInTouchMode = false
+                    edt_answer_2.isFocusable = false
+                    edt_answer.isFocusableInTouchMode = false
+                    edt_answer.isFocusable = false
+                    edt_answer_4.isFocusableInTouchMode = false
+                    edt_answer_4.isFocusable = false
                 }
                 val postAnswer = PostAnswer()
                 val postSurvey = PostSurvey()
@@ -126,9 +138,12 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 if (buttonView.isChecked) {
                     edt_answer_4.isFocusableInTouchMode = true
                     edt_answer_4.isFocusable = true
-                } else {
-                    edt_answer_4.isFocusableInTouchMode = false
-                    edt_answer_4.isFocusable = false
+                    edt_answer_3.isFocusableInTouchMode = false
+                    edt_answer_3.isFocusable = false
+                    edt_answer_2.isFocusableInTouchMode = false
+                    edt_answer_2.isFocusable = false
+                    edt_answer.isFocusableInTouchMode = false
+                    edt_answer.isFocusable = false
                 }
                 val postAnswer = PostAnswer()
                 val postSurvey = PostSurvey()
@@ -176,8 +191,8 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
                 }
             }
 
-//        adapterAnswer = AnswerAdapter()
-//        question.answers?.let { adapterAnswer.replaceAll(it) }
+//        val adapterAnswer = AnswerAdapter()
+//        listQuestion[position].answers?.let { adapterAnswer.replaceAll(it) }
 //        rv_answer.layoutManager = LinearLayoutManager(container.context, LinearLayoutManager.VERTICAL, false)
 //        rv_answer.adapter = adapterAnswer
 

@@ -15,4 +15,5 @@ interface CategoryProvider {
 
     fun provideLevel(): Int
 
+    fun provideCount(): Int
 }

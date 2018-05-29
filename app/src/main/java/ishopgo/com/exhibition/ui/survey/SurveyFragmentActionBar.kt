@@ -1,12 +1,19 @@
 package ishopgo.com.exhibition.ui.survey
 
+import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class SurveyFragmentActionBar : BaseActionBarFragment() {
+    private lateinit var viewModel: AccountViewModel
 
     companion object {
 
@@ -32,12 +39,33 @@ class SurveyFragmentActionBar : BaseActionBarFragment() {
                 .commit()
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = obtainViewModel(AccountViewModel::class.java, false)
+        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.loggedOut.observe(this, Observer { m ->
+            m?.let {
+                UserDataManager.deleteUserInfo()
+                toast("Đăng xuất thành công")
+                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                startActivity(intent)
+                activity?.finish()
+            }
+        })
+    }
+
     private fun setupToolbars() {
         toolbar.setCustomTitle("Làm bài khảo sát")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
-        toolbar.setLeftButtonClickListener {
-            activity?.finish()
+        if (arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, null) == Const.TransferKey.EXTRA_REQUIRE) {
+            toolbar.setLeftButtonClickListener {
+                activity?.finish()
+            }
+        } else {
+            toolbar.setLeftButtonClickListener {
+                viewModel.logout()
+            }
         }
     }
-
 }
