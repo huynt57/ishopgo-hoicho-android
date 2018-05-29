@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -29,7 +30,6 @@ import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
-import ishopgo.com.exhibition.ui.main.report.ReportActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -155,8 +155,14 @@ class AccountFragment : BaseFragment() {
 
     private fun openReportActivity() {
         context?.let {
-            val intent = Intent(it, ReportActivity::class.java)
-            startActivity(intent)
+//            val intent = Intent(it, ReportActivity::class.java)
+//            startActivity(intent)
+
+            val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/groups/ishopgovn/"))
+
+            if (i.resolveActivity(it.packageManager) != null) {
+                it.startActivity(i)
+            }
         }
     }
 
@@ -282,6 +288,7 @@ class AccountFragment : BaseFragment() {
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
+                activity?.finishAffinity()
             }
         })
 

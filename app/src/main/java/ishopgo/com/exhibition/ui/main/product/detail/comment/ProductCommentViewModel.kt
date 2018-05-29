@@ -64,7 +64,7 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
                 uri?.let {
                     val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
                     imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                     val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
                 }

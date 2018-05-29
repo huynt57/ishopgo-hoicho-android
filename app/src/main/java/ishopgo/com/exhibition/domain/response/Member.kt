@@ -40,11 +40,11 @@ class Member {
     @SerializedName("status")
     var status: String? = null
     @SerializedName("ck_mh")
-    var ckMh: Int = 0
+    var ckMh: String? = ""
     @SerializedName("ck_si")
-    var ckSi: Int = 0
+    var ckSi: String? = ""
     @SerializedName("ck_le")
-    var ckLe: Int = 0
+    var ckLe: String? = ""
     @SerializedName("bank_number")
     var bankNumber: String? = null
     @SerializedName("bank_name")

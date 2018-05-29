@@ -17,7 +17,6 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.community.CommunityProvider
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
-import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityAdapter.Companion.COMMUNITY_CLICK
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityResultDetailActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 

@@ -19,8 +19,8 @@ import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -116,7 +116,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
                 uri?.let {
                     val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
                     imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 2048, Uri.fromFile(imageFile))
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                     val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
                 }
@@ -129,7 +129,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         if (image.trim().isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "product_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
         }

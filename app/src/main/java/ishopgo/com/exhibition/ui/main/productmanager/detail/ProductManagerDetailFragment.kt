@@ -18,7 +18,6 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.crashlytics.android.core.CrashlyticsCore
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Brand
@@ -31,7 +30,6 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.showStackTrace
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.BrandsAdapter
@@ -248,7 +246,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                 )
                 webView_spk_detail_description.loadData(fullHtml, "text/html; charset=UTF-8", null)
             } catch (e: IOException) {
-                CrashlyticsCore.getInstance().log(e.showStackTrace())
+                e.printStackTrace()
                 webView_spk_detail_description.loadData(info.provideDescription(), "text/html; charset=UTF-8", null)
             }
         }

@@ -27,7 +27,6 @@ import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
-import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener

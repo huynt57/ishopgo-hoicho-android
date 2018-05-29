@@ -7,13 +7,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.community.CommunityImageAdapter
 import ishopgo.com.exhibition.ui.community.CommunityProvider
 import kotlinx.android.synthetic.main.item_community.view.*
-import kotlinx.android.synthetic.main.item_search_total.view.*
 
 class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
     companion object {

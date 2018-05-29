@@ -70,12 +70,12 @@ class ShopInfoFragment : BaseFragment() {
     private fun showInfo(info: ShopInfoProvider) {
 
         view_name.text = "Tên: <b>${info.provideName()}</b>".asHtml()
-        view_product_count.text = "Số sản phẩm: <b>${info.provideProductCount()} sản phẩm</b>".asHtml()
+        view_product_count.text = "Số sản phẩm: <b>${info.provideProductCount()}</b>".asHtml()
         view_joined_date.text = "Ngày tham gia: <b>${info.provideJoinedDate()}</b>".asHtml()
         view_region.text = "Khu vực: <b>${info.provideRegion()}</b>".asHtml()
         view_rating.text = "Đánh giá shop: <b>${info.provideRating()}/5 điểm</b>".asHtml()
-        view_click_count.text = "Số lượt click: <b>${info.provideClickCount()} lượt</b>".asHtml()
-        view_share_count.text = "Số lượt share: <b>${info.provideShareCount()} lượt</b>".asHtml()
+        view_click_count.text = "Số lượt click: <b>${info.provideClickCount()}</b>".asHtml()
+        view_share_count.text = "Số lượt share: <b>${info.provideShareCount()}</b>".asHtml()
         view_description.text = info.provideDescription().asHtml()
         salePointAdapter.replaceAll(info.provideSalePoints())
 

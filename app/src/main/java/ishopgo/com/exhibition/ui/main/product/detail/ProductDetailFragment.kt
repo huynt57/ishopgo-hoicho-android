@@ -202,16 +202,17 @@ class ProductDetailFragment : BaseFragment() {
             view_product_description.setHtml(product.provideProductShortDescription(), HtmlHttpImageGetter(view_product_description))
             view_shop_name.text = product.provideShopName()
             view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"
-            view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm mới".asHtml()
+            view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b>${product.provideShopRateCount()}</b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${product.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${product.provideProductCommentCount()} bình luận"
             view_product_share_count.text = "${product.provideProductShareCount()} chia sẻ"
-            tv_shop_phone.text = "Số điện thoại: <b>${product.provideShopPhone()}</b>".asHtml()
-            tv_shop_address.text = "Địa chỉ: <b>${product.provideShopAddress()}</b>".asHtml()
+            tv_shop_phone.text = product.provideShopPhone()
+            tv_shop_address.text = product.provideShopAddress()
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
+            view_product_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
             view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }

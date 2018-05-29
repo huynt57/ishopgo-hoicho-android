@@ -55,13 +55,12 @@ class ApiModule {
 
     @Provides
     @Singleton
-    @Named("header")
+    @Named("expo_header")
     fun provideHeaderInterceptor(): Interceptor {
         return Interceptor { chain ->
             val original = chain.request()
 
             val request = original.newBuilder()
-                    .header("Authorization", "Bearer " + UserDataManager.accessToken)
                     .method(original.method(), original.body())
                     .url(original
                             .url()
@@ -69,6 +68,22 @@ class ApiModule {
                             .addQueryParameter("id_app", UserDataManager.appId)
                             .build()
                     )
+                    .build()
+
+            return@Interceptor chain.proceed(request)
+        }
+    }
+
+    @Provides
+    @Singleton
+    @Named("expo_auth_header")
+    fun provideExpoAuthHeaderInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            val original = chain.request()
+
+            val request = original.newBuilder()
+                    .header("Authorization", "Bearer " + UserDataManager.accessToken)
+                    .method(original.method(), original.body())
                     .build()
 
             return@Interceptor chain.proceed(request)
@@ -107,11 +122,10 @@ class ApiModule {
 
     @Provides
     @Singleton
-    @Named("okhttp_authenticator")
-    fun provideOkHttpClient(@Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache,
+    @Named("okhttp_noauth_authenticator")
+    fun provideNoAuthOkHttpClient(@Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache,
                             @Named("log") logger: Interceptor,
-                            @Named("header") header: Interceptor,
-                            @Named("minute_cache") minuteCache: Interceptor): okhttp3.OkHttpClient {
+                            @Named("expo_header") header: Interceptor): okhttp3.OkHttpClient {
         val builder = okhttp3.OkHttpClient.Builder()
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
@@ -121,7 +135,29 @@ class ApiModule {
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .authenticator(auth)
                 .addInterceptor(header)
-                .addInterceptor(minuteCache)
+                .addInterceptor(logger)
+                .dispatcher(dispatcher)
+
+        return builder.build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("okhttp_auth_authenticator")
+    fun provideAuthOkHttpClient(@Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache,
+                            @Named("log") logger: Interceptor,
+                            @Named("expo_header") header: Interceptor,
+                            @Named("expo_auth_header") authHeader: Interceptor): okhttp3.OkHttpClient {
+        val builder = okhttp3.OkHttpClient.Builder()
+        val dispatcher = Dispatcher()
+        dispatcher.maxRequests = 1
+        builder
+                .cache(cache)
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .authenticator(auth)
+                .addInterceptor(authHeader)
+                .addInterceptor(header)
                 .addInterceptor(logger)
                 .dispatcher(dispatcher)
 
@@ -152,7 +188,7 @@ class ApiModule {
     @Provides
     @Singleton
     @Named("retrofit_authenticator")
-    fun provideRetrofit(@Named("okhttp_authenticator") okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofit(@Named("okhttp_auth_authenticator") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -164,7 +200,7 @@ class ApiModule {
     @Provides
     @Singleton
     @Named("retrofit_no_authenticator")
-    fun provideRetrofitNoAuth(@Named("okhttp_authenticator") okHttpClient: OkHttpClient): Retrofit {
+    fun provideRetrofitNoAuth(@Named("okhttp_noauth_authenticator") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
@@ -229,7 +265,7 @@ class ApiModule {
 
     @Provides
     @Singleton
-    fun provideISGApi(@Named("retrofit_isg") retrofit: Retrofit,
+    fun provideISGService(@Named("retrofit_isg") retrofit: Retrofit,
                       @Named("isg_auth") auth: Authenticator): ApiService.ISGApi {
 
         val isgService = retrofit.create(ApiService.ISGApi::class.java)

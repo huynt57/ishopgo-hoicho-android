@@ -2,12 +2,25 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.ui.chat.local.contact.ContactProvider
 import ishopgo.com.exhibition.ui.chat.local.group.addmember.IMemberView
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
  */
-class ContactItem : IMemberView {
+class ContactItem : IMemberView, ContactProvider {
+    override fun provideAvatar(): String {
+        return image ?: ""
+    }
+
+    override fun provideName(): String {
+        return name ?: ""
+    }
+
+    override fun providePhone(): String {
+        return phone ?: ""
+    }
+
     override fun memberName(): String {
         return name ?: ""
     }

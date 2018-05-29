@@ -55,7 +55,7 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (!image.trim().isEmpty()) {
             val imageFile = File(appContext.cacheDir, "product_" + System.currentTimeMillis() + ".jpg")
             imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 2048, Uri.fromFile(imageFile))
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 640, Uri.fromFile(imageFile))
             val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
             imagePart = MultipartBody.Part.createFormData("banner", imageFile.name, imageBody)
         }
