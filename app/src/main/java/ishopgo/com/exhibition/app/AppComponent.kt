@@ -48,6 +48,7 @@ import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
 import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
+import ishopgo.com.exhibition.ui.main.ticket.TicketViewModel
 import ishopgo.com.exhibition.ui.splash.SplashViewModel
 import ishopgo.com.exhibition.ui.survey.SurveyViewModel
 import javax.inject.Singleton
@@ -117,4 +118,5 @@ interface AppComponent {
     fun inject(myQrViewModel: MyQrViewModel)
     fun inject(searchCommunityViewModel: SearchCommunityViewModel)
     fun inject(surveyViewModel: SurveyViewModel)
+    fun inject(ticketViewModel: TicketViewModel)
 }
