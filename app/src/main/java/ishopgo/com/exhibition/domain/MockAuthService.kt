@@ -18,6 +18,31 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun createTicket(): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createTicket()
+    }
+
+    override fun getTicket(): Single<BaseResponse<Ticket>> {
+        val c = Ticket()
+        c.id = random.nextInt(1000).toLong()
+        c.ticketName = "Hội chợ iShopGo"
+        c.name = "Nguyễn Huy Hoàng"
+        c.phone = "0989013403"
+        c.district = "Cầu Giấy"
+        c.city = "Hà Nội"
+        c.createdAt = "2018/04/27 15:35:25"
+        c.address = "Dương Đình Nghệ"
+        c.banner = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
+
+
+        val response = BaseResponse<Ticket>()
+        response.status = 1
+        response.data = c
+
+        return delegate.returningResponse(response).getTicket()    }
+
     override fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

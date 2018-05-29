@@ -10,8 +10,8 @@ class TicketFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
 
-        fun newInstance(params: Bundle): TicketFragment {
-            val fragment = TicketFragment()
+        fun newInstance(params: Bundle): TicketFragmentActionBar {
+            val fragment = TicketFragmentActionBar()
             fragment.arguments = params
 
             return fragment
@@ -39,5 +39,4 @@ class TicketFragmentActionBar : BaseActionBarFragment() {
                 .replace(R.id.view_main_content, TicketFragment.newInstance(Bundle()))
                 .commit()
     }
-
 }

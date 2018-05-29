@@ -64,6 +64,7 @@ object Const {
         const val ACTION_MY_QR = 16
         const val ACTION_REGISTER_BOOTH = 17
         const val ACTION_SURVEY = 18
+        const val ACTION_TICKET = 19
     }
 
     object Chat {

@@ -142,25 +142,29 @@
 
         <ImageView
             android:id="@+id/img_qr_code"
-            android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:scaleType="fitXY"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/view4" />
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/bg_boder_ticket"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_qr_code"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/img_qr_code"
             app:layout_constraintTop_toTopOf="@+id/img_qr_code">
@@ -173,8 +177,8 @@
                 android:layout_marginStart="8dp"
                 android:gravity="center"
                 android:text="Mã sô vé"
-                android:textSize="12sp"
                 android:textColor="@color/md_grey_700"
+                android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -188,19 +192,20 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:gravity="center"
-                tools:text="99999999"
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8"
-                tools:ignore="HardcodedText" />
+                tools:ignore="HardcodedText"
+                tools:text="99999999" />
         </android.support.constraint.ConstraintLayout>
 
         <android.support.constraint.ConstraintLayout
-            android:background="@color/md_grey_300"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="@color/md_grey_300"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -209,20 +214,27 @@
             <TextView
                 android:id="@+id/tv_contact"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="77dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:textSize="12sp"
                 android:gravity="center"
                 android:padding="8dp"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Mọi thông tin chi tiết vui lòng liên hệ hotline 19008198 hoặc email event@rubeauty.com\nChương trình tự hào được tài trợ bởi iShopGo - www.ishopgo.com" />
         </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
 
     </android.support.constraint.ConstraintLayout>

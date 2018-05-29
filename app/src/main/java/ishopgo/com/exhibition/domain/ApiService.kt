@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.question.QuestionCategory
 import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
+import ishopgo.com.exhibition.ui.main.ticket.TicketProvider
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -232,6 +233,12 @@ class ApiService {
 
         @POST("survey/add-survey-account/{id}")
         fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("ticket/add")
+        fun createTicket(): Single<BaseResponse<Any>>
+
+        @GET("ticket/account")
+        fun getTicket(): Single<BaseResponse<Ticket>>
     }
 
     interface ISGApi {

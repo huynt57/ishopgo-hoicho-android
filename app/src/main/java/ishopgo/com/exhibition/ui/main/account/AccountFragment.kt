@@ -31,6 +31,7 @@ import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
+import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -147,6 +148,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_SURVEY -> {
                 openSurvey()
             }
+            Const.AccountAction.ACTION_TICKET -> {
+            openTicket()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -206,6 +210,13 @@ class AccountFragment : BaseFragment() {
         context?.let {
             val intent = Intent(it, SurveyActivity::class.java)
             intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, Const.TransferKey.EXTRA_REQUIRE)
+            startActivity(intent)
+        }
+    }
+
+    private fun openTicket() {
+        context?.let {
+            val intent = Intent(it, TicketActivity::class.java)
             startActivity(intent)
         }
     }

@@ -95,7 +95,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_TICKET,
                     R.drawable.ic_ticket,
                     "Vé thăm quan của tôi"
             ))
