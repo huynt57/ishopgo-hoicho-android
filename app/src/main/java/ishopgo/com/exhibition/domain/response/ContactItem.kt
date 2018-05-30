@@ -9,6 +9,10 @@ import ishopgo.com.exhibition.ui.chat.local.group.addmember.IMemberView
  * Created by xuanhong on 5/17/18. HappyCoding!
  */
 class ContactItem : IdentityData(), IMemberView, ContactProvider {
+    override fun provideJob(): String {
+        return typeText ?: ""
+    }
+
     override fun provideAvatar(): String {
         return image ?: ""
     }

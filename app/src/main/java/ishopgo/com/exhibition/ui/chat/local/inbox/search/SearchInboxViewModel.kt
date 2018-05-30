@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
  * Created by xuanhong on 5/24/18. HappyCoding!
  */
 class SearchInboxViewModel : BaseListViewModel<List<InboxProvider>>(), AppComponent.Injectable {
+
     override fun loadData(params: Request) {
         if (params is SearchInboxRequest) {
             if (params.keyword.isBlank()) {

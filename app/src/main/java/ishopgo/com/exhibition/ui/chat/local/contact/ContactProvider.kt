@@ -8,5 +8,6 @@ interface ContactProvider {
     fun provideAvatar(): String
     fun provideName(): String
     fun providePhone(): String
+    fun provideJob(): String
 
 }

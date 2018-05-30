@@ -43,7 +43,7 @@ class ContactAdapter : ClickableAdapter<ContactProvider>() {
                         )
                         .into(view_avatar)
                 view_name.text = data.provideName()
-                view_phone.text = data.providePhone()
+                view_phone.text = "${data.provideJob()} - ${data.providePhone()}"
             }
         }
     }

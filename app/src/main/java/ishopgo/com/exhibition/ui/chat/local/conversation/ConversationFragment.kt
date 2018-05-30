@@ -80,7 +80,6 @@ class ConversationFragment : BaseActionBarFragment() {
             m?.let {
                 // we have new message
                 if (m.idConversation == conversationId) {
-                    Log.d(TAG, "received new message: $m")
                     adapter.addData(0, it)
 
                     recyclerview.post {
@@ -394,7 +393,7 @@ class ConversationFragment : BaseActionBarFragment() {
             scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     reloadData = false
-                    viewModel.getMessages(conversationId, adapter.getItem(adapter.itemCount - 1).getMessageId())
+                    viewModel.getMessages(conversationId, adapter.getItem(totalItemsCount - 1).getMessageId())
                 }
 
             }
