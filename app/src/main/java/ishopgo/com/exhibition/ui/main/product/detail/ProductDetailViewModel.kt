@@ -101,7 +101,11 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var detail = MutableLiveData<ProductDetailProvider>()
 
     fun loadProductDetail(productId: Long) {
-        addDisposable(noAuthService.getProductDetail(productId)
+        val request = if (UserDataManager.currentUserId > 0)
+            authService.getProductDetail(productId)
+        else noAuthService.getProductDetail(productId)
+
+        addDisposable(request
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
                     override fun success(data: ProductDetail?) {
@@ -143,7 +147,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun getProductLike(productId: Long) {
         addDisposable(authService.getProductLike(productId)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductLike>() {
                     override fun success(data: ProductLike?) {
                         getProductLike.postValue(data)

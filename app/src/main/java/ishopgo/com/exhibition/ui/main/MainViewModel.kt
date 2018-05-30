@@ -2,6 +2,8 @@ package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
+import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
@@ -13,6 +15,8 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var isSearchEnable = MutableLiveData<Boolean>()
     var enableSearchInbox = MutableLiveData<Boolean>()
     var enableSearchContact = MutableLiveData<Boolean>()
+    var currentConversation = MutableLiveData<LocalConversationItem>()
+    var newMessage = MutableLiveData<PusherChatMessage>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -36,5 +40,20 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         enableSearchContact.postValue(true)
     }
 
+    fun openCurrentConversation(conv: LocalConversationItem) {
+        currentConversation.value = conv
+    }
+
+    fun closeCurrentConversation() {
+        currentConversation.value = null
+    }
+
+    /**
+     * simply forward this message
+     */
+    fun resolveMessage(message: PusherChatMessage): Boolean {
+        newMessage.postValue(message)
+        return true
+    }
 
 }

@@ -26,7 +26,7 @@ class MemberInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
             fields.put("title", title)
         }
         addDisposable(isgService.chat_updateInfoGroup(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ConversationInfo>() {
                     override fun success(data: ConversationInfo?) {
                         data?.let {
@@ -47,7 +47,7 @@ class MemberInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
         fields.put("conver", conversationId)
 
         addDisposable(isgService.chat_conversationInfo(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ConversationInfo>() {
                     override fun success(data: ConversationInfo?) {
                         data?.let { info.postValue(it) }

@@ -108,7 +108,7 @@ class ConfigBoothFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context!!, data.data, (2 * 1024 * 1024).toLong())) {
+            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
                 toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                 return
             }

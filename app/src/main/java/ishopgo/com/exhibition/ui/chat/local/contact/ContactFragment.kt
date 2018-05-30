@@ -7,10 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -27,8 +32,7 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
         if (reloadData) {
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
-        }
-        else
+        } else
             adapter.addAll(data)
     }
 
@@ -37,7 +41,25 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<ContactProvider> {
-        return ContactAdapter()
+        val contactAdapter = ContactAdapter()
+        contactAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ContactProvider> {
+
+            override fun click(position: Int, data: ContactProvider, code: Int) {
+                if (viewModel is ContactViewModel) {
+                    val request = CreateConversationRequest()
+                    request.type = 1
+                    val members = mutableListOf<Long>()
+                    members.add(UserDataManager.currentUserId)
+                    if (data is IdentityData) {
+                        members.add(data.id)
+                    }
+                    request.member = members
+                    (viewModel as ContactViewModel).createConversation(request)
+                }
+            }
+
+        }
+        return contactAdapter
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,6 +74,17 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        if (viewModel is ContactViewModel) {
+            (viewModel as ContactViewModel).conversation.observe(this, Observer { c ->
+                c?.let {
+                    val conv = LocalConversationItem()
+                    conv.idConversions = c.id ?: ""
+                    conv.name = c.name ?: ""
+                    mainViewModel.openCurrentConversation(conv)
+                }
+            })
+        }
 
         mainViewModel = obtainViewModel(MainViewModel::class.java, true)
         mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })

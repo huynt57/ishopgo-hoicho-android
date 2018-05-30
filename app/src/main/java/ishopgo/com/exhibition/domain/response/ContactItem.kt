@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.ui.chat.local.group.addmember.IMemberView
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
  */
-class ContactItem : IMemberView, ContactProvider {
+class ContactItem : IdentityData(), IMemberView, ContactProvider {
     override fun provideAvatar(): String {
         return image ?: ""
     }
@@ -33,9 +33,6 @@ class ContactItem : IMemberView, ContactProvider {
         return image ?: ""
     }
 
-    @SerializedName("id")
-    @Expose
-    var id: Long = 0
     @SerializedName("type_text")
     @Expose
     var typeText: String? = null

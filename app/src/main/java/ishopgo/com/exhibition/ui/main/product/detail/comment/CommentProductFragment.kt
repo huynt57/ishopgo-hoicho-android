@@ -201,7 +201,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {
-                if (Toolbox.exceedSize(context!!, data.data, (2 * 1024 * 1024).toLong())) {
+                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
                     toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                     return
                 }
@@ -212,7 +212,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (2 * 1024 * 1024).toLong())) {
+                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
                         toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
                         return
                     }

@@ -4,6 +4,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import kotlinx.android.synthetic.main.item_inbox.view.*
@@ -12,8 +13,17 @@ import kotlinx.android.synthetic.main.item_inbox.view.*
  * Created by xuanhong on 5/23/18. HappyCoding!
  */
 class InboxAdapter : ClickableAdapter<InboxProvider>() {
+
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_inbox
+    }
+
+    fun indexOf(conversationId: String): Int {
+        return mData.indexOfFirst {
+            if (it is LocalConversationItem)
+                return@indexOfFirst it.idConversions == conversationId
+            return@indexOfFirst false
+        }
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<InboxProvider> {

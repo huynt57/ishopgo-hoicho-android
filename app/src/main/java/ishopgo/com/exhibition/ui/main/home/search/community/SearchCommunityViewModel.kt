@@ -26,7 +26,7 @@ class SearchCommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), A
             fields["content"] = params.content
 
             addDisposable(noAuthService.getCommunity(fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
                         override fun success(data: ManagerCommunity?) {
                             total.postValue(data?.total ?: 0)
