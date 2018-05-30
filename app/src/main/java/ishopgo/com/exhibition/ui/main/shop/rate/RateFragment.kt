@@ -90,12 +90,20 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
     }
 
     private val rateListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
+        ratingBar.onRatingBarChangeListener = null
         if (UserDataManager.currentUserId > 0) {
-            ratingBar.onRatingBarChangeListener = null
             showDialogRating(rating)
         } else {
-            showDialogLogin()
+            openLoginActivity()
         }
+    }
+
+    private fun openLoginActivity(){
+        ratingBar.rating = 0.0f
+        ratingBar.onRatingBarChangeListener = rateListener
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
     }
 
     private fun showDialogRating(rating: Float) {
@@ -146,27 +154,6 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
             toast("Cảm ơn bạn đã đánh giá gian hàng")
             firstLoad()
         })
-    }
-
-    private fun showDialogLogin() {
-        context?.let {
-            val builder = MaterialDialog.Builder(it)
-            builder.title("Thông báo")
-                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
-                    .positiveText("Đăng nhập")
-                    .positiveColor(Color.parseColor("#00c853"))
-                    .onPositive { dialog, _ ->
-                        dialog.dismiss()
-                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                    .negativeText("Bỏ qua")
-                    .negativeColor(Color.parseColor("#00c853"))
-                    .show()
-
-        }
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ShopRateProvider>> {

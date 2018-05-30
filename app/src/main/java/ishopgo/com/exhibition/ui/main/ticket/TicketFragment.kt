@@ -37,9 +37,6 @@ class TicketFragment : BaseFragment() {
                 resolveError(it)
             }
         })
-        viewModel.crateSusscess.observe(this, Observer {
-            viewModel.getTicket()
-        })
 
         viewModel.getTicketData.observe(this, Observer { p ->
             p?.let {

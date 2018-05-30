@@ -241,7 +241,7 @@ class ApiService {
         fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
         @POST("ticket/add")
-        fun createTicket(): Single<BaseResponse<Any>>
+        fun createTicket(): Single<BaseResponse<Ticket>>
 
         @GET("ticket/account")
         fun getTicket(): Single<BaseResponse<Ticket>>

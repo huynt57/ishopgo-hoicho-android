@@ -184,8 +184,12 @@ class ProductDetailFragment : BaseFragment() {
                 view_share.setOnClickListener { showDialogShare(product) }
                 linearLayout.visibility = View.VISIBLE
             } else {
-                view_shop_follow.setOnClickListener { showDialogLogin() }
-                view_share.setOnClickListener { showDialogLogin() }
+                view_shop_follow.setOnClickListener {
+                    openActivtyLogin()
+                }
+                view_share.setOnClickListener {
+                    openActivtyLogin()
+                }
                 linearLayout.visibility = View.GONE
             }
 
@@ -241,7 +245,7 @@ class ProductDetailFragment : BaseFragment() {
             view_shop_add_sale_point.setOnClickListener {
                 if (UserDataManager.currentUserId > 0)
                     openAddSalePoint(it.context, product)
-                else showDialogLogin()
+                else openActivtyLogin()
             }
         }
     }
@@ -262,25 +266,10 @@ class ProductDetailFragment : BaseFragment() {
         return true
     }
 
-    private fun showDialogLogin() {
-        context?.let {
-            val builder = MaterialDialog.Builder(it)
-            builder.title("Thông báo")
-                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
-                    .positiveText("Đăng nhập")
-                    .positiveColor(Color.parseColor("#00c853"))
-                    .onPositive { dialog, _ ->
-                        dialog.dismiss()
-                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                    .negativeText("Bỏ qua")
-                    .negativeColor(Color.parseColor("#00c853"))
-                    .show()
-
-        }
+    private fun openActivtyLogin() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
     }
 
     private fun showDialogShare(product: ProductDetailProvider) {

@@ -12,26 +12,10 @@ class TicketViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var crateSusscess = MutableLiveData<Boolean>()
+    var getTicketData = MutableLiveData<Ticket>()
 
     fun createTicket() {
         addDisposable(authService.createTicket()
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<Any>() {
-                    override fun success(data: Any?) {
-                        crateSusscess.postValue(true)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                }))
-    }
-
-    var getTicketData = MutableLiveData<Ticket>()
-
-    fun getTicket() {
-        addDisposable(authService.getTicket()
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Ticket>() {
                     override fun success(data: Ticket?) {
@@ -39,6 +23,7 @@ class TicketViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     }
 
                     override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
                     }
                 }))
     }
