@@ -241,7 +241,7 @@ class ProductDetailFragment : BaseFragment() {
             view_shop_add_sale_point.setOnClickListener {
                 if (UserDataManager.currentUserId > 0)
                     openAddSalePoint(it.context, product)
-                else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
+                else showDialogLogin()
             }
         }
     }

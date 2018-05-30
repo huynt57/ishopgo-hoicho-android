@@ -4,6 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -17,6 +18,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -24,6 +26,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
 import ishopgo.com.exhibition.ui.main.shop.rate.RateFragment
@@ -119,7 +122,7 @@ class ShopDetailFragment : BaseFragment() {
                     if (UserDataManager.currentUserId > 0) {
                         if (boothId != -1L)
                             viewModel.postProductFollow(boothId)
-                    } else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
+                    } else showDialogLogin()
                 }
             }
         })
@@ -160,6 +163,27 @@ class ShopDetailFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun showDialogLogin() {
+        context?.let {
+            val builder = MaterialDialog.Builder(it)
+            builder.title("Thông báo")
+                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
+                    .positiveText("Đăng nhập")
+                    .positiveColor(Color.parseColor("#00c853"))
+                    .onPositive { dialog, _ ->
+                        dialog.dismiss()
+                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                    .negativeText("Bỏ qua")
+                    .negativeColor(Color.parseColor("#00c853"))
+                    .show()
+
+        }
     }
 
     inner class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {

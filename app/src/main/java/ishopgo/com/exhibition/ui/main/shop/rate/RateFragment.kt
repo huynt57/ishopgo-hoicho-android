@@ -1,6 +1,8 @@
 package ishopgo.com.exhibition.ui.main.shop.rate
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.view.LayoutInflater
@@ -17,6 +19,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_shop_rating.*
@@ -82,13 +85,17 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
-        ratingBar.visibility = if (UserDataManager.currentUserId > 0) View.VISIBLE else View.GONE
         ratingBar.onRatingBarChangeListener = rateListener
+
     }
 
     private val rateListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
-        ratingBar.onRatingBarChangeListener = null
-        showDialogRating(rating)
+        if (UserDataManager.currentUserId > 0) {
+            ratingBar.onRatingBarChangeListener = null
+            showDialogRating(rating)
+        } else {
+            showDialogLogin()
+        }
     }
 
     private fun showDialogRating(rating: Float) {
@@ -139,6 +146,27 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
             toast("Cảm ơn bạn đã đánh giá gian hàng")
             firstLoad()
         })
+    }
+
+    private fun showDialogLogin() {
+        context?.let {
+            val builder = MaterialDialog.Builder(it)
+            builder.title("Thông báo")
+                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
+                    .positiveText("Đăng nhập")
+                    .positiveColor(Color.parseColor("#00c853"))
+                    .onPositive { dialog, _ ->
+                        dialog.dismiss()
+                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                        startActivity(intent)
+                        activity?.finish()
+                    }
+                    .negativeText("Bỏ qua")
+                    .negativeColor(Color.parseColor("#00c853"))
+                    .show()
+
+        }
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ShopRateProvider>> {
