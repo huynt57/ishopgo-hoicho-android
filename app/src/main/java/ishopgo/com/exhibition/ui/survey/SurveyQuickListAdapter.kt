@@ -35,9 +35,9 @@ class SurveyQuickListAdapter : ClickableAdapter<SurveyQuestion>() {
                 tv_question_name.text = "Câu ${adapterPosition + 1}"
 
                 if (data.isAnswered()) {
-                    tv_question_name.setBackgroundResource(R.color.colorPrimary)
+                    tv_question_name.setBackgroundResource(R.color.colorAccent)
                 } else {
-                    tv_question_name.setBackgroundResource(R.color.colorPrimaryDark)
+                    tv_question_name.setBackgroundResource(R.color.md_blue_700)
                 }
             }
         }

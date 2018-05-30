@@ -1,11 +1,9 @@
 package ishopgo.com.exhibition.domain
 
 import io.reactivex.Single
-import ishopgo.com.exhibition.domain.response.BaseResponse
-import ishopgo.com.exhibition.domain.response.Member
-import ishopgo.com.exhibition.domain.response.Product
-import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
 import okhttp3.RequestBody
@@ -18,6 +16,55 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getProductDetail(id: Long): Single<BaseResponse<ProductDetail>> {
+        val detail = ProductDetail()
+        detail.id = 16110
+        detail.name = "Balo Nữ Thời Trang Naza"
+        detail.price = 590000
+        detail.ttPrice = 590000
+        detail.description = "<!--?xml encoding=\\\"utf-8\\\" ?-->\\r\\n<p><strong>TH&Ocirc;NG TIN SẢN PHẨM</strong></p>\\r\\n\\r\\n<p>Balo thời trang, tặng k&egrave;m gấu b&ocirc;ng<br />\\r\\n-Chất liệu: da PU cấp bền đẹp, bề mặt t&uacute;i được dập v&acirc;n tinh xảo<br />\\r\\n-D&acirc;y đeo vai c&oacute; thể điều chỉnh độ d&agrave;i ngắn<br />\\r\\n-Ngăn t&uacute;i đủ rộng để đựng c&aacute;c đồ vật cần thiết ra ngo&agrave;i: ipad,điện tho<br />\\r\\n-Kh&oacute;a k&eacute;o chống gỉ<br />\\r\\n-Chi tiết t&uacute;i được l&agrave;m tinh xảo, đường may cẩn thận<br />\\r\\n-Sử dụng nhiều mục đ&iacute;ch: đi chơi, đi học,..<br />\\r\\n-K&iacute;ch thước: d&agrave;i 29cm, cao 31cm, rộng 12cm</p>\\r\\n"
+        detail.image = "https://static.ishopgo.com/17288/657de7dc98abeddf23a80b3ac3a9bbc7contactpng.png"
+        val department = Department()
+        department.name = "Cafe trà sữa"
+        department.id = 752
+        detail.department = department
+        val booth = ishopgo.com.exhibition.domain.response.Booth()
+        booth.id = 17365
+        booth.name = "GIAN HÀNG TRƯNG BÀY"
+        booth.intro = "th&ocirc;ng tin gian h&agrave;ng 232"
+        booth.info = "th&ocirc;ng tin gian h&agrave;ng23"
+        booth.image = "https://static.ishopgo.com/17288/99bbfb5e747949d53d0eaeb5c4f3ee92.png"
+        booth.hotline = "12345"
+        booth.address = null
+        booth.count = 4
+        detail.booth = booth
+        detail.linkAffiliate = "http://hoicho.ishopgo.com/san-pham/balo-nu-thoi-trang-naza-16110"
+
+        val response = BaseResponse<ProductDetail>()
+        response.status = 1
+        response.data = detail
+
+        return delegate.returningResponse(response).getProductDetail(id)
+    }
+
+    override fun getShopInfo(id: Long): Single<BaseResponse<ShopDetail>> {
+        val d = ShopDetail()
+        d.id = 17354
+        d.name = "Gian hàng hội chợ"
+        d.introduction = "Gian hàng trưng bày các sản phẩm mỹ phẩm chất lượng cao"
+        d.hotline = "0917577795"
+        d.info = "Thông tin thì cùng không có gì nhiều."
+        d.banner = "https://static.ishopgo.com/17288/32cc917eabe0af0d905421071f4804f7bannerjpg.jpg"
+        d.address = null
+        d.productCount = 8
+        d.rate = 4
+
+        val response = BaseResponse<ShopDetail>()
+        response.status = 1
+        response.data = d
+        return delegate.returningResponse(response).getShopInfo(id)
+    }
+
     override fun createTicket(): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1
@@ -41,7 +88,8 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         response.status = 1
         response.data = c
 
-        return delegate.returningResponse(response).getTicket()    }
+        return delegate.returningResponse(response).getTicket()
+    }
 
     override fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
@@ -52,7 +100,8 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
     override fun getSurvey(): Single<BaseResponse<Survey>> {
         val response = BaseResponse<Survey>()
         response.status = 1
-        return delegate.returningResponse(response).getSurvey()    }
+        return delegate.returningResponse(response).getSurvey()
+    }
 
     override fun checkSurvey(): Single<BaseResponse<CheckSurvey>> {
         val response = BaseResponse<CheckSurvey>()

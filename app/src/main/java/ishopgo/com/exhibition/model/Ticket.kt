@@ -11,7 +11,7 @@ import ishopgo.com.exhibition.ui.main.ticket.TicketProvider
 
 class Ticket : IdentityData(), TicketProvider {
     override fun provideEmail(): Spanned {
-        return "Email: <b>$email</b>".asHtml()
+        return "Email: <b>${email ?: ""}</b>".asHtml()
     }
 
     override fun provideTicketName(): String {
@@ -19,7 +19,7 @@ class Ticket : IdentityData(), TicketProvider {
     }
 
     override fun provideName(): Spanned {
-        return "Họ và tên: <b>$name</b>".asHtml()
+        return "Họ và tên: <b>${name ?: ""}</b>".asHtml()
     }
 
     override fun provideCode(): String {
@@ -27,11 +27,11 @@ class Ticket : IdentityData(), TicketProvider {
     }
 
     override fun providePhone(): Spanned {
-        return "Số điện thoại: <b>$phone</b>".asHtml()
+        return "Số điện thoại: <b>${phone ?: ""}</b>".asHtml()
     }
 
     override fun provideAddress(): Spanned {
-        return "Địa chỉ: <b>$address, $district, $city</b>".asHtml()
+        return "Địa chỉ: <b>${address ?: ""}, ${district ?: ""}, ${city ?: ""}</b>".asHtml()
     }
 
     override fun provideBanner(): String {

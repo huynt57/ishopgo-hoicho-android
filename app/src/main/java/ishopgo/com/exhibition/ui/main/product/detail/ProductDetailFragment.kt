@@ -10,6 +10,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -188,6 +189,7 @@ class ProductDetailFragment : BaseFragment() {
                 linearLayout.visibility = View.GONE
             }
 
+            Log.d("product.provideLiked()", product.provideLiked().toString())
             Glide.with(context)
                     .load(if (product.provideLiked()) R.drawable.ic_heart_checked else R.drawable.ic_heart)
                     .apply(RequestOptions()

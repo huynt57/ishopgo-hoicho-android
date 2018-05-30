@@ -116,6 +116,12 @@ class ApiService {
 
     interface Auth {
 
+        @GET("shop/{id}")
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+
+        @GET("product/{id}")
+        fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
+
         @GET("members/{id}")
         fun getMemberDetail(
                 @Path("id") memberId: Long

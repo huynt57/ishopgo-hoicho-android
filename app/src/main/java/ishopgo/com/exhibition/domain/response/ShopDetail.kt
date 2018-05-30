@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.domain.response
 
+import android.util.Log
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.main.shop.info.SalePointProvider
@@ -89,5 +90,5 @@ class ShopDetail : IdentityData(), ShopInfoProvider {
     var qrcode: String? = null
     @SerializedName("follow")
     @Expose
-    var follow: Boolean? = false
+    var follow: Boolean = false
 }

@@ -35,7 +35,7 @@ class SurveyFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, SurveyFragment.newInstance(Bundle()))
+                .replace(R.id.view_main_content, SurveyFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
 

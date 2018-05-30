@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
@@ -101,6 +102,7 @@ class LoginFragment : BaseFragment() {
                     toast("Bạn chưa làm bài khảo sát")
                     val intent = Intent(context, SurveyActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, "")
                     startActivity(intent)
                     activity?.finish()
                 } else {

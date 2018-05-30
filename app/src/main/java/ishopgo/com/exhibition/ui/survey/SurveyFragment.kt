@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.survey.SurveyAnswer
 import ishopgo.com.exhibition.model.survey.SurveyQuestion
 import ishopgo.com.exhibition.model.UserDataManager
@@ -69,7 +70,7 @@ class SurveyFragment : BaseFragment() {
     }
 
     private fun setupRecycleViewQuestionQuick() {
-        rv_question_quick.layoutManager = GridLayoutManager(context,5)
+        rv_question_quick.layoutManager = GridLayoutManager(context, 5)
         rv_question_quick.adapter = adapterQuestionQuick
         adapterQuestionQuick.listener = object : ClickableAdapter.BaseAdapterAction<SurveyQuestion> {
             override fun click(position: Int, data: SurveyQuestion, code: Int) {
@@ -147,10 +148,14 @@ class SurveyFragment : BaseFragment() {
         })
         viewModel.postSusscess.observe(this, Observer {
             toast("Gửi đáp án khảo sát thành công")
-            val intent = Intent(context, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            activity?.finish()
+            if (arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, null) == Const.TransferKey.EXTRA_REQUIRE) {
+                activity?.finish()
+            } else {
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                activity?.finish()
+            }
         })
     }
 }

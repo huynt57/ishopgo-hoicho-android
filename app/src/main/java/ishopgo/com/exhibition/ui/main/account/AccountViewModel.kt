@@ -101,6 +101,12 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_NOTIFICATION,
+                    R.drawable.ic_notification,
+                    "Xem thông báo"
+            ))
+
+            items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SALE_POINT,
                     R.drawable.ic_sale_point,
                     "Xem điểm bán của tôi"
