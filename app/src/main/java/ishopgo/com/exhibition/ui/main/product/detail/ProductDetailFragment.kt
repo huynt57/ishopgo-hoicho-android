@@ -23,7 +23,9 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -41,6 +43,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePoint
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -193,7 +196,6 @@ class ProductDetailFragment : BaseFragment() {
                 linearLayout.visibility = View.GONE
             }
 
-            Log.d("product.provideLiked()", product.provideLiked().toString())
             Glide.with(context)
                     .load(if (product.provideLiked()) R.drawable.ic_heart_checked else R.drawable.ic_heart)
                     .apply(RequestOptions()
@@ -248,6 +250,7 @@ class ProductDetailFragment : BaseFragment() {
                 else openActivtyLogin()
             }
         }
+        openProductSalePoint(product)
     }
 
     private fun launchPickPhotoIntent() {
@@ -436,6 +439,19 @@ class ProductDetailFragment : BaseFragment() {
         val intent = Intent(context, ProductSalePointAddActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
         startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+    }
+
+    private fun openProductSalePoint(product: ProductDetailProvider) {
+        adapterSalePoint.listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePointProvider> {
+            override fun click(position: Int, data: ProductSalePointProvider, code: Int) {
+                if (data is ProductSalePoint) {
+                    val intent = Intent(context, SalePointDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+                    startActivity(intent)
+                }
+            }
+        }
     }
 
     private fun openProductDetail(context: Context, product: ProductProvider) {

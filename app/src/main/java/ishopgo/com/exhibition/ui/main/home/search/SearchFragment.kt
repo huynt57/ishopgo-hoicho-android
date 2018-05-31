@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.CommunityResultFragment
 import ishopgo.com.exhibition.ui.main.home.search.product.ProductResultsFragment
+import ishopgo.com.exhibition.ui.main.home.search.sale_point.SalePointResultFragment
 import ishopgo.com.exhibition.ui.main.home.search.shop.ShopResultsFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_home_search.*
@@ -59,7 +60,7 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
 
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
-        view_pager.offscreenPageLimit = 3
+        view_pager.offscreenPageLimit = 4
         view_pager.adapter = ResultAdapter(childFragmentManager)
 
         view_search_field.addTextChangedListener(object : TextWatcher {
@@ -89,7 +90,7 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
         searchViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
     }
 
-    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 3) {
+    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 4) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -99,6 +100,9 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
                     ShopResultsFragment()
                 }
                 2 -> {
+                    SalePointResultFragment()
+                }
+                3 -> {
                     CommunityResultFragment()
                 }
                 else -> {

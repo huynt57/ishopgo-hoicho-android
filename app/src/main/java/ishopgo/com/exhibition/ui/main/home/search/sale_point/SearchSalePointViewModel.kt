@@ -1,16 +1,16 @@
 package ishopgo.com.exhibition.ui.main.home.search.sale_point
 
+import android.arch.lifecycle.MutableLiveData
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchSalePointRequest
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.salepoint.SalePointProvider
 
-class SearchSalePointViewModel : BaseListViewModel<List<SalePointProvider>>(), AppComponent.Injectable {
-
-    companion object {
-        private val TAG = "SearchProductViewModel"
-    }
+class SearchSalePointViewModel : BaseListViewModel<List<SearchSalePointProvider>>(), AppComponent.Injectable {
+    var total = MutableLiveData<Int>()
 
     override fun loadData(params: Request) {
         if (params is SearchSalePointRequest) {
@@ -19,25 +19,23 @@ class SearchSalePointViewModel : BaseListViewModel<List<SalePointProvider>>(), A
             fields["offset"] = params.offset
             fields["q"] = params.keyword
 
-//            addDisposable(noAuthService.searchProducts(fields)
-//                    .subscribeOn(Schedulers.single())
-//                    .subscribeWith(object : BaseSingleObserver<List<Product>>() {
-//                        override fun success(data: List<Product>?) {
-//                            dataReturned.postValue(data ?: mutableListOf<Product>())
-//                        }
-//
-//                        override fun failure(status: Int, message: String) {
-//                            resolveError(status, message)
-//                        }
-//
-//
-//                    })
-//            )
+            addDisposable(noAuthService.searchSalePoint(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManagerSearchSalePoint>() {
+                        override fun success(data: ManagerSearchSalePoint?) {
+                            total.postValue(data?.total ?: 0)
+                            dataReturned.postValue(data?.salePoint ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
         }
     }
 
     override fun inject(appComponent: AppComponent) {
-//        appComponent.inject(this)
+        appComponent.inject(this)
     }
-
 }

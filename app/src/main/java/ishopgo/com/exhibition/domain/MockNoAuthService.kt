@@ -8,7 +8,10 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
 import okhttp3.RequestBody
+import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
@@ -17,6 +20,18 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getSalePointDetail(@Query("account_id") account_id: Long): Single<BaseResponse<ManagerSalePointDetail>> {
+        val response = BaseResponse<ManagerSearchSalePoint>()
+        response.status = 1
+        return delegate.returningResponse(response).getSalePointDetail(account_id)
+    }
+
+    override fun searchSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>> {
+        val response = BaseResponse<ManagerSearchSalePoint>()
+        response.status = 1
+        return delegate.returningResponse(response).searchSalePoint(fields)
+    }
+
     override fun getSubCategories(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Category>>> {
         val dummy = mutableListOf<Category>()
         dummy.add(generateCategory(random.nextInt(5)))

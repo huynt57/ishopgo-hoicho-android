@@ -48,4 +48,7 @@ class ProductSalePoint : IdentityData(), ProductSalePointProvider {
     @SerializedName("product_name")
     @Expose
     var productName: String? = null
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Long? = 0
 }

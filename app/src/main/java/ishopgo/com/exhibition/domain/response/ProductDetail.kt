@@ -12,11 +12,10 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
     override fun provideShopAddress(): String {
-        return "${booth?.address}, ${booth?.district}, ${booth?.city}"
+        return "${booth?.address?.trim() ?:""}, ${booth?.district?.trim() ?:""}, ${booth?.city?.trim() ?:""}"
     }
 
     override fun provideLiked(): Boolean {
-        Log.d("product.provideLiked()2", liked.toString())
         return liked == LIKED
     }
 

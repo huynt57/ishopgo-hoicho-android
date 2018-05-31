@@ -17,7 +17,9 @@ import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.question.QuestionCategory
 import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
-import ishopgo.com.exhibition.ui.main.ticket.TicketProvider
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -112,6 +114,14 @@ class ApiService {
 
         @GET("shop/{id}")
         fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+
+        @GET("search-sale-point")
+        fun searchSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>>
+
+        @GET("booth/detail-sale-point")
+        fun getSalePointDetail(@Query("account_id") account_id: Long
+        ): Single<BaseResponse<ManagerSalePointDetail>>
+
     }
 
     interface Auth {

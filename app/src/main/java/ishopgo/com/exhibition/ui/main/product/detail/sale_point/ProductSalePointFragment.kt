@@ -16,12 +16,14 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_product_sale_point_detail.*
@@ -76,7 +78,16 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-
+        (adapter as  ProductSalePointAdapter).listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePointProvider> {
+            override fun click(position: Int, dataSalePoint: ProductSalePointProvider, code: Int) {
+                if (dataSalePoint is ProductSalePoint) {
+                    val intent = Intent(context, SalePointDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, dataSalePoint.accountId)
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                    startActivity(intent)
+                }
+            }
+        }
         Glide.with(context).load(data.image)
                 .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                 .into(img_product)
