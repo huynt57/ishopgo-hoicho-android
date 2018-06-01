@@ -20,6 +20,7 @@ import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -69,13 +70,13 @@ class ProductSalePointAddFragment : BaseFragment() {
         edit_shop_district.setOnClickListener { getDistrict(edit_shop_district) }
 
         btn_sale_point_add.setOnClickListener {
-            if (checkRequireFields(edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
-                viewModel.createProductSalePoint(data.id, edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.toString(), edit_shop_city.text.toString(),
+            if (checkRequireFields(edit_product_price.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
+                viewModel.createProductSalePoint(data.id, edit_product_price.text.toString(), edit_shop_name.text.toString(), edit_shop_city.text.toString(),
                         edit_shop_district.text.toString(), edit_shop_address.text.toString())
         }
     }
 
-    private fun checkRequireFields(price: String, phone: String, name: String, city: String, district: String): Boolean {
+    private fun checkRequireFields(price: String, name: String, city: String, district: String): Boolean {
 
         if (price.trim().isEmpty()) {
             toast("Giá sản phẩm không được để trống")
@@ -83,15 +84,6 @@ class ProductSalePointAddFragment : BaseFragment() {
             edit_product_price.requestFocus()
             val inputMethodManager = edit_product_price.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(edit_product_price, 0)
-            return false
-        }
-
-        if (phone.trim().isEmpty()) {
-            toast("Số điện thoại không được để trống")
-            edit_shop_phone.error = getString(R.string.error_field_required)
-            edit_shop_phone.requestFocus()
-            val inputMethodManager = edit_shop_phone.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(edit_shop_phone, 0)
             return false
         }
 
@@ -184,6 +176,13 @@ class ProductSalePointAddFragment : BaseFragment() {
         }
     }
 
+    private fun showInfo(data : SearchSalePoint){
+        edit_shop_name.setText(data.name ?:"")
+        edit_shop_city.setText(data.city ?:"")
+        edit_shop_district.setText(data.district ?:"")
+        edit_shop_district.setText(data.address ?:"")
+    }
+
     override
     fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -216,6 +215,13 @@ class ProductSalePointAddFragment : BaseFragment() {
             }
         })
 
+        viewModel.getDataInforMember.observe(this, Observer { p ->
+            p?.let {
+                showInfo(it)
+            }
+        })
+
         viewModel.loadRegion()
+        viewModel.getInfoMemberSalePoint()
     }
 }

@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
@@ -252,11 +253,10 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var createSalePointSuccess = MutableLiveData<Boolean>()
 
-    fun createProductSalePoint(productId: Long, price: String, phone: String, name: String, city: String, district: String, address: String) {
+    fun createProductSalePoint(productId: Long, price: String, name: String, city: String, district: String, address: String) {
         val fields = mutableMapOf<String, Any>()
         fields["product_id"] = productId
         fields["price"] = price
-        fields["phone"] = phone
         fields["name"] = name
         fields["city"] = city
         fields["district"] = district
@@ -284,6 +284,22 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
                     override fun success(data: MutableList<Region>?) {
                         loadRegion.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    var getDataInforMember = MutableLiveData<SearchSalePoint>()
+
+    fun getInfoMemberSalePoint() {
+        addDisposable(authService.getInfoMemberSalePoint()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<SearchSalePoint>() {
+                    override fun success(data: SearchSalePoint?) {
+                        getDataInforMember.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {

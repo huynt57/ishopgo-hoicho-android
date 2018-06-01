@@ -44,8 +44,6 @@ class SignupFragment : BaseFragment() {
             fragment.arguments = params
             return fragment
         }
-
-        const val REGISTER_MEMBER = 1
     }
 
     private lateinit var viewModel: LoginViewModel
@@ -125,7 +123,7 @@ class SignupFragment : BaseFragment() {
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                     tv_signup_company.text.toString(), tv_signup_birthday.text.toString(), tv_signup_region.text.toString(),
-                    tv_signup_address.text.toString(), tv_signup_password.text.toString(), REGISTER_MEMBER.toString())
+                    tv_signup_address.text.toString(), tv_signup_password.text.toString())
         }
     }
 

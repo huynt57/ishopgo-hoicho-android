@@ -19,6 +19,7 @@ import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -112,13 +113,13 @@ class ApiService {
         ): Single<BaseResponse<Any>>
 
         @GET("shop/{id}")
-        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
         @GET("search-sale-point")
         fun searchSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>>
 
         @GET("booth/detail-sale-point")
-        fun getSalePointDetail(@Query("account_id") account_id: Long
+        fun getSalePointDetail(@Query("phone") phone: String
         ): Single<BaseResponse<ManagerSalePointDetail>>
 
     }
@@ -126,7 +127,7 @@ class ApiService {
     interface Auth {
 
         @GET("shop/{id}")
-        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
         @GET("product/{id}")
         fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
@@ -254,6 +255,10 @@ class ApiService {
 
         @GET("ticket/account")
         fun getTicket(): Single<BaseResponse<Ticket>>
+
+        @GET("detail-sale-point")
+        fun getInfoMemberSalePoint(): Single<BaseResponse<SearchSalePoint>>
+
     }
 
     interface ISGApi {

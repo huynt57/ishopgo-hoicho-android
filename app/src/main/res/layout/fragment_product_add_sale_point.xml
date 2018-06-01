@@ -106,22 +106,6 @@
             android:layout_marginTop="16dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/edit_shop_phone"
-                style="@style/AppTheme.EnableInputField"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Số điện thoại*"
-                android:inputType="phone"
-                android:singleLine="true" />
-
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
-
-            <android.support.design.widget.TextInputEditText
                 android:id="@+id/edit_shop_name"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"

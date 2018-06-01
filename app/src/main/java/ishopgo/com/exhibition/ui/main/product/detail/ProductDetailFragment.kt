@@ -5,12 +5,10 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +23,6 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -183,9 +180,8 @@ class ProductDetailFragment : BaseFragment() {
 
             view_product_name.text = product.provideProductName()
             if (UserDataManager.currentUserId > 0) {
-                view_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
+                linear_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
                 view_share.setOnClickListener { showDialogShare(product) }
-                linearLayout.visibility = View.VISIBLE
             } else {
                 view_shop_follow.setOnClickListener {
                     openActivtyLogin()
@@ -193,7 +189,6 @@ class ProductDetailFragment : BaseFragment() {
                 view_share.setOnClickListener {
                     openActivtyLogin()
                 }
-                linearLayout.visibility = View.GONE
             }
 
             Glide.with(context)
@@ -235,19 +230,25 @@ class ProductDetailFragment : BaseFragment() {
                 }
             }
 
-            img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
-
-            img_comment_sent.setOnClickListener {
-                if (checkRequireFields(edt_comment.text.toString())) {
-                    showProgressDialog()
-                    viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+            if (UserDataManager.currentUserId > 0) {
+                img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
+                img_comment_sent.setOnClickListener {
+                    if (checkRequireFields(edt_comment.text.toString())) {
+                        showProgressDialog()
+                        viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+                    }
                 }
-            }
-
-            view_shop_add_sale_point.setOnClickListener {
-                if (UserDataManager.currentUserId > 0)
-                    openAddSalePoint(it.context, product)
-                else openActivtyLogin()
+                view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
+                edt_comment.isFocusable = true
+                edt_comment.isFocusableInTouchMode = true
+                edt_comment.setOnClickListener (null)
+            } else {
+                img_comment_gallery.setOnClickListener { openActivtyLogin() }
+                img_comment_sent.setOnClickListener { openActivtyLogin() }
+                view_shop_add_sale_point.setOnClickListener { openActivtyLogin() }
+                edt_comment.isFocusable = false
+                edt_comment.isFocusableInTouchMode = false
+                edt_comment.setOnClickListener { openActivtyLogin() }
             }
         }
         openProductSalePoint(product)
@@ -446,7 +447,7 @@ class ProductDetailFragment : BaseFragment() {
             override fun click(position: Int, data: ProductSalePointProvider, code: Int) {
                 if (data is ProductSalePoint) {
                     val intent = Intent(context, SalePointDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
                     startActivity(intent)
                 }

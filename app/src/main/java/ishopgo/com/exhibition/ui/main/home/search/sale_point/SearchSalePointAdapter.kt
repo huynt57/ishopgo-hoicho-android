@@ -7,7 +7,7 @@ import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import kotlinx.android.synthetic.main.item_search_sale_point.view.*
+import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 import kotlinx.android.synthetic.main.item_search_total.view.*
 
 class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<SearchSalePointProvider>() {
@@ -21,7 +21,7 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
     var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return if (viewType == SALE_POINT_TOTAL) R.layout.item_search_total else R.layout.item_search_sale_point
+        return if (viewType == SALE_POINT_TOTAL) R.layout.item_search_total else R.layout.item_product_sale_point
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -77,10 +77,10 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
             super.populate(data)
 
             itemView.apply {
-                view_name.text = data.provideName()
-                view_address.text = data.provideAddress()
-                view_product_count.text = data.provideCountProduct()
-                view_phone.text = data.providePhone()
+                tv_product_sale_point_name.text = data.provideName()
+                tv_product_sale_point_address.text = data.provideAddress()
+                tv_product_sale_point_price.text = data.provideCountProduct()
+                tv_product_sale_point_phone.text = data.providePhone()
             }
         }
     }

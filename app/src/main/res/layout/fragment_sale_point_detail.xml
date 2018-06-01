@@ -44,7 +44,7 @@
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/tv_sale_point_phone"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
                 android:autoLink="phone"
@@ -87,6 +87,7 @@
                     tools:ignore="HardcodedText" />
 
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraintLayoutProduct"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_stroked_rounded_rectangle">
@@ -148,6 +149,7 @@
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
 
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -165,8 +167,7 @@
                 android:id="@+id/rv_product_sale_point"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp" />
-
+                android:padding="8dp" />
         </LinearLayout>
 
         <LinearLayout

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,84 +15,96 @@
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Tên: "/>
+            tools:text="Tên: " />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_product_count"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="So san pham"
-            />
+            tools:text="So san pham" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_joined_date"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Ngay tham gia"
-            />
+            tools:text="Ngay tham gia" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_region"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Khu vuc"
-            />
+            tools:text="Khu vuc" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_rating"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Danh gia shop"/>
+            tools:text="Danh gia shop" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_click_count"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="luot click"/>
+            tools:text="luot click" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_share_count"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="luot chia se "/>
+            tools:text="luot chia se " />
 
         <View
             android:id="@+id/textView10"
             style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent"
-            />
+            android:layout_width="match_parent" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/textView11"
             style="@style/AppTheme.ShopInfo.Section"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Mô tả"
-            />
+            android:background="@color/md_grey_300"
+            android:text="Mô tả" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_description"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="Công ty mỹ phẩm hàng đầu Việt Nam"/>
+            tools:text="Công ty mỹ phẩm hàng đầu Việt Nam" />
 
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/textView15"
-            style="@style/AppTheme.ShopInfo.Section"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="@color/md_grey_300"
-            android:text="Điểm bán"
-            android:textStyle="bold"
-            />
+            android:layout_marginTop="8dp">
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/textView15"
+                style="@style/AppTheme.ShopInfo.Section"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/md_grey_300"
+                android:text="Điểm bán"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/img_add_sale_point"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/md_grey_300"
+                android:padding="5dp"
+                app:srcCompat="@drawable/ic_add_green_24dp"
+                android:visibility="gone"/>
+        </RelativeLayout>
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_recyclerview"
@@ -100,8 +112,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:padding="@dimen/item_spacing"
-            tools:listitem="@layout/item_sale_point"
-            />
+            tools:listitem="@layout/item_sale_point" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

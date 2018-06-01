@@ -115,8 +115,7 @@
             android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:weightSum="4">
-
+            android:weightSum="3">
 
             <ImageButton
                 android:id="@+id/imb_preview"
@@ -128,14 +127,6 @@
 
 
             <ImageButton
-                android:id="@+id/imb_next"
-                style="@style/Base.Widget.AppCompat.Button.Borderless"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_green_24dp" />
-
-            <ImageButton
                 android:id="@+id/imb_question_quick"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
@@ -145,15 +136,13 @@
                 android:textOn=""
                 app:srcCompat="@drawable/ic_toggle_list" />
 
-
             <ImageButton
-                android:id="@+id/imb_end"
+                android:id="@+id/imb_next"
                 style="@style/Base.Widget.AppCompat.Button.Borderless"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_send_24dp" />
-
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_green_24dp" />
         </LinearLayout>
     </RelativeLayout>
 
