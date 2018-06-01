@@ -4,6 +4,8 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.survey.CheckSurvey
+import ishopgo.com.exhibition.model.survey.Survey
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
@@ -15,6 +17,8 @@ import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.question.QuestionCategory
 import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
+import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -109,9 +113,20 @@ class ApiService {
 
         @GET("shop/{id}")
         fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+
+        @GET("search-sale-point")
+        fun searchSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>>
+
+        @GET("booth/detail-sale-point")
+        fun getSalePointDetail(@Query("account_id") account_id: Long
+        ): Single<BaseResponse<ManagerSalePointDetail>>
+
     }
 
     interface Auth {
+
+        @GET("shop/{id}")
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
 
         @GET("product/{id}")
         fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
@@ -211,7 +226,7 @@ class ApiService {
         fun deleteBooth(@Path("id") booth_id: Long): Single<BaseResponse<Any>>
 
         @POST("booth/add-from-member/{id}")
-        fun registerBooth(@Path("id") account_id: Long,@Body body: RequestBody): Single<BaseResponse<Any>>
+        fun registerBooth(@Path("id") account_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
         @POST("follow")
         fun postProductPollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ProductFollow>>
@@ -224,6 +239,21 @@ class ApiService {
 
         @POST("shop/{id}/rate")
         fun createRatingShop(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @GET("survey/check-survey")
+        fun checkSurvey(): Single<BaseResponse<CheckSurvey>>
+
+        @GET("survey")
+        fun getSurvey(): Single<BaseResponse<Survey>>
+
+        @POST("survey/add-survey-account/{id}")
+        fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("ticket/add")
+        fun createTicket(): Single<BaseResponse<Ticket>>
+
+        @GET("ticket/account")
+        fun getTicket(): Single<BaseResponse<Ticket>>
     }
 
     interface ISGApi {

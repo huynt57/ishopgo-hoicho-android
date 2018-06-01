@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
@@ -7,7 +8,9 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +23,9 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -38,6 +43,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePoint
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -141,41 +147,17 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.getProductLike.observe(this, Observer { c ->
             c?.let {
                 Glide.with(context)
-                        .load(if (it.status == 1) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
+                        .load(if (it.status == 1) R.drawable.ic_heart_checked else R.drawable.ic_heart)
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder))
-                        .into(view_favorite)
+                        .into(view_shop_follow)
             }
         })
 
         viewModel.postLikeSuccess.observe(this, Observer {
             if (UserDataManager.currentUserId > 0)
                 viewModel.getProductLike(productId)
-        })
-
-        viewModel.postFollow.observe(this, Observer { p ->
-            p.let {
-                if (it?.status ?: 0 == 1) {
-                    Glide.with(context)
-                            .load(R.drawable.ic_heart)
-                            .apply(RequestOptions()
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.image_placeholder))
-                            .into(view_shop_follow)
-//                    tv_shop_follow.text = "Bỏ theo dõi"
-                    toast("Theo dõi gian hàng thành công")
-                } else {
-                    Glide.with(context)
-                            .load(R.drawable.ic_heart_checked)
-                            .apply(RequestOptions()
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.image_placeholder))
-                            .into(view_shop_follow)
-//                    tv_shop_follow.text = "Theo dõi"
-                    toast("Bỏ theo dõi gian hàng thành công")
-                }
-            }
         })
 
         viewModel.productSalePoint.observe(this, Observer { p ->
@@ -188,6 +170,7 @@ class ProductDetailFragment : BaseFragment() {
         firstLoadSalePoint()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetailProvider) {
         context?.let {
             Glide.with(it)
@@ -200,19 +183,25 @@ class ProductDetailFragment : BaseFragment() {
 
             view_product_name.text = product.provideProductName()
             if (UserDataManager.currentUserId > 0) {
-                view_favorite.setOnClickListener { viewModel.postProductLike(productId) }
+                view_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
                 view_share.setOnClickListener { showDialogShare(product) }
+                linearLayout.visibility = View.VISIBLE
             } else {
-                view_favorite.setOnClickListener { showDialogLogin() }
-                view_share.setOnClickListener { showDialogLogin() }
+                view_shop_follow.setOnClickListener {
+                    openActivtyLogin()
+                }
+                view_share.setOnClickListener {
+                    openActivtyLogin()
+                }
+                linearLayout.visibility = View.GONE
             }
 
             Glide.with(context)
-                    .load(if (product.provideLiked()) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
+                    .load(if (product.provideLiked()) R.drawable.ic_heart_checked else R.drawable.ic_heart)
                     .apply(RequestOptions()
                             .placeholder(R.drawable.image_placeholder)
                             .error(R.drawable.image_placeholder))
-                    .into(view_favorite)
+                    .into(view_shop_follow)
             view_product_price.text = product.provideProductPrice()
 
             container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
@@ -246,22 +235,6 @@ class ProductDetailFragment : BaseFragment() {
                 }
             }
 
-            view_shop_follow.setOnClickListener {
-                if (UserDataManager.currentUserId > 0)
-                    if (product is ProductDetail) {
-                        val boothId = product.booth?.id ?: -1L
-                        if (boothId != -1L)
-                            viewModel.postProductFollow(boothId)
-                    } else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
-            }
-
-            Glide.with(context)
-                    .load(if (product.provideFollowed()) R.drawable.ic_heart else R.drawable.ic_heart_checked)
-                    .apply(RequestOptions()
-                            .placeholder(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder))
-                    .into(view_shop_follow)
-
             img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
             img_comment_sent.setOnClickListener {
@@ -274,9 +247,10 @@ class ProductDetailFragment : BaseFragment() {
             view_shop_add_sale_point.setOnClickListener {
                 if (UserDataManager.currentUserId > 0)
                     openAddSalePoint(it.context, product)
-                else toast("Bạn vui lòng đăng nhập để sử dụng chức năng này")
+                else openActivtyLogin()
             }
         }
+        openProductSalePoint(product)
     }
 
     private fun launchPickPhotoIntent() {
@@ -295,25 +269,10 @@ class ProductDetailFragment : BaseFragment() {
         return true
     }
 
-    private fun showDialogLogin() {
-        context?.let {
-            val builder = MaterialDialog.Builder(it)
-            builder.title("Thông báo")
-                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
-                    .positiveText("Đăng nhập")
-                    .positiveColor(Color.parseColor("#00c853"))
-                    .onPositive { dialog, _ ->
-                        dialog.dismiss()
-                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                    .negativeText("Bỏ qua")
-                    .negativeColor(Color.parseColor("#00c853"))
-                    .show()
-
-        }
+    private fun openActivtyLogin() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
     }
 
     private fun showDialogShare(product: ProductDetailProvider) {
@@ -434,6 +393,7 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun setupSalePointRecycleview() {
         rv_product_sale_point.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        ViewCompat.setNestedScrollingEnabled(rv_product_sale_point, false)
         rv_product_sale_point.adapter = adapterSalePoint
     }
 
@@ -479,6 +439,19 @@ class ProductDetailFragment : BaseFragment() {
         val intent = Intent(context, ProductSalePointAddActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
         startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+    }
+
+    private fun openProductSalePoint(product: ProductDetailProvider) {
+        adapterSalePoint.listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePointProvider> {
+            override fun click(position: Int, data: ProductSalePointProvider, code: Int) {
+                if (data is ProductSalePoint) {
+                    val intent = Intent(context, SalePointDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+                    startActivity(intent)
+                }
+            }
+        }
     }
 
     private fun openProductDetail(context: Context, product: ProductProvider) {

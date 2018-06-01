@@ -33,7 +33,10 @@ class ProductBoothCategoryAdapter : ClickableAdapter<CategoryProvider>() {
             super.populate(data)
 
             val textView = itemView as TextView
-            textView.text = data.provideName()
+            if (data.provideName() == "Tất cả danh mục") {
+                textView.text = data.provideName()
+            } else
+                textView.text = "${data.provideName()} (${data.provideCount()})"
         }
     }
 }

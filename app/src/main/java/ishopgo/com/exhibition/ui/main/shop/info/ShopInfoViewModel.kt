@@ -5,6 +5,7 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.ShopDetail
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
 /**
@@ -19,7 +20,8 @@ class ShopInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var info = MutableLiveData<ShopInfoProvider>()
 
     fun loadInfo(shopId: Long) {
-        addDisposable(noAuthService.getShopInfo(shopId)
+        val request = if (UserDataManager.currentUserId > 0) authService.getShopInfo(shopId) else noAuthService.getShopInfo(shopId)
+        addDisposable(request
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ShopDetail>() {
                     override fun success(data: ShopDetail?) {

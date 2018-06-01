@@ -1,9 +1,11 @@
 package ishopgo.com.exhibition.ui.main.shop.info
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,6 +69,7 @@ class ShopInfoFragment : BaseFragment() {
         viewModel.loadInfo(shopId)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showInfo(info: ShopInfoProvider) {
 
         view_name.text = "Tên: <b>${info.provideName()}</b>".asHtml()
@@ -80,7 +83,7 @@ class ShopInfoFragment : BaseFragment() {
         salePointAdapter.replaceAll(info.provideSalePoints())
 
         if (info is ShopDetail) {
-            sharedViewModel.updateShopImage(info.id, info.provideName(), info.provideImage())
+            sharedViewModel.updateShopImage(info.id, info.follow, info.provideImage())
             if (UserDataManager.currentUserId == info.id) {
                 view_name.drawableCompat(0, 0, R.drawable.ic_edit_black_24dp, 0)
                 view_name.setOnClickListener { showDialogChangeName(info.name ?: "") }

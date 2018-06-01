@@ -2,21 +2,15 @@ package ishopgo.com.exhibition.ui.main.shop
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.view.PagerAdapter
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -24,6 +18,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
 import ishopgo.com.exhibition.ui.main.shop.rate.RateFragment
@@ -101,21 +96,71 @@ class ShopDetailFragment : BaseFragment() {
 
         viewModel.shopId.observe(this, Observer { i ->
             i?.let {
-                if (UserDataManager.currentUserId == it) {
+                val boothId = it
+                if (UserDataManager.currentUserId == boothId) {
                     tv_edit_image.visibility = View.VISIBLE
+                    view_favorite.visibility = View.GONE
                     view_image.setOnClickListener {
                         val intent = Intent()
                         intent.type = "image/*"
                         intent.action = Intent.ACTION_GET_CONTENT
                         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
                     }
-                } else tv_edit_image.visibility = View.GONE
+                } else {
+                    tv_edit_image.visibility = View.GONE
+                    view_favorite.visibility = View.VISIBLE
+                }
+                view_favorite.setOnClickListener {
+                    if (UserDataManager.currentUserId > 0) {
+                        if (boothId != -1L)
+                            viewModel.postProductFollow(boothId)
+                    } else openLoginActivity()
+                }
+            }
+        })
+
+        viewModel.shopFollow.observe(this, Observer { i ->
+            i?.let {
+                Glide.with(context)
+                        .load(if (it) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder))
+                        .into(view_favorite)
             }
         })
 
         viewModel.editSusscess.observe(this, Observer {
             toast("Cập nhật thành công")
         })
+
+        viewModel.postFollow.observe(this, Observer { p ->
+            p.let {
+                if (it?.status ?: 0 == 1) {
+                    Glide.with(context)
+                            .load(R.drawable.ic_added_to_favorite_24dp)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_favorite)
+                    toast("Theo dõi gian hàng thành công")
+                } else {
+                    Glide.with(context)
+                            .load(R.drawable.ic_add_to_favorite_24dp)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder))
+                            .into(view_favorite)
+                    toast("Bỏ theo dõi gian hàng thành công")
+                }
+            }
+        })
+    }
+
+    private fun openLoginActivity() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
     }
 
     inner class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.domain.response
 
+import android.util.Log
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.extensions.asMoney
@@ -11,11 +12,11 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
     override fun provideShopAddress(): String {
-        return "${booth?.address}, ${booth?.district}, ${booth?.city}"
+        return "${booth?.address?.trim() ?:""}, ${booth?.district?.trim() ?:""}, ${booth?.city?.trim() ?:""}"
     }
 
     override fun provideLiked(): Boolean {
-        return liked == 1
+        return liked == LIKED
     }
 
     override fun provideProductLinkAffiliate(): String {
@@ -79,6 +80,9 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
         return booth?.isFollowed() ?: false
     }
 
+    companion object {
+        const val LIKED = 1
+    }
 
     @SerializedName("title")
     @Expose
@@ -112,7 +116,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     var likes: Int = 0
     @SerializedName("liked")
     @Expose
-    var liked: Int = 0
+    val liked: Int = 0
     @SerializedName("followed")
     @Expose
     var followed: Int = 0

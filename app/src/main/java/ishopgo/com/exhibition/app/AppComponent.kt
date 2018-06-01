@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryVi
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
+import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerViewModel
 import ishopgo.com.exhibition.ui.main.myqr.MyQrViewModel
@@ -47,12 +48,15 @@ import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointViewModel
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailViewModel
 import ishopgo.com.exhibition.ui.main.scan.ScanViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
 import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
+import ishopgo.com.exhibition.ui.main.ticket.TicketViewModel
 import ishopgo.com.exhibition.ui.splash.SplashViewModel
+import ishopgo.com.exhibition.ui.survey.SurveyViewModel
 import javax.inject.Singleton
 
 @Singleton
@@ -123,4 +127,8 @@ interface AppComponent {
     fun inject(contactViewModel: ContactViewModel)
     fun inject(searchInboxViewModel: SearchInboxViewModel)
     fun inject(searchContactViewModel: SearchContactViewModel)
+    fun inject(surveyViewModel: SurveyViewModel)
+    fun inject(ticketViewModel: TicketViewModel)
+    fun inject(searchSalePointViewModel: SearchSalePointViewModel)
+    fun inject(salePointDetailViewModel: SalePointDetailViewModel)
 }

@@ -49,6 +49,17 @@
                     android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent" />
 
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/view_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="28dp"
+                    app:fabSize="mini"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/view_image"
+                    app:srcCompat="@drawable/ic_added_to_favorite_24dp" />
+
             </android.support.constraint.ConstraintLayout>
 
         </android.support.design.widget.CollapsingToolbarLayout>

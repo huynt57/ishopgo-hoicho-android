@@ -70,11 +70,11 @@
             android:layout_height="wrap_content"
             android:text="Gian hàng"/>
 
-        <!--<android.support.design.widget.TabItem-->
-            <!--android:id="@+id/tab_sale_point"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Điểm bán"/>-->
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_sale_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Điểm bán"/>
 
         <android.support.design.widget.TabItem
             android:id="@+id/tab_community"

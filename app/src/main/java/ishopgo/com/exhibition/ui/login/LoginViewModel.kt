@@ -5,6 +5,7 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import okhttp3.MultipartBody
 
@@ -18,6 +19,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var changNewPassword = MutableLiveData<Boolean>()
     var loadRegion = MutableLiveData<MutableList<Region>>()
     var getUserByPhone = MutableLiveData<PhoneInfo>()
+    var checkSurveySusscess = MutableLiveData<Int>()
 
 
     override fun inject(appComponent: AppComponent) {
@@ -126,7 +128,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    fun loadUserByPhone(phone:String) {
+    fun loadUserByPhone(phone: String) {
         val fields = mutableMapOf<String, Any>()
         fields["phone"] = phone
         addDisposable(isgService.getUserByPhone(fields)
@@ -134,6 +136,20 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<PhoneInfo>() {
                     override fun success(data: PhoneInfo?) {
                         getUserByPhone.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                    }
+                }))
+    }
+
+    fun checkSurvey() {
+        addDisposable(authService.checkSurvey()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<CheckSurvey>() {
+                    override fun success(data: CheckSurvey?) {
+                        UserDataManager.currentSurvey = data?.status ?: 0
+                        checkSurveySusscess.postValue(data?.status)
                     }
 
                     override fun failure(status: Int, message: String) {

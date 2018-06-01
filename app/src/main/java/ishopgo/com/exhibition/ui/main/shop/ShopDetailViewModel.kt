@@ -7,6 +7,7 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.model.ProductFollow
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
@@ -23,17 +24,17 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     lateinit var appContext: Application
 
     var shopImage = MutableLiveData<String>()
-    var shopName = MutableLiveData<String>()
+    var shopFollow = MutableLiveData<Boolean>()
     var shopId = MutableLiveData<Long>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
-    fun updateShopImage(shop_id: Long, name: String, url: String) {
+    fun updateShopImage(shop_id: Long, follow: Boolean, url: String) {
         shopId.postValue(shop_id)
         shopImage.postValue(url)
-        shopName.postValue(name)
+        shopFollow.postValue(follow)
     }
 
     var editSusscess = MutableLiveData<Boolean>()
@@ -74,5 +75,24 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    var postFollow = MutableLiveData<ProductFollow>()
+
+    fun postProductFollow(productId: Long) {
+        val fields = mutableMapOf<String, Any>()
+        fields["id"] = productId
+        addDisposable(authService.postProductPollow(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<ProductFollow>() {
+                    override fun success(data: ProductFollow?) {
+                        postFollow.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 }

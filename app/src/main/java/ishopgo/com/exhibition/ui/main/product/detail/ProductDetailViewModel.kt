@@ -101,10 +101,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var detail = MutableLiveData<ProductDetailProvider>()
 
     fun loadProductDetail(productId: Long) {
-        val request = if (UserDataManager.currentUserId > 0)
-            authService.getProductDetail(productId)
-        else noAuthService.getProductDetail(productId)
-
+        val request = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId) else noAuthService.getProductDetail(productId)
         addDisposable(request
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
@@ -183,25 +180,6 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         postLikeSuccess.postValue(data)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                })
-        )
-    }
-
-    var postFollow = MutableLiveData<ProductFollow>()
-
-    fun postProductFollow(productId: Long) {
-        val fields = mutableMapOf<String, Any>()
-        fields["id"] = productId
-        addDisposable(authService.postProductPollow(fields)
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<ProductFollow>() {
-                    override fun success(data: ProductFollow?) {
-                        postFollow.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {

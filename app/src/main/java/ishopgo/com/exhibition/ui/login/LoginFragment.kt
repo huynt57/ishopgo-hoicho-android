@@ -11,8 +11,10 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.main.MainActivity
+import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
@@ -28,6 +30,8 @@ class LoginFragment : BaseFragment() {
             f.phone = phone
             return f
         }
+
+        val NOT_SURVEY = 0
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -88,9 +92,25 @@ class LoginFragment : BaseFragment() {
             p.let {
                 hideProgressDialog()
                 toast("Đăng nhập thành công")
-                val intent = Intent(context, MainActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
+                viewModel.checkSurvey()
+            }
+        })
+
+        viewModel.checkSurveySusscess.observe(this, Observer { p ->
+            p.let {
+                if (it == NOT_SURVEY) {
+                    toast("Bạn chưa làm bài khảo sát")
+                    val intent = Intent(context, SurveyActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, "")
+                    startActivity(intent)
+                    activity?.finish()
+                } else {
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    activity?.finish()
+                }
             }
         })
     }

@@ -76,6 +76,11 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     "Đăng ký gian hàng"
             ))
 
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_SURVEY,
+                    R.drawable.ic_question,
+                    "Bảng khảo sát"
+            ))
 
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_NOT_AVALIBLE,
@@ -90,9 +95,9 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_TICKET,
                     R.drawable.ic_ticket,
-                    "Vé thăm quan"
+                    "Vé thăm quan của tôi"
             ))
 
             items.add(AccountMenuItem(
@@ -243,7 +248,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun getOTP(phone: String) {
         val fields = mutableMapOf<String, Any>()
-        fields.put("phone", phone)
+        fields["phone"] = phone
 
         addDisposable(noAuthService.getOTP(fields)
                 .subscribeOn(Schedulers.single())

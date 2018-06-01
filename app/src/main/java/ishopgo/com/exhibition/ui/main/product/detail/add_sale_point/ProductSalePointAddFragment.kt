@@ -63,6 +63,7 @@ class ProductSalePointAddFragment : BaseFragment() {
 
         tv_product.text = data.name
         tv_product_price.text = data.price.asMoney()
+        tv_product_code.text = data.code
 
         edit_shop_city.setOnClickListener { getRegion(edit_shop_city) }
         edit_shop_district.setOnClickListener { getDistrict(edit_shop_district) }
