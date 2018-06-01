@@ -435,6 +435,7 @@ class HomeFragment : BaseFragment() {
         rv_categories.adapter = categoriesAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_categories.layoutManager = layoutManager
+        rv_categories.isNestedScrollingEnabled = false
         rv_categories.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
         rv_categories.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }

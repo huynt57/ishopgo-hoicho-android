@@ -21,6 +21,12 @@ fun Throwable.showStackTrace(): String {
     return sw.toString()
 }
 
+fun Int.asColor(context: Context): Int {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        context.resources.getColor(this, context.theme)
+    else context.resources.getColor(this)
+}
+
 fun String.asNumber(hour: Double): String? {
     var total_sec = hour * 60.0 * 60.0
     var i = 4

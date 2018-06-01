@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -21,7 +22,7 @@ import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.chat.local.ChatFragment
 import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
-import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationFragment
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -112,16 +113,11 @@ class MainFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun showConversation(conversation: LocalConversationItem) {
-        val fragment = childFragmentManager.findFragmentByTag(ConversationFragment.TAG)
-        if (fragment == null) {
-            val data = Bundle()
-            data.putString(Const.TransferKey.EXTRA_CONVERSATION_ID, conversation.idConversions)
-            data.putString(Const.TransferKey.EXTRA_TITLE, conversation.name)
-            childFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
-                    .add(R.id.content_main_container, ConversationFragment.newInstance(data), ConversationFragment.TAG)
-                    .addToBackStack(ConversationFragment.TAG)
-                    .commit()
+        context?.let {
+            val intent = Intent(it, ConversationActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conversation.idConversions)
+            intent.putExtra(Const.TransferKey.EXTRA_TITLE, conversation.name)
+            startActivity(intent)
         }
     }
 

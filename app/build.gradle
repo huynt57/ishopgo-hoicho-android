@@ -86,8 +86,9 @@ dependencies {
     implementation "com.android.support:customtabs:$project.ext.supportLibrary"
     implementation "com.android.support.constraint:constraint-layout:1.1.0"
 
-    implementation "com.google.firebase:firebase-messaging:$project.ext.playServices"
-    implementation "com.google.firebase:firebase-database:15.0.1"
+    implementation "com.google.firebase:firebase-messaging:17.0.0"
+    implementation "com.google.firebase:firebase-database:16.0.1"
+    implementation 'com.google.firebase:firebase-core:16.0.0'
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$project.ext.retrofit"
@@ -146,7 +147,6 @@ dependencies {
     }
 
     implementation 'com.pusher:pusher-java-client:1.5.0'
-    implementation 'com.pusher:push-notifications-android:0.9.12'
 
     // utilities
     implementation 'org.sufficientlysecure:html-textview:3.4'
