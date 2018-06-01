@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_home_search_inbox.*
  * Created by xuanhong on 5/24/18. HappyCoding!
  */
 class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>(), BackpressConsumable {
+
     override fun populateData(data: List<InboxProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
@@ -36,7 +37,8 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<InboxProvider> {
-        return InboxAdapter()
+        val inboxAdapter = InboxAdapter()
+        return inboxAdapter
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<InboxProvider>> {

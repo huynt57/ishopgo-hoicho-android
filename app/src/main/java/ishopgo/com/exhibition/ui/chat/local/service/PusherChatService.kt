@@ -6,10 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.*
 import android.util.Log
-import ishopgo.com.exhibition.ui.chat.local.service.utils.PresenceChannelListener
-import ishopgo.com.exhibition.ui.chat.local.service.utils.PrivateChannelListener
-import ishopgo.com.exhibition.ui.chat.local.service.utils.PublicChannelListener
-import ishopgo.com.exhibition.ui.chat.local.service.utils.PusherUtils
 import com.pusher.client.Pusher
 import com.pusher.client.PusherOptions
 import com.pusher.client.channel.Channel
@@ -18,6 +14,10 @@ import com.pusher.client.connection.ConnectionState
 import com.pusher.client.connection.ConnectionStateChange
 import com.pusher.client.util.HttpAuthorizer
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.chat.local.service.utils.PresenceChannelListener
+import ishopgo.com.exhibition.ui.chat.local.service.utils.PrivateChannelListener
+import ishopgo.com.exhibition.ui.chat.local.service.utils.PublicChannelListener
+import ishopgo.com.exhibition.ui.chat.local.service.utils.PusherUtils
 
 /**
  * Created by xuanhong on 4/10/18. HappyCoding!
@@ -25,7 +25,7 @@ import ishopgo.com.exhibition.model.Const
 class PusherChatService : Service() {
 
     companion object {
-        private val TAG = "PusherChatService"
+        private const val TAG = "PusherChatService"
 
         fun getIntent(context: Context): Intent {
             return Intent(context, PusherChatService::class.java)
@@ -42,7 +42,7 @@ class PusherChatService : Service() {
     private var handlerThread = HandlerThread("message queue", Process.THREAD_PRIORITY_BACKGROUND)
 
     private var isPusherConnected = false
-    val pusher: Pusher by lazy {
+    private val pusher: Pusher by lazy {
         val options = PusherOptions()
         options.setCluster(Const.Chat.PUSHER_CLUSTER)
         options.isEncrypted = false

@@ -44,6 +44,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var patternCreated = MutableLiveData<TextPattern>()
     var patternRemoved = MutableLiveData<Boolean>()
     var conversationInfo = MutableLiveData<ConversationInfo>()
+    var messageSent = MutableLiveData<Boolean>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -54,7 +55,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         fields.put("conver", conversationId)
 
         addDisposable(isgService.chat_conversationInfo(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ConversationInfo>() {
                     override fun success(data: ConversationInfo?) {
                         data?.let { conversationInfo.postValue(it) }
@@ -75,7 +76,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (lastId != -1L) fields.put("last_id", lastId)
 
         addDisposable(isgService.inbox_getMessages(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<LocalMessageItem>>() {
                     override fun success(data: List<LocalMessageItem>?) {
                         messages.postValue(data ?: listOf())
@@ -99,7 +100,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         saveSendingMessage(idConversions, UserDataManager.currentUserId, tempId, text, null, null)
 
         addDisposable(isgService.chat_sendChat(builder.build())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         Log.d(TAG, "send message ok:  $data")
@@ -129,10 +130,11 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         saveSendingMessage(idConversions, UserDataManager.currentUserId, tempId, null, null, null)
 
         addDisposable(isgService.chat_sendChat(builder.build())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         Log.d(TAG, "send message ok:  $data")
+                        messageSent.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -154,10 +156,11 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         saveSendingMessage(idConversions, UserDataManager.currentUserId, tempId, null, null, null)
 
         addDisposable(isgService.chat_sendChat(builder.build())
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         Log.d(TAG, "send message ok:  $data")
+                        messageSent.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -170,7 +173,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun removePattern(idConversions: String, patternId: Long) {
         addDisposable(isgService.chat_removeSampleMessage(patternId)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         patternRemoved.postValue(true)
@@ -191,7 +194,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         fields.put("content", updatedPattern.content ?: "")
 
         addDisposable(isgService.chat_updateSampleMessages(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<TextPattern>() {
                     override fun success(data: TextPattern?) {
                         patternUpdated.postValue(true)
@@ -210,7 +213,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         fields.put("content", content)
 
         addDisposable(isgService.chat_updateSampleMessages(fields)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<TextPattern>() {
                     override fun success(data: TextPattern?) {
                         val created = TextPattern()
@@ -260,7 +263,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (tempId.isNotBlank()) {
             // mark temp message in db is failed
             addDisposable(messageRepo.setMessageFailed(tempId)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : DisposableCompletableObserver() {
                         override fun onComplete() {
                             // ignored

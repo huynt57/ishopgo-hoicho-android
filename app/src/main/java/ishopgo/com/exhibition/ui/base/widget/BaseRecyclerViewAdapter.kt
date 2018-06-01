@@ -30,9 +30,9 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         checkedItems = SparseBooleanArray()
     }
 
-    fun getData() = mData
+    open fun getData() = mData
 
-    fun updateData(position: Int, newData: T) {
+    open fun updateData(position: Int, newData: T) {
         if (position < 0 || position >= mData.size)
             throw IndexOutOfBoundsException("request index [$position], data length: ${mData.size}")
 
@@ -40,7 +40,7 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         notifyItemChanged(position)
     }
 
-    fun updateData(newData: T, a: Comparator<T>) {
+    open fun updateData(newData: T, a: Comparator<T>) {
         val filter = this.mData.filter { a.compare(newData, it) == 0 }
         filter.mapIndexed { index, t ->
             {
@@ -56,28 +56,28 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         notifyDataSetChanged()
     }
 
-    fun addData(data: T) {
+    open fun addData(data: T) {
         this.mData.add(data)
         notifyItemInserted(this.mData.size - 1)
     }
 
-    fun addData(index: Int, data: T) {
+    open fun addData(index: Int, data: T) {
         this.mData.add(index, data)
         notifyItemInserted(index)
     }
 
-    fun addAll(data: List<T>) {
+    open fun addAll(data: List<T>) {
         val size = mData.size
         this.mData.addAll(data)
         notifyItemRangeInserted(size, data.size)
     }
 
-    fun addAll(index: Int, data: List<T>) {
+    open fun addAll(index: Int, data: List<T>) {
         this.mData.addAll(index, data)
         notifyItemRangeInserted(index, index + data.size)
     }
 
-    fun remove(data: T): T? {
+    open fun remove(data: T): T? {
         var removedData: T? = null
         val index = this.mData.indexOf(data)
         if (index != -1) {
@@ -88,7 +88,7 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
         return removedData
     }
 
-    fun removeAll(from: Int) {
+    open fun removeAll(from: Int) {
         if (from < mData.size - 1) {
             val removeList = mData.subList(from, mData!!.size)
             val size = removeList.size
@@ -98,18 +98,18 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<BaseRecyclerVie
 
     }
 
-    fun clear() {
+    open fun clear() {
         this.mData.clear()
         notifyDataSetChanged()
     }
 
-    fun resetSelection() {
+    open fun resetSelection() {
         checkedItems.clear()
         checkedItemCount = 0
         notifyDataSetChanged()
     }
 
-    fun getItem(position: Int): T {
+    open fun getItem(position: Int): T {
         return mData[position]
     }
 

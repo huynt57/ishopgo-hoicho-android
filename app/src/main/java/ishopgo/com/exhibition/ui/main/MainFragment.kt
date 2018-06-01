@@ -14,12 +14,14 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.chat.local.ChatFragment
 import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationFragment
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -56,6 +58,8 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         const val TAB_SCAN = 2
         const val TAB_CHAT = 3
         const val TAB_ACCOUNT = 4
+
+        private val TAG = "MainFragment"
     }
 
     private lateinit var viewModel: MainViewModel
@@ -86,6 +90,12 @@ class MainFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
+        viewModel.currentConversation.observe(this, Observer {
+            it?.let {
+                showConversation(it)
+            }
+        })
+
         viewModel.showCategoriedProducts.observe(this, Observer { s ->
             s?.let {
                 if (it is Category) {
@@ -99,6 +109,20 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 }
             }
         })
+    }
+
+    private fun showConversation(conversation: LocalConversationItem) {
+        val fragment = childFragmentManager.findFragmentByTag(ConversationFragment.TAG)
+        if (fragment == null) {
+            val data = Bundle()
+            data.putString(Const.TransferKey.EXTRA_CONVERSATION_ID, conversation.idConversions)
+            data.putString(Const.TransferKey.EXTRA_TITLE, conversation.name)
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
+                    .add(R.id.content_main_container, ConversationFragment.newInstance(data), ConversationFragment.TAG)
+                    .addToBackStack(ConversationFragment.TAG)
+                    .commit()
+        }
     }
 
     private fun showSearch() {

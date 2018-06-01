@@ -19,7 +19,6 @@ import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
-import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -268,7 +267,6 @@ class ApiService {
         @POST("read-notifications")
         fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-
         @GET("get-products")
         fun getProductManager(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageProduct>>
 
@@ -371,7 +369,7 @@ class ApiService {
 
         @GET("chat/get-image-warehouse")
         fun chat_getImageInventory(
-                @QueryMap fields: Map<String, Any>
+                @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<List<ImageInventory>>>
 
         @POST("chat/update-info-group")
@@ -390,6 +388,12 @@ class ApiService {
         fun inbox_addMemberGroup(
                 @FieldMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
+
+        @FormUrlEncoded
+        @POST("chat/create-new-chat")
+        fun inbox_createNewChat(
+                @FieldMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<NewConversation>>
 
         @GET("find-info")
         fun getUserByPhone(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PhoneInfo>>

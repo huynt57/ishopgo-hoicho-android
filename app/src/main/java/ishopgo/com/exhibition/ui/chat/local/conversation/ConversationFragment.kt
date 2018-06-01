@@ -21,7 +21,6 @@ import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ConversationInfo
-import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.domain.response.TextPattern
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.chat.IChatMessage
@@ -31,6 +30,7 @@ import ishopgo.com.exhibition.ui.chat.local.conversation.pattern.PatternChooserB
 import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryActivity
 import ishopgo.com.exhibition.ui.chat.local.info.ConversationInfoActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.widget.ChatReplyActionView
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_local_chat_conversation.*
@@ -45,7 +45,7 @@ import java.util.*
  */
 class ConversationFragment : BaseActionBarFragment() {
     companion object {
-        private val TAG = "ConversationFragment"
+        const val TAG = "ConversationFragment"
 
         fun newInstance(data: Bundle): ConversationFragment {
             val fragment = ConversationFragment()
@@ -57,13 +57,14 @@ class ConversationFragment : BaseActionBarFragment() {
     }
 
     private lateinit var viewModel: ConversationViewModel
-    private lateinit var sharedViewModel: ConversationSharedViewModel
+    private lateinit var mainViewModel: MainViewModel
 
     private val adapter = MessageAdapter()
     private var sendingPhotoUri: Uri? = null
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
-    private lateinit var conversation: LocalConversationItem
+    private lateinit var conversationId: String
+    private lateinit var conversationTitle: String
     private lateinit var conversationInfo: ConversationInfo
 
     override fun contentLayoutRes(): Int {
@@ -73,23 +74,28 @@ class ConversationFragment : BaseActionBarFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        sharedViewModel = obtainViewModel(ConversationSharedViewModel::class.java, true)
-        sharedViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-        sharedViewModel.newMessage.observe(this, Observer { m ->
+        mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        mainViewModel.newMessage.observe(this, Observer { m ->
             m?.let {
                 // we have new message
-                Log.d(TAG, "received new message: $m")
-                adapter.addData(0, it)
+                if (m.idConversation == conversationId) {
+                    adapter.addData(0, it)
 
-                recyclerview.post {
-                    smoothScroller.targetPosition = 0
-                    recyclerview.layoutManager.startSmoothScroll(smoothScroller)
+                    recyclerview.post {
+                        smoothScroller.targetPosition = 0
+                        recyclerview.layoutManager.startSmoothScroll(smoothScroller)
+                    }
                 }
             }
         })
 
         viewModel = obtainViewModel(ConversationViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.messageSent.observe(this, Observer {
+            reloadData = true
+            viewModel.getMessages(conversationId, -1L)
+        })
         viewModel.messages.observe(this, Observer { m ->
             m?.let {
                 if (reloadData) {
@@ -128,22 +134,18 @@ class ConversationFragment : BaseActionBarFragment() {
             }
         })
 
-        viewModel.getConversationInfo(conversation.idConversions)
+        viewModel.getConversationInfo(conversationId)
         // start loading message
         reloadData = true
-        viewModel.getMessages(conversation.idConversions, -1L)
+        viewModel.getMessages(conversationId, -1L)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val arguments = arguments
-        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        try {
-            conversation = Toolbox.gson.fromJson(json, LocalConversationItem::class.java)
-        } catch (e: Exception) {
-            throw RuntimeException("can not parse LocalConversationItem")
-        }
+        conversationTitle = arguments?.getString(Const.TransferKey.EXTRA_TITLE) ?: ""
+        conversationId = arguments?.getString(Const.TransferKey.EXTRA_CONVERSATION_ID) ?: ""
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -155,16 +157,19 @@ class ConversationFragment : BaseActionBarFragment() {
             }
         }
 
-        toolbar.setCustomTitle(conversation.name ?: "Chưa đặt tên")
+        toolbar.setCustomTitle(conversationTitle)
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
-        toolbar.setLeftButtonClickListener { activity?.finish() }
+        toolbar.setLeftButtonClickListener {
+            mainViewModel.closeCurrentConversation()
+            activity?.onBackPressed()
+        }
         toolbar.rightButton(R.drawable.ic_info_green_24dp)
         toolbar.setRightButtonClickListener {
             context?.let {
                 if (::conversationInfo.isInitialized) {
                     val intent = Intent(it, ConversationInfoActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(conversationInfo))
-                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conversation.idConversions)
+                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conversationId)
                     startActivity(intent)
                 }
             }
@@ -191,7 +196,7 @@ class ConversationFragment : BaseActionBarFragment() {
             }
 
             override fun sendTextMessage(actionView: ChatReplyActionView, text: String) {
-                viewModel.sendTextMessage(conversation.idConversions, text)
+                viewModel.sendTextMessage(conversationId, text)
             }
         }
     }
@@ -265,7 +270,7 @@ class ConversationFragment : BaseActionBarFragment() {
                         MaterialDialog.Builder(it)
                                 .title("Thêm mẫu tin nhắn")
                                 .input("Nội dung tin nhắn mẫu", null, false) { _, input ->
-                                    viewModel.addPattern(conversation.idConversions, input.toString())
+                                    viewModel.addPattern(conversationId, input.toString())
                                 }
                                 .positiveText("OK")
                                 .negativeText("Huỷ")
@@ -282,7 +287,7 @@ class ConversationFragment : BaseActionBarFragment() {
                                         val newPattern = TextPattern()
                                         newPattern.id = pattern.id
                                         newPattern.content = input.toString()
-                                        viewModel.updatePattern(conversation.idConversions, newPattern)
+                                        viewModel.updatePattern(conversationId, newPattern)
                                     }
                                 }
                                 .positiveText("OK")
@@ -297,7 +302,7 @@ class ConversationFragment : BaseActionBarFragment() {
                                 .title("Xoá tin nhắn mẫu ?")
                                 .content(pattern.content ?: "")
                                 .positiveText("OK")
-                                .onPositive { _, _ -> viewModel.removePattern(conversation.idConversions, pattern.id) }
+                                .onPositive { _, _ -> viewModel.removePattern(conversationId, pattern.id) }
                                 .negativeText("Huỷ")
                                 .show()
                     }
@@ -315,7 +320,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 Const.RequestCode.RC_PICK_IMAGE -> {
                     val imageUri = data?.data
                     imageUri?.let {
-                        viewModel.sendImageMessage(conversation.idConversions, it)
+                        viewModel.sendImageMessage(conversationId, it)
                     }
                 }
                 Const.RequestCode.RC_PICK_IMAGES -> {
@@ -324,12 +329,12 @@ class ConversationFragment : BaseActionBarFragment() {
                     urls?.mapTo(uris, { s -> Uri.parse(s) })
                     Log.d(TAG, "picked images = $uris")
                     if (uris.isNotEmpty()) {
-                        viewModel.sendImagesFromInventory(conversation.idConversions, uris)
+                        viewModel.sendImagesFromInventory(conversationId, uris)
                     }
                 }
                 Const.RequestCode.RC_CAPTURE_IMAGE -> {
                     sendingPhotoUri?.let {
-                        viewModel.sendImageMessage(conversation.idConversions, it)
+                        viewModel.sendImageMessage(conversationId, it)
 
                         sendingPhotoUri = null
                     }
@@ -388,7 +393,7 @@ class ConversationFragment : BaseActionBarFragment() {
             scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     reloadData = false
-                    viewModel.getMessages(conversation.idConversions, adapter.getItem(adapter.itemCount - 1).getMessageId())
+                    viewModel.getMessages(conversationId, adapter.getItem(totalItemsCount - 1).getMessageId())
                 }
 
             }

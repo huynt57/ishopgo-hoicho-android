@@ -36,7 +36,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
             fields["last_id"] = params.last_id
 
             addDisposable(noAuthService.getCommunity(fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
                         override fun success(data: ManagerCommunity?) {
                             dataReturned.postValue(data?.post ?: mutableListOf())
@@ -142,7 +142,7 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
             fields["last_id"] = params.last_id
             fields["parent_id"] = parent_id
             addDisposable(noAuthService.getCommentCommunity(post_id, fields)
-                    .subscribeOn(Schedulers.io())
+                    .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<MutableList<CommunityComment>>() {
                         override fun success(data: MutableList<CommunityComment>?) {
                             loadCommentSusscess.postValue(data)

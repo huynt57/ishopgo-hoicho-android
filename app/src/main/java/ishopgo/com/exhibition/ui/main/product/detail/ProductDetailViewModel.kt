@@ -144,7 +144,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun getProductLike(productId: Long) {
         addDisposable(authService.getProductLike(productId)
-                .subscribeOn(Schedulers.io())
+                .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductLike>() {
                     override fun success(data: ProductLike?) {
                         getProductLike.postValue(data)
