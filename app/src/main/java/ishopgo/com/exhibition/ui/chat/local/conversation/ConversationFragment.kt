@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.conversation
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -42,6 +43,7 @@ import ishopgo.com.exhibition.ui.chat.local.service.utils.PresenceChannelListene
 import ishopgo.com.exhibition.ui.chat.local.service.utils.PublicChannelListener
 import ishopgo.com.exhibition.ui.chat.local.service.utils.PusherUtils
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asColor
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_local_chat_conversation.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -471,6 +473,7 @@ class ConversationFragment : BaseActionBarFragment() {
             pusher = it
 
             pusher.connect(object : ConnectionEventListener {
+                @SuppressLint("SetTextI18n")
                 override fun onConnectionStateChange(connectionStateChange: ConnectionStateChange) {
                     val currentState = connectionStateChange.currentState
                     when (currentState) {
@@ -480,7 +483,7 @@ class ConversationFragment : BaseActionBarFragment() {
                             activity?.runOnUiThread {
                                 view_notice.visibility = View.VISIBLE
                                 view_notice.text = "Đang kết nối..."
-                                view_notice.setBackgroundColor(resources.getColor(R.color.md_orange_A400))
+                                view_notice.setBackgroundColor(R.color.md_orange_A400.asColor(view_notice.context))
                             }
                         }
                         ConnectionState.CONNECTED -> {
@@ -490,7 +493,7 @@ class ConversationFragment : BaseActionBarFragment() {
                             activity?.runOnUiThread {
                                 view_notice.visibility = View.VISIBLE
                                 view_notice.text = "Đã kết nối"
-                                view_notice.setBackgroundColor(resources.getColor(R.color.md_light_blue_400))
+                                view_notice.setBackgroundColor(R.color.md_light_blue_400.asColor(view_notice.context))
                                 view_notice.postDelayed({ view_notice.visibility = View.GONE }, 1500)
                             }
                         }
@@ -501,7 +504,7 @@ class ConversationFragment : BaseActionBarFragment() {
                                 if (activity?.isFinishing == false) {
                                     view_notice.visibility = View.VISIBLE
                                     view_notice.text = "Mất kết nối"
-                                    view_notice.setBackgroundColor(resources.getColor(R.color.md_deep_orange_A400))
+                                    view_notice.setBackgroundColor(R.color.md_deep_orange_A400.asColor(view_notice.context))
                                 }
                             }
                         }
@@ -610,11 +613,11 @@ class ConversationFragment : BaseActionBarFragment() {
             }
 
             override fun onAuthenticationFailure(messange: String?, exception: Exception?) {
-                Log.d(TAG, "onAuthenticationFailure: messange = [${messange}], exception = [${exception}]")
+                Log.d(TAG, "onAuthenticationFailure: messange = [$messange], exception = [$exception]")
             }
 
             override fun onSubscriptionSucceeded(channelName: String?) {
-                Log.d(TAG, "onSubscriptionSucceeded: channelName = [${channelName}]")
+                Log.d(TAG, "onSubscriptionSucceeded: channelName = [$channelName]")
             }
 
         }
