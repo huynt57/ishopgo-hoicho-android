@@ -55,7 +55,6 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         zxing_barcode_scanner.initializeFromIntent(intent)
     }
 
-
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause: ")

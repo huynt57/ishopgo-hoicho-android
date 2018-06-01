@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="ishopgo.com.exhibition">
 
@@ -17,179 +18,153 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="b82480c69b88e0d7fc2629ac7e2b90d14e5bfdc8"/>
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_launcher"/>
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPureWhite"/>
 
         <service android:name=".service.FcmService">
-
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <!--<service-->
+            <!--android:name=".service.FcmNotificationService">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="com.google.firebase.MESSAGING_EVENT"/>-->
+            <!--</intent-filter>-->
+        <!--</service>-->
         <service android:name=".service.FcmIdService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
 
-
         <activity
-            android:name="ishopgo.com.exhibition.ui.splash.SplashActivity"
+            android:name=".ui.splash.SplashActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.MainActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.detail.ProductDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.shop.ProductsOfShopActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.detail.fulldetail.FullDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.favorite.FavoriteProductsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.suggested.SuggestedProductsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.viewed.ViewedProductsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.shop.ShopDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.brand.popular.PopularBrandsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.popular.PopularProductsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.detail.comment.ProductCommentsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.login.SignupActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.login.ForgetActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.login.LoginSelectOptionActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER"/>
+
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.main.profile.ProfileActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.account.password.ChangePasswordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.product.branded.ProductsOfBrandActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
-
         <activity
             android:name=".ui.community.share.CommunityShareActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.report.ReportActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.community.comment.CommunityCommentActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.configbooth.ConfigBoothActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.notification.NotificationActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.notification.add.NotificationAddActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.notification.detail.NotificationDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.productmanager.ProductManagerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.productmanager.add.ProductManagerAddActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.photoview.PhotoAlbumViewActivity"
             android:launchMode="singleTop"
@@ -222,56 +197,46 @@
             android:name=".ui.main.brandmanager.BrandManagerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.brandmanager.add.BrandManagerAddActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.brandmanager.update.BrandManagerUpdateActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.generalmanager.news.PostManagerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.postmanager.detail.PostManagerDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.questmanager.QuestionManagerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.postmanager.detail.QuestionManagerDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
-
         <activity
             android:name=".ui.main.membermanager.deletedmember.DeletedMemberActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.main.registerbooth.RegisterBoothActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.main.product.detail.sale_point.ProductSalePointActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.main.product.detail.add_sale_point.ProductSalePointAddActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -296,7 +261,6 @@
                 <action android:name="ishopgo.com.exhibition.ui.chat.local.service.PUSHER_MESSAGE"/>
             </intent-filter>
         </service>
-
         <service
             android:name=".ui.chat.local.service.PusherChatService"
             android:exported="false">
@@ -305,8 +269,12 @@
         <activity
             android:name=".ui.chat.local.conversation.ConversationActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="ishopgo.com.exhibition.conversation_activity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.chat.local.group.CreateGroupActivity"
             android:launchMode="singleTop"
@@ -347,7 +315,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>
-
         <activity
             android:name=".ui.main.home.search.community.detail.CommunityResultDetailActivity"
             android:launchMode="singleTop"
@@ -369,4 +336,5 @@
             android:screenOrientation="portrait"/>
 
     </application>
+
 </manifest>

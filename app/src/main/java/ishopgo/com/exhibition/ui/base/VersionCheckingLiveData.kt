@@ -11,12 +11,12 @@ class VersionCheckingLiveData(ref: DatabaseReference) : LiveData<DataSnapshot>()
     var query: Query = ref
 
     private var eventListener = object : ValueEventListener {
-        override fun onCancelled(p0: DatabaseError?) {
+        override fun onCancelled(p0: DatabaseError) {
 
         }
 
-        override fun onDataChange(p0: DataSnapshot?) {
-            p0?.let { value = it }
+        override fun onDataChange(p0: DataSnapshot) {
+            p0.let { value = it }
         }
 
     }

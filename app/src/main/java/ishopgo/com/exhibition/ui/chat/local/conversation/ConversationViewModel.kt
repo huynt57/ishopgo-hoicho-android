@@ -109,6 +109,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     override fun failure(status: Int, message: String) {
                         Log.d(TAG, "send message failed: $message")
                         markMessageFailed(tempId)
+                        resolveError(status, message)
                     }
 
                 }))
@@ -140,6 +141,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     override fun failure(status: Int, message: String) {
                         Log.d(TAG, "send message failed: $message")
                         markMessageFailed(tempId)
+                        resolveError(status, message)
                     }
 
                 }))
@@ -166,6 +168,7 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     override fun failure(status: Int, message: String) {
                         Log.d(TAG, "send message failed: $message")
                         markMessageFailed(tempId)
+                        resolveError(status, message)
                     }
 
                 }))

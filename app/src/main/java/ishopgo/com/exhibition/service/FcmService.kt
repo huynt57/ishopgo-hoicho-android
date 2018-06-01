@@ -11,6 +11,7 @@ import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.extensions.asColor
 import me.leolin.shortcutbadger.ShortcutBadger
 
 /**
@@ -38,32 +39,27 @@ class FcmService : FirebaseMessagingService() {
             }
 
             if (data != null && data.isNotEmpty()) {
-                val notificationId = try {
-                    data["notification_id"]?.toIntOrNull() ?: -1
-                } catch (e: Exception) {
-                    System.currentTimeMillis().toInt()
-                }
-                val title = data["title"]
-                val body = data["body"]
+                val notificationId = data["notification_id"]?.toInt() ?: System.currentTimeMillis().toInt()
+                val title = data.getOrDefault("title", "Bạn có thông báo mới")
+                val body = data.getOrDefault("content", "Nội dung thông báo")
 
-                if (!title.isNullOrEmpty() && !body.isNullOrEmpty()) {
-                    val i = Intent(this@FcmService, NotificationClickReceiver::class.java)
-                    // Put all extras
-                    data.keys.forEach { s: String? -> s?.let { i.putExtra(it, data[it]) } }
-                    val pendingIntent = PendingIntent.getBroadcast(this@FcmService, notificationId, i, PendingIntent.FLAG_UPDATE_CURRENT)
+                val i = Intent(this@FcmService, NotificationClickReceiver::class.java)
+                // Put all extras
+                data.keys.forEach { s: String? -> s?.let { i.putExtra(it, data[it]) } }
+                val pendingIntent = PendingIntent.getBroadcast(this@FcmService, notificationId, i, PendingIntent.FLAG_UPDATE_CURRENT)
 
-                    val notification = NotificationCompat.Builder(this@FcmService, "")
-                            .setSmallIcon(R.mipmap.ic_launcher)
-                            .setContentTitle(title)
-                            .setStyle(NotificationCompat.BigTextStyle().bigText(body))
-                            .setLights(Color.BLUE, 500, 2000)
-                            .setVibrate(longArrayOf(100, 200, 300, 400, 500))
-                            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                            .setContentIntent(pendingIntent)
-                            .setAutoCancel(true)
-                            .build()
-                    NotificationManagerCompat.from(this@FcmService).notify(data["type"], notificationId, notification)
-                }
+                val notification = NotificationCompat.Builder(this@FcmService, "")
+                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setColor(R.color.colorPrimary.asColor(this@FcmService))
+                        .setContentTitle(title)
+                        .setStyle(NotificationCompat.BigTextStyle().bigText(body))
+                        .setLights(Color.BLUE, 500, 2000)
+                        .setVibrate(longArrayOf(100, 200, 300, 400, 500))
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .build()
+                NotificationManagerCompat.from(this@FcmService).notify(data["type"], notificationId, notification)
 
                 val badgeCount = data["badge"]?.toIntOrNull() ?: 0
                 ShortcutBadger.applyCount(this@FcmService, badgeCount)

@@ -20,5 +20,6 @@ class NotificationPayload {
 
     companion object {
         const val TYPE_PRODUCT = "san_pham"
+        const val TYPE_CHAT = "chat"
     }
 }
