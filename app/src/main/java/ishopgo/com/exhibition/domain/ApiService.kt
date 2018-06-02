@@ -119,8 +119,7 @@ class ApiService {
         fun searchSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>>
 
         @GET("booth/detail-sale-point")
-        fun getSalePointDetail(@Query("phone") phone: String
-        ): Single<BaseResponse<ManagerSalePointDetail>>
+        fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>>
 
     }
 

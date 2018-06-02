@@ -16,9 +16,12 @@ class SalePointDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var getData = MutableLiveData<ManagerSalePointDetail>()
 
-    fun loadData(phone: String) {
+    fun loadData(phone: String, productId: Long) {
+        val fields = mutableMapOf<String, Any>()
+        fields["phone"] = phone
+        fields["product_id"] = productId
 
-        addDisposable(noAuthService.getSalePointDetail(phone)
+        addDisposable(noAuthService.getSalePointDetail(fields)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ManagerSalePointDetail>() {
                     override fun success(data: ManagerSalePointDetail?) {

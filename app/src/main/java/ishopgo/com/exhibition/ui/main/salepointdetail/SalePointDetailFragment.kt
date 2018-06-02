@@ -38,6 +38,7 @@ class SalePointDetailFragment : BaseFragment() {
     private lateinit var viewModel: SalePointDetailViewModel
     private val productsAdapter = ProductAdapter(0.4f)
     private var phone: String = ""
+    private var productId: Long = 0
     private var dataProduct: ProductDetail? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,20 +85,10 @@ class SalePointDetailFragment : BaseFragment() {
         }
 
         if (dataProduct != null) {
-            if (data.products != null) {
-                if (data.products!!.data!!.isNotEmpty())
-                    for (i in data.products!!.data?.indices!!) {
-                        if (data.products!!.data!![i].id == dataProduct!!.id) {
-                            productsAdapter.remove(data.products!!.data!![i])
-                        }
-                    }
-            }
-
             linear_product_current.visibility = View.VISIBLE
             Glide.with(context).load(dataProduct!!.image)
                     .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                     .into(img_product)
-
             tv_product.text = dataProduct!!.name
             tv_product_price.text = dataProduct!!.price.asMoney()
             tv_product_code.text = dataProduct!!.code
@@ -127,6 +118,11 @@ class SalePointDetailFragment : BaseFragment() {
                 it?.let { it1 -> showDetail(it1) }
             }
         })
-        viewModel.loadData(phone)
+
+        if (dataProduct != null) {
+            productId = dataProduct!!.id
+        }
+
+        viewModel.loadData(phone, productId)
     }
 }

@@ -21,10 +21,10 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
-    override fun getSalePointDetail(@Query("phone") phone: String): Single<BaseResponse<ManagerSalePointDetail>> {
+    override fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>> {
         val response = BaseResponse<ManagerSearchSalePoint>()
         response.status = 1
-        return delegate.returningResponse(response).getSalePointDetail(phone)
+        return delegate.returningResponse(response).getSalePointDetail(fields)
     }
 
     override fun searchSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>> {

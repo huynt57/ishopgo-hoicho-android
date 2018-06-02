@@ -149,6 +149,8 @@ class ProductDetailFragment : BaseFragment() {
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder))
                         .into(view_shop_follow)
+
+                if (it.status == 1) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
             }
         })
 
@@ -198,6 +200,8 @@ class ProductDetailFragment : BaseFragment() {
                             .error(R.drawable.image_placeholder))
                     .into(view_shop_follow)
             view_product_price.text = product.provideProductPrice()
+
+            if (product.provideLiked()) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
 
             container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = product.provideProductBrand()
