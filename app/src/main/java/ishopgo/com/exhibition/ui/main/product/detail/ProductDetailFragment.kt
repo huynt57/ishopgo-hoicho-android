@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -23,6 +25,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -71,6 +74,23 @@ class ProductDetailFragment : BaseFragment() {
     private var adapterImages = ComposingPostMediaAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var productId: Long = -1L
+    private var mPagerAdapter: FragmentPagerAdapter? = null
+    private var changePage = Runnable {
+        val currentItem = view_product_image.currentItem
+        val nextItem = (currentItem + 1) % (mPagerAdapter?.count ?: 1)
+        view_product_image.setCurrentItem(nextItem, nextItem != 0)
+
+        doChangeBanner()
+    }
+
+    private fun doChangeBanner() {
+        if (mPagerAdapter?.count ?: 1 > 1) {
+            view_product_image.handler?.let {
+                it.removeCallbacks(changePage)
+                it.postDelayed(changePage, 2500)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_detail, container, false)
@@ -172,13 +192,18 @@ class ProductDetailFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetailProvider) {
         context?.let {
-            Glide.with(it)
-                    .load(product.provideProductImage())
-                    .apply(RequestOptions()
-                            .centerCrop()
-                            .placeholder(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder))
-                    .into(view_product_image)
+            //            Glide.with(it)
+//                    .load(product.provideProductImage())
+//                    .apply(RequestOptions()
+//                            .centerCrop()
+//                            .placeholder(R.drawable.image_placeholder)
+//                            .error(R.drawable.image_placeholder))
+//                    .into(view_product_image)
+
+            if (product is ProductDetail) {
+                if (product.images != null && product.images!!.isNotEmpty())
+                    showBanners(product.images!!)
+            }
 
             view_product_name.text = product.provideProductName()
             if (UserDataManager.currentUserId > 0) {
@@ -245,7 +270,7 @@ class ProductDetailFragment : BaseFragment() {
                 view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
                 edt_comment.isFocusable = true
                 edt_comment.isFocusableInTouchMode = true
-                edt_comment.setOnClickListener (null)
+                edt_comment.setOnClickListener(null)
             } else {
                 img_comment_gallery.setOnClickListener { openActivtyLogin() }
                 img_comment_sent.setOnClickListener { openActivtyLogin() }
@@ -566,6 +591,35 @@ class ProductDetailFragment : BaseFragment() {
             }
             adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        view_product_image.handler?.removeCallbacks(changePage)
+    }
+
+    private fun showBanners(imagesList: MutableList<String>) {
+        mPagerAdapter = object : FragmentPagerAdapter(childFragmentManager) {
+
+            override fun getItem(position: Int): Fragment {
+                val params = Bundle()
+                params.putString(Const.TransferKey.EXTRA_STRING_LIST, imagesList[position])
+                return ImagesProductFragment.newInstance(params)
+            }
+
+            override fun getCount(): Int {
+                return imagesList.size
+            }
+        }
+        view_product_image.offscreenPageLimit = imagesList.size
+        view_product_image.adapter = mPagerAdapter
+        view_banner_indicator.setViewPager(view_product_image)
+
+        view_product_image.post {
+            if (imagesList.size > 1)
+                doChangeBanner()
         }
     }
 }
