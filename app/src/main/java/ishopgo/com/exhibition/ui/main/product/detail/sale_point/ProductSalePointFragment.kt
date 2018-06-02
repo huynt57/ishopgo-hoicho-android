@@ -82,7 +82,7 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
             override fun click(position: Int, dataSalePoint: ProductSalePointProvider, code: Int) {
                 if (dataSalePoint is ProductSalePoint) {
                     val intent = Intent(context, SalePointDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, dataSalePoint.accountId)
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, dataSalePoint.phone)
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                     startActivity(intent)
                 }
