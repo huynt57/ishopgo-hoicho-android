@@ -5,12 +5,10 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +23,6 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -230,8 +227,9 @@ class ProductDetailFragment : BaseFragment() {
             container_product_brand.setOnClickListener {
                 if (product is ProductDetail) {
                     val brandId = product.department?.id ?: -1L
+                    val brandName = product.department?.name ?: "Sản phẩm cùng thương hiệu"
                     if (brandId != -1L)
-                        showProductsOfBrand(brandId)
+                        showProductsOfBrand(brandId, brandName)
                 }
             }
 
@@ -418,9 +416,10 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
-    private fun showProductsOfBrand(brandId: Long) {
+    private fun showProductsOfBrand(brandId: Long, brandName: String) {
         val intent = Intent(context, ProductsOfBrandActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
+        intent.putExtra(Const.TransferKey.EXTRA_TITLE, brandName)
         startActivity(intent)
     }
 

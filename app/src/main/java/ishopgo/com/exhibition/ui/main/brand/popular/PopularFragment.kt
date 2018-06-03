@@ -64,6 +64,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
                         if (data is IdentityData) {
                             val intent = Intent(it, ProductsOfBrandActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                            intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.provideName())
                             startActivity(intent)
                         }
                     }
