@@ -8,7 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
@@ -21,7 +24,6 @@ import android.util.Log
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pusher.client.Pusher
-import com.pusher.client.channel.Channel
 import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.connection.ConnectionEventListener
 import com.pusher.client.connection.ConnectionState
@@ -75,11 +77,8 @@ class ConversationFragment : BaseActionBarFragment() {
     private var mTyping = false
     private var isPusherConnected = false
     private lateinit var pusher: Pusher
+    private lateinit var connectionListener: ConnectionEventListener
     private lateinit var handler: Handler
-    private val handlerThread = HandlerThread("message queue", Process.THREAD_PRIORITY_BACKGROUND)
-    /** Keeps track of all channel we are listening to */
-    private var mChannelNames = mutableListOf<String>()
-    private var mSubscribedChannel = mutableListOf<Channel>()
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewModel: ConversationViewModel
@@ -365,6 +364,8 @@ class ConversationFragment : BaseActionBarFragment() {
             m?.let {
                 // we have new message
                 if (m.idConversation == conversationId) {
+                    scrollListener.resetState()
+
                     adapter.addData(0, it)
 
                     scrollToBottom()
@@ -387,6 +388,7 @@ class ConversationFragment : BaseActionBarFragment() {
                     scrollToBottom()
 
                     view_recyclerview.post {
+                        view_recyclerview.clearOnScrollListeners()
                         view_recyclerview.addOnScrollListener(scrollListener)
                         reloadData = false
                     }
@@ -457,8 +459,7 @@ class ConversationFragment : BaseActionBarFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        handlerThread.start()
-        handler = Handler(handlerThread.looper)
+        handler = Handler()
 
         val arguments = arguments
         conversationTitle = arguments?.getString(Const.TransferKey.EXTRA_TITLE) ?: ""
@@ -472,7 +473,7 @@ class ConversationFragment : BaseActionBarFragment() {
         application?.pusher?.let {
             pusher = it
 
-            pusher.connect(object : ConnectionEventListener {
+            connectionListener = object : ConnectionEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onConnectionStateChange(connectionStateChange: ConnectionStateChange) {
                     val currentState = connectionStateChange.currentState
@@ -498,7 +499,7 @@ class ConversationFragment : BaseActionBarFragment() {
                             }
                         }
                         else -> {
-                            Log.d(TAG, "onConnectionStateChange: no connection")
+                            Log.d(TAG, "onConnectionStateChange: no connection $currentState")
                             isPusherConnected = false
                             activity?.runOnUiThread {
                                 if (activity?.isFinishing == false) {
@@ -512,10 +513,12 @@ class ConversationFragment : BaseActionBarFragment() {
 
                 }
 
-                override fun onError(s: String?, s1: String?, e: java.lang.Exception?) {
+                override fun onError(s: String?, s1: String?, e: Exception?) {
                     Log.d(TAG, "onError() called with: s = [$s], s1 = [$s1], e = [$e]")
                 }
-            }, ConnectionState.ALL)
+            }
+
+            pusher.connect(connectionListener, ConnectionState.ALL)
         }
 
     }
@@ -523,17 +526,11 @@ class ConversationFragment : BaseActionBarFragment() {
     private fun leave() {
         // disconnect pusher
         if (::pusher.isInitialized) {
+            pusher.connection.unbind(ConnectionState.ALL, connectionListener)
             pusher.disconnect()
-
-            // should destroy connection here
-            mSubscribedChannel.filter { it.isSubscribed }.map { channel -> channel.unbind("new-chat", { _, _, _ -> }) }
-            mSubscribedChannel.clear()
-
-            // unsubscribe from channels
-            mChannelNames.map { pusher.unsubscribe(it); Log.d(TAG, "unsubcribe channel: $it") }
         }
 
-        handlerThread.quit()
+
     }
 
 
@@ -579,9 +576,7 @@ class ConversationFragment : BaseActionBarFragment() {
 
     private fun internalSubscribePublic(channel: String) {
         val channelListener = PublicChannelListener()
-        val subscription = pusher.subscribe(channel, channelListener, "new-chat")
-        mSubscribedChannel.add(subscription)
-        mChannelNames.add(channel)
+        pusher.subscribe(channel, channelListener, "new-chat")
     }
 
     private fun subscribePrivate(channel: String) {
@@ -621,9 +616,7 @@ class ConversationFragment : BaseActionBarFragment() {
             }
 
         }
-        val subscription = pusher.subscribePrivate(channel, channelListener, "new-chat")
-        mSubscribedChannel.add(subscription)
-        mChannelNames.add(channel)
+        pusher.subscribePrivate(channel, channelListener, "new-chat")
     }
 
     private fun subscribePresence(channel: String) {
@@ -644,9 +637,7 @@ class ConversationFragment : BaseActionBarFragment() {
 
     private fun internalSubscribePresence(channel: String) {
         val channelListener = PresenceChannelListener()
-        val subscription = pusher.subscribePresence(channel, channelListener, "new-chat")
-        mSubscribedChannel.add(subscription)
-        mChannelNames.add(channel)
+        pusher.subscribePresence(channel, channelListener, "new-chat")
     }
 
 }
