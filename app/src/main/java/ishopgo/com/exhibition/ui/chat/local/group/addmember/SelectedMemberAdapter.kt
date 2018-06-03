@@ -29,7 +29,9 @@ class SelectedMemberAdapter : ClickableAdapter<IMemberView>() {
             itemView.apply {
                 Glide.with(context).load(data.memberAvatar())
                         .apply(RequestOptions.circleCropTransform()
-                                .placeholder(R.drawable.avatar_placeholder))
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder)
+                        )
                         .into(view_avatar)
             }
         }

@@ -28,7 +28,12 @@ class MemberAdapter : ClickableAdapter<User>() {
             super.populate(data)
 
             itemView.apply {
-                Glide.with(context).load(data.image).apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_placeholder)).into(view_avatar)
+                Glide.with(context)
+                        .load(data.image)
+                        .apply(RequestOptions.circleCropTransform()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder)
+                        ).into(view_avatar)
 
                 view_name.text = data.name
 //                view_phone.text = data.phone

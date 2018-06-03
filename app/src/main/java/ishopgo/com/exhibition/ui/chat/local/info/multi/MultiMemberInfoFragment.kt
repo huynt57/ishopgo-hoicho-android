@@ -7,13 +7,13 @@ import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import ishopgo.com.exhibition.ui.chat.local.group.member.MembersActivity
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ConversationInfo
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.chat.local.config.notification.NotificationConfigFragment
 import ishopgo.com.exhibition.ui.chat.local.group.addmember.AddMemberActivity
+import ishopgo.com.exhibition.ui.chat.local.group.member.MembersActivity
 import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.content_local_chat_multi_member_info.*
@@ -70,7 +70,12 @@ class MultiMemberInfoFragment : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        Glide.with(view.context).load(info.image).apply(RequestOptions().circleCrop()).into(view_avatar)
+        Glide.with(view.context)
+                .load(info.image)
+                .apply(RequestOptions().circleCrop()
+                        .placeholder(R.drawable.avatar_placeholder)
+                        .error(R.drawable.avatar_placeholder)
+                ).into(view_avatar)
         view_name.text = info.title
         view_description.text = "Active"
 

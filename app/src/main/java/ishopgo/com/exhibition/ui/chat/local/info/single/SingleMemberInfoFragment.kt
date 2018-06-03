@@ -5,12 +5,12 @@ import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import ishopgo.com.exhibition.ui.chat.local.group.CreateGroupActivity
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ConversationInfo
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.chat.local.config.notification.NotificationConfigFragment
+import ishopgo.com.exhibition.ui.chat.local.group.CreateGroupActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import kotlinx.android.synthetic.main.content_local_chat_single_member_info.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -45,7 +45,13 @@ class SingleMemberInfoFragment : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        Glide.with(view.context).load(info.image).apply(RequestOptions().circleCrop()).into(view_avatar)
+        Glide.with(view.context)
+                .load(info.image)
+                .apply(RequestOptions()
+                        .circleCrop()
+                        .placeholder(R.drawable.avatar_placeholder)
+                        .error(R.drawable.avatar_placeholder))
+                .into(view_avatar)
         view_name.text = info.title
         view_description.text = "Active"
 

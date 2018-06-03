@@ -50,7 +50,10 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
 
             itemView.apply {
                 Glide.with(itemView.context).load(data.provideImage())
-                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                        .apply(RequestOptions
+                                .placeholderOf(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
                         .into(iv_thumb)
                 tv_item_name.text = data.provideName()
 

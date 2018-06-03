@@ -70,7 +70,10 @@ class ProfileFragment : BaseActionBarFragment() {
     private fun showDetail(user: Member) {
         Glide.with(view_member_avatar.context)
                 .load(user.image)
-                .apply(RequestOptions.circleCropTransform().placeholder(R.drawable.avatar_placeholder))
+                .apply(RequestOptions.circleCropTransform()
+                        .placeholder(R.drawable.avatar_placeholder)
+                        .error(R.drawable.avatar_placeholder)
+                )
                 .into(view_member_avatar)
 
         member_detail_name.text = "Họ tên: <b>${user.name} </b>".asHtml()

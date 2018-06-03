@@ -33,8 +33,8 @@ import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -681,7 +681,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
             Glide.with(context)
                     .load(Uri.parse(image))
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
                     .into(view_image_add_product)
         }
     }

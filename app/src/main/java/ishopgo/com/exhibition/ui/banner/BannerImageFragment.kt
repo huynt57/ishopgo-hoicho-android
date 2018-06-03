@@ -38,8 +38,11 @@ class BannerImageFragment : BaseFragment() {
 
         Glide.with(view.context)
                 .load(banner?.image)
-                .apply(RequestOptions().centerCrop().placeholder(R.drawable.image_placeholder)
-                        .error(R.drawable.image_placeholder))
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
+                )
                 .into(view_banner_image)
 
         view_banner_image.setOnClickListener {

@@ -151,6 +151,7 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                         Glide.with(itemView).load(imageUrls[0])
                                 .apply(RequestOptions
                                         .placeholderOf(R.drawable.avatar_placeholder)
+                                        .error(R.drawable.avatar_placeholder)
                                         .transforms(CenterCrop(), RoundedCorners(25))
                                 )
                                 .into(left_imageContent)
@@ -169,6 +170,7 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                 Glide.with(itemView).load(data.getOwnerAvatar())
                         .apply(RequestOptions
                                 .placeholderOf(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder)
                                 .transforms(CenterCrop(), RoundedCorners(25))
                         )
                         .into(left_imageView)
@@ -223,6 +225,7 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                         Glide.with(itemView.context).load(imageUrls[0])
                                 .apply(RequestOptions()
                                         .placeholder(R.drawable.image_placeholder)
+                                        .error(R.drawable.image_placeholder)
                                         .transforms(CenterCrop(), RoundedCorners(25))
                                 )
                                 .into(right_imageContent)

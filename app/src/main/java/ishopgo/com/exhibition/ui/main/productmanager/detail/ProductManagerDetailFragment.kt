@@ -168,7 +168,8 @@ class ProductManagerDetailFragment : BaseFragment() {
 
             Glide.with(context)
                     .load(info.provideImages()[0])
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
                     .into(view_image_product_detail)
 
             view_image_product_detail.setOnClickListener {
@@ -406,7 +407,8 @@ class ProductManagerDetailFragment : BaseFragment() {
 
             Glide.with(context)
                     .load(Uri.parse(image))
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
                     .into(view_image_product_detail)
         }
     }
