@@ -149,7 +149,7 @@ class AccountFragment : BaseFragment() {
                 openSurvey()
             }
             Const.AccountAction.ACTION_TICKET -> {
-            openTicket()
+                openTicket()
             }
             else -> {
                 toast("Đang phát triển")
@@ -159,7 +159,7 @@ class AccountFragment : BaseFragment() {
 
     private fun openReportActivity() {
         context?.let {
-//            val intent = Intent(it, ReportActivity::class.java)
+            //            val intent = Intent(it, ReportActivity::class.java)
 //            startActivity(intent)
 
             val i = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/groups/ishopgovn/"))
