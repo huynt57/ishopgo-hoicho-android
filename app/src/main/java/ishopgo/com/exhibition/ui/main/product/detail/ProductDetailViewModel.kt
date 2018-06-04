@@ -253,7 +253,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var createSalePointSuccess = MutableLiveData<Boolean>()
 
-    fun createProductSalePoint(productId: Long, price: String, name: String, city: String, district: String, address: String) {
+    fun createProductSalePoint(productId: Long, price: String, phone: String, name: String, city: String, district: String, address: String) {
         val fields = mutableMapOf<String, Any>()
         fields["product_id"] = productId
         fields["price"] = price
@@ -261,6 +261,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         fields["city"] = city
         fields["district"] = district
         fields["address"] = address
+        fields["phone"] = phone
 
         addDisposable(authService.createProductSalePoint(fields)
                 .subscribeOn(Schedulers.single())
@@ -294,8 +295,8 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var getDataInforMember = MutableLiveData<SearchSalePoint>()
 
-    fun getInfoMemberSalePoint() {
-        addDisposable(authService.getInfoMemberSalePoint()
+    fun getInfoMemberSalePoint(phone: String) {
+        addDisposable(authService.getInfoMemberSalePoint(phone)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<SearchSalePoint>() {
                     override fun success(data: SearchSalePoint?) {
@@ -303,7 +304,6 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     }
 
                     override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
                     }
                 }))
     }
