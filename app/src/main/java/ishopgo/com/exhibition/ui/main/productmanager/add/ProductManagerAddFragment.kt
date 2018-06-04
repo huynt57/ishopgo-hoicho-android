@@ -30,6 +30,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
@@ -100,6 +101,13 @@ class ProductManagerAddFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
         edit_product_provider.setOnClickListener { getProvider(edit_product_provider) }
+
+        if (UserDataManager.currentType == "Chủ hội chợ")
+            til_product_provider.visibility = View.VISIBLE else {
+            provider_id = UserDataManager.currentUserId
+            til_product_provider.visibility = View.GONE
+        }
+
         view_image_add_product.setOnClickListener {
             CASE_PICK_IMAGE = true
             launchPickPhotoIntent()
@@ -148,14 +156,29 @@ class ProductManagerAddFragment : BaseFragment() {
         sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
 
         btn_product_add.setOnClickListener {
-            if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                            edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
-                showProgressDialog()
-                viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money ?:0,
-                        edit_product_price?.money ?:0, edit_product_provider_price.money ?:0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
-                        image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                        edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
-            }
+            if (UserDataManager.currentType == "Chủ hội chợ") {
+                if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                                edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
+                    showProgressDialog()
+                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money
+                            ?: 0,
+                            edit_product_price?.money ?: 0, edit_product_provider_price.money
+                            ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                            image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
+                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
+                }
+            } else
+                if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                                edt_product_categories.text.toString(), provider_id.toString(), edit_product_brand.text.toString())) {
+                    showProgressDialog()
+                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money
+                            ?: 0,
+                            edit_product_price?.money ?: 0, edit_product_provider_price.money
+                            ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                            image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
+                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
+                }
+
         }
 
         edt_product_categories.setOnClickListener { getCategory(edt_product_categories, CATEGORY_LEVEL_PARENT) }
