@@ -21,7 +21,6 @@ import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
-import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
 import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
 import ishopgo.com.exhibition.ui.main.myqr.MyQrActivity
@@ -31,6 +30,7 @@ import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -241,8 +241,12 @@ class AccountFragment : BaseFragment() {
 
     private fun openSettingBoothActivity() {
         context?.let {
-            val intent = Intent(it, ConfigBoothActivity::class.java)
+            val boothId = UserDataManager.currentUserId // id gian hang chinh la id cua chu gian hang
+            val intent = Intent(context, ShopDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
             startActivity(intent)
+//            val intent = Intent(it, ConfigBoothActivity::class.java)
+//            startActivity(intent)
         }
     }
 
