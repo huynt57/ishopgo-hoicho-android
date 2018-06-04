@@ -22,6 +22,14 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/image_placeholder"/>
 
+        <View
+            android:id="@+id/textView6"
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/view_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
         <ImageView
             android:id="@+id/view_avatar"
             android:layout_width="80dp"
@@ -53,14 +61,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/view_avatar"
             tools:text="Xuan Hong Vuong"/>
-
-        <View
-            android:id="@+id/textView6"
-            style="@style/AppTheme.DividerLine"
-            android:layout_width="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/view_cover"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
 
         <TextView
             android:id="@+id/view_phone"

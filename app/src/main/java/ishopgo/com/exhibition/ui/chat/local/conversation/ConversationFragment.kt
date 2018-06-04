@@ -100,6 +100,20 @@ class ConversationFragment : BaseActionBarFragment() {
         return R.layout.content_local_chat_conversation
     }
 
+    private var mContext: Context? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        mContext = context
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        mContext = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -110,7 +124,7 @@ class ConversationFragment : BaseActionBarFragment() {
         }
         toolbar.rightButton(R.drawable.ic_info_green_24dp)
         toolbar.setRightButtonClickListener {
-            context?.let {
+            mContext?.let {
                 if (::conversationInfo.isInitialized) {
                     val intent = Intent(it, ConversationInfoActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(conversationInfo))
@@ -211,7 +225,7 @@ class ConversationFragment : BaseActionBarFragment() {
     }
 
     private fun selectImagesFromInventory() {
-        context?.let {
+        mContext?.let {
             startActivityForResult(Intent(it, ImageInventoryActivity::class.java), Const.RequestCode.RC_PICK_IMAGES)
         }
     }
@@ -270,7 +284,7 @@ class ConversationFragment : BaseActionBarFragment() {
 
     private fun hasCameraPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
-            return context?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED }
+            return mContext?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED }
                     ?: false
         }
 
@@ -283,13 +297,13 @@ class ConversationFragment : BaseActionBarFragment() {
         if (requestCode == Const.RequestCode.CAMERA_PERMISSION) {
             val hasCameraPermission = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             if (hasCameraPermission) {
-                context?.let { getImageFromCamera(it) }
+                mContext?.let { getImageFromCamera(it) }
             }
         }
     }
 
     private fun showPatternChooser() {
-        context?.let {
+        mContext?.let {
             val fragment = PatternChooserBottomSheet()
             fragment.patternChooserListener = object : PatternChooserBottomSheet.PatternChooserListener {
                 override fun addPattern() {
@@ -309,7 +323,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 }
 
                 private fun showAddPatternDialog() {
-                    context?.let {
+                    mContext?.let {
                         MaterialDialog.Builder(it)
                                 .title("Thêm mẫu tin nhắn")
                                 .input("Nội dung tin nhắn mẫu", null, false) { _, input ->
@@ -322,7 +336,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 }
 
                 private fun showEditPatternDialog(pattern: TextPattern) {
-                    context?.let {
+                    mContext?.let {
                         MaterialDialog.Builder(it)
                                 .title("Sửa tin nhắn mẫu")
                                 .input(pattern.content, null, false) { _, input ->
@@ -340,7 +354,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 }
 
                 private fun showConfirmRemovePatternDialog(pattern: TextPattern) {
-                    context?.let {
+                    mContext?.let {
                         MaterialDialog.Builder(it)
                                 .title("Xoá tin nhắn mẫu ?")
                                 .content(pattern.content ?: "")
@@ -599,7 +613,7 @@ class ConversationFragment : BaseActionBarFragment() {
         val channelListener = object : PrivateChannelEventListener {
             override fun onEvent(channelName: String?, eventName: String?, data: String?) {
                 Log.d(TAG, "onEvent $data")
-                context?.let {
+                mContext?.let {
                     val intent = Intent(it, PusherMessageReceiver::class.java)
                     intent.putExtra(Const.Chat.EXTRA_MESSAGE, data)
                     intent.action = Const.Chat.PUSHER_MESSAGE
