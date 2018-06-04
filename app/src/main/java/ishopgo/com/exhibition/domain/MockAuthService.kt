@@ -20,6 +20,19 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getPostDetail(post_id: Long): Single<BaseResponse<PostContent>> {
+        val response = BaseResponse<PostContent>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getPostDetail(post_id)
+    }
+
+    override fun getPost(fields: MutableMap<String, Any>): Single<BaseResponse<PostsManager>> {
+        val response = BaseResponse<PostsManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getPost(fields)    }
+
     override fun getInfoMemberSalePoint(@Query("phone") phone: String): Single<BaseResponse<SearchSalePoint>> {
         val detail = SearchSalePoint()
         detail.id = 44

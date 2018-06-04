@@ -256,8 +256,14 @@ class ApiService {
         fun getTicket(): Single<BaseResponse<Ticket>>
 
         @GET("detail-sale-point")
-        fun getInfoMemberSalePoint(): Single<BaseResponse<SearchSalePoint>>
+        fun getInfoMemberSalePoint(@Query("phone") phone: String
+        ): Single<BaseResponse<SearchSalePoint>>
 
+        @GET("general-info/get-posts")
+        fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostsManager>>
+
+        @GET("general-info/get-posts/{id}")
+        fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
     }
 
     interface ISGApi {
