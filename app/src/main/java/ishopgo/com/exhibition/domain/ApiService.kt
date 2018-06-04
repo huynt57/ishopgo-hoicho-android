@@ -19,6 +19,7 @@ import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.*
 
@@ -112,21 +113,20 @@ class ApiService {
         ): Single<BaseResponse<Any>>
 
         @GET("shop/{id}")
-        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
         @GET("search-sale-point")
         fun searchSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>>
 
         @GET("booth/detail-sale-point")
-        fun getSalePointDetail(@Query("account_id") account_id: Long
-        ): Single<BaseResponse<ManagerSalePointDetail>>
+        fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>>
 
     }
 
     interface Auth {
 
         @GET("shop/{id}")
-        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ShopDetail>>
+        fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
         @GET("product/{id}")
         fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
@@ -254,6 +254,16 @@ class ApiService {
 
         @GET("ticket/account")
         fun getTicket(): Single<BaseResponse<Ticket>>
+
+        @GET("detail-sale-point")
+        fun getInfoMemberSalePoint(@Query("phone") phone: String
+        ): Single<BaseResponse<SearchSalePoint>>
+
+        @GET("general-info/get-posts")
+        fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostsManager>>
+
+        @GET("general-info/get-posts/{id}")
+        fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
     }
 
     interface ISGApi {

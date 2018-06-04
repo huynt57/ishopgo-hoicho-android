@@ -107,7 +107,7 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePointProvider>, 
                     context?.let {
                         if (data is SearchSalePoint) {
                             val intent = Intent(it, SalePointDetailActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
                             startActivity(intent)
                         }
                     }

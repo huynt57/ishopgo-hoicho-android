@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.survey
 
 import android.annotation.SuppressLint
 import android.support.v4.view.PagerAdapter
+import android.support.v7.widget.AppCompatButton
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -32,9 +33,15 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
         val tv_question_number: TextView = view.findViewById(R.id.tv_question_number)
         val tv_question: TextView = view.findViewById(R.id.tv_question)
         val rv_answer: RecyclerView = view.findViewById(R.id.rv_answer)
+        val btn_end: AppCompatButton = view.findViewById(R.id.btn_end)
 
         tv_question_number.text = "Câu ${position + 1}:"
         tv_question.text = listQuestion[position].title
+
+        if (position == listQuestion.size - 1) {
+            btn_end.visibility = View.VISIBLE
+            btn_end.setOnClickListener { listener?.clickSentSurvey() }
+        } else btn_end.visibility = View.GONE
 
         val adapterAnswer = AnswerAdapter()
         listQuestion[position].answers?.let { adapterAnswer.replaceAll(it) }
@@ -66,5 +73,6 @@ class SurveyAdapter(private var listQuestion: MutableList<SurveyQuestion>) : Pag
 
     interface CkListener {
         fun clickOption(listResult: MutableList<PostSurvey>, position: Int)
+        fun clickSentSurvey()
     }
 }

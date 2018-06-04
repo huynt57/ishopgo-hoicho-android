@@ -50,7 +50,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String, birthday: String,
-                        region: String, address: String, password: String, register_type: String) {
+                        region: String, address: String, password: String) {
 
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -62,7 +62,6 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("region", region)
                 .addFormDataPart("address", address)
                 .addFormDataPart("password", password)
-                .addFormDataPart("type", register_type)
 
         addDisposable(noAuthService.register(builder.build())
                 .subscribeOn(Schedulers.single())

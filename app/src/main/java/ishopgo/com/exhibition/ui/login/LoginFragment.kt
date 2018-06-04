@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
@@ -92,7 +93,14 @@ class LoginFragment : BaseFragment() {
             p.let {
                 hideProgressDialog()
                 toast("Đăng nhập thành công")
-                viewModel.checkSurvey()
+                if (UserDataManager.currentType == "Thành viên")
+                    viewModel.checkSurvey()
+                else {
+                    val intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    activity?.finish()
+                }
             }
         })
 

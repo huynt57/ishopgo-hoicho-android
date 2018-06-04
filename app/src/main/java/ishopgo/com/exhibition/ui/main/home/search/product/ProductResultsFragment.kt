@@ -1,18 +1,22 @@
 package ishopgo.com.exhibition.ui.main.home.search.product
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
@@ -65,13 +69,25 @@ class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, Sea
             product.id = total.toLong()
             adapter.addData(0, product)
             view_recyclerview.scheduleLayoutAnimation()
-        }
-        else
+        } else
             adapter.addAll(data)
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<SearchProductProvider> {
-        return SearchProductAdapter()
+        val searchProductAdapter = SearchProductAdapter()
+        searchProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<SearchProductProvider> {
+            override fun click(position: Int, data: SearchProductProvider, code: Int) {
+                context?.let {
+                    if (data is IdentityData) {
+                        val intent = Intent(it, ProductDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+        }
+        return searchProductAdapter
     }
 
     override fun firstLoad() {

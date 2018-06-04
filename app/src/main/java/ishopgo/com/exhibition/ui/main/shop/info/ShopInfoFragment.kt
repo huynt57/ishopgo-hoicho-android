@@ -1,10 +1,13 @@
 package ishopgo.com.exhibition.ui.main.shop.info
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +17,13 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointProvider
+import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import kotlinx.android.synthetic.main.fragment_shop_info.*
 
@@ -66,6 +74,12 @@ class ShopInfoFragment : BaseFragment() {
             }
         })
 
+        viewModel.listSalePoint.observe(this, Observer { i ->
+            i?.let {
+                salePointAdapter.replaceAll(it)
+            }
+        })
+
         viewModel.loadInfo(shopId)
     }
 
@@ -80,7 +94,6 @@ class ShopInfoFragment : BaseFragment() {
         view_click_count.text = "Số lượt click: <b>${info.provideClickCount()}</b>".asHtml()
         view_share_count.text = "Số lượt share: <b>${info.provideShareCount()}</b>".asHtml()
         view_description.text = info.provideDescription().asHtml()
-        salePointAdapter.replaceAll(info.provideSalePoints())
 
         if (info is ShopDetail) {
             sharedViewModel.updateShopImage(info.id, info.follow, info.provideImage())
@@ -90,6 +103,11 @@ class ShopInfoFragment : BaseFragment() {
                 textView11.drawableCompat(0, 0, R.drawable.ic_edit_black_24dp, 0)
                 textView11.setOnClickListener {
                     showDialogChangeDescription(info.introduction ?: "")
+                }
+                img_add_sale_point.visibility = View.VISIBLE
+                img_add_sale_point.setOnClickListener {
+                    val intent = Intent(context, SalePointAddActivity::class.java)
+                    startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
                 }
             }
         }
@@ -173,5 +191,24 @@ class ShopInfoFragment : BaseFragment() {
         layoutManager.isAutoMeasureEnabled = true
         view_recyclerview.layoutManager = layoutManager
         view_recyclerview.isNestedScrollingEnabled = false
+
+        salePointAdapter.listener = object : ClickableAdapter.BaseAdapterAction<SearchSalePointProvider> {
+            override fun click(position: Int, data: SearchSalePointProvider, code: Int) {
+                context?.let {
+                    if (data is SearchSalePoint) {
+                        val intent = Intent(it, SalePointDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
+                        startActivity(intent)
+                    }
+                }
+
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.SALE_POINT_ADD && resultCode == RESULT_OK)
+            viewModel.loadInfo(shopId)
     }
 }

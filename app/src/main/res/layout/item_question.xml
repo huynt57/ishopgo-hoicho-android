@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fillViewport="true"
     android:padding="8dp">
 
     <RelativeLayout
@@ -32,8 +33,19 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_question"
             android:descendantFocusability="beforeDescendants"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:layout_above="@+id/btn_end"/>
 
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_end"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            style="@style/AppTheme.ActionButton"
+            android:text="Nộp bài khảo sát"
+            android:visibility="gone"
+            />
     </RelativeLayout>
 </android.support.v4.widget.NestedScrollView>

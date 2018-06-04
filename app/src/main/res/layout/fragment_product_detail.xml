@@ -22,7 +22,7 @@
                 android:layout_height="match_parent"
                 tools:visibility="visible">
 
-                <ImageView
+                <android.support.v4.view.ViewPager
                     android:id="@+id/view_product_image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -30,6 +30,21 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:src="@tools:sample/avatars" />
+
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/view_banner_indicator"
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:minWidth="20dp"
+                    app:ci_drawable="@drawable/view_pager_indicator_selected"
+                    app:ci_drawable_unselected="@drawable/view_pager_indicator_unselected"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_product_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <LinearLayout
                     android:id="@+id/view_share"
@@ -192,7 +207,7 @@
                     app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_divider_shop_info"
-                    tools:ignore="HardcodedText"/>
+                    tools:ignore="HardcodedText" />
 
                 <TextView
                     android:id="@+id/view_shop_name"
@@ -532,8 +547,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="1.5"
-                        android:inputType="text"
                         android:hint="Viết bình luận"
+                        android:inputType="text"
                         android:lines="1" />
 
                     <ImageView
@@ -714,32 +729,59 @@
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <ImageView
-            android:id="@+id/view_shop_follow"
+        <LinearLayout
+            android:id="@+id/linear_shop_follow"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="centerInside"
             android:foreground="?attr/selectableItemBackground"
-            app:srcCompat="@drawable/ic_heart_checked" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
-        <ImageView
+            <ImageView
+                android:id="@+id/view_shop_follow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:scaleType="centerInside"
+                app:srcCompat="@drawable/ic_heart_checked" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_product_like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Quan tâm" />
+
+        </LinearLayout>
+
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_call"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="center"
             android:foreground="?attr/selectableItemBackground"
-            app:srcCompat="@drawable/ic_phone_24dp" />
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Gọi điện"
+            app:drawableTopCompat="@drawable/ic_phone_24dp" />
 
-        <ImageView
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_message"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:scaleType="center"
             android:foreground="?attr/selectableItemBackground"
-            app:srcCompat="@drawable/ic_comment" />
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Nhắn tin"
+            app:drawableTopCompat="@drawable/ic_comment" />
     </LinearLayout>
 
 </RelativeLayout>

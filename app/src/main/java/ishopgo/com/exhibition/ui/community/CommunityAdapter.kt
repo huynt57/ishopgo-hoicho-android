@@ -53,7 +53,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                     itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
                 }
                 itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
-                itemView.cv_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
+                itemView.img_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
                 itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
                 itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
 
@@ -102,12 +102,12 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                         .apply(RequestOptions.circleCropTransform()
                                 .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_community_avatar)
 
-                cv_community_share.visibility = View.GONE
+                img_community_share.visibility = View.GONE
                 tv_community_number_share.visibility = View.GONE
 
                 if (data.provideProduct() != null) {
                     cv_community_product.visibility = View.VISIBLE
-                    cv_community_share.visibility = View.VISIBLE
+                    img_community_share.visibility = View.VISIBLE
                     tv_community_number_share.visibility = View.VISIBLE
                     tv_community_like.visibility = View.VISIBLE
                     tv_community_like.text = "${data.provideLikeCount()} lượt thích"

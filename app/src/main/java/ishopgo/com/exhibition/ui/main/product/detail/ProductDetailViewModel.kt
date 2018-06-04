@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
@@ -256,11 +257,11 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         val fields = mutableMapOf<String, Any>()
         fields["product_id"] = productId
         fields["price"] = price
-        fields["phone"] = phone
         fields["name"] = name
         fields["city"] = city
         fields["district"] = district
         fields["address"] = address
+        fields["phone"] = phone
 
         addDisposable(authService.createProductSalePoint(fields)
                 .subscribeOn(Schedulers.single())
@@ -288,6 +289,21 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
                     override fun failure(status: Int, message: String) {
                         resolveError(status, message)
+                    }
+                }))
+    }
+
+    var getDataInforMember = MutableLiveData<SearchSalePoint>()
+
+    fun getInfoMemberSalePoint(phone: String) {
+        addDisposable(authService.getInfoMemberSalePoint(phone)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<SearchSalePoint>() {
+                    override fun success(data: SearchSalePoint?) {
+                        getDataInforMember.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
                     }
                 }))
     }

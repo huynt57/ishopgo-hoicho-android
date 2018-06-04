@@ -26,10 +26,11 @@ import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
-import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
+import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
+import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -38,7 +39,6 @@ import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
-import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -198,11 +198,12 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun openPostManager(typeManager: Int) {
-        context?.let {
-            val intent = Intent(it, PostManagerActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
-            startActivity(intent)
-        }
+        toast("Đang phát triển")
+//        context?.let {
+//            val intent = Intent(it, PostActivity::class.java)
+//            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
+//            startActivity(intent)
+//        }
     }
 
     private fun setupListeners() {
@@ -265,7 +266,7 @@ class HomeFragment : BaseFragment() {
             }
 
         }
-        categoryStage1Adapter.listener = object: ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+        categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
             override fun click(position: Int, data: CategoryProvider, code: Int) {
                 mainViewModel.showCategoriedProducts(data)
             }
@@ -293,10 +294,11 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun openQuestionAnswer() {
-        context?.let {
-            val intent = Intent(it, QuestionManagerActivity::class.java)
-            startActivity(intent)
-        }
+        toast("Đang phát triển")
+//        context?.let {
+//            val intent = Intent(it, QuestionActivity::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun openHighlightProducts() {

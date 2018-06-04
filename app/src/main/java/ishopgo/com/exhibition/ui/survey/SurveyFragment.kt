@@ -131,6 +131,11 @@ class SurveyFragment : BaseFragment() {
                 }
 
                 adapterSurvey.listener = object : SurveyAdapter.CkListener {
+                    override fun clickSentSurvey() {
+                        if (listAnswer.isNotEmpty())
+                        viewModel.postSurvey(surveyId, listAnswer)
+                        else toast("Bạn vui lòng trả lời câu hỏi khảo sát")                    }
+
                     override fun clickOption(listResult: MutableList<PostSurvey>, position: Int) {
                         if (position < listAnswer.size) {
                             listAnswer.removeAt(position)
@@ -138,11 +143,6 @@ class SurveyFragment : BaseFragment() {
                         listAnswer.add(position, listResult[0])
                         adapterQuestionQuick.replaceAll(listQuestion)
                     }
-                }
-                imb_end.setOnClickListener {
-                    if (listAnswer.isNotEmpty())
-                        viewModel.postSurvey(surveyId, listAnswer)
-                    else toast("Bạn vui lòng trả lời câu hỏi khảo sát")
                 }
             }
         })

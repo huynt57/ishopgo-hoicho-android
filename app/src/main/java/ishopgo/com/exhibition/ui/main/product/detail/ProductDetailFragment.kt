@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -71,6 +73,23 @@ class ProductDetailFragment : BaseFragment() {
     private var adapterImages = ComposingPostMediaAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var productId: Long = -1L
+    private var mPagerAdapter: FragmentPagerAdapter? = null
+    private var changePage = Runnable {
+        val currentItem = view_product_image.currentItem
+        val nextItem = (currentItem + 1) % (mPagerAdapter?.count ?: 1)
+        view_product_image.setCurrentItem(nextItem, nextItem != 0)
+
+        doChangeBanner()
+    }
+
+    private fun doChangeBanner() {
+        if (mPagerAdapter?.count ?: 1 > 1) {
+            view_product_image.handler?.let {
+                it.removeCallbacks(changePage)
+                it.postDelayed(changePage, 2500)
+            }
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_detail, container, false)
@@ -149,6 +168,8 @@ class ProductDetailFragment : BaseFragment() {
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder))
                         .into(view_shop_follow)
+
+                if (it.status == 1) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
             }
         })
 
@@ -170,19 +191,23 @@ class ProductDetailFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetailProvider) {
         context?.let {
-            Glide.with(it)
-                    .load(product.provideProductImage())
-                    .apply(RequestOptions()
-                            .centerCrop()
-                            .placeholder(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder))
-                    .into(view_product_image)
+            //            Glide.with(it)
+//                    .load(product.provideProductImage())
+//                    .apply(RequestOptions()
+//                            .centerCrop()
+//                            .placeholder(R.drawable.image_placeholder)
+//                            .error(R.drawable.image_placeholder))
+//                    .into(view_product_image)
+
+            if (product is ProductDetail) {
+                if (product.images != null && product.images!!.isNotEmpty())
+                    showBanners(product.images!!)
+            }
 
             view_product_name.text = product.provideProductName()
             if (UserDataManager.currentUserId > 0) {
-                view_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
+                linear_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
                 view_share.setOnClickListener { showDialogShare(product) }
-                linearLayout.visibility = View.VISIBLE
             } else {
                 view_shop_follow.setOnClickListener {
                     openActivtyLogin()
@@ -190,7 +215,6 @@ class ProductDetailFragment : BaseFragment() {
                 view_share.setOnClickListener {
                     openActivtyLogin()
                 }
-                linearLayout.visibility = View.GONE
             }
 
             Glide.with(context)
@@ -200,6 +224,8 @@ class ProductDetailFragment : BaseFragment() {
                             .error(R.drawable.image_placeholder))
                     .into(view_shop_follow)
             view_product_price.text = product.provideProductPrice()
+
+            if (product.provideLiked()) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
 
             container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = product.provideProductBrand()
@@ -233,19 +259,25 @@ class ProductDetailFragment : BaseFragment() {
                 }
             }
 
-            img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
-
-            img_comment_sent.setOnClickListener {
-                if (checkRequireFields(edt_comment.text.toString())) {
-                    showProgressDialog()
-                    viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+            if (UserDataManager.currentUserId > 0) {
+                img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
+                img_comment_sent.setOnClickListener {
+                    if (checkRequireFields(edt_comment.text.toString())) {
+                        showProgressDialog()
+                        viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+                    }
                 }
-            }
-
-            view_shop_add_sale_point.setOnClickListener {
-                if (UserDataManager.currentUserId > 0)
-                    openAddSalePoint(it.context, product)
-                else openActivtyLogin()
+                view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
+                edt_comment.isFocusable = true
+                edt_comment.isFocusableInTouchMode = true
+                edt_comment.setOnClickListener(null)
+            } else {
+                img_comment_gallery.setOnClickListener { openActivtyLogin() }
+                img_comment_sent.setOnClickListener { openActivtyLogin() }
+                view_shop_add_sale_point.setOnClickListener { openActivtyLogin() }
+                edt_comment.isFocusable = false
+                edt_comment.isFocusableInTouchMode = false
+                edt_comment.setOnClickListener { openActivtyLogin() }
             }
         }
         openProductSalePoint(product)
@@ -445,7 +477,7 @@ class ProductDetailFragment : BaseFragment() {
             override fun click(position: Int, data: ProductSalePointProvider, code: Int) {
                 if (data is ProductSalePoint) {
                     val intent = Intent(context, SalePointDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
                     startActivity(intent)
                 }
@@ -560,6 +592,35 @@ class ProductDetailFragment : BaseFragment() {
             }
             adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.VISIBLE
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        view_product_image.handler?.removeCallbacks(changePage)
+    }
+
+    private fun showBanners(imagesList: MutableList<String>) {
+        mPagerAdapter = object : FragmentPagerAdapter(childFragmentManager) {
+
+            override fun getItem(position: Int): Fragment {
+                val params = Bundle()
+                params.putString(Const.TransferKey.EXTRA_STRING_LIST, imagesList[position])
+                return ImagesProductFragment.newInstance(params)
+            }
+
+            override fun getCount(): Int {
+                return imagesList.size
+            }
+        }
+        view_product_image.offscreenPageLimit = imagesList.size
+        view_product_image.adapter = mPagerAdapter
+        view_banner_indicator.setViewPager(view_product_image)
+
+        view_product_image.post {
+            if (imagesList.size > 1)
+                doChangeBanner()
         }
     }
 }

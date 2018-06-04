@@ -10,11 +10,11 @@ import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointProv
 
 class SearchSalePoint : IdentityData(), SearchSalePointProvider {
     override fun provideAddress(): Spanned {
-        return "Địa chỉ: <b>${address ?: ""}, ${district ?: ""}, ${city ?: ""}</b>".asHtml()
+        return "<b>${address ?: ""}, ${district ?: ""}, ${city ?: ""}</b>".asHtml()
     }
 
     override fun provideName(): Spanned {
-        return "Tên điểm bán: <b>${name ?: ""}</b>".asHtml()
+        return "<b>${name ?: ""}</b>".asHtml()
     }
 
     override fun providePhone(): String {

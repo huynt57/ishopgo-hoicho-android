@@ -28,7 +28,7 @@ class SalePoint : IdentityData(), SalePointProvider {
     }
 
     override fun provideProductName(): String {
-        return "Sản phẩm: $productName"
+        return "Sản phẩm: ${productName ?:""}"
     }
 
     override fun provideManagerPhone(): String {

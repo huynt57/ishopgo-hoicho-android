@@ -19,7 +19,6 @@ object UserDataManager {
     private const val KEY_USER_NAME = "user_name"
     private const val KEY_USER_TYPE = "type"
     private const val KEY_USER_SURVEY = "survey"
-    private const val KEY_BOOTH_ID= "type"
 
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")

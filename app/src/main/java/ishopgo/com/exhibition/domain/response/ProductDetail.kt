@@ -132,4 +132,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("link_affiliate")
     @Expose
     var linkAffiliate: String? = null
+    @SerializedName("images")
+    @Expose
+    var images: MutableList<String>? = null
 }

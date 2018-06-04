@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
@@ -20,10 +21,10 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
-    override fun getSalePointDetail(@Query("account_id") account_id: Long): Single<BaseResponse<ManagerSalePointDetail>> {
+    override fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>> {
         val response = BaseResponse<ManagerSearchSalePoint>()
         response.status = 1
-        return delegate.returningResponse(response).getSalePointDetail(account_id)
+        return delegate.returningResponse(response).getSalePointDetail(fields)
     }
 
     override fun searchSalePoint(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>> {
@@ -110,7 +111,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getBoothProducts(boothId, params)
     }
 
-    override fun getShopInfo(id: Long): Single<BaseResponse<ShopDetail>> {
+    override fun getShopInfo(id: Long): Single<BaseResponse<ManagerShopDetail>> {
         val d = ShopDetail()
         d.id = 17354
         d.name = "Gian hàng hội chợ"
@@ -122,9 +123,25 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         d.productCount = 8
         d.rate = 4
 
-        val response = BaseResponse<ShopDetail>()
+        val ps = mutableListOf<SearchSalePoint>()
+        val detail = SearchSalePoint()
+        detail.id = 44
+        detail.name = "test điểm bán"
+        detail.city = "Hà Nội"
+        detail.district = "Cầu Giấy"
+        detail.address = "Dương Đình Nghệ"
+        detail.phone = "0989013403"
+        detail.countProduct = 0
+        detail.accountId = 17288
+
+        for (i in 0..5)
+            ps.add(detail)
+
+
+        val response = BaseResponse<ManagerShopDetail>()
         response.status = 1
-        response.data = d
+        response.data?.booth = d
+        response.data?.salePoint = ps
         return delegate.returningResponse(response).getShopInfo(id)
     }
 

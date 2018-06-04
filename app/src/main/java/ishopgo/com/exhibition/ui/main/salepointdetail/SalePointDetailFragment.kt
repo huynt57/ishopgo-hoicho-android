@@ -1,12 +1,10 @@
 package ishopgo.com.exhibition.ui.main.salepointdetail
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +22,7 @@ import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_sale_point_detail.*
 
 class SalePointDetailFragment : BaseFragment() {
@@ -39,7 +38,8 @@ class SalePointDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: SalePointDetailViewModel
     private val productsAdapter = ProductAdapter(0.4f)
-    private var accountId: Long = 0
+    private var phone: String = ""
+    private var productId: Long = 0
     private var dataProduct: ProductDetail? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,7 +50,7 @@ class SalePointDetailFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
         dataProduct = Toolbox.gson.fromJson(json, ProductDetail::class.java)
-        accountId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+        phone = arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, "") ?: ""
     }
 
     private fun showDetail(data: ManagerSalePointDetail) {
@@ -58,7 +58,7 @@ class SalePointDetailFragment : BaseFragment() {
             val salePoint = data.salePoint
             tv_sale_point_name.text = salePoint?.provideName() ?: ""
             tv_sale_point_phone.text = salePoint?.providePhone() ?: ""
-            tv_sale_point_address.text = salePoint?.address ?: ""
+            tv_sale_point_address.text = salePoint?.provideAddress() ?: ""
             linear_footer.setOnClickListener {
                 val call = Uri.parse("tel:${salePoint?.providePhone()}")
                 val intent = Intent(Intent.ACTION_DIAL, call)
@@ -68,14 +68,23 @@ class SalePointDetailFragment : BaseFragment() {
         }
 
         if (data.products != null) {
-            val product = data.products!!
-            product.data?.let { productsAdapter.replaceAll(it) }
-            rv_product_sale_point.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_product_sale_point.adapter = productsAdapter
-
-            productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-                override fun click(position: Int, data: ProductProvider, code: Int) {
-                    context?.let { openProductDetail(it, data) }
+            context?.let {
+                val product = data.products!!
+                product.data?.let { productsAdapter.replaceAll(it) }
+                rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+                rv_product_sale_point.isNestedScrollingEnabled = false
+                rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+                rv_product_sale_point.adapter = productsAdapter
+                productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
+                    override fun click(position: Int, data: ProductProvider, code: Int) {
+                        context?.let {
+                            if (data is IdentityData) {
+                                val intent = Intent(context, ProductDetailActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                                startActivity(intent)
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -85,20 +94,17 @@ class SalePointDetailFragment : BaseFragment() {
             Glide.with(context).load(dataProduct!!.image)
                     .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                     .into(img_product)
-
             tv_product.text = dataProduct!!.name
             tv_product_price.text = dataProduct!!.price.asMoney()
             tv_product_code.text = dataProduct!!.code
 
-        } else linear_product_current.visibility = View.GONE
-    }
+            constraintLayoutProduct.setOnClickListener {
+                val intent = Intent(context, ProductDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, dataProduct!!.id)
+                startActivity(intent)
+            }
 
-    private fun openProductDetail(context: Context, product: ProductProvider) {
-        if (product is IdentityData) {
-            val intent = Intent(context, ProductDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-            startActivity(intent)
-        }
+        } else linear_product_current.visibility = View.GONE
     }
 
     override
@@ -117,6 +123,11 @@ class SalePointDetailFragment : BaseFragment() {
                 it?.let { it1 -> showDetail(it1) }
             }
         })
-        viewModel.loadData(accountId)
+
+        if (dataProduct != null) {
+            productId = dataProduct!!.id
+        }
+
+        viewModel.loadData(phone, productId)
     }
 }

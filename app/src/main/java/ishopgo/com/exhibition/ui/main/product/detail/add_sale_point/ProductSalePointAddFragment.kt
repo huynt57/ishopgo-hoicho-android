@@ -4,9 +4,12 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +23,7 @@ import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -34,6 +38,20 @@ class ProductSalePointAddFragment : BaseFragment() {
     private val adapterRegion = RegionAdapter()
     private val adapterDistrict = DistrictAdapter()
     private lateinit var data: ProductDetail
+    private var searchPhone = ""
+    private val handler = Handler()
+    private val searchRunnable = object : Runnable {
+        override fun run() {
+            handler.removeCallbacks(this)
+
+            reloadData = true
+            if (!searchPhone.isEmpty()) {
+                viewModel.getInfoMemberSalePoint(searchPhone)
+            } else {
+                showInfo(null)
+            }
+        }
+    }
 
     companion object {
         fun newInstance(params: Bundle): ProductSalePointAddFragment {
@@ -67,6 +85,19 @@ class ProductSalePointAddFragment : BaseFragment() {
 
         edit_shop_city.setOnClickListener { getRegion(edit_shop_city) }
         edit_shop_district.setOnClickListener { getDistrict(edit_shop_district) }
+
+        edit_shop_phone.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                searchPhone = s.toString()
+                edit_shop_phone.handler.removeCallbacks(searchRunnable)
+                edit_shop_phone.handler.postDelayed(searchRunnable, 500)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        })
 
         btn_sale_point_add.setOnClickListener {
             if (checkRequireFields(edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
@@ -184,6 +215,13 @@ class ProductSalePointAddFragment : BaseFragment() {
         }
     }
 
+    private fun showInfo(data: SearchSalePoint?) {
+        edit_shop_name.setText(data?.name ?: "")
+        edit_shop_city.setText(data?.city ?: "")
+        edit_shop_district.setText(data?.district ?: "")
+        edit_shop_address.setText(data?.address ?: "")
+    }
+
     override
     fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -213,6 +251,12 @@ class ProductSalePointAddFragment : BaseFragment() {
         viewModel.loadDistrict.observe(this, Observer { p ->
             p?.let {
                 adapterDistrict.replaceAll(it)
+            }
+        })
+
+        viewModel.getDataInforMember.observe(this, Observer { p ->
+            p?.let {
+                showInfo(it)
             }
         })
 
