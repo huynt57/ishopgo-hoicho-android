@@ -22,6 +22,7 @@ import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_sale_point_detail.*
 
 class SalePointDetailFragment : BaseFragment() {
@@ -67,17 +68,21 @@ class SalePointDetailFragment : BaseFragment() {
         }
 
         if (data.products != null) {
-            val product = data.products!!
-            product.data?.let { productsAdapter.replaceAll(it) }
-            rv_product_sale_point.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_product_sale_point.adapter = productsAdapter
-            productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-                override fun click(position: Int, data: ProductProvider, code: Int) {
-                    context?.let {
-                        if (data is IdentityData) {
-                            val intent = Intent(context, ProductDetailActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                            startActivity(intent)
+            context?.let {
+                val product = data.products!!
+                product.data?.let { productsAdapter.replaceAll(it) }
+                rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+                rv_product_sale_point.isNestedScrollingEnabled = false
+                rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+                rv_product_sale_point.adapter = productsAdapter
+                productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
+                    override fun click(position: Int, data: ProductProvider, code: Int) {
+                        context?.let {
+                            if (data is IdentityData) {
+                                val intent = Intent(context, ProductDetailActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                                startActivity(intent)
+                            }
                         }
                     }
                 }

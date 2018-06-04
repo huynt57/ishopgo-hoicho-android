@@ -180,7 +180,7 @@ class ProductSalePointAddFragment : BaseFragment() {
         edit_shop_name.setText(data.name ?:"")
         edit_shop_city.setText(data.city ?:"")
         edit_shop_district.setText(data.district ?:"")
-        edit_shop_district.setText(data.address ?:"")
+        edit_shop_address.setText(data.address ?:"")
     }
 
     override

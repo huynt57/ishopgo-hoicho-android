@@ -734,9 +734,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical"
             android:foreground="?attr/selectableItemBackground"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp">
 
             <ImageView
                 android:id="@+id/view_shop_follow"
@@ -757,25 +759,28 @@
         </LinearLayout>
 
 
-
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_call"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Gọi điện"
             android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Gọi điện"
             app:drawableTopCompat="@drawable/ic_phone_24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_message"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackground"
-            android:text="Nhắn tin"
             android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Nhắn tin"
             app:drawableTopCompat="@drawable/ic_comment" />
     </LinearLayout>
 
