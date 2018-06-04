@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
+    android:layout_height="match_parent">
 
-    <RelativeLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_above="@+id/linear_footer"
+        app:layout_constraintBottom_toTopOf="@+id/linear_footer"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/linear_footer"
             android:orientation="vertical">
 
             <TextView
@@ -170,27 +172,29 @@
                 android:padding="8dp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/linear_footer"
-            android:layout_width="match_parent"
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/linear_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:background="@color/colorPrimary"
-            android:gravity="center">
-
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="8dp"
-                android:gravity="center"
-                android:padding="8dp"
-                android:text="Gọi"
-                android:textColor="@color/md_white_1000"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_phone_white_24dp"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-
-    </RelativeLayout>
-</android.support.v4.widget.NestedScrollView>
+            android:drawablePadding="8dp"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Gọi"
+            android:textColor="@color/md_white_1000"
+            android:textSize="16sp"
+            app:drawableStartCompat="@drawable/ic_phone_white_24dp"
+            tools:ignore="HardcodedText" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

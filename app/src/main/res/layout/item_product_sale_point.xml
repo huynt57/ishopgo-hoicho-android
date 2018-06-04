@@ -8,16 +8,18 @@
     android:background="@drawable/bg_stroked_rounded_rectangle"
     android:padding="8dp">
 
-    <TextView
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_product_sale_point_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:drawablePadding="8dp"
         app:layout_constraintEnd_toStartOf="@+id/tv_product_sale_point_distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:drawableStartCompat="@drawable/ic_search_shop"
         tools:text="Tên cửa hàng" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
