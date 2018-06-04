@@ -4,9 +4,12 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +38,20 @@ class ProductSalePointAddFragment : BaseFragment() {
     private val adapterRegion = RegionAdapter()
     private val adapterDistrict = DistrictAdapter()
     private lateinit var data: ProductDetail
+    private var searchPhone = ""
+    private val handler = Handler()
+    private val searchRunnable = object : Runnable {
+        override fun run() {
+            handler.removeCallbacks(this)
+
+            reloadData = true
+            if (!searchPhone.isEmpty()) {
+                viewModel.getInfoMemberSalePoint(searchPhone)
+            } else {
+                showInfo(null)
+            }
+        }
+    }
 
     companion object {
         fun newInstance(params: Bundle): ProductSalePointAddFragment {
@@ -69,14 +86,27 @@ class ProductSalePointAddFragment : BaseFragment() {
         edit_shop_city.setOnClickListener { getRegion(edit_shop_city) }
         edit_shop_district.setOnClickListener { getDistrict(edit_shop_district) }
 
+        edit_shop_phone.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                searchPhone = s.toString()
+                edit_shop_phone.handler.removeCallbacks(searchRunnable)
+                edit_shop_phone.handler.postDelayed(searchRunnable, 500)
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+        })
+
         btn_sale_point_add.setOnClickListener {
-            if (checkRequireFields(edit_product_price.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
-                viewModel.createProductSalePoint(data.id, edit_product_price.text.toString(), edit_shop_name.text.toString(), edit_shop_city.text.toString(),
+            if (checkRequireFields(edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
+                viewModel.createProductSalePoint(data.id, edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.toString(), edit_shop_city.text.toString(),
                         edit_shop_district.text.toString(), edit_shop_address.text.toString())
         }
     }
 
-    private fun checkRequireFields(price: String, name: String, city: String, district: String): Boolean {
+    private fun checkRequireFields(price: String, phone: String, name: String, city: String, district: String): Boolean {
 
         if (price.trim().isEmpty()) {
             toast("Giá sản phẩm không được để trống")
@@ -84,6 +114,15 @@ class ProductSalePointAddFragment : BaseFragment() {
             edit_product_price.requestFocus()
             val inputMethodManager = edit_product_price.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethodManager.showSoftInput(edit_product_price, 0)
+            return false
+        }
+
+        if (phone.trim().isEmpty()) {
+            toast("Số điện thoại không được để trống")
+            edit_shop_phone.error = getString(R.string.error_field_required)
+            edit_shop_phone.requestFocus()
+            val inputMethodManager = edit_shop_phone.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(edit_shop_phone, 0)
             return false
         }
 
@@ -176,11 +215,11 @@ class ProductSalePointAddFragment : BaseFragment() {
         }
     }
 
-    private fun showInfo(data : SearchSalePoint){
-        edit_shop_name.setText(data.name ?:"")
-        edit_shop_city.setText(data.city ?:"")
-        edit_shop_district.setText(data.district ?:"")
-        edit_shop_address.setText(data.address ?:"")
+    private fun showInfo(data: SearchSalePoint?) {
+        edit_shop_name.setText(data?.name ?: "")
+        edit_shop_city.setText(data?.city ?: "")
+        edit_shop_district.setText(data?.district ?: "")
+        edit_shop_address.setText(data?.address ?: "")
     }
 
     override
@@ -222,6 +261,5 @@ class ProductSalePointAddFragment : BaseFragment() {
         })
 
         viewModel.loadRegion()
-        viewModel.getInfoMemberSalePoint()
     }
 }
