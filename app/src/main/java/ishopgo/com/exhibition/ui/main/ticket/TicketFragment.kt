@@ -42,7 +42,11 @@ class TicketFragment : BaseFragment() {
             p?.let {
                 Glide.with(context)
                         .load(it.provideBanner())
-                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
+                        .apply(RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
                         .into(view_image)
                 tv_fair.text = it.provideTicketName()
                 tv_user_name.text = it.provideName()

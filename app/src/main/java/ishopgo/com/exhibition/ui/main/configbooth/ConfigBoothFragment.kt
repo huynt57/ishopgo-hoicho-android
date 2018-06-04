@@ -94,7 +94,11 @@ class ConfigBoothFragment : BaseFragment() {
                 imageOld = it.provideBanner()
                 Glide.with(context)
                         .load(it.provideBanner())
-                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
+                        .apply(RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
                         .into(img_setting_booth)
             }
         })
@@ -117,7 +121,10 @@ class ConfigBoothFragment : BaseFragment() {
 
             Glide.with(context)
                     .load(Uri.parse(image))
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
+                    .apply(RequestOptions()
+                            .centerCrop()
+                            .placeholder(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder))
                     .into(img_setting_booth)
         }
     }

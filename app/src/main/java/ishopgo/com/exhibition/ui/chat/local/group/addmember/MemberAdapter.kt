@@ -68,7 +68,9 @@ class MemberAdapter : BaseRecyclerViewAdapter<IMemberView>() {
                         .load(data.memberAvatar())
                         .apply(RequestOptions
                                 .circleCropTransform()
-                                .placeholder(R.drawable.avatar_placeholder))
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder)
+                        )
                         .into(view_avatar)
                 view_name.text = data.memberName()
                 view_phone.text = data.memberPhone()

@@ -81,7 +81,10 @@ class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio:
 
             itemView.apply {
                 Glide.with(itemView.context).load(data.provideImage())
-                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                        .apply(RequestOptions
+                                .placeholderOf(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
                         .into(iv_thumb)
                 view_name.text = data.provideName()
                 view_code.text = data.provideCode()

@@ -8,7 +8,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.*
+import android.os.Build
+import android.os.Bundle
+import android.os.Environment
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
@@ -21,7 +24,6 @@ import android.util.Log
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import com.pusher.client.Pusher
-import com.pusher.client.channel.Channel
 import com.pusher.client.channel.PrivateChannelEventListener
 import com.pusher.client.connection.ConnectionEventListener
 import com.pusher.client.connection.ConnectionState
@@ -75,11 +77,8 @@ class ConversationFragment : BaseActionBarFragment() {
     private var mTyping = false
     private var isPusherConnected = false
     private lateinit var pusher: Pusher
+    private lateinit var connectionListener: ConnectionEventListener
     private lateinit var handler: Handler
-    private val handlerThread = HandlerThread("message queue", Process.THREAD_PRIORITY_BACKGROUND)
-    /** Keeps track of all channel we are listening to */
-    private var mChannelNames = mutableListOf<String>()
-    private var mSubscribedChannel = mutableListOf<Channel>()
     private lateinit var smoothScroller: RecyclerView.SmoothScroller
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewModel: ConversationViewModel
@@ -101,6 +100,20 @@ class ConversationFragment : BaseActionBarFragment() {
         return R.layout.content_local_chat_conversation
     }
 
+    private var mContext: Context? = null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        mContext = context
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+
+        mContext = null
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -111,7 +124,7 @@ class ConversationFragment : BaseActionBarFragment() {
         }
         toolbar.rightButton(R.drawable.ic_info_green_24dp)
         toolbar.setRightButtonClickListener {
-            context?.let {
+            mContext?.let {
                 if (::conversationInfo.isInitialized) {
                     val intent = Intent(it, ConversationInfoActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(conversationInfo))
@@ -212,7 +225,7 @@ class ConversationFragment : BaseActionBarFragment() {
     }
 
     private fun selectImagesFromInventory() {
-        context?.let {
+        mContext?.let {
             startActivityForResult(Intent(it, ImageInventoryActivity::class.java), Const.RequestCode.RC_PICK_IMAGES)
         }
     }
@@ -271,7 +284,7 @@ class ConversationFragment : BaseActionBarFragment() {
 
     private fun hasCameraPermission(): Boolean {
         if (Build.VERSION.SDK_INT >= 23) {
-            return context?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED }
+            return mContext?.let { ContextCompat.checkSelfPermission(it, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED }
                     ?: false
         }
 
@@ -284,13 +297,13 @@ class ConversationFragment : BaseActionBarFragment() {
         if (requestCode == Const.RequestCode.CAMERA_PERMISSION) {
             val hasCameraPermission = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             if (hasCameraPermission) {
-                context?.let { getImageFromCamera(it) }
+                mContext?.let { getImageFromCamera(it) }
             }
         }
     }
 
     private fun showPatternChooser() {
-        context?.let {
+        mContext?.let {
             val fragment = PatternChooserBottomSheet()
             fragment.patternChooserListener = object : PatternChooserBottomSheet.PatternChooserListener {
                 override fun addPattern() {
@@ -310,7 +323,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 }
 
                 private fun showAddPatternDialog() {
-                    context?.let {
+                    mContext?.let {
                         MaterialDialog.Builder(it)
                                 .title("Thêm mẫu tin nhắn")
                                 .input("Nội dung tin nhắn mẫu", null, false) { _, input ->
@@ -323,7 +336,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 }
 
                 private fun showEditPatternDialog(pattern: TextPattern) {
-                    context?.let {
+                    mContext?.let {
                         MaterialDialog.Builder(it)
                                 .title("Sửa tin nhắn mẫu")
                                 .input(pattern.content, null, false) { _, input ->
@@ -341,7 +354,7 @@ class ConversationFragment : BaseActionBarFragment() {
                 }
 
                 private fun showConfirmRemovePatternDialog(pattern: TextPattern) {
-                    context?.let {
+                    mContext?.let {
                         MaterialDialog.Builder(it)
                                 .title("Xoá tin nhắn mẫu ?")
                                 .content(pattern.content ?: "")
@@ -365,6 +378,8 @@ class ConversationFragment : BaseActionBarFragment() {
             m?.let {
                 // we have new message
                 if (m.idConversation == conversationId) {
+                    scrollListener.resetState()
+
                     adapter.addData(0, it)
 
                     scrollToBottom()
@@ -387,6 +402,7 @@ class ConversationFragment : BaseActionBarFragment() {
                     scrollToBottom()
 
                     view_recyclerview.post {
+                        view_recyclerview.clearOnScrollListeners()
                         view_recyclerview.addOnScrollListener(scrollListener)
                         reloadData = false
                     }
@@ -457,8 +473,7 @@ class ConversationFragment : BaseActionBarFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        handlerThread.start()
-        handler = Handler(handlerThread.looper)
+        handler = Handler()
 
         val arguments = arguments
         conversationTitle = arguments?.getString(Const.TransferKey.EXTRA_TITLE) ?: ""
@@ -472,7 +487,7 @@ class ConversationFragment : BaseActionBarFragment() {
         application?.pusher?.let {
             pusher = it
 
-            pusher.connect(object : ConnectionEventListener {
+            connectionListener = object : ConnectionEventListener {
                 @SuppressLint("SetTextI18n")
                 override fun onConnectionStateChange(connectionStateChange: ConnectionStateChange) {
                     val currentState = connectionStateChange.currentState
@@ -498,7 +513,7 @@ class ConversationFragment : BaseActionBarFragment() {
                             }
                         }
                         else -> {
-                            Log.d(TAG, "onConnectionStateChange: no connection")
+                            Log.d(TAG, "onConnectionStateChange: no connection $currentState")
                             isPusherConnected = false
                             activity?.runOnUiThread {
                                 if (activity?.isFinishing == false) {
@@ -512,10 +527,12 @@ class ConversationFragment : BaseActionBarFragment() {
 
                 }
 
-                override fun onError(s: String?, s1: String?, e: java.lang.Exception?) {
+                override fun onError(s: String?, s1: String?, e: Exception?) {
                     Log.d(TAG, "onError() called with: s = [$s], s1 = [$s1], e = [$e]")
                 }
-            }, ConnectionState.ALL)
+            }
+
+            pusher.connect(connectionListener, ConnectionState.ALL)
         }
 
     }
@@ -523,17 +540,11 @@ class ConversationFragment : BaseActionBarFragment() {
     private fun leave() {
         // disconnect pusher
         if (::pusher.isInitialized) {
+            pusher.connection.unbind(ConnectionState.ALL, connectionListener)
             pusher.disconnect()
-
-            // should destroy connection here
-            mSubscribedChannel.filter { it.isSubscribed }.map { channel -> channel.unbind("new-chat", { _, _, _ -> }) }
-            mSubscribedChannel.clear()
-
-            // unsubscribe from channels
-            mChannelNames.map { pusher.unsubscribe(it); Log.d(TAG, "unsubcribe channel: $it") }
         }
 
-        handlerThread.quit()
+
     }
 
 
@@ -579,9 +590,7 @@ class ConversationFragment : BaseActionBarFragment() {
 
     private fun internalSubscribePublic(channel: String) {
         val channelListener = PublicChannelListener()
-        val subscription = pusher.subscribe(channel, channelListener, "new-chat")
-        mSubscribedChannel.add(subscription)
-        mChannelNames.add(channel)
+        pusher.subscribe(channel, channelListener, "new-chat")
     }
 
     private fun subscribePrivate(channel: String) {
@@ -604,7 +613,7 @@ class ConversationFragment : BaseActionBarFragment() {
         val channelListener = object : PrivateChannelEventListener {
             override fun onEvent(channelName: String?, eventName: String?, data: String?) {
                 Log.d(TAG, "onEvent $data")
-                context?.let {
+                mContext?.let {
                     val intent = Intent(it, PusherMessageReceiver::class.java)
                     intent.putExtra(Const.Chat.EXTRA_MESSAGE, data)
                     intent.action = Const.Chat.PUSHER_MESSAGE
@@ -621,9 +630,7 @@ class ConversationFragment : BaseActionBarFragment() {
             }
 
         }
-        val subscription = pusher.subscribePrivate(channel, channelListener, "new-chat")
-        mSubscribedChannel.add(subscription)
-        mChannelNames.add(channel)
+        pusher.subscribePrivate(channel, channelListener, "new-chat")
     }
 
     private fun subscribePresence(channel: String) {
@@ -644,9 +651,7 @@ class ConversationFragment : BaseActionBarFragment() {
 
     private fun internalSubscribePresence(channel: String) {
         val channelListener = PresenceChannelListener()
-        val subscription = pusher.subscribePresence(channel, channelListener, "new-chat")
-        mSubscribedChannel.add(subscription)
-        mChannelNames.add(channel)
+        pusher.subscribePresence(channel, channelListener, "new-chat")
     }
 
 }

@@ -6,154 +6,211 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:paddingBottom="16dp"
         >
 
-        <TextView
-            style="@style/AppTheme.Label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/colorPrimary"
-            android:text="Thông tin cá nhân"
-            android:textColor="@color/md_white_1000"
-            android:textSize="16sp"
-            />
+        <ImageView
+            android:id="@+id/view_cover"
+            android:layout_width="0dp"
+            android:layout_height="170dp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@drawable/image_placeholder"/>
+
+        <View
+            android:id="@+id/textView6"
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/view_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
 
         <ImageView
-            android:id="@+id/view_member_avatar"
+            android:id="@+id/view_avatar"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_margin="16dp"
-            app:srcCompat="@drawable/avatar_placeholder"/>
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/md_grey_200"
+            app:layout_constraintBottom_toBottomOf="@+id/view_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_cover"
+            tools:srcCompat="@drawable/avatar_placeholder"/>
 
         <TextView
-            android:id="@+id/member_detail_name"
-            style="@style/AppTheme.ContentLine"
+            android:id="@+id/view_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
             android:paddingBottom="0dp"
-            tools:text="Họ tên: Hong"
-            />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_avatar"
+            tools:text="Xuan Hong Vuong"/>
 
         <TextView
-            android:id="@+id/member_detail_phone"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_phone"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:autoLink="phone"
-            android:paddingBottom="0dp"
-            tools:text="SĐT: 012312412312"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView25"
+            tools:text="Số điện thoại"/>
 
         <TextView
-            android:id="@+id/member_detail_email"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_dob"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Email: 01/02/2017"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_email"
+            tools:text="Ngày sinh"/>
 
         <TextView
-            android:id="@+id/member_detail_dob"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_email"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Ngày sinh nhật: 01/01/1985"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_phone"
+            tools:text="Email"/>
 
         <TextView
-            android:id="@+id/member_detail_ngay_thamgia"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_company"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Ngày tham gia: 01/02/2017"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_dob"
+            tools:text="cong ty"/>
 
         <TextView
-            android:id="@+id/member_detail_chucdanh"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_region"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Chức danh: Nhân viên"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_company"
+            tools:text="Khu vực"/>
 
         <TextView
-            android:id="@+id/member_detail_khuvuc"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_address"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Khu vực: Hà nội"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_region"
+            tools:text="dia chi"/>
 
         <TextView
-            android:id="@+id/member_detail_company"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_type"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Công ty: Hà nội"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view_address"
+            tools:text="Loai tai khoan"/>
 
         <TextView
-            android:id="@+id/member_detail_tax_code"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+            android:id="@+id/view_joined_date"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Mã số thuế: Hà nội"
-            />
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_type"
+            tools:text="ngay tham gia"/>
 
-        <TextView
-            android:id="@+id/member_detail_address"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Địa chỉ: Hà nội"
-            />
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Bạn bè"
+            android:textStyle="bold"
+            app:drawableTopCompat="@drawable/ic_network_24dp"
+            app:layout_constraintEnd_toStartOf="@+id/textView23"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView24"/>
 
-        <TextView
-            android:id="@+id/member_detail_name_phutrach"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="Người phụ trách: U23"
-            />
+            android:layout_marginTop="16dp"
+            android:drawablePadding="8dp"
+            android:fontFamily="@font/roboto_light"
+            android:text="Bài đăng"
+            android:textStyle="bold"
+            app:drawableTopCompat="@drawable/ic_newspaper_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView22"
+            app:layout_constraintTop_toBottomOf="@+id/textView24"/>
 
-        <TextView
-            android:id="@+id/member_detail_phone_phutrach"
-            style="@style/AppTheme.ContentLine"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="0dp"
-            tools:text="SĐT Người phụ trách: 091231231"
-            />
+        <View
+            android:id="@+id/textView24"
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_name"/>
 
-        <include
-            layout="@layout/layout_container_date_care"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"/>
+        <View
+            android:id="@+id/textView25"
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView22"/>
 
-        <include
-            layout="@layout/layout_container_note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"/>
-
-    </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </ScrollView>

@@ -16,7 +16,7 @@ class CommunityComment : IdentityData(), CommunityCommentProvider {
     }
 
     override fun providerAccountName(): String {
-        return accountName ?: ""
+        return if (accountName.isNullOrBlank()) "Người dùng ẩn danh" else accountName!!
     }
 
     override fun providerAccountId(): Long {

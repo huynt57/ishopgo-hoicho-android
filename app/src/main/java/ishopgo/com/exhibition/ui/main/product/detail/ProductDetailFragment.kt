@@ -253,8 +253,9 @@ class ProductDetailFragment : BaseFragment() {
             container_product_brand.setOnClickListener {
                 if (product is ProductDetail) {
                     val brandId = product.department?.id ?: -1L
+                    val brandName = product.department?.name ?: "Sản phẩm cùng thương hiệu"
                     if (brandId != -1L)
-                        showProductsOfBrand(brandId)
+                        showProductsOfBrand(brandId, brandName)
                 }
             }
 
@@ -447,9 +448,10 @@ class ProductDetailFragment : BaseFragment() {
         }
     }
 
-    private fun showProductsOfBrand(brandId: Long) {
+    private fun showProductsOfBrand(brandId: Long, brandName: String) {
         val intent = Intent(context, ProductsOfBrandActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
+        intent.putExtra(Const.TransferKey.EXTRA_TITLE, brandName)
         startActivity(intent)
     }
 

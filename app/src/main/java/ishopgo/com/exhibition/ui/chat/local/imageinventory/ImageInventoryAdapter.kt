@@ -55,7 +55,13 @@ class ImageInventoryAdapter : BaseRecyclerViewAdapter<ImageInventory>() {
 
             itemView.apply {
                 data.let {
-                    Glide.with(context).load(it.link).apply(RequestOptions().placeholder(R.drawable.image_placeholder).centerCrop()).into(view_image)
+                    Glide.with(context)
+                            .load(it.link)
+                            .apply(RequestOptions()
+                                    .placeholder(R.drawable.image_placeholder)
+                                    .error(R.drawable.image_placeholder)
+                                    .centerCrop()
+                            ).into(view_image)
                 }
             }
 

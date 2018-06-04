@@ -17,7 +17,7 @@ class Community : IdentityData(), CommunityProvider {
     }
 
     override fun providerUserName(): String {
-        return accountName ?: ""
+        return if (accountName.isNullOrBlank()) "Người dùng ẩn danh" else accountName!!
     }
 
     override fun providerUserAvatar(): String {

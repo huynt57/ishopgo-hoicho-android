@@ -180,7 +180,10 @@ class ProfileFragment : BaseFragment() {
 
             Glide.with(context)
                     .load(Uri.parse(image))
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder))
+                    .apply(RequestOptions
+                            .placeholderOf(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder)
+                    )
                     .into(view_avatar)
         }
     }
