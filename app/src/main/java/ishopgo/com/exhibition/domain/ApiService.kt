@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.post.PostCategory
 import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostsManager
+import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.question.QuestionCategory
@@ -121,6 +122,23 @@ class ApiService {
         @GET("booth/detail-sale-point")
         fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>>
 
+        @GET("general-info/get-posts")
+        fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostMenuManager>>
+
+        @GET("general-info/get-posts/{id}")
+        fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
+
+        @GET("general-info/get-categories")
+        fun getPostCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>>
+
+        @GET("question/get-posts")
+        fun getQuestion(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<QuestionManager>>
+
+        @GET("question/get-posts/{id}")
+        fun getQuestionDetail(@Path("id") question_id: Long): Single<BaseResponse<QuestionDetail>>
+
+        @GET("question/get-categories")
+        fun getQuestionCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>>
     }
 
     interface Auth {
@@ -258,12 +276,6 @@ class ApiService {
         @GET("detail-sale-point")
         fun getInfoMemberSalePoint(@Query("phone") phone: String
         ): Single<BaseResponse<SearchSalePoint>>
-
-        @GET("general-info/get-posts")
-        fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostsManager>>
-
-        @GET("general-info/get-posts/{id}")
-        fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
     }
 
     interface ISGApi {

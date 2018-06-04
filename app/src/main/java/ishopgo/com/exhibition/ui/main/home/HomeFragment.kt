@@ -198,12 +198,11 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun openPostManager(typeManager: Int) {
-        toast("Đang phát triển")
-//        context?.let {
-//            val intent = Intent(it, PostActivity::class.java)
-//            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
-//            startActivity(intent)
-//        }
+        context?.let {
+            val intent = Intent(it, PostActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, typeManager)
+            startActivity(intent)
+        }
     }
 
     private fun setupListeners() {
@@ -294,11 +293,10 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun openQuestionAnswer() {
-        toast("Đang phát triển")
-//        context?.let {
-//            val intent = Intent(it, QuestionActivity::class.java)
-//            startActivity(intent)
-//        }
+        context?.let {
+            val intent = Intent(it, QuestionActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun openHighlightProducts() {

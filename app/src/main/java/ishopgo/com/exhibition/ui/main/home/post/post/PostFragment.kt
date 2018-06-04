@@ -25,9 +25,9 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerAdapter
+import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.postmanager.PostManagerCategoryAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
-import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -56,7 +56,7 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<PostProvider>> {
-        return obtainViewModel(PostViewModel::class.java, false)
+        return obtainViewModel(PostMenuViewModel::class.java, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -104,7 +104,7 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
             firstLoad.type = GENERAL_MANAGER
 
-        (viewModel as PostViewModel).loadCategory(firstLoad)
+        (viewModel as PostMenuViewModel).loadCategory(firstLoad)
     }
 
     fun loadMoreCategory(currentCount: Int) {
@@ -117,7 +117,7 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
             loadMore.type = GENERAL_MANAGER
 
-        (viewModel as PostViewModel).loadCategory(loadMore)
+        (viewModel as PostMenuViewModel).loadCategory(loadMore)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,7 +129,7 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
                 @SuppressLint("SetTextI18n")
                 override fun click(position: Int, data: PostProvider, code: Int) {
                     if (data is PostObject) {
-                        val i = Intent(context, PostManagerDetailActivity::class.java)
+                        val i = Intent(context, PostMenuDetailActivity::class.java)
                         i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                         startActivity(i)
                     }
@@ -140,7 +140,7 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (viewModel as PostViewModel).dataReturned.observe(this, Observer { p ->
+        (viewModel as PostMenuViewModel).dataReturned.observe(this, Observer { p ->
             p.let {
                 hideProgressDialog()
                 if (reloadData) it?.let { it1 -> adapter.replaceAll(it1) }
@@ -149,15 +149,8 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
             }
         })
 
-        (viewModel as PostViewModel).createCategorySusscess.observe(this, Observer { p ->
-            p.let {
-                toast("Tạo thành công")
-                hideProgressDialog()
-                firstLoadCategory()
-            }
-        })
 
-        (viewModel as PostViewModel).getCategorySusscess.observe(this, Observer { p ->
+        (viewModel as PostMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
                 if (reloadCategory) it?.let { it1 ->
                     adapterCategory.replaceAll(it1)

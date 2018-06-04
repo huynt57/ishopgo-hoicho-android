@@ -24,6 +24,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.generalmanager.news.QuestionManagerAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionManagerDetailActivity
+import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.questmanager.*
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -35,7 +36,6 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
     private var key_search = ""
     private var categoryId: Long = 0
     private var categoryName = ""
-    private lateinit var viewModelSearch: QuestionSearchViewModel
 
     override fun populateData(data: List<QuestProvider>) {
         if (reloadData) {
@@ -53,7 +53,7 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<QuestProvider>> {
-        return obtainViewModel(QuestionViewModel::class.java, false)
+        return obtainViewModel(QuestionMenuViewModel::class.java, false)
     }
 
     override fun firstLoad() {
@@ -85,7 +85,7 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
         val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
-        (viewModel as QuestionViewModel).loadCategory(firstLoad)
+        (viewModel as QuestionMenuViewModel).loadCategory(firstLoad)
     }
 
     fun loadMoreCategory(currentCount: Int) {
@@ -94,7 +94,7 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
 
-        (viewModel as QuestionViewModel).loadCategory(loadMore)
+        (viewModel as QuestionMenuViewModel).loadCategory(loadMore)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -106,7 +106,7 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
                 @SuppressLint("SetTextI18n")
                 override fun click(position: Int, data: QuestProvider, code: Int) {
                     if (data is QuestionObject) {
-                        val i = Intent(context, QuestionManagerDetailActivity::class.java)
+                        val i = Intent(context, QuestionMenuDetailActivity::class.java)
                         i.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                         startActivity(i)
                     }
@@ -117,12 +117,8 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModelSearch = obtainViewModel(QuestionSearchViewModel::class.java, true)
-        viewModelSearch.errorSignal.observe(this, Observer {
-            it?.let { resolveError(it) }
-        })
 
-        (viewModel as QuestionViewModel).dataReturned.observe(this, Observer { p ->
+        (viewModel as QuestionMenuViewModel).dataReturned.observe(this, Observer { p ->
             p.let {
                 hideProgressDialog()
                 if (reloadData) it?.let { it1 -> adapter.replaceAll(it1) }
@@ -131,8 +127,7 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
             }
         })
 
-
-        (viewModel as QuestionViewModel).getCategorySusscess.observe(this, Observer { p ->
+        (viewModel as QuestionMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
                 if (reloadCategory) it?.let { it1 ->
                     adapterCategory.replaceAll(it1)
@@ -143,11 +138,6 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
                 }
                 else it?.let { it1 -> adapterCategory.addAll(it1) }
             }
-        })
-
-        viewModelSearch.searchKey.observe(this, Observer {
-            if (it == TAG)
-                performSearching()
         })
 
         reloadCategory = true

@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.home.post.question
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -45,15 +46,16 @@ class QuestionFragmentActionBar : BaseActionBarFragment() {
             }
         }
 
-
-        toolbar.rightButton2(R.drawable.ic_add_green_24dp)
-        toolbar.setRight2ButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(QuestionFragment.TAG)
-            if (fragment != null) {
-                toast("Đang phát triển")
-//                val shareFragment = fragment as QuestionFragment
-//                shareFragment.openAddProductManager()
-            }
-        }
+//        if (UserDataManager.currentUserId > 0) {
+//            toolbar.rightButton2(R.drawable.ic_add_green_24dp)
+//            toolbar.setRight2ButtonClickListener {
+//                val fragment = childFragmentManager.findFragmentByTag(QuestionFragment.TAG)
+//                if (fragment != null) {
+//                    toast("Đang phát triển")
+//                    val shareFragment = fragment as QuestionFragment
+//                    shareFragment.performSearching()
+//                }
+//            }
+//        }
     }
 }

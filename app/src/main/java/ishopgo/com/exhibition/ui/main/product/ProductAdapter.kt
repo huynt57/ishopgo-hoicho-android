@@ -56,7 +56,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
 
                 tv_price.text = data.providePrice()
                 val hideMarketPrice = data.provideMarketPrice().equals(data.providePrice(), true)
-                tv_tt_price.visibility = if (hideMarketPrice) View.INVISIBLE else View.VISIBLE
+                tv_tt_price.visibility = if (data.provideMarketPrice() == "0 đ" || hideMarketPrice) View.INVISIBLE else View.VISIBLE
                 tv_tt_price.paintFlags = tv_tt_price.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                 tv_tt_price.text = data.provideMarketPrice()
             }
