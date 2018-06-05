@@ -25,6 +25,7 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
 
     private lateinit var mainViewModel: MainViewModel
 
+
     override fun populateData(data: List<InboxProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
@@ -79,11 +80,6 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
                 if (data is LocalConversationItem) {
                     mainViewModel.openCurrentConversation(data)
                 }
-
-//                val notifyIntent = Intent(context, ConversationActivity::class.java)
-//                notifyIntent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-//                notifyIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//                startActivity(notifyIntent)
             }
 
         }
