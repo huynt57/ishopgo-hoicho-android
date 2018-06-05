@@ -142,6 +142,7 @@ class ProfileFragment : BaseFragment() {
                 }
                 tv_update_profile.setOnClickListener {
                     startEditing()
+                    isEditMode = true
                     dialog.dismiss()
                 }
 
@@ -209,8 +210,9 @@ class ProfileFragment : BaseFragment() {
         view_address.isFocusableInTouchMode = true
 
         view_name.requestFocus()
-        val inputMethodManager = view_phone.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.showSoftInput(view_name, 0)
+        val inputMethodManager = view_name.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+//        inputMethodManager.showSoftInput(view_name, 0)
 
         view_scrollview.smoothScrollTo(0, 0)
 
