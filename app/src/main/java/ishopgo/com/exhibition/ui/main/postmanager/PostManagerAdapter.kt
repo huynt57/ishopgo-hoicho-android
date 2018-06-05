@@ -22,7 +22,9 @@ class PostManagerAdapter : ClickableAdapter<PostProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<PostProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) } }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.tv_news_title.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+        }
     }
 
     inner class Holder(v: View) : BaseRecyclerViewAdapter.ViewHolder<PostProvider>(v) {
