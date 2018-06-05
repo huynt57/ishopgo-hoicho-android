@@ -21,7 +21,7 @@ import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
-import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerActivity
+import ishopgo.com.exhibition.ui.main.postmanager.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
 import ishopgo.com.exhibition.ui.main.myqr.MyQrActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity

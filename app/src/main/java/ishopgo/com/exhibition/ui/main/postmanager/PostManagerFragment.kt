@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.generalmanager.news
+package ishopgo.com.exhibition.ui.main.postmanager
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -24,9 +24,6 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.postmanager.PostManagerCategoryAdapter
-import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
-import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration

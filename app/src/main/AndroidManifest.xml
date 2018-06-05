@@ -206,7 +206,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.main.generalmanager.news.PostManagerActivity"
+            android:name=".ui.main.postmanager.PostManagerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
@@ -342,6 +342,16 @@
 
         <activity
             android:name=".ui.main.home.post.post.PostActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.home.post.post.detail.PostMenuDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".ui.main.postmanager.detail.QuestionMenuDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 

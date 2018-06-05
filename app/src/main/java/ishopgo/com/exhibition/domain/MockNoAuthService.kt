@@ -8,11 +8,17 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
+import ishopgo.com.exhibition.model.post.PostCategory
+import ishopgo.com.exhibition.model.post.PostContent
+import ishopgo.com.exhibition.model.post.PostsManager
+import ishopgo.com.exhibition.model.postmenu.PostMenuManager
+import ishopgo.com.exhibition.model.question.QuestionCategory
+import ishopgo.com.exhibition.model.question.QuestionDetail
+import ishopgo.com.exhibition.model.question.QuestionManager
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
-import retrofit2.http.Query
 import retrofit2.http.QueryMap
 import retrofit2.mock.BehaviorDelegate
 import java.util.*
@@ -21,6 +27,47 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getQuestion(fields: MutableMap<String, Any>): Single<BaseResponse<QuestionManager>> {
+        val response = BaseResponse<QuestionManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getQuestion(fields)
+    }
+
+    override fun getQuestionDetail(question_id: Long): Single<BaseResponse<QuestionDetail>> {
+        val response = BaseResponse<QuestionDetail>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getQuestionDetail(question_id)
+    }
+
+    override fun getQuestionCategory(fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>> {
+        val response = BaseResponse<QuestionCategory>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getQuestionCategory(fields)    }
+
+    override fun getPostCategory(fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>> {
+        val response = BaseResponse<PostCategory>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getPostCategory(fields)
+    }
+
+    override fun getPostDetail(post_id: Long): Single<BaseResponse<PostContent>> {
+        val response = BaseResponse<PostContent>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getPostDetail(post_id)
+    }
+
+    override fun getPost(fields: MutableMap<String, Any>): Single<BaseResponse<PostMenuManager>> {
+        val response = BaseResponse<PostsManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getPost(fields)
+    }
+
     override fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>> {
         val response = BaseResponse<ManagerSearchSalePoint>()
         response.status = 1

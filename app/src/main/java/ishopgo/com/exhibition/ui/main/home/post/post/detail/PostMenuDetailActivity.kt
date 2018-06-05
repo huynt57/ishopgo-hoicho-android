@@ -1,12 +1,12 @@
-package ishopgo.com.exhibition.ui.main.postmanager
+package ishopgo.com.exhibition.ui.main.home.post.post.detail
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 
-class PostManagerActivity : BaseSingleFragmentActivity() {
+class PostMenuDetailActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
-        return PostManagerFragmentActionBar.newInstance(startupOption)
+        return PostMenuDetailFragmentActionBar.newInstance(startupOption)
     }
 
     override fun startupOptions(): Bundle {

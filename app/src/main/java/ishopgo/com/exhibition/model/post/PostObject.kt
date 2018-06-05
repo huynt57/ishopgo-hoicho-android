@@ -1,9 +1,11 @@
 package ishopgo.com.exhibition.model.post
 
+import android.text.Spanned
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
 
 
@@ -12,8 +14,9 @@ class PostObject : IdentityData(), PostProvider {
         return name ?: ""
     }
 
-    override fun provideTime(): String {
-        return "${createdAt?.asDateTime() ?: ""} | Đăng bởi $accountName | $statusText"
+    override fun provideTime(): Spanned {
+        return "${createdAt?.asDateTime() ?: ""} | Đăng bởi <b>${accountName
+                ?: ""}</b> | ${statusText ?: ""}".asHtml()
     }
 
     override fun provideCategoryName(): String {

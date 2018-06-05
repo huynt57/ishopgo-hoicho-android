@@ -59,20 +59,9 @@
                 android:id="@+id/linearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:weightSum="4"
+                android:weightSum="3"
                 app:layout_constraintBottom_toBottomOf="@id/view2"
                 app:layout_constraintTop_toBottomOf="@+id/view">
-
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/tv_profile_write"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Viết Bài"
-                    app:drawableTopCompat="@drawable/ic_write" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_group"

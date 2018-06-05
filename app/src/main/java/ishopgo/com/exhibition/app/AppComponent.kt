@@ -24,6 +24,8 @@ import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerViewModel
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothViewModel
 import ishopgo.com.exhibition.ui.main.home.HomeViewModel
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
+import ishopgo.com.exhibition.ui.main.home.post.post.PostMenuViewModel
+import ishopgo.com.exhibition.ui.main.home.post.question.QuestionMenuViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
@@ -131,4 +133,6 @@ interface AppComponent {
     fun inject(ticketViewModel: TicketViewModel)
     fun inject(searchSalePointViewModel: SearchSalePointViewModel)
     fun inject(salePointDetailViewModel: SalePointDetailViewModel)
+    fun inject(postMenuViewModel: PostMenuViewModel)
+    fun inject(questionMenuViewModel: QuestionMenuViewModel)
 }

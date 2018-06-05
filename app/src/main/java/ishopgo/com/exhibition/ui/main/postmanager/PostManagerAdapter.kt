@@ -1,12 +1,9 @@
-package ishopgo.com.exhibition.ui.main.generalmanager.news
+package ishopgo.com.exhibition.ui.main.postmanager
 
 import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
 import kotlinx.android.synthetic.main.item_new_manager.view.*
 
 class PostManagerAdapter : ClickableAdapter<PostProvider>() {
@@ -22,7 +19,8 @@ class PostManagerAdapter : ClickableAdapter<PostProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<PostProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) } }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+        }
     }
 
     inner class Holder(v: View) : BaseRecyclerViewAdapter.ViewHolder<PostProvider>(v) {
