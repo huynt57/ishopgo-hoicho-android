@@ -24,11 +24,10 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.generalmanager.news.PostManagerAdapter
+import ishopgo.com.exhibition.ui.main.postmanager.PostManagerAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.postmanager.PostManagerCategoryAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
-import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*

@@ -71,7 +71,7 @@
                     android:foreground="?attr/selectableItemBackground"
                     android:gravity="center"
                     android:padding="8dp"
-                    android:text="Cộng đồng"
+                    android:text="Bạn bè"
                     app:drawableTopCompat="@drawable/ic_group" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

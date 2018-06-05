@@ -22,7 +22,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.generalmanager.news.QuestionManagerAdapter
+import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.questmanager.*
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener

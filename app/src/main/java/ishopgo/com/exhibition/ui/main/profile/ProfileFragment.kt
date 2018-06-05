@@ -103,11 +103,11 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun chooseProfileOption() {
-        tv_profile_group.setOnClickListener {
+        tv_profile_newsfeed.setOnClickListener {
             val intent = Intent(context, CommunityShareActivity::class.java)
             startActivity(intent)
         }
-        tv_profile_newsfeed.setOnClickListener { toast("Đang phát triển") }
+        tv_profile_group.setOnClickListener { toast("Đang phát triển") }
         tv_profile_setting.setOnClickListener { showDialogSetting() }
     }
 
@@ -238,11 +238,11 @@ class ProfileFragment : BaseFragment() {
         view_submit.text = "Cập nhật"
     }
 
-    private fun launchPickPhotoIntent(PICK_IMAGE_STATUS: Boolean) {
+    private fun launchPickPhotoIntent(pickImageStatus: Boolean) {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        if (PICK_IMAGE_STATUS)
+        if (pickImageStatus)
             startActivityForResult(intent, Const.RequestCode.UPDATE_PROFILE_AVATAR)
         else
             startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)

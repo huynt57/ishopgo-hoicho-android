@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.generalmanager.news
+package ishopgo.com.exhibition.ui.main.postmanager
 
 import android.os.Bundle
 import android.view.View
