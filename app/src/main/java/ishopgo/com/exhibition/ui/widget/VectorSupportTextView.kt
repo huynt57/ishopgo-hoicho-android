@@ -26,9 +26,13 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
                     R.styleable.VectorSupportTextView)
 
             var dStart: Drawable? = null
+            val drawableStartSquareSize: Int
             var dEnd: Drawable? = null
+            val drawableEndSquareSize: Int
             var dBottom: Drawable? = null
+            val drawableBottomSquareSize: Int
             var dTop: Drawable? = null
+            val drawableTopSquareSize: Int
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 dStart = attributeArray.getDrawable(R.styleable.VectorSupportTextView_drawableStartCompat)
                 dEnd = attributeArray.getDrawable(R.styleable.VectorSupportTextView_drawableEndCompat)
@@ -40,18 +44,47 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
                 val drawableBottomId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableBottomCompat, 0)
                 val drawableTopId = attributeArray.getResourceId(R.styleable.VectorSupportTextView_drawableTopCompat, 0)
 
-                if (drawableStartId != 0)
+                if (drawableStartId != 0) {
                     dStart = AppCompatResources.getDrawable(context, drawableStartId)
-                if (drawableEndId != 0)
+                }
+                if (drawableEndId != 0) {
                     dEnd = AppCompatResources.getDrawable(context, drawableEndId)
-                if (drawableBottomId != 0)
+                }
+                if (drawableBottomId != 0) {
                     dBottom = AppCompatResources.getDrawable(context, drawableBottomId)
-                if (drawableTopId != 0)
+                }
+                if (drawableTopId != 0) {
                     dTop = AppCompatResources.getDrawable(context, drawableTopId)
+                }
             }
 
-            // to support rtl
-            setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
+            drawableStartSquareSize = attributeArray.getDimensionPixelSize(R.styleable.VectorSupportTextView_drawableStartSquareSize, -1)
+            drawableEndSquareSize = attributeArray.getDimensionPixelSize(R.styleable.VectorSupportTextView_drawableEndSquareSize, -1)
+            drawableBottomSquareSize = attributeArray.getDimensionPixelSize(R.styleable.VectorSupportTextView_drawableBottomSquareSize, -1)
+            drawableTopSquareSize = attributeArray.getDimensionPixelSize(R.styleable.VectorSupportTextView_drawableTopSquareSize, -1)
+
+            if (drawableStartSquareSize != -1) {
+                dStart?.setBounds(0, 0, drawableStartSquareSize, drawableStartSquareSize)
+            }
+            if (drawableEndSquareSize != -1) {
+                dStart?.setBounds(0, 0, drawableEndSquareSize, drawableEndSquareSize)
+            }
+            if (drawableBottomSquareSize != -1) {
+                dStart?.setBounds(0, 0, drawableBottomSquareSize, drawableBottomSquareSize)
+            }
+            if (drawableTopSquareSize != -1) {
+                dStart?.setBounds(0, 0, drawableTopSquareSize, drawableTopSquareSize)
+            }
+
+            val hasCustomSize = drawableStartSquareSize != -1
+                    || drawableEndSquareSize != -1
+                    || drawableBottomSquareSize != -1
+                    || drawableTopSquareSize != -1
+
+            if (hasCustomSize)
+                setCompoundDrawablesRelative(dStart, dTop, dEnd, dBottom)
+            else
+                setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
             attributeArray.recycle()
         }
     }

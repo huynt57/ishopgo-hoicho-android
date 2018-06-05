@@ -29,8 +29,6 @@ import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
-import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
-import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -438,7 +436,7 @@ class HomeFragment : BaseFragment() {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_categories.layoutManager = layoutManager
         rv_categories.isNestedScrollingEnabled = false
-        rv_categories.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+//        rv_categories.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
         rv_categories.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 }

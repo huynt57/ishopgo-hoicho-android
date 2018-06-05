@@ -150,34 +150,34 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     "Quản lý thông báo"
             ))
 
-            val childs = ArrayList<AccountMenuItem>()
-            childs.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NEWS_MANAGER,
-                    R.drawable.ic_news_pager,
-                    "Quản lý tin tức",
-                    isParent = false
-            ))
+//            val childs = ArrayList<AccountMenuItem>()
+//            childs.add(AccountMenuItem(
+//                    Const.AccountAction.ACTION_NEWS_MANAGER,
+//                    R.drawable.ic_news_pager,
+//                    "Quản lý tin tức",
+//                    isParent = false
+//            ))
+//
+//            childs.add(AccountMenuItem(
+//                    Const.AccountAction.ACTION_GENEREL_MANAGER,
+//                    R.drawable.ic_affiliate_order_white,
+//                    "Quản lý thông tin chung",
+//                    isParent = false
+//            ))
+//
+//            childs.add(AccountMenuItem(
+//                    Const.AccountAction.ACTION_QUESTION_MANAGER,
+//                    R.drawable.ic_question,
+//                    "Quản lý hỏi đáp",
+//                    isParent = false
+//            ))
 
-            childs.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_GENEREL_MANAGER,
-                    R.drawable.ic_affiliate_order_white,
-                    "Quản lý thông tin chung",
-                    isParent = false
-            ))
-
-            childs.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_QUESTION_MANAGER,
-                    R.drawable.ic_question,
-                    "Quản lý hỏi đáp",
-                    isParent = false
-            ))
-
-            items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_SYNTHETIC_MANAGER,
-                    R.drawable.ic_general,
-                    "Quản lý tổng hợp",
-                    childs
-            ))
+//            items.add(AccountMenuItem(
+//                    Const.AccountAction.ACTION_SYNTHETIC_MANAGER,
+//                    R.drawable.ic_general,
+//                    "Quản lý tổng hợp",
+//                    childs
+//            ))
 
 
             items.add(AccountMenuItem(

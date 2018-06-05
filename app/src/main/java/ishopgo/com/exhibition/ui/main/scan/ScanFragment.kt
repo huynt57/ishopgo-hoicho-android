@@ -53,6 +53,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         intent.putExtra(Intents.Scan.CAMERA_ID, Camera.CameraInfo.CAMERA_FACING_BACK)
         intent.putExtra(Intents.Scan.PROMPT_MESSAGE, "")
         zxing_barcode_scanner.initializeFromIntent(intent)
+
+        Log.d(TAG, "userHint: ${userVisibleHint} ${isVisible} ${isResumed} ${isHidden} ")
     }
 
     override fun onPause() {
@@ -166,12 +168,17 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     private fun processData(qrCode: String?) {
         Log.d(TAG, "processData: qrCode = [${qrCode}]")
-        val uri = Uri.parse(qrCode)
-        val boothId = uri.getQueryParameter("booth")
-        if (boothId != null && boothId.isNotBlank()) {
-            openShopDetail(boothId.toLong())
-        } else
-            toast("Không hợp lệ")
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(qrCode))
+        if (context != null && intent.resolveActivity(context!!.packageManager) != null)
+            startActivity(intent)
+
+        zxing_barcode_scanner.decodeSingle(this)
+//        val uri = Uri.parse(qrCode)
+//        val boothId = uri.getQueryParameter("booth")
+//        if (boothId != null && boothId.isNotBlank()) {
+//            openShopDetail(boothId.toLong())
+//        } else
+//            toast("Không hợp lệ")
     }
 
     private fun openShopDetail(shopId: Long) {

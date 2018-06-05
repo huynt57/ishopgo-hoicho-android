@@ -6,6 +6,10 @@
         <attr name="drawableEndCompat" format="reference"/>
         <attr name="drawableTopCompat" format="reference"/>
         <attr name="drawableBottomCompat" format="reference"/>
+        <attr name="drawableStartSquareSize" format="dimension"/>
+        <attr name="drawableEndSquareSize" format="dimension"/>
+        <attr name="drawableTopSquareSize" format="dimension"/>
+        <attr name="drawableBottomSquareSize" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="SimpleBottomSheetItem">

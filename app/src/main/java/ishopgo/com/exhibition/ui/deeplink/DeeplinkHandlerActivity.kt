@@ -31,6 +31,7 @@ class DeeplinkHandlerActivity : BaseActivity() {
                             val intent = Intent(this, ShopDetailActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_ID, boothId.toLong())
                             startActivity(intent)
+                            finish()
                         } else
                             Log.d(TAG, "Không hợp lệ")
 

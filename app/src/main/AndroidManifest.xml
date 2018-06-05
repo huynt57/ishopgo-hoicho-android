@@ -345,15 +345,15 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
-        <!--<activity android:name=".ui.deeplink.DeeplinkHandlerActivity">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.VIEW"/>-->
-                <!--<category android:name="android.intent.category.DEFAULT"/>-->
-                <!--<category android:name="android.intent.category.BROWSABLE"/>-->
-                <!--<data android:host="hoicho.ishopgo.com" android:scheme="http"/>-->
-                <!--<data android:host="hoicho.ishopgo.com" android:scheme="https"/>-->
-            <!--</intent-filter>-->
-        <!--</activity>-->
+        <activity android:name=".ui.deeplink.DeeplinkHandlerActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="hoicho.ishopgo.com" android:scheme="http"/>
+                <data android:host="hoicho.ishopgo.com" android:scheme="https"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
