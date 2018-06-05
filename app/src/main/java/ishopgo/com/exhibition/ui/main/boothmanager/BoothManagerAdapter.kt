@@ -19,7 +19,7 @@ class BoothManagerAdapter : ClickableAdapter<BoothManagerProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<BoothManagerProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.img_booth_manager_delete.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
         }
     }
 

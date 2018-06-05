@@ -103,21 +103,4 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), A
                     }
                 }))
     }
-
-    var deleteSusscess = MutableLiveData<Boolean>()
-
-    fun deleteBooth(booth_Id: Long) {
-
-        addDisposable(authService.deleteBooth(booth_Id)
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<Any>() {
-                    override fun success(data: Any?) {
-                        deleteSusscess.postValue(true)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                }))
-    }
 }
