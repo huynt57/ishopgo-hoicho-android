@@ -9,8 +9,8 @@ import android.content.SharedPreferences
 object UserDataManager {
     private const val PREF_NAME = "user_data_manager"
 
-    private const val KEY_ACCESS_TOKEN = "access_token"
     private const val KEY_APP_ID = "app_id"
+    private const val KEY_ACCESS_TOKEN = "access_token"
     private const val KEY_USER_ID = "user_id"
     private const val KEY_PASS_LOGIN_SCREEN = "pass_login_screen"
     private const val KEY_SKIP_UPDATE = "skip_update"
@@ -70,10 +70,12 @@ object UserDataManager {
     fun deleteUserInfo() {
         val edit = pref.edit()
         edit.remove(KEY_ACCESS_TOKEN)
-        edit.remove(KEY_USER_AVATAR)
         edit.remove(KEY_USER_ID)
-        edit.remove(KEY_USER_NAME)
+        edit.remove(KEY_PASS_LOGIN_SCREEN)
+        edit.remove(KEY_SKIP_UPDATE)
+        edit.remove(KEY_USER_AVATAR)
         edit.remove(KEY_USER_PHONE)
+        edit.remove(KEY_USER_NAME)
         edit.remove(KEY_USER_TYPE)
         edit.remove(KEY_USER_SURVEY)
         edit.apply()
