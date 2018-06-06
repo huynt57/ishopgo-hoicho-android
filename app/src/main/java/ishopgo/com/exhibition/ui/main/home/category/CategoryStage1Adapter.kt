@@ -1,6 +1,8 @@
 package ishopgo.com.exhibition.ui.main.home.category
 
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -47,12 +49,12 @@ class CategoryStage1Adapter(private var itemWidthRatio: Float = -1f) : Clickable
             super.populate(data)
 
             itemView.apply {
-                //                Glide.with(context)
-//                        .load(data.provideIcon())
-//                        .apply(RequestOptions()
-//                                .placeholder(R.drawable.ic_finger)
-//                                .error(R.drawable.ic_finger))
-//                        .into(view_child_icon)
+                Glide.with(context)
+                        .load(data.provideIcon())
+                        .apply(RequestOptions()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder))
+                        .into(view_image)
 
                 view_text.text = data.provideName()
             }

@@ -11,6 +11,7 @@ import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -32,8 +33,10 @@ class ShopDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: ShopDetailViewModel
     private lateinit var adapter: PagerAdapter
+    private var boothId = -1L
 
     companion object {
+        val TAG = "ShopDetailFragment"
         fun newInstance(params: Bundle): ShopDetailFragment {
             val fragment = ShopDetailFragment()
             fragment.arguments = params
@@ -81,6 +84,7 @@ class ShopDetailFragment : BaseFragment() {
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
                 resolveError(it)
+                hideProgressDialog()
             }
         })
         viewModel.shopImage.observe(this, Observer { i ->
@@ -96,7 +100,7 @@ class ShopDetailFragment : BaseFragment() {
 
         viewModel.shopId.observe(this, Observer { i ->
             i?.let {
-                val boothId = it
+                boothId = it
                 if (UserDataManager.currentUserId == boothId) {
                     tv_edit_image.visibility = View.VISIBLE
                     view_favorite.visibility = View.GONE
@@ -155,6 +159,30 @@ class ShopDetailFragment : BaseFragment() {
                 }
             }
         })
+
+        viewModel.deleteSusscess.observe(this, Observer {
+            toast("Xoá thành công")
+            activity?.setResult(Activity.RESULT_OK)
+            hideProgressDialog()
+            activity?.finish()
+        })
+
+
+    }
+
+    fun deleleBooth() {
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .content("Bạn có muốn xoá gian hàng này không?")
+                    .positiveText("Có")
+                    .onPositive { _, _ ->
+                        viewModel.deleteBooth(boothId)
+                        showProgressDialog()
+                    }
+                    .negativeText("Không")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
+        }
     }
 
     private fun openLoginActivity() {
@@ -172,9 +200,6 @@ class ShopDetailFragment : BaseFragment() {
                 1 -> {
                     ProductsFragment.newInstance(arguments ?: Bundle())
                 }
-//                2 -> {
-//                    CategoryFragment.newInstance(arguments ?: Bundle())
-//                }
                 2 -> {
                     RateFragment.newInstance(arguments ?: Bundle())
                 }

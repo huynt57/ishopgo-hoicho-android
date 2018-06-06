@@ -13,7 +13,7 @@ class Category : IdentityData(), CategoryProvider {
     }
 
     override fun provideIcon(): String {
-        return ""
+        return image ?: ""
     }
 
     override fun provideName(): String {
@@ -50,4 +50,6 @@ class Category : IdentityData(), CategoryProvider {
     var count: Int? = 0
     @SerializedName("subCate")
     var subs: List<Category>? = null
+    @SerializedName("image")
+    var image: String? = null
 }

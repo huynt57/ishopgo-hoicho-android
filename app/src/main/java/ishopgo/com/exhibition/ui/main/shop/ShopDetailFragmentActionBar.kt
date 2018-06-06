@@ -6,6 +6,7 @@ import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -40,7 +41,8 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ShopDetailFragment.newInstance(arguments ?: Bundle()))
+                .replace(R.id.view_main_content, ShopDetailFragment.newInstance(arguments
+                        ?: Bundle()), "ShopDetailFragment")
                 .commit()
     }
 
@@ -69,6 +71,17 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
+        }
+
+        if (UserDataManager.currentType == "Chủ hội chợ") {
+            toolbar.rightButton(R.drawable.ic_delete_green_24dp)
+            toolbar.setRightButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as ShopDetailFragment
+                    shareFragment.deleleBooth()
+                }
+            }
         }
     }
 

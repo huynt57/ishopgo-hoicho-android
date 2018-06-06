@@ -1,7 +1,7 @@
 package ishopgo.com.exhibition.ui.main.boothmanager
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.boothmanager.add_booth.BoothManagerAddActivity
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
@@ -65,7 +66,10 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
                 @SuppressLint("SetTextI18n")
                 override fun click(position: Int, data: BoothManagerProvider, code: Int) {
                     if (data is BoothManager) {
-                        if (viewModel is BoothManagerViewModel) (viewModel as BoothManagerViewModel).deleteBooth(data.id)
+                        val boothId = data.id
+                        val intent = Intent(context, ShopDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
+                        startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_DELETE)
                     }
                 }
 
@@ -100,14 +104,10 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        if (viewModel is BoothManagerViewModel) {
-            (viewModel as BoothManagerViewModel).deleteSusscess.observe(this, Observer {
-                toast("Xoá thành công")
-                firstLoad()
-            })
-        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if ((requestCode == Const.RequestCode.BOOTH_MANAGER_ADD || requestCode == Const.RequestCode.BOOTH_MANAGER_DELETE) && resultCode == RESULT_OK)
+            firstLoad()
     }
 
     companion object {

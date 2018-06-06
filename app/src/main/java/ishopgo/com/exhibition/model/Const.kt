@@ -43,6 +43,7 @@ object Const {
         const val RC_ADD_NEW = 21
         const val PRODUCT_SALE_POINT_DETAIL = 22
         const val UPDATE_PROFILE_AVATAR = 23
+        const val BOOTH_MANAGER_DELETE = 24
     }
 
     object AccountAction {
