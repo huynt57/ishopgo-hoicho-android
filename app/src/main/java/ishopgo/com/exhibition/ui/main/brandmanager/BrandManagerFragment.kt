@@ -19,10 +19,17 @@ import ishopgo.com.exhibition.ui.main.brandmanager.add.BrandManagerAddActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.update.BrandManagerUpdateActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 class BrandManagerFragment : BaseListFragment<List<BrandManagerProvider>, BrandManagerProvider>() {
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<BrandManagerProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else {

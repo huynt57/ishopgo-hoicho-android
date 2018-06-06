@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionManagerDetailAc
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() {
     private val adapterCategory = QuestionManagerCategoryAdapter()
@@ -35,8 +36,14 @@ class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, Que
     private var categoryName = ""
     private lateinit var viewModelSearch: QuestionSearchViewModel
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<QuestProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else {
