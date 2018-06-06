@@ -67,6 +67,8 @@ object Const {
         const val ACTION_REGISTER_BOOTH = 17
         const val ACTION_SURVEY = 18
         const val ACTION_TICKET = 19
+        const val ACTION_FAVORITE_PRODUCTS = 20
+        const val ACTION_FAVORITE_BOOTHS = 21
     }
 
     object Chat {

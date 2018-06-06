@@ -19,12 +19,14 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
+import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
 import ishopgo.com.exhibition.ui.main.postmanager.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
 import ishopgo.com.exhibition.ui.main.myqr.MyQrActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
+import ishopgo.com.exhibition.ui.main.productfollow.ProductFollowActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
@@ -151,6 +153,13 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_TICKET -> {
                 openTicket()
             }
+            Const.AccountAction.ACTION_FAVORITE_PRODUCTS -> {
+                openProductFavorite()
+            }
+
+            Const.AccountAction.ACTION_FAVORITE_BOOTHS -> {
+                openBoothFavorite()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -217,6 +226,20 @@ class AccountFragment : BaseFragment() {
     private fun openTicket() {
         context?.let {
             val intent = Intent(it, TicketActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openProductFavorite() {
+        context?.let {
+            val intent = Intent(it, ProductFollowActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openBoothFavorite() {
+        context?.let {
+            val intent = Intent(it, BoothFollowActivity::class.java)
             startActivity(intent)
         }
     }

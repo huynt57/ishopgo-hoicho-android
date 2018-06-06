@@ -355,6 +355,16 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
+        <activity
+            android:name=".ui.main.boothfollow.BoothFollowActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.productfollow.ProductFollowActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <activity android:name=".ui.deeplink.DeeplinkHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

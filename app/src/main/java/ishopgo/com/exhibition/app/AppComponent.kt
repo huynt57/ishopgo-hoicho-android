@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
+import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowViewModel
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerViewModel
@@ -44,6 +45,7 @@ import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
+import ishopgo.com.exhibition.ui.main.productfollow.ProductFollowViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
@@ -135,4 +137,6 @@ interface AppComponent {
     fun inject(salePointDetailViewModel: SalePointDetailViewModel)
     fun inject(postMenuViewModel: PostMenuViewModel)
     fun inject(questionMenuViewModel: QuestionMenuViewModel)
+    fun inject(productFollowViewModel: ProductFollowViewModel)
+    fun inject(boothFollowViewModel: BoothFollowViewModel)
 }

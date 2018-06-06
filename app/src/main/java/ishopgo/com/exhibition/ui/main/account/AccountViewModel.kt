@@ -25,6 +25,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadMenu() {
         val items = mutableListOf<AccountMenuProvider>()
+
         if (UserDataManager.currentType == "Chủ gian hàng") {
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_SETTING_BOTTH,
@@ -36,6 +37,18 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     Const.AccountAction.ACTION_MY_QR,
                     R.drawable.ic_my_qr,
                     "Mã QR gian hàng"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_FAVORITE_PRODUCTS,
+                    R.drawable.ic_shopping_favorite_2,
+                    "Sản phẩm quan tâm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_FAVORITE_BOOTHS,
+                    R.drawable.ic_star_white,
+                    "Gian hàng quan tâm"
             ))
 
             items.add(AccountMenuItem(
@@ -54,12 +67,6 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     Const.AccountAction.ACTION_NOTIFICATION,
                     R.drawable.ic_notification,
                     "Quản lý thông báo"
-            ))
-
-            items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_star_white,
-                    "Gian hàng quan tâm"
             ))
 
             items.add(AccountMenuItem(
@@ -83,15 +90,15 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_star_white,
-                    "Gian hàng quan tâm"
+                    Const.AccountAction.ACTION_FAVORITE_PRODUCTS,
+                    R.drawable.ic_shopping_favorite_2,
+                    "Sản phẩm quan tâm"
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
-                    R.drawable.ic_shopping_white,
-                    "Sản phẩm quan tâm"
+                    Const.AccountAction.ACTION_FAVORITE_BOOTHS,
+                    R.drawable.ic_star_white,
+                    "Gian hàng quan tâm"
             ))
 
             items.add(AccountMenuItem(
@@ -114,6 +121,19 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_FAVORITE_PRODUCTS,
+                    R.drawable.ic_shopping_favorite_2,
+                    "Sản phẩm quan tâm"
+            ))
+
+            items.add(AccountMenuItem(
+                    Const.AccountAction.ACTION_FAVORITE_BOOTHS,
+                    R.drawable.ic_star_white,
+                    "Gian hàng quan tâm"
+            ))
+
             items.add(AccountMenuItem(
                     Const.AccountAction.ACTION_MEMBER_MANAGER,
                     R.drawable.ic_customer_white,

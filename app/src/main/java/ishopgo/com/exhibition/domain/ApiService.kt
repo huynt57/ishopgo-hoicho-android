@@ -276,6 +276,12 @@ class ApiService {
         @GET("detail-sale-point")
         fun getInfoMemberSalePoint(@Query("phone") phone: String
         ): Single<BaseResponse<SearchSalePoint>>
+
+        @GET("follow-product")
+        fun getProductFollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
+
+        @GET("list-follow-booth")
+        fun getBoothFollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothFollow>>>
     }
 
     interface ISGApi {
