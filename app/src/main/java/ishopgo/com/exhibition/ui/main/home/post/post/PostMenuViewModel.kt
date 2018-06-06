@@ -25,6 +25,7 @@ class PostMenuViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.
     @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
+    var total = MutableLiveData<Int>()
 
     override fun loadData(params: Request) {
         if (params is PostRequest) {
@@ -39,6 +40,7 @@ class PostMenuViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<PostMenuManager>() {
                         override fun success(data: PostMenuManager?) {
+                            total.postValue(data?.totalPost ?: 0)
                             dataReturned.postValue(data?.posts ?: mutableListOf())
                         }
 

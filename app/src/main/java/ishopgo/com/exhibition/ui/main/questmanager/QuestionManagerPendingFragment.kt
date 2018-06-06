@@ -193,7 +193,7 @@ class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, Que
     private fun loadCategory(view: TextView) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
-                    .title("Chọn nhà cung cấp")
+                    .title("Chọn danh mục")
                     .customView(R.layout.diglog_search_recyclerview, false)
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ -> dialog.dismiss() }
