@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.group.addmember
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.os.Bundle
@@ -17,6 +18,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_local_chat_add_member.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -108,6 +110,7 @@ class AddMemberFragment : BaseActionBarFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -117,6 +120,11 @@ class AddMemberFragment : BaseActionBarFragment() {
         viewModel.contacts.observe(this, Observer { c ->
             c?.let {
                 if (reloadData) {
+                    if (it.isEmpty()) {
+                        view_empty_result_notice.visibility = View.VISIBLE
+                        view_empty_result_notice.text = "Nội dung trống"
+                    } else view_empty_result_notice.visibility = View.GONE
+
                     adapter.replaceAll(it)
                     adapter.resetSelection()
 

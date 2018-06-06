@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.inbox
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_inbox.*
 
 /**
@@ -26,8 +28,14 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
     private lateinit var mainViewModel: MainViewModel
 
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<InboxProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else

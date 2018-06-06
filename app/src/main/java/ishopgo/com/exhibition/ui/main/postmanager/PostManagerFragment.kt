@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailActivi
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
     private var typeManager = 0
@@ -36,8 +37,15 @@ class PostManagerFragment : BaseListFragment<List<PostProvider>, PostProvider>()
     private var name = ""
     private var categoryId: Long = 0
     private var categoryName = ""
+
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<PostProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else {

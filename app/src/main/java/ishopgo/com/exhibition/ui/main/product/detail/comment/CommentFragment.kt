@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail.comment
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -12,6 +13,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
@@ -35,8 +37,14 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
         productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<ProductCommentProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.contact.search
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
@@ -28,6 +29,7 @@ import ishopgo.com.exhibition.ui.chat.local.contact.ContactProvider
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_home_search_contact.*
 
 /**
@@ -37,8 +39,14 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
 
     private lateinit var mainViewModel: MainViewModel
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<ContactProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Không tìm thấy"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else

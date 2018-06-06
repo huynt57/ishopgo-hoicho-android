@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.shop.category
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
@@ -16,6 +17,7 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailShareViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
@@ -47,8 +49,14 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<CategoryProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else

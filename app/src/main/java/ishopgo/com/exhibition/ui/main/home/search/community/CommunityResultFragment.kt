@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.search.community
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -19,6 +20,7 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityResultDetailActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
     companion object {
@@ -61,6 +63,7 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
         })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<CommunityProvider>) {
         if (data.isNotEmpty()) {
             val community = data[data.size - 1]
@@ -69,6 +72,12 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
         }
 
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
+
             adapter.replaceAll(data)
             val community = Community()
             community.id = total.toLong()

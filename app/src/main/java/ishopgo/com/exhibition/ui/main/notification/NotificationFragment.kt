@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.notification
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
@@ -20,6 +21,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.notification.add.NotificationAddActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 /**
  * Created by hoangnh on 5/7/2018.
@@ -34,8 +36,14 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<NotificationProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else {

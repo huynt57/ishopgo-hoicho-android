@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.viewed
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +21,7 @@ import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
@@ -30,8 +32,14 @@ class ViewedFragment : BaseListFragment<List<ProductProvider>, ProductProvider>(
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<ProductProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else {
@@ -65,16 +73,16 @@ class ViewedFragment : BaseListFragment<List<ProductProvider>, ProductProvider>(
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         if (adapter is ClickableAdapter<ProductProvider>)
             (adapter as ClickableAdapter<ProductProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
-                context?.let {
-                    if (data is IdentityData) {
-                        val intent = Intent(it, ProductDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
+                override fun click(position: Int, data: ProductProvider, code: Int) {
+                    context?.let {
+                        if (data is IdentityData) {
+                            val intent = Intent(it, ProductDetailActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                            startActivity(intent)
+                        }
                     }
                 }
             }
-        }
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
     }
 

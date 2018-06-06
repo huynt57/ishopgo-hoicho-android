@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.salepoint
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -17,6 +18,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 class SalePointFragment : BaseListFragment<List<SalePointProvider>, SalePointProvider>() {
 
@@ -36,8 +38,14 @@ class SalePointFragment : BaseListFragment<List<SalePointProvider>, SalePointPro
         viewModel.loadData(loadMore)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<SalePointProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else {

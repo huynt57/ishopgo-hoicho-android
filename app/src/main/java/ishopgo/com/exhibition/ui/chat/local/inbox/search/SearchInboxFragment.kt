@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.inbox.search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -21,6 +22,7 @@ import ishopgo.com.exhibition.ui.chat.local.inbox.InboxAdapter
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_home_search_inbox.*
 
 /**
@@ -28,8 +30,14 @@ import kotlinx.android.synthetic.main.fragment_home_search_inbox.*
  */
 class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>(), BackpressConsumable {
 
+    @SuppressLint("SetTextI18n")
     override fun populateData(data: List<InboxProvider>) {
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Không tìm thấy"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
         } else

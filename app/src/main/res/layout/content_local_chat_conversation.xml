@@ -22,6 +22,10 @@
             android:paddingTop="8dp"
             />
 
+        <include
+            android:id="@+id/view_empty_layout"
+            layout="@layout/empty_list_result" />
+
         <TextView
             android:id="@+id/view_notice"
             android:layout_width="match_parent"
