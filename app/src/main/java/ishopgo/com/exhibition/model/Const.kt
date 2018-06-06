@@ -44,6 +44,8 @@ object Const {
         const val PRODUCT_SALE_POINT_DETAIL = 22
         const val UPDATE_PROFILE_AVATAR = 23
         const val BOOTH_MANAGER_DELETE = 24
+        const val BOOTH_FOLLOW = 25
+        const val PRODUCT_FOLLOW = 26
     }
 
     object AccountAction {
@@ -67,6 +69,8 @@ object Const {
         const val ACTION_REGISTER_BOOTH = 17
         const val ACTION_SURVEY = 18
         const val ACTION_TICKET = 19
+        const val ACTION_FAVORITE_PRODUCTS = 20
+        const val ACTION_FAVORITE_BOOTHS = 21
     }
 
     object Chat {
