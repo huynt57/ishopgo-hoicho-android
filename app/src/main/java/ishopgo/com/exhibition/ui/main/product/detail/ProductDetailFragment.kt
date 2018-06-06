@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.product.detail
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -168,8 +169,9 @@ class ProductDetailFragment : BaseFragment() {
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder))
                         .into(view_shop_follow)
-
                 if (it.status == 1) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
+
+                activity?.setResult(RESULT_OK)
             }
         })
 

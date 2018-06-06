@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.shop
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -156,6 +157,7 @@ class ShopDetailFragment : BaseFragment() {
                                     .error(R.drawable.image_placeholder))
                             .into(view_favorite)
                     toast("Bỏ theo dõi gian hàng thành công")
+                    activity?.setResult(RESULT_OK)
                 }
             }
         })

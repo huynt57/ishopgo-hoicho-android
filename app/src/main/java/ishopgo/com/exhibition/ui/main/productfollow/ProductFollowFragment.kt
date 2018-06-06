@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.Const.RequestCode.PRODUCT_FOLLOW
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -73,10 +74,9 @@ class ProductFollowFragment : BaseListFragment<List<ProductProvider>, ProductPro
                     if (data is Product) {
                         val intent = Intent(context, ProductDetailActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
+                        startActivityForResult(intent, PRODUCT_FOLLOW)
                     }
                 }
-
             }
         }
     }
@@ -89,5 +89,11 @@ class ProductFollowFragment : BaseListFragment<List<ProductProvider>, ProductPro
 
             return fragment
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PRODUCT_FOLLOW && resultCode == Activity.RESULT_OK)
+            firstLoad()
     }
 }

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.boothfollow
 
+import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.BoothFollow
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.Const.RequestCode.BOOTH_FOLLOW
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -70,7 +72,7 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
                     if (data is BoothFollow) {
                         val intent = Intent(context, ShopDetailActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
+                        startActivityForResult(intent, BOOTH_FOLLOW)
                     }
                 }
 
@@ -86,5 +88,11 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
 
             return fragment
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == BOOTH_FOLLOW && resultCode == RESULT_OK)
+            firstLoad()
     }
 }

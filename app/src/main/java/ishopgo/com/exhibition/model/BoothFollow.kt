@@ -9,17 +9,17 @@ import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowProvider
 
 
 class BoothFollow : IdentityData(), BoothFollowProvider {
-    override fun provideAddress(): Spanned {
-        return "<b>${address?.trim() ?: ""}, ${district?.trim() ?: ""}, ${city?.trim()
-                ?: ""}</b>".asHtml()
+    override fun provideAddress(): String {
+        return "${address?.trim() ?: ""}, ${district?.trim() ?: ""}, ${city?.trim()
+                ?: ""}"
     }
 
     override fun provideName(): Spanned {
         return "<b>${name ?: ""}</b>".asHtml()
     }
 
-    override fun providePhone(): Spanned {
-        return "<b>${phone ?: ""}</b>".asHtml()
+    override fun providePhone(): String {
+        return phone ?: ""
     }
 
     override fun provideNumberProduct(): Spanned {

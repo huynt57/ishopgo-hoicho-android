@@ -4,7 +4,7 @@ import android.text.Spanned
 
 interface BoothFollowProvider {
     fun provideName(): Spanned
-    fun providePhone(): Spanned
-    fun provideAddress(): Spanned
+    fun providePhone(): String
+    fun provideAddress(): String
     fun provideNumberProduct(): Spanned
 }
