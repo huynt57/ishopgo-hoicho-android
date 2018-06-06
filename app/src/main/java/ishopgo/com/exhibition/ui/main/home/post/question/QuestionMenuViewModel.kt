@@ -24,6 +24,7 @@ class QuestionMenuViewModel: BaseListViewModel<List<QuestProvider>>(), AppCompon
     @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
+    var total = MutableLiveData<Int>()
 
     override fun loadData(params: Request) {
         if (params is QuestionRequest) {
@@ -38,6 +39,7 @@ class QuestionMenuViewModel: BaseListViewModel<List<QuestProvider>>(), AppCompon
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<QuestionManager>() {
                         override fun success(data: QuestionManager?) {
+                            total.postValue(data?.total ?: 0)
                             dataReturned.postValue(data?.objects ?: mutableListOf())
                         }
 
