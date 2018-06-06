@@ -24,15 +24,26 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/view_recyclerview"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="16dp"
         app:layout_constraintBottom_toTopOf="@+id/view_container_added_members"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_member_name"/>
+        app:layout_constraintTop_toBottomOf="@id/view_member_name">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <include
+            android:id="@+id/view_empty_layout"
+            layout="@layout/empty_list_result" />
+
+    </FrameLayout>
+
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/view_container_added_members"

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.conversation.pattern
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProviders
@@ -91,6 +92,7 @@ class PatternChooserBottomSheet : BottomSheetDialogFragment() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

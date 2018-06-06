@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_by_category.*
 
@@ -185,6 +186,10 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         viewModel.products.observe(this, Observer { p ->
             p?.let {
                 if (reloadData) {
+                    if (it.isEmpty()) {
+                        view_empty_result_notice.visibility = View.VISIBLE
+                        view_empty_result_notice.text = "Nội dung trống"
+                    } else view_empty_result_notice.visibility = View.GONE
                     productAdapter.replaceAll(it)
                     view_recyclerview.scheduleLayoutAnimation()
                 } else

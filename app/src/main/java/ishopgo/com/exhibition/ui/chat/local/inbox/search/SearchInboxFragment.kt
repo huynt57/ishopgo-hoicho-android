@@ -35,7 +35,7 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
-                view_empty_result_notice.text = "Nội dung trống"
+                view_empty_result_notice.text = "Không tìm thấy"
             } else view_empty_result_notice.visibility = View.GONE
 
             adapter.replaceAll(data)

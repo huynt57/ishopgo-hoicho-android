@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.imageinventory
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -14,6 +15,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -60,6 +62,7 @@ class ImageInventoryFragment : BaseActionBarFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -67,9 +70,13 @@ class ImageInventoryFragment : BaseActionBarFragment() {
         viewModel.images.observe(this, Observer { images ->
             run {
                 images?.let {
-                    if (reloadData)
+                    if (reloadData) {
+                        if (it.isEmpty()) {
+                            view_empty_result_notice.visibility = View.VISIBLE
+                            view_empty_result_notice.text = "Nội dung trống"
+                        } else view_empty_result_notice.visibility = View.GONE
                         inventoryAdapter.replaceAll(it)
-                    else
+                    } else
                         inventoryAdapter.addAll(it)
 
                     reloadData = false

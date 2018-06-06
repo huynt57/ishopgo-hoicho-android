@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.group.member
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -16,6 +17,7 @@ import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
 import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -31,6 +33,7 @@ class MembersFragment : BaseActionBarFragment() {
         return R.layout.content_swipable_recyclerview
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar.setCustomTitle("Thành viên")
@@ -64,6 +67,12 @@ class MembersFragment : BaseActionBarFragment() {
             }
             view_recyclerview.adapter = adapter
             view_recyclerview.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+
+            if (info.listMember != null && info.listMember!!.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(info.listMember ?: mutableListOf())
         }
 
@@ -76,6 +85,7 @@ class MembersFragment : BaseActionBarFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -84,6 +94,11 @@ class MembersFragment : BaseActionBarFragment() {
         viewModel.info.observe(this, Observer { i ->
             i?.let {
                 info = it
+
+                if (info.listMember != null && info.listMember!!.isEmpty()) {
+                    view_empty_result_notice.visibility = View.VISIBLE
+                    view_empty_result_notice.text = "Nội dung trống"
+                } else view_empty_result_notice.visibility = View.GONE
 
                 adapter.replaceAll(info.listMember ?: mutableListOf())
             }

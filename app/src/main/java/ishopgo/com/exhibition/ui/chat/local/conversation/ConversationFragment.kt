@@ -48,6 +48,7 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asColor
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_local_chat_conversation.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import java.io.File
 import java.io.IOException
@@ -370,6 +371,7 @@ class ConversationFragment : BaseActionBarFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -396,6 +398,11 @@ class ConversationFragment : BaseActionBarFragment() {
                 } else {
                     adapter.addAll(it)
                 }
+
+                if (adapter.itemCount == 0) {
+                    view_empty_result_notice.visibility = View.VISIBLE
+                    view_empty_result_notice.text = "Nội dung trống"
+                } else view_empty_result_notice.visibility = View.GONE
 
                 // because we just want to load latest message, because of reverse layout so add scroll listener for first time here
                 if (reloadData) {
