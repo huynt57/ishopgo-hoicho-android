@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.community.comment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -22,6 +23,8 @@ import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
+import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_comment_community.*
 
 /**
@@ -76,9 +79,9 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_comment_community.layoutManager = layoutManager
-        rv_comment_community.adapter = adapter
-        rv_comment_community.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        view_recyclerview.layoutManager = layoutManager
+        view_recyclerview.adapter = adapter
+        view_recyclerview.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 loadMore()
             }
@@ -118,6 +121,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(CommunityViewModel::class.java, false)
@@ -139,9 +143,9 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
                 rv_comment_community_image.adapter = adapterImages
                 rv_comment_community_image.visibility = View.GONE
 
-                rv_comment_community.post {
+                view_recyclerview.post {
                     scroller.targetPosition = 0
-                    rv_comment_community.layoutManager.startSmoothScroll(scroller)
+                    view_recyclerview.layoutManager.startSmoothScroll(scroller)
                 }
             }
         })
@@ -153,6 +157,11 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
                 }
 
                 if (reloadData) {
+                    if (it.isEmpty()) {
+                        view_empty_result_notice.visibility = View.VISIBLE
+                        view_empty_result_notice.text = "Nội dung trống"
+                    } else view_empty_result_notice.visibility = View.GONE
+
                     adapter.replaceAll(it)
                     hideProgressDialog()
                 } else {
@@ -196,7 +205,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {
                 if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                     return
                 }
                 val postMedia = PostMedia()
@@ -207,7 +216,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
             } else {
                 for (i in 0 until data.clipData.itemCount) {
                     if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                         return
                     }
                     val postMedia = PostMedia()
