@@ -36,9 +36,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 
 class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, TicketManagerProvider>() {
 
-    private var ticketCode = ""
-    private var boothName = ""
-
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
@@ -95,8 +92,6 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
                         if (ActivityCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) run {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                 ActivityCompat.requestPermissions(it as TicketManagerActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                ticketCode = data.provideTicketCode()
-                                boothName = data.provideBoothName()
                             }
                         } else {
                             storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
@@ -158,16 +153,7 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
                     (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
                         @SuppressLint("ObsoleteSdkInt")
                         override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                            context?.let {
-                                if (ActivityCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) run {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                        ActivityCompat.requestPermissions(it as TicketManagerActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                        ticketCode = data.provideTicketCode()
-                                        boothName = data.provideBoothName()
-                                    }
-                                } else {
                                     storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
-                                }
                             }
                         }
                     }
