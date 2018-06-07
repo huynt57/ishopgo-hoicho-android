@@ -159,9 +159,9 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_TICKET_MANAGER,
                     R.drawable.ic_sight_seeing,
-                    "Quản lý tham quan"
+                    "Quản lý vé tham quan"
             ))
 
             items.add(AccountMenuItem(

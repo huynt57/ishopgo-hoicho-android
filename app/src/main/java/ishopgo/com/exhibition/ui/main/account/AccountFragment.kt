@@ -34,6 +34,7 @@ import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
+import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -159,6 +160,10 @@ class AccountFragment : BaseFragment() {
 
             Const.AccountAction.ACTION_FAVORITE_BOOTHS -> {
                 openBoothFavorite()
+            }
+
+            Const.AccountAction.ACTION_TICKET_MANAGER -> {
+                openTicketManager()
             }
             else -> {
                 toast("Đang phát triển")
@@ -304,6 +309,13 @@ class AccountFragment : BaseFragment() {
     private fun openSalePoint() {
         context?.let {
             val intent = Intent(it, SalePointActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openTicketManager() {
+        context?.let {
+            val intent = Intent(it, TicketManagerActivity::class.java)
             startActivity(intent)
         }
     }
