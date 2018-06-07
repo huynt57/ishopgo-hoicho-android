@@ -2,7 +2,9 @@ package ishopgo.com.exhibition.ui.chat.local.inbox
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
@@ -72,8 +75,13 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
                         if (item is LocalConversationItem) {
                             item.lastMsgTime = m.apiTime
                             item.content = m.apiContent
+                            item.unreadCount = 0 // mark unread
                             adapter.notifyItemChanged(conversationPosition)
                         }
+                    }
+                    else {
+                        // new conversation, reload
+                        firstLoad()
                     }
                 }
 
@@ -86,12 +94,24 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
         inboxAdapter.listener = object : ClickableAdapter.BaseAdapterAction<InboxProvider> {
             override fun click(position: Int, data: InboxProvider, code: Int) {
                 if (data is LocalConversationItem) {
-                    mainViewModel.openCurrentConversation(data)
+                    context?.let {
+                        val intent = Intent(it, ConversationActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, data.idConversions)
+                        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.name)
+                        startActivityForResult(intent, Const.RequestCode.RC_SHOW_DETAIL)
+                    }
                 }
             }
 
         }
         return inboxAdapter
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        Log.d("InboxFragment", "onActivityResult: requestCode = [${requestCode}], resultCode = [${resultCode}], data = [${data}]")
+        super.onActivityResult(requestCode, resultCode, data)
+
+        firstLoad()
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<InboxProvider>> {

@@ -145,8 +145,9 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Category>>() {
                     override fun success(data: List<Category>?) {
-                        data?.map { it.level = 1 }
-                        categories.postValue(data ?: mutableListOf())
+                        val filtered = data?.filter { it.id != 0L }
+                        filtered?.map { it.level = 1 }
+                        categories.postValue(filtered ?: mutableListOf())
                     }
 
                     override fun failure(status: Int, message: String) {

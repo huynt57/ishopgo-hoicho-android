@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.chat.local.contact
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
@@ -89,7 +91,13 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
                     val conv = LocalConversationItem()
                     conv.idConversions = c.id ?: ""
                     conv.name = c.name ?: ""
-                    mainViewModel.openCurrentConversation(conv)
+
+                    context?.let {
+                        val intent = Intent(it, ConversationActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
+                        intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
+                        startActivity(intent)
+                    }
                 }
             })
         }

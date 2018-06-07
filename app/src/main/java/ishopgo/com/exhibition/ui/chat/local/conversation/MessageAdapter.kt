@@ -10,13 +10,17 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.chat.ChatImageMessage
+import ishopgo.com.exhibition.model.chat.ChatProductMessage
 import ishopgo.com.exhibition.model.chat.ChatTextMessage
 import ishopgo.com.exhibition.model.chat.IChatMessage
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
+import kotlinx.android.synthetic.main.stream_item_center.view.*
 import kotlinx.android.synthetic.main.stream_item_left.view.*
+import kotlinx.android.synthetic.main.stream_item_left_product.view.*
 import kotlinx.android.synthetic.main.stream_item_right.view.*
+import kotlinx.android.synthetic.main.stream_item_right_product.view.*
 
 /**
  * Created by xuanhong on 11/18/17. HappyCoding!
@@ -26,17 +30,30 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
     companion object {
         const val TYPE_LEFT = 0
         const val TYPE_RIGHT = 1
+        const val TYPE_CENTER = 2
+        const val TYPE_LEFT_PRODUCT = 3
+        const val TYPE_RIGHT_PRODUCT = 4
+
         const val CODE_NORMAL = 1
         const val CODE_FAIL = 2
-
+        const val CODE_PRODUCT = 3
     }
 
     var currentId = UserDataManager.currentUserId
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return when (viewType) {
+            TYPE_CENTER -> {
+                R.layout.stream_item_center
+            }
             TYPE_LEFT -> {
                 R.layout.stream_item_left
+            }
+            TYPE_LEFT_PRODUCT -> {
+                R.layout.stream_item_left_product
+            }
+            TYPE_RIGHT_PRODUCT -> {
+                R.layout.stream_item_right_product
             }
             else -> {
                 R.layout.stream_item_right
@@ -45,7 +62,13 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<IChatMessage> {
-        return if (viewType == TYPE_LEFT) MessageHolderLeft(v) else MessageHolderRight(v)
+        return when (viewType) {
+            TYPE_CENTER -> SystemMessageHolder(v)
+            TYPE_LEFT -> MessageHolderLeft(v)
+            TYPE_LEFT_PRODUCT -> LeftProductMessageHolder(v)
+            TYPE_RIGHT_PRODUCT -> RightProductMessageHolder(v)
+            else -> MessageHolderRight(v)
+        }
     }
 
 
@@ -62,10 +85,16 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
 
     override fun getItemViewType(position: Int): Int {
         val data = getItem(position)
-        return if (data.getOwnerId() == currentId)
-            TYPE_RIGHT
-        else
-            TYPE_LEFT
+        return when {
+            data.getMessageType() == IChatMessage.TYPE_SYSTEM -> TYPE_CENTER
+            data.getMessageType() == IChatMessage.TYPE_PRODUCT ->
+                if (data.getOwnerId() == currentId)
+                    TYPE_RIGHT_PRODUCT
+                else
+                    TYPE_LEFT_PRODUCT
+            data.getOwnerId() == currentId -> TYPE_RIGHT
+            else -> TYPE_LEFT
+        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder<IChatMessage>, position: Int) {
@@ -73,11 +102,25 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
 
         holder.apply {
             itemView.setOnClickListener {
+                val adapterPosition = holder.adapterPosition
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_NORMAL)
             }
         }
 
-        val adapterPosition = holder.adapterPosition
+
+        if (holder is LeftProductMessageHolder) {
+            holder.itemView.apply {
+                val adapterPosition = holder.adapterPosition
+                listener?.click(adapterPosition, getItem(adapterPosition), CODE_PRODUCT)
+            }
+        }
+
+        if (holder is RightProductMessageHolder) {
+            holder.itemView.apply {
+                val adapterPosition = holder.adapterPosition
+                listener?.click(adapterPosition, getItem(adapterPosition), CODE_PRODUCT)
+            }
+        }
 
         if (holder is MessageHolderRight) {
             holder.itemView.apply {
@@ -90,6 +133,7 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                     holder.itemView.right_time.visibility = if (isVisible) View.GONE else View.VISIBLE
                 }
                 right_imageContent.setOnClickListener {
+                    val adapterPosition = holder.adapterPosition
                     val item = getItem(adapterPosition)
                     if (item is ChatImageMessage) {
                         val imageUrls = item.getImageUrls()
@@ -101,8 +145,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                     }
                 }
                 right_view_container_error.setOnClickListener {
-                    val pos = adapterPosition
-                    listener?.click(pos, getItem(pos), CODE_FAIL)
+                    val adapterPosition = holder.adapterPosition
+                    listener?.click(adapterPosition, getItem(adapterPosition), CODE_FAIL)
                 }
             }
 
@@ -119,7 +163,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                     holder.itemView.left_time.visibility = if (isVisible) View.GONE else View.VISIBLE
                 }
                 left_imageContent.setOnClickListener {
-                    val item = getItem(holder.adapterPosition)
+                    val adapterPosition = holder.adapterPosition
+                    val item = getItem(adapterPosition)
                     if (item is ChatImageMessage) {
                         val imageUrls = item.getImageUrls()
                         if (imageUrls.isNotEmpty()) {
@@ -132,6 +177,127 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
             }
 
         }
+    }
+
+    inner class RightProductMessageHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<IChatMessage>(view) {
+
+        override fun populate(data: IChatMessage) {
+            super.populate(data)
+            itemView.apply {
+                if (data is ChatProductMessage) {
+                    data.getEmbededProduct()?.let {
+                        Glide.with(context)
+                                .load(it.image)
+                                .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
+                                        .error(R.drawable.image_placeholder))
+                                .into(right_productImage)
+                        right_productName.text = it.provideName()
+                        right_productPrice.text = it.providePrice()
+                    }
+
+                }
+
+                right_product_time.text = data.getCreatedTime()
+                // time will not display by default
+                right_product_time.visibility = View.GONE
+
+                when (data.getSendStatus()) {
+                    IChatMessage.STATUS_SENDING -> {
+                        right_product_view_container_progress.visibility = View.VISIBLE
+                        right_product_view_container_error.visibility = View.GONE
+                        right_product_view_progress.visibility = View.VISIBLE
+                    }
+                    IChatMessage.STATUS_SENT -> {
+                        right_product_view_container_progress.visibility = View.GONE
+                    }
+                    IChatMessage.STATUS_FAILED -> {
+                        right_product_view_container_progress.visibility = View.VISIBLE
+                        right_product_view_container_error.visibility = View.VISIBLE
+                        right_product_view_progress.visibility = View.GONE
+                    }
+                    else -> {
+                        right_product_view_container_progress.visibility = View.GONE
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    inner class LeftProductMessageHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<IChatMessage>(view) {
+
+        override fun populate(data: IChatMessage) {
+            super.populate(data)
+            itemView.apply {
+                if (data is ChatProductMessage) {
+                    data.getEmbededProduct()?.let {
+                        Glide.with(context)
+                                .load(it.image)
+                                .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
+                                        .error(R.drawable.image_placeholder))
+                                .into(left_productImage)
+                        left_productName.text = it.provideName()
+                        left_productPrice.text = it.providePrice()
+                    }
+
+                }
+
+                Glide.with(itemView).load(data.getOwnerAvatar())
+                        .apply(RequestOptions
+                                .placeholderOf(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder)
+                                .transforms(CenterCrop(), RoundedCorners(25))
+                        )
+                        .into(left_product_imageView)
+
+                left_product_time.text = data.getCreatedTime()
+                // time will not display by default
+                left_product_time.visibility = View.GONE
+
+                left_product_name.text = data.getOwnerName()
+
+                val shouldShowTitle = shouldShowTitle(adapterPosition)
+                left_product_name.visibility = if (shouldShowTitle) View.VISIBLE else View.GONE
+                left_product_imageView.visibility = if (shouldShowTitle) View.VISIBLE else View.INVISIBLE
+            }
+
+        }
+
+        private fun shouldShowTitle(position: Int): Boolean {
+            val current = getItem(position)
+            val beforeIndex = position + 1 // because of reverse layout
+            if (beforeIndex < itemCount) {
+                val item = getItem(beforeIndex)
+                if (item.getOwnerId() != current.getOwnerId()) {
+                    // message come from other person, should show name
+                    return true
+                }
+            } else {
+                // first message
+                return true
+            }
+
+            return false
+        }
+
+    }
+
+    inner class SystemMessageHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<IChatMessage>(view) {
+
+        override fun populate(data: IChatMessage) {
+            super.populate(data)
+            itemView.apply {
+                if (data is ChatTextMessage) {
+                    center_textContent.text = data.getText()
+                    center_textContent.visibility = if (data.getText().isBlank()) View.GONE else View.VISIBLE
+                }
+
+                center_time.text = data.getCreatedTime()
+            }
+
+        }
+
     }
 
     inner class MessageHolderLeft(view: View) : BaseRecyclerViewAdapter.ViewHolder<IChatMessage>(view) {
@@ -207,7 +373,7 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
 
     }
 
-    class MessageHolderRight(view: View) : BaseRecyclerViewAdapter.ViewHolder<IChatMessage>(view) {
+    inner class MessageHolderRight(view: View) : BaseRecyclerViewAdapter.ViewHolder<IChatMessage>(view) {
 
         override fun populate(data: IChatMessage) {
             super.populate(data)

@@ -9,5 +9,6 @@ interface InboxProvider {
     fun provideAvatar(): String
     fun provideMessage(): String
     fun provideTime(): String
+    fun provideWasRead(): Boolean
 
 }

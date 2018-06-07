@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerProvider
 
 class BoothManager : IdentityData(), BoothManagerProvider {
     override fun provideName(): String {
-        return name ?: ""
+        return boothName ?: ""
     }
 
     override fun providePhone(): String {
@@ -34,6 +34,9 @@ class BoothManager : IdentityData(), BoothManagerProvider {
     @SerializedName("name")
     @Expose
     var name: String? = null
+    @SerializedName("booth_name")
+    @Expose
+    var boothName: String? = null
     @SerializedName("phone")
     @Expose
     var phone: String? = null

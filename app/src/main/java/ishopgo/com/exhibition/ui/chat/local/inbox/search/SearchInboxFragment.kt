@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.chat.local.inbox.search
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,11 +14,14 @@ import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchInboxRequest
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxAdapter
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
@@ -46,6 +50,19 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<InboxProvider> {
         val inboxAdapter = InboxAdapter()
+        inboxAdapter.listener = object : ClickableAdapter.BaseAdapterAction<InboxProvider> {
+            override fun click(position: Int, data: InboxProvider, code: Int) {
+                if (data is LocalConversationItem) {
+                    context?.let {
+                        val intent = Intent(it, ConversationActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, data.idConversions)
+                        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.name)
+                        startActivity(intent)
+                    }
+                }
+            }
+
+        }
         return inboxAdapter
     }
 

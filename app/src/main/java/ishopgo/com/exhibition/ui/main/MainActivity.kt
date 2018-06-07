@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main
 
+import android.app.Activity
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -13,7 +14,6 @@ import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
-import ishopgo.com.exhibition.ui.extensions.Toolbox
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
@@ -34,26 +34,18 @@ class MainActivity : BaseSingleFragmentActivity() {
         override fun onReceive(context: Context?, intent: Intent?) {
             Log.d(TAG, "onReceive: context = [${context}], intent = [${intent}]")
             intent?.let {
-                val json = it.getStringExtra(Const.Chat.EXTRA_MESSAGE)
-                Log.d(TAG, "onReceive: $json")
+                val idConversion = it.getStringExtra("idConversion")
 
-                val msg = try {
-                    Toolbox.gson.fromJson(json, PusherChatMessage::class.java)
-                } catch (e: Exception) {
-                    null
+                idConversion?.let { conv ->
+                    val message = PusherChatMessage()
+                    message.idConversation = conv
+                    message.apiContent = it.getStringExtra("content")
+                    message.apiTime = it.getStringExtra("time") ?: "--:--"
+                    mainViewModel.resolveMessage(message)
+
+                    Log.d(TAG, "chat message was not processed: ")
+                    Activity.RESULT_OK
                 }
-//
-//                msg?.let {
-//                    resultCode = if (sharedViewModel.resolveMessage(it)) {
-//                        // mark this message was processed and do not create notification
-//                        Log.d(TAG, "chat message was processed: ")
-//                        Activity.RESULT_CANCELED
-//                    } else {
-//                        // this message is not belong to this conversation, show notification
-//                        Log.d(TAG, "chat message was not processed: ")
-//                        Activity.RESULT_OK
-//                    }
-//                }
             }
 
         }

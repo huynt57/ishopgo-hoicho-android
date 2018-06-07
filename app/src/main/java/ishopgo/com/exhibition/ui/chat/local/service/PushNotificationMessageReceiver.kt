@@ -12,31 +12,19 @@ import ishopgo.com.exhibition.model.Const
  * Created by xuanhong on 12/29/17. HappyCoding!
  * service to handle incoming message from pusher
  */
-class PusherMessageReceiver : IntentService("PusherMessageReceiver") {
+class PushNotificationMessageReceiver : IntentService("PushNotificationMessageReceiver") {
 
     companion object {
-        private val TAG = "PusherMessageReceiver"
+        private val TAG = "PushNotiMessageReceiver"
     }
-
-//    private val callback = Handler.Callback { throw IllegalArgumentException("PUSH_RECEIVED NOT HANDLED!") }
 
     override fun onHandleIntent(intent: Intent?) {
-        val content = intent?.getStringExtra(Const.Chat.EXTRA_MESSAGE)
-
-        Log.d(TAG, "onHandleIntent: $content")
-
-        content?.let {
-            sendNotification(content)
-        }
+        Log.d(TAG, "onHandleIntent: ${intent?.extras ?: Bundle()}")
+        sendNotification(intent?.extras ?: Bundle())
     }
 
-    private fun sendNotification(json: String) {
-        sendNotification(json, Bundle())
-    }
-
-    private fun sendNotification(json: String, extras: Bundle) {
+    private fun sendNotification(extras: Bundle) {
         val broadcast = Intent()
-        extras.putString(Const.Chat.EXTRA_MESSAGE, json)
         broadcast.putExtras(extras)
         broadcast.action = Const.Chat.BROADCAST_NOTIFICATION
 
