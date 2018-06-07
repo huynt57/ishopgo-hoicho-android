@@ -8,6 +8,10 @@ import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
  * Created by xuanhong on 5/17/18. HappyCoding!
  */
 class LocalConversationItem : InboxProvider {
+    override fun provideWasRead(): Boolean {
+        return unreadCount == 1
+    }
+
     override fun provideName(): String {
         return name ?: ""
     }

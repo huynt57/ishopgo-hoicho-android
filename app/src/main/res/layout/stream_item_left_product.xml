@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             android:orientation="horizontal">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/left_product_constraintLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/bg_buble_left"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="@+id/left_product_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/left_product_name">
+
+        <ImageView
+            android:id="@+id/left_productImage"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="w,1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/image_placeholder"/>
+
+        <TextView
+            android:id="@+id/left_productName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:autoLink="phone|email|web"
+            android:fontFamily="@font/ff_roboto"
+            android:lineSpacingMultiplier="1.3"
+            android:maxWidth="250dp"
+            android:textColor="#212121"
+            android:textColorLink="#212121"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/left_productImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_goneMarginTop="4dp"
+            tools:text="Mỹ phẩm trang điểmMỹ phẩm trang điểmMỹ phẩm trang điểmMỹ phẩm trang điểm"/>
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/left_productPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:autoLink="phone|email|web"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/ff_roboto"
+            android:gravity="center_vertical"
+            android:lineSpacingMultiplier="1.3"
+            android:maxWidth="250dp"
+            android:textColor="#212121"
+            android:textColorLink="#212121"
+            android:textSize="12sp"
+            app:drawableStartCompat="@drawable/price_tag"
+            app:drawableStartSquareSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@+id/left_productName"
+            app:layout_constraintTop_toBottomOf="@+id/left_productName"
+            app:layout_goneMarginTop="4dp"
+            tools:text="200.000"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/left_product_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:paddingEnd="3dp"
+        android:paddingStart="3dp"
+        android:text="12:00"
+        android:textColor="#44000000"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="@+id/left_product_constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/left_product_constraintLayout"/>
+
+    <ImageView
+        android:id="@+id/left_product_imageView"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:adjustViewBounds="false"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="@+id/left_product_constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/ic_launcher"/>
+
+    <TextView
+        android:id="@+id/left_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text="Hong Vuong Xuan"
+        android:textColor="#44000000"
+        android:textSize="11sp"
+        app:layout_constraintStart_toEndOf="@+id/left_product_imageView"
+        app:layout_constraintTop_toTopOf="parent"/>
+</android.support.constraint.ConstraintLayout>

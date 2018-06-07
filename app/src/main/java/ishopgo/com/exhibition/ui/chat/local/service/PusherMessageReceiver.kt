@@ -18,8 +18,6 @@ class PusherMessageReceiver : IntentService("PusherMessageReceiver") {
         private val TAG = "PusherMessageReceiver"
     }
 
-//    private val callback = Handler.Callback { throw IllegalArgumentException("PUSH_RECEIVED NOT HANDLED!") }
-
     override fun onHandleIntent(intent: Intent?) {
         val content = intent?.getStringExtra(Const.Chat.EXTRA_MESSAGE)
 

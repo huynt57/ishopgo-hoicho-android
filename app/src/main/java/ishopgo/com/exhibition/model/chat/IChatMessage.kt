@@ -21,6 +21,8 @@ interface IChatMessage {
 
     fun getSendStatus(): Int
 
+    fun getMessageType(): Int
+
     companion object {
         const val STATUS_SENDING = 0
         const val STATUS_SENT = 1
@@ -28,5 +30,6 @@ interface IChatMessage {
 
         const val TYPE_MESSAGE = 0
         const val TYPE_SYSTEM = 1
+        const val TYPE_PRODUCT = 3 // my custom
     }
 }

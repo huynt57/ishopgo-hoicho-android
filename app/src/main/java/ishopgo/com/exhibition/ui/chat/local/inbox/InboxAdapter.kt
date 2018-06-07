@@ -55,7 +55,7 @@ class InboxAdapter : ClickableAdapter<InboxProvider>() {
                 view_title.text = data.provideName()
                 view_time.text = data.provideTime()
                 view_message.text = data.provideMessage()
-                view_unread_count
+                view_unread_count.visibility = if (data.provideWasRead()) View.GONE else View.VISIBLE
             }
         }
     }

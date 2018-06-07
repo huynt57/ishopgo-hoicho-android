@@ -4,9 +4,9 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
-import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import okhttp3.RequestBody
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -18,6 +18,7 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+
     override fun getProductFollow(fields: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
         val response = BaseResponse<Product>()
         response.status = 1

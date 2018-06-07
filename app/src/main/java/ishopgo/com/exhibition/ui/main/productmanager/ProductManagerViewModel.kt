@@ -27,6 +27,7 @@ import java.io.File
 import javax.inject.Inject
 
 class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(), AppComponent.Injectable {
+
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
@@ -227,7 +228,8 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<Category>>() {
                     override fun success(data: List<Category>?) {
-                        categories.postValue(data ?: mutableListOf())
+                        val filtered = data?.filter { it.id != 0L }
+                        categories.postValue(filtered ?: mutableListOf())
                     }
 
                     override fun failure(status: Int, message: String) {

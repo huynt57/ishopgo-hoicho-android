@@ -269,6 +269,7 @@
         <activity
             android:name=".ui.chat.local.conversation.ConversationActivity"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="ishopgo.com.exhibition.conversation_activity"/>

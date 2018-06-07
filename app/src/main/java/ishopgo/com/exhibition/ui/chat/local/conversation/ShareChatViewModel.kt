@@ -7,16 +7,26 @@ import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 /**
  * Created by xuanhong on 5/31/18. HappyCoding!
  */
-class ShareChatViewModel: BaseApiViewModel() {
+class ShareChatViewModel : BaseApiViewModel() {
+
+    companion object {
+        const val STATE_CONNECTED = 0
+        const val STATE_CONNECTING = 1
+        const val STATE_DISCONNECTED = 2
+    }
 
     var newMessage = MutableLiveData<PusherChatMessage>()
+    var connectionState = MutableLiveData<Int>()
 
     /**
      * simply forward this message
      */
-    fun resolveMessage(message: PusherChatMessage): Boolean {
+    fun resolveMessage(message: PusherChatMessage) {
         newMessage.postValue(message)
-        return true
+    }
+
+    fun updateConnectionState(state: Int) {
+        connectionState.postValue(state)
     }
 
 

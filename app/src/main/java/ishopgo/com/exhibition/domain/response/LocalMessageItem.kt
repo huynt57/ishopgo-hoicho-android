@@ -3,13 +3,27 @@ package ishopgo.com.exhibition.domain.response
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.model.chat.ChatImageMessage
+import ishopgo.com.exhibition.model.chat.ChatProductMessage
 import ishopgo.com.exhibition.model.chat.ChatTextMessage
 import ishopgo.com.exhibition.model.chat.IChatMessage
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
  */
-class LocalMessageItem : ChatTextMessage, ChatImageMessage {
+class LocalMessageItem : ChatTextMessage, ChatImageMessage, ChatProductMessage {
+
+    override fun getEmbededProduct(): Product? {
+        return product
+    }
+
+    override fun getMessageType(): Int {
+        return if (product != null) IChatMessage.TYPE_PRODUCT
+        else
+            when (type) {
+                1 -> IChatMessage.TYPE_SYSTEM
+                else -> IChatMessage.TYPE_MESSAGE
+            }
+    }
 
     override fun getText(): CharSequence = content.replace("<br>", "\n")
 
@@ -57,4 +71,6 @@ class LocalMessageItem : ChatTextMessage, ChatImageMessage {
     var time: String = ""
     @SerializedName("type")
     var type: Int = 0
+    @SerializedName("product")
+    var product: Product? = null
 }

@@ -45,9 +45,14 @@ class ConversationViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var patternRemoved = MutableLiveData<Boolean>()
     var conversationInfo = MutableLiveData<ConversationInfo>()
     var messageSent = MutableLiveData<Boolean>()
+    var channelSubscribed = MutableLiveData<Boolean>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
+    }
+
+    fun channelSubscribed(isSubscribed: Boolean) {
+        channelSubscribed.postValue(isSubscribed)
     }
 
     fun getConversationInfo(conversationId: String) {
