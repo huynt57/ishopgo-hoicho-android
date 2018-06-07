@@ -72,8 +72,7 @@ class ProductManagerAddFragment : BaseFragment() {
     companion object {
         const val TAG = "ProductManagerFragment"
         const val STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
-        const val STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dang landing page
-        const val STATUS_DISPLAY_HIDDEN: Int = 0 //Không hiển thị
+        const val STATUS_DISPLAY_HIDDEN: Int = 1 //Không hiển thị
 
         const val STATUS_FEAUTURED: Int = 1 //Sp nổi bật
         const val STATUS_NOT_FEAUTURED: Int = 0 //Sp bình thường
@@ -119,40 +118,17 @@ class ProductManagerAddFragment : BaseFragment() {
             CASE_PICK_IMAGE = false
             launchPickPhotoIntent()
         }
-        edit_product_status.setText("Hiển thị dạng chuẩn")
-        edit_product_status.setOnClickListener {
-            context?.let {
-                val dialog = MaterialDialog.Builder(it)
-                        .customView(R.layout.dialog_product_status, false)
-                        .autoDismiss(false)
-                        .canceledOnTouchOutside(true)
-                        .build()
-
-                val tv_status_standard = dialog.findViewById(R.id.tv_status_standard) as TextView
-                val tv_status_landing_padding = dialog.findViewById(R.id.tv_status_landing_padding) as TextView
-                val tv_status_hidden = dialog.findViewById(R.id.tv_status_hidden) as TextView
-
-                tv_status_standard.setOnClickListener {
-                    status = STATUS_DISPLAY_SHOW
-                    edit_product_status.setText(tv_status_standard.text)
-                    dialog.dismiss()
-                }
-
-                tv_status_landing_padding.setOnClickListener {
-                    status = STATUS_DISPLAY_LANDING_PAGE
-                    edit_product_status.setText(tv_status_landing_padding.text)
-                    dialog.dismiss()
-                }
-
-                tv_status_hidden.setOnClickListener {
-                    status = STATUS_DISPLAY_HIDDEN
-                    edit_product_status.setText(tv_status_hidden.text)
-                    dialog.dismiss()
-                }
-
-                dialog.show()
+        sw_show_wholesale.setOnCheckedChangeListener { _, _ ->
+            if (sw_show_wholesale.isChecked) linear_wholesale.visibility = View.VISIBLE else {
+                linear_wholesale.visibility = View.GONE
+                edit_produt_wholesale_from.setText("")
+                edit_produt_wholesale_to.setText("")
+                edit_produt_wholesale_count.setText("")
             }
         }
+
+        sw_isShow.setOnCheckedChangeListener { _, _ -> status = if (sw_isShow.isChecked) STATUS_DISPLAY_SHOW else STATUS_DISPLAY_HIDDEN }
+
         sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
 
         btn_product_add.setOnClickListener {
@@ -160,23 +136,25 @@ class ProductManagerAddFragment : BaseFragment() {
                 if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                 edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
                     showProgressDialog()
-                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money
-                            ?: 0,
-                            edit_product_price?.money ?: 0, edit_product_provider_price.money
-                            ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
+                            edit_product_price?.money
+                                    ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
                             image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
+                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
+                            ?: 0, edit_produt_wholesale_to.money
+                            ?: 0, edit_produt_wholesale_count.text.toString())
                 }
             } else
                 if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                 edt_product_categories.text.toString(), provider_id.toString(), edit_product_brand.text.toString())) {
                     showProgressDialog()
-                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(), edit_produt_ttprice.money
-                            ?: 0,
-                            edit_product_price?.money ?: 0, edit_product_provider_price.money
-                            ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
+                            edit_product_price?.money
+                                    ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
                             image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured)
+                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
+                            ?: 0, edit_produt_wholesale_to.money
+                            ?: 0, edit_produt_wholesale_count.text.toString())
                 }
 
         }

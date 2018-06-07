@@ -25,5 +25,9 @@ interface ProductManagerDetailProvider {
     fun provideCategory(): List<Category>?
     fun provideLink(): String
     fun provideIsFeatured(): Boolean
+    fun provideViewWholesale(): Boolean
+    fun provideWholesaleFrom(): String
+    fun provideWholesaleTo(): String
+    fun provideWholesaleCountProduct(): String
 
 }

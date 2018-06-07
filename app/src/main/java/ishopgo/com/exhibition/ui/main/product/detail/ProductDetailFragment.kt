@@ -193,13 +193,11 @@ class ProductDetailFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetailProvider) {
         context?.let {
-            //            Glide.with(it)
-//                    .load(product.provideProductImage())
-//                    .apply(RequestOptions()
-//                            .centerCrop()
-//                            .placeholder(R.drawable.image_placeholder)
-//                            .error(R.drawable.image_placeholder))
-//                    .into(view_product_image)
+
+            if (product.provideViewWholesale()) {
+                view_product_wholesale.visibility = View.VISIBLE
+                view_product_wholesale.text = product.provideWholesale()
+            } else view_product_wholesale.visibility = View.GONE
 
             if (product is ProductDetail) {
                 if (product.images != null && product.images!!.isNotEmpty())

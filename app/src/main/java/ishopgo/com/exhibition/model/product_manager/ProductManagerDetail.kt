@@ -10,6 +10,18 @@ import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.productmanager.detail.ProductManagerDetailProvider
 
 class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
+    override fun provideWholesaleFrom(): String {
+        return wholesalePriceFrom.toString()
+    }
+
+    override fun provideWholesaleTo(): String {
+        return wholesalePriceTo.toString()
+    }
+
+    override fun provideWholesaleCountProduct(): String {
+        return wholesaleCountProduct.toString()
+    }
+
     override fun provideCategory(): List<Category>? {
         return categories ?: mutableListOf()
     }
@@ -19,6 +31,12 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
         var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
 
         var IS_FEATURED: Int = 1  //Sản phẩm nổi bật
+
+        const val VIEW_WHOLESALE = 1
+    }
+
+    override fun provideViewWholesale(): Boolean {
+        return viewWholesale == VIEW_WHOLESALE
     }
 
     override fun provideName(): String {
@@ -184,6 +202,18 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     @SerializedName("is_featured")
     @Expose
     var is_featured: Int = 0
+    @SerializedName("wholesale_price_from")
+    @Expose
+    var wholesalePriceFrom: Long = 0
+    @SerializedName("wholesale_price_to")
+    @Expose
+    var wholesalePriceTo: Long = 0
+    @SerializedName("wholesale_count_product")
+    @Expose
+    var wholesaleCountProduct: Int = 0
+    @SerializedName("view_wholesale")
+    @Expose
+    var viewWholesale: Int? = null
 
     fun wasIsFeatured() = is_featured == IS_FEATURED
 }

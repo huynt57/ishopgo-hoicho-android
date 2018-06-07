@@ -128,24 +128,6 @@
                 android:layout_marginTop="16dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_product_provider_price"
-                    style="@style/AppTheme.EnableInputField.DisableInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Giá vốn"
-                    android:inputType="text"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
-
-                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_price"
                     style="@style/AppTheme.EnableInputField.DisableInput"
                     android:layout_width="match_parent"
@@ -156,23 +138,75 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <Switch
+                android:id="@+id/sw_show_wholesale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:enabled="false"
+                android:text="Hiển thị giá bán sỉ" />
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_product_ttprice"
-                    style="@style/AppTheme.EnableInputField.DisableInput"
+            <LinearLayout
+                android:id="@+id/linear_wholesale"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Giá thị trường"
-                    android:inputType="text"
-                    android:singleLine="true" />
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="16dp">
 
-            </android.support.design.widget.TextInputLayout>
+                    <ishopgo.com.exhibition.ui.widget.MoneyEditText
+                        android:id="@+id/edit_produt_wholesale_from"
+                        style="@style/AppTheme.EnableInputField.DisableInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Giá bán sỉ từ"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="16dp">
+
+                    <ishopgo.com.exhibition.ui.widget.MoneyEditText
+                        android:id="@+id/edit_produt_wholesale_to"
+                        style="@style/AppTheme.EnableInputField.DisableInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Giá bán sỉ đến"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="16dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_produt_wholesale_count"
+                        style="@style/AppTheme.EnableInputField.DisableInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Số lượng sản phẩm tối thiểu"
+                        android:inputType="number" />
+
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
