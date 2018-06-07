@@ -153,25 +153,24 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
                     (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
                         @SuppressLint("ObsoleteSdkInt")
                         override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                                    storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
-                            }
+                            storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
                         }
                     }
                 }
-            } else {
-                context?.let {
-                    MaterialDialog.Builder(it)
-                            .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
-                            .positiveText("Đi tới cài đặt")
-                            .onPositive { _, _ ->
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                        Uri.fromParts("package", it.packageName, null))
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
-                            }
-                            .negativeText("Huỷ")
-                            .show()
-                }
+            }
+        } else {
+            context?.let {
+                MaterialDialog.Builder(it)
+                        .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
+                        .positiveText("Đi tới cài đặt")
+                        .onPositive { _, _ ->
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                    Uri.fromParts("package", it.packageName, null))
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            startActivity(intent)
+                        }
+                        .negativeText("Huỷ")
+                        .show()
             }
         }
     }
