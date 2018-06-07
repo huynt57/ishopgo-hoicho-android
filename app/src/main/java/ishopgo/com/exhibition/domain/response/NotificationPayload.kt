@@ -19,6 +19,7 @@ class NotificationPayload {
     val phone: String? = null
 
     companion object {
+        const val TYPE_COMMON = ""
         const val TYPE_PRODUCT = "san_pham"
         const val TYPE_CHAT = "chat"
     }

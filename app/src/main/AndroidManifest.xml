@@ -255,21 +255,17 @@
             android:exported="false">
         </service>
         <service
-            android:name=".ui.chat.local.service.PusherMessageReceiver"
+            android:name=".ui.chat.local.service.PushNotificationMessageReceiver"
             android:exported="false">
             <intent-filter>
-                <action android:name="ishopgo.com.exhibition.ui.chat.local.service.PUSHER_MESSAGE"/>
+                <action android:name="ishopgo.com.exhibition.ui.chat.local.service.PUSH_MESSAGE"/>
             </intent-filter>
-        </service>
-        <service
-            android:name=".ui.chat.local.service.PusherChatService"
-            android:exported="false">
         </service>
 
         <activity
             android:name=".ui.chat.local.conversation.ConversationActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustResize"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="ishopgo.com.exhibition.conversation_activity"/>

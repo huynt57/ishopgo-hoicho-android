@@ -79,7 +79,7 @@ object Const {
         const val EXTRA_EVENT_NAME = "event_name"
         const val EXTRA_CHANNEL_NAME = "channel_name"
         const val BROADCAST_NOTIFICATION = "ishopgo.com.exhibition.ui.chat.local.service.BROADCAST_NOTIFICATION"
-        const val PUSHER_MESSAGE = "ishopgo.com.exhibition.ui.chat.local.service.PUSHER_MESSAGE"
+        const val PUSHER_MESSAGE = "ishopgo.com.exhibition.ui.chat.local.service.PUSH_MESSAGE"
 
         val PUSHER_CLUSTER = "ap1"
         val PUSHER_AUTH_ENDPOINT = "http://ishopgo.com/api/v1/chat/pusher-auth"

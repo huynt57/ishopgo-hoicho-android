@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -15,14 +14,12 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.chat.local.ChatFragment
 import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
-import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -91,12 +88,6 @@ class MainFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
-        viewModel.currentConversation.observe(this, Observer {
-            it?.let {
-                showConversation(it)
-            }
-        })
-
         viewModel.showCategoriedProducts.observe(this, Observer { s ->
             s?.let {
                 if (it is Category) {
@@ -110,15 +101,6 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 }
             }
         })
-    }
-
-    private fun showConversation(conversation: LocalConversationItem) {
-        context?.let {
-            val intent = Intent(it, ConversationActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conversation.idConversions)
-            intent.putExtra(Const.TransferKey.EXTRA_TITLE, conversation.name)
-            startActivity(intent)
-        }
     }
 
     private fun showSearch() {

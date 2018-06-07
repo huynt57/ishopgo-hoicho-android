@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -42,9 +44,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.pattern.PatternChooserBottomSheet
 import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryActivity
 import ishopgo.com.exhibition.ui.chat.local.info.ConversationInfoActivity
-import ishopgo.com.exhibition.ui.chat.local.service.PusherMessageReceiver
-import ishopgo.com.exhibition.ui.chat.local.service.utils.PresenceChannelListener
-import ishopgo.com.exhibition.ui.chat.local.service.utils.PublicChannelListener
 import ishopgo.com.exhibition.ui.chat.local.service.utils.PusherUtils
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asColor
@@ -136,9 +135,11 @@ class ConversationActivity : BaseActivity() {
                     if (it.idConversation == conversationId) {
                         sharedViewModel.resolveMessage(it)
                     } else {
-                        val intent = Intent(this@ConversationActivity, PusherMessageReceiver::class.java)
-                        intent.putExtra(Const.Chat.EXTRA_MESSAGE, data)
-                        intent.action = Const.Chat.PUSHER_MESSAGE
+                        val intent = Intent(Const.Chat.PUSHER_MESSAGE)
+                        intent.putExtra("type", "chat")
+                        intent.putExtra("idConversion", conversationId)
+                        intent.putExtra("content", it.apiContent)
+                        intent.putExtra("title", it.name)
                         startService(intent)
                     }
                 }
@@ -155,6 +156,30 @@ class ConversationActivity : BaseActivity() {
         override fun onSubscriptionSucceeded(channelName: String?) {
             Log.d(TAG, "onSubscriptionSucceeded: channelName = [$channelName]")
             viewModel.channelSubscribed(true)
+        }
+
+    }
+
+    private var messageReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            Log.d(TAG, "onReceive: context = [${context}], intent = [${intent}]")
+            intent?.let {
+                val idConversion = it.getStringExtra("idConversion")
+
+                idConversion?.let {
+                    resultCode = if (it == conversationId) {
+                        // mark this message was processed and do not create notification
+                        Log.d(TAG, "chat message was processed: ")
+                        Activity.RESULT_CANCELED
+                    } else {
+                        // this message is not belong to this conversation, show notification
+                        Log.d(TAG, "chat message was not processed: ")
+                        Activity.RESULT_OK
+                    }
+                }
+            }
+
         }
 
     }
@@ -373,6 +398,19 @@ class ConversationActivity : BaseActivity() {
         viewModel.getMessages(conversationId, -1L)
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        val filter = IntentFilter(Const.Chat.BROADCAST_NOTIFICATION)
+        registerReceiver(messageReceiver, filter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        unregisterReceiver(messageReceiver)
+    }
+
     private fun selectTextPattern() {
         showPatternChooser()
     }
@@ -536,33 +574,11 @@ class ConversationActivity : BaseActivity() {
     private fun registerChannel(channel: String) {
         when {
             PusherUtils.isPrivateChannel(channel) -> subscribePrivate(channel)
-            PusherUtils.isPublicChannel(channel) -> subscribePublic(channel)
-            PusherUtils.isPresenceChannel(channel) -> subscribePresence(channel)
             else -> {
                 // ignored
             }
         }
 
-    }
-
-    private fun subscribePublic(channel: String) {
-        if (pusher.getChannel(channel)?.isSubscribed == true) {
-            Log.d(TAG, "channel $channel has subscribed")
-        } else {
-            Log.d(TAG, "channel $channel has not subscribed. Subscribing it")
-            if (isPusherConnected)
-                internalSubscribePublic(channel)
-            else {
-                // try again after 1 second
-                Log.d(TAG, "pusher has not connected. Retry in 1s ...: ")
-                handler.postDelayed({ subscribePublic(channel) }, 1000)
-            }
-        }
-    }
-
-    private fun internalSubscribePublic(channel: String) {
-        val channelListener = PublicChannelListener()
-        pusher.subscribe(channel, channelListener, "new-chat")
     }
 
     private fun subscribePrivate(channel: String) {
@@ -583,27 +599,6 @@ class ConversationActivity : BaseActivity() {
     private fun internalSubscribePrivate(channel: String) {
         Log.d(TAG, "Subscribing channel: $channel")
         pusher.subscribePrivate(channel, channelListener, "new-chat")
-    }
-
-    private fun subscribePresence(channel: String) {
-        if (pusher.getPresenceChannel(channel)?.isSubscribed == true) {
-            Log.d(TAG, "channel $channel has subscribed")
-        } else {
-            Log.d(TAG, "channel $channel has not subscribed. Subscribing it")
-
-            if (isPusherConnected)
-                internalSubscribePresence(channel)
-            else {
-                // try again after 1 second
-                Log.d(TAG, "pusher has not connected. Retry in 1s ...: ")
-                handler.postDelayed({ subscribePresence(channel) }, 1000)
-            }
-        }
-    }
-
-    private fun internalSubscribePresence(channel: String) {
-        val channelListener = PresenceChannelListener()
-        pusher.subscribePresence(channel, channelListener, "new-chat")
     }
 
     private fun updateInfo(info: ConversationInfo) {
