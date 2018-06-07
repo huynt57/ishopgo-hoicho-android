@@ -5,7 +5,6 @@ package ishopgo.com.exhibition.ui.community
  */
 interface CommunityCommentProvider {
     fun providerContent(): String
-    fun providerAccountId(): Long
     fun providerAccountName(): String
     fun providerAccountImage(): String
     fun providerPostId(): Long

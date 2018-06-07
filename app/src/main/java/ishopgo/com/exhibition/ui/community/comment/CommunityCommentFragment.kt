@@ -17,8 +17,11 @@ import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.community.CommunityCommentProvider
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -93,6 +96,17 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
             if (checkRequireFields(edt_comment.text.toString())) {
                 showProgressDialog()
                 viewModel.postCommentCommunity(post_id, edt_comment.text.toString(), postMedias)
+            }
+        }
+
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<CommunityCommentProvider> {
+            override fun click(position: Int, data: CommunityCommentProvider, code: Int) {
+
+                if (data is CommunityComment) {
+                    val intent = Intent(view.context, ProfileActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    startActivity(intent)
+                }
             }
         }
 

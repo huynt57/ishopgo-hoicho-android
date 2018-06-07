@@ -27,7 +27,8 @@ class CommunityCommentAdapter : ClickableAdapter<CommunityCommentProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<CommunityCommentProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-
+            itemView.img_avatar_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.tv_comment_name.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
         }
     }
 

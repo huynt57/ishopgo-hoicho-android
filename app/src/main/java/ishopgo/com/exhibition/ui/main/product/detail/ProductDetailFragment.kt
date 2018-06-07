@@ -21,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -28,6 +29,7 @@ import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -37,6 +39,7 @@ import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointActivity
@@ -533,6 +536,17 @@ class ProductDetailFragment : BaseFragment() {
         view_list_comments.layoutManager = layoutManager
         view_list_comments.isNestedScrollingEnabled = false
         view_list_comments.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+
+        productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductCommentProvider> {
+            override fun click(position: Int, data: ProductCommentProvider, code: Int) {
+                toast("Đang phát triển")
+//                if (data is ProductComment) {
+//                    val intent = Intent(context, ProfileActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+//                    startActivity(intent)
+//                }
+            }
+        }
     }
 
     private fun setupFavoriteProducts(context: Context) {

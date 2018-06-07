@@ -100,6 +100,17 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductCommentProvider> {
+            override fun click(position: Int, data: ProductCommentProvider, code: Int) {
+                toast("Đang phát triển")
+//                if (data is ProductComment) {
+//                    val intent = Intent(context, ProfileActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+//                    startActivity(intent)
+//                }
+            }
+        }
+
         setupImageRecycleview()
     }
 
