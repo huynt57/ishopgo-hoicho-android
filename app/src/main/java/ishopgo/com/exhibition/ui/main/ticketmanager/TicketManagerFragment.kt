@@ -102,6 +102,44 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
         }
     }
 
+    private fun saveTicketStorage() {
+        if (adapter is ClickableAdapter<TicketManagerProvider>)
+            (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
+                @SuppressLint("ObsoleteSdkInt")
+                override fun click(position: Int, data: TicketManagerProvider, code: Int) {
+                    context?.let {
+                        storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                    }
+                }
+            }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            if (!hasCameraPermission(it))
+                requestCameraPermission()
+            else saveTicketStorage()
+        }
+    }
+
+    private fun hasCameraPermission(context: Context): Boolean {
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCameraPermission() {
+        activity?.let {
+            if (adapter is ClickableAdapter<TicketManagerProvider>) {
+                (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
+                    @SuppressLint("ObsoleteSdkInt")
+                    override fun click(position: Int, data: TicketManagerProvider, code: Int) {
+                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
         fun newInstance(params: Bundle): TicketManagerFragment {
             val fragment = TicketManagerFragment()
@@ -146,32 +184,27 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == Const.RequestCode.STORAGE_PERMISSION) {
-            val hasCallPermission = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            if (hasCallPermission) {
-                if (adapter is ClickableAdapter<TicketManagerProvider>) {
-                    (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
-                        @SuppressLint("ObsoleteSdkInt")
-                        override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                            storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
-                        }
-                    }
-                }
-            }
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveTicketStorage()
         } else {
-            context?.let {
-                MaterialDialog.Builder(it)
-                        .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
-                        .positiveText("Đi tới cài đặt")
-                        .onPositive { _, _ ->
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", it.packageName, null))
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
-                        .negativeText("Huỷ")
-                        .show()
+            // permission was not granted
+            if (activity == null) {
+                return
             }
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                context?.let {
+                    MaterialDialog.Builder(it)
+                            .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
+                            .positiveText("Đi tới cài đặt")
+                            .onPositive { _, _ ->
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package", it.packageName, null))
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                            }
+                            .negativeText("Huỷ")
+                            .show()
+                }
         }
     }
 }
