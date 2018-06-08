@@ -170,6 +170,12 @@ class ApiService {
                 @Query("type") osType: String
         ): Single<BaseResponse<Any>>
 
+        @GET("members")
+        fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
+
+        @GET("members")
+        fun getDeletedMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
+
         @GET("profile")
         fun getProfile(
                 @Query("account_id") account_id: Long
@@ -318,12 +324,6 @@ class ApiService {
 
         @GET("product")
         fun getProductManagerDetail(@Query("product_id") productID: Long): Single<BaseResponse<ProductManagerDetail>>
-
-        @GET("members")
-        fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
-
-        @GET("members")
-        fun getDeletedMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
 
         @POST("restore-members/{id}")
         fun restoreMembers(@Path("id") member_id: Long): Single<BaseResponse<Any>>
