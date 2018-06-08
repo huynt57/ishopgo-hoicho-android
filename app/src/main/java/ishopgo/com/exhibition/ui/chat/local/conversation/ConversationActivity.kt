@@ -44,6 +44,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.pattern.PatternChooserBottomSheet
 import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryActivity
 import ishopgo.com.exhibition.ui.chat.local.info.ConversationInfoActivity
+import ishopgo.com.exhibition.ui.chat.local.service.PushNotificationMessageReceiver
 import ishopgo.com.exhibition.ui.chat.local.service.utils.PusherUtils
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asColor
@@ -135,7 +136,7 @@ class ConversationActivity : BaseActivity() {
                     if (it.idConversation == conversationId) {
                         sharedViewModel.resolveMessage(it)
                     } else {
-                        val intent = Intent(Const.Chat.PUSHER_MESSAGE)
+                        val intent = Intent(this@ConversationActivity, PushNotificationMessageReceiver::class.java)
                         intent.putExtra("type", "chat")
                         intent.putExtra("idConversion", conversationId)
                         intent.putExtra("content", it.apiContent)

@@ -7,17 +7,17 @@ interface IChatMessage {
 
     fun getMessageId(): Long
 
-    fun getMessageUid(): String
+    fun getMessageUid(): CharSequence
 
-    fun getCreatedTime(): String
+    fun getCreatedTime(): CharSequence
 
-    fun getConversationId(): String
+    fun getConversationId(): CharSequence
 
     fun getOwnerId(): Long
 
-    fun getOwnerName(): String
+    fun getOwnerName(): CharSequence
 
-    fun getOwnerAvatar(): String
+    fun getOwnerAvatar(): CharSequence
 
     fun getSendStatus(): Int
 

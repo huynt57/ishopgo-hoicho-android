@@ -1,16 +1,16 @@
 package ishopgo.com.exhibition.model.search_sale_point
 
 import android.text.Spanned
-import ishopgo.com.exhibition.domain.response.IdentityData
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointProvider
 
 
 class SearchSalePoint : IdentityData(), SearchSalePointProvider {
     override fun provideAddress(): Spanned {
-        return "<b>${address ?: ""}, ${district ?: ""}, ${city ?: ""}</b>".asHtml()
+        return "${address ?: ""}, ${district ?: ""}, ${city ?: ""}".asHtml()
     }
 
     override fun provideName(): Spanned {
@@ -46,4 +46,7 @@ class SearchSalePoint : IdentityData(), SearchSalePointProvider {
     @SerializedName("account_id")
     @Expose
     var accountId: Long? = 0
+    @SerializedName("chat_id")
+    @Expose
+    var chatId: Long? = 0
 }

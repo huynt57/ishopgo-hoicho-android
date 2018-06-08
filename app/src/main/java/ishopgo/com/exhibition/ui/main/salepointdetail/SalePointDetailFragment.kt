@@ -11,12 +11,16 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
@@ -59,11 +63,40 @@ class SalePointDetailFragment : BaseFragment() {
             tv_sale_point_name.text = salePoint?.provideName() ?: ""
             tv_sale_point_phone.text = salePoint?.providePhone() ?: ""
             tv_sale_point_address.text = salePoint?.provideAddress() ?: ""
-            linear_footer.setOnClickListener {
+            linear_footer_call.setOnClickListener {
                 val call = Uri.parse("tel:${salePoint?.providePhone()}")
                 val intent = Intent(Intent.ACTION_DIAL, call)
                 if (intent.resolveActivity(it.context.packageManager) != null)
                     startActivity(intent)
+            }
+
+            val chatId = data.salePoint?.chatId ?: 0L
+            val hasValidChatId = chatId != 0L
+            linear_footer_message.setOnClickListener {
+                if (!hasValidChatId) {
+                    val intent = Intent(Intent.ACTION_SENDTO)
+                    intent.type = "text/plain"
+                    intent.data = Uri.parse("smsto:${salePoint?.providePhone()}")
+                    dataProduct?.let {
+                        intent.putExtra("sms_body", "Sản phẩm: ${it.provideProductName()}\n")
+                    }
+                    context?.let {
+                        if (intent.resolveActivity(it.packageManager) != null)
+                            it.startActivity(intent)
+                    }
+                } else {
+                    val request = CreateConversationRequest()
+                    request.type = 1
+                    val members = mutableListOf<Long>()
+                    members.add(UserDataManager.currentUserId)
+                    members.add(chatId)
+                    request.member = members
+                    viewModel.createConversation(request)
+                }
+//                val call = Uri.parse("tel:${salePoint?.providePhone()}")
+//                val intent = Intent(Intent.ACTION_DIAL, call)
+//                if (intent.resolveActivity(it.context.packageManager) != null)
+//                    startActivity(intent)
             }
         }
 
@@ -115,6 +148,20 @@ class SalePointDetailFragment : BaseFragment() {
             it?.let {
                 hideProgressDialog()
                 resolveError(it)
+            }
+        })
+        viewModel.conversation.observe(this, Observer { c ->
+            c?.let {
+                val conv = LocalConversationItem()
+                conv.idConversions = c.id ?: ""
+                conv.name = c.name ?: ""
+
+                context?.let {
+                    val intent = Intent(it, ConversationActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
+                    startActivity(intent)
+                }
             }
         })
 

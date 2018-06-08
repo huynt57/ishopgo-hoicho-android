@@ -5,10 +5,10 @@ package ishopgo.com.exhibition.ui.chat.local.inbox
  */
 interface InboxProvider {
 
-    fun provideName(): String
-    fun provideAvatar(): String
-    fun provideMessage(): String
-    fun provideTime(): String
+    fun provideName(): CharSequence
+    fun provideAvatar(): CharSequence
+    fun provideMessage(): CharSequence
+    fun provideTime(): CharSequence
     fun provideWasRead(): Boolean
 
 }

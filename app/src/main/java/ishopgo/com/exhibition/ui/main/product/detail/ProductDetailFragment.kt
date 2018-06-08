@@ -19,8 +19,10 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -28,6 +30,7 @@ import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -118,6 +121,20 @@ class ProductDetailFragment : BaseFragment() {
 
         viewModel = obtainViewModel(ProductDetailViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.conversation.observe(this, Observer { c ->
+            c?.let {
+                val conv = LocalConversationItem()
+                conv.idConversions = c.id ?: ""
+                conv.name = c.name ?: ""
+
+                context?.let {
+                    val intent = Intent(it, ConversationActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
+                    startActivity(intent)
+                }
+            }
+        })
         viewModel.detail.observe(this, Observer { d ->
             d?.let {
                 showProductDetail(it)
@@ -386,7 +403,18 @@ class ProductDetailFragment : BaseFragment() {
 
     private fun messageShop(context: Context, product: ProductDetailProvider) {
         // gui tin nhan cho shop
-
+        if (product is ProductDetail) {
+            val boothId = product.booth?.id
+            boothId?.let {
+                val request = CreateConversationRequest()
+                request.type = 1
+                val members = mutableListOf<Long>()
+                members.add(UserDataManager.currentUserId)
+                members.add(it)
+                request.member = members
+                viewModel.createConversation(request)
+            }
+        }
     }
 
     private fun callShop(context: Context, product: ProductDetailProvider) {
