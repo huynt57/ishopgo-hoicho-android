@@ -5,11 +5,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.Environment.DIRECTORY_PICTURES
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
@@ -20,18 +29,9 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.os.Environment.DIRECTORY_PICTURES
-import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import java.io.File.separator
-import android.util.Log
 import net.glxn.qrgen.android.QRCode
 import java.io.*
-import com.afollestad.materialdialogs.MaterialDialog
+import java.io.File.separator
 
 
 class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, TicketManagerProvider>() {
@@ -166,7 +166,7 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
             imageData.compress(Bitmap.CompressFormat.PNG, 100, bos)
             bos.flush()
             bos.close()
-            toast("Lưu thành công")
+            toast("Lưu thành công\n$filePath")
 
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
