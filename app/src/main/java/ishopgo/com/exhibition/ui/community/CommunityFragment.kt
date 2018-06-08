@@ -30,6 +30,7 @@ import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -48,6 +49,11 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
             if (community is Community)
                 last_id = community.id
         }
+
+        if (data.isEmpty()) {
+            view_empty_result_notice.visibility = View.VISIBLE
+            view_empty_result_notice.text = "Nội dung trống"
+        } else view_empty_result_notice.visibility = View.GONE
 
         if (reloadData) {
             adapter.replaceAll(data)
@@ -109,7 +115,10 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
                             } else {
-                                showDiglogLogin()
+                                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                                startActivity(intent)
+                                activity?.finish()
                             }
                         }
 
@@ -228,26 +237,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         shareIntent.type = "text/plain"
         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlToShare)
         startActivity(shareIntent)
-    }
-
-    private fun showDiglogLogin() {
-        context?.let {
-            val builder = MaterialDialog.Builder(it)
-            builder.title("Thông báo")
-                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
-                    .positiveText("Đăng nhập")
-                    .positiveColor(Color.parseColor("#00c853"))
-                    .onPositive { dialog, _ ->
-                        dialog.dismiss()
-                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                    .negativeText("Bỏ qua")
-                    .negativeColor(Color.parseColor("#00c853"))
-                    .show()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
