@@ -23,7 +23,6 @@ import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
-import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -32,7 +31,6 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -403,18 +401,22 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun messageShop(context: Context, product: ProductDetailProvider) {
-        // gui tin nhan cho shop
-        if (product is ProductDetail) {
-            val boothId = product.booth?.id
-            boothId?.let {
-                val request = CreateConversationRequest()
-                request.type = 1
-                val members = mutableListOf<Long>()
-                members.add(UserDataManager.currentUserId)
-                members.add(it)
-                request.member = members
-                viewModel.createConversation(request)
+        if (UserDataManager.currentUserId > 0) {
+            // gui tin nhan cho shop
+            if (product is ProductDetail) {
+                val boothId = product.booth?.id
+                boothId?.let {
+                    val request = CreateConversationRequest()
+                    request.type = 1
+                    val members = mutableListOf<Long>()
+                    members.add(UserDataManager.currentUserId)
+                    members.add(it)
+                    request.member = members
+                    viewModel.createConversation(request)
+                }
             }
+        } else {
+            openActivtyLogin()
         }
     }
 
