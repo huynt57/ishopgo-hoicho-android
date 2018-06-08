@@ -145,7 +145,7 @@
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:enabled="false"
+                android:clickable="false"
                 android:text="Hiển thị giá bán sỉ" />
 
             <LinearLayout
@@ -341,23 +341,23 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+            <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="@dimen/default_margin"-->
+            <!--android:layout_marginStart="@dimen/default_margin"-->
+            <!--android:layout_marginTop="16dp">-->
 
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_product_status"
-                    style="@style/AppTheme.EnableInputField.DisableInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Trạng thái hiển thị"
-                    android:inputType="text"
-                    android:singleLine="true" />
+            <!--<android.support.design.widget.TextInputEditText-->
+            <!--android:id="@+id/edit_product_status"-->
+            <!--style="@style/AppTheme.EnableInputField.DisableInput"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:hint="Trạng thái hiển thị"-->
+            <!--android:inputType="text"-->
+            <!--android:singleLine="true" />-->
 
-            </android.support.design.widget.TextInputLayout>
+            <!--</android.support.design.widget.TextInputLayout>-->
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/til_product_description"
@@ -380,13 +380,23 @@
             </android.support.design.widget.TextInputLayout>
 
             <Switch
+                android:id="@+id/sw_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp"
+                android:clickable="false"
+                android:text="Trạng thái hiển thị:" />
+
+            <Switch
                 android:id="@+id/sw_featured"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:enabled="false"
+                android:clickable="false"
                 android:text="Sản phẩm nổi bật:" />
 
 

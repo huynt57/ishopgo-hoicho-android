@@ -9,6 +9,7 @@
     android:orientation="horizontal"
     android:padding="@dimen/default_margin"
     android:background="@drawable/bg_white_black_bottom"
+    android:foreground="?attr/selectableItemBackground"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp"
     android:layout_marginBottom="@dimen/default_margin">
@@ -17,7 +18,6 @@
         android:id="@+id/iv_thumb"
         android:layout_width="0dp"
         android:layout_height="110dp"
-        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,6 @@
         android:layout_marginEnd="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="0dp"
-        android:background="?attr/selectableItemBackground"
         android:clickable="true"
         android:ellipsize="end"
         android:focusable="true"

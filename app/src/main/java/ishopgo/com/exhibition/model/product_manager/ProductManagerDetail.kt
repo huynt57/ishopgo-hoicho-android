@@ -67,15 +67,8 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
         return price?.asMoney() ?: "0 đ"
     }
 
-    override fun provideStatus(): String {
-        var provideStatus = "Không hiển thị"
-        if (status == STATUS_DISPLAY_SHOW) {
-            provideStatus = "Hiển thị dạng chuẩn "
-        }
-        if (status == STATUS_DISPLAY_LANDING_PAGE)
-            provideStatus = "Hiển thị dạng landing page"
-
-        return provideStatus
+    override fun provideStatus(): Boolean {
+        return status == STATUS_DISPLAY_SHOW
     }
 
     override fun provideMadeIn(): String {
