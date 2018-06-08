@@ -92,14 +92,14 @@ open class BaseActivity : AppCompatActivity() {
                     .content(message)
                     .positiveText("Cập nhật")
                     .onPositive { dialog, _ ->
-                        var intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=ishopgo%20expo"))
+                        var intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=expo%20360"))
                         if (intent.resolveActivity(packageManager) != null) {
                             dialog.dismiss()
                             startActivity(intent)
                             finish()
                         } else {
                             dialog.dismiss()
-                            intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=ishopgo%20expo&c=apps"))
+                            intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=expo%20360&c=apps"))
                             startActivity(intent)
                             finish()
                         }
