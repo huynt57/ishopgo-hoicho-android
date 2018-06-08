@@ -13,7 +13,7 @@ interface ProductManagerDetailProvider {
     fun provideTTPrice(): String
     fun provideProviderPrice(): String
     fun providePrice(): String
-    fun provideStatus(): String
+    fun provideStatus(): Boolean
     fun provideMadeIn(): String
     fun provideTags(): String
     fun provideDescription(): String

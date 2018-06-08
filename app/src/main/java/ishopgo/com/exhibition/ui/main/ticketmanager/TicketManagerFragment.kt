@@ -5,11 +5,20 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
+import android.os.Environment.DIRECTORY_PICTURES
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
@@ -20,18 +29,9 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
-import android.os.Environment
-import android.os.Environment.DIRECTORY_PICTURES
-import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import java.io.File.separator
-import android.util.Log
 import net.glxn.qrgen.android.QRCode
 import java.io.*
-import com.afollestad.materialdialogs.MaterialDialog
+import java.io.File.separator
 
 
 class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, TicketManagerProvider>() {
@@ -102,6 +102,44 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
         }
     }
 
+    private fun saveTicketStorage() {
+        if (adapter is ClickableAdapter<TicketManagerProvider>)
+            (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
+                @SuppressLint("ObsoleteSdkInt")
+                override fun click(position: Int, data: TicketManagerProvider, code: Int) {
+                    context?.let {
+                        storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                    }
+                }
+            }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        context?.let {
+            if (!hasCameraPermission(it))
+                requestCameraPermission()
+            else saveTicketStorage()
+        }
+    }
+
+    private fun hasCameraPermission(context: Context): Boolean {
+        return ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestCameraPermission() {
+        activity?.let {
+            if (adapter is ClickableAdapter<TicketManagerProvider>) {
+                (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
+                    @SuppressLint("ObsoleteSdkInt")
+                    override fun click(position: Int, data: TicketManagerProvider, code: Int) {
+                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
         fun newInstance(params: Bundle): TicketManagerFragment {
             val fragment = TicketManagerFragment()
@@ -128,7 +166,7 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
             imageData.compress(Bitmap.CompressFormat.PNG, 100, bos)
             bos.flush()
             bos.close()
-            toast("Lưu thành công")
+            toast("Lưu thành công\n$filePath")
 
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
@@ -146,32 +184,27 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        if (requestCode == Const.RequestCode.STORAGE_PERMISSION) {
-            val hasCallPermission = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
-            if (hasCallPermission) {
-                if (adapter is ClickableAdapter<TicketManagerProvider>) {
-                    (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
-                        @SuppressLint("ObsoleteSdkInt")
-                        override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                            storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
-                        }
-                    }
-                }
-            }
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            saveTicketStorage()
         } else {
-            context?.let {
-                MaterialDialog.Builder(it)
-                        .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
-                        .positiveText("Đi tới cài đặt")
-                        .onPositive { _, _ ->
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                    Uri.fromParts("package", it.packageName, null))
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            startActivity(intent)
-                        }
-                        .negativeText("Huỷ")
-                        .show()
+            // permission was not granted
+            if (activity == null) {
+                return
             }
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                context?.let {
+                    MaterialDialog.Builder(it)
+                            .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
+                            .positiveText("Đi tới cài đặt")
+                            .onPositive { _, _ ->
+                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                        Uri.fromParts("package", it.packageName, null))
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                startActivity(intent)
+                            }
+                            .negativeText("Huỷ")
+                            .show()
+                }
         }
     }
 }

@@ -238,8 +238,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_meta_description.setText(info.provideMetaDescription())
         edit_product_tags.setText(info.provideTags())
         edit_product_provider.setText(info.providerAccount?.name ?: "")
-        edit_product_status.setText(info.provideStatus())
 
+        sw_status.isChecked = info.provideStatus()
         if (info.provideDepartments() != null && info.provideDepartments()!!.isNotEmpty())
             edit_product_brand.setText(info.provideDepartments()?.get(0)?.name ?: "")
 
@@ -320,7 +320,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_tags.isFocusableInTouchMode = false
         edit_product_price.setOnClickListener(null)
         edit_product_provider.setOnClickListener(null)
-        edit_product_status.setOnClickListener(null)
         sw_featured.isEnabled = false
 
         view_scrollview.smoothScrollTo(0, 0)
@@ -355,9 +354,10 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_tags.isFocusableInTouchMode = true
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
         edit_product_provider.setOnClickListener { getProvider(edit_product_provider) }
-        edit_product_status.setOnClickListener { getStatus(edit_product_status) }
         sw_featured.isEnabled = true
+        sw_status.isEnabled = true
         sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
+        sw_status.setOnCheckedChangeListener { _, _ -> status = if (sw_status.isChecked) STATUS_DISPLAY_SHOW else STATUS_DISPLAY_HIDDEN }
 
         edit_product_name.requestFocus()
         val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -447,40 +447,6 @@ class ProductManagerDetailFragment : BaseFragment() {
                     }
                 }
             }
-            dialog.show()
-        }
-    }
-
-    private fun getStatus(view: TextView) {
-        context?.let {
-            val dialog = MaterialDialog.Builder(it)
-                    .customView(R.layout.dialog_product_status, false)
-                    .autoDismiss(false)
-                    .canceledOnTouchOutside(true)
-                    .build()
-
-            val tv_status_standard = dialog.findViewById(R.id.tv_status_standard) as TextView
-            val tv_status_landing_padding = dialog.findViewById(R.id.tv_status_landing_padding) as TextView
-            val tv_status_hidden = dialog.findViewById(R.id.tv_status_hidden) as TextView
-
-            tv_status_standard.setOnClickListener {
-                status = STATUS_DISPLAY_SHOW
-                view.text = tv_status_standard.text
-                dialog.dismiss()
-            }
-
-            tv_status_landing_padding.setOnClickListener {
-                status = STATUS_DISPLAY_LANDING_PAGE
-                view.text = tv_status_landing_padding.text
-                dialog.dismiss()
-            }
-
-            tv_status_hidden.setOnClickListener {
-                status = STATUS_DISPLAY_HIDDEN
-                view.text = tv_status_hidden.text
-                dialog.dismiss()
-            }
-
             dialog.show()
         }
     }
