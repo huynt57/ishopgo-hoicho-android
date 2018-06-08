@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail.comment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -25,7 +26,9 @@ import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import kotlinx.android.synthetic.main.fragment_comment_community.*
+import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
+import kotlinx.android.synthetic.main.fragment_comment_product.*
 
 /**
  * Created by hoangnh on 5/4/2018.
@@ -76,9 +79,9 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_comment_community.layoutManager = layoutManager
-        rv_comment_community.adapter = adapter
-        rv_comment_community.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        view_recyclerview.layoutManager = layoutManager
+        view_recyclerview.adapter = adapter
+        view_recyclerview.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 loadMore()
             }
@@ -94,8 +97,8 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         }
 
         swipe.setOnRefreshListener(this)
-        rv_comment_community.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        rv_comment_community.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
+        view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
         setupImageRecycleview()
     }
@@ -121,6 +124,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(ProductCommentViewModel::class.java, false)
@@ -141,9 +145,9 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
                 adapterImages.replaceAll(postMedias)
                 rv_comment_community_image.visibility = View.GONE
 
-                rv_comment_community.post {
+                view_recyclerview.post {
                     scroller.targetPosition = 0
-                    rv_comment_community.layoutManager.startSmoothScroll(scroller)
+                    view_recyclerview.layoutManager.startSmoothScroll(scroller)
                 }
             }
         })
@@ -151,6 +155,11 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         viewModel.dataReturned.observe(this, Observer { p ->
             p?.let {
                 if (reloadData) {
+                    if (it.isEmpty()) {
+                        view_empty_result_notice.visibility = View.VISIBLE
+                        view_empty_result_notice.text = "Nội dung trống"
+                    } else view_empty_result_notice.visibility = View.GONE
+
                     adapter.replaceAll(it)
                     hideProgressDialog()
                 } else {
@@ -173,8 +182,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         loadMore.productId = productId
         loadMore.limit = Const.PAGE_LIMIT
         viewModel.loadData(loadMore)
-        rv_comment_community.scheduleLayoutAnimation()
-
+        view_recyclerview.scheduleLayoutAnimation()
     }
 
     fun loadMore() {
@@ -204,7 +212,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.clipData == null) {
                 if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                     return
                 }
                 val postMedia = PostMedia()
@@ -215,7 +223,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
             } else {
                 for (i in 0 until data.clipData.itemCount) {
                     if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                         return
                     }
                     val postMedia = PostMedia()
