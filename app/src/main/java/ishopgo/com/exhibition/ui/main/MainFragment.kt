@@ -152,24 +152,8 @@ class MainFragment : BaseFragment(), BackpressConsumable {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
                 view_bottom_navigation.currentItem = position
-
-                changeStateScanFragment(position == TAB_SCAN)
             }
         })
-    }
-
-    private fun changeStateScanFragment(isTabScan: Boolean) {
-        val count = pagerAdapter.count
-        for (i in 0..count) {
-            val item = pagerAdapter.getItem(i)
-            if (item is ScanFragmentActionBar) {
-                if (isTabScan) {
-                    // should resume camera here
-                } else {
-                    // should pause camera here
-                }
-            }
-        }
     }
 
     private fun setUpNavigation() {

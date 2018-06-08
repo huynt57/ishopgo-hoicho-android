@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.scan
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
@@ -17,6 +18,9 @@ class ScanFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
     }
 
     companion object {
+
+        private val TAG = "ScanFragmentActionBar"
+
         fun newInstance(params: Bundle): ScanFragmentActionBar {
             val fragment = ScanFragmentActionBar()
             fragment.arguments = params
@@ -39,19 +43,25 @@ class ScanFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ScanFragment())
+                .replace(R.id.view_main_content, ScanFragment(), ScanFragment.TAG)
                 .commit()
+
+        Log.d(TAG, "userHint: ${userVisibleHint} ${isVisible} ${isResumed} ${isHidden} ")
     }
 
-    fun pauseCamera() {
-//        if (scanFragment.isAdded)
-//            scanFragment.pauseCamera()
-    }
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        Log.d(TAG, "setUserVisibleHint: isVisibleToUser = [${isVisibleToUser}]")
+        super.setUserVisibleHint(isVisibleToUser)
 
-    fun resumeCamera() {
-//        if (scanFragment.isAdded)
-//            scanFragment.resumeCamera()
+        if (!isAdded) return
+        else
+            if (isVisibleToUser) {
+                val fragment = childFragmentManager.findFragmentByTag(ScanFragment.TAG) as? ScanFragment
+                fragment?.resumeCamera()
+            } else {
+                val fragment = childFragmentManager.findFragmentByTag(ScanFragment.TAG) as? ScanFragment
+                fragment?.pauseCamera()
+            }
     }
-
 
 }

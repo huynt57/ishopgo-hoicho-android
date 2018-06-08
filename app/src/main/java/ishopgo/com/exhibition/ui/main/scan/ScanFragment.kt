@@ -34,60 +34,83 @@ import kotlinx.android.synthetic.main.fragment_scan.*
  */
 class ScanFragment : BaseFragment(), BarcodeCallback {
     companion object {
-        private val TAG = "ScanFragment"
+        const val TAG = "ScanFragment"
     }
 
     private val capture: CaptureManager? = null
     private lateinit var beepManager: BeepManager
     private lateinit var viewModel: ScanViewModel
+    private var isInitBarCodeScanner = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scan, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        val intent = Intent()
-        intent.putExtra(Intents.Scan.FORMATS, String.format("%s, %s", Intents.Scan.ONE_D_MODE, Intents.Scan.QR_CODE_MODE))
-        intent.putExtra(Intents.Scan.CAMERA_ID, Camera.CameraInfo.CAMERA_FACING_BACK)
-        intent.putExtra(Intents.Scan.PROMPT_MESSAGE, "")
-        zxing_barcode_scanner.initializeFromIntent(intent)
-
-        Log.d(TAG, "userHint: ${userVisibleHint} ${isVisible} ${isResumed} ${isHidden} ")
-    }
-
     override fun onPause() {
         super.onPause()
         Log.d(TAG, "onPause: ")
-        pauseCamera()
+
+        if (isInitBarCodeScanner)
+            pauseCamera()
     }
 
     override fun onResume() {
         super.onResume()
         Log.d(TAG, "onResume: ")
 
-        context?.let {
-            if (hasCameraPermission(it)) {
-                view_request_camera_permission.visibility = View.GONE
-                view_notice_permission.visibility = View.GONE
-                resumeCamera()
-            } else {
-                requestCameraPermission()
+        if (isInitBarCodeScanner)
+            context?.let {
+                if (hasCameraPermission(it)) {
+                    view_request_camera_permission.visibility = View.GONE
+                    view_notice_permission.visibility = View.GONE
+                    resumeCamera()
+                } else {
+                    requestCameraPermission()
+                }
+            }
+    }
+
+    private fun initBarcodeScanner() {
+        if (!isInitBarCodeScanner) {
+            Log.d(TAG, "init barcode scanner")
+            val intent = Intent()
+            intent.putExtra(Intents.Scan.FORMATS, String.format("%s, %s", Intents.Scan.ONE_D_MODE, Intents.Scan.QR_CODE_MODE))
+            intent.putExtra(Intents.Scan.CAMERA_ID, Camera.CameraInfo.CAMERA_FACING_BACK)
+            intent.putExtra(Intents.Scan.PROMPT_MESSAGE, "")
+            zxing_barcode_scanner.initializeFromIntent(intent)
+            zxing_barcode_scanner.decodeSingle(this)
+            zxing_barcode_scanner.resume()
+            isInitBarCodeScanner = true
+
+            context?.let {
+                val hasCameraPermission = hasCameraPermission(it)
+                view_request_camera_permission.visibility = if (hasCameraPermission) View.GONE else View.VISIBLE
+                view_notice_permission.visibility = if (hasCameraPermission) View.GONE else View.VISIBLE
+                view_request_camera_permission.setOnClickListener {
+                    requestPermissions(arrayOf(Manifest.permission.CAMERA), Const.RequestCode.CAMERA_PERMISSION)
+                }
             }
         }
     }
 
     fun pauseCamera() {
         Log.d(TAG, "pauseCamera: ")
-        zxing_barcode_scanner.post { zxing_barcode_scanner.pauseAndWait() }
+        if (isInitBarCodeScanner)
+            zxing_barcode_scanner.post { zxing_barcode_scanner.pauseAndWait() }
+        else {
+            initBarcodeScanner()
+        }
     }
 
     fun resumeCamera() {
         Log.d(TAG, "resumeCamera: ")
-        zxing_barcode_scanner.post {
-            zxing_barcode_scanner.decodeSingle(this)
-            zxing_barcode_scanner.resume()
+        if (isInitBarCodeScanner)
+            zxing_barcode_scanner.post {
+                zxing_barcode_scanner.decodeSingle(this)
+                zxing_barcode_scanner.resume()
+            }
+        else {
+            initBarcodeScanner()
         }
     }
 
