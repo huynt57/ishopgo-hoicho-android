@@ -37,4 +37,20 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var deleteSusscess = MutableLiveData<Boolean>()
+
+    fun deleteMember(member_Id: Long) {
+
+        addDisposable(isgService.deleteMember(member_Id)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        deleteSusscess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
 }

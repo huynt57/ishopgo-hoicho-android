@@ -1,9 +1,11 @@
 package ishopgo.com.exhibition.ui.chat.local.profile
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -12,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.content_local_chat_profile.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -31,13 +34,24 @@ class ProfileFragment : BaseActionBarFragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel = obtainViewModel(ProfileViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                hideProgressDialog()
+                resolveError(it)
+            }
+        })
         viewModel.userData.observe(this, Observer { info ->
             info?.let {
                 showDetail(it)
             }
         })
 
+        viewModel.deleteSusscess.observe(this, Observer {
+            toast("Xoá thành công")
+            hideProgressDialog()
+            activity?.setResult(RESULT_OK)
+            activity?.finish()
+        })
 
         activity?.let {
             val memberId = it.intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
@@ -65,7 +79,7 @@ class ProfileFragment : BaseActionBarFragment() {
                         .placeholder(R.drawable.avatar_placeholder)
                         .error(R.drawable.avatar_placeholder)
                 )
-                .listener(object: RequestListener<Drawable> {
+                .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
                         view_avatar.setBackgroundResource(R.color.md_grey_200)
                         return false
@@ -97,6 +111,25 @@ class ProfileFragment : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
+        if (UserDataManager.currentType == "Chủ hội chợ") {
+            toolbar.rightButton(R.drawable.ic_delete_green_24dp)
+            toolbar.setRightButtonClickListener {
+                context?.let {
+                    MaterialDialog.Builder(it)
+                            .content("Bạn có muốn xoá thành viên này không?")
+                            .positiveText("Có")
+                            .onPositive { _, _ ->
+                                activity?.let {
+                                    val memberId = it.intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
+                                    viewModel.deleteMember(memberId)
+                                }
+                                showProgressDialog()
+                            }
+                            .negativeText("Không")
+                            .onNegative { dialog, _ -> dialog.dismiss() }
+                            .show()
+                }
+            }
+        }
     }
-
 }

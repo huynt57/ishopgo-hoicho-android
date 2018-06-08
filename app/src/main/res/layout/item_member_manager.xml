@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_white_black_bottom"
+    android:foreground="?attr/selectableItemBackground"
     android:padding="8dp"
     tools:layout_editor_absoluteX="8dp"
     tools:layout_editor_absoluteY="25dp">

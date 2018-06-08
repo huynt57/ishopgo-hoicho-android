@@ -19,7 +19,7 @@ class MemberManagerAdapter : ClickableAdapter<MemberManagerProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<MemberManagerProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.img_member_manager_delete.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
         }
     }
 
@@ -34,6 +34,7 @@ class MemberManagerAdapter : ClickableAdapter<MemberManagerProvider>() {
                 tv_member_manager_email.text = data.provideEmail()
                 tv_member_manager_region.text = data.provideRegion()
                 tv_member_manager_booth.text = data.provideBooth()
+                img_member_manager_delete.visibility = View.GONE
             }
         }
 

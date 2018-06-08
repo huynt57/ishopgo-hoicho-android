@@ -47,6 +47,7 @@ object Const {
         const val BOOTH_FOLLOW = 25
         const val PRODUCT_FOLLOW = 26
         const val STORAGE_PERMISSION = 27
+        const val DELETED_MEMBER = 28
     }
 
     object AccountAction {
