@@ -24,4 +24,7 @@ interface ProductDetailProvider {
     fun provideProductShareCount(): Int
     fun provideProductLinkAffiliate(): String
 
+    fun provideViewWholesale(): Boolean
+    fun provideWholesale(): String
+
 }

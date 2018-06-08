@@ -362,6 +362,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".ui.main.ticketmanager.TicketManagerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
         <activity android:name=".ui.deeplink.DeeplinkHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>

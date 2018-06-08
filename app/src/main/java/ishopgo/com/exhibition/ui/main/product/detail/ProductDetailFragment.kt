@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -31,6 +32,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -40,6 +42,7 @@ import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointActivity
@@ -210,13 +213,11 @@ class ProductDetailFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetailProvider) {
         context?.let {
-            //            Glide.with(it)
-//                    .load(product.provideProductImage())
-//                    .apply(RequestOptions()
-//                            .centerCrop()
-//                            .placeholder(R.drawable.image_placeholder)
-//                            .error(R.drawable.image_placeholder))
-//                    .into(view_product_image)
+
+            if (product.provideViewWholesale()) {
+                view_product_wholesale.visibility = View.VISIBLE
+                view_product_wholesale.text = product.provideWholesale()
+            } else view_product_wholesale.visibility = View.GONE
 
             if (product is ProductDetail) {
                 if (product.images != null && product.images!!.isNotEmpty())
@@ -563,6 +564,17 @@ class ProductDetailFragment : BaseFragment() {
         view_list_comments.layoutManager = layoutManager
         view_list_comments.isNestedScrollingEnabled = false
         view_list_comments.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+
+        productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductCommentProvider> {
+            override fun click(position: Int, data: ProductCommentProvider, code: Int) {
+                toast("Đang phát triển")
+//                if (data is ProductComment) {
+//                    val intent = Intent(context, ProfileActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+//                    startActivity(intent)
+//                }
+            }
+        }
     }
 
     private fun setupFavoriteProducts(context: Context) {

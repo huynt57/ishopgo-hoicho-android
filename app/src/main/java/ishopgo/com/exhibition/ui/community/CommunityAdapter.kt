@@ -27,6 +27,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
         const val COMMUNITY_IMAGE_CLICK = 7
+        const val COMMUNITY_PROFILE_CLICK = 8
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
@@ -56,6 +57,8 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                 itemView.img_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
                 itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
                 itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
+                itemView.img_community_avatar.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PROFILE_CLICK) }
+                itemView.tv_community_username.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PROFILE_CLICK) }
 
                 if (UserDataManager.currentUserId > 0) {
                     itemView.toggle_community_like.setOnClickListener {

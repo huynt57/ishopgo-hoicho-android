@@ -282,6 +282,9 @@ class ApiService {
 
         @GET("list-follow-booth")
         fun getBoothFollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothFollow>>>
+
+        @GET("ticket")
+        fun getListTicket(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>>
     }
 
     interface ISGApi {

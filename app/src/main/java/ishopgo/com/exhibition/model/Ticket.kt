@@ -7,11 +7,32 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.ticket.TicketProvider
+import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerProvider
 
 
-class Ticket : IdentityData(), TicketProvider {
+class Ticket : IdentityData(), TicketProvider, TicketManagerProvider {
+    override fun provideBoothName(): String {
+        return name ?: ""
+    }
+
+    override fun provideTicketAddress(): String {
+        return "Địa chỉ: ${address ?: ""}, ${district ?: ""}, ${city ?: ""}"
+    }
+
+    override fun provideTicketCode(): String {
+        return code ?: ""
+    }
+
+    override fun provideBoothPhone(): String {
+        return phone ?: ""
+    }
+
+    override fun provideDateScan(): String {
+        return "Ngày quét: ${createdAt ?: ""}"
+    }
+
     override fun provideEmail(): Spanned {
-        return "Email: <b>${email ?: ""}</b>".asHtml()
+        return "Email: <b>${email?.asDateTime() ?: ""}</b>".asHtml()
     }
 
     override fun provideTicketName(): String {

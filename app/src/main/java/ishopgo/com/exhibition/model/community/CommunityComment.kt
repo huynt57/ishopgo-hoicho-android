@@ -19,10 +19,6 @@ class CommunityComment : IdentityData(), CommunityCommentProvider {
         return if (accountName.isNullOrBlank()) "Người dùng ẩn danh" else accountName!!
     }
 
-    override fun providerAccountId(): Long {
-        return id
-    }
-
     override fun providerPostId(): Long {
         return postId ?: 0
     }
@@ -54,6 +50,9 @@ class CommunityComment : IdentityData(), CommunityCommentProvider {
     @SerializedName("account_name")
     @Expose
     var accountName: String? = null
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Long = 0L
     @SerializedName("account_image")
     @Expose
     var accountImage: String? = null

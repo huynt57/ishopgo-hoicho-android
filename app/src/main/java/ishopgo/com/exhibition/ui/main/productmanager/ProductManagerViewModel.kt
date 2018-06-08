@@ -64,10 +64,10 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
 
     var createProductSusscess = MutableLiveData<Boolean>()
 
-    fun createProductManager(name: String, code: String, title: String, tt_price: Long, price: Long, provider_price: Long, dvt: String,
+    fun createProductManager(name: String, code: String, title: String, price: Long, dvt: String,
                              provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                              description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int) {
+                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -75,9 +75,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         builder.addFormDataPart("name", name)
         builder.addFormDataPart("code", code)
         builder.addFormDataPart("title", title)
-        builder.addFormDataPart("tt_price", tt_price.toString())
         builder.addFormDataPart("price", price.toString())
-        builder.addFormDataPart("provider_price", provider_price.toString())
         builder.addFormDataPart("dvt", dvt)
         builder.addFormDataPart("provider_id", provider_id.toString())
         builder.addFormDataPart("department_id", brand_id.toString())
@@ -87,6 +85,10 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         builder.addFormDataPart("meta_description", meta_description)
         builder.addFormDataPart("meta_keyword", meta_keyword)
         builder.addFormDataPart("is_featured", is_featured.toString())
+        builder.addFormDataPart("wholesale_price_from", wholesale_price_from.toString())
+        builder.addFormDataPart("wholesale_price_to", wholesale_price_to.toString())
+        builder.addFormDataPart("wholesale_count_product", wholesale_count_product.toString())
+
         val listTags: ArrayList<String>? = ArrayList()
         listTags?.add(tag)
 

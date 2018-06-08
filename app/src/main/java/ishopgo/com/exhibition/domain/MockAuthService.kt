@@ -18,6 +18,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getListTicket(fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>> {
+        val response = BaseResponse<Ticket>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getListTicket(fields)
+    }
 
     override fun getProductFollow(fields: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
         val response = BaseResponse<Product>()

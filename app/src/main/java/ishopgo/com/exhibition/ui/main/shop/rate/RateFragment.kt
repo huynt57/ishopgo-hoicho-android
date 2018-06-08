@@ -15,11 +15,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ShopRatesRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.ShopRate
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -95,6 +98,20 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
 
         ratingBar.onRatingBarChangeListener = rateListener
 
+        if (adapter is ClickableAdapter<ShopRateProvider>) {
+            (adapter as ClickableAdapter<ShopRateProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ShopRateProvider> {
+                override fun click(position: Int, data: ShopRateProvider, code: Int) {
+                    if (data is ShopRate) {
+                        val intent = Intent(view.context, ProfileActivity::class.java)
+                        val memberId = data.account?.id ?: 0
+                        memberId?.let {
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, it)
+                        }
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     private val rateListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
@@ -106,7 +123,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
         }
     }
 
-    private fun openLoginActivity(){
+    private fun openLoginActivity() {
         ratingBar.rating = 0.0f
         ratingBar.onRatingBarChangeListener = rateListener
         val intent = Intent(context, LoginSelectOptionActivity::class.java)

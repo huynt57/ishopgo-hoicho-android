@@ -21,6 +21,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
@@ -92,6 +93,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
         const val COMMUNITY_IMAGE_CLICK = 7
+        const val COMMUNITY_PROFILE_CLICK = 8
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -179,6 +181,14 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
                             startActivity(intent)
+                        }
+
+                        COMMUNITY_PROFILE_CLICK -> {
+                            if (data is Community) {
+                                val intent = Intent(view.context, ProfileActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                                startActivity(intent)
+                            }
                         }
                     }
                 }

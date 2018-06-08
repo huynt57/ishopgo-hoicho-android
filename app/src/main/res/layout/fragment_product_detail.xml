@@ -94,11 +94,9 @@
                     android:id="@+id/view_icon_price"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:layout_marginBottom="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/price_tag"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_product_name" />
 
@@ -115,6 +113,22 @@
                     app:layout_constraintStart_toEndOf="@+id/view_icon_price"
                     app:layout_constraintTop_toTopOf="@id/view_icon_price"
                     tools:text="280.000 đ" />
+
+                <TextView
+                    android:id="@+id/view_product_wholesale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_price"
+                    tools:text="Giá bán sỉ từ 0đ tới 0đ khi mua tối thiểu 0" />
 
             </android.support.constraint.ConstraintLayout>
 

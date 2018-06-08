@@ -72,12 +72,6 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
         }
 
         if (reloadData) {
-            if (data.isEmpty()) {
-                view_empty_result_notice.visibility = View.VISIBLE
-                view_empty_result_notice.text = "Nội dung trống"
-            } else view_empty_result_notice.visibility = View.GONE
-
-
             adapter.replaceAll(data)
             val community = Community()
             community.id = total.toLong()

@@ -163,6 +163,15 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     private fun showDetail(info: ProductManagerDetail) {
 
+        sw_show_wholesale.isChecked = info.provideViewWholesale()
+
+        if (info.provideViewWholesale()) {
+            linear_wholesale.visibility = View.VISIBLE
+            edit_produt_wholesale_from.setText(info.provideWholesaleFrom())
+            edit_produt_wholesale_to.setText(info.provideWholesaleTo())
+            edit_produt_wholesale_count.setText(info.provideWholesaleCountProduct())
+        } else linear_wholesale.visibility = View.GONE
+
         if (info.provideImages().isNotEmpty()) {
             imageOld = info.provideImages()[0]
 
@@ -224,9 +233,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_code.setText(info.provideCode())
         edit_product_dvt.setText(info.provideDVT())
         edit_product_madeIn.setText(info.provideMadeIn())
-        edit_product_provider_price.setText(info.provideProviderPrice())
         edit_product_price.setText(info.providePrice())
-        edit_product_ttprice.setText(info.provideTTPrice())
         edit_product_title.setText(info.provideTitle())
         edit_product_meta_description.setText(info.provideMetaDescription())
         edit_product_tags.setText(info.provideTags())
@@ -303,12 +310,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_dvt.isFocusableInTouchMode = false
         edit_product_madeIn.isFocusable = false
         edit_product_madeIn.isFocusableInTouchMode = false
-        edit_product_provider_price.isFocusable = false
-        edit_product_provider_price.isFocusableInTouchMode = false
         edit_product_price.isFocusable = false
         edit_product_price.isFocusableInTouchMode = false
-        edit_product_ttprice.isFocusable = false
-        edit_product_ttprice.isFocusableInTouchMode = false
         edit_product_title.isFocusable = false
         edit_product_title.isFocusableInTouchMode = false
         edit_product_meta_description.isFocusable = false
@@ -342,12 +345,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_dvt.isFocusableInTouchMode = true
         edit_product_madeIn.isFocusable = true
         edit_product_madeIn.isFocusableInTouchMode = true
-        edit_product_provider_price.isFocusable = true
-        edit_product_provider_price.isFocusableInTouchMode = true
         edit_product_price.isFocusable = true
         edit_product_price.isFocusableInTouchMode = true
-        edit_product_ttprice.isFocusable = true
-        edit_product_ttprice.isFocusableInTouchMode = true
         edit_product_title.isFocusable = true
         edit_product_title.isFocusableInTouchMode = true
         edit_product_meta_description.isFocusable = true

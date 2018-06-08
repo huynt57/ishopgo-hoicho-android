@@ -11,8 +11,17 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
+    override fun provideWholesale(): String {
+        return "Giá bán sỉ từ ${wholesalePriceFrom.asMoney()} tới ${wholesalePriceTo.asMoney()} khi mua tối thiểu $wholesaleCountProduct sản phẩm"
+    }
+
+    override fun provideViewWholesale(): Boolean {
+        return viewWholesale == VIEW_WHOLESALE
+    }
+
     override fun provideShopAddress(): String {
-        return "${booth?.address?.trim() ?:""}, ${booth?.district?.trim() ?:""}, ${booth?.city?.trim() ?:""}"
+        return "${booth?.address?.trim() ?: ""}, ${booth?.district?.trim()
+                ?: ""}, ${booth?.city?.trim() ?: ""}"
     }
 
     override fun provideLiked(): Boolean {
@@ -82,6 +91,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
 
     companion object {
         const val LIKED = 1
+        const val VIEW_WHOLESALE = 1
     }
 
     @SerializedName("title")
@@ -135,4 +145,16 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     @SerializedName("images")
     @Expose
     var images: MutableList<String>? = null
+    @SerializedName("wholesale_price_from")
+    @Expose
+    var wholesalePriceFrom: Long = 0
+    @SerializedName("wholesale_price_to")
+    @Expose
+    var wholesalePriceTo: Long = 0
+    @SerializedName("wholesale_count_product")
+    @Expose
+    var wholesaleCountProduct: Int = 0
+    @SerializedName("view_wholesale")
+    @Expose
+    var viewWholesale: Int? = null
 }
