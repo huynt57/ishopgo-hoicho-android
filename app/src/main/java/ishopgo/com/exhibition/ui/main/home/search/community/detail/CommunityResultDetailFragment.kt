@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.search.community.detail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -31,6 +32,8 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_comment_community.*
 import kotlinx.android.synthetic.main.fragment_community_result_detail.*
 
@@ -174,9 +177,9 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
             }
         }
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        rv_comment_community.layoutManager = layoutManager
-        rv_comment_community.adapter = adapterComment
-        rv_comment_community.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+        view_recyclerview.layoutManager = layoutManager
+        view_recyclerview.adapter = adapterComment
+        view_recyclerview.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                 loadMore()
             }
@@ -255,6 +258,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(CommunityViewModel::class.java, false)
@@ -284,6 +288,11 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                 }
 
                 if (reloadData) {
+                    if (it.isEmpty()) {
+                        view_empty_result_notice.visibility = View.VISIBLE
+                        view_empty_result_notice.text = "Nội dung trống"
+                    } else view_empty_result_notice.visibility = View.GONE
+
                     adapterComment.replaceAll(it)
                     hideProgressDialog()
                 } else {
@@ -298,8 +307,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         if (UserDataManager.currentUserId > 0){
             firstLoad()
             include_content.visibility = View.VISIBLE
-        }
-        else include_content.visibility = View.GONE
+        } else include_content.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
