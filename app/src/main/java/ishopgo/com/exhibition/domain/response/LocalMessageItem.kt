@@ -6,6 +6,7 @@ import ishopgo.com.exhibition.model.chat.ChatImageMessage
 import ishopgo.com.exhibition.model.chat.ChatProductMessage
 import ishopgo.com.exhibition.model.chat.ChatTextMessage
 import ishopgo.com.exhibition.model.chat.IChatMessage
+import ishopgo.com.exhibition.ui.extensions.asHtml
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
@@ -25,21 +26,21 @@ class LocalMessageItem : ChatTextMessage, ChatImageMessage, ChatProductMessage {
             }
     }
 
-    override fun getText(): CharSequence = content.replace("<br>", "\n")
+    override fun getText(): CharSequence = content.asHtml()
 
     override fun getMessageId(): Long = id
 
-    override fun getMessageUid(): String = "$id"
+    override fun getMessageUid(): CharSequence = "$id"
 
-    override fun getCreatedTime(): String = time
+    override fun getCreatedTime(): CharSequence = time
 
-    override fun getConversationId(): String = idConversation
+    override fun getConversationId(): CharSequence = idConversation
 
     override fun getOwnerId(): Long = from
 
-    override fun getOwnerName(): String = accountName
+    override fun getOwnerName(): CharSequence = accountName
 
-    override fun getOwnerAvatar(): String = accountAvatar
+    override fun getOwnerAvatar(): CharSequence = accountAvatar
 
     override fun getSendStatus(): Int = IChatMessage.STATUS_SENT
 

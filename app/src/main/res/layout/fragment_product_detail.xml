@@ -373,7 +373,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:text="Hỗ trợ thêm thông tin nhiều điểm bán - sản phẩm"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:text="Hãy thêm thông tin liên hệ nếu bạn đang có bán sản phẩm này"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />

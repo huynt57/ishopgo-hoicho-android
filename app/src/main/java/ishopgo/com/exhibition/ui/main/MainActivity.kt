@@ -69,6 +69,7 @@ class MainActivity : BaseSingleFragmentActivity() {
         super.onCreate(savedInstanceState)
 
         mainViewModel = obtainViewModel(MainViewModel::class.java)
+
     }
 
     override fun createFragment(startupOption: Bundle): Fragment {

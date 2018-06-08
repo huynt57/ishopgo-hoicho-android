@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
     android:background="@drawable/bg_stroked_rounded_rectangle"
+    android:foreground="?attr/selectableItemBackground"
     android:padding="8dp">
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -21,7 +23,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_product_sale_point_distance"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Tên cửa hàng" />
+        tools:text="Tên cửa hàng"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_product_sale_point_distance"
@@ -31,7 +33,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="1.0km" />
+        tools:text="1.0km"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_product_sale_point_address"
@@ -46,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_sale_point_name"
-        tools:text="Địa chỉ" />
+        tools:text="Địa chỉ"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_product_sale_point_phone"
@@ -64,7 +66,7 @@
         app:layout_constraintEnd_toStartOf="@+id/tv_product_sale_point_price"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_sale_point_address"
-        tools:text="0987654321" />
+        tools:text="0987654321"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_product_sale_point_price"
@@ -81,6 +83,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_product_sale_point_address"
-        tools:text="100.000.000 đ" />
+        tools:text="100.000.000 đ"/>
 
 </android.support.constraint.ConstraintLayout>

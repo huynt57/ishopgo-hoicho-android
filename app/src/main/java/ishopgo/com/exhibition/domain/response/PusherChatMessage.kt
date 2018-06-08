@@ -5,6 +5,7 @@ import ishopgo.com.exhibition.model.chat.ChatImageMessage
 import ishopgo.com.exhibition.model.chat.ChatProductMessage
 import ishopgo.com.exhibition.model.chat.ChatTextMessage
 import ishopgo.com.exhibition.model.chat.IChatMessage
+import ishopgo.com.exhibition.ui.extensions.asHtml
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
@@ -24,21 +25,21 @@ class PusherChatMessage : ChatTextMessage, ChatImageMessage, ChatProductMessage 
             }
     }
 
-    override fun getText(): CharSequence = apiContent ?: ""
+    override fun getText(): CharSequence = apiContent?.asHtml() ?: ""
 
     override fun getMessageId(): Long = -1L
 
-    override fun getMessageUid(): String = uiId ?: ""
+    override fun getMessageUid(): CharSequence = uiId ?: ""
 
-    override fun getCreatedTime(): String = apiTime
+    override fun getCreatedTime(): CharSequence = apiTime
 
-    override fun getConversationId(): String = idConversation
+    override fun getConversationId(): CharSequence = idConversation
 
     override fun getOwnerId(): Long = from
 
-    override fun getOwnerName(): String = name
+    override fun getOwnerName(): CharSequence = name
 
-    override fun getOwnerAvatar(): String = image ?: ""
+    override fun getOwnerAvatar(): CharSequence = image ?: ""
 
     override fun getSendStatus(): Int = IChatMessage.STATUS_SENT
 

@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.domain.response
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
+import ishopgo.com.exhibition.ui.extensions.asHtml
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
@@ -12,19 +13,19 @@ class LocalConversationItem : InboxProvider {
         return unreadCount == 1
     }
 
-    override fun provideName(): String {
+    override fun provideName(): CharSequence {
         return name ?: ""
     }
 
-    override fun provideAvatar(): String {
+    override fun provideAvatar(): CharSequence {
         return image ?: ""
     }
 
-    override fun provideMessage(): String {
-        return content ?: ""
+    override fun provideMessage(): CharSequence {
+        return content?.asHtml() ?: ""
     }
 
-    override fun provideTime(): String {
+    override fun provideTime(): CharSequence {
         return time ?: ""
     }
 
