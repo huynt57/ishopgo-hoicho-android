@@ -6,7 +6,6 @@ import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.view.Gravity
@@ -87,6 +86,7 @@ class ProfileFragment : BaseFragment() {
             view_company.setText(profile.provideCompany())
             view_region.setText(profile.provideRegion())
             view_address.setText(profile.provideAddress())
+            view_introduction.setText(profile.provideIntroduction())
             view_account_type.setText(profile.provideAccountType())
             view_joined_date.setText(profile.provideJoinedDate())
             view_submit.setOnClickListener {
@@ -95,7 +95,7 @@ class ProfileFragment : BaseFragment() {
                     isEditMode = true
                 } else {
                     submitChanges(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                            view_company.text.toString(), view_region.text.toString(), view_address.text.toString())
+                            view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString())
                 }
             }
         }
@@ -103,9 +103,9 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun chooseProfileOption() {
-        tv_profile_newsfeed.setOnClickListener {
+        tv_profile_write_post.setOnClickListener {
             val intent = Intent(context, CommunityShareActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, Const.RequestCode.RC_ADD_NEW)
         }
         tv_profile_group.setOnClickListener { toast("Đang phát triển") }
         tv_profile_setting.setOnClickListener { showDialogSetting() }
@@ -165,7 +165,7 @@ class ProfileFragment : BaseFragment() {
                     .onPositive { dialog, which ->
                         val edit_profile_name = dialog.findViewById(R.id.edit_profile_name) as TextInputEditText
                         submitChanges(edit_profile_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                                view_company.text.toString(), view_region.text.toString(), view_address.text.toString())
+                                view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString())
                         dialog.dismiss()
                     }
                     .negativeText("Huỷ")
@@ -181,8 +181,8 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String) {
-        viewModel.updateProfile(name, dob, email, company, region, address, image)
+    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String, introduction: String) {
+        viewModel.updateProfile(name, dob, email, company, region, address, introduction, image)
         showProgressDialog()
     }
 
@@ -193,7 +193,7 @@ class ProfileFragment : BaseFragment() {
         }
 
         tv_profile_group.setOnClickListener(null)
-        tv_profile_newsfeed.setOnClickListener(null)
+        tv_profile_write_post.setOnClickListener(null)
         tv_profile_setting.setOnClickListener(null)
 
         view_name.isFocusable = true
@@ -208,6 +208,8 @@ class ProfileFragment : BaseFragment() {
         view_region.isFocusableInTouchMode = true
         view_address.isFocusable = true
         view_address.isFocusableInTouchMode = true
+        view_introduction.isFocusable = true
+        view_introduction.isFocusableInTouchMode = true
 
         view_name.requestFocus()
         val inputMethodManager = view_name.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -234,6 +236,8 @@ class ProfileFragment : BaseFragment() {
         view_region.isFocusableInTouchMode = false
         view_address.isFocusable = false
         view_address.isFocusableInTouchMode = false
+        view_introduction.isFocusable = false
+        view_introduction.isFocusableInTouchMode = false
         chooseProfileOption()
 
         view_scrollview.smoothScrollTo(0, 0)
@@ -252,40 +256,44 @@ class ProfileFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                return
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Const.RequestCode.RC_PICK_IMAGE && null != data) {
+                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                    return
+                }
+
+                image = data.data.toString()
+
+                Glide.with(context)
+                        .load(data.data)
+                        .apply(RequestOptions
+                                .placeholderOf(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
+                        .into(view_avatar)
             }
 
-            image = data.data.toString()
+            if (requestCode == Const.RequestCode.UPDATE_PROFILE_AVATAR && null != data) {
+                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                    return
+                }
 
-            Glide.with(context)
-                    .load(data.data)
-                    .apply(RequestOptions
-                            .placeholderOf(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder)
-                    )
-                    .into(view_avatar)
-        }
+                Glide.with(context)
+                        .load(data.data)
+                        .apply(RequestOptions
+                                .placeholderOf(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
+                        .into(view_avatar)
 
-        if (requestCode == Const.RequestCode.UPDATE_PROFILE_AVATAR && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                return
+                viewModel.updateProfile(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
+                        view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString(), data.data.toString())
+                showProgressDialog()
             }
 
-            Glide.with(context)
-                    .load(data.data)
-                    .apply(RequestOptions
-                            .placeholderOf(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder)
-                    )
-                    .into(view_avatar)
-
-            viewModel.updateProfile(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                    view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), data.data.toString())
-            showProgressDialog()
+            // reload bai dang
         }
     }
 }

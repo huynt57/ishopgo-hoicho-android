@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.ui.main.shop.rate
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.view.LayoutInflater
@@ -22,7 +21,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -102,7 +101,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
             (adapter as ClickableAdapter<ShopRateProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ShopRateProvider> {
                 override fun click(position: Int, data: ShopRateProvider, code: Int) {
                     if (data is ShopRate) {
-                        val intent = Intent(view.context, ProfileActivity::class.java)
+                        val intent = Intent(view.context, MemberProfileActivity::class.java)
                         val memberId = data.account?.id ?: 0
                         memberId?.let {
                             intent.putExtra(Const.TransferKey.EXTRA_ID, it)

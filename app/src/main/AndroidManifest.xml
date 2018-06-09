@@ -283,7 +283,7 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ui.chat.local.profile.ProfileActivity"
+            android:name=".ui.chat.local.profile.MemberProfileActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait">
         </activity>

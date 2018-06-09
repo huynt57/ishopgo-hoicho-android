@@ -13,12 +13,13 @@
         <ImageView
             android:id="@+id/view_image"
             android:layout_width="0dp"
+            android:scaleType="centerCrop"
             android:layout_height="182dp"
             app:layout_constraintDimensionRatio="2:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ishogo" />
+            tools:srcCompat="@drawable/expo_ticket_background" />
 
         <TextView
             android:id="@+id/tv_fair"

@@ -37,6 +37,10 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
                         userInfo.postValue(object : ProfileProvider {
+                            override fun provideIntroduction(): String {
+                                return data?.introduction ?: ""
+                            }
+
                             override fun provideAvatar(): String {
                                 return data?.image ?: ""
                             }
@@ -89,7 +93,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var profileUpdated = MutableLiveData<ProfileProvider>()
 
-    fun updateProfile(name: String, dob: String, email: String, company: String, region: String, address: String, image: String) {
+    fun updateProfile(name: String, dob: String, email: String, company: String, region: String, address: String, introduction: String, image: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -98,6 +102,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("company_store", company)
                 .addFormDataPart("region", region)
                 .addFormDataPart("address", address)
+                .addFormDataPart("introduction", introduction)
 
         if (image.isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
@@ -113,6 +118,10 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
                         profileUpdated.postValue(object : ProfileProvider {
+                            override fun provideIntroduction(): String {
+                                return data?.introduction ?: ""
+                            }
+
                             override fun provideAvatar(): String {
                                 UserDataManager.currentUserAvatar = data?.image ?: ""
                                 return data?.image ?: ""

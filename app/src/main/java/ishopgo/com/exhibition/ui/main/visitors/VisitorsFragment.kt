@@ -16,7 +16,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
@@ -66,7 +66,7 @@ class VisitorsFragment : BaseListFragment<List<VisitorsProvider>, VisitorsProvid
             override fun click(position: Int, data: VisitorsProvider, code: Int) {
                 context?.let {
                     if (data is Visitor) {
-                        val intent = Intent(it, ProfileActivity::class.java)
+                        val intent = Intent(it, MemberProfileActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
                         it.startActivity(intent)
                     }

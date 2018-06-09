@@ -21,7 +21,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
@@ -185,7 +185,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
                         COMMUNITY_PROFILE_CLICK -> {
                             if (data is Community) {
-                                val intent = Intent(view.context, ProfileActivity::class.java)
+                                val intent = Intent(view.context, MemberProfileActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
                                 startActivity(intent)
                             }

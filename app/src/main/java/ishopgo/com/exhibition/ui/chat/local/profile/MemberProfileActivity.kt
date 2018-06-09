@@ -7,7 +7,7 @@ import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 /**
  * Created by xuanhong on 4/6/18. HappyCoding!
  */
-class ProfileActivity : BaseSingleFragmentActivity() {
+class MemberProfileActivity : BaseSingleFragmentActivity() {
 
     override fun createFragment(startupOption: Bundle): Fragment {
         return ProfileFragment()

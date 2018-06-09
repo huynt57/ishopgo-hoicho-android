@@ -104,7 +104,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
             override fun click(position: Int, data: ProductCommentProvider, code: Int) {
                 toast("Đang phát triển")
 //                if (data is ProductComment) {
-//                    val intent = Intent(context, ProfileActivity::class.java)
+//                    val intent = Intent(context, MemberProfileActivity::class.java)
 //                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
 //                    startActivity(intent)
 //                }

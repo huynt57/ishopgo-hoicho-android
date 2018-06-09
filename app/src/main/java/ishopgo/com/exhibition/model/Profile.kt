@@ -12,6 +12,10 @@ import ishopgo.com.exhibition.ui.extensions.asHtml
  * Created by hoangnh on 5/2/2018.
  */
 class Profile : IdentityData(), UserInfoProvider {
+    override fun provideIntroduction(): CharSequence {
+        return "Giới thiệu: ${introduction ?: ""}"
+    }
+
     override fun provideName(): CharSequence {
         return name ?: ""
     }
@@ -122,4 +126,7 @@ class Profile : IdentityData(), UserInfoProvider {
     @SerializedName("title")
     @Expose
     var title: String? = null
+    @SerializedName("introduction")
+    @Expose
+    var introduction: String? = null
 }
