@@ -1,9 +1,9 @@
 package ishopgo.com.exhibition.domain.response
 
-import android.util.Log
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
 
 
@@ -70,7 +70,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
     }
 
     override fun provideShopPhone(): String {
-        return booth?.hotline ?: ""
+        return booth?.hotline?.asPhone() ?: ""
     }
 
     override fun provideProductLikeCount(): Int {

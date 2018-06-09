@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -46,7 +47,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                             }
 
                             override fun providePhone(): String {
-                                return data?.phone ?: ""
+                                return data?.phone?.asPhone() ?: ""
                             }
 
                             override fun provideName(): String {
@@ -128,8 +129,8 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                             }
 
                             override fun providePhone(): String {
-                                UserDataManager.currentUserPhone = data?.phone ?: ""
-                                return data?.phone ?: ""
+                                UserDataManager.currentUserPhone = data?.phone?.asPhone() ?: ""
+                                return data?.phone?.asPhone() ?: ""
                             }
 
                             override fun provideName(): String {

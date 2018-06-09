@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowProvider
 
 
@@ -19,7 +20,7 @@ class BoothFollow : IdentityData(), BoothFollowProvider {
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return phone?.asPhone() ?: ""
     }
 
     override fun provideNumberProduct(): Spanned {

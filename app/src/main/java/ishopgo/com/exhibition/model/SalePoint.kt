@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointProvider
 
 class SalePoint : IdentityData(), SalePointProvider {
@@ -44,7 +45,7 @@ class SalePoint : IdentityData(), SalePointProvider {
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return phone?.asPhone() ?: ""
     }
 
     override fun provideAddress(): String {

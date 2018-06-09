@@ -5,6 +5,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointProvider
 
 
@@ -18,7 +19,7 @@ class SearchSalePoint : IdentityData(), SearchSalePointProvider {
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return phone?.asPhone() ?: ""
     }
 
     override fun provideCountProduct(): String {

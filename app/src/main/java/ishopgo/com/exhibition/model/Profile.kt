@@ -6,6 +6,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.chat.local.profile.UserInfoProvider
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 
 
 /**
@@ -21,7 +22,7 @@ class Profile : IdentityData(), UserInfoProvider {
     }
 
     override fun providePhone(): CharSequence {
-        return "Số điện thoại: <b>${phone ?: ""}</b>".asHtml()
+        return "Số điện thoại: <b>${phone?.asPhone() ?: ""}</b>".asHtml()
     }
 
     override fun provideCover(): CharSequence {
