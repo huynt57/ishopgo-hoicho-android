@@ -150,6 +150,7 @@ dependencies {
     implementation 'com.pusher:pusher-java-client:1.5.0'
 
     // utilities
+    implementation "com.googlecode.libphonenumber:libphonenumber:8.8.8"
     implementation 'org.sufficientlysecure:html-textview:3.4'
     implementation 'com.android.support:multidex:1.0.3'
     implementation "com.facebook.stetho:stetho:1.5.0"

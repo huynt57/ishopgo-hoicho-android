@@ -323,6 +323,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".ui.main.visitors.VisitorsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".ui.main.ticket.TicketActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />

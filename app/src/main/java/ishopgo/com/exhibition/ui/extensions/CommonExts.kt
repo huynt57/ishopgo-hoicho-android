@@ -5,6 +5,7 @@ import android.os.Build
 import android.text.Html
 import android.text.Spanned
 import android.util.TypedValue
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.NumberFormat
@@ -43,6 +44,16 @@ fun String.asNumber(hour: Double): String? {
     if (number[2] > 0) builder.append(number[2]).append(" phút ")
     if (number[3] > 0) builder.append(number[3]).append(" giây ")
     return if (builder.isEmpty()) "0" else builder.toString()
+}
+
+fun String.asPhone(): String? {
+    val phoneUtil = PhoneNumberUtil.getInstance()
+    val phoneNumber = try {
+        phoneUtil.parse(this, "VN")
+    } catch (e: Exception) {
+        null
+    }
+    return if (phoneNumber != null && phoneUtil.isValidNumber(phoneNumber)) phoneUtil.format(phoneNumber, PhoneNumberUtil.PhoneNumberFormat.E164) else this
 }
 
 fun String.asDate(): String? {

@@ -291,6 +291,10 @@ class ApiService {
 
         @GET("ticket")
         fun getListTicket(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>>
+
+        @GET("customer-visit")
+        fun getVisitors(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageVisitor>>
+
     }
 
     interface ISGApi {

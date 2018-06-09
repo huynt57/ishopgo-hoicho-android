@@ -22,10 +22,10 @@ import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
-import ishopgo.com.exhibition.ui.main.postmanager.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerActivity
 import ishopgo.com.exhibition.ui.main.myqr.MyQrActivity
 import ishopgo.com.exhibition.ui.main.notification.NotificationActivity
+import ishopgo.com.exhibition.ui.main.postmanager.PostManagerActivity
 import ishopgo.com.exhibition.ui.main.productfollow.ProductFollowActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
@@ -35,6 +35,7 @@ import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
 import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerActivity
+import ishopgo.com.exhibition.ui.main.visitors.VisitorsActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
@@ -162,6 +163,10 @@ class AccountFragment : BaseFragment() {
                 openBoothFavorite()
             }
 
+            Const.AccountAction.ACTION_VISITORS -> {
+                openVisitors()
+            }
+
             Const.AccountAction.ACTION_TICKET_MANAGER -> {
                 openTicketManager()
             }
@@ -238,6 +243,13 @@ class AccountFragment : BaseFragment() {
     private fun openProductFavorite() {
         context?.let {
             val intent = Intent(it, ProductFollowActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openVisitors() {
+        context?.let {
+            val intent = Intent(it, VisitorsActivity::class.java)
             startActivity(intent)
         }
     }
