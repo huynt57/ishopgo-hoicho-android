@@ -22,10 +22,12 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.Ticket
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
@@ -88,13 +90,25 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
             (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
                 @SuppressLint("ObsoleteSdkInt")
                 override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                    context?.let {
-                        if (ActivityCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) run {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                ActivityCompat.requestPermissions(it as TicketManagerActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                    when (code) {
+                        SAVE_QRCODE_TO_STORAGE -> {
+                            context?.let {
+                                if (ActivityCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) run {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                        ActivityCompat.requestPermissions(it as TicketManagerActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                    }
+                                } else {
+                                    storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                                }
                             }
-                        } else {
-                            storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                        }
+
+                        CLICK_ITEM_TO_PROFILE -> {
+                            if (data is Ticket) {
+                                val intent = Intent(context, MemberProfileActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                                startActivity(intent)
+                            }
                         }
                     }
                 }
@@ -107,8 +121,19 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
             (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
                 @SuppressLint("ObsoleteSdkInt")
                 override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                    context?.let {
-                        storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                    when (code) {
+                        SAVE_QRCODE_TO_STORAGE -> {
+                            context?.let {
+                                storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                            }
+                        }
+                        CLICK_ITEM_TO_PROFILE -> {
+                            if (data is Ticket) {
+                                val intent = Intent(context, MemberProfileActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                                startActivity(intent)
+                            }
+                        }
                     }
                 }
             }
@@ -118,7 +143,7 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
         super.onResume()
         context?.let {
             if (!hasCameraPermission(it))
-                requestCameraPermission()
+                requestStoragePermission()
             else saveTicketStorage()
         }
     }
@@ -127,13 +152,26 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
         return ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestCameraPermission() {
+    private fun requestStoragePermission() {
         activity?.let {
             if (adapter is ClickableAdapter<TicketManagerProvider>) {
                 (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
                     @SuppressLint("ObsoleteSdkInt")
                     override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                        when (code) {
+                            SAVE_QRCODE_TO_STORAGE -> {
+                                context?.let {
+                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                }
+                            }
+                            CLICK_ITEM_TO_PROFILE -> {
+                                if (data is Ticket) {
+                                    val intent = Intent(context, MemberProfileActivity::class.java)
+                                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                                    startActivity(intent)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -147,9 +185,12 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
 
             return fragment
         }
+
+        const val SAVE_QRCODE_TO_STORAGE = 0
+        const val CLICK_ITEM_TO_PROFILE = 1
     }
 
-    fun storeImage(imageData: Bitmap, filename: String): Boolean {
+    private fun storeImage(imageData: Bitmap, filename: String): Boolean {
         // get path to external storage (SD card)
         val sdIconStorageDir = File(Environment.getExternalStoragePublicDirectory(DIRECTORY_PICTURES).toString())
 

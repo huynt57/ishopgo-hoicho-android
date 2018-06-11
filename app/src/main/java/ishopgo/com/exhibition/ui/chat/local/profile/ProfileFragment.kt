@@ -38,6 +38,7 @@ import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
+import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 import kotlinx.android.synthetic.main.content_local_chat_profile.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -153,7 +154,7 @@ class ProfileFragment : BaseActionBarFragment() {
         firstLoad()
     }
 
-    private fun showDetail(info: UserInfoProvider) {
+    private fun showDetail(info: ProfileProvider) {
         Glide.with(view_cover.context)
                 .load(R.drawable.default_cover_background)
                 .apply(RequestOptions().centerCrop()
@@ -188,7 +189,7 @@ class ProfileFragment : BaseActionBarFragment() {
         view_company.text = info.provideCompany()
         view_region.text = info.provideRegion()
         view_address.text = info.provideAddress()
-        view_type.text = info.provideType()
+        view_type.text = info.provideAccountType()
         view_joined_date.text = info.provideJoinedDate()
         view_introduction.text = info.provideIntroduction()
 

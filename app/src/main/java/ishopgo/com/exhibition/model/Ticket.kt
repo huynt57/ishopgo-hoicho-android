@@ -64,6 +64,9 @@ class Ticket : IdentityData(), TicketProvider, TicketManagerProvider {
         return "Thời gian: <b>${createdAt?.asDateTime() ?: ""}".asHtml()
     }
 
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Long = 0L
     @SerializedName("code")
     @Expose
     var code: String? = null

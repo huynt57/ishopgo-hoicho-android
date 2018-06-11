@@ -20,7 +20,8 @@ class TicketManagerAdapter : ClickableAdapter<TicketManagerProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<TicketManagerProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.btn_save_ticket.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.btn_save_ticket.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), SAVE_QRCODE_TO_STORAGE) }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_ITEM_TO_PROFILE) }
         }
     }
 
@@ -38,6 +39,10 @@ class TicketManagerAdapter : ClickableAdapter<TicketManagerProvider>() {
                 tv_ticket_phone.text = data.provideBoothPhone()
             }
         }
+    }
 
+    companion object {
+        const val SAVE_QRCODE_TO_STORAGE = 0
+        const val CLICK_ITEM_TO_PROFILE = 1
     }
 }

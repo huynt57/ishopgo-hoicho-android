@@ -4,24 +4,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_white_black_bottom"
-    android:padding="8dp"
-    tools:layout_editor_absoluteX="8dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:background="@drawable/bg_white_black_bottom">
+
+    <ImageView
+        android:id="@+id/img_code"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_booth_manager_name"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="18dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Chủ gian hàng" />
-
+        tools:text="Tên" />
 
     <TextView
         android:id="@+id/tv_booth_manager_phone"
@@ -31,23 +39,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:autoLink="phone"
+        android:textColor="@color/md_blue_grey_500"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
         app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_name"
-        tools:text="phone" />
-
-
-    <TextView
-        android:id="@+id/tv_booth_manager_store"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_phone"
-        tools:text="Công ty/cửa hàng" />
+        tools:text="0989013403" />
 
     <TextView
         android:id="@+id/tv_booth_manager_region"
@@ -56,10 +52,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_store"
-        tools:text="Khu vực" />
+        app:layout_constraintStart_toEndOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_phone"
+        tools:text="Địa chỉ" />
 
     <TextView
         android:id="@+id/tv_booth_manager_number_product"
@@ -69,22 +66,37 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
         app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_region"
-        tools:text="Số sản phẩm" />
+        tools:text="12 sản phẩm" />
 
     <TextView
         android:id="@+id/tv_booth_manager_member_cnt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_number_product"
+        tools:text="2 thành viên quan tâm" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_save_booth"
+        style="@style/AppTheme.ActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:text="Lưu vào máy"
+        android:textColor="@color/md_white_1000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_booth_manager_number_product"
-        tools:text="Số thành viên quan tâm" />
+        app:layout_constraintEnd_toEndOf="@+id/img_code"
+        app:layout_constraintStart_toStartOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/img_code"
+        tools:ignore="HardcodedText,MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>

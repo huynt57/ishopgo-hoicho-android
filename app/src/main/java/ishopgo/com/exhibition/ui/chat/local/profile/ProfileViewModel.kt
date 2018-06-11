@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.community.CommunityProvider
+import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 
 /**
  * Created by xuanhong on 4/6/18. HappyCoding!
@@ -22,7 +23,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var userData = MutableLiveData<UserInfoProvider>()
+    var userData = MutableLiveData<ProfileProvider>()
 
     fun loadUserDetail(userId: Long) {
         addDisposable(authService.getProfile(userId)

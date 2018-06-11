@@ -25,9 +25,16 @@ class ProfileFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Thông tin cá nhân")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener {
-            val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view?.windowToken, 0)
             activity?.finish()
+        }
+
+        toolbar.rightButton(R.drawable.ic_edit_green_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(ProfileFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as ProfileFragment
+                shareFragment.openProfileEditActivity()
+            }
         }
     }
 
@@ -41,7 +48,7 @@ class ProfileFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, ProfileFragment())
+                .replace(R.id.view_main_content, ProfileFragment.newInstance(Bundle()), "ProfileFragment")
                 .commit()
     }
 
