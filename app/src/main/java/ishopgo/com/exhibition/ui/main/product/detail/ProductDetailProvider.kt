@@ -5,26 +5,27 @@ package ishopgo.com.exhibition.ui.main.product.detail
  */
 interface ProductDetailProvider {
 
-    fun provideProductImage(): String
-    fun provideProductName(): String
-    fun provideProductPrice(): String
-    fun provideProductBrand(): String
-    fun provideProductShortDescription(): String
-    fun provideShopName(): String
-    fun provideShopRegion(): String
+    fun provideProductImage(): CharSequence
+    fun provideProductName(): CharSequence
+    fun provideProductPrice(): CharSequence
+    fun provideProductBrand(): CharSequence
+    fun provideProductShortDescription(): CharSequence
+    fun provideShopName(): CharSequence
+    fun provideShopRegion(): CharSequence
     fun provideShopProductCount(): Int
     fun provideShopRateCount(): Int
-    fun provideShopPhone(): String
+    fun provideShopPhone(): CharSequence
     fun provideLiked(): Boolean
-    fun provideShopAddress(): String
+    fun provideShopAddress(): CharSequence
     fun provideFollowed(): Boolean
 
     fun provideProductLikeCount(): Int
     fun provideProductCommentCount(): Int
     fun provideProductShareCount(): Int
-    fun provideProductLinkAffiliate(): String
+    fun provideProductLinkAffiliate(): CharSequence
 
     fun provideViewWholesale(): Boolean
-    fun provideWholesale(): String
+    fun provideWholesale(): CharSequence
+    fun provideWholesaleLimit(): CharSequence
 
 }

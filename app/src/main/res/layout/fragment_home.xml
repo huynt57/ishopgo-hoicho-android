@@ -350,7 +350,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:text="Tin tức hội chợ"
+                android:text="Thông tin hội chợ"
                 app:drawableStartCompat="@drawable/newspaper"
                 app:drawableStartSquareSize="24dp"
                 />
@@ -380,6 +380,20 @@
                 android:padding="8dp"
                 android:text="Thông tin chung"
                 app:drawableStartCompat="@drawable/info"
+                app:drawableStartSquareSize="24dp"
+                />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/view_open_expo_map"
+                style="@style/AppTheme.CategoryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Sơ đồ hội chợ"
+                app:drawableStartCompat="@drawable/ic_expo_map"
                 app:drawableStartSquareSize="24dp"
                 />
 

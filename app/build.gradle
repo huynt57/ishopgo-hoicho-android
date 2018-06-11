@@ -72,7 +72,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Android support libraries
     implementation "com.android.support:support-v4:$project.ext.supportLibrary"
@@ -85,6 +85,8 @@ dependencies {
     implementation "com.android.support:support-emoji:$project.ext.supportLibrary"
     implementation "com.android.support:customtabs:$project.ext.supportLibrary"
     implementation "com.android.support.constraint:constraint-layout:1.1.1"
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha02'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0-alpha02'
 
     implementation "com.google.firebase:firebase-messaging:17.0.0"
     implementation "com.google.firebase:firebase-database:16.0.1"
@@ -111,6 +113,7 @@ dependencies {
 
     // dagger
     implementation "com.google.dagger:dagger:$project.ext.dagger"
+    implementation 'com.android.support:support-v4:27.1.1'
     kapt "com.google.dagger:dagger-compiler:$project.ext.dagger"
     compileOnly "javax.annotation:jsr250-api:$project.ext.javax"
 
@@ -136,14 +139,13 @@ dependencies {
     }
     kapt "android.arch.persistence.room:compiler:1.0.0"
 
-
     // qrcode
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     implementation 'com.github.kenglxn.QRGen:android:2.4.0'
 
     // fabric
-    implementation ('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
+    implementation('com.crashlytics.sdk.android:crashlytics:2.9.2@aar') {
         transitive = true
     }
 

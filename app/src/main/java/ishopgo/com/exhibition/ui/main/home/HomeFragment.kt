@@ -31,6 +31,7 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
+import ishopgo.com.exhibition.ui.main.map.ExpoMapActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -237,6 +238,9 @@ class HomeFragment : BaseFragment() {
         view_open_quesions.setOnClickListener {
             openQuestionAnswer()
         }
+        view_open_expo_map.setOnClickListener {
+            openExpoMap()
+        }
         categoriesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
 
             override fun click(position: Int, data: CategoryProvider, code: Int) {
@@ -298,6 +302,13 @@ class HomeFragment : BaseFragment() {
     private fun openQuestionAnswer() {
         context?.let {
             val intent = Intent(it, QuestionActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openExpoMap() {
+        context?.let {
+            val intent = Intent(it, ExpoMapActivity::class.java)
             startActivity(intent)
         }
     }
