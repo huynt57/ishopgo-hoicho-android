@@ -215,7 +215,12 @@ class ProductDetailFragment : BaseFragment() {
             if (product.provideViewWholesale()) {
                 view_product_wholesale.visibility = View.VISIBLE
                 view_product_wholesale.text = product.provideWholesale()
-            } else view_product_wholesale.visibility = View.GONE
+                view_product_wholesale_limit.visibility = View.VISIBLE
+                view_product_wholesale_limit.text = product.provideWholesaleLimit()
+            } else {
+                view_product_wholesale.visibility = View.GONE
+                view_product_wholesale_limit.visibility = View.GONE
+            }
 
             if (product is ProductDetail) {
                 if (product.images != null && product.images!!.isNotEmpty())
@@ -248,11 +253,11 @@ class ProductDetailFragment : BaseFragment() {
             container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = product.provideProductBrand()
 
-            view_product_description.setHtml(product.provideProductShortDescription(), HtmlHttpImageGetter(view_product_description))
+            view_product_description.setHtml(product.provideProductShortDescription().toString(), HtmlHttpImageGetter(view_product_description))
             view_shop_name.text = product.provideShopName()
             view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"
-            view_shop_product_count.text = "<b>${product.provideShopProductCount()}</b><br>Sản phẩm".asHtml()
-            view_shop_rating.text = "<b>${product.provideShopRateCount()}</b><br>Đánh giá".asHtml()
+            view_shop_product_count.text = "<b><font color=\"#00c853\">${product.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
+            view_shop_rating.text = "<b><font color=\"red\">${product.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${product.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${product.provideProductCommentCount()} bình luận"
             view_product_share_count.text = "${product.provideProductShareCount()} chia sẻ"

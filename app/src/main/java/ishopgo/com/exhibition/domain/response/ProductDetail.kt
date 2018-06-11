@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
@@ -11,15 +12,19 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ProductDetail : IdentityData(), ProductDetailProvider {
-    override fun provideWholesale(): String {
-        return "Giá bán sỉ từ ${wholesalePriceFrom.asMoney()} tới ${wholesalePriceTo.asMoney()} khi mua tối thiểu $wholesaleCountProduct sản phẩm"
+    override fun provideWholesaleLimit(): CharSequence {
+        return "Mua tối thiểu <b><font color=\"red\">$wholesaleCountProduct</font></b> sản phẩm".asHtml()
+    }
+
+    override fun provideWholesale(): CharSequence {
+        return "<b>Giá bán sỉ: Từ <font color=\"red\">${wholesalePriceFrom.asMoney()}</font> tới <font color=\"red\">${wholesalePriceTo.asMoney()}</font></b>".asHtml()
     }
 
     override fun provideViewWholesale(): Boolean {
         return viewWholesale == VIEW_WHOLESALE
     }
 
-    override fun provideShopAddress(): String {
+    override fun provideShopAddress(): CharSequence {
         return "${booth?.address?.trim() ?: ""}, ${booth?.district?.trim()
                 ?: ""}, ${booth?.city?.trim() ?: ""}"
     }
@@ -28,36 +33,36 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
         return liked == LIKED
     }
 
-    override fun provideProductLinkAffiliate(): String {
+    override fun provideProductLinkAffiliate(): CharSequence {
         return linkAffiliate ?: ""
     }
 
-    override fun provideProductImage(): String {
+    override fun provideProductImage(): CharSequence {
         return image ?: ""
     }
 
-    override fun provideProductName(): String {
+    override fun provideProductName(): CharSequence {
         return name?.trim() ?: "unknown"
     }
 
-    override fun provideProductPrice(): String {
-        return price.asMoney()
+    override fun provideProductPrice(): CharSequence {
+        return "<b>Giá bán lẻ: Từ <font color=\"#00c853\">${price.asMoney()}</font></b>".asHtml()
     }
 
-    override fun provideProductBrand(): String {
+    override fun provideProductBrand(): CharSequence {
         if (department?.id == 0L) return ""
         return department?.name?.trim() ?: ""
     }
 
-    override fun provideProductShortDescription(): String {
+    override fun provideProductShortDescription(): CharSequence {
         return description ?: ""
     }
 
-    override fun provideShopName(): String {
+    override fun provideShopName(): CharSequence {
         return booth?.name?.trim() ?: ""
     }
 
-    override fun provideShopRegion(): String {
+    override fun provideShopRegion(): CharSequence {
         return booth?.address?.trim() ?: ""
     }
 
@@ -69,7 +74,7 @@ class ProductDetail : IdentityData(), ProductDetailProvider {
         return booth?.rate ?: 0
     }
 
-    override fun provideShopPhone(): String {
+    override fun provideShopPhone(): CharSequence {
         return booth?.hotline?.asPhone() ?: ""
     }
 
