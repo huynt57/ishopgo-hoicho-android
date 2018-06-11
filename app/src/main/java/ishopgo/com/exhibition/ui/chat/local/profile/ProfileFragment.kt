@@ -28,7 +28,6 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityProvider
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
-import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -53,14 +52,12 @@ class ProfileFragment : BaseActionBarFragment() {
     }
 
     companion object {
-        const val COMMUNITY_SHARE_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
         const val COMMUNITY_IMAGE_CLICK = 7
-        const val COMMUNITY_PROFILE_CLICK = 8
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,7 +138,6 @@ class ProfileFragment : BaseActionBarFragment() {
 
     private fun showDetail(info: UserInfoProvider) {
         Glide.with(view_cover.context)
-//                .load(info.provideCover())
                 .load(R.drawable.default_cover_background)
                 .apply(RequestOptions().centerCrop()
                         .placeholder(R.drawable.image_placeholder)
@@ -221,18 +217,6 @@ class ProfileFragment : BaseActionBarFragment() {
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
             override fun click(position: Int, data: CommunityProvider, code: Int) {
                 when (code) {
-                    COMMUNITY_SHARE_CLICK -> {
-                        if (UserDataManager.currentUserId > 0) {
-                            val intent = Intent(context, CommunityShareActivity::class.java)
-                            startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
-                        } else {
-                            val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                            startActivity(intent)
-                            activity?.finish()
-                        }
-                    }
-
                     COMMUNITY_LIKE_CLICK -> {
                         if (data is Community) {
                             viewModel.postCommunityLike(data.id)
@@ -240,50 +224,21 @@ class ProfileFragment : BaseActionBarFragment() {
                     }
 
                     COMMUNITY_COMMENT_CLICK -> {
-                        if (data is Community) {
-                            val intent = Intent(context, CommunityCommentActivity::class.java)
-                            intent.putExtra(EXTRA_ID, data.id)
-                            startActivity(intent)
-                        }
+                        if (UserDataManager.currentUserId > 0) {
+                            if (data is Community) {
+                                val intent = Intent(context, CommunityCommentActivity::class.java)
+                                intent.putExtra(EXTRA_ID, data.id)
+                                startActivity(intent)
+                            }
+                        } else
+                            openLoginActivity()
                     }
 
-                    COMMUNITY_SHARE_NUMBER_CLICK -> {
-                        context?.let {
-                            val dialog = MaterialDialog.Builder(it)
-                                    .customView(R.layout.dialog_community_share, false)
-                                    .autoDismiss(false)
-                                    .canceledOnTouchOutside(true)
-                                    .build()
-                            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                            tv_share_facebook.setOnClickListener {
-                                shareFacebook(data)
-                            }
-                            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                            tv_share_zalo.setOnClickListener {
-                                shareApp(data)
-                            }
-                            dialog.show()
-                        }
-                    }
+                    COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
 
-                    COMMUNITY_SHARE_PRODUCT_CLICK -> {
-                        context?.let {
-                            val dialog = MaterialDialog.Builder(it)
-                                    .customView(R.layout.dialog_community_share, false)
-                                    .autoDismiss(false)
-                                    .canceledOnTouchOutside(true)
-                                    .build()
-                            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                            tv_share_facebook.setOnClickListener {
-                                shareFacebook(data)
-                            }
-                            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                            tv_share_zalo.setOnClickListener {
-                                shareApp(data)
-                            }
-                            dialog.show()
-                        }
-                    }
+
+                    COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
+
 
                     COMMUNITY_PRODUCT_CLICK -> {
                         if (data is Community) {
@@ -302,16 +257,33 @@ class ProfileFragment : BaseActionBarFragment() {
                         intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
                         startActivity(intent)
                     }
-
-                    COMMUNITY_PROFILE_CLICK -> {
-                        if (data is Community) {
-                            val intent = Intent(view.context, ProfileActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                            startActivity(intent)
-                        }
-                    }
                 }
             }
+        }
+    }
+
+    private fun openLoginActivity() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
+    }
+
+    private fun openDialogShare(data: CommunityProvider) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_community_share, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+            tv_share_facebook.setOnClickListener {
+                shareFacebook(data)
+            }
+            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+            tv_share_zalo.setOnClickListener {
+                shareApp(data)
+            }
+            dialog.show()
         }
     }
 

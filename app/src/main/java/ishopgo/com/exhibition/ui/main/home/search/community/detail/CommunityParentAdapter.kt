@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.item_community.view.*
 
 class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
     companion object {
-        const val COMMUNITY_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
@@ -58,7 +57,6 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
                 itemView.tv_community_username.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PROFILE_CLICK) }
                 itemView.img_community_avatar.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PROFILE_CLICK) }
-                itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_CLICK) }
 
                 if (UserDataManager.currentUserId > 0) {
                     itemView.toggle_community_like.setOnClickListener {

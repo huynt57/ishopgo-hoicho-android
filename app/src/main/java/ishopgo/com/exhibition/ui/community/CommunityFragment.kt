@@ -129,50 +129,19 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
-                            if (data is Community) {
-                                val intent = Intent(context, CommunityCommentActivity::class.java)
-                                intent.putExtra(EXTRA_ID, data.id)
-                                startActivity(intent)
-                            }
+                            if (UserDataManager.currentUserId > 0) {
+
+                                if (data is Community) {
+                                    val intent = Intent(context, CommunityCommentActivity::class.java)
+                                    intent.putExtra(EXTRA_ID, data.id)
+                                    startActivity(intent)
+                                }
+                            } else openLoginActivity()
                         }
 
-                        COMMUNITY_SHARE_NUMBER_CLICK -> {
-                            context?.let {
-                                val dialog = MaterialDialog.Builder(it)
-                                        .customView(R.layout.dialog_community_share, false)
-                                        .autoDismiss(false)
-                                        .canceledOnTouchOutside(true)
-                                        .build()
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                tv_share_facebook.setOnClickListener {
-                                    shareFacebook(data)
-                                }
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                                tv_share_zalo.setOnClickListener {
-                                    shareApp(data)
-                                }
-                                dialog.show()
-                            }
-                        }
+                        COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
 
-                        COMMUNITY_SHARE_PRODUCT_CLICK -> {
-                            context?.let {
-                                val dialog = MaterialDialog.Builder(it)
-                                        .customView(R.layout.dialog_community_share, false)
-                                        .autoDismiss(false)
-                                        .canceledOnTouchOutside(true)
-                                        .build()
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                tv_share_facebook.setOnClickListener {
-                                    shareFacebook(data)
-                                }
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                                tv_share_zalo.setOnClickListener {
-                                    shareApp(data)
-                                }
-                                dialog.show()
-                            }
-                        }
+                        COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
 
                         COMMUNITY_PRODUCT_CLICK -> {
                             if (data is Community) {
@@ -202,6 +171,31 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     }
                 }
             }
+        }
+    }
+
+    private fun openLoginActivity() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
+    }
+
+    private fun openDialogShare(data: CommunityProvider) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_community_share, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+            tv_share_facebook.setOnClickListener {
+                shareFacebook(data)
+            }
+            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+            tv_share_zalo.setOnClickListener {
+                shareApp(data)
+            }
+            dialog.show()
         }
     }
 
