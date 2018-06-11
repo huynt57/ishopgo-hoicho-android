@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_expo_map.xml"
+            app:startDestination="@id/expoMapFragment">
+
+    <fragment
+        android:id="@+id/expoMapFragment"
+        android:name="ishopgo.com.exhibition.ui.main.map.ExpoMapFragment"
+        android:label="fragment_expo_map"
+        tools:layout="@layout/fragment_expo_map"/>
+</navigation>
