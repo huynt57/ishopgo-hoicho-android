@@ -7,8 +7,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,7 +84,7 @@ class ShopInfoFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun showInfo(info: ShopInfoProvider) {
 
-        view_name.text = "Tên: <b>${info.provideName()}</b>".asHtml()
+        view_name.text = "Chủ gian hàng: <b>${info.provideName()}</b>".asHtml()
         view_product_count.text = "Số sản phẩm: <b>${info.provideProductCount()}</b>".asHtml()
         view_joined_date.text = "Ngày tham gia: <b>${info.provideJoinedDate()}</b>".asHtml()
         view_region.text = "Khu vực: <b>${info.provideRegion()}</b>".asHtml()

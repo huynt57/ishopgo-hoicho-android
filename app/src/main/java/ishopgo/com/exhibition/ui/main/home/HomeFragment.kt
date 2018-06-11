@@ -47,6 +47,9 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomeFragment : BaseFragment() {
 
+    companion object {
+        private const val CHANGE_BANNER_PERIOD = 3000L
+    }
     private lateinit var viewModel: HomeViewModel
     private lateinit var mainViewModel: MainViewModel
 
@@ -70,7 +73,7 @@ class HomeFragment : BaseFragment() {
         if (mPagerAdapter?.count ?: 1 > 1) {
             view_banner_pager.handler?.let {
                 it.removeCallbacks(changePage)
-                it.postDelayed(changePage, 2500)
+                it.postDelayed(changePage, CHANGE_BANNER_PERIOD)
             }
         }
     }
