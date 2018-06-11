@@ -403,18 +403,22 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun messageShop(context: Context, product: ProductDetailProvider) {
-        // gui tin nhan cho shop
-        if (product is ProductDetail) {
-            val boothId = product.booth?.id
-            boothId?.let {
-                val request = CreateConversationRequest()
-                request.type = 1
-                val members = mutableListOf<Long>()
-                members.add(UserDataManager.currentUserId)
-                members.add(it)
-                request.member = members
-                viewModel.createConversation(request)
+        if (UserDataManager.currentUserId > 0) {
+            // gui tin nhan cho shop
+            if (product is ProductDetail) {
+                val boothId = product.booth?.id
+                boothId?.let {
+                    val request = CreateConversationRequest()
+                    request.type = 1
+                    val members = mutableListOf<Long>()
+                    members.add(UserDataManager.currentUserId)
+                    members.add(it)
+                    request.member = members
+                    viewModel.createConversation(request)
+                }
             }
+        } else {
+            openActivtyLogin()
         }
     }
 

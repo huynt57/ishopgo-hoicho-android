@@ -302,7 +302,7 @@ class ConversationActivity : BaseActivity() {
                 val intent = Intent(this, ConversationInfoActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(conversationInfo))
                 intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conversationId)
-                startActivity(intent)
+                startActivityForResult(intent, Const.RequestCode.RC_SHOW_DETAIL)
             }
         }
 
@@ -636,6 +636,8 @@ class ConversationActivity : BaseActivity() {
                 }
             }
         }
+
+        viewModel.getConversationInfo(conversationId)
     }
 
     private fun scrollToBottom() {

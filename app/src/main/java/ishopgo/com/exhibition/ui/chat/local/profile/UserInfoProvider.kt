@@ -13,5 +13,6 @@ interface UserInfoProvider {
     fun provideAddress(): CharSequence
     fun provideType(): CharSequence
     fun provideJoinedDate(): CharSequence
+    fun provideIntroduction(): CharSequence
 
 }

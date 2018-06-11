@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerProvider
 
 
@@ -12,7 +13,7 @@ class BoothManager : IdentityData(), BoothManagerProvider {
     }
 
     override fun providePhone(): String {
-        return "SĐT: ${phone ?: ""}"
+        return "SĐT: ${phone?.asPhone() ?: ""}"
     }
 
     override fun provideCompanyStore(): String {

@@ -311,6 +311,7 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
+                        android:autoLink="phone"
                         android:padding="8dp"
                         app:drawableStartCompat="@drawable/ic_phone_24dp"
                         tools:text="Số điện thoại: 0985771135" />

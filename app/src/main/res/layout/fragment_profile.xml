@@ -64,6 +64,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/view">
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/tv_profile_write_post"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="Đăng bài"
+                    app:drawableTopCompat="@drawable/ic_edit_black_24dp" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_group"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -73,17 +84,6 @@
                     android:padding="8dp"
                     android:text="Bạn bè"
                     app:drawableTopCompat="@drawable/ic_group" />
-
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/tv_profile_newsfeed"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="Bài đăng"
-                    app:drawableTopCompat="@drawable/ic_newsfeeds" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_setting"
@@ -230,6 +230,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Địa chỉ"
+                android:inputType="text"
+                tools:ignore="HardcodedText" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="8dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/view_introduction"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giới thiệu"
                 android:inputType="text"
                 tools:ignore="HardcodedText" />
 

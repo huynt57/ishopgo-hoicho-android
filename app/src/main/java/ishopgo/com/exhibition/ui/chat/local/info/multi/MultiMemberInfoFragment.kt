@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.info.multi
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -53,6 +54,8 @@ class MultiMemberInfoFragment : BaseActionBarFragment() {
                 info.title = it.title
 
                 view_name.text = info.title
+
+                activity?.setResult(Activity.RESULT_OK)
             }
         })
 

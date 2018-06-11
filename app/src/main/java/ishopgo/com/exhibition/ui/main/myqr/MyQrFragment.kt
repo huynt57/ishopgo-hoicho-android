@@ -96,7 +96,7 @@ class MyQrFragment : BaseFragment() {
             val request = DownloadManager.Request(uri)
 
             request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE or DownloadManager.Request.NETWORK_WIFI)
-            request.setTitle("iShopgo Expo")
+            request.setTitle("Expo 360")
             request.setDescription("Đang tải về...")
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)
 
@@ -105,7 +105,7 @@ class MyQrFragment : BaseFragment() {
                 request.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS,
                         "photo_qr_" + System.currentTimeMillis() + ".jpg")
             } else {
-                request.setDestinationInExternalPublicDir("iShopgoExpo", "photo_qr_" + System.currentTimeMillis() + ".jpg")
+                request.setDestinationInExternalPublicDir("Expo360", "photo_qr_" + System.currentTimeMillis() + ".jpg")
             }
             request.allowScanningByMediaScanner()
 

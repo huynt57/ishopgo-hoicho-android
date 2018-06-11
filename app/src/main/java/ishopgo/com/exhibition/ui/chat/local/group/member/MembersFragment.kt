@@ -6,15 +6,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import ishopgo.com.exhibition.ui.chat.local.group.addmember.AddMemberActivity
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ConversationInfo
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.User
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.chat.local.group.addmember.AddMemberActivity
 import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
@@ -58,7 +58,7 @@ class MembersFragment : BaseActionBarFragment() {
 
             adapter.listener = object : ClickableAdapter.BaseAdapterAction<User> {
                 override fun click(position: Int, data: User, code: Int) {
-                    val intent = Intent(view.context, ProfileActivity::class.java)
+                    val intent = Intent(view.context, MemberProfileActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                     intent.putExtra(Const.TransferKey.EXTRA_ENABLE_CREATE_GROUP, false)
                     startActivity(intent)

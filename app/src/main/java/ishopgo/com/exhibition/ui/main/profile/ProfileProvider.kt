@@ -15,5 +15,6 @@ interface ProfileProvider {
     fun provideAddress(): String
     fun provideAccountType(): String
     fun provideJoinedDate(): String
+    fun provideIntroduction(): String
 
 }

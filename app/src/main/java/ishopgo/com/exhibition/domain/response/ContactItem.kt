@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.chat.local.contact.ContactProvider
 import ishopgo.com.exhibition.ui.chat.local.group.addmember.IMemberView
+import ishopgo.com.exhibition.ui.extensions.asPhone
 
 /**
  * Created by xuanhong on 5/17/18. HappyCoding!
@@ -22,7 +23,7 @@ class ContactItem : IdentityData(), IMemberView, ContactProvider {
     }
 
     override fun providePhone(): String {
-        return phone ?: ""
+        return phone?.asPhone() ?: ""
     }
 
     override fun memberName(): String {
@@ -30,7 +31,7 @@ class ContactItem : IdentityData(), IMemberView, ContactProvider {
     }
 
     override fun memberPhone(): String {
-        return phone ?: ""
+        return phone?.asPhone() ?: ""
     }
 
     override fun memberAvatar(): String {

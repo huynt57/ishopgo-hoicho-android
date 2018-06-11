@@ -11,7 +11,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.chat.local.config.notification.NotificationConfigFragment
 import ishopgo.com.exhibition.ui.chat.local.group.CreateGroupActivity
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import kotlinx.android.synthetic.main.content_local_chat_single_member_info.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.layout_container_local_chat_avatar.*
@@ -56,7 +56,7 @@ class SingleMemberInfoFragment : BaseActionBarFragment() {
         view_description.text = "Active"
 
         view_config_avatar.setOnClickListener {
-            val intent = Intent(view.context, ProfileActivity::class.java)
+            val intent = Intent(view.context, MemberProfileActivity::class.java)
             val memberId = info.listMember?.get(0)?.id
             memberId?.let {
                 intent.putExtra(Const.TransferKey.EXTRA_ID, it)
@@ -68,7 +68,7 @@ class SingleMemberInfoFragment : BaseActionBarFragment() {
             fragment.show(childFragmentManager, "NotificationConfigFragment")
         }
         view_config_show_profile.setOnClickListener {
-            val intent = Intent(view.context, ProfileActivity::class.java)
+            val intent = Intent(view.context, MemberProfileActivity::class.java)
             val memberId = info.listMember?.get(0)?.id
             memberId?.let {
                 intent.putExtra(Const.TransferKey.EXTRA_ID, it)

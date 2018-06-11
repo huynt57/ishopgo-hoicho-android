@@ -6,18 +6,23 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.chat.local.profile.UserInfoProvider
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 
 
 /**
  * Created by hoangnh on 5/2/2018.
  */
 class Profile : IdentityData(), UserInfoProvider {
+    override fun provideIntroduction(): CharSequence {
+        return "Giới thiệu: ${introduction ?: ""}"
+    }
+
     override fun provideName(): CharSequence {
         return name ?: ""
     }
 
     override fun providePhone(): CharSequence {
-        return "Số điện thoại: <b>${phone ?: ""}</b>".asHtml()
+        return "Số điện thoại: <b>${phone?.asPhone() ?: ""}</b>".asHtml()
     }
 
     override fun provideCover(): CharSequence {
@@ -122,4 +127,7 @@ class Profile : IdentityData(), UserInfoProvider {
     @SerializedName("title")
     @Expose
     var title: String? = null
+    @SerializedName("introduction")
+    @Expose
+    var introduction: String? = null
 }

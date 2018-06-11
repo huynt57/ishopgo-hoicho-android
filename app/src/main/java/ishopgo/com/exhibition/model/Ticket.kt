@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.ticket.TicketProvider
 import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerProvider
 
@@ -24,7 +25,7 @@ class Ticket : IdentityData(), TicketProvider, TicketManagerProvider {
     }
 
     override fun provideBoothPhone(): String {
-        return phone ?: ""
+        return phone?.asPhone() ?: ""
     }
 
     override fun provideDateScan(): String {
@@ -48,7 +49,7 @@ class Ticket : IdentityData(), TicketProvider, TicketManagerProvider {
     }
 
     override fun providePhone(): Spanned {
-        return "Số điện thoại: <b>${phone ?: ""}</b>".asHtml()
+        return "Số điện thoại: <b>${phone?.asPhone() ?: ""}</b>".asHtml()
     }
 
     override fun provideAddress(): Spanned {

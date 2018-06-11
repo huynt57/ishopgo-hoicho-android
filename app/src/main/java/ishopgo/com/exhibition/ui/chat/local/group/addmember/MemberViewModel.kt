@@ -46,11 +46,11 @@ class MemberViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun addMember(conversationId: String, selectedMembers: List<IMemberView>) {
-        val fields = HashMap<String, Any>()
-        fields.put("conver", conversationId)
-        selectedMembers.map {
-            if (it is ContactItem)
-                fields.put("member[]", it.id)
+        val fields = mutableMapOf<String, Any>()
+        fields["conver"] = conversationId
+        selectedMembers.mapIndexed { index, iMemberView ->
+            if (iMemberView is ContactItem)
+                fields.put("member[$index]", iMemberView.id)
         }
 
         addDisposable(isgService.inbox_addMemberGroup(fields)

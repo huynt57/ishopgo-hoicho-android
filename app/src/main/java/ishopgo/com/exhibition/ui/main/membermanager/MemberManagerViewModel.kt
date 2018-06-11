@@ -29,7 +29,7 @@ class MemberManagerViewModel : BaseListViewModel<List<MemberManagerProvider>>(),
             fields["name"] = params.name
             fields["region"] = params.region
 
-            addDisposable(isgService.getMember(fields)
+            addDisposable(authService.getMember(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManageMember>() {
                         override fun success(data: ManageMember?) {
@@ -73,7 +73,7 @@ class MemberManagerViewModel : BaseListViewModel<List<MemberManagerProvider>>(),
             fields["region"] = params.region
             fields["deleted_at"] = params.deleted_at
 
-            addDisposable(isgService.getDeletedMember(fields)
+            addDisposable(authService.getDeletedMember(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManageMember>() {
                         override fun success(data: ManageMember?) {

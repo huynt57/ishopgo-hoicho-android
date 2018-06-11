@@ -20,10 +20,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
+import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
-import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.community.Community
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityProvider
@@ -34,6 +37,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import kotlinx.android.synthetic.main.content_local_chat_profile.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -101,6 +105,11 @@ class ProfileFragment : BaseActionBarFragment() {
                 showDetail(it)
             }
         })
+        viewModel.conversation.observe(this, Observer { c ->
+            c?.let {
+                val conv = LocalConversationItem()
+                conv.idConversions = c.id ?: ""
+                conv.name = c.name ?: ""
 
         viewModel.deleteSusscess.observe(this, Observer {
             toast("Xoá thành công")
@@ -117,6 +126,14 @@ class ProfileFragment : BaseActionBarFragment() {
                         if (community is Community)
                             last_id = community.id
                     }
+                context?.let {
+                    val intent = Intent(it, ConversationActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
+                    startActivity(intent)
+                }
+            }
+        })
 
                 if (reloadData) {
                     if (it != null)
@@ -173,6 +190,21 @@ class ProfileFragment : BaseActionBarFragment() {
         view_address.text = info.provideAddress()
         view_type.text = info.provideType()
         view_joined_date.text = info.provideJoinedDate()
+        view_introduction.text = info.provideIntroduction()
+
+        view_message.setOnClickListener {
+            // start conversation
+            val currentUserId = UserDataManager.currentUserId
+            if (info is IdentityData && currentUserId != info.id) {
+                val request = CreateConversationRequest()
+                request.type = 1
+                val members = mutableListOf<Long>()
+                members.add(currentUserId)
+                members.add(info.id)
+                request.member = members
+                viewModel.createConversation(request)
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

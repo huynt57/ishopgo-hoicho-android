@@ -52,7 +52,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             ))
 
             items.add(AccountMenuItem(
-                    Const.AccountAction.ACTION_NOT_AVALIBLE,
+                    Const.AccountAction.ACTION_VISITORS,
                     R.drawable.ic_shop_customer_white,
                     "Khách hàng tham quan"
             ))

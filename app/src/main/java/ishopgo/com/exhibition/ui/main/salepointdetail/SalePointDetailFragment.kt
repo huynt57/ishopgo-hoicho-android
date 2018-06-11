@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -57,6 +58,13 @@ class SalePointDetailFragment : BaseFragment() {
         phone = arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, "") ?: ""
     }
 
+    private fun openActivtyLogin() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
+    }
+
+
     private fun showDetail(data: ManagerSalePointDetail) {
         if (data.salePoint != null) {
             val salePoint = data.salePoint
@@ -73,6 +81,10 @@ class SalePointDetailFragment : BaseFragment() {
             val chatId = data.salePoint?.chatId ?: 0L
             val hasValidChatId = chatId != 0L
             linear_footer_message.setOnClickListener {
+                if (UserDataManager.currentUserId <= 0) {
+                    openActivtyLogin()
+                    return@setOnClickListener
+                }
                 if (!hasValidChatId) {
                     val intent = Intent(Intent.ACTION_SENDTO)
                     intent.type = "text/plain"

@@ -4,6 +4,7 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
@@ -18,6 +19,27 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getVisitors(fields: MutableMap<String, Any>): Single<BaseResponse<ManageVisitor>> {
+        val response = BaseResponse<ManageMember>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getVisitors(fields)
+    }
+
+    override fun getMember(fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>> {
+        val response = BaseResponse<ManageMember>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getMember(fields)
+    }
+
+    override fun getDeletedMember(fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>> {
+        val response = BaseResponse<ManageMember>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getDeletedMember(fields)
+    }
+
     override fun getListTicket(fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>> {
         val response = BaseResponse<Ticket>()
         response.status = 1
