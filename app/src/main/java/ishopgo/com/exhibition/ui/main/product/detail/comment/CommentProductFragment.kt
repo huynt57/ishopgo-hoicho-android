@@ -23,7 +23,7 @@ import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -105,7 +105,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductCommentProvider> {
             override fun click(position: Int, data: ProductCommentProvider, code: Int) {
                 if (data is ProductComment) {
-                    val intent = Intent(context, ProfileActivity::class.java)
+                    val intent = Intent(context, MemberProfileActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
                     startActivity(intent)
                 }

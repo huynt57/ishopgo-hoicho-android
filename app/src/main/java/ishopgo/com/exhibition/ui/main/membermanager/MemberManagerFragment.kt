@@ -22,7 +22,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.chat.local.profile.ProfileActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.membermanager.deletedmember.DeletedMemberActivity
 import ishopgo.com.exhibition.ui.widget.DateInputEditText
@@ -166,7 +166,7 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
                 override fun click(position: Int, data: MemberManagerProvider, code: Int) {
                     if (data is MemberManager) {
                         context?.let {
-                            val intent = Intent(context, ProfileActivity::class.java)
+                            val intent = Intent(context, MemberProfileActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                             startActivityForResult(intent, Const.RequestCode.DELETED_MEMBER)
                         }

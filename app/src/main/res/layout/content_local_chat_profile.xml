@@ -164,6 +164,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/view_type"
                 tools:text="ngay tham gia" />
 
+            <TextView
+                android:id="@+id/view_introduction"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view_joined_date"
+                tools:text="introduction" />
+
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/textView22"
                 android:layout_width="wrap_content"
@@ -174,13 +186,13 @@
                 android:text="Bạn bè"
                 android:textStyle="bold"
                 app:drawableTopCompat="@drawable/ic_network_24dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView23"
+                app:layout_constraintEnd_toStartOf="@+id/view_message"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView24" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/textView23"
+                android:id="@+id/view_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -233,7 +245,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_joined_date"
+            app:layout_constraintTop_toBottomOf="@+id/view_introduction"
             tools:ignore="HardcodedText" />
 
         <FrameLayout

@@ -110,6 +110,14 @@ class ProfileFragment : BaseActionBarFragment() {
                 val conv = LocalConversationItem()
                 conv.idConversions = c.id ?: ""
                 conv.name = c.name ?: ""
+                context?.let {
+                    val intent = Intent(it, ConversationActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
+                    startActivity(intent)
+                }
+            }
+        })
 
         viewModel.deleteSusscess.observe(this, Observer {
             toast("Xoá thành công")
@@ -126,14 +134,6 @@ class ProfileFragment : BaseActionBarFragment() {
                         if (community is Community)
                             last_id = community.id
                     }
-                context?.let {
-                    val intent = Intent(it, ConversationActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
-                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
-                    startActivity(intent)
-                }
-            }
-        })
 
                 if (reloadData) {
                     if (it != null)
