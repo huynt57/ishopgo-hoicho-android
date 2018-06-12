@@ -15,13 +15,13 @@ import kotlinx.android.synthetic.main.item_community.view.*
 
 class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
     companion object {
-        const val COMMUNITY_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
         const val COMMUNITY_SHARE_NUMBER_CLICK = 4
         const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
         const val COMMUNITY_PRODUCT_CLICK = 6
         const val COMMUNITY_IMAGE_CLICK = 7
+        const val COMMUNITY_PROFILE_CLICK = 8
     }
 
     var screenWidth: Int = UserDataManager.displayWidth
@@ -48,14 +48,13 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         super.onBindViewHolder(holder, position)
         if (holder is ProductHolder) {
             holder.apply {
-                if (UserDataManager.currentUserId > 0) {
-                    itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
-                }
+                itemView.tv_community_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_COMMENT_CLICK) }
                 itemView.tv_community_number_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_NUMBER_CLICK) }
                 itemView.img_community_share.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHARE_PRODUCT_CLICK) }
                 itemView.cv_community_product.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PRODUCT_CLICK) }
                 itemView.img_community_image.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
-                itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_CLICK) }
+                itemView.tv_community_username.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PROFILE_CLICK) }
+                itemView.img_community_avatar.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_PROFILE_CLICK) }
 
                 if (UserDataManager.currentUserId > 0) {
                     itemView.toggle_community_like.setOnClickListener {

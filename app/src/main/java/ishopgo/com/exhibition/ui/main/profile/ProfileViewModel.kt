@@ -7,12 +7,10 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.Profile
+import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.extensions.asDateTime
-import ishopgo.com.exhibition.ui.extensions.asPhone
+import ishopgo.com.exhibition.ui.extensions.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -37,52 +35,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
-                        userInfo.postValue(object : ProfileProvider {
-                            override fun provideIntroduction(): String {
-                                return data?.introduction ?: ""
-                            }
-
-                            override fun provideAvatar(): String {
-                                return data?.image ?: ""
-                            }
-
-                            override fun providePhone(): String {
-                                return data?.phone?.asPhone() ?: ""
-                            }
-
-                            override fun provideName(): String {
-                                return data?.name ?: ""
-                            }
-
-                            override fun provideDob(): String {
-                                return data?.birthday?.asDate() ?: ""
-                            }
-
-                            override fun provideEmail(): String {
-                                return data?.email ?: ""
-                            }
-
-                            override fun provideCompany(): String {
-                                return data?.company ?: ""
-                            }
-
-                            override fun provideRegion(): String {
-                                return data?.region ?: ""
-                            }
-
-                            override fun provideAddress(): String {
-                                return data?.address ?: ""
-                            }
-
-                            override fun provideAccountType(): String {
-                                return data?.typeText ?: ""
-                            }
-
-                            override fun provideJoinedDate(): String {
-                                return data?.createdAt?.asDateTime() ?: ""
-                            }
-
-                        })
+                        userInfo.postValue(data)
                     }
 
 
@@ -97,13 +50,14 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun updateProfile(name: String, dob: String, email: String, company: String, region: String, address: String, introduction: String, image: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("name", name)
-                .addFormDataPart("birthday", dob)
-                .addFormDataPart("email", email)
-                .addFormDataPart("company_store", company)
-                .addFormDataPart("region", region)
-                .addFormDataPart("address", address)
-                .addFormDataPart("introduction", introduction)
+
+        if (name.isNotEmpty()) builder.addFormDataPart("name", name)
+        if (dob.isNotEmpty()) builder.addFormDataPart("birthday", dob)
+        if (email.isNotEmpty()) builder.addFormDataPart("email", email)
+        if (company.isNotEmpty()) builder.addFormDataPart("company_store", company)
+        if (region.isNotEmpty()) builder.addFormDataPart("region", region)
+        if (address.isNotEmpty()) builder.addFormDataPart("address", address)
+        if (introduction.isNotEmpty()) builder.addFormDataPart("introduction", introduction)
 
         if (image.isNotEmpty()) {
             val imageFile = File(appContext.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
@@ -118,55 +72,27 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
-                        profileUpdated.postValue(object : ProfileProvider {
-                            override fun provideIntroduction(): String {
-                                return data?.introduction ?: ""
-                            }
+                        UserDataManager.currentUserName = data?.name ?: ""
+                        UserDataManager.currentUserAvatar = data?.image ?: ""
+                        UserDataManager.currentType = data?.typeTextExpo ?: ""
 
-                            override fun provideAvatar(): String {
-                                UserDataManager.currentUserAvatar = data?.image ?: ""
-                                return data?.image ?: ""
-                            }
+                        profileUpdated.postValue(data)
+                    }
 
-                            override fun providePhone(): String {
-                                UserDataManager.currentUserPhone = data?.phone?.asPhone() ?: ""
-                                return data?.phone?.asPhone() ?: ""
-                            }
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
 
-                            override fun provideName(): String {
-                                UserDataManager.currentUserName = data?.name ?: ""
-                                return data?.name ?: ""
-                            }
+    var loadRegion = MutableLiveData<MutableList<Region>>()
 
-                            override fun provideDob(): String {
-                                return data?.birthday?.asDate() ?: ""
-                            }
-
-                            override fun provideEmail(): String {
-                                return data?.email ?: ""
-                            }
-
-                            override fun provideCompany(): String {
-                                return data?.company ?: ""
-                            }
-
-                            override fun provideRegion(): String {
-                                return data?.region ?: ""
-                            }
-
-                            override fun provideAddress(): String {
-                                return data?.address ?: ""
-                            }
-
-                            override fun provideAccountType(): String {
-                                return data?.typeText ?: ""
-                            }
-
-                            override fun provideJoinedDate(): String {
-                                return data?.createdAt?.asDateTime() ?: ""
-                            }
-
-                        })
+    fun loadRegion() {
+        addDisposable(isgService.getRegions()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
+                    override fun success(data: MutableList<Region>?) {
+                        loadRegion.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {

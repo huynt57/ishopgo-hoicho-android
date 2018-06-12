@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -31,6 +32,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -574,12 +576,11 @@ class ProductDetailFragment : BaseFragment() {
 
         productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductCommentProvider> {
             override fun click(position: Int, data: ProductCommentProvider, code: Int) {
-                toast("Đang phát triển")
-//                if (data is ProductComment) {
-//                    val intent = Intent(context, MemberProfileActivity::class.java)
-//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-//                    startActivity(intent)
-//                }
+                if (data is ProductComment) {
+                    val intent = Intent(context, MemberProfileActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    startActivity(intent)
+                }
             }
         }
     }

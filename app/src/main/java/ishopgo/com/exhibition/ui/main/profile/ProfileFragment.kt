@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -19,21 +20,28 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.profile.edit.ProfileEditActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment() {
 
     private lateinit var viewModel: ProfileViewModel
-    private var isEditMode = false
     private var image: String = ""
+    private var data: Profile? = null
 
     companion object {
-        const val PICK_IMAGE_UPDATE_SETTING = true
-        const val PICK_IMAGE_UPDATE_IN_PROFILE = false
+        const val TAG = "ProfileFragment"
+        fun newInstance(params: Bundle): ProfileFragment {
+            val fragment = ProfileFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -50,19 +58,19 @@ class ProfileFragment : BaseFragment() {
                 resolveError(it)
             }
         })
+
+        viewModel.userInfo.observe(this, Observer { i ->
+            i?.let {
+                showData(it)
+            }
+        })
+
         viewModel.profileUpdated.observe(this, Observer { p ->
             p?.let {
                 toast("Cập nhật thành công")
                 showData(it)
-                stopEditing()
-                isEditMode = false
-                activity?.setResult(RESULT_OK)
+                activity?.setResult(Activity.RESULT_OK)
                 hideProgressDialog()
-            }
-        })
-        viewModel.userInfo.observe(this, Observer { i ->
-            i?.let {
-                showData(it)
             }
         })
 
@@ -70,6 +78,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun showData(profile: ProfileProvider) {
+        if (profile is Profile) data = profile
         context?.let {
             Glide.with(it)
                     .load(profile.provideAvatar())
@@ -78,27 +87,18 @@ class ProfileFragment : BaseFragment() {
                             .placeholder(R.drawable.avatar_placeholder)
                             .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
-            view_phone.setText(profile.providePhone())
-            view_name.setText(profile.provideName())
             tv_profile_name.text = profile.provideName()
-            view_dob.setText(profile.provideDob())
-            view_email.setText(profile.provideEmail())
-            view_company.setText(profile.provideCompany())
-            view_region.setText(profile.provideRegion())
-            view_address.setText(profile.provideAddress())
-            view_introduction.setText(profile.provideIntroduction())
-            view_account_type.setText(profile.provideAccountType())
-            view_joined_date.setText(profile.provideJoinedDate())
-            view_submit.setOnClickListener {
-                if (!isEditMode) {
-                    startEditing()
-                    isEditMode = true
-                } else {
-                    submitChanges(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                            view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString())
-                }
-            }
+            tv_profile_phone.text = profile.providePhone()
+            tv_profile_birthday.text = profile.provideDob()
+            tv_profile_email.text = profile.provideEmail()
+            tv_profile_company.text = profile.provideCompany()
+            tv_profile_region.text = profile.provideRegion()
+            tv_profile_address.text = profile.provideAddress()
+            tv_profile_type.text = profile.provideAccountType()
+            tv_profile_createAt.text = profile.provideJoinedDate()
+            tv_profile_introduction.text = profile.provideIntroduction()
         }
+
         chooseProfileOption()
     }
 
@@ -109,6 +109,14 @@ class ProfileFragment : BaseFragment() {
         }
         tv_profile_group.setOnClickListener { toast("Đang phát triển") }
         tv_profile_setting.setOnClickListener { showDialogSetting() }
+    }
+
+    fun openProfileEditActivity() {
+        if (data != null) {
+            val intent = Intent(context, ProfileEditActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+            startActivityForResult(intent, Const.RequestCode.UPDATE_PROFILE)
+        } else toast("Không thể cập nhật tài khoản")
     }
 
     @SuppressLint("SetTextI18n")
@@ -133,7 +141,7 @@ class ProfileFragment : BaseFragment() {
                     dialog.dismiss()
                 }
                 tv_change_avatar.setOnClickListener {
-                    launchPickPhotoIntent(PICK_IMAGE_UPDATE_SETTING)
+                    launchPickPhotoIntent()
                     dialog.dismiss()
                 }
                 tv_change_banner.setOnClickListener {
@@ -141,8 +149,7 @@ class ProfileFragment : BaseFragment() {
                     dialog.dismiss()
                 }
                 tv_update_profile.setOnClickListener {
-                    startEditing()
-                    isEditMode = true
+                    openProfileEditActivity()
                     dialog.dismiss()
                 }
 
@@ -164,8 +171,8 @@ class ProfileFragment : BaseFragment() {
                     .positiveText("Thay đổi")
                     .onPositive { dialog, which ->
                         val edit_profile_name = dialog.findViewById(R.id.edit_profile_name) as TextInputEditText
-                        submitChanges(edit_profile_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                                view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString())
+                        submitChanges(edit_profile_name.text.toString(), "", "",
+                                "", "", "", "")
                         dialog.dismiss()
                     }
                     .negativeText("Huỷ")
@@ -186,114 +193,39 @@ class ProfileFragment : BaseFragment() {
         showProgressDialog()
     }
 
-    @SuppressLint("SetTextI18n")
-    private fun startEditing() {
-        view_avatar.setOnClickListener {
-            launchPickPhotoIntent(PICK_IMAGE_UPDATE_IN_PROFILE)
-        }
-
-        tv_profile_group.setOnClickListener(null)
-        tv_profile_write_post.setOnClickListener(null)
-        tv_profile_setting.setOnClickListener(null)
-
-        view_name.isFocusable = true
-        view_name.isFocusableInTouchMode = true
-        view_dob.isFocusable = true
-        view_dob.isFocusableInTouchMode = true
-        view_email.isFocusable = true
-        view_email.isFocusableInTouchMode = true
-        view_company.isFocusable = true
-        view_company.isFocusableInTouchMode = true
-        view_region.isFocusable = true
-        view_region.isFocusableInTouchMode = true
-        view_address.isFocusable = true
-        view_address.isFocusableInTouchMode = true
-        view_introduction.isFocusable = true
-        view_introduction.isFocusableInTouchMode = true
-
-        view_name.requestFocus()
-        val inputMethodManager = view_name.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
-//        inputMethodManager.showSoftInput(view_name, 0)
-
-        view_scrollview.smoothScrollTo(0, 0)
-
-        view_submit.text = "Xong"
-    }
-
-    @SuppressLint("SetTextI18n")
-    private fun stopEditing() {
-        view_avatar.setOnClickListener(null)
-        view_name.isFocusable = false
-        view_name.isFocusableInTouchMode = false
-        view_dob.isFocusable = false
-        view_dob.isFocusableInTouchMode = false
-        view_email.isFocusable = false
-        view_email.isFocusableInTouchMode = false
-        view_company.isFocusable = false
-        view_company.isFocusableInTouchMode = false
-        view_region.isFocusable = false
-        view_region.isFocusableInTouchMode = false
-        view_address.isFocusable = false
-        view_address.isFocusableInTouchMode = false
-        view_introduction.isFocusable = false
-        view_introduction.isFocusableInTouchMode = false
-        chooseProfileOption()
-
-        view_scrollview.smoothScrollTo(0, 0)
-        view_submit.text = "Cập nhật"
-    }
-
-    private fun launchPickPhotoIntent(pickImageStatus: Boolean) {
+    private fun launchPickPhotoIntent() {
         val intent = Intent()
         intent.type = "image/*"
         intent.action = Intent.ACTION_GET_CONTENT
-        if (pickImageStatus)
-            startActivityForResult(intent, Const.RequestCode.UPDATE_PROFILE_AVATAR)
-        else
-            startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
+        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Const.RequestCode.RC_PICK_IMAGE && null != data) {
-                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                    return
-                }
-
-                image = data.data.toString()
-
-                Glide.with(context)
-                        .load(data.data)
-                        .apply(RequestOptions
-                                .placeholderOf(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder)
-                        )
-                        .into(view_avatar)
+        if (resultCode == Activity.RESULT_OK && requestCode == Const.RequestCode.RC_PICK_IMAGE && null != data) {
+            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
+                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                return
             }
 
-            if (requestCode == Const.RequestCode.UPDATE_PROFILE_AVATAR && null != data) {
-                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                    return
-                }
+            image = data.data.toString()
 
-                Glide.with(context)
-                        .load(data.data)
-                        .apply(RequestOptions
-                                .placeholderOf(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder)
-                        )
-                        .into(view_avatar)
+            Glide.with(context)
+                    .load(data.data)
+                    .apply(RequestOptions
+                            .placeholderOf(R.drawable.image_placeholder)
+                            .error(R.drawable.image_placeholder)
+                    )
+                    .into(view_avatar)
 
-                viewModel.updateProfile(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                        view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString(), data.data.toString())
-                showProgressDialog()
-            }
+            viewModel.updateProfile("", "", "",
+                    "", "", "", "", data.data.toString())
+            showProgressDialog()
+        }
 
-            // reload bai dang
+        if (resultCode == Activity.RESULT_OK && requestCode == Const.RequestCode.EDIT_PROFILE && null != data) {
+            activity?.setResult(Activity.RESULT_OK)
+            viewModel.loadUserProfile()
         }
     }
 }

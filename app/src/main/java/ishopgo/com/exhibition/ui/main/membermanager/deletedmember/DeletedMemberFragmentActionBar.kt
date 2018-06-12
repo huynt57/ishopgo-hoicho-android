@@ -32,7 +32,7 @@ class DeletedMemberFragmentActionBar: BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Quản lý thành viên")
+        toolbar.setCustomTitle("Khôi phục thành viên")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 

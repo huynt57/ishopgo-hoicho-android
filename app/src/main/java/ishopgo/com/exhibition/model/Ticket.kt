@@ -29,11 +29,11 @@ class Ticket : IdentityData(), TicketProvider, TicketManagerProvider {
     }
 
     override fun provideDateScan(): String {
-        return "Ngày quét: ${createdAt ?: ""}"
+        return "Ngày quét: ${createdAt?.asDateTime() ?: ""}"
     }
 
     override fun provideEmail(): Spanned {
-        return "Email: <b>${email?.asDateTime() ?: ""}</b>".asHtml()
+        return "Email: <b>${email ?: ""}</b>".asHtml()
     }
 
     override fun provideTicketName(): String {
@@ -64,6 +64,9 @@ class Ticket : IdentityData(), TicketProvider, TicketManagerProvider {
         return "Thời gian: <b>${createdAt?.asDateTime() ?: ""}".asHtml()
     }
 
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Long = 0L
     @SerializedName("code")
     @Expose
     var code: String? = null

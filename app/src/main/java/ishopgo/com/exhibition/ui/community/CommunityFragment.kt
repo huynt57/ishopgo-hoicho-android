@@ -1,9 +1,9 @@
 package ishopgo.com.exhibition.ui.community
 
+//import ishopgo.com.exhibition.ui.community.search.CommunityResultActivity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -30,6 +30,7 @@ import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
+import kotlinx.android.synthetic.main.empty_list_result.*
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -48,6 +49,11 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
             if (community is Community)
                 last_id = community.id
         }
+
+        if (data.isEmpty()) {
+            view_empty_result_notice.visibility = View.VISIBLE
+            view_empty_result_notice.text = "Nội dung trống"
+        } else view_empty_result_notice.visibility = View.GONE
 
         if (reloadData) {
             adapter.replaceAll(data)
@@ -86,6 +92,8 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     companion object {
+        const val TAG = "CommunityFragment"
+
         const val COMMUNITY_SHARE_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
@@ -109,7 +117,10 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
                             } else {
-                                showDiglogLogin()
+                                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                                startActivity(intent)
+                                activity?.finish()
                             }
                         }
 
@@ -120,50 +131,19 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
-                            if (data is Community) {
-                                val intent = Intent(context, CommunityCommentActivity::class.java)
-                                intent.putExtra(EXTRA_ID, data.id)
-                                startActivity(intent)
-                            }
+                            if (UserDataManager.currentUserId > 0) {
+
+                                if (data is Community) {
+                                    val intent = Intent(context, CommunityCommentActivity::class.java)
+                                    intent.putExtra(EXTRA_ID, data.id)
+                                    startActivity(intent)
+                                }
+                            } else openLoginActivity()
                         }
 
-                        COMMUNITY_SHARE_NUMBER_CLICK -> {
-                            context?.let {
-                                val dialog = MaterialDialog.Builder(it)
-                                        .customView(R.layout.dialog_community_share, false)
-                                        .autoDismiss(false)
-                                        .canceledOnTouchOutside(true)
-                                        .build()
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                tv_share_facebook.setOnClickListener {
-                                    shareFacebook(data)
-                                }
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                                tv_share_zalo.setOnClickListener {
-                                    shareApp(data)
-                                }
-                                dialog.show()
-                            }
-                        }
+                        COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
 
-                        COMMUNITY_SHARE_PRODUCT_CLICK -> {
-                            context?.let {
-                                val dialog = MaterialDialog.Builder(it)
-                                        .customView(R.layout.dialog_community_share, false)
-                                        .autoDismiss(false)
-                                        .canceledOnTouchOutside(true)
-                                        .build()
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                tv_share_facebook.setOnClickListener {
-                                    shareFacebook(data)
-                                }
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                                tv_share_zalo.setOnClickListener {
-                                    shareApp(data)
-                                }
-                                dialog.show()
-                            }
-                        }
+                        COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
 
                         COMMUNITY_PRODUCT_CLICK -> {
                             if (data is Community) {
@@ -193,6 +173,41 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     }
                 }
             }
+        }
+    }
+
+    private fun openLoginActivity() {
+        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
+    }
+
+    fun openSearchActivity() {
+//        val intent = Intent(context, CommunityResultActivity::class.java)
+//        startActivity(intent)
+    }
+
+    fun openNotificationActivity() {
+//        val intent = Intent(context, CommunityResultActivity::class.java)
+//        startActivity(intent)
+    }
+
+    private fun openDialogShare(data: CommunityProvider) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_community_share, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+            tv_share_facebook.setOnClickListener {
+                shareFacebook(data)
+            }
+            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+            tv_share_zalo.setOnClickListener {
+                shareApp(data)
+            }
+            dialog.show()
         }
     }
 
@@ -228,26 +243,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         shareIntent.type = "text/plain"
         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlToShare)
         startActivity(shareIntent)
-    }
-
-    private fun showDiglogLogin() {
-        context?.let {
-            val builder = MaterialDialog.Builder(it)
-            builder.title("Thông báo")
-                    .content("Bạn cần đăng nhập để sử dụng tính năng này!")
-                    .positiveText("Đăng nhập")
-                    .positiveColor(Color.parseColor("#00c853"))
-                    .onPositive { dialog, _ ->
-                        dialog.dismiss()
-                        val intent = Intent(context, LoginSelectOptionActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                        startActivity(intent)
-                        activity?.finish()
-                    }
-                    .negativeText("Bỏ qua")
-                    .negativeColor(Color.parseColor("#00c853"))
-                    .show()
-        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

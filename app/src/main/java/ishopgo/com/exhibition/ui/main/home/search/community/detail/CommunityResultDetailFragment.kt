@@ -107,53 +107,19 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
     private fun setupRecycleview() {
         rv_community_parent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_community_parent.adapter = adapterParent
-        if (adapterParent is ClickableAdapter<CommunityProvider>) {
-            (adapterParent as ClickableAdapter<CommunityProvider>).listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
+        adapterParent.listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
                 override fun click(position: Int, data: CommunityProvider, code: Int) {
                     when (code) {
                         COMMUNITY_LIKE_CLICK -> {
                             if (data is Community) {
-                                if (viewModel is CommunityViewModel) viewModel.postCommunityLike(data.id)
+                                viewModel.postCommunityLike(data.id)
                             }
                         }
 
-                        COMMUNITY_SHARE_NUMBER_CLICK -> {
-                            context?.let {
-                                val dialog = MaterialDialog.Builder(it)
-                                        .customView(R.layout.dialog_community_share, false)
-                                        .autoDismiss(false)
-                                        .canceledOnTouchOutside(true)
-                                        .build()
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                tv_share_facebook.setOnClickListener {
-                                    shareFacebook(data)
-                                }
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                                tv_share_zalo.setOnClickListener {
-                                    shareApp(data)
-                                }
-                                dialog.show()
-                            }
-                        }
+                        COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
 
-                        COMMUNITY_SHARE_PRODUCT_CLICK -> {
-                            context?.let {
-                                val dialog = MaterialDialog.Builder(it)
-                                        .customView(R.layout.dialog_community_share, false)
-                                        .autoDismiss(false)
-                                        .canceledOnTouchOutside(true)
-                                        .build()
-                                val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-                                tv_share_facebook.setOnClickListener {
-                                    shareFacebook(data)
-                                }
-                                val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-                                tv_share_zalo.setOnClickListener {
-                                    shareApp(data)
-                                }
-                                dialog.show()
-                            }
-                        }
+                        COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
+
 
                         COMMUNITY_PRODUCT_CLICK -> {
                             if (data is Community) {
@@ -167,6 +133,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                                 }
                             }
                         }
+
                         COMMUNITY_IMAGE_CLICK -> {
                             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
@@ -175,7 +142,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                     }
                 }
             }
-        }
+
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view_recyclerview.layoutManager = layoutManager
         view_recyclerview.adapter = adapterComment
@@ -193,6 +160,25 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                 if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
                 adapterImages.replaceAll(postMedias)
             }
+        }
+    }
+
+    private fun openDialogShare(data: CommunityProvider) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_community_share, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+            tv_share_facebook.setOnClickListener {
+                shareFacebook(data)
+            }
+            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+            tv_share_zalo.setOnClickListener {
+                shareApp(data)
+            }
+            dialog.show()
         }
     }
 

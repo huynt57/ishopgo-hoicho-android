@@ -29,6 +29,9 @@ class ProductComment : IdentityData(), ProductCommentProvider {
     @SerializedName("content")
     @Expose
     var content: String? = null
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Long = 0L
     @SerializedName("account_name")
     @Expose
     var accountName: String? = null

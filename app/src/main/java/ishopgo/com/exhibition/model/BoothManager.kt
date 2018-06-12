@@ -8,16 +8,16 @@ import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerProvider
 
 
 class BoothManager : IdentityData(), BoothManagerProvider {
+    override fun provideQrCode(): String {
+        return qrcode ?: ""
+    }
+
     override fun provideName(): String {
         return boothName ?: ""
     }
 
     override fun providePhone(): String {
-        return "SĐT: ${phone?.asPhone() ?: ""}"
-    }
-
-    override fun provideCompanyStore(): String {
-        return "Công ty/cửa hàng: $companyStore"
+        return phone?.asPhone() ?: ""
     }
 
     override fun provideRegion(): String {
@@ -55,5 +55,5 @@ class BoothManager : IdentityData(), BoothManagerProvider {
     var memberCnt: Int? = null
     @SerializedName("qrcode")
     @Expose
-    var qrcode: Any? = null
+    var qrcode: String? = null
 }

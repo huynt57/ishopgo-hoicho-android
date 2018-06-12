@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -49,6 +50,15 @@ class SalePointDetailFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sale_point_detail, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        context?.let {
+            rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_sale_point.isNestedScrollingEnabled = false
+            rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -116,17 +126,20 @@ class SalePointDetailFragment : BaseFragment() {
             context?.let {
                 val product = data.products!!
                 product.data?.let { productsAdapter.replaceAll(it) }
-                rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
-                rv_product_sale_point.isNestedScrollingEnabled = false
-                rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
                 rv_product_sale_point.adapter = productsAdapter
                 productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
                     override fun click(position: Int, data: ProductProvider, code: Int) {
                         context?.let {
-                            if (data is IdentityData) {
-                                val intent = Intent(context, ProductDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                                startActivity(intent)
+                            if (data is Product) {
+                                productId = data.id
+
+                                val productDetail = ProductDetail()
+                                productDetail.image = data.image
+                                productDetail.name = data.name
+                                productDetail.price = data.price
+                                productDetail.code = data.code
+                                dataProduct = productDetail
+                                viewModel.loadData(phone, productId)
                             }
                         }
                     }
@@ -143,13 +156,15 @@ class SalePointDetailFragment : BaseFragment() {
             tv_product_price.text = dataProduct!!.price.asMoney()
             tv_product_code.text = dataProduct!!.code
 
-            constraintLayoutProduct.setOnClickListener {
-                val intent = Intent(context, ProductDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, dataProduct!!.id)
-                startActivity(intent)
-            }
-
         } else linear_product_current.visibility = View.GONE
+
+        tv_product_detail.setOnClickListener { openProductDetail(productId) }
+    }
+
+    private fun openProductDetail(productId: Long) {
+        val intent = Intent(context, ProductDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+        startActivity(intent)
     }
 
     override

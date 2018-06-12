@@ -6,15 +6,15 @@ package ishopgo.com.exhibition.ui.main.profile
 interface ProfileProvider {
 
     fun provideAvatar(): String
-    fun providePhone(): String
-    fun provideName(): String
-    fun provideDob(): String
-    fun provideEmail(): String
-    fun provideCompany(): String
-    fun provideRegion(): String
-    fun provideAddress(): String
-    fun provideAccountType(): String
-    fun provideJoinedDate(): String
-    fun provideIntroduction(): String
+    fun providePhone(): CharSequence
+    fun provideName(): CharSequence
+    fun provideDob(): CharSequence
+    fun provideEmail(): CharSequence
+    fun provideCompany(): CharSequence
+    fun provideRegion(): CharSequence
+    fun provideAddress(): CharSequence
+    fun provideAccountType(): CharSequence
+    fun provideJoinedDate(): CharSequence
+    fun provideIntroduction(): CharSequence
 
 }
