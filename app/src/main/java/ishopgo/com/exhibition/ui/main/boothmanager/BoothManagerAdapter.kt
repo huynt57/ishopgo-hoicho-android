@@ -34,8 +34,8 @@ class BoothManagerAdapter : ClickableAdapter<BoothManagerProvider>() {
             itemView.apply {
                 Glide.with(context)
                         .load(data.provideQrCode())
-                        .apply(RequestOptions.circleCropTransform()
-                                .placeholder(R.drawable.image_placeholder)
+                        .apply(RequestOptions
+                                .placeholderOf(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder)
                         ).into(img_code)
                 tv_booth_manager_name.text = data.provideName()

@@ -28,6 +28,23 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Cộng đồng")
+        toolbar.rightButton(R.drawable.ic_search_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as CommunityFragment
+                shareFragment.openDialogSearch()
+            }
+        }
+
+        toolbar.leftButton(R.drawable.ic_notifications_green_24dp)
+        toolbar.setLeftButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as CommunityFragment
+                shareFragment.openNotificationActivity()
+            }
+        }
     }
 
     override fun contentLayoutRes(): Int {
@@ -40,7 +57,7 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, CommunityFragment())
+                .replace(R.id.view_main_content, CommunityFragment(), "CommunityFragment")
                 .commit()
     }
 }

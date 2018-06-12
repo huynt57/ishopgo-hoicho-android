@@ -76,11 +76,11 @@
             android:layout_height="wrap_content"
             android:text="Điểm bán"/>
 
-        <android.support.design.widget.TabItem
-            android:id="@+id/tab_community"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bài viết"/>
+        <!--<android.support.design.widget.TabItem-->
+        <!--android:id="@+id/tab_community"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Bài viết"/>-->
 
         <!--<android.support.design.widget.TabItem-->
             <!--android:id="@+id/tab_member"-->

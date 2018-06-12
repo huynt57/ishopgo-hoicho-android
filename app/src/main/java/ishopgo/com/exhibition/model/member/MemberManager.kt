@@ -3,24 +3,29 @@ package ishopgo.com.exhibition.model.member
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerProvider
 
 
 class MemberManager : IdentityData(), MemberManagerProvider {
+    override fun provideAvatar(): String {
+        return image ?: ""
+    }
+
     override fun provideName(): String {
         return name ?: ""
     }
 
     override fun providePhone(): String {
-        return "SĐT: ${phone?: ""} "
+        return phone?.asPhone() ?: ""
     }
 
     override fun provideEmail(): String {
-        return "Email: $email"
+        return email ?: ""
     }
 
     override fun provideRegion(): String {
-        return "Khu vực: $region"
+        return region?.trim() ?: ""
     }
 
     override fun provideBooth(): String {

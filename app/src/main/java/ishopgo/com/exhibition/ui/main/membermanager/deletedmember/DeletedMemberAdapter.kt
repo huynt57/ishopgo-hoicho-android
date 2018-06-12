@@ -22,7 +22,7 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManagerProvider>() {
     override fun onBindViewHolder(holder: ViewHolder<MemberManagerProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.img_member_manager_delete.setOnClickListener {
+            itemView.btn_restore.setOnClickListener {
                 listener?.click(adapterPosition, getItem(adapterPosition))
             }
         }
@@ -34,18 +34,17 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManagerProvider>() {
             super.populate(data)
 
             itemView.apply {
+                Glide.with(context)
+                        .load(data.provideAvatar())
+                        .apply(RequestOptions()
+                                .circleCrop()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
+                        .into(img_member_avatar)
                 tv_member_manager_name.text = data.provideName()
                 tv_member_manager_phone.text = data.providePhone()
-                tv_member_manager_email.text = data.provideEmail()
                 tv_member_manager_region.text = data.provideRegion()
-                tv_member_manager_booth.text = data.provideBooth()
-
-                Glide.with(context)
-                        .load(R.drawable.ic_restore)
-                        .apply(RequestOptions
-                                .placeholderOf(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
-                        .into(img_member_manager_delete)
+                btn_restore.visibility = View.VISIBLE
             }
         }
 

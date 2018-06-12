@@ -1,6 +1,8 @@
 package ishopgo.com.exhibition.ui.main.membermanager
 
 import android.view.View
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
@@ -29,12 +31,16 @@ class MemberManagerAdapter : ClickableAdapter<MemberManagerProvider>() {
             super.populate(data)
 
             itemView.apply {
+                Glide.with(context)
+                        .load(data.provideAvatar())
+                        .apply(RequestOptions()
+                                .circleCrop()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
+                        .into(img_member_avatar)
                 tv_member_manager_name.text = data.provideName()
                 tv_member_manager_phone.text = data.providePhone()
-                tv_member_manager_email.text = data.provideEmail()
                 tv_member_manager_region.text = data.provideRegion()
-                tv_member_manager_booth.text = data.provideBooth()
-                img_member_manager_delete.visibility = View.GONE
             }
         }
 

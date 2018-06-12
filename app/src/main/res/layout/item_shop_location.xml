@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,7 +20,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="13"/>
+        tools:text="13" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/view_name"
@@ -35,7 +34,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/view_number"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Medi White"/>
+        tools:text="Medi White" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/view_region"
@@ -47,6 +46,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/view_name"
         app:layout_constraintTop_toBottomOf="@+id/view_name"
-        tools:text="0974427143 - Đắc lak"/>
+        tools:text="0974427143 - Đắc lak" />
 
 </android.support.constraint.ConstraintLayout>

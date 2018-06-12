@@ -313,7 +313,7 @@
                 android:paddingEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:src="@drawable/expo_horizontal"/>
+                android:src="@drawable/expo_horizontal" />
 
             <View
                 style="@style/AppTheme.DividerLine"

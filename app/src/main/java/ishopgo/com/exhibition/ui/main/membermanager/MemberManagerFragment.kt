@@ -31,8 +31,6 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, MemberManagerProvider>() {
-    private var startTime = ""
-    private var endTime = ""
     private var phone = ""
     private var name = ""
     private var region = ""
@@ -58,8 +56,8 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         val firstLoad = MemberRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
-        firstLoad.start_time = startTime
-        firstLoad.end_time = endTime
+        firstLoad.start_time = ""
+        firstLoad.end_time = ""
         firstLoad.phone = phone
         firstLoad.name = name
         firstLoad.region = region
@@ -71,8 +69,8 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         val loadMore = MemberRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-        loadMore.start_time = startTime
-        loadMore.end_time = endTime
+        loadMore.start_time = ""
+        loadMore.end_time = ""
         loadMore.phone = phone
         loadMore.name = name
         loadMore.region = region
@@ -103,28 +101,12 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
                     .onPositive { dialog, _ ->
                         val edit_member_phone = dialog.findViewById(R.id.edit_member_phone) as TextInputEditText
                         phone = edit_member_phone.text.toString().trim { it <= ' ' }
+
                         val edit_member_name = dialog.findViewById(R.id.edit_member_name) as TextInputEditText
                         name = edit_member_name.text.toString().trim { it <= ' ' }
 
-                        val edit_member_start_time = dialog.findViewById(R.id.edit_member_start_time) as DateInputEditText
-                        startTime = edit_member_start_time.text.toString()
-
-                        val edit_member_end_time = dialog.findViewById(R.id.edit_member_end_time) as DateInputEditText
-                        endTime = edit_member_end_time.text.toString()
-
                         val edit_member_region = dialog.findViewById(R.id.edit_member_region) as TextInputEditText
                         region = edit_member_region.text.toString()
-
-
-                        if (edit_member_start_time.isError) {
-                            toast("Ngày không hợp lệ")
-                            return@onPositive
-                        }
-
-                        if (edit_member_end_time.isError) {
-                            toast("Ngày không hợp lệ")
-                            return@onPositive
-                        }
 
                         firstLoad()
                         dialog.dismiss()
@@ -134,12 +116,6 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
                     .autoDismiss(false)
                     .canceledOnTouchOutside(false)
                     .build()
-
-            val edit_member_start_time = dialog.findViewById(R.id.edit_member_start_time) as DateInputEditText
-            edit_member_start_time.setText(startTime)
-
-            val edit_member_end_time = dialog.findViewById(R.id.edit_member_end_time) as DateInputEditText
-            edit_member_end_time.setText(endTime)
 
             val edit_member_phone = dialog.findViewById(R.id.edit_member_phone) as TextInputEditText
             edit_member_phone.setText(phone)

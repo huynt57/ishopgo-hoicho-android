@@ -1,18 +1,21 @@
 package ishopgo.com.exhibition.ui.community
 
-//import ishopgo.com.exhibition.ui.community.search.CommunityResultActivity
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
+import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.model.UserDataManager
@@ -23,6 +26,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.community.notification.CommunityNotificationActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -31,6 +35,7 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
+import kotlinx.android.synthetic.main.fragment_search_community.*
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -41,21 +46,30 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_search_community, container, false)
+    }
+
     private var last_id: Long = 0
+    private var keyword = ""
 
     override fun populateData(data: List<CommunityProvider>) {
+        hideProgressDialog()
+
         if (data.isNotEmpty()) {
             val community = data[data.size - 1]
             if (community is Community)
                 last_id = community.id
         }
 
-        if (data.isEmpty()) {
-            view_empty_result_notice.visibility = View.VISIBLE
-            view_empty_result_notice.text = "Nội dung trống"
-        } else view_empty_result_notice.visibility = View.GONE
+        if (keyword.isNotEmpty()) cardView_total.visibility = View.VISIBLE
 
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             adapter.addData(0, Community())
             view_recyclerview.scheduleLayoutAnimation()
@@ -72,7 +86,8 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun firstLoad() {
         super.firstLoad()
-        val firstLoad = LoadMoreCommunityRequest()
+        val firstLoad = SearchCommunityRequest()
+        firstLoad.content = keyword
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.last_id = 0
         viewModel.loadData(firstLoad)
@@ -81,7 +96,8 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreCommunityRequest()
+        val loadMore = SearchCommunityRequest()
+        loadMore.content = keyword
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.last_id = last_id
         viewModel.loadData(loadMore)
@@ -120,7 +136,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                                 startActivity(intent)
-                                activity?.finish()
                             }
                         }
 
@@ -174,6 +189,12 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                 }
             }
         }
+
+        img_cancel_search.setOnClickListener {
+            keyword = ""
+            cardView_total.visibility = View.GONE
+            firstLoad()
+        }
     }
 
     private fun openLoginActivity() {
@@ -182,14 +203,45 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         startActivity(intent)
     }
 
-    fun openSearchActivity() {
-//        val intent = Intent(context, CommunityResultActivity::class.java)
-//        startActivity(intent)
+    fun openDialogSearch() {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Tìm kiếm")
+                    .customView(R.layout.dialog_search_community, false)
+                    .positiveText("Lọc")
+                    .onPositive { dialog, _ ->
+                        val edit_keyword = dialog.findViewById(R.id.edit_keyword) as TextInputEditText
+
+                        keyword = edit_keyword.text.toString().trim { it <= ' ' }
+
+                        dialog.dismiss()
+
+                        showProgressDialog()
+                        firstLoad()
+                    }
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val edit_keyword = dialog.findViewById(R.id.edit_keyword) as TextInputEditText
+            edit_keyword.setText(keyword)
+
+
+            dialog.show()
+        }
     }
 
     fun openNotificationActivity() {
-//        val intent = Intent(context, CommunityResultActivity::class.java)
-//        startActivity(intent)
+        if (UserDataManager.currentUserId > 0) {
+            val intent = Intent(context, CommunityNotificationActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(context, LoginSelectOptionActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            startActivity(intent)
+        }
     }
 
     private fun openDialogShare(data: CommunityProvider) {
@@ -250,5 +302,16 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         if (requestCode == Const.RequestCode.SHARE_POST_COMMUNITY && resultCode == Activity.RESULT_OK) {
             firstLoad()
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        (viewModel as CommunityViewModel).total.observe(this, Observer { p ->
+            p.let {
+                if (it != null)
+                    tv_total.text = "$it kết quả được tìm thấy"
+            }
+        })
     }
 }
