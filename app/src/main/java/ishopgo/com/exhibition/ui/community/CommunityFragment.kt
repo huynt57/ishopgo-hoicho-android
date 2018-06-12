@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.gms.dynamic.IFragmentWrapper
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
@@ -36,6 +37,8 @@ import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_search_community.*
+import io.fabric.sdk.android.services.settings.IconRequest.build
+
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -253,7 +256,9 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     .build()
             val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
             tv_share_facebook.setOnClickListener {
-                shareFacebook(data)
+                if (data.provideProduct() != null)
+                    shareFacebook(data)
+                else toast("Tạm thời chỉ chia sẻ được sản phẩm lên Facebook, vui lòng chia sẻ bằng ứng dụng khác")
             }
             val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
             tv_share_zalo.setOnClickListener {
@@ -289,7 +294,23 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     private fun shareApp(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
+        val urlToShare = if (data.provideListImage().isNotEmpty()) {
+            if (data.provideListImage().size > 1) {
+                var linkImage = ""
+                for (i in data.provideListImage().indices) {
+                    linkImage += "${data.provideListImage()[i]}\n\n"
+                }
+
+                "${data.provideContent()}\n $linkImage\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+
+            } else {
+                "${data.provideContent()}\n ${data.provideListImage()[0]}\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+            }
+        } else
+            "${data.provideContent()}\n ${data.provideProduct()?.providerLink() ?: ""}"
+
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"

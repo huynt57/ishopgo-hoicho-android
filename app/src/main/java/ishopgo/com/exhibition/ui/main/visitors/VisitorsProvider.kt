@@ -5,4 +5,5 @@ interface VisitorsProvider {
     fun provideAvatar(): CharSequence
     fun providePhone(): CharSequence
     fun provideEmail(): CharSequence
+    fun provideRegion(): CharSequence
 }
