@@ -1,9 +1,9 @@
 package ishopgo.com.exhibition.ui.community
 
+//import ishopgo.com.exhibition.ui.community.search.CommunityResultActivity
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -23,7 +23,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
-import ishopgo.com.exhibition.ui.community.search.CommunityResultActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -184,13 +183,13 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     fun openSearchActivity() {
-        val intent = Intent(context, CommunityResultActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(context, CommunityResultActivity::class.java)
+//        startActivity(intent)
     }
 
     fun openNotificationActivity() {
-        val intent = Intent(context, CommunityResultActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(context, CommunityResultActivity::class.java)
+//        startActivity(intent)
     }
 
     private fun openDialogShare(data: CommunityProvider) {
