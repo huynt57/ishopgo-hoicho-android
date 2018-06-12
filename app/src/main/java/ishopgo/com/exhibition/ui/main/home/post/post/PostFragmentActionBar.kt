@@ -39,7 +39,7 @@ class PostFragmentActionBar : BaseActionBarFragment() {
         if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
             toolbar.setCustomTitle("Thông tin hội  chợ")
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
-            toolbar.setCustomTitle("thông tin chung")
+            toolbar.setCustomTitle("Thông tin chung")
 
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }

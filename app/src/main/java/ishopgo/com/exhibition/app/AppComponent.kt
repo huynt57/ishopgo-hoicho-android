@@ -32,6 +32,7 @@ import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityViewM
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
+import ishopgo.com.exhibition.ui.main.map.ExpoShopViewModel
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerViewModel
 import ishopgo.com.exhibition.ui.main.myqr.MyQrViewModel
 import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
@@ -143,4 +144,5 @@ interface AppComponent {
     fun inject(boothFollowViewModel: BoothFollowViewModel)
     fun inject(ticketManagerViewModel: TicketManagerViewModel)
     fun inject(visitorsViewModel: VisitorsViewModel)
+    fun inject(expoShopViewModel: ExpoShopViewModel)
 }
