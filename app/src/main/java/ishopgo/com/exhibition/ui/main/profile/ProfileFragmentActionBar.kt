@@ -27,15 +27,6 @@ class ProfileFragmentActionBar : BaseActionBarFragment() {
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }
-
-        toolbar.rightButton(R.drawable.ic_edit_green_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(ProfileFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as ProfileFragment
-                shareFragment.openProfileEditActivity()
-            }
-        }
     }
 
     override fun contentLayoutRes(): Int {

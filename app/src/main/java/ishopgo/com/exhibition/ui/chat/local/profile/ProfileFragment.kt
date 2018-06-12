@@ -78,7 +78,7 @@ class ProfileFragment : BaseActionBarFragment() {
         firstLoad.last_id = 0
         firstLoad.account_id = memberId
         viewModel.loadProfileCommunity(firstLoad)
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
+        view_recyclerview.scheduleLayoutAnimation()
     }
 
     private fun loadMore() {
@@ -143,7 +143,6 @@ class ProfileFragment : BaseActionBarFragment() {
                             view_empty_result_notice.text = "Nội dung trống"
                         } else view_empty_result_notice.visibility = View.GONE
                     it?.let { it1 -> adapter.replaceAll(it1) }
-                    view_recyclerview.scheduleLayoutAnimation()
                 } else {
                     it?.let { it1 -> adapter.addAll(it1) }
                 }
@@ -210,6 +209,7 @@ class ProfileFragment : BaseActionBarFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
 
         toolbar.setCustomTitle("Thông tin thành viên")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)

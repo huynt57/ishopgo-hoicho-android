@@ -13,6 +13,7 @@ import android.os.Environment
 import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -86,34 +87,6 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<TicketManagerProvider>) {
-            (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
-                @SuppressLint("ObsoleteSdkInt")
-                override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                    when (code) {
-                        SAVE_QRCODE_TO_STORAGE -> {
-                            context?.let {
-                                if (ActivityCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) run {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                        ActivityCompat.requestPermissions(it as TicketManagerActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                    }
-                                } else {
-                                    storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
-                                }
-                            }
-                        }
-
-                        CLICK_ITEM_TO_PROFILE -> {
-                            if (data is Ticket) {
-                                val intent = Intent(context, MemberProfileActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                                startActivity(intent)
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun saveTicketStorage() {
@@ -124,7 +97,10 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
                     when (code) {
                         SAVE_QRCODE_TO_STORAGE -> {
                             context?.let {
-                                storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                                if (!hasCameraPermission(it))
+                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                else
+                                    storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
                             }
                         }
                         CLICK_ITEM_TO_PROFILE -> {
@@ -141,41 +117,11 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
 
     override fun onResume() {
         super.onResume()
-        context?.let {
-            if (!hasCameraPermission(it))
-                requestStoragePermission()
-            else saveTicketStorage()
-        }
+        saveTicketStorage()
     }
 
     private fun hasCameraPermission(context: Context): Boolean {
         return ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-    }
-
-    private fun requestStoragePermission() {
-        activity?.let {
-            if (adapter is ClickableAdapter<TicketManagerProvider>) {
-                (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
-                    @SuppressLint("ObsoleteSdkInt")
-                    override fun click(position: Int, data: TicketManagerProvider, code: Int) {
-                        when (code) {
-                            SAVE_QRCODE_TO_STORAGE -> {
-                                context?.let {
-                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                }
-                            }
-                            CLICK_ITEM_TO_PROFILE -> {
-                                if (data is Ticket) {
-                                    val intent = Intent(context, MemberProfileActivity::class.java)
-                                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                                    startActivity(intent)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     companion object {
@@ -224,28 +170,29 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            saveTicketStorage()
-        } else {
-            // permission was not granted
-            if (activity == null) {
-                return
-            }
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE))
-                context?.let {
-                    MaterialDialog.Builder(it)
-                            .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
-                            .positiveText("Đi tới cài đặt")
-                            .onPositive { _, _ ->
-                                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                                        Uri.fromParts("package", it.packageName, null))
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                                startActivity(intent)
-                            }
-                            .negativeText("Huỷ")
-                            .show()
+        when (requestCode) {
+            Const.RequestCode.STORAGE_PERMISSION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                saveTicketStorage()
+            } else {
+                // permission was not granted
+                if (activity == null) {
+                    return
                 }
+                if (!ActivityCompat.shouldShowRequestPermissionRationale(activity!!, Manifest.permission.WRITE_EXTERNAL_STORAGE))
+                    context?.let {
+                        MaterialDialog.Builder(it)
+                                .content("Hãy cấp quyền cho ứng dụng sử dụng bộ nhớ trong")
+                                .positiveText("Đi tới cài đặt")
+                                .onPositive { _, _ ->
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                                            Uri.fromParts("package", it.packageName, null))
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                    startActivity(intent)
+                                }
+                                .negativeText("Huỷ")
+                                .show()
+                    }
+            }
         }
     }
 }

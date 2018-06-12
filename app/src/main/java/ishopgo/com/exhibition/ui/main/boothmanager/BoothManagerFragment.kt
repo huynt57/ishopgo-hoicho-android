@@ -83,59 +83,29 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<BoothManagerProvider>) {
-            (adapter as ClickableAdapter<BoothManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BoothManagerProvider> {
-                @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: BoothManagerProvider, code: Int) {
-                    when (code) {
-                        SAVE_QRCODE_TO_STORAGE -> {
-                            context?.let {
-                                if (ActivityCompat.checkSelfPermission(it, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) run {
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                        ActivityCompat.requestPermissions(it as BoothManagerActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                    }
-                                } else {
-                                    Glide.with(context)
-                                            .asBitmap()
-                                            .load(data.provideQrCode())
-                                            .into(object : SimpleTarget<Bitmap>(300, 300) {
-                                                override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
-                                                    resource?.let { it1 -> storeImage(it1, data.provideName()) }
-                                                }
-                                            })
-                                }
-                            }
-                        }
-
-                        CLICK_ITEM_TO_BOOTH -> {
-                            if (data is BoothManager) {
-                                val boothId = data.id
-                                val intent = Intent(context, ShopDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
-                                startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_DELETE)
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 
-    private fun saveTicketStorage() {
+    private fun saveQRcodeStorage() {
         if (adapter is ClickableAdapter<BoothManagerProvider>)
             (adapter as ClickableAdapter<BoothManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BoothManagerProvider> {
                 @SuppressLint("ObsoleteSdkInt")
                 override fun click(position: Int, data: BoothManagerProvider, code: Int) {
                     when (code) {
                         SAVE_QRCODE_TO_STORAGE -> {
-                            Glide.with(context)
-                                    .asBitmap()
-                                    .load(data.provideQrCode())
-                                    .into(object : SimpleTarget<Bitmap>(300, 300) {
-                                        override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
-                                            resource?.let { storeImage(it, data.provideName()) }
-                                        }
-                                    })
+                            context?.let {
+                                if (!hasCameraPermission(it))
+                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                else
+                                    Glide.with(context)
+                                            .asBitmap()
+                                            .load(data.provideQrCode())
+                                            .into(object : SimpleTarget<Bitmap>(300, 300) {
+                                                override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                                                    resource?.let { storeImage(it, data.provideName()) }
+                                                }
+                                            })
+                            }
+
                         }
                         CLICK_ITEM_TO_BOOTH -> {
                             if (data is BoothManager) {
@@ -152,43 +122,13 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
 
     override fun onResume() {
         super.onResume()
-        context?.let {
-            if (!hasCameraPermission(it))
-                requestStoragePermission()
-            else saveTicketStorage()
-        }
+        saveQRcodeStorage()
     }
 
     private fun hasCameraPermission(context: Context): Boolean {
         return ActivityCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
     }
 
-    private fun requestStoragePermission() {
-        activity?.let {
-            if (adapter is ClickableAdapter<BoothManagerProvider>) {
-                (adapter as ClickableAdapter<BoothManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BoothManagerProvider> {
-                    @SuppressLint("ObsoleteSdkInt")
-                    override fun click(position: Int, data: BoothManagerProvider, code: Int) {
-                        when (code) {
-                            SAVE_QRCODE_TO_STORAGE -> {
-                                context?.let {
-                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                }
-                            }
-                            CLICK_ITEM_TO_BOOTH -> {
-                                if (data is BoothManager) {
-                                    val boothId = data.id
-                                    val intent = Intent(context, ShopDetailActivity::class.java)
-                                    intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
-                                    startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_DELETE)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     private fun storeImage(imageData: Bitmap, filename: String): Boolean {
         // get path to external storage (SD card)
@@ -259,7 +199,7 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            saveTicketStorage()
+            saveQRcodeStorage()
         } else {
             // permission was not granted
             if (activity == null) {

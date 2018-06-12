@@ -72,6 +72,10 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
+                        UserDataManager.currentUserName = data?.name ?: ""
+                        UserDataManager.currentUserAvatar = data?.image ?: ""
+                        UserDataManager.currentType = data?.typeTextExpo ?: ""
+
                         profileUpdated.postValue(data)
                     }
 
