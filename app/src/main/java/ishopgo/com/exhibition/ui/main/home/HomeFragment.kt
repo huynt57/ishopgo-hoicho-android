@@ -353,11 +353,11 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun loadData() {
+        viewModel.loadBanners()
+        viewModel.loadCategories()
         viewModel.loadHighlightBrands()
         viewModel.loadHighlightProducts()
         viewModel.loadSuggestedProducts()
-        viewModel.loadCategories()
-        viewModel.loadBanners()
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         if (isUserLoggedIn) {

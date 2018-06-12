@@ -104,7 +104,7 @@ class ShopDetailFragment : BaseFragment() {
                 boothId = it
                 if (UserDataManager.currentUserId == boothId) {
                     tv_edit_image.visibility = View.VISIBLE
-                    view_favorite.visibility = View.GONE
+                    constraintLayout.visibility = View.GONE
                     view_image.setOnClickListener {
                         val intent = Intent()
                         intent.type = "image/*"
@@ -113,9 +113,9 @@ class ShopDetailFragment : BaseFragment() {
                     }
                 } else {
                     tv_edit_image.visibility = View.GONE
-                    view_favorite.visibility = View.VISIBLE
+                    constraintLayout.visibility = View.VISIBLE
                 }
-                view_favorite.setOnClickListener {
+                view_shop_follow.setOnClickListener {
                     if (UserDataManager.currentUserId > 0) {
                         if (boothId != -1L)
                             viewModel.postProductFollow(boothId)
@@ -126,12 +126,13 @@ class ShopDetailFragment : BaseFragment() {
 
         viewModel.shopFollow.observe(this, Observer { i ->
             i?.let {
-                Glide.with(context)
-                        .load(if (it) R.drawable.ic_added_to_favorite_24dp else R.drawable.ic_add_to_favorite_24dp)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
-                        .into(view_favorite)
+                //                Glide.with(context)
+//                        .load(if (it) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp)
+//                        .apply(RequestOptions()
+//                                .placeholder(R.drawable.image_placeholder)
+//                                .error(R.drawable.image_placeholder))
+//                        .into(view_favorite)
+                view_shop_follow.drawableCompat(0, if (it) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp, 0, 0)
             }
         })
 
@@ -142,20 +143,22 @@ class ShopDetailFragment : BaseFragment() {
         viewModel.postFollow.observe(this, Observer { p ->
             p.let {
                 if (it?.status ?: 0 == 1) {
-                    Glide.with(context)
-                            .load(R.drawable.ic_added_to_favorite_24dp)
-                            .apply(RequestOptions()
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.image_placeholder))
-                            .into(view_favorite)
+//                    Glide.with(context)
+//                            .load(R.drawable.ic_favorite_accent_24dp)
+//                            .apply(RequestOptions()
+//                                    .placeholder(R.drawable.image_placeholder)
+//                                    .error(R.drawable.image_placeholder))
+//                            .into(view_favorite)
+                    view_shop_follow.drawableCompat(0, R.drawable.ic_favorite_accent_24dp, 0, 0)
                     toast("Theo dõi gian hàng thành công")
                 } else {
-                    Glide.with(context)
-                            .load(R.drawable.ic_add_to_favorite_24dp)
-                            .apply(RequestOptions()
-                                    .placeholder(R.drawable.image_placeholder)
-                                    .error(R.drawable.image_placeholder))
-                            .into(view_favorite)
+//                    Glide.with(context)
+//                            .load(R.drawable.ic_favorite_border_black_24dp)
+//                            .apply(RequestOptions()
+//                                    .placeholder(R.drawable.image_placeholder)
+//                                    .error(R.drawable.image_placeholder))
+//                            .into(view_favorite)
+                    view_shop_follow.drawableCompat(0, R.drawable.ic_favorite_border_black_24dp, 0, 0)
                     toast("Bỏ theo dõi gian hàng thành công")
                     activity?.setResult(RESULT_OK)
                 }

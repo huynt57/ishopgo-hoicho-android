@@ -16,8 +16,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
@@ -183,13 +181,8 @@ class ProductDetailFragment : BaseFragment() {
 
         viewModel.getProductLike.observe(this, Observer { c ->
             c?.let {
-                Glide.with(context)
-                        .load(if (it.status == 1) R.drawable.ic_heart_checked else R.drawable.ic_heart)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
-                        .into(view_shop_follow)
-                if (it.status == 1) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
+                view_shop_follow.drawableCompat(0, if (it.status == 1) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp, 0, 0)
+                if (it.status == 1) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
 
                 activity?.setResult(RESULT_OK)
             }
@@ -231,7 +224,7 @@ class ProductDetailFragment : BaseFragment() {
 
             view_product_name.text = product.provideProductName()
             if (UserDataManager.currentUserId > 0) {
-                linear_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
+                view_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
                 view_share.setOnClickListener { showDialogShare(product) }
             } else {
                 view_shop_follow.setOnClickListener {
@@ -242,15 +235,10 @@ class ProductDetailFragment : BaseFragment() {
                 }
             }
 
-            Glide.with(context)
-                    .load(if (product.provideLiked()) R.drawable.ic_heart_checked else R.drawable.ic_heart)
-                    .apply(RequestOptions()
-                            .placeholder(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder))
-                    .into(view_shop_follow)
+            view_shop_follow.drawableCompat(0, if (product.provideLiked()) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp, 0, 0)
             view_product_price.text = product.provideProductPrice()
 
-            if (product.provideLiked()) tv_product_like.text = "Bỏ quan tâm" else tv_product_like.text = "Quan tâm"
+            if (product.provideLiked()) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
 
             container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = product.provideProductBrand()

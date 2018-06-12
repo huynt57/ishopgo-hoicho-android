@@ -128,7 +128,7 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                     img_community_share.visibility = View.VISIBLE
                     tv_community_number_share.visibility = View.VISIBLE
                     tv_community_like.visibility = View.VISIBLE
-                    tv_community_like.text = "${data.provideLikeCount()} lượt thích"
+                    tv_community_like.text = "${data.provideLikeCount()} thích"
                     toggle_community_like.visibility = View.GONE
 
                     Glide.with(this).load(data.provideProduct()?.providerImage())

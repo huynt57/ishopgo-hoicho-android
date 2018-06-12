@@ -367,10 +367,10 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="hoicho.ishopgo.com"
+                    android:host="expo360.vn"
                     android:scheme="http"/>
                 <data
-                    android:host="hoicho.ishopgo.com"
+                    android:host="expo360.vn"
                     android:scheme="https"/>
             </intent-filter>
         </activity>

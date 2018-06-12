@@ -466,7 +466,7 @@
                     android:layout_marginTop="8dp"
                     android:drawablePadding="8dp"
                     android:text="90 Thích"
-                    app:drawableStartCompat="@drawable/ic_heart_checked"
+                    app:drawableStartCompat="@drawable/ic_favorite_accent_24dp"
                     app:layout_constraintEnd_toStartOf="@+id/view_product_comment_count"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
@@ -770,35 +770,17 @@
         android:orientation="horizontal"
         android:weightSum="3">
 
-        <LinearLayout
-            android:id="@+id/linear_shop_follow"
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_shop_follow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:foreground="?attr/selectableItemBackground"
             android:gravity="center"
-            android:orientation="vertical"
             android:paddingTop="8dp"
-            android:paddingBottom="8dp">
-
-            <ImageView
-                android:id="@+id/view_shop_follow"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/ic_heart_checked" />
-
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/tv_product_like"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Quan tâm" />
-
-        </LinearLayout>
-
+            android:paddingBottom="8dp"
+            android:text="Quan tâm"
+            app:drawableTopCompat="@drawable/ic_favorite_border_black_24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_call"
