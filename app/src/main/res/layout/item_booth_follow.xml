@@ -4,72 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/bg_stroked_rounded_rectangle"
-    android:padding="8dp">
+    android:background="@drawable/bg_white_black_bottom">
 
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+    <ImageView
+        android:id="@+id/img_code"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tv_booth_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:drawablePadding="8dp"
+        android:ellipsize="end"
         android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_search_shop"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Tên cửa hàng" />
+        tools:text="Tên" />
 
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+    <TextView
+        android:id="@+id/tv_booth_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:autoLink="phone"
+        android:textColor="@color/md_blue_grey_500"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_booth_name"
+        tools:text="0989013403" />
+
+    <TextView
         android:id="@+id/tv_booth_address"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        app:drawableStartCompat="@drawable/ic_home_green_24dp"
+        android:ellipsize="end"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_booth_name"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_booth_phone"
         tools:text="Địa chỉ" />
 
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-        android:id="@+id/tv_booth_phone"
+    <TextView
+        android:id="@+id/tv_booth_number_product"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_booth_address"
+        tools:text="12 sản phẩm" />
+
+    <TextView
+        android:id="@+id/tv_booth_member_cnt"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/tv_booth_number_product"
+        tools:text="2 thành viên quan tâm" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_save_booth"
+        style="@style/AppTheme.ActionButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:autoLink="phone"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        app:drawableStartCompat="@drawable/ic_phone_24dp"
+        android:text="Lưu vào máy"
+        android:textColor="@color/md_white_1000"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/tv_booth_number_product"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_booth_address"
-        tools:text="0987654321" />
-
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-        android:id="@+id/tv_booth_number_product"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:textColor="@color/colorPrimary"
-        app:drawableStartCompat="@drawable/price_tag"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_booth_address"
-        tools:text="0 Sản phẩm" />
+        app:layout_constraintEnd_toEndOf="@+id/img_code"
+        app:layout_constraintStart_toStartOf="@+id/img_code"
+        app:layout_constraintTop_toBottomOf="@+id/img_code"
+        tools:ignore="HardcodedText,MissingConstraints" />
 
 </android.support.constraint.ConstraintLayout>

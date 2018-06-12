@@ -1,30 +1,36 @@
 package ishopgo.com.exhibition.model
 
-import android.text.Spanned
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowProvider
 
 
 class BoothFollow : IdentityData(), BoothFollowProvider {
+    override fun provideQrCode(): String {
+        return qrcode ?: ""
+    }
+
+    override fun provideMemberCNT(): String {
+        return "Số thành viên quan tâm: $memberCnt"
+    }
+
     override fun provideAddress(): String {
         return "${address?.trim() ?: ""}, ${district?.trim() ?: ""}, ${city?.trim()
                 ?: ""}"
     }
 
-    override fun provideName(): Spanned {
-        return "<b>${name ?: ""}</b>".asHtml()
+    override fun provideName(): String {
+        return name ?: ""
     }
 
     override fun providePhone(): String {
         return phone?.asPhone() ?: ""
     }
 
-    override fun provideNumberProduct(): Spanned {
-        return "<b>${numberProduct ?: "0"} sản phẩm</b>".asHtml()
+    override fun provideNumberProduct(): String {
+        return "Số sản phẩm: $numberProduct"
     }
 
     @SerializedName("name")

@@ -1,10 +1,11 @@
 package ishopgo.com.exhibition.ui.main.boothfollow
 
-import android.text.Spanned
 
 interface BoothFollowProvider {
-    fun provideName(): Spanned
+    fun provideName(): String
     fun providePhone(): String
     fun provideAddress(): String
-    fun provideNumberProduct(): Spanned
+    fun provideNumberProduct(): String
+    fun provideMemberCNT(): String
+    fun provideQrCode(): String
 }
