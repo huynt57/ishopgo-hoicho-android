@@ -164,29 +164,8 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
 
     @SuppressLint("SetTextI18n")
     fun openAddBoothManager() {
-        context?.let {
-            val dialog = MaterialDialog.Builder(it)
-                    .customView(R.layout.dialog_select_register, false)
-                    .autoDismiss(false)
-                    .canceledOnTouchOutside(true)
-                    .build()
-
-            val tv_register_member = dialog.findViewById(R.id.tv_register_member) as TextView
-            val tv_register_store = dialog.findViewById(R.id.tv_register_store) as TextView
-            tv_register_member.text = "Thêm gian hàng từ thành viên"
-            tv_register_store.text = "Thêm gian hàng mới"
-            tv_register_member.setOnClickListener {
-                toast("Đang phát triển")
-            }
-
-            tv_register_store.setOnClickListener {
-                val intent = Intent(context, BoothManagerAddActivity::class.java)
-                startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_ADD)
-                dialog.dismiss()
-            }
-
-            dialog.show()
-        }
+        val intent = Intent(context, BoothManagerAddActivity::class.java)
+        startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_ADD)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

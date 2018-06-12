@@ -52,6 +52,15 @@ class SalePointDetailFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_sale_point_detail, container, false)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        context?.let {
+            rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_sale_point.isNestedScrollingEnabled = false
+            rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
@@ -117,9 +126,6 @@ class SalePointDetailFragment : BaseFragment() {
             context?.let {
                 val product = data.products!!
                 product.data?.let { productsAdapter.replaceAll(it) }
-                rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
-                rv_product_sale_point.isNestedScrollingEnabled = false
-                rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
                 rv_product_sale_point.adapter = productsAdapter
                 productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
                     override fun click(position: Int, data: ProductProvider, code: Int) {

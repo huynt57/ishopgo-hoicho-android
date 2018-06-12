@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.community.search.CommunityResultActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -92,6 +93,8 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     companion object {
+        const val TAG = "CommunityFragment"
+
         const val COMMUNITY_SHARE_CLICK = 1
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
@@ -177,6 +180,16 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     private fun openLoginActivity() {
         val intent = Intent(context, LoginSelectOptionActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        startActivity(intent)
+    }
+
+    fun openSearchActivity() {
+        val intent = Intent(context, CommunityResultActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun openNotificationActivity() {
+        val intent = Intent(context, CommunityResultActivity::class.java)
         startActivity(intent)
     }
 
