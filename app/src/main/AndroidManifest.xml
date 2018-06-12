@@ -359,6 +359,10 @@
             android:name=".ui.main.profile.edit.ProfileEditActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.community.notification.CommunityNotificationActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
         <activity android:name=".ui.deeplink.DeeplinkHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
