@@ -23,7 +23,7 @@ class CommunityNotificationFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Chia sẻ bài viết")
+        toolbar.setCustomTitle("Danh sách thông báo")
         toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
         toolbar.rightButton(R.drawable.ic_done_all_black_24dp)

@@ -37,8 +37,8 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
             }
         }
 
-        toolbar.rightButton2(R.drawable.ic_notifications_green_24dp)
-        toolbar.setRight2ButtonClickListener {
+        toolbar.leftButton(R.drawable.ic_notifications_green_24dp)
+        toolbar.setLeftButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
             if (fragment != null) {
                 val shareFragment = fragment as CommunityFragment

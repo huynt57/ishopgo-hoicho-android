@@ -6,4 +6,5 @@ interface MemberManagerProvider {
     fun provideEmail(): String
     fun provideRegion(): String
     fun provideBooth(): String
+    fun provideAvatar(): String
 }

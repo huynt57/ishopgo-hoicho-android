@@ -64,12 +64,12 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
         if (keyword.isNotEmpty()) cardView_total.visibility = View.VISIBLE
 
-        if (data.isEmpty()) {
-            view_empty_result_notice.visibility = View.VISIBLE
-            view_empty_result_notice.text = "Nội dung trống"
-        } else view_empty_result_notice.visibility = View.GONE
-
         if (reloadData) {
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Nội dung trống"
+            } else view_empty_result_notice.visibility = View.GONE
+
             adapter.replaceAll(data)
             adapter.addData(0, Community())
             view_recyclerview.scheduleLayoutAnimation()
@@ -136,7 +136,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                 val intent = Intent(context, LoginSelectOptionActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                                 startActivity(intent)
-                                activity?.finish()
                             }
                         }
 
@@ -235,8 +234,14 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     fun openNotificationActivity() {
-        val intent = Intent(context, CommunityNotificationActivity::class.java)
-        startActivity(intent)
+        if (UserDataManager.currentUserId > 0) {
+            val intent = Intent(context, CommunityNotificationActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(context, LoginSelectOptionActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            startActivity(intent)
+        }
     }
 
     private fun openDialogShare(data: CommunityProvider) {
