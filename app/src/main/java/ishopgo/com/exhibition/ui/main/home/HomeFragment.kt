@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -29,7 +30,9 @@ import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
+import ishopgo.com.exhibition.ui.main.home.post.LatestPostsAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
+import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
 import ishopgo.com.exhibition.ui.main.map.ExpoMapActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
@@ -51,6 +54,7 @@ class HomeFragment : BaseFragment() {
     companion object {
         private const val CHANGE_BANNER_PERIOD = 3000L
     }
+
     private lateinit var viewModel: HomeViewModel
     private lateinit var mainViewModel: MainViewModel
 
@@ -60,6 +64,7 @@ class HomeFragment : BaseFragment() {
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val categoryStage1Adapter = CategoryStage1Adapter(0.3f)
     private val highlightBrandAdapter = HighlightBrandAdapter(0.4f)
+    private val latestNewsAdapter = LatestPostsAdapter(0.6f)
     private val categoriesAdapter = CategoryAdapter()
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
@@ -126,6 +131,13 @@ class HomeFragment : BaseFragment() {
                 view_list_highlight_brand.scheduleLayoutAnimation()
             }
         })
+        viewModel.latestNews.observe(this, Observer { b ->
+            b?.let {
+                container_latest_news.visibility = if (it.posts?.isEmpty() == true) View.GONE else View.VISIBLE
+                latestNewsAdapter.replaceAll(it.posts ?: listOf())
+                view_list_latest_news.scheduleLayoutAnimation()
+            }
+        })
         viewModel.categories.observe(this, Observer { c ->
             c?.let {
                 categoriesAdapter.replaceAll(it)
@@ -190,13 +202,16 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupSuggestedProducts(view.context)
-        setupHighlightBrands(view.context)
-        setupHighlightProducts(view.context)
-        setupCategories(view.context)
-        setupCategoryStage1(view.context)
-        setupViewedProducts(view.context)
-        setupFavoriteProducts(view.context)
+        val context = view.context
+
+        setupSuggestedProducts(context)
+        setupHighlightBrands(context)
+        setupHighlightProducts(context)
+        setupCategories(context)
+        setupCategoryStage1(context)
+        setupViewedProducts(context)
+        setupLatestNews(context)
+        setupFavoriteProducts(context)
 
         setupListeners()
     }
@@ -224,6 +239,9 @@ class HomeFragment : BaseFragment() {
         }
         more_suggest_products.setOnClickListener {
             openSuggestedProducts()
+        }
+        more_latest_news.setOnClickListener {
+            openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
         }
         swipe.setOnRefreshListener {
             loadData()
@@ -257,6 +275,14 @@ class HomeFragment : BaseFragment() {
 
                     }
                 }
+            }
+
+        }
+        latestNewsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<PostObject> {
+            override fun click(position: Int, data: PostObject, code: Int) {
+                val i = Intent(context, PostMenuDetailActivity::class.java)
+                i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(i)
             }
 
         }
@@ -357,6 +383,7 @@ class HomeFragment : BaseFragment() {
         viewModel.loadCategories()
         viewModel.loadHighlightBrands()
         viewModel.loadHighlightProducts()
+        viewModel.loadLatestNews()
         viewModel.loadSuggestedProducts()
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
@@ -409,6 +436,15 @@ class HomeFragment : BaseFragment() {
         view_list_highlight_brand.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
     }
 
+    private fun setupLatestNews(context: Context) {
+        view_list_latest_news.adapter = latestNewsAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_latest_news.layoutManager = layoutManager
+        view_list_latest_news.isNestedScrollingEnabled = false
+        view_list_latest_news.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+        view_list_latest_news.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
+    }
+
     private fun setupViewedProducts(context: Context) {
         view_list_viewed_products.adapter = viewedProductAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -454,3 +490,4 @@ class HomeFragment : BaseFragment() {
         rv_categories.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 }
+
