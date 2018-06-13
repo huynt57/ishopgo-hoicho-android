@@ -56,15 +56,15 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     }
 
     override fun provideTTPrice(): String {
-        return ttPrice?.asMoney() ?: "0 đ"
+        return ttPrice.toString()
     }
 
     override fun provideProviderPrice(): String {
-        return providerPrice?.asMoney() ?: "0 đ"
+        return providerPrice.toString()
     }
 
     override fun providePrice(): String {
-        return price?.asMoney() ?: "0 đ"
+        return price.toString()
     }
 
     override fun provideStatus(): Boolean {
@@ -182,7 +182,7 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     var departments: List<Brand>? = null
     @SerializedName("categories")
     @Expose
-    var categories: List<Category>? = null
+    var categories: MutableList<Category>? = null
     @SerializedName("relate")
     @Expose
     var relate: List<Any>? = null

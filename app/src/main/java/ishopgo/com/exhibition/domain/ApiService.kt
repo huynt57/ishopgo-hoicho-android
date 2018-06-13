@@ -432,6 +432,9 @@ class ApiService {
 
         @GET("find-info")
         fun getUserByPhone(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PhoneInfo>>
+
+        @POST("edit-product/{id}")
+        fun editProduct(@Path("id") brand_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
 }

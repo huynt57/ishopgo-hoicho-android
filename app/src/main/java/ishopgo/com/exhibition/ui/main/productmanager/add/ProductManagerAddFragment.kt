@@ -118,6 +118,7 @@ class ProductManagerAddFragment : BaseFragment() {
             CASE_PICK_IMAGE = false
             launchPickPhotoIntent()
         }
+
         sw_show_wholesale.setOnCheckedChangeListener { _, _ ->
             if (sw_show_wholesale.isChecked) linear_wholesale.visibility = View.VISIBLE else {
                 linear_wholesale.visibility = View.GONE
@@ -166,6 +167,7 @@ class ProductManagerAddFragment : BaseFragment() {
         edt_product_categories_4.setOnClickListener { getCategory(edt_product_categories_4, CATEGORY_LEVEL_4) }
 
         setupImageRecycleview()
+        loadSanPhamLienQuan()
     }
 
     private fun setupImageRecycleview() {
@@ -609,7 +611,6 @@ class ProductManagerAddFragment : BaseFragment() {
                                         listProductRelated.add(data)
                                     }
                                 }
-                                loadSanPhamLienQuan()
                                 dialog.dismiss()
                             }
                         }
