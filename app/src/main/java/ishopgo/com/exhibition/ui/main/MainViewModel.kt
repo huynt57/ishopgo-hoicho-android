@@ -1,7 +1,9 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
@@ -46,4 +48,41 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         return true
     }
 
+    var notificationCount = MutableLiveData<Int>()
+
+    fun loadUnreadNotificationCount() {
+        addDisposable(isgService.getNotificationCount()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Int>() {
+                    override fun success(data: Int?) {
+                        notificationCount.postValue(data ?: 0)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+
+    }
+
+    var inboxUnreadCount = MutableLiveData<Int>()
+
+    fun loadUnreadInboxCount() {
+        addDisposable(isgService.chatUnreadInbox()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Int>() {
+                    override fun success(data: Int?) {
+                        inboxUnreadCount.postValue(data ?: 0)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+
+    }
 }

@@ -1,10 +1,12 @@
 package ishopgo.com.exhibition.ui.community
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -25,6 +27,8 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
             return fragment
         }
     }
+
+    private lateinit var mainViewModel : MainViewModel
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Cộng đồng")
@@ -49,6 +53,23 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_single_content
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        mainViewModel.notificationCount.observe(this, Observer { c ->
+            c?.let {
+                if (c > 0) {
+                    toolbar.leftButton(R.drawable.ic_notifications_green_24dp, it)
+                }
+                else {
+                    toolbar.leftButton(R.drawable.ic_notifications_green_24dp, 0)
+                }
+            }
+        })
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

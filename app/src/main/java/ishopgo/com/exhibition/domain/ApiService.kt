@@ -397,6 +397,9 @@ class ApiService {
         @GET("chat/get-info-group")
         fun chat_conversationInfo(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ConversationInfo>>
 
+        @GET("chat/count-unread-inbox")
+        fun chatUnreadInbox(): Single<BaseResponse<Int>>
+
         @GET("chat/get-sample-messages")
         fun inbox_getPatterns(
                 @QueryMap fields: MutableMap<String, Any>
@@ -432,6 +435,9 @@ class ApiService {
 
         @GET("find-info")
         fun getUserByPhone(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PhoneInfo>>
+
+        @GET("count-notification")
+        fun getNotificationCount(): Single<BaseResponse<Int>>
     }
 
 }
