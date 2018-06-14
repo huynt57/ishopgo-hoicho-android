@@ -32,6 +32,7 @@ import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -47,7 +48,7 @@ import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.fragment_product_manager_detail.*
 import org.apache.commons.io.IOUtils
 import java.io.IOException
-import java.util.*
+import kotlin.collections.ArrayList
 
 class ProductManagerDetailFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
@@ -55,7 +56,8 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var provider_id: Long = 0L
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var status: Int = STATUS_DISPLAY_SHOW
-    private var postMedias: ArrayList<PostMedia> = ArrayList()
+    private var postMedias = ArrayList<PostMedia>()
+    private var listImageDelete = ArrayList<PostMedia>()
     private var adapterImages = ComposingPostMediaAdapter()
     private var image: String = ""
     private var imageOld = ""
@@ -74,7 +76,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var listCategory = mutableListOf<Category>()
     private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
-    private var listProductRelated: ArrayList<ProductManagerProvider> = ArrayList()
+    private var listProductRelated = ArrayList<ProductManagerProvider>()
 
     private var brand_id: Long = 0L
 
@@ -90,12 +92,7 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        if (UserDataManager.currentType == "Chủ hội chợ")
-            til_product_provider.visibility = View.VISIBLE else {
-            provider_id = UserDataManager.currentUserId
-            til_product_provider.visibility = View.GONE
-        }
+        showProgressDialog()
 
         view_add_images.setOnClickListener {
             CASE_PICK_IMAGE = false
@@ -121,11 +118,11 @@ class ProductManagerDetailFragment : BaseFragment() {
                                 image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                                 edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
                                 ?: 0, edit_produt_wholesale_to.money
-                                ?: 0, edit_produt_wholesale_count.text.toString())
+                                ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
                     }
                 } else
                     if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                    edt_product_categories.text.toString(), provider_id.toString(), edit_product_brand.text.toString())) {
+                                    edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
                         showProgressDialog()
                         viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
                                 edit_product_price?.money
@@ -133,7 +130,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                                 image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                                 edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
                                 ?: 0, edit_produt_wholesale_to.money
-                                ?: 0, edit_produt_wholesale_count.text.toString())
+                                ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
                     }
             }
         }
@@ -153,8 +150,12 @@ class ProductManagerDetailFragment : BaseFragment() {
         adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
             override fun click(position: Int, data: PostMedia, code: Int) {
                 postMedias.remove(data)
+                if (data.uri.toString().subSequence(0, 4).contains("http"))
+                    listImageDelete.add(data)
+
                 if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
                 adapterImages.replaceAll(postMedias)
+
             }
         }
 
@@ -214,6 +215,8 @@ class ProductManagerDetailFragment : BaseFragment() {
             isEditMode = false
             toast("Cập nhật thành công")
             viewModel.getProductDetail(product_Id)
+            postMedias.clear()
+            listProductRelated.clear()
             activity?.setResult(RESULT_OK)
         })
 
@@ -361,6 +364,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                             override fun click(position: Int, data: ProductManagerProvider, code: Int) {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
+                                    adapterProductRelatedImage.replaceAll(listProductRelated)
                                 } else {
                                     val isContained = listProductRelated.any {
                                         if (it is IdentityData && data is IdentityData)
@@ -373,6 +377,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                                         return
                                     } else {
                                         listProductRelated.add(data)
+                                        adapterProductRelatedImage.replaceAll(listProductRelated)
                                     }
                                 }
                                 dialog.dismiss()
@@ -397,7 +402,6 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     private fun loadSanPhamLienQuan() {
         context?.let {
-            adapterProductRelatedImage.replaceAll(listProductRelated)
             rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_product_related_products.adapter = adapterProductRelatedImage
             adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
@@ -410,8 +414,17 @@ class ProductManagerDetailFragment : BaseFragment() {
     }
 
     private fun showDetail(info: ProductManagerDetail) {
-
+        hideProgressDialog()
         sw_show_wholesale.isChecked = info.provideViewWholesale()
+
+        if (UserDataManager.currentType == "Chủ hội chợ") {
+            til_product_provider.visibility = View.VISIBLE
+            provider_id = info.providerId
+
+        } else {
+            provider_id = UserDataManager.currentUserId
+            til_product_provider.visibility = View.GONE
+        }
 
         if (info.provideViewWholesale()) {
             linear_wholesale.visibility = View.VISIBLE
@@ -421,6 +434,13 @@ class ProductManagerDetailFragment : BaseFragment() {
         } else linear_wholesale.visibility = View.GONE
 
         if (info.provideImages().isNotEmpty()) {
+            for (i in info.provideImages()) {
+                val postMedia = PostMedia()
+                postMedia.uri = Uri.parse(i)
+                postMedias.add(postMedia)
+            }
+            adapterImages.replaceAll(postMedias)
+
             imageOld = info.provideImages()[0]
 
             Glide.with(context)
@@ -491,7 +511,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_title.setText(info.provideTitle())
         edit_product_meta_description.setText(info.provideMetaDescription())
         edit_product_tags.setText(info.provideTags())
-        edit_product_provider.setText(info.providerAccount?.name ?: "")
+        edit_product_provider.setText(info.providerProviderName())
 
         sw_status.isChecked = info.provideStatus()
         if (info.provideDepartments() != null && info.provideDepartments()!!.isNotEmpty())
@@ -513,18 +533,32 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         }
 
-        tv_view_details.setOnClickListener({
-            val i = Intent(context, FullDetailActivity::class.java)
-            i.putExtra(Const.TransferKey.EXTRA_JSON, info.provideDescription())
-            startActivity(i)
-        })
+        tv_view_details.setOnClickListener(
+                {
+                    val i = Intent(context, FullDetailActivity::class.java)
+                    i.putExtra(Const.TransferKey.EXTRA_JSON, info.provideDescription())
+                    startActivity(i)
+                })
 
 
-        if (info.collectionProducts != null) {
-            val productsRelatedAdapter = ProductManagerDetailRelatedAdapter()
-            info.collectionProducts!!.products?.let { productsRelatedAdapter.replaceAll(it) }
-            rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_product_related_products.adapter = productsRelatedAdapter
+        val productsRelatedAdapter = ProductManagerDetailRelatedAdapter()
+        info.collectionProducts?.products?.let { productsRelatedAdapter.replaceAll(it) }
+        rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        rv_product_related_products.adapter = productsRelatedAdapter
+
+        if (info.collectionProducts != null && info.collectionProducts!!.products != null && info.collectionProducts!!.products!!.isNotEmpty()) {
+            for (i in info.collectionProducts!!.products!!.indices) {
+                val productCollection = info.collectionProducts!!.products!![i]
+                val productManager = ProductManager()
+                productManager.code = productCollection.code
+                productManager.name = productCollection.name
+                productManager.ttPrice = productCollection.ttPrice
+                productManager.price = productCollection.price
+                productManager.image = productCollection.image
+                productManager.id = productCollection.id
+                listProductRelated.add(productManager)
+                adapterProductRelatedImage.replaceAll(listProductRelated)
+            }
         }
     }
 
@@ -599,9 +633,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
         container_product_detail.visibility = View.GONE
 
-        //Tạm thời đóng thêm ảnh vào danh sách và thêm sản phẩm vì chưa xử lý được
-        img_add_related_product.visibility = View.GONE
-        view_add_images.visibility = View.GONE
+        img_add_related_product.visibility = View.VISIBLE
+        view_add_images.visibility = View.VISIBLE
 
         til_product_description.visibility = View.VISIBLE
         edit_product_name.isFocusable = true
@@ -656,6 +689,9 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         view_scrollview.smoothScrollTo(0, 0)
 
+        setupImageRecycleview()
+        loadSanPhamLienQuan()
+
         btn_product_update.text = "Xong"
     }
 
@@ -670,7 +706,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                 val postMedia = PostMedia()
                 postMedia.uri = data.data
                 postMedias.add(postMedia)
-
+                Log.d("1231231", data.data.toString())
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {

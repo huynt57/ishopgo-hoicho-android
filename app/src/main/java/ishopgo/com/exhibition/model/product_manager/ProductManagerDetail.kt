@@ -6,10 +6,13 @@ import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Provider
-import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.productmanager.detail.ProductManagerDetailProvider
 
 class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
+    override fun providerProviderName(): String {
+        return providerName ?: ""
+    }
+
     override fun provideWholesaleFrom(): String {
         return wholesalePriceFrom.toString()
     }
@@ -106,6 +109,7 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     override fun provideLink(): String {
         return link ?: ""
     }
+
 
     override fun provideIsFeatured(): Boolean {
         return wasIsFeatured()
@@ -207,6 +211,12 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     @SerializedName("view_wholesale")
     @Expose
     var viewWholesale: Int? = null
+    @SerializedName("provider_name")
+    @Expose
+    var providerName: String? = null
+    @SerializedName("provider_id")
+    @Expose
+    var providerId: Long = 0L
 
     fun wasIsFeatured() = is_featured == IS_FEATURED
 }

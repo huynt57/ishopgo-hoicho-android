@@ -160,11 +160,10 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
     fun editProductManager(productId: Long, name: String, code: String, title: String, price: Long, dvt: String,
                            provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                            description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                           listCategory: List<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String) {
+                           listCategory: List<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
-
         builder.addFormDataPart("name", name)
         builder.addFormDataPart("code", code)
         builder.addFormDataPart("title", title)
@@ -195,28 +194,32 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
         if (!listProducts_bsp.isEmpty()) {
             for (i in listProducts_bsp.indices) {
                 builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
-                Log.d("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
             }
         }
 
         if (listCategory.isNotEmpty()) {
             for (i in listCategory.indices) {
                 builder.addFormDataPart("categories[]", listCategory[i].id.toString())
-                Log.d("categories[]", listCategory[i].id.toString())
+            }
+        }
+
+        if (listImageDelete.isNotEmpty()) {
+            for (i in listImageDelete.indices) {
+                builder.addFormDataPart("deleted_images[]", listImageDelete[i].uri.toString())
             }
         }
 
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {
                 val uri = postMedias[i].uri
-                uri?.let {
-                    val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
-                    imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
-                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-                    builder.addFormDataPart("images[]", imageFile.name, imageBody)
-                }
-
+                if (!uri.toString().subSequence(0, 4).contains("http"))
+                    uri?.let {
+                        val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                        imageFile.deleteOnExit()
+                        Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                        val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                        builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                    }
             }
         }
 
