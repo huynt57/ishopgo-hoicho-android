@@ -4,6 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -14,7 +15,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.android.gms.dynamic.IFragmentWrapper
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
@@ -37,7 +40,8 @@ import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_search_community.*
-import io.fabric.sdk.android.services.settings.IconRequest.build
+import com.facebook.share.widget.ShareDialog
+import com.facebook.share.model.*
 
 
 /**
@@ -256,9 +260,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     .build()
             val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
             tv_share_facebook.setOnClickListener {
-                if (data.provideProduct() != null)
-                    shareFacebook(data)
-                else toast("Tạm thời chỉ chia sẻ được sản phẩm lên Facebook, vui lòng chia sẻ bằng ứng dụng khác")
+                shareFacebook(data)
             }
             val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
             tv_share_zalo.setOnClickListener {
@@ -269,28 +271,58 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     }
 
     private fun shareFacebook(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
-        var intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+        val shareDialog = ShareDialog(this)
+        if (data.provideProduct() != null) {
+            val urlToShare = data.provideProduct()?.providerLink()
+            val shareContent = ShareLinkContent.Builder()
+                    .setContentUrl(Uri.parse(urlToShare))
+                    .setQuote(data.provideContent())
+                    .build()
 
-        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
-
-        var facebookAppFound = false
-        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
-        for (info in matches) {
-            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-                intent.`package` = info.activityInfo.packageName
-                facebookAppFound = true
-                break
-            }
+            shareDialog.show(shareContent)
         }
 
-        if (!facebookAppFound) {
-            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
+        if (data.provideListImage().isNotEmpty()) {
+            if (data.provideListImage().size > 1) {
+                val listSharePhoto = mutableListOf<SharePhoto>()
+
+                for (i in data.provideListImage().indices)
+                    Glide.with(context)
+                            .asBitmap()
+                            .load(data.provideListImage()[i])
+                            .into(object : SimpleTarget<Bitmap>(300, 300) {
+                                override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                                    val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+                                    listSharePhoto.add(sharePhoto)
+                                }
+                            })
+
+                val shareContent = SharePhotoContent.Builder()
+                        .addPhotos(listSharePhoto)
+                        .build()
+                shareDialog.show(shareContent)
+            } else Glide.with(context)
+                    .asBitmap()
+                    .load(data.provideListImage()[0])
+                    .into(object : SimpleTarget<Bitmap>(300, 300) {
+                        override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                            val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+                            val shareContent = SharePhotoContent.Builder()
+                                    .addPhoto(sharePhoto)
+                                    .build()
+                            shareDialog.show(shareContent)
+                        }
+                    })
         }
 
-        startActivity(intent)
+        if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
+            val shareContent = ShareLinkContent.Builder()
+                    .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                    .setQuote(data.provideContent())
+                    .build()
+
+            shareDialog.show(shareContent)
+        }
     }
 
     private fun shareApp(data: CommunityProvider) {
