@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_login.*
  */
 class LoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
-    private lateinit var phone: String
+    private var phone = ""
 
     companion object {
         fun newInstance(phone: String): LoginFragment {
@@ -74,7 +74,7 @@ class LoginFragment : BaseFragment() {
             startActivity(intent)
         }
 
-        if (phone != "") {
+        if (phone.isNotEmpty()) {
             tv_account.setText(phone)
         }
     }
