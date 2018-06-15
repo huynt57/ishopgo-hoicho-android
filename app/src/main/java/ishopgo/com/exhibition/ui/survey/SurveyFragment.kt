@@ -6,18 +6,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.survey.SurveyAnswer
-import ishopgo.com.exhibition.model.survey.SurveyQuestion
 import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.model.survey.PostAnswer
 import ishopgo.com.exhibition.model.survey.PostSurvey
+import ishopgo.com.exhibition.model.survey.SurveyQuestion
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
@@ -154,7 +150,7 @@ class SurveyFragment : BaseFragment() {
                 val intent = Intent(context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
-                activity?.finish()
+                activity?.finishAffinity()
             }
         })
     }

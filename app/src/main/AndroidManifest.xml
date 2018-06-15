@@ -45,7 +45,7 @@
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.main.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.main.product.detail.ProductDetailActivity"

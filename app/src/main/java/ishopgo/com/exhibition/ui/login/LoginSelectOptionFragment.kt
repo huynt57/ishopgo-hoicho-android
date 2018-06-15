@@ -5,8 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -35,6 +33,7 @@ class LoginSelectOptionFragment : BaseFragment() {
             UserDataManager.passLoginScreen = 1
 
             val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
             startActivity(intent)
             activity?.finish()
         }

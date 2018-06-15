@@ -36,7 +36,7 @@ class DeeplinkHandlerActivity : BaseActivity() {
                         } else {
                             Log.d(TAG, "Không hợp lệ")
                             val intent = Intent(this, MainActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                            intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
                             startActivity(intent)
                             finish()
                         }
