@@ -438,6 +438,9 @@ class ApiService {
 
         @GET("count-notification")
         fun getNotificationCount(): Single<BaseResponse<Int>>
+
+        @POST("edit-product/{id}")
+        fun editProduct(@Path("id") brand_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
 }

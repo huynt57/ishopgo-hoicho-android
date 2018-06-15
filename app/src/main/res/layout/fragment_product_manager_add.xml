@@ -122,7 +122,8 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
             android:checked="false"
-            android:text="Hiển thị giá bán sỉ" />
+            android:text="Hiển thị giá bán sỉ: Không hiển thị"
+            tools:ignore="HardcodedText" />
 
         <LinearLayout
             android:id="@+id/linear_wholesale"
@@ -346,7 +347,8 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
             android:checked="true"
-            android:text="Tuỳ chọn hiển thị" />
+            android:text="Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
+            tools:ignore="HardcodedText" />
 
         <Switch
             android:id="@+id/sw_featured"
@@ -356,7 +358,8 @@
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
             android:checked="false"
-            android:text="Sản phẩm nổi bật ?" />
+            android:text="Sản phẩm nổi bật: Không nổi bật"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:layout_width="match_parent"

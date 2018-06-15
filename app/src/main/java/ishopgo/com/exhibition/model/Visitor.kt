@@ -9,7 +9,11 @@ import ishopgo.com.exhibition.ui.main.visitors.VisitorsProvider
 /**
  * Created by xuanhong on 6/8/18. HappyCoding!
  */
-class Visitor: IdentityData(), VisitorsProvider {
+class Visitor : IdentityData(), VisitorsProvider {
+    override fun provideRegion(): CharSequence {
+        return city ?: ""
+    }
+
     override fun provideName(): CharSequence {
         return name ?: ""
     }
@@ -41,4 +45,7 @@ class Visitor: IdentityData(), VisitorsProvider {
     @SerializedName("account_id")
     @Expose
     var accountId: Long? = null
+    @SerializedName("city")
+    @Expose
+    var city: String? = null
 }

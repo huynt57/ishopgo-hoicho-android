@@ -1,43 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="200dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_stroked_rounded_rectangle"
+    android:foreground="?attr/selectableItemBackground"
+    android:padding="8dp"
+    android:id="@+id/relativeLayout3">
 
     <ImageView
         android:id="@+id/iv_spk_product_related_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/tv_spk_product_related_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_spk_product_related_image"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:gravity="center_horizontal"
+        android:maxLines="2"
+        android:lines="2"
         android:textColor="@color/colorAccent"
-        android:gravity="center_horizontal|center_vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp" />
+        app:layout_constraintTop_toBottomOf="@+id/iv_spk_product_related_image"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/tv_spk_product_related_price"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_spk_product_related_name"
-        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="8dp"
         android:gravity="center_horizontal|center_vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="8dp" />
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_spk_product_related_name" />
 
     <ImageView
         android:id="@+id/btn_spk_product_related_delete"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:layout_margin="4dp"
-        app:srcCompat="@android:drawable/presence_offline" />
-</RelativeLayout>
+        app:srcCompat="@android:drawable/presence_offline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</android.support.constraint.ConstraintLayout>

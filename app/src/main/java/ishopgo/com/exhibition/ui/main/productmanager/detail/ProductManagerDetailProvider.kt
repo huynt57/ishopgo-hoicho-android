@@ -29,5 +29,6 @@ interface ProductManagerDetailProvider {
     fun provideWholesaleFrom(): String
     fun provideWholesaleTo(): String
     fun provideWholesaleCountProduct(): String
+    fun providerProviderName(): String
 
 }

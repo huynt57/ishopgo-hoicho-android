@@ -33,15 +33,15 @@ class VisitorsAdapter : ClickableAdapter<VisitorsProvider>() {
             itemView.apply {
                 Glide.with(context)
                         .load(data.provideAvatar())
-                        .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder)
-                        )
+                        .apply(RequestOptions()
+                                .circleCrop()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
                         .into(view_avatar)
                 view_name.text = data.provideName()
                 view_phone.text = data.providePhone()
-                view_email.text = data.provideEmail()
+                view_region.text = data.provideRegion()
             }
         }
-
     }
 }

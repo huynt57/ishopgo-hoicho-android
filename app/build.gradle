@@ -169,6 +169,16 @@ dependencies {
     implementation 'commons-io:commons-io:2.5'
     //Tag flow
     implementation 'com.hyman:flowlayout-lib:1.1.2'
+
+    implementation('com.facebook.android:facebook-android-sdk:4.28.0') {
+        exclude group: 'com.android.support', module: "support-core-utils"
+        exclude group: 'com.android.support', module: "support-annotations"
+        exclude group: 'com.android.support', module: "appcompat-v7"
+        exclude group: 'com.android.support', module: "cardview-v7"
+        exclude group: 'com.android.support', module: "customtabs"
+        exclude group: 'com.android.support', module: "support-v4"
+        exclude group: 'com.android.support', module: "support-compat"
+    }
 }
 
 apply plugin: 'com.google.gms.google-services'

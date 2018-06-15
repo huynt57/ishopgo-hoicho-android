@@ -1,19 +1,26 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.app.Activity
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
@@ -36,6 +43,15 @@ import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_search_community.*
+import com.facebook.share.widget.ShareDialog
+import com.facebook.share.model.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import java.io.IOException
+import java.net.URL
+
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -253,7 +269,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     .build()
             val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
             tv_share_facebook.setOnClickListener {
-                shareFacebook(data)
+                shareFacebook(data, dialog)
             }
             val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
             tv_share_zalo.setOnClickListener {
@@ -263,33 +279,107 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         }
     }
 
-    private fun shareFacebook(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
-        var intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+    private var callbackManager: CallbackManager? = null
 
-        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
+    private fun shareFacebook(data: CommunityProvider, dialog: Dialog) {
+        callbackManager = CallbackManager.Factory.create()
+        val shareDialog = ShareDialog(this)
 
-        var facebookAppFound = false
-        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
-        for (info in matches) {
-            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-                intent.`package` = info.activityInfo.packageName
-                facebookAppFound = true
-                break
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onSuccess(result: Sharer.Result?) {
+                dialog.dismiss()
+            }
+
+            override fun onCancel() {
+                dialog.dismiss()
+                toast("Chia sẻ bị huỷ bỏ")
+            }
+
+            override fun onError(error: FacebookException?) {
+                dialog.dismiss()
+                toast(error.toString())
+            }
+        })
+
+        if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+            if (data.provideProduct() != null) {
+                val urlToShare = data.provideProduct()?.providerLink()
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(urlToShare))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
+            }
+
+            if (data.provideListImage().isNotEmpty()) {
+                if (data.provideListImage().size > 1) {
+                    val thread = Thread(Runnable {
+                        try {
+                            val listSharePhoto = mutableListOf<SharePhoto>()
+                            for (i in data.provideListImage().indices)
+                                try {
+                                    val url = URL(data.provideListImage()[i])
+                                    val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                    val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                    listSharePhoto.add(sharePhoto)
+                                } catch (e: IOException) {
+                                    Log.d("IOException", e.toString())
+                                }
+                            val shareContent = SharePhotoContent.Builder()
+                                    .addPhotos(listSharePhoto)
+                                    .build()
+                            shareDialog.show(shareContent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    })
+
+                    thread.start()
+
+                } else Glide.with(context)
+                        .asBitmap()
+                        .load(data.provideListImage()[0])
+                        .into(object : SimpleTarget<Bitmap>(300, 300) {
+                            override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                                val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+                                val shareContent = SharePhotoContent.Builder()
+                                        .addPhoto(sharePhoto)
+                                        .build()
+                                shareDialog.show(shareContent)
+                            }
+                        })
+            }
+
+            if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
             }
         }
-
-        if (!facebookAppFound) {
-            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
-        }
-
-        startActivity(intent)
     }
 
     private fun shareApp(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
+        val urlToShare = if (data.provideListImage().isNotEmpty()) {
+            if (data.provideListImage().size > 1) {
+                var linkImage = ""
+                for (i in data.provideListImage().indices) {
+                    linkImage += "${data.provideListImage()[i]}\n\n"
+                }
+
+                "${data.provideContent()}\n $linkImage\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+
+            } else {
+                "${data.provideContent()}\n ${data.provideListImage()[0]}\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+            }
+        } else
+            "${data.provideContent()}\n ${data.provideProduct()?.providerLink() ?: ""}"
+
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"
@@ -302,7 +392,9 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         if (requestCode == Const.RequestCode.SHARE_POST_COMMUNITY && resultCode == Activity.RESULT_OK) {
             firstLoad()
         }
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

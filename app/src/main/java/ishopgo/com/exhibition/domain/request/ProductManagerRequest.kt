@@ -13,12 +13,6 @@ open class ProductManagerRequest : Request() {
 
     var code: String = ""
 
-    fun toMap(): MutableMap<String, Any> {
-        val fields = mutableMapOf<String, Any>()
-        fields["limit"] = limit
-        fields["offset"] = offset
-        fields["name"] = name
-        fields["code"] = code
-        return fields
-    }
+    var productId: Long = -1L
+
 }
