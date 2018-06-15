@@ -15,7 +15,6 @@ import android.view.animation.GridLayoutAnimationController
 open class GridRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RecyclerView(context, attrs, defStyleAttr) {
 
     override fun attachLayoutAnimationParameters(child: View?, params: ViewGroup.LayoutParams?, index: Int, count: Int) {
-
         val layoutManager = layoutManager
         if (adapter != null && layoutManager is GridLayoutManager) {
             params?.let {

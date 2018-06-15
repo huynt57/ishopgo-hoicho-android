@@ -21,10 +21,10 @@ import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
+import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
@@ -35,7 +35,6 @@ import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
-import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -46,12 +45,13 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 /**
  * Created by xuanhong on 4/6/18. HappyCoding!
  */
-class ProfileFragment : BaseActionBarFragment() {
+class MemberProfileFragment : BaseActionBarFragment() {
 
-    private lateinit var viewModel: ProfileViewModel
+    private lateinit var viewModel: MemberProfileViewModel
     private var memberId = 0L
     private var last_id: Long = 0
     private var adapter = CommunityParentAdapter()
+    private lateinit var currentProfile: Profile
 
     override fun contentLayoutRes(): Int {
         return R.layout.content_local_chat_profile
@@ -95,7 +95,7 @@ class ProfileFragment : BaseActionBarFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = obtainViewModel(ProfileViewModel::class.java, false)
+        viewModel = obtainViewModel(MemberProfileViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
                 hideProgressDialog()
@@ -104,7 +104,8 @@ class ProfileFragment : BaseActionBarFragment() {
         })
         viewModel.userData.observe(this, Observer { info ->
             info?.let {
-                showDetail(it)
+                currentProfile = it
+                showDetail(ConverterMemberProfile().convert(it))
             }
         })
         viewModel.conversation.observe(this, Observer { c ->
@@ -154,7 +155,7 @@ class ProfileFragment : BaseActionBarFragment() {
         firstLoad()
     }
 
-    private fun showDetail(info: ProfileProvider) {
+    private fun showDetail(info: UserInfoProvider) {
         Glide.with(view_cover.context)
                 .load(R.drawable.default_cover_background)
                 .apply(RequestOptions().centerCrop()
@@ -183,36 +184,11 @@ class ProfileFragment : BaseActionBarFragment() {
                 .into(view_avatar)
 
         view_name.text = info.provideName()
-        view_phone.text = info.providePhone()
-        view_dob.text = info.provideDob()
-        view_email.text = info.provideEmail()
-        view_company.text = info.provideCompany()
-        view_region.text = info.provideRegion()
-        view_address.text = info.provideAddress()
-        view_type.text = info.provideAccountType()
-        view_joined_date.text = info.provideJoinedDate()
-        view_introduction.text = info.provideIntroduction()
-
-        view_call.setOnClickListener {
-            callShop(info.providePhone().toString())
-        }
-        view_message.setOnClickListener {
-            // start conversation
-            val currentUserId = UserDataManager.currentUserId
-            if (info is IdentityData && currentUserId != info.id) {
-                val request = CreateConversationRequest()
-                request.type = 1
-                val members = mutableListOf<Long>()
-                members.add(currentUserId)
-                members.add(info.id)
-                request.member = members
-                viewModel.createConversation(request)
-            }
-        }
+        view_info.text = info.info()
     }
 
     private fun callShop(phoneNumber: String) {
-        val call = Uri.parse("tel:" + phoneNumber)
+        val call = Uri.parse("tel:$phoneNumber")
         val intent = Intent(Intent.ACTION_DIAL, call)
         if (intent.resolveActivity(requireContext().packageManager) != null)
             startActivity(intent)
@@ -302,6 +278,27 @@ class ProfileFragment : BaseActionBarFragment() {
                         startActivity(intent)
                     }
                 }
+            }
+        }
+
+        view_call.setOnClickListener {
+            if (!::currentProfile.isInitialized) return@setOnClickListener
+
+            callShop(currentProfile.phone.toString())
+        }
+        view_message.setOnClickListener {
+            if (!::currentProfile.isInitialized) return@setOnClickListener
+
+            // start conversation
+            val currentUserId = UserDataManager.currentUserId
+            if (currentUserId != currentProfile.id) {
+                val request = CreateConversationRequest()
+                request.type = 1
+                val members = mutableListOf<Long>()
+                members.add(currentUserId)
+                members.add(currentProfile.id)
+                request.member = members
+                viewModel.createConversation(request)
             }
         }
     }

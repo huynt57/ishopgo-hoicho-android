@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.ui.chat.local.imageinventory.ImageInventoryViewMod
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxViewModel
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxViewModel
 import ishopgo.com.exhibition.ui.chat.local.info.MemberInfoViewModel
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileViewModel
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
@@ -119,7 +120,7 @@ interface AppComponent {
     fun inject(postViewModel: PostViewModel)
     fun inject(questionViewModel: QuestionViewModel)
     fun inject(questionSearchViewModel: QuestionSearchViewModel)
-    fun inject(profileViewModel: ishopgo.com.exhibition.ui.chat.local.profile.ProfileViewModel)
+    fun inject(profileViewModel: MemberProfileViewModel)
     fun inject(conversationViewModel: ConversationViewModel)
     fun inject(patternChooserViewModel: PatternChooserViewModel)
     fun inject(imageInventoryViewModel: ImageInventoryViewModel)
