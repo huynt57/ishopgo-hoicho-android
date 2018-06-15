@@ -45,6 +45,7 @@ import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.*
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_detail.*
 import org.apache.commons.io.IOUtils
 import java.io.IOException
@@ -93,6 +94,11 @@ class ProductManagerDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showProgressDialog()
+        context?.let {
+            rv_product_images.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_product_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+        }
+
 
         view_add_images.setOnClickListener {
             CASE_PICK_IMAGE = false
@@ -279,7 +285,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         firstLoadBrand()
         firstLoadProvider()
         firstLoadCategory()
-        firstLoadProductRelated()
         viewModel.getProductDetail(product_Id)
     }
 
@@ -322,6 +327,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         firstLoad.offset = 0
         firstLoad.name = keyWord
         firstLoad.code = code
+        firstLoad.productId = product_Id
         viewModel.loadData(firstLoad)
     }
 
@@ -332,6 +338,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         loadMore.offset = currentCount
         loadMore.name = keyWord
         loadMore.code = code
+        loadMore.productId = product_Id
         viewModel.loadData(loadMore)
     }
 
@@ -351,6 +358,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                         val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
                         keyWord = edt_search_name.text.toString().trim { it <= ' ' }
                         code = edt_search_code.text.toString().trim { it <= ' ' }
+                        firstLoadProductRelated()
 
                         val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -413,9 +421,12 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun showDetail(info: ProductManagerDetail) {
         hideProgressDialog()
         sw_show_wholesale.isChecked = info.provideViewWholesale()
+        sw_show_wholesale.text = if (info.provideViewWholesale()) "Hiển thị giá bán sỉ: Hiển thị"
+        else "Hiển thị giá bán sỉ: Không hiển thị"
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
             til_product_provider.visibility = View.VISIBLE
@@ -502,6 +513,12 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
 
         sw_featured.isChecked = info.wasIsFeatured()
+        sw_featured.text = if (info.wasIsFeatured()) "Sản phẩm nổi bật: Nổi bật"
+        else "Sản phẩm nổi bật: Không nổi bật"
+
+        sw_status.isChecked = info.provideStatus()
+        sw_status.text = if (info.provideStatus()) "Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
+        else "Tuỳ chọn hiển thị: Không hiển thị"
 
         edit_product_name.setText(info.provideName())
         edit_product_code.setText(info.provideCode())
@@ -513,7 +530,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_tags.setText(info.provideTags())
         edit_product_provider.setText(info.providerProviderName())
 
-        sw_status.isChecked = info.provideStatus()
         if (info.provideDepartments() != null && info.provideDepartments()!!.isNotEmpty())
             edit_product_brand.setText(info.provideDepartments()?.get(0)?.name ?: "")
 
@@ -664,15 +680,35 @@ class ProductManagerDetailFragment : BaseFragment() {
         sw_featured.isClickable = true
         sw_status.isClickable = true
         sw_show_wholesale.isClickable = true
-        sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
-        sw_status.setOnCheckedChangeListener { _, _ -> status = if (sw_status.isChecked) STATUS_DISPLAY_SHOW else STATUS_DISPLAY_HIDDEN }
+        sw_featured.setOnCheckedChangeListener { _, _ ->
+            if (sw_featured.isChecked) {
+                feautured = STATUS_FEAUTURED
+                sw_featured.text = "Sản phẩm nổi bật: Nổi bật"
+            } else {
+                feautured = STATUS_NOT_FEAUTURED
+                sw_featured.text = "Sản phẩm nổi bật: Không nổi bật"
+            }
+        }
+        sw_status.setOnCheckedChangeListener { _, _ ->
+            if (sw_status.isChecked) {
+                status = STATUS_DISPLAY_SHOW
+                sw_status.text = "Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
+            } else {
+                status = STATUS_DISPLAY_HIDDEN
+                sw_status.text = "Tuỳ chọn hiển thị: Không hiển thị"
+            }
+        }
 
         sw_show_wholesale.setOnCheckedChangeListener { _, _ ->
-            if (sw_show_wholesale.isChecked) linear_wholesale.visibility = View.VISIBLE else {
+            if (sw_show_wholesale.isChecked) {
+                linear_wholesale.visibility = View.VISIBLE
+                sw_show_wholesale.text = "Hiển thị giá bán sỉ: Hiển thị"
+            } else {
                 linear_wholesale.visibility = View.GONE
                 edit_produt_wholesale_from.setText("")
                 edit_produt_wholesale_to.setText("")
                 edit_produt_wholesale_count.setText("")
+                sw_show_wholesale.text = "Hiển thị giá bán sỉ: Không hiển thị"
             }
         }
 

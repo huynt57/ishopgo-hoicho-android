@@ -127,6 +127,8 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                         val adapter = CommunityImageAdapter()
                         adapter.replaceAll(data.provideListImage())
                         rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+                        rv_community_image.isNestedScrollingEnabled = false
+                        rv_community_image.setHasFixedSize(false)
                         rv_community_image.adapter = adapter
                         (adapter as ClickableAdapter<String>).listener = object : ClickableAdapter.BaseAdapterAction<String> {
                             override fun click(position: Int, data: String, code: Int) {

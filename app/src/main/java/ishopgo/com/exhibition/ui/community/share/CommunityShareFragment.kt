@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_share_community.*
 import java.io.File
 import java.io.IOException
@@ -84,16 +85,18 @@ class CommunityShareFragment : BaseFragment() {
     }
 
     private fun setupImageRecycleview() {
-        rv_share_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_share_image.adapter = adapterImages
-        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-            override fun click(position: Int, data: PostMedia, code: Int) {
-                postMedias.remove(data)
-                if (postMedias.isEmpty()) rv_share_image.visibility = View.GONE
-                adapterImages.replaceAll(postMedias)
+        context?.let {
+            rv_share_image.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_share_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_share_image.adapter = adapterImages
+            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMedias.remove(data)
+                    if (postMedias.isEmpty()) rv_share_image.visibility = View.GONE
+                    adapterImages.replaceAll(postMedias)
+                }
             }
         }
-
     }
 
     private fun launchPickPhotoIntent() {

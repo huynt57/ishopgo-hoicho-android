@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.productmanager.add
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
@@ -39,6 +40,7 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_add.*
 import java.util.*
 
@@ -96,6 +98,7 @@ class ProductManagerAddFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_product_manager_add, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
@@ -120,7 +123,11 @@ class ProductManagerAddFragment : BaseFragment() {
         }
 
         sw_show_wholesale.setOnCheckedChangeListener { _, _ ->
-            if (sw_show_wholesale.isChecked) linear_wholesale.visibility = View.VISIBLE else {
+            if (sw_show_wholesale.isChecked) {
+                linear_wholesale.visibility = View.VISIBLE
+                sw_show_wholesale.text = "Hiển thị giá bán sỉ: Hiển thị"
+            } else {
+                sw_show_wholesale.text = "Hiển thị giá bán sỉ: Không hiển thị"
                 linear_wholesale.visibility = View.GONE
                 edit_produt_wholesale_from.setText("")
                 edit_produt_wholesale_to.setText("")
@@ -128,9 +135,25 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         }
 
-        sw_isShow.setOnCheckedChangeListener { _, _ -> status = if (sw_isShow.isChecked) STATUS_DISPLAY_SHOW else STATUS_DISPLAY_HIDDEN }
+        sw_isShow.setOnCheckedChangeListener { _, _ ->
+            if (sw_isShow.isChecked) {
+                status = STATUS_DISPLAY_SHOW
+                sw_isShow.text = "Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
+            } else {
+                status = STATUS_DISPLAY_HIDDEN
+                sw_isShow.text = "Tuỳ chọn hiển thị: Không hiển thị"
+            }
+        }
 
-        sw_featured.setOnCheckedChangeListener { _, _ -> feautured = if (sw_featured.isChecked) STATUS_FEAUTURED else STATUS_NOT_FEAUTURED }
+        sw_featured.setOnCheckedChangeListener { _, _ ->
+            if (sw_featured.isChecked) {
+                feautured = STATUS_FEAUTURED
+                sw_featured.text = "Sản phẩm nổi bật: Nổi bật"
+            } else {
+                feautured = STATUS_NOT_FEAUTURED
+                sw_featured.text = "Sản phẩm nổi bật: Không nổi bật"
+            }
+        }
 
         btn_product_add.setOnClickListener {
             if (UserDataManager.currentType == "Chủ hội chợ") {
@@ -171,16 +194,18 @@ class ProductManagerAddFragment : BaseFragment() {
     }
 
     private fun setupImageRecycleview() {
-        rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_product_images.adapter = adapterImages
-        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-            override fun click(position: Int, data: PostMedia, code: Int) {
-                postMedias.remove(data)
-                if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
-                adapterImages.replaceAll(postMedias)
+        context?.let {
+            rv_product_images.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_images.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_product_images.adapter = adapterImages
+            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMedias.remove(data)
+                    if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
+                    adapterImages.replaceAll(postMedias)
+                }
             }
         }
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -267,7 +292,6 @@ class ProductManagerAddFragment : BaseFragment() {
         firstLoadBrand()
         firstLoadCategory()
         firstLoadProvider()
-        firstLoadProductRelated()
     }
 
     private fun firstLoadBrand() {
@@ -584,7 +608,7 @@ class ProductManagerAddFragment : BaseFragment() {
                         val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
                         keyWord = edt_search_name.text.toString().trim { it <= ' ' }
                         code = edt_search_code.text.toString().trim { it <= ' ' }
-
+                        firstLoadProductRelated()
                         val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
                         rv_search.adapter = adapterDialogProduct
@@ -597,6 +621,7 @@ class ProductManagerAddFragment : BaseFragment() {
                             override fun click(position: Int, data: ProductManagerProvider, code: Int) {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
+                                    adapterProductRelatedImage.replaceAll(listProductRelated)
                                 } else {
                                     val isContained = listProductRelated.any {
                                         if (it is IdentityData && data is IdentityData)
@@ -609,6 +634,7 @@ class ProductManagerAddFragment : BaseFragment() {
                                         return
                                     } else {
                                         listProductRelated.add(data)
+                                        adapterProductRelatedImage.replaceAll(listProductRelated)
                                     }
                                 }
                                 dialog.dismiss()
@@ -635,6 +661,7 @@ class ProductManagerAddFragment : BaseFragment() {
         context?.let {
             adapterProductRelatedImage.replaceAll(listProductRelated)
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_related_products.adapter = adapterProductRelatedImage
             adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
                 override fun click(position: Int, data: ProductManagerProvider, code: Int) {

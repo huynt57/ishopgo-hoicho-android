@@ -449,16 +449,18 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun setupImageRecycleview() {
-        rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_comment_community_image.adapter = adapterImages
-        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-            override fun click(position: Int, data: PostMedia, code: Int) {
-                postMedias.remove(data)
-                if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
-                adapterImages.replaceAll(postMedias)
+        context?.let {
+            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_comment_community_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_comment_community_image.adapter = adapterImages
+            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMedias.remove(data)
+                    if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
+                    adapterImages.replaceAll(postMedias)
+                }
             }
         }
-
     }
 
     private fun setupSalePointRecycleview() {

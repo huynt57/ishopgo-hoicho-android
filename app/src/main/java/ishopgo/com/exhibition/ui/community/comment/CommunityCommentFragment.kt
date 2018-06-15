@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_comment_community.*
@@ -115,16 +116,18 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
     }
 
     private fun setupImageRecycleview() {
-        rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_comment_community_image.adapter = adapterImages
-        adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-            override fun click(position: Int, data: PostMedia, code: Int) {
-                postMedias.remove(data)
-                if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
-                adapterImages.replaceAll(postMedias)
+        context?.let {
+            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_comment_community_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_comment_community_image.adapter = adapterImages
+            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMedias.remove(data)
+                    if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
+                    adapterImages.replaceAll(postMedias)
+                }
             }
         }
-
     }
 
     private fun launchPickPhotoIntent() {

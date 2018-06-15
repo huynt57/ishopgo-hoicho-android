@@ -45,6 +45,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
             fields["offset"] = params.offset
             fields["name"] = params.name
             fields["code"] = params.code
+            fields["product_id"] = params.productId
 
             addDisposable(isgService.getProductManager(fields)
                     .subscribeOn(Schedulers.single())

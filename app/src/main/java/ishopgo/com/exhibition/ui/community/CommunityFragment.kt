@@ -1,15 +1,18 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.app.Activity
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +45,12 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_search_community.*
 import com.facebook.share.widget.ShareDialog
 import com.facebook.share.model.*
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import java.io.IOException
+import java.net.URL
 
 
 /**
@@ -260,7 +269,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                     .build()
             val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
             tv_share_facebook.setOnClickListener {
-                shareFacebook(data)
+                shareFacebook(data, dialog)
             }
             val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
             tv_share_zalo.setOnClickListener {
@@ -270,58 +279,86 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         }
     }
 
-    private fun shareFacebook(data: CommunityProvider) {
+    private var callbackManager: CallbackManager? = null
+
+    private fun shareFacebook(data: CommunityProvider, dialog: Dialog) {
+        callbackManager = CallbackManager.Factory.create()
         val shareDialog = ShareDialog(this)
-        if (data.provideProduct() != null) {
-            val urlToShare = data.provideProduct()?.providerLink()
-            val shareContent = ShareLinkContent.Builder()
-                    .setContentUrl(Uri.parse(urlToShare))
-                    .setQuote(data.provideContent())
-                    .build()
 
-            shareDialog.show(shareContent)
-        }
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onSuccess(result: Sharer.Result?) {
+                dialog.dismiss()
+            }
 
-        if (data.provideListImage().isNotEmpty()) {
-            if (data.provideListImage().size > 1) {
-                val listSharePhoto = mutableListOf<SharePhoto>()
+            override fun onCancel() {
+                dialog.dismiss()
+                toast("Chia sẻ bị huỷ bỏ")
+            }
 
-                for (i in data.provideListImage().indices)
-                    Glide.with(context)
-                            .asBitmap()
-                            .load(data.provideListImage()[i])
-                            .into(object : SimpleTarget<Bitmap>(300, 300) {
-                                override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
-                                    val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
-                                    listSharePhoto.add(sharePhoto)
-                                }
-                            })
+            override fun onError(error: FacebookException?) {
+                dialog.dismiss()
+                toast(error.toString())
+            }
+        })
 
-                val shareContent = SharePhotoContent.Builder()
-                        .addPhotos(listSharePhoto)
+        if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+            if (data.provideProduct() != null) {
+                val urlToShare = data.provideProduct()?.providerLink()
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(urlToShare))
+                        .setQuote(data.provideContent())
                         .build()
+
                 shareDialog.show(shareContent)
-            } else Glide.with(context)
-                    .asBitmap()
-                    .load(data.provideListImage()[0])
-                    .into(object : SimpleTarget<Bitmap>(300, 300) {
-                        override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
-                            val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+            }
+
+            if (data.provideListImage().isNotEmpty()) {
+                if (data.provideListImage().size > 1) {
+                    val thread = Thread(Runnable {
+                        try {
+                            val listSharePhoto = mutableListOf<SharePhoto>()
+                            for (i in data.provideListImage().indices)
+                                try {
+                                    val url = URL(data.provideListImage()[i])
+                                    val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                    val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                    listSharePhoto.add(sharePhoto)
+                                } catch (e: IOException) {
+                                    Log.d("IOException", e.toString())
+                                }
                             val shareContent = SharePhotoContent.Builder()
-                                    .addPhoto(sharePhoto)
+                                    .addPhotos(listSharePhoto)
                                     .build()
                             shareDialog.show(shareContent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
                         }
                     })
-        }
 
-        if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
-            val shareContent = ShareLinkContent.Builder()
-                    .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
-                    .setQuote(data.provideContent())
-                    .build()
+                    thread.start()
 
-            shareDialog.show(shareContent)
+                } else Glide.with(context)
+                        .asBitmap()
+                        .load(data.provideListImage()[0])
+                        .into(object : SimpleTarget<Bitmap>(300, 300) {
+                            override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                                val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+                                val shareContent = SharePhotoContent.Builder()
+                                        .addPhoto(sharePhoto)
+                                        .build()
+                                shareDialog.show(shareContent)
+                            }
+                        })
+            }
+
+            if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
+            }
         }
     }
 
@@ -355,7 +392,9 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         if (requestCode == Const.RequestCode.SHARE_POST_COMMUNITY && resultCode == Activity.RESULT_OK) {
             firstLoad()
         }
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
