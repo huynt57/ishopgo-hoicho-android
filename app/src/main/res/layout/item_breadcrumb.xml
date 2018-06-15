@@ -5,7 +5,7 @@
     android:id="@+id/view_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:drawableEnd="@drawable/ic_chevron_right_24dp"
+    android:drawableEnd="@drawable/ic_chevron_right_neutral_24dp"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:paddingBottom="8dp"

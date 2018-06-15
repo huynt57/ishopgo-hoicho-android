@@ -24,9 +24,9 @@ class CommunityNotificationFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Danh sách thông báo")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
-        toolbar.rightButton(R.drawable.ic_done_all_black_24dp)
+        toolbar.rightButton(R.drawable.ic_done_all_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(CommunityNotificationFragment.TAG)
             if (fragment != null) {

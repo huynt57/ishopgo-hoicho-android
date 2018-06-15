@@ -18,7 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_chevron_right_24dp"/>
+        app:srcCompat="@drawable/ic_chevron_right_neutral_24dp"/>
 
     <TextView
         android:id="@+id/view_child_text"

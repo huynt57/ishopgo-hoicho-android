@@ -222,7 +222,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Danh mục*"
-                    tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                    tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -242,7 +242,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Danh mục cấp 1"
-                    tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                    tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -262,7 +262,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Danh mục cấp 2"
-                    tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                    tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -282,7 +282,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Danh mục cấp 3"
-                    tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                    tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -302,7 +302,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Danh mục cấp 4"
-                    tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                    tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -557,7 +557,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
                     android:padding="4dp"
-                    app:srcCompat="@drawable/ic_add_black_24dp" />
+                    app:srcCompat="@drawable/ic_add_default_24dp" />
 
             </LinearLayout>
 
@@ -595,7 +595,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginEnd="8dp"
                     android:padding="4dp"
-                    app:srcCompat="@drawable/ic_add_black_24dp" />
+                    app:srcCompat="@drawable/ic_add_default_24dp" />
 
             </LinearLayout>
 

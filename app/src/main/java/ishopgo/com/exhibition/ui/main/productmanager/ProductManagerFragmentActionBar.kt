@@ -32,11 +32,11 @@ class ProductManagerFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Quản lý sản phẩm")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
 
-        toolbar.rightButton(R.drawable.ic_search_24dp)
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(ProductManagerFragment.TAG)
             if (fragment != null) {
@@ -46,7 +46,7 @@ class ProductManagerFragmentActionBar : BaseActionBarFragment() {
         }
 
 
-        toolbar.rightButton2(R.drawable.ic_add_green_24dp)
+        toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
         toolbar.setRight2ButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(ProductManagerFragment.TAG)
             if (fragment != null) {

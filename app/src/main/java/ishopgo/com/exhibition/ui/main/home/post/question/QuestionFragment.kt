@@ -24,16 +24,16 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionMenuDetailActivity
-import ishopgo.com.exhibition.ui.main.questmanager.*
+import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerAdapter
+import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerCategoryAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
-class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() {
+class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>() {
     private val adapterCategory = QuestionManagerCategoryAdapter()
     private var reloadCategory = false
     private var key_search = ""
@@ -41,7 +41,7 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
     private var categoryName = ""
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<QuestProvider>) {
+    override fun populateData(data: List<QuestionObject>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -59,13 +59,13 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
         return inflater.inflate(R.layout.fragment_list_post_question, container, false)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<QuestProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<QuestionObject> {
         val adapter = QuestionManagerAdapter()
         adapter.addData(QuestionObject())
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<QuestProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<QuestionObject>> {
         return obtainViewModel(QuestionMenuViewModel::class.java, false)
     }
 
@@ -114,15 +114,13 @@ class QuestionFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() 
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<QuestProvider>) {
-            (adapter as ClickableAdapter<QuestProvider>).listener = object : ClickableAdapter.BaseAdapterAction<QuestProvider> {
+        if (adapter is ClickableAdapter<QuestionObject>) {
+            (adapter as ClickableAdapter<QuestionObject>).listener = object : ClickableAdapter.BaseAdapterAction<QuestionObject> {
                 @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: QuestProvider, code: Int) {
-                    if (data is QuestionObject) {
-                        val i = Intent(context, QuestionMenuDetailActivity::class.java)
-                        i.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(i)
-                    }
+                override fun click(position: Int, data: QuestionObject, code: Int) {
+                    val i = Intent(context, QuestionMenuDetailActivity::class.java)
+                    i.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                    startActivity(i)
                 }
             }
         }

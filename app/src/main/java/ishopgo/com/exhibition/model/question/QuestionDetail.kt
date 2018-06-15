@@ -2,23 +2,8 @@ package ishopgo.com.exhibition.model.question
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.ui.extensions.asDateTime
-import ishopgo.com.exhibition.ui.main.questmanager.detail.QuestDetailProvider
 
-
-class QuestionDetail : QuestDetailProvider {
-    override fun provideTitle(): String {
-        return "Tiêu đề: $title"
-    }
-
-    override fun provideTime(): String {
-        return createdAt?.asDateTime() ?: ""
-    }
-
-    override fun provideAnswer(): String {
-        return "Câu trả lời: $answer"
-    }
-
+class QuestionDetail {
 
     @SerializedName("content")
     @Expose
@@ -41,4 +26,5 @@ class QuestionDetail : QuestDetailProvider {
     @SerializedName("category_name")
     @Expose
     var categoryName: String? = null
+
 }

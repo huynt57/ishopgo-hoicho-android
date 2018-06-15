@@ -33,10 +33,10 @@ class MemberManagerFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Quản lý thành viên")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_restore)
+        toolbar.rightButton(R.drawable.ic_restore_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(MemberManagerFragment.TAG)
             if (fragment != null) {
@@ -45,7 +45,7 @@ class MemberManagerFragmentActionBar : BaseActionBarFragment() {
             }
         }
 
-        toolbar.rightButton2(R.drawable.ic_filter)
+        toolbar.rightButton2(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRight2ButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(MemberManagerFragment.TAG)
             if (fragment != null) {

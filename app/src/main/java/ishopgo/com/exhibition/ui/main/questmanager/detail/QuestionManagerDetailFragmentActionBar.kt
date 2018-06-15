@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.postmanager.detail
+package ishopgo.com.exhibition.ui.main.questmanager.detail
 
 import android.os.Bundle
 import android.view.View
@@ -31,7 +31,7 @@ class QuestionManagerDetailFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Thông tin chi tiết")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
     }
 }

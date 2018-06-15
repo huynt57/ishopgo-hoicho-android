@@ -19,8 +19,8 @@ object NotificationUtils {
         val type = extras.getString("type")
         when (type) {
             NotificationPayload.TYPE_PRODUCT -> {
-                val productId = extras.getLong("id")
-                showProduct(context, productId)
+                val productId = extras.get("id") as? Long
+                productId?.let { showProduct(context, it) }
             }
             NotificationPayload.TYPE_CHAT -> {
                 val conversationId = extras.getString("idConversion")

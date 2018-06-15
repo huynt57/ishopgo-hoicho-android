@@ -51,7 +51,7 @@ class ImageInventoryFragment : BaseActionBarFragment() {
     private fun setupToolbar() {
         toolbar.setCustomTitle("Kho hình ảnh")
         toolbar.setLeftButtonClickListener { activity?.finish() }
-        toolbar.rightButton(R.drawable.ic_send_24dp)
+        toolbar.rightButton(R.drawable.ic_send_default_24dp)
         toolbar.setRightButtonClickListener {
             val intent = Intent()
             val selectedUrls = mutableListOf<String>()

@@ -22,13 +22,13 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionManagerDetailActivity
+import ishopgo.com.exhibition.ui.main.questmanager.detail.QuestionManagerDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, QuestProvider>() {
+class QuestionManagerPendingFragment : BaseListFragment<List<QuestionObject>, QuestionObject>() {
     private val adapterCategory = QuestionManagerCategoryAdapter()
     private var reloadCategory = false
     private var key_search = ""
@@ -37,7 +37,7 @@ class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, Que
     private lateinit var viewModelSearch: QuestionSearchViewModel
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<QuestProvider>) {
+    override fun populateData(data: List<QuestionObject>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -51,13 +51,13 @@ class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, Que
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<QuestProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<QuestionObject> {
         val adapter = QuestionManagerAdapter()
         adapter.addData(QuestionObject())
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<QuestProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<QuestionObject>> {
         return obtainViewModel(QuestionViewModel::class.java, false)
     }
 
@@ -106,10 +106,10 @@ class QuestionManagerPendingFragment : BaseListFragment<List<QuestProvider>, Que
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<QuestProvider>) {
-            (adapter as ClickableAdapter<QuestProvider>).listener = object : ClickableAdapter.BaseAdapterAction<QuestProvider> {
+        if (adapter is ClickableAdapter<QuestionObject>) {
+            (adapter as ClickableAdapter<QuestionObject>).listener = object : ClickableAdapter.BaseAdapterAction<QuestionObject> {
                 @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: QuestProvider, code: Int) {
+                override fun click(position: Int, data: QuestionObject, code: Int) {
                     if (data is QuestionObject) {
                         val i = Intent(context, QuestionManagerDetailActivity::class.java)
                         i.putExtra(Const.TransferKey.EXTRA_ID, data.id)

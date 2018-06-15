@@ -8,10 +8,10 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
-import ishopgo.com.exhibition.domain.response.Notification
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.notification.NotificationAdapter
 import ishopgo.com.exhibition.ui.main.notification.NotificationProvider
@@ -41,7 +41,12 @@ class CommunityNotificationFragment : BaseListFragment<List<NotificationProvider
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<NotificationProvider> {
         val adapter = NotificationAdapter()
-        adapter.addData(Notification())
+        adapter.listener = object: ClickableAdapter.BaseAdapterAction<NotificationProvider> {
+            override fun click(position: Int, data: NotificationProvider, code: Int) {
+
+            }
+
+        }
         return adapter
     }
 

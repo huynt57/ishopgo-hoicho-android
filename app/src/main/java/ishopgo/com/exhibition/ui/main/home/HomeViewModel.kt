@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
@@ -17,6 +18,11 @@ import ishopgo.com.exhibition.ui.main.product.ProductProvider
  * Created by xuanhong on 4/26/18. HappyCoding!
  */
 class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
+
+    companion object {
+        const val DEFAULT_MAX_HOME_ITEMS = 5
+        const val DEFAULT_MAX_HOME_PRODUCT_ITEMS = 10
+    }
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -38,6 +44,31 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
 
+                })
+        )
+
+    }
+
+    var latestNews = MutableLiveData<PostMenuManager>()
+
+    fun loadLatestNews() {
+        val params = mutableMapOf<String, Any>()
+        params["limit"] = DEFAULT_MAX_HOME_ITEMS
+        params["offset"] = 0
+        params["type"] = 1 // news
+
+        addDisposable(noAuthService.getPost(params)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<PostMenuManager>() {
+                    override fun success(data: PostMenuManager?) {
+                        data?.let {
+                            latestNews.postValue(it)
+                        }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
 
                 })
         )
@@ -48,7 +79,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadHighlightProducts() {
         val params = mutableMapOf<String, Any>()
-        params["limit"] = 5
+        params["limit"] = DEFAULT_MAX_HOME_ITEMS
         params["offset"] = 0
 
         addDisposable(noAuthService.getHighlightProducts(params)
@@ -74,7 +105,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadViewedProducts() {
         val fields = mutableMapOf<String, Any>()
-        fields["limit"] = 10
+        fields["limit"] = DEFAULT_MAX_HOME_PRODUCT_ITEMS
         fields["offset"] = 0
 
         addDisposable(noAuthService.getViewedProducts(fields)
@@ -97,7 +128,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadSuggestedProducts() {
         val fields = mutableMapOf<String, Any>()
-        fields["limit"] = 10
+        fields["limit"] = DEFAULT_MAX_HOME_PRODUCT_ITEMS
         fields["offset"] = 0
 
         addDisposable(noAuthService.getSuggestedProducts(fields)
@@ -120,7 +151,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadFavoriteProducts() {
         val fields = mutableMapOf<String, Any>()
-        fields["limit"] = 10
+        fields["limit"] = DEFAULT_MAX_HOME_PRODUCT_ITEMS
         fields["offset"] = 0
 
         addDisposable(authService.getFavoriteProducts(fields)

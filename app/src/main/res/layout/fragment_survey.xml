@@ -123,7 +123,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_keyboard_arrow_left_green_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_left_highlight_24dp" />
 
 
             <ImageButton
@@ -134,7 +134,7 @@
                 android:layout_weight="1"
                 android:textOff=""
                 android:textOn=""
-                app:srcCompat="@drawable/ic_toggle_list" />
+                app:srcCompat="@drawable/ic_format_list_bulleted_highlight_24dp" />
 
             <ImageButton
                 android:id="@+id/imb_next"
@@ -142,7 +142,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                app:srcCompat="@drawable/ic_keyboard_arrow_right_green_24dp" />
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_highlight_24dp" />
         </LinearLayout>
     </RelativeLayout>
 

@@ -46,7 +46,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    app:srcCompat="@drawable/ic_photo_camera"/>
+                    app:srcCompat="@drawable/ic_photo_camera_highlight_24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -72,7 +72,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    app:srcCompat="@drawable/ic_gallery"/>
+                    app:srcCompat="@drawable/ic_gallery_highlight_24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    app:srcCompat="@drawable/ic_inventory"/>
+                    app:srcCompat="@drawable/ic_inventory_highlight_24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_gravity="center_horizontal"
-                    app:srcCompat="@drawable/ic_text_pattern"/>
+                    app:srcCompat="@drawable/ic_text_pattern_highlight_24dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"

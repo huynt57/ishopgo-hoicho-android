@@ -87,6 +87,7 @@ class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
 
             }
         })
+
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<InboxProvider> {

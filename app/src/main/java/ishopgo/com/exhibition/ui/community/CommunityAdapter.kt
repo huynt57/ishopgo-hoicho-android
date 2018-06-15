@@ -106,7 +106,7 @@ class CommunityAdapter : ClickableAdapter<CommunityProvider>() {
                 if (data.provideProduct() != null) {
                     cv_community_product.visibility = View.VISIBLE
                     tv_community_like.visibility = View.VISIBLE
-                    tv_community_like.text = "${data.provideLikeCount()} lượt thích"
+                    tv_community_like.text = "${data.provideLikeCount()} thích"
                     toggle_community_like.visibility = View.GONE
 
                     Glide.with(this).load(data.provideProduct()?.providerImage())

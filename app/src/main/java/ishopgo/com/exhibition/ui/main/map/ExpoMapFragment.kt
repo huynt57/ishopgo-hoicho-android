@@ -127,7 +127,7 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoSh
             view_search_name.visibility = if (isSearchMode) View.GONE else View.VISIBLE
 
             isSearchMode = !isSearchMode
-            view_search_shop.setImageResource(if (isSearchMode) R.drawable.ic_close_black_24dp else R.drawable.ic_search_24dp)
+            view_search_shop.setImageResource(if (isSearchMode) R.drawable.ic_close_default_24dp else R.drawable.ic_search_highlight_24dp)
             if (!isSearchMode) {
                 if (searchKeyword.isNotBlank()) {
                     searchKeyword = ""
@@ -157,7 +157,7 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoSh
 
     private fun setupToolbar() {
         toolbar.setCustomTitle("Sơ đồ hội chợ")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
         }

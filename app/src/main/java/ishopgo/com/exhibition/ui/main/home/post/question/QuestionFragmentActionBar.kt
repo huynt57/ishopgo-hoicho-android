@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.ui.main.home.post.question
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -33,11 +32,11 @@ class QuestionFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Danh sách hỏi đáp")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
 
-        toolbar.rightButton(R.drawable.ic_search_24dp)
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(QuestionFragment.TAG)
             if (fragment != null) {

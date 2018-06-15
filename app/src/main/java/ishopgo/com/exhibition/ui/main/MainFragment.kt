@@ -101,6 +101,35 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 }
             }
         })
+        viewModel.notificationCount.observe(this, Observer { c ->
+            c?.let {
+                if (c > 0) {
+                    view_bottom_navigation.setNotification(c.toString(), 1)
+                } else {
+                    view_bottom_navigation.setNotification("", 1)
+                }
+            }
+        })
+        viewModel.inboxUnreadCount.observe(this, Observer { c ->
+            c?.let {
+                if (c > 0) {
+                    view_bottom_navigation.setNotification(c.toString(), 3)
+                } else {
+                    view_bottom_navigation.setNotification("", 3)
+                }
+            }
+        })
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val isUserLoggedIn = UserDataManager.currentUserId > 0
+        if (isUserLoggedIn) {
+            viewModel.loadUnreadNotificationCount()
+            viewModel.loadUnreadInboxCount()
+        }
     }
 
     private fun showSearch() {

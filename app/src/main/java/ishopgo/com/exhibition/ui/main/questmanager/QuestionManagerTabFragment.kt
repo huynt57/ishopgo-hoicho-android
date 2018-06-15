@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +13,6 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_question_tab.*
-import android.support.v4.view.ViewPager
 
 class QuestionManagerTabFragment : BaseFragment() {
     private var TAG = "QuestionManagerProcessedFragment"
@@ -87,10 +87,10 @@ class QuestionManagerTabFragment : BaseFragment() {
     private fun setupToolbars() {
         toolbar.setCustomTitle("Quản lý hỏi đáp")
 
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_search_24dp)
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
         toolbar.setRightButtonClickListener {
                 viewModel.search(TAG)
 

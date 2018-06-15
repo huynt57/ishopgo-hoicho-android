@@ -57,7 +57,7 @@ class SurveyFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Làm bài khảo sát")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         if (arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, null) == Const.TransferKey.EXTRA_REQUIRE) {
             toolbar.setLeftButtonClickListener {
                 activity?.finish()

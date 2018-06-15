@@ -41,10 +41,10 @@ class PostFragmentActionBar : BaseActionBarFragment() {
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
             toolbar.setCustomTitle("Thông tin chung")
 
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_search_24dp)
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(PostFragment.TAG)
             if (fragment != null) {

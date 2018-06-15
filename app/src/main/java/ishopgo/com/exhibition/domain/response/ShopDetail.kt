@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.domain.response
 
-import android.util.Log
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.ui.main.shop.info.SalePointProvider
@@ -11,6 +10,17 @@ import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoProvider
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ShopDetail : IdentityData(), ShopInfoProvider {
+    override fun provideVisitCount(): Int {
+        return visitCount ?: 0
+    }
+
+    override fun provideFollowCount(): Int {
+        return followCount ?: 0
+    }
+
+    override fun provideHotline(): String {
+        return hotline ?: ""
+    }
 
     override fun provideImage(): String {
         return banner ?: ""
@@ -91,4 +101,10 @@ class ShopDetail : IdentityData(), ShopInfoProvider {
     @SerializedName("follow")
     @Expose
     var follow: Boolean = false
+    @SerializedName("count_follow")
+    @Expose
+    var followCount: Int? = null
+    @SerializedName("visit")
+    @Expose
+    var visitCount: Int? = null
 }

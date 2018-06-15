@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@drawable/ic_expand_more_24dp"
+        tools:srcCompat="@drawable/ic_expand_more_neutral_24dp"
         />
 
     <View

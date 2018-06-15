@@ -12,10 +12,11 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.question.QuestionCategory
 import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
+import ishopgo.com.exhibition.model.question.QuestionObject
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import javax.inject.Inject
 
-class QuestionViewModel : BaseListViewModel<List<QuestProvider>>(), AppComponent.Injectable {
+class QuestionViewModel : BaseListViewModel<List<QuestionObject>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

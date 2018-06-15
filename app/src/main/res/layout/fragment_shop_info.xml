@@ -18,6 +18,14 @@
             tools:text="Tên: " />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_phone"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:autoLink="phone"
+            tools:text="SDT: " />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_product_count"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
@@ -58,6 +66,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="luot chia se " />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_follow_count"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="luot quan tam" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_visit_count"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="luot tham quan" />
 
         <View
             android:id="@+id/textView10"
@@ -101,7 +123,7 @@
                 android:layout_alignParentTop="true"
                 android:background="@color/md_grey_300"
                 android:padding="5dp"
-                app:srcCompat="@drawable/ic_add_green_24dp"
+                app:srcCompat="@drawable/ic_add_highlight_24dp"
                 android:visibility="gone"/>
         </RelativeLayout>
 

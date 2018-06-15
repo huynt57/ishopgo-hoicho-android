@@ -72,7 +72,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Đăng bài"
-                    app:drawableTopCompat="@drawable/ic_edit_black_24dp" />
+                    app:drawableTopCompat="@drawable/ic_edit_default_24dp" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_group"
@@ -83,7 +83,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Bạn bè"
-                    app:drawableTopCompat="@drawable/ic_group" />
+                    app:drawableTopCompat="@drawable/ic_group_default_24dp" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_setting"
@@ -94,7 +94,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Thiết lập"
-                    app:drawableTopCompat="@drawable/ic_setting" />
+                    app:drawableTopCompat="@drawable/ic_setting_default_24dp" />
             </LinearLayout>
 
             <View

@@ -292,11 +292,11 @@ class ConversationActivity : BaseActivity() {
         connectPusher()
 
         toolbar.setCustomTitle(conversationTitle)
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             onBackPressed()
         }
-        toolbar.rightButton(R.drawable.ic_info_green_24dp)
+        toolbar.rightButton(R.drawable.ic_info_highlight_24dp)
         toolbar.setRightButtonClickListener {
             if (::conversationInfo.isInitialized) {
                 val intent = Intent(this, ConversationInfoActivity::class.java)

@@ -6,6 +6,7 @@ package ishopgo.com.exhibition.ui.main.shop.info
 interface ShopInfoProvider {
 
     fun provideName(): String
+    fun provideHotline(): String
     fun provideImage(): String
     fun provideProductCount(): Int
     fun provideJoinedDate(): String
@@ -13,6 +14,8 @@ interface ShopInfoProvider {
     fun provideRating(): Int
     fun provideClickCount(): Int
     fun provideShareCount(): Int
+    fun provideFollowCount(): Int
+    fun provideVisitCount(): Int
     fun provideDescription(): String
     fun provideSalePoints(): List<SalePointProvider>
 

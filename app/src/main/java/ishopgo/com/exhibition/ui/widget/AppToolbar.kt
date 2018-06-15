@@ -31,15 +31,21 @@ class AppToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet
         view_divider_toolbar_bottom.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
-    fun leftButton(@DrawableRes icon: Int = R.drawable.ic_arrow_back_24dp) {
+    fun leftButton(@DrawableRes icon: Int = R.drawable.ic_arrow_back_highlight_24dp, count: Int = 0) {
         if (icon == 0) {
-            view_toolbar_start.visibility = View.GONE
+            view_option_left.visibility = View.GONE
             view_toolbar_start.setOnClickListener(null)
             view_toolbar_start.setImageDrawable(null)
         } else {
-            view_toolbar_start.visibility = View.VISIBLE
+            view_option_left.visibility = View.VISIBLE
             view_toolbar_start.setImageDrawable(AppCompatResources.getDrawable(context, icon))
         }
+
+        if (count > 0) {
+            tv_unread_count_left.visibility = View.VISIBLE
+            tv_unread_count_left.text = count.toString()
+        } else
+            tv_unread_count_left.visibility = View.GONE
     }
 
     fun setLeftButtonClickListener(listener: (v: View) -> Unit) {

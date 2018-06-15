@@ -37,9 +37,9 @@ class MembersFragment : BaseActionBarFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         toolbar.setCustomTitle("Thành viên")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
-        toolbar.rightButton(R.drawable.ic_person_add_green_24dp)
+        toolbar.rightButton(R.drawable.ic_person_add_highlight_24dp)
         toolbar.setRightButtonClickListener {
             if (::info.isInitialized) {
                 val intent = Intent(it.context, AddMemberActivity::class.java)

@@ -12,11 +12,11 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.question.QuestionCategory
 import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
+import ishopgo.com.exhibition.model.question.QuestionObject
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.questmanager.QuestProvider
 import javax.inject.Inject
 
-class QuestionMenuViewModel: BaseListViewModel<List<QuestProvider>>(), AppComponent.Injectable {
+class QuestionMenuViewModel : BaseListViewModel<List<QuestionObject>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
@@ -40,7 +40,7 @@ class QuestionMenuViewModel: BaseListViewModel<List<QuestProvider>>(), AppCompon
                     .subscribeWith(object : BaseSingleObserver<QuestionManager>() {
                         override fun success(data: QuestionManager?) {
                             total.postValue(data?.total ?: 0)
-                            dataReturned.postValue(data?.objects ?: mutableListOf())
+                            dataReturned.postValue(data?.objects ?: listOf())
                         }
 
                         override fun failure(status: Int, message: String) {
