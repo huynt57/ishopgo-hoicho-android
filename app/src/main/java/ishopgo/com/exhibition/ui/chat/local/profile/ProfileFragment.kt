@@ -19,26 +19,26 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
-import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.CommunityProvider
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
-import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 import kotlinx.android.synthetic.main.content_local_chat_profile.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -52,6 +52,7 @@ class ProfileFragment : BaseActionBarFragment() {
     private var memberId = 0L
     private var last_id: Long = 0
     private var adapter = CommunityParentAdapter()
+
     override fun contentLayoutRes(): Int {
         return R.layout.content_local_chat_profile
     }
@@ -192,6 +193,9 @@ class ProfileFragment : BaseActionBarFragment() {
         view_joined_date.text = info.provideJoinedDate()
         view_introduction.text = info.provideIntroduction()
 
+        view_call.setOnClickListener {
+            callShop(info.providePhone().toString())
+        }
         view_message.setOnClickListener {
             // start conversation
             val currentUserId = UserDataManager.currentUserId
@@ -205,6 +209,13 @@ class ProfileFragment : BaseActionBarFragment() {
                 viewModel.createConversation(request)
             }
         }
+    }
+
+    private fun callShop(phoneNumber: String) {
+        val call = Uri.parse("tel:" + phoneNumber)
+        val intent = Intent(Intent.ACTION_DIAL, call)
+        if (intent.resolveActivity(requireContext().packageManager) != null)
+            startActivity(intent)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

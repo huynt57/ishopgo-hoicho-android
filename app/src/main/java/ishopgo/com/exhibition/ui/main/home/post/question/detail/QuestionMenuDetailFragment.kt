@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionMenuViewModel
+import ishopgo.com.exhibition.ui.main.questmanager.detail.QuestDetailConverter
 import kotlinx.android.synthetic.main.fragment_question_detail.*
 
 class QuestionMenuDetailFragment : BaseFragment() {
@@ -46,10 +47,11 @@ class QuestionMenuDetailFragment : BaseFragment() {
         })
 
         viewModel.getContentSusscess.observe(this, Observer { p ->
-            p.let {
-                tv_question_title.text = it?.provideTitle()
-                tv_question_time.text = it?.provideTime()
-                tv_question_answer.text = it?.provideAnswer()
+            p?.let {
+                val converted = QuestDetailConverter().convert(it)
+                tv_question_title.text = converted.provideTitle()
+                tv_question_time.text = converted.provideTime()
+                tv_question_answer.text = converted.provideAnswer()
             }
         })
 

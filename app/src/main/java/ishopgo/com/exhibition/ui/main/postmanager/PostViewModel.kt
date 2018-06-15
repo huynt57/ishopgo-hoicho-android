@@ -11,11 +11,12 @@ import ishopgo.com.exhibition.domain.request.PostRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.post.PostCategory
 import ishopgo.com.exhibition.model.post.PostContent
+import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.model.post.PostsManager
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import javax.inject.Inject
 
-class PostViewModel : BaseListViewModel<List<PostProvider>>(), AppComponent.Injectable {
+class PostViewModel : BaseListViewModel<List<PostObject>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

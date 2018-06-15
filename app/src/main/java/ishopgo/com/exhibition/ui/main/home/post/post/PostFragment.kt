@@ -26,17 +26,16 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.postmanager.PostManagerAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
+import ishopgo.com.exhibition.ui.main.postmanager.PostManagerAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.PostManagerCategoryAdapter
-import ishopgo.com.exhibition.ui.main.postmanager.PostProvider
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
-class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
+class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
     private var typeManager = 0
     private val adapterCategory = PostManagerCategoryAdapter()
     private var reloadCategory = false
@@ -45,7 +44,7 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
     private var categoryName = ""
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<PostProvider>) {
+    override fun populateData(data: List<PostObject>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -63,13 +62,18 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
         return inflater.inflate(R.layout.fragment_list_post_question, container, false)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<PostProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<PostObject> {
         val adapter = PostManagerAdapter()
-        adapter.addData(PostObject())
+        adapter.listener = object: ClickableAdapter.BaseAdapterAction<PostObject> {
+            override fun click(position: Int, data: PostObject, code: Int) {
+
+            }
+
+        }
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<PostProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<PostObject>> {
         return obtainViewModel(PostMenuViewModel::class.java, false)
     }
 
@@ -138,15 +142,13 @@ class PostFragment : BaseListFragment<List<PostProvider>, PostProvider>() {
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<PostProvider>) {
-            (adapter as ClickableAdapter<PostProvider>).listener = object : ClickableAdapter.BaseAdapterAction<PostProvider> {
+        if (adapter is ClickableAdapter<PostObject>) {
+            (adapter as ClickableAdapter<PostObject>).listener = object : ClickableAdapter.BaseAdapterAction<PostObject> {
                 @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: PostProvider, code: Int) {
-                    if (data is PostObject) {
-                        val i = Intent(context, PostMenuDetailActivity::class.java)
-                        i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                        startActivity(i)
-                    }
+                override fun click(position: Int, data: PostObject, code: Int) {
+                    val i = Intent(context, PostMenuDetailActivity::class.java)
+                    i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                    startActivity(i)
                 }
             }
         }

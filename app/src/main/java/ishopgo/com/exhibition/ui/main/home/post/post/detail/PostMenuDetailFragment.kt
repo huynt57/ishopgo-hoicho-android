@@ -15,11 +15,12 @@ import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.post.post.PostMenuViewModel
+import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailConverter
 import kotlinx.android.synthetic.main.fragment_post_detail.*
 import kotlinx.android.synthetic.main.fragment_product_full_detail.*
 
 class PostMenuDetailFragment : BaseFragment() {
-    private var data: PostObject? = null
+    private lateinit var data: PostObject
     private lateinit var viewModel: PostMenuViewModel
 
     companion object {
@@ -43,8 +44,10 @@ class PostMenuDetailFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tv_post_title.text = data?.provideTitle() ?: ""
-        tv_post_time.text = data?.provideTime() ?: ""
+        val convert = PostManagerDetailConverter().convert(data)
+        tv_post_title.text = convert.provideTitle()
+        tv_post_time.text = convert.provideInfo()
+        tv_category.text = convert.provideCategory()
     }
 
     @SuppressLint("SetJavaScriptEnabled")

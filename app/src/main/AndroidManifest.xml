@@ -212,7 +212,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.main.postmanager.detail.QuestionManagerDetailActivity"
+            android:name=".ui.main.questmanager.detail.QuestionManagerDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
         <activity

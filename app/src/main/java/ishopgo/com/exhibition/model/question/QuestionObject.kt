@@ -13,11 +13,7 @@ class QuestionObject : IdentityData(), QuestProvider {
     }
 
     override fun provideTime(): String {
-        return "${createdAt?.asDateTime() ?: ""} | Đăng bởi $accountName"
-    }
-
-    override fun provideCategoryName(): String {
-        return categoryName ?: ""
+        return createdAt?.asDateTime() ?: ""
     }
 
     @SerializedName("name")

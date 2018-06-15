@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.postmanager.detail
+package ishopgo.com.exhibition.ui.main.questmanager.detail
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
@@ -46,10 +46,11 @@ class QuestionManagerDetailFragment : BaseFragment() {
         })
 
         viewModel.getContentSusscess.observe(this, Observer { p ->
-            p.let {
-                tv_question_title.text = it?.provideTitle()
-                tv_question_time.text = it?.provideTime()
-                tv_question_answer.text = it?.provideAnswer()
+            p?.let {
+                val converter = QuestDetailConverter().convert(it)
+                tv_question_title.text = converter.provideTitle()
+                tv_question_time.text = converter.provideTime()
+                tv_question_answer.text = converter.provideAnswer()
             }
         })
 

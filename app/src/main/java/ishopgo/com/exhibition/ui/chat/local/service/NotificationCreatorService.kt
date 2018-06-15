@@ -37,7 +37,7 @@ class NotificationCreatorService : IntentService("NotificationCreatorService") {
     private fun sendNotification(extras: Bundle) {
         Log.d(TAG, "sendNotification: extras = [${extras}]")
 
-        val notificationId = extras.getString("notification_id")?.toInt()
+        val notificationId = extras.get("notification_id") as? Int
                 ?: System.currentTimeMillis().toInt()
         val title = extras.getString("title") ?: "Bạn có thông báo mới"
         val body = extras.getString("content") ?: extras.getString("body") ?: ""
