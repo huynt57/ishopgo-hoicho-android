@@ -223,11 +223,11 @@ class ProfileFragment : BaseActionBarFragment() {
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
 
         toolbar.setCustomTitle("Thông tin thành viên")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
-            toolbar.rightButton(R.drawable.ic_delete_green_24dp)
+            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
             toolbar.setRightButtonClickListener {
                 context?.let {
                     MaterialDialog.Builder(it)

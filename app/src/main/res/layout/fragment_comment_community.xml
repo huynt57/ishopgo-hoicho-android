@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.2"
             android:scaleType="center"
-            app:srcCompat="@drawable/ic_gallery" />
+            app:srcCompat="@drawable/ic_gallery_highlight_24dp" />
 
         <EditText
             android:id="@+id/edt_comment"

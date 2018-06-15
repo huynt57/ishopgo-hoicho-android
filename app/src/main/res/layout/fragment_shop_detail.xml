@@ -44,7 +44,7 @@
                     android:paddingEnd="8dp"
                     android:text="Chỉnh sửa"
                     android:visibility="gone"
-                    app:drawableStartCompat="@drawable/ic_edit_black_24dp"
+                    app:drawableStartCompat="@drawable/ic_edit_default_24dp"
                     app:layout_constraintBottom_toBottomOf="@+id/view_image"
                     app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -88,7 +88,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:text="Quan tâm"
-                    app:drawableTopCompat="@drawable/ic_favorite_border_black_24dp"/>
+                    app:drawableTopCompat="@drawable/ic_favorite_border_default_24dp"/>
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/view_shop_call"
@@ -100,7 +100,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:text="Gọi điện"
-                    app:drawableTopCompat="@drawable/ic_phone_24dp"/>
+                    app:drawableTopCompat="@drawable/ic_phone_highlight_24dp"/>
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/view_shop_message"

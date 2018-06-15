@@ -432,7 +432,7 @@
                 android:gravity="center_vertical"
                 android:padding="8dp"
                 android:text="Sơ đồ hội chợ"
-                app:drawableStartCompat="@drawable/ic_expo_map"
+                app:drawableStartCompat="@drawable/ic_expo_map_24dp"
                 app:drawableStartSquareSize="24dp"
                 />
 

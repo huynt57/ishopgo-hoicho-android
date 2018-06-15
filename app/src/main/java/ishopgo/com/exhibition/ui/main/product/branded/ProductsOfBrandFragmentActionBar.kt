@@ -40,7 +40,7 @@ class ProductsOfBrandFragmentActionBar : BaseActionBarFragment() {
     private fun setupToolbars() {
         val title = arguments?.getString(Const.TransferKey.EXTRA_TITLE) ?: ""
         toolbar.setCustomTitle(if (title.isBlank()) "Sản phẩm cùng thương hiệu" else title)
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }

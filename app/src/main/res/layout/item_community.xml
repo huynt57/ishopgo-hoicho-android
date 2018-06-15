@@ -178,7 +178,7 @@
                 android:layout_width="50dp"
                 android:layout_height="match_parent"
                 android:background="@null"
-                android:button="@drawable/ic_toggle"
+                android:button="@drawable/selector_ic_favorite"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -214,7 +214,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
-            app:drawableStartCompat="@drawable/ic_share_option"
+            app:drawableStartCompat="@drawable/ic_share_highlight_24dp"
             app:layout_constraintStart_toEndOf="@+id/tv_community_comment"/>
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

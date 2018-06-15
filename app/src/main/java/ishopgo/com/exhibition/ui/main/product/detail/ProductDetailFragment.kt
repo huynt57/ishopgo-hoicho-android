@@ -181,7 +181,7 @@ class ProductDetailFragment : BaseFragment() {
 
         viewModel.getProductLike.observe(this, Observer { c ->
             c?.let {
-                view_shop_follow.drawableCompat(0, if (it.status == 1) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp, 0, 0)
+                view_shop_follow.drawableCompat(0, if (it.status == 1) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
                 if (it.status == 1) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
 
                 activity?.setResult(RESULT_OK)
@@ -235,7 +235,7 @@ class ProductDetailFragment : BaseFragment() {
                 }
             }
 
-            view_shop_follow.drawableCompat(0, if (product.provideLiked()) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp, 0, 0)
+            view_shop_follow.drawableCompat(0, if (product.provideLiked()) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
             view_product_price.text = product.provideProductPrice()
 
             if (product.provideLiked()) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"

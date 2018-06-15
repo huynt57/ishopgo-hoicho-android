@@ -1,12 +1,10 @@
 package ishopgo.com.exhibition.ui.main.profile
 
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
-import android.view.inputmethod.InputMethodManager
 
 
 class ProfileFragmentActionBar : BaseActionBarFragment() {
@@ -23,7 +21,7 @@ class ProfileFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Thông tin cá nhân")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }

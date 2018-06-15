@@ -117,8 +117,8 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
                 Glide.with(context)
                         .load(data.provideIcon())
                         .apply(RequestOptions()
-                                .placeholder(R.drawable.ic_finger)
-                                .error(R.drawable.ic_finger))
+                                .placeholder(R.drawable.ic_finger_highlight_24dp)
+                                .error(R.drawable.ic_finger_highlight_24dp))
                         .into(view_parent_icon)
 
                 view_parent_text.text = data.provideName()
@@ -127,9 +127,9 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
                     view_parent_expand.setImageResource(0)
                 } else {
                     if (mExpanding.any { it == data })
-                        view_parent_expand.setImageResource(R.drawable.ic_expand_less_24dp)
+                        view_parent_expand.setImageResource(R.drawable.ic_expand_less_neutral_24dp)
                     else
-                        view_parent_expand.setImageResource(R.drawable.ic_expand_more_24dp)
+                        view_parent_expand.setImageResource(R.drawable.ic_expand_more_neutral_24dp)
                 }
             }
         }
@@ -144,8 +144,8 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
                 Glide.with(context)
                         .load(data.provideIcon())
                         .apply(RequestOptions()
-                                .placeholder(R.drawable.ic_finger)
-                                .error(R.drawable.ic_finger))
+                                .placeholder(R.drawable.ic_finger_highlight_24dp)
+                                .error(R.drawable.ic_finger_highlight_24dp))
                         .into(view_child_icon)
 
                 view_child_text.text = data.provideName()

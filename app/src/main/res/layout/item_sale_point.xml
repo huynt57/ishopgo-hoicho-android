@@ -23,7 +23,7 @@
         android:id="@+id/view_distance"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:drawableStartCompat="@drawable/ic_location_16dp"
+        app:drawableStartCompat="@drawable/ic_location_default_16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="1.100 km"

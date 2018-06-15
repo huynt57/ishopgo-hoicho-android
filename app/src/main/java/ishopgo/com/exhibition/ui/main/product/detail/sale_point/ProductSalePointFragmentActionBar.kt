@@ -33,11 +33,11 @@ class ProductSalePointFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Danh sách điểm bán")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
         if (UserDataManager.currentUserId > 0) {
-            toolbar.rightButton(R.drawable.ic_add_green_24dp)
+            toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
             toolbar.setRightButtonClickListener {
                 val fragment = childFragmentManager.findFragmentByTag(ProductSalePointFragment.TAG)
                 if (fragment != null) {

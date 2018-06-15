@@ -132,7 +132,7 @@ class ShopDetailFragment : BaseFragment() {
 //                                .placeholder(R.drawable.image_placeholder)
 //                                .error(R.drawable.image_placeholder))
 //                        .into(view_favorite)
-                view_shop_follow.drawableCompat(0, if (it) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_black_24dp, 0, 0)
+                view_shop_follow.drawableCompat(0, if (it) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
             }
         })
 
@@ -158,7 +158,7 @@ class ShopDetailFragment : BaseFragment() {
 //                                    .placeholder(R.drawable.image_placeholder)
 //                                    .error(R.drawable.image_placeholder))
 //                            .into(view_favorite)
-                    view_shop_follow.drawableCompat(0, R.drawable.ic_favorite_border_black_24dp, 0, 0)
+                    view_shop_follow.drawableCompat(0, R.drawable.ic_favorite_border_default_24dp, 0, 0)
                     toast("Bỏ theo dõi gian hàng thành công")
                     activity?.setResult(RESULT_OK)
                 }

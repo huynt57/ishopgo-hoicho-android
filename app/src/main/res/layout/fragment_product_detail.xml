@@ -63,7 +63,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_gravity="center_vertical"
-                        app:srcCompat="@drawable/ic_share_24dp" />
+                        app:srcCompat="@drawable/ic_share_white_18dp" />
 
                     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                         android:layout_width="wrap_content"
@@ -101,7 +101,7 @@
                     android:drawablePadding="8dp"
                     app:drawableStartSquareSize="24dp"
                     android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/ic_tag_price"
+                    app:drawableStartCompat="@drawable/ic_tag_price_default_24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_product_name"
@@ -121,7 +121,7 @@
                     app:drawableStartSquareSize="24dp"
                     android:textSize="16sp"
                     android:visibility="gone"
-                    app:drawableStartCompat="@drawable/ic_tag_wholesale"
+                    app:drawableStartCompat="@drawable/ic_tag_wholesale_default_24dp"
                     tools:visibility="visible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -141,7 +141,7 @@
                     android:gravity="center_vertical"
                     android:textStyle="italic"
                     android:visibility="gone"
-                    app:drawableStartCompat="@drawable/ic_shopping_cart"
+                    app:drawableStartCompat="@drawable/ic_shopping_cart_default_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -333,7 +333,7 @@
                         android:paddingEnd="8dp"
                         android:paddingTop="8dp"
                         android:paddingBottom="4dp"
-                        app:drawableStartCompat="@drawable/ic_phone_24dp"
+                        app:drawableStartCompat="@drawable/ic_phone_highlight_24dp"
                         tools:text="Số điện thoại: 0985771135" />
 
                     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -346,7 +346,7 @@
                         android:paddingEnd="8dp"
                         android:paddingTop="4dp"
                         android:paddingBottom="8dp"
-                        app:drawableStartCompat="@drawable/ic_home_green_24dp"
+                        app:drawableStartCompat="@drawable/ic_home_highlight_24dp"
                         tools:text="Địa chỉ: 68 Dương Đình Nghệ, Cầu Giấy, Hà Nội" />
                 </LinearLayout>
 
@@ -581,7 +581,7 @@
                         android:layout_height="match_parent"
                         android:layout_weight="0.2"
                         android:scaleType="center"
-                        app:srcCompat="@drawable/ic_gallery" />
+                        app:srcCompat="@drawable/ic_gallery_highlight_24dp" />
 
                     <EditText
                         android:id="@+id/edt_comment"
@@ -780,7 +780,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="Quan tâm"
-            app:drawableTopCompat="@drawable/ic_favorite_border_black_24dp" />
+            app:drawableTopCompat="@drawable/ic_favorite_border_default_24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_call"
@@ -792,7 +792,7 @@
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:text="Gọi điện"
-            app:drawableTopCompat="@drawable/ic_phone_24dp" />
+            app:drawableTopCompat="@drawable/ic_phone_highlight_24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_message"

@@ -40,7 +40,7 @@
             app:layout_constraintBottom_toBottomOf="@id/view_label_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/view_label_title"
-            app:srcCompat="@drawable/ic_add_black_24dp"
+            app:srcCompat="@drawable/ic_add_default_24dp"
             />
 
     </LinearLayout>

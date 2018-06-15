@@ -68,13 +68,13 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Chi tiết gian hàng")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
-            toolbar.rightButton(R.drawable.ic_delete_green_24dp)
+            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
             toolbar.setRightButtonClickListener {
                 val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
                 if (fragment != null) {

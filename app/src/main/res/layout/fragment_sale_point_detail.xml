@@ -54,7 +54,7 @@
                 android:gravity="center_vertical"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                app:drawableStartCompat="@drawable/ic_phone_24dp"
+                app:drawableStartCompat="@drawable/ic_phone_highlight_24dp"
                 tools:text="Số điện thoại" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -66,7 +66,7 @@
                 android:gravity="center_vertical"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                app:drawableStartCompat="@drawable/ic_home_green_24dp"
+                app:drawableStartCompat="@drawable/ic_home_highlight_24dp"
                 tools:text="Địa chỉ" />
 
             <LinearLayout

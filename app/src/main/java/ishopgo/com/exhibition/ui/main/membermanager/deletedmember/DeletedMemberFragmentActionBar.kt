@@ -33,10 +33,10 @@ class DeletedMemberFragmentActionBar: BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Khôi phục thành viên")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_filter)
+        toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(DeletedMemberFragment.TAG)
             if (fragment != null) {

@@ -32,7 +32,7 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Cộng đồng")
-        toolbar.rightButton(R.drawable.ic_search_24dp)
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
             if (fragment != null) {
@@ -41,7 +41,7 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
             }
         }
 
-        toolbar.leftButton(R.drawable.ic_notifications_green_24dp)
+        toolbar.leftButton(R.drawable.ic_notifications_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
             if (fragment != null) {
@@ -62,12 +62,7 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
         mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         mainViewModel.notificationCount.observe(this, Observer { c ->
             c?.let {
-                if (c > 0) {
-                    toolbar.leftButton(R.drawable.ic_notifications_green_24dp, it)
-                }
-                else {
-                    toolbar.leftButton(R.drawable.ic_notifications_green_24dp, 0)
-                }
+                toolbar.leftButton(R.drawable.ic_notifications_highlight_24dp, if (it > 0) it else 0)
             }
         })
     }

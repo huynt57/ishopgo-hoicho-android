@@ -31,7 +31,7 @@ class AppToolbar @JvmOverloads constructor(context: Context, attrs: AttributeSet
         view_divider_toolbar_bottom.visibility = if (isShow) View.VISIBLE else View.GONE
     }
 
-    fun leftButton(@DrawableRes icon: Int = R.drawable.ic_arrow_back_24dp, count: Int = 0) {
+    fun leftButton(@DrawableRes icon: Int = R.drawable.ic_arrow_back_highlight_24dp, count: Int = 0) {
         if (icon == 0) {
             view_option_left.visibility = View.GONE
             view_toolbar_start.setOnClickListener(null)

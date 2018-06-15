@@ -28,9 +28,9 @@ class CommunityShareFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Chia sẻ bài viết")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
-        toolbar.rightButton(R.drawable.ic_send_24dp)
+        toolbar.rightButton(R.drawable.ic_send_default_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(CommunityShareFragment.TAG)
             if (fragment != null) {

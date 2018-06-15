@@ -38,7 +38,7 @@ class ReportFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Bão lỗi - Đóng góp")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }

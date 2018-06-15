@@ -5,7 +5,6 @@ import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
-import ishopgo.com.exhibition.ui.main.notification.add.NotificationAddFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -27,12 +26,12 @@ class NotificationFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Quản lý thông báo")
-        toolbar.leftButton(R.drawable.ic_arrow_back_24dp)
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
 
-            toolbar.rightButton(R.drawable.ic_add_green_24dp)
+            toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
             toolbar.setRightButtonClickListener {
                 toast("Đang phát triển")
                 val fragment = childFragmentManager.findFragmentByTag(NotificationFragment.TAG)
@@ -44,7 +43,7 @@ class NotificationFragmentActionBar : BaseActionBarFragment() {
         }
 
 
-        toolbar.rightButton2(R.drawable.ic_done_all_black_24dp)
+        toolbar.rightButton2(R.drawable.ic_done_all_highlight_24dp)
         toolbar.setRight2ButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(NotificationFragment.TAG)
             if (fragment != null) {

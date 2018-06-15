@@ -18,7 +18,7 @@
         android:padding="16dp"
         android:text="Chia sẻ Facebook"
         android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_facebook"
+        app:drawableStartCompat="@drawable/ic_facebook_default_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         />
@@ -35,7 +35,7 @@
         android:padding="16dp"
         android:text="Chia sẻ ứng dụng khác"
         android:textSize="16sp"
-        app:drawableStartCompat="@drawable/ic_apps_24dp"
+        app:drawableStartCompat="@drawable/ic_share_default_24dp"
         app:layout_constraintDimensionRatio=""
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"

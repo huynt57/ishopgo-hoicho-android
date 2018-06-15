@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Thành phố*"
-                tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -80,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Quận huyện*"
-                tools:drawableEnd="@drawable/ic_arrow_drop_down_black_24dp" />
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
         </android.support.design.widget.TextInputLayout>
 
