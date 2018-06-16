@@ -2,13 +2,17 @@ package ishopgo.com.exhibition.ui.chat.local.profile
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
@@ -17,7 +21,17 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.target.Target
+import com.bumptech.glide.request.transition.Transition
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.model.SharePhoto
+import com.facebook.share.model.SharePhotoContent
+import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
@@ -41,6 +55,8 @@ import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_local_chat_profile.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
+import java.io.IOException
+import java.net.URL
 
 /**
  * Created by xuanhong on 4/6/18. HappyCoding!
@@ -318,7 +334,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
                     .build()
             val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
             tv_share_facebook.setOnClickListener {
-                shareFacebook(data)
+                shareFacebook(data, dialog)
             }
             val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
             tv_share_zalo.setOnClickListener {
@@ -328,37 +344,116 @@ class MemberProfileFragment : BaseActionBarFragment() {
         }
     }
 
-    private fun shareFacebook(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
-        var intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+    private var callbackManager: CallbackManager? = null
 
-        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
+    private fun shareFacebook(data: CommunityProvider, dialog: Dialog) {
+        callbackManager = CallbackManager.Factory.create()
+        val shareDialog = ShareDialog(this)
 
-        var facebookAppFound = false
-        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
-        for (info in matches) {
-            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-                intent.`package` = info.activityInfo.packageName
-                facebookAppFound = true
-                break
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onSuccess(result: Sharer.Result?) {
+                dialog.dismiss()
+            }
+
+            override fun onCancel() {
+                dialog.dismiss()
+                toast("Chia sẻ bị huỷ bỏ")
+            }
+
+            override fun onError(error: FacebookException?) {
+                dialog.dismiss()
+                toast(error.toString())
+            }
+        })
+
+        if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+            if (data.provideProduct() != null) {
+                val urlToShare = data.provideProduct()?.providerLink()
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(urlToShare))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
+            }
+
+            if (data.provideListImage().isNotEmpty()) {
+                if (data.provideListImage().size > 1) {
+                    val thread = Thread(Runnable {
+                        try {
+                            val listSharePhoto = mutableListOf<SharePhoto>()
+                            for (i in data.provideListImage().indices)
+                                try {
+                                    val url = URL(data.provideListImage()[i])
+                                    val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                    val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                    listSharePhoto.add(sharePhoto)
+                                } catch (e: IOException) {
+                                    Log.d("IOException", e.toString())
+                                }
+                            val shareContent = SharePhotoContent.Builder()
+                                    .addPhotos(listSharePhoto)
+                                    .build()
+                            shareDialog.show(shareContent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    })
+
+                    thread.start()
+
+                } else Glide.with(context)
+                        .asBitmap()
+                        .load(data.provideListImage()[0])
+                        .into(object : SimpleTarget<Bitmap>(300, 300) {
+                            override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                                val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+                                val shareContent = SharePhotoContent.Builder()
+                                        .addPhoto(sharePhoto)
+                                        .build()
+                                shareDialog.show(shareContent)
+                            }
+                        })
+            }
+
+            if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
             }
         }
-
-        if (!facebookAppFound) {
-            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
-        }
-
-        startActivity(intent)
     }
 
     private fun shareApp(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
+        val urlToShare = if (data.provideListImage().isNotEmpty()) {
+            if (data.provideListImage().size > 1) {
+                var linkImage = ""
+                for (i in data.provideListImage().indices) {
+                    linkImage += "${data.provideListImage()[i]}\n\n"
+                }
+
+                "${data.provideContent()}\n $linkImage\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+
+            } else {
+                "${data.provideContent()}\n ${data.provideListImage()[0]}\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+            }
+        } else
+            "${data.provideContent()}\n ${data.provideProduct()?.providerLink() ?: ""}"
+
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"
         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, urlToShare)
         startActivity(shareIntent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        callbackManager?.onActivityResult(requestCode, resultCode, data)
     }
 }

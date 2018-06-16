@@ -102,12 +102,10 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                         .apply(RequestOptions.circleCropTransform()
                                 .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_community_avatar)
 
-                img_community_share.visibility = View.GONE
                 tv_community_number_share.visibility = View.GONE
 
                 if (data.provideProduct() != null) {
                     cv_community_product.visibility = View.VISIBLE
-                    img_community_share.visibility = View.VISIBLE
                     tv_community_number_share.visibility = View.VISIBLE
                     tv_community_like.visibility = View.VISIBLE
                     tv_community_like.text = "${data.provideLikeCount()} thích"
