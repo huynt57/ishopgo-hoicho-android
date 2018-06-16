@@ -40,7 +40,8 @@ object NotificationUtils {
         val type = notification.payloadData?.type ?: -1
         when (type) {
             NotificationPayload.TYPE_PRODUCT -> {
-                showProduct(context, notification.id)
+                val productId = notification.payloadData?.id ?: -1L
+                if (productId != -1L) showProduct(context, productId)
             }
             NotificationPayload.TYPE_CHAT -> {
                 // we do not have notification for chat now
