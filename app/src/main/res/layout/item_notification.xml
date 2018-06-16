@@ -22,26 +22,27 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/avatar_placeholder" />
+        app:srcCompat="@drawable/avatar_placeholder"
+        tools:ignore="ContentDescription"/>
 
-    <TextView
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/ff_roboto"
         android:maxLines="3"
-        android:text="Đơn hàng "
+        tools:text="Đơn hàng "
         android:textColor="@color/md_grey_800"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_timestamp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/sdv_picture"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <TextView
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -49,23 +50,26 @@
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:text="4 giờ trước"
         android:textColor="@color/md_grey_500"
-        android:textSize="11sp"
+        android:textSize="10sp"
+        app:drawableStartCompat="@drawable/ic_clock_default_24dp"
+        app:drawableStartSquareSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tv_title"/>
+        app:layout_constraintTop_toTopOf="@+id/tv_short_desc"
+        tools:ignore="SmallSp"
+        tools:text="4 giờ trước"/>
 
-    <TextView
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_short_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:textColor="@color/md_grey_500"
-        android:textSize="14sp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tv_timestamp"
         app:layout_constraintStart_toEndOf="@+id/sdv_picture"
         app:layout_constraintTop_toBottomOf="@+id/tv_title"
         tools:text="Cộng đồng có bài viết mới"/>

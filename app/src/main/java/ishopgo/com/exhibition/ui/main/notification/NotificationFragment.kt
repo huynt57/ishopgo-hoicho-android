@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Notification
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.service.NotificationUtils
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 /**
  * Created by hoangnh on 5/7/2018.
  */
-class NotificationFragment : BaseListFragment<List<NotificationProvider>, NotificationProvider>() {
+class NotificationFragment : BaseListFragment<List<Notification>, Notification>() {
 
     companion object {
         const val TAG = "NotificationAddFragment"
@@ -37,7 +38,7 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<NotificationProvider>) {
+    override fun populateData(data: List<Notification>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -51,13 +52,17 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<NotificationProvider> {
-        val adapter = NotificationAdapter()
-        adapter.addData(Notification())
-        return adapter
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Notification> {
+        val notificationAdapter = NotificationAdapter()
+        notificationAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Notification> {
+            override fun click(position: Int, data: Notification, code: Int) {
+                NotificationUtils.resolveNotification(requireContext(), data)
+            }
+        }
+        return notificationAdapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<NotificationProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Notification>> {
         return obtainViewModel(NotificationViewModel::class.java, false)
     }
 
@@ -93,15 +98,6 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<NotificationProvider>) {
-            (adapter as ClickableAdapter<NotificationProvider>).listener = object : ClickableAdapter.BaseAdapterAction<NotificationProvider> {
-                override fun click(position: Int, data: NotificationProvider, code: Int) {
-                    if (viewModel is NotificationViewModel) {
-                        (viewModel as NotificationViewModel).markAsReadThenShowDetail(data.provideId())
-                    }
-                }
-            }
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -111,12 +107,6 @@ class NotificationFragment : BaseListFragment<List<NotificationProvider>, Notifi
             (viewModel as NotificationViewModel).marksAllSuccess.observe(this, Observer {
                 hideProgressDialog()
                 firstLoad()
-            })
-
-            (viewModel as NotificationViewModel).markNotificationSuccess.observe(this, Observer {
-                toast("Đang phát triển")
-//            val intent = Intent(context, NotificationDetailActivity::class.java)
-//            startActivityForResult(intent, Const.RequestCode.NOTIFICATION_DETAIL)
             })
         }
     }

@@ -305,6 +305,9 @@ class ApiService {
         @GET("notifications")
         fun getNotifications(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Notification>>>
 
+        @GET("notifications/{id}")
+        fun getNotificationDetail(@Path("id") id: Long): Single<BaseResponse<Notification>>
+
         @POST("read-notifications")
         fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
 

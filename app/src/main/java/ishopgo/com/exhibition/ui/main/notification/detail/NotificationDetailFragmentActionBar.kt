@@ -9,7 +9,18 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 /**
  * Created by hoangnh on 5/7/2018.
  */
-class NotificationDetailFragmentActionBar : BaseActionBarFragment() {
+class NotificationDetailFragmentActionBar: BaseActionBarFragment() {
+
+    companion object {
+        fun newInstance(data: Bundle): NotificationDetailFragmentActionBar {
+            val fragment = NotificationDetailFragmentActionBar()
+            fragment.arguments = data
+
+            return fragment
+        }
+
+    }
+
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_single_content
     }
@@ -20,7 +31,7 @@ class NotificationDetailFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, NotificationDetailFragment()).commit()
+                .replace(R.id.view_main_content, NotificationDetailFragment.newInstance(arguments ?: Bundle())).commit()
     }
 
     private fun setupToolbars() {
