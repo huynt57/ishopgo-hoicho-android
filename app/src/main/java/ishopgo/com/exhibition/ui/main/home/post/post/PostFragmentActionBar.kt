@@ -37,7 +37,7 @@ class PostFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
-            toolbar.setCustomTitle("Thông tin hội  chợ")
+            toolbar.setCustomTitle("Tin tức")
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
             toolbar.setCustomTitle("Thông tin chung")
 

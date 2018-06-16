@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.ui.banner.BannerImageFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.brand.DummyHighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
@@ -218,6 +219,27 @@ class HomeFragment : BaseFragment() {
         setupFavoriteProducts(context)
 
         setupListeners()
+
+        val builder = StringBuilder()
+
+        builder.append("<b>CÔNG TY TNHH CÔNG NGHỆ ISHOPGO</b>")
+        builder.append("<br>")
+        builder.append("Địa chỉ: Tầng 8, tòa nhà báo Nông Thôn Ngày Nay,")
+        builder.append("<br>")
+        builder.append("Dương Đình Nghệ, Cầu Giấy, Hà Nội")
+        builder.append("<br>")
+        builder.append("Tổng đài: <b>024 7300 3649</b>")
+        builder.append("<br>")
+        builder.append("(từ 9:00AM - 6:00PM Thứ Hai đến Thứ Bảy)")
+        builder.append("<br>")
+        builder.append("GPĐKKD: số 0314270705 do")
+        builder.append("<br>")
+        builder.append("Sở KHĐT TP.HCM cấp ngày 26/08/2017")
+        builder.append("<br>")
+        builder.append("©2018 iShopGo - iShopGo.com")
+        builder.append("<br>")
+        builder.append("iShopGo® Nền tảng Hội chợ trực tuyến 4.0")
+        view_company_info.text = builder.toString().asHtml()
     }
 
     private fun openPostManager(typeManager: Int) {
