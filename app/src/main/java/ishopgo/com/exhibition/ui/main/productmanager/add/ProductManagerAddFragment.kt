@@ -648,11 +648,6 @@ class ProductManagerAddFragment : BaseFragment() {
                     .canceledOnTouchOutside(false)
                     .build()
 
-            val edt_search_name = dialog.findViewById(R.id.edt_search_name) as TextInputEditText
-            val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
-            edt_search_name.hint = "Nhập tên sản phẩm"
-            edt_search_code.hint = "Nhập mã sản phẩm"
-
             dialog.show()
         }
     }

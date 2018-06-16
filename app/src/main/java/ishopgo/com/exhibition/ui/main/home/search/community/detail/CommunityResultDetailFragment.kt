@@ -2,18 +2,33 @@ package ishopgo.com.exhibition.ui.main.home.search.community.detail
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.model.SharePhoto
+import com.facebook.share.model.SharePhotoContent
+import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.model.Const
@@ -37,6 +52,8 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_comment_community.*
 import kotlinx.android.synthetic.main.fragment_community_result_detail.*
+import java.io.IOException
+import java.net.URL
 
 class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListener {
     private var adapterImages = ComposingPostMediaAdapter()
@@ -109,40 +126,40 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         rv_community_parent.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_community_parent.adapter = adapterParent
         adapterParent.listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
-                override fun click(position: Int, data: CommunityProvider, code: Int) {
-                    when (code) {
-                        COMMUNITY_LIKE_CLICK -> {
-                            if (data is Community) {
-                                viewModel.postCommunityLike(data.id)
-                            }
+            override fun click(position: Int, data: CommunityProvider, code: Int) {
+                when (code) {
+                    COMMUNITY_LIKE_CLICK -> {
+                        if (data is Community) {
+                            viewModel.postCommunityLike(data.id)
                         }
+                    }
 
-                        COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
+                    COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
 
-                        COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
+                    COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
 
 
-                        COMMUNITY_PRODUCT_CLICK -> {
-                            if (data is Community) {
-                                val productId = data.product?.id ?: -1L
-                                if (productId != -1L) {
-                                    context?.let {
-                                        val intent = Intent(it, ProductDetailActivity::class.java)
-                                        intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
-                                        startActivity(intent)
-                                    }
+                    COMMUNITY_PRODUCT_CLICK -> {
+                        if (data is Community) {
+                            val productId = data.product?.id ?: -1L
+                            if (productId != -1L) {
+                                context?.let {
+                                    val intent = Intent(it, ProductDetailActivity::class.java)
+                                    intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+                                    startActivity(intent)
                                 }
                             }
                         }
+                    }
 
-                        COMMUNITY_IMAGE_CLICK -> {
-                            val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
-                            startActivity(intent)
-                        }
+                    COMMUNITY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
+                        startActivity(intent)
                     }
                 }
             }
+        }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view_recyclerview.layoutManager = layoutManager
@@ -176,7 +193,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                     .build()
             val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
             tv_share_facebook.setOnClickListener {
-                shareFacebook(data)
+                shareFacebook(data, dialog)
             }
             val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
             tv_share_zalo.setOnClickListener {
@@ -186,33 +203,107 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         }
     }
 
-    private fun shareFacebook(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
-        var intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+    private var callbackManager: CallbackManager? = null
 
-        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
+    private fun shareFacebook(data: CommunityProvider, dialog: Dialog) {
+        callbackManager = CallbackManager.Factory.create()
+        val shareDialog = ShareDialog(this)
 
-        var facebookAppFound = false
-        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
-        for (info in matches) {
-            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-                intent.`package` = info.activityInfo.packageName
-                facebookAppFound = true
-                break
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onSuccess(result: Sharer.Result?) {
+                dialog.dismiss()
+            }
+
+            override fun onCancel() {
+                dialog.dismiss()
+                toast("Chia sẻ bị huỷ bỏ")
+            }
+
+            override fun onError(error: FacebookException?) {
+                dialog.dismiss()
+                toast(error.toString())
+            }
+        })
+
+        if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+            if (data.provideProduct() != null) {
+                val urlToShare = data.provideProduct()?.providerLink()
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse(urlToShare))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
+            }
+
+            if (data.provideListImage().isNotEmpty()) {
+                if (data.provideListImage().size > 1) {
+                    val thread = Thread(Runnable {
+                        try {
+                            val listSharePhoto = mutableListOf<SharePhoto>()
+                            for (i in data.provideListImage().indices)
+                                try {
+                                    val url = URL(data.provideListImage()[i])
+                                    val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                    val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                    listSharePhoto.add(sharePhoto)
+                                } catch (e: IOException) {
+                                    Log.d("IOException", e.toString())
+                                }
+                            val shareContent = SharePhotoContent.Builder()
+                                    .addPhotos(listSharePhoto)
+                                    .build()
+                            shareDialog.show(shareContent)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    })
+
+                    thread.start()
+
+                } else Glide.with(context)
+                        .asBitmap()
+                        .load(data.provideListImage()[0])
+                        .into(object : SimpleTarget<Bitmap>(300, 300) {
+                            override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
+                                val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
+                                val shareContent = SharePhotoContent.Builder()
+                                        .addPhoto(sharePhoto)
+                                        .build()
+                                shareDialog.show(shareContent)
+                            }
+                        })
+            }
+
+            if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
+                val shareContent = ShareLinkContent.Builder()
+                        .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                        .setQuote(data.provideContent())
+                        .build()
+
+                shareDialog.show(shareContent)
             }
         }
-
-        if (!facebookAppFound) {
-            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
-        }
-
-        startActivity(intent)
     }
 
     private fun shareApp(data: CommunityProvider) {
-        val urlToShare = data.provideProduct()?.providerLink()
+        val urlToShare = if (data.provideListImage().isNotEmpty()) {
+            if (data.provideListImage().size > 1) {
+                var linkImage = ""
+                for (i in data.provideListImage().indices) {
+                    linkImage += "${data.provideListImage()[i]}\n\n"
+                }
+
+                "${data.provideContent()}\n $linkImage\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+
+            } else {
+                "${data.provideContent()}\n ${data.provideListImage()[0]}\n ${data.provideProduct()?.providerLink()
+                        ?: ""}"
+            }
+        } else
+            "${data.provideContent()}\n ${data.provideProduct()?.providerLink() ?: ""}"
+
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"
@@ -294,7 +385,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         reloadData = true
         swipe.isRefreshing = true
 
-        if (UserDataManager.currentUserId > 0){
+        if (UserDataManager.currentUserId > 0) {
             firstLoad()
             include_content.visibility = View.VISIBLE
         } else include_content.visibility = View.GONE
@@ -328,6 +419,8 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
 
             adapterImages.replaceAll(postMedias)
             rv_comment_community_image.visibility = View.VISIBLE
+
+            callbackManager?.onActivityResult(requestCode, resultCode, data)
         }
     }
 

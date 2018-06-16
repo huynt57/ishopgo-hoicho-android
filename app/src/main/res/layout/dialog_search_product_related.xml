@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:inputType="text"
             android:singleLine="true"
+            android:hint="Nhập tên sản phẩm"
             tools:drawableEnd="@drawable/ic_search_highlight_24dp" />
 
     </android.support.design.widget.TextInputLayout>
@@ -37,6 +38,7 @@
             style="@style/AppTheme.EnableInputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Nhập mã sản phẩm"
             android:inputType="text"
             android:singleLine="true"
             tools:drawableEnd="@drawable/ic_search_highlight_24dp" />
