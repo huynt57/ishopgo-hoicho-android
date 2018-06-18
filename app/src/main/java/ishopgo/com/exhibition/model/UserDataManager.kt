@@ -19,6 +19,7 @@ object UserDataManager {
     private const val KEY_USER_NAME = "user_name"
     private const val KEY_USER_TYPE = "type"
     private const val KEY_USER_SURVEY = "survey"
+    private const val KEY_USER_SURVEY_IS_MANDATORY = "survey_mandatory"
 
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")
@@ -44,6 +45,9 @@ object UserDataManager {
     var currentSurvey: Int
         get() = pref.getInt(KEY_USER_SURVEY, 0)
         set(value) = pref.edit().putInt(KEY_USER_SURVEY, value).apply()
+    var currentSurveyIsMandatory: Boolean
+        get() = pref.getBoolean(KEY_USER_SURVEY_IS_MANDATORY, false)
+        set(value) = pref.edit().putBoolean(KEY_USER_SURVEY_IS_MANDATORY, value).apply()
     var passLoginScreen: Long
         get() = pref.getLong(KEY_PASS_LOGIN_SCREEN, -1L)
         set(value) = pref.edit().putLong(KEY_PASS_LOGIN_SCREEN, value).apply()
@@ -65,6 +69,9 @@ object UserDataManager {
         val displayMetrics = context.resources.displayMetrics
         displayWidth = displayMetrics.widthPixels
         displayHeight = displayMetrics.heightPixels
+
+        // TODO this field will be config by server in the future
+        currentSurveyIsMandatory = false
     }
 
     fun deleteUserInfo() {

@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import kotlinx.android.synthetic.main.activity_photo_list_view.*
@@ -26,6 +27,7 @@ class PhotoAlbumViewActivity : AppCompatActivity() {
      * [android.support.v4.app.FragmentStatePagerAdapter].
      */
     private var mSectionsPagerAdapter: SectionsPagerAdapter? = null
+    private var fetchFullSize = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,7 @@ class PhotoAlbumViewActivity : AppCompatActivity() {
 
         val imagesUri = intent?.getStringArrayExtra(Const.TransferKey.EXTRA_STRING_LIST)
                 ?: arrayOf<String>()
+        fetchFullSize = intent?.getBooleanExtra(Const.TransferKey.EXTRA_FETCH_FULL_SIZE, false) ?: false
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -55,7 +58,7 @@ class PhotoAlbumViewActivity : AppCompatActivity() {
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(imagesUri[position])
+            return PlaceholderFragment.newInstance(imagesUri[position], fetchFullSize)
         }
 
         override fun getCount(): Int {
@@ -78,9 +81,19 @@ class PhotoAlbumViewActivity : AppCompatActivity() {
             super.onViewCreated(view, savedInstanceState)
 
             val url = arguments?.getString(ARG_URL) ?: ""
-            Glide.with(this).load(url).apply(RequestOptions()
+            val override = RequestOptions()
                     .placeholder(R.drawable.image_placeholder)
-                    .error(R.drawable.image_placeholder)).into(iv_image)
+                    .error(R.drawable.image_placeholder)
+
+            val fullsize = arguments?.getBoolean(ARG_OPTION_FULL_SIZE) ?: false
+            if (fullsize)
+                    override.override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+            Glide.with(this)
+                    .load(url)
+                    .apply(
+                            override
+                    )
+                    .into(iv_image)
         }
 
         companion object {
@@ -89,15 +102,17 @@ class PhotoAlbumViewActivity : AppCompatActivity() {
              * fragment.
              */
             private val ARG_URL = "url"
+            private val ARG_OPTION_FULL_SIZE = "fullsize"
 
             /**
              * Returns a new instance of this fragment for the given section
              * number.
              */
-            fun newInstance(url: String): PlaceholderFragment {
+            fun newInstance(url: String, fetchFullsize: Boolean): PlaceholderFragment {
                 val fragment = PlaceholderFragment()
                 val args = Bundle()
                 args.putString(ARG_URL, url)
+                args.putBoolean(ARG_OPTION_FULL_SIZE, fetchFullsize)
                 fragment.arguments = args
                 return fragment
             }

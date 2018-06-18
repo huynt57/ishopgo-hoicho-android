@@ -55,6 +55,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET_MANAGER, R.drawable.ic_sight_seeing, "Quản lý vé tham quan"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
 //            val childs = ArrayList<AccountMenuItem>()
 //            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NEWS_MANAGER, R.drawable.ic_news_pager, "Quản lý tin tức", isParent = false))

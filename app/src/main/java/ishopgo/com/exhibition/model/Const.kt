@@ -10,6 +10,7 @@ object Const {
 
     object TransferKey {
         const val EXTRA_STRING_LIST = "string_list"
+        const val EXTRA_FETCH_FULL_SIZE = "fetch_full_size"
         const val EXTRA_JSON = "json"
         const val EXTRA_ID = "id"
         const val EXTRA_TITLE = "title"
@@ -75,6 +76,7 @@ object Const {
         const val ACTION_FAVORITE_BOOTHS = 21
         const val ACTION_TICKET_MANAGER = 22
         const val ACTION_VISITORS = 23
+        const val ACTION_CONFIG_EXPO = 24
     }
 
     object Chat {

@@ -622,7 +622,7 @@ class ProductDetailFragment : BaseFragment() {
             } else {
                 for (i in 0 until data.clipData.itemCount) {
                     if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 2 MB. Hãy chọn file khác.")
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
                         return
                     }
                     val postMedia = PostMedia()

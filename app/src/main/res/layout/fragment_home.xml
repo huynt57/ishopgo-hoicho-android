@@ -76,7 +76,7 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <android.support.v7.widget.RecyclerView
+                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
                             android:id="@+id/view_list_category_stage1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <android.support.v7.widget.RecyclerView
+                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
                             android:id="@+id/view_list_highlight_brand"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -321,7 +321,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <android.support.v7.widget.RecyclerView
+                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
                             android:id="@+id/view_list_suggest_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"

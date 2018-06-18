@@ -93,9 +93,16 @@ class LoginFragment : BaseFragment() {
             p.let {
                 hideProgressDialog()
                 toast("Đăng nhập thành công")
-                if (UserDataManager.currentType == "Thành viên")
-                    viewModel.checkSurvey()
-                else {
+                if (UserDataManager.currentSurveyIsMandatory) {
+                    if (UserDataManager.currentType == "Thành viên")
+                        viewModel.checkSurvey()
+                    else {
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                        startActivity(intent)
+                        activity?.finishAffinity()
+                    }
+                } else {
                     val intent = Intent(context, MainActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
                     startActivity(intent)

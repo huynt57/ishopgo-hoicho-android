@@ -37,7 +37,7 @@ import ishopgo.com.exhibition.ui.main.home.post.LatestPostsAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
-import ishopgo.com.exhibition.ui.main.map.ExpoMapActivity
+import ishopgo.com.exhibition.ui.main.map.config.ExpoMapConfigActivity
 import ishopgo.com.exhibition.ui.main.product.DummyProductProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductProvider
@@ -370,7 +370,7 @@ class HomeFragment : BaseFragment() {
 
     private fun openExpoMap() {
         context?.let {
-            val intent = Intent(it, ExpoMapActivity::class.java)
+            val intent = Intent(it, ExpoMapConfigActivity::class.java)
             startActivity(intent)
         }
     }
