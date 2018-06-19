@@ -73,7 +73,7 @@ class PostMenuViewModel : BaseListViewModel<List<PostObject>>(), AppComponent.In
     fun loadCategory(params: Request) {
         if (params is PostCategoryRequest) {
             val fields = mutableMapOf<String, Any>()
-            fields["limit"] = params.limit
+            fields["limit"] = 999
             fields["offset"] = params.offset
             fields["type"] = params.type
 
