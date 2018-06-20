@@ -44,6 +44,7 @@ class ProductCommentAdapter : ClickableAdapter<ProductCommentProvider>() {
                 view_name.text = data.provideName()
                 view_time.text = data.provideTime()
                 view_content.text = data.provideContent()
+                view_rating.rating = data.provideRate()
             }
         }
     }

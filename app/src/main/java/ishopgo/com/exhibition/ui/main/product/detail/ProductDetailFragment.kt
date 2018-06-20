@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
@@ -27,6 +28,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
@@ -57,7 +59,10 @@ import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
  */
-class ProductDetailFragment : BaseFragment() {
+class ProductDetailFragment : BaseFragment(), BackpressConsumable {
+    override fun onBackPressConsumed(): Boolean {
+        return childFragmentManager.popBackStackImmediate()
+    }
 
     companion object {
         fun newInstance(params: Bundle): ProductDetailFragment {
@@ -69,13 +74,12 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private lateinit var viewModel: ProductDetailViewModel
+    private lateinit var ratingViewModel: RatingProductViewModel
 
     private val sameShopProductsAdapter = ProductAdapter(0.4f)
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
-    private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private var adapterImages = ComposingPostMediaAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var productId: Long = -1L
     private var mPagerAdapter: FragmentPagerAdapter? = null
@@ -117,8 +121,14 @@ class ProductDetailFragment : BaseFragment() {
         viewModel.getProductSalePoint(firstLoad)
     }
 
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        ratingViewModel = obtainViewModel(RatingProductViewModel::class.java, true)
+        ratingViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        ratingViewModel.isSusscess.observe(this, Observer {
+            viewModel.loadProductComments(productId)
+        })
 
         viewModel = obtainViewModel(ProductDetailViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
@@ -167,16 +177,6 @@ class ProductDetailFragment : BaseFragment() {
                 productCommentAdapter.replaceAll(it)
             }
 
-        })
-
-        viewModel.postCommentSuccess.observe(this, Observer {
-            toast("Tạo thảo luận thành công")
-            hideProgressDialog()
-            edt_comment.setText("")
-            postMedias.clear()
-            adapterImages.replaceAll(postMedias)
-            rv_comment_community_image.visibility = View.GONE
-            viewModel.loadProductComments(productId)
         })
 
         viewModel.getProductLike.observe(this, Observer { c ->
@@ -273,18 +273,17 @@ class ProductDetailFragment : BaseFragment() {
             }
 
             if (UserDataManager.currentUserId > 0) {
-                img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
-                img_comment_sent.setOnClickListener {
-                    if (checkRequireFields(edt_comment.text.toString())) {
-                        showProgressDialog()
-                        viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+
+                if (product is ProductDetail) {
+                    linearLayout.setOnClickListener { ratingViewModel.enableCommentRating(product) }
+                    edt_comment.setOnClickListener {
+                        ratingViewModel.enableCommentRating(product)
                     }
                 }
+
                 view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
-                edt_comment.isFocusable = true
-                edt_comment.isFocusableInTouchMode = true
-                edt_comment.setOnClickListener(null)
             } else {
+                linearLayout.setOnClickListener { openActivtyLogin() }
                 img_comment_gallery.setOnClickListener { openActivtyLogin() }
                 img_comment_sent.setOnClickListener { openActivtyLogin() }
                 view_shop_add_sale_point.setOnClickListener { openActivtyLogin() }
@@ -294,22 +293,6 @@ class ProductDetailFragment : BaseFragment() {
             }
         }
         openProductSalePoint(product)
-    }
-
-    private fun launchPickPhotoIntent() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
-    }
-
-    private fun checkRequireFields(content: String): Boolean {
-        if (content.trim().isEmpty()) {
-            toast("Nội dung quá ngắn hoặc chưa đầy đủ")
-            return false
-        }
-        return true
     }
 
     private fun openActivtyLogin() {
@@ -379,10 +362,16 @@ class ProductDetailFragment : BaseFragment() {
         startActivity(intent)
     }
 
+    override fun onResume() {
+        super.onResume()
+        view_scrollview.visibility = View.VISIBLE
+        constraintLayout.visibility = View.VISIBLE
+    }
+
     private fun showMoreComment(context: Context, product: ProductDetailProvider) {
         if (product is IdentityData) {
             val intent = Intent(context, ProductCommentsActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
             startActivityForResult(intent, Const.RequestCode.EDIT_PRODUCT_COMMENT)
         }
     }
@@ -430,25 +419,8 @@ class ProductDetailFragment : BaseFragment() {
         setupFavoriteProducts(view.context)
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
-        setupImageRecycleview()
         setupSalePointRecycleview()
         setupListeners()
-
-    }
-
-    private fun setupImageRecycleview() {
-        context?.let {
-            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_comment_community_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
-            rv_comment_community_image.adapter = adapterImages
-            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-                override fun click(position: Int, data: PostMedia, code: Int) {
-                    postMedias.remove(data)
-                    if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
-                    adapterImages.replaceAll(postMedias)
-                }
-            }
-        }
     }
 
     private fun setupSalePointRecycleview() {
@@ -607,32 +579,6 @@ class ProductDetailFragment : BaseFragment() {
 
         if (requestCode == Const.RequestCode.SALE_POINT_ADD && resultCode == Activity.RESULT_OK)
             firstLoadSalePoint()
-
-        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (data.clipData == null) {
-                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                    return
-                }
-                val postMedia = PostMedia()
-                postMedia.uri = data.data
-                postMedias.add(postMedia)
-
-
-            } else {
-                for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                        return
-                    }
-                    val postMedia = PostMedia()
-                    postMedia.uri = data.clipData.getItemAt(i).uri
-                    postMedias.add(postMedia)
-                }
-            }
-            adapterImages.replaceAll(postMedias)
-            rv_comment_community_image.visibility = View.VISIBLE
-        }
     }
 
     override fun onStop() {

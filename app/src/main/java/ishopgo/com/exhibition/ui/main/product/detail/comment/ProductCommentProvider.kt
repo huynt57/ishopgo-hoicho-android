@@ -9,5 +9,6 @@ interface ProductCommentProvider {
     fun provideAvatar(): String
     fun provideTime(): String
     fun provideContent(): String
+    fun provideRate(): Float
 
 }

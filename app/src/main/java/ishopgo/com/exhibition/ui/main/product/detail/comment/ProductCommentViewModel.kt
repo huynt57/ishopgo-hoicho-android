@@ -52,11 +52,12 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(
 
     var postCommentSuccess = MutableLiveData<Boolean>()
 
-    fun postCommentProduct(productId: Long, content: String, parentId: Long, postMedias: ArrayList<PostMedia> = ArrayList()) {
+    fun postCommentProduct(productId: Long, content: String, parentId: Long, postMedias: ArrayList<PostMedia> = ArrayList(), rating: Float) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("content", content)
                 .addFormDataPart("parent_id", parentId.toString())
+                .addFormDataPart("rate", rating.toString())
 
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {

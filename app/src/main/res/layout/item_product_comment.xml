@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingBottom="8dp"
-    android:paddingTop="8dp"
-    >
+    android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/view_avatar"
@@ -16,8 +14,7 @@
         android:layout_marginStart="@dimen/default_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars"
-        />
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/view_name"
@@ -29,7 +26,7 @@
         app:layout_constraintEnd_toStartOf="@+id/view_time"
         app:layout_constraintStart_toEndOf="@+id/view_avatar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Vương Xuân Hồng"/>
+        tools:text="Vương Xuân Hồng" />
 
     <TextView
         android:id="@+id/view_time"
@@ -40,7 +37,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="1 giờ trước"/>
+        tools:text="1 giờ trước" />
 
     <TextView
         android:id="@+id/view_content"
@@ -52,8 +49,16 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/view_name"
-        app:layout_constraintTop_toBottomOf="@id/view_name"
-        tools:text="sản phẩm rất tốt. sẽ quay lại vào một dịp gần nhất"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/view_rating"
+        tools:text="sản phẩm rất tốt. sẽ quay lại vào một dịp gần nhất" />
+
+    <RatingBar
+        android:id="@+id/view_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:isIndicator="false"
+        style="?android:ratingBarStyleSmall"
+        app:layout_constraintStart_toStartOf="@+id/view_name"
+        app:layout_constraintTop_toBottomOf="@+id/view_name" />
 
 </android.support.constraint.ConstraintLayout>
