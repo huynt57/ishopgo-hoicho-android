@@ -146,7 +146,6 @@ class HomeFragment : BaseFragment() {
         viewModel.categories.observe(this, Observer { c ->
             c?.let {
                 categoriesAdapter.replaceAll(it)
-                rv_categories.scheduleLayoutAnimation()
 
                 categoryStage1Adapter.replaceAll(it)
                 view_list_category_stage1.scheduleLayoutAnimation()
@@ -549,9 +548,9 @@ class HomeFragment : BaseFragment() {
     private fun setupCategories(context: Context) {
         rv_categories.adapter = categoriesAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        layoutManager.isAutoMeasureEnabled = true
         rv_categories.layoutManager = layoutManager
         rv_categories.isNestedScrollingEnabled = false
-        rv_categories.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 }
 

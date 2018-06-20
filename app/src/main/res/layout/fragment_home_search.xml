@@ -6,56 +6,15 @@
     android:layout_height="match_parent"
     android:background="@color/colorPureWhite">
 
-    <ImageView
-        android:id="@+id/view_back"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:foreground="?attr/selectableItemBackground"
-        android:padding="16dp"
-        app:srcCompat="@drawable/ic_arrow_back_highlight_24dp"
-        />
-
-    <EditText
-        android:id="@+id/view_search_field"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_search_box"
-        android:hint="từ khoá"
-        android:inputType="text"
-        android:paddingBottom="8dp"
-        android:paddingEnd="16dp"
-        android:paddingStart="16dp"
-        android:paddingTop="8dp"
-        android:singleLine="true"
-        android:textColor="@color/md_grey_700"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="@id/view_back"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/view_back"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-        <requestFocus/>
-    </EditText>
-
-    <View
-        android:id="@+id/view_divider_search"
-        android:layout_width="0dp"
-        style="@style/AppTheme.DividerLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_back"
-        />
-
     <android.support.design.widget.TabLayout
         android:id="@+id/view_tab_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:tabMode="fixed"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_divider_search"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@color/colorPrimaryDark"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimaryDark">
 
         <android.support.design.widget.TabItem
@@ -76,24 +35,12 @@
             android:layout_height="wrap_content"
             android:text="Điểm bán"/>
 
-        <!--<android.support.design.widget.TabItem-->
-        <!--android:id="@+id/tab_community"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Bài viết"/>-->
-
-        <!--<android.support.design.widget.TabItem-->
-            <!--android:id="@+id/tab_member"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Thành viên"/>-->
-
     </android.support.design.widget.TabLayout>
 
     <View
         android:id="@+id/view_divider_search_result"
-        android:layout_width="0dp"
         style="@style/AppTheme.DividerLine"
+        android:layout_width="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_tab_layout"

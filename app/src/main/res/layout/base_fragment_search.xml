@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPureWhite"
+    >
+
+    <ImageView
+        android:id="@+id/view_back"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_divider_search"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_arrow_back_highlight_24dp"
+        tools:ignore="ContentDescription"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportEditText
+        android:id="@+id/view_search_field"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bg_search_box"
+        android:drawablePadding="4dp"
+        android:hint="từ khoá"
+        android:inputType="text"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:textColor="@color/md_grey_700"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_divider_search"
+        app:layout_constraintEnd_toStartOf="@id/view_cancel"
+        app:layout_constraintStart_toEndOf="@id/view_back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:supportDrawableStart="@drawable/ic_search_grey_24dp"
+        app:supportDrawableStartSquareSize="18dp"/>
+
+    <TextView
+        android:id="@+id/view_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:text="Huỷ"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/view_divider_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <View
+        android:id="@+id/view_divider_search"
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="0dp"
+        android:layout_marginTop="56dp"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <FrameLayout
+        android:id="@+id/view_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_divider_search"
+        />
+
+</android.support.constraint.ConstraintLayout>
