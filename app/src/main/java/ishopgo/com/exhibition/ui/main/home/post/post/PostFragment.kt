@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
@@ -37,7 +38,7 @@ import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
 class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
     private var typeManager = 0
-    private val adapterCategory = PostManagerCategoryAdapter()
+    private var adapterCategory = PostManagerCategoryAdapter()
     private var reloadCategory = false
     private var name = ""
     private var categoryId: Long = 0
@@ -64,7 +65,7 @@ class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<PostObject> {
         val adapter = PostManagerAdapter()
-        adapter.listener = object: ClickableAdapter.BaseAdapterAction<PostObject> {
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<PostObject> {
             override fun click(position: Int, data: PostObject, code: Int) {
 
             }
@@ -169,11 +170,32 @@ class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
 
         (viewModel as PostMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
+                val category = PostCategory()
+                category.id = 0
+                category.name = "Tất cả danh mục"
+
+                val listCategory = mutableListOf<PostCategory>()
+                listCategory.add(0, category)
+                it?.let { it1 -> listCategory.addAll(it1) }
+                val adapter = SpCategoryAdapter(listCategory)
+                sp_category.adapter = adapter
+                sp_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                        if (it != null && it.isNotEmpty()) {
+                            categoryId = if (position == 0) {
+                                0
+                            } else
+                                it[position - 1].id
+                            firstLoad()
+                        }
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+
+                    }
+                }
                 if (reloadCategory) it?.let { it1 ->
                     adapterCategory.replaceAll(it1)
-                    val category = PostCategory()
-                    category.id = 0
-                    category.name = "Tất cả danh mục"
                     adapterCategory.addData(0, category)
                 }
                 else it?.let { it1 -> adapterCategory.addAll(it1) }
