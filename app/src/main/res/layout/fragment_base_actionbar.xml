@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
+            app:elevation="0dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <ishopgo.com.exhibition.ui.widget.AppToolbar

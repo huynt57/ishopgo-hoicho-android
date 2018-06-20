@@ -30,7 +30,6 @@ import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_signup.*
 
@@ -130,7 +129,7 @@ class SignupFragment : BaseFragment() {
             showProgressDialog()
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
-                    tv_signup_company.text.toString(), tv_signup_birthday.text.toString(), tv_signup_city.text.toString(), tv_signup_district.text.toString(),
+                    tv_signup_company.text.toString(), tv_signup_city.text.toString(), tv_signup_district.text.toString(),
                     tv_signup_address.text.toString(), tv_signup_password.text.toString())
         }
     }
@@ -341,8 +340,8 @@ class SignupFragment : BaseFragment() {
     private fun fillInfo(user: PhoneInfo?) {
         tv_signup_mail.setText(user?.email ?: "")
         tv_signup_name.setText(user?.name ?: "")
-        tv_signup_birthday.setText(user?.birthday?.asDateTime())
         tv_signup_city.setText(user?.region ?: "")
+        tv_signup_district.setText(user?.region ?: "")
         tv_signup_company.setText(user?.company ?: "")
         tv_signup_address.setText(user?.address ?: "")
     }

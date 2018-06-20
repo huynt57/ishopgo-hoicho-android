@@ -117,14 +117,17 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.login.SignupActivity"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.login.ForgetActivity"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.login.LoginSelectOptionActivity"
@@ -146,6 +149,12 @@
             android:name=".ui.main.account.password.ChangePasswordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ui.main.home.category.product.search.SearchProductsOfCategoryActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".ui.main.product.branded.ProductsOfBrandActivity"
             android:launchMode="singleTop"

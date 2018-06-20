@@ -11,55 +11,50 @@
     <ImageView
         android:id="@+id/tv"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/logo_expo"
+        android:layout_marginBottom="24dp"
+        android:src="@drawable/logo_expo_horizontal"
         app:layout_constraintBottom_toTopOf="@+id/btn_sigup"
-        app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintEnd_toStartOf="@+id/guideline8"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3"/>
+        app:layout_constraintVertical_chainStyle="packed"/>
 
     <Button
         android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:background="@drawable/button_radius_purple"
         android:fontFamily="@font/ff_roboto"
-        android:paddingStart="70dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="70dp"
-        android:paddingBottom="16dp"
         android:text="Đăng nhập"
         android:textColor="@color/md_white_1000"
         app:layout_constraintBottom_toTopOf="@+id/tv_skip_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_sigup"
         tools:ignore="HardcodedText"/>
 
     <Button
         android:id="@+id/btn_sigup"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/button_radius_green"
         android:fontFamily="@font/ff_roboto"
-        android:paddingStart="60dp"
-        android:paddingTop="16dp"
-        android:paddingEnd="60dp"
-        android:paddingBottom="16dp"
         android:text="Đăng ký ngay"
         android:textColor="@color/md_white_1000"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv"
         tools:ignore="HardcodedText"/>
 
     <TextView
@@ -76,20 +71,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"/>
+        app:layout_constraintGuide_percent="0.15"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"/>
+        app:layout_constraintGuide_percent="0.85"/>
 
 </android.support.constraint.ConstraintLayout>

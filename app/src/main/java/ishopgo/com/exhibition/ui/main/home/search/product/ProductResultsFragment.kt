@@ -8,7 +8,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
-class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, SearchProductProvider>() {
+class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
 
     companion object {
         private val TAG = "ProductResultsFragment"
@@ -62,7 +61,7 @@ class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, Sea
         })
     }
 
-    override fun populateData(data: List<SearchProductProvider>) {
+    override fun populateData(data: List<Product>) {
         if (reloadData) {
             adapter.replaceAll(data)
             val product = Product()
@@ -73,16 +72,14 @@ class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, Sea
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<SearchProductProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Product> {
         val searchProductAdapter = SearchProductAdapter()
-        searchProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<SearchProductProvider> {
-            override fun click(position: Int, data: SearchProductProvider, code: Int) {
+        searchProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 context?.let {
-                    if (data is IdentityData) {
-                        val intent = Intent(it, ProductDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
-                    }
+                    val intent = Intent(it, ProductDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                    startActivity(intent)
                 }
             }
 
@@ -114,7 +111,7 @@ class ProductResultsFragment : BaseListFragment<List<SearchProductProvider>, Sea
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<SearchProductProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Product>> {
         return obtainViewModel(SearchProductViewModel::class.java, false)
     }
 

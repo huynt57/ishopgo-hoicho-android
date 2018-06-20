@@ -36,8 +36,11 @@ class RegisterBoothFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, RegisterBoothFragment.newInstance(Bundle()))
+                .replace(R.id.view_main_content, ContactToRegisterBoothFragment())
                 .commit()
+//        childFragmentManager.beginTransaction()
+//                .replace(R.id.view_main_content, RegisterBoothFragment.newInstance(Bundle()))
+//                .commit()
     }
 
 }

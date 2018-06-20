@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
+<android.support.v7.widget.AppCompatTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/view_name"
@@ -8,5 +8,5 @@
     android:foreground="?attr/selectableItemBackground"
     android:padding="8dp"
     android:textColor="@color/colorPureWhite"
-    tools:background="@color/md_red_500"
+    tools:background="@drawable/bg_rounded_button"
     tools:text="danh muc con"/>

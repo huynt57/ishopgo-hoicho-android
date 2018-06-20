@@ -49,7 +49,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    fun registerAccount(phone: String, email: String, fullname: String, company: String, birthday: String,
+    fun registerAccount(phone: String, email: String, fullname: String, company: String,
                         region: String, district: String, address: String, password: String) {
 
         val builder = MultipartBody.Builder()
@@ -58,7 +58,6 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("email", email)
                 .addFormDataPart("name", fullname)
                 .addFormDataPart("company_store", company)
-                .addFormDataPart("birthday", birthday)
                 .addFormDataPart("region", region)
                 .addFormDataPart("district", district)
                 .addFormDataPart("address", address)

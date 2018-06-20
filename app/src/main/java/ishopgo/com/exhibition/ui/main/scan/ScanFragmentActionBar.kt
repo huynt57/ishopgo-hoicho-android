@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main.scan
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
@@ -45,12 +44,9 @@ class ScanFragmentActionBar : BaseActionBarFragment(), BackpressConsumable {
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, ScanFragment(), ScanFragment.TAG)
                 .commit()
-
-        Log.d(TAG, "userHint: ${userVisibleHint} ${isVisible} ${isResumed} ${isHidden} ")
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        Log.d(TAG, "setUserVisibleHint: isVisibleToUser = [${isVisibleToUser}]")
         super.setUserVisibleHint(isVisibleToUser)
 
         if (!isAdded) return

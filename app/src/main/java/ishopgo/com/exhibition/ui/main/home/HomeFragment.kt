@@ -63,7 +63,6 @@ class HomeFragment : BaseFragment() {
     private lateinit var mainViewModel: MainViewModel
 
     private val highlightProductAdapter = ProductAdapter(0.4f)
-    private val suggestedProductAdapter = ProductAdapter()
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val categoryStage1Adapter = CategoryStage1Adapter(0.3f)
@@ -101,13 +100,6 @@ class HomeFragment : BaseFragment() {
 
         viewModel = obtainViewModel(HomeViewModel::class.java, true)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-        viewModel.suggestedProducts.observe(this, Observer { p ->
-            p?.let {
-                container_suggest_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
-                suggestedProductAdapter.replaceAll(it)
-                view_list_suggest_products.scheduleLayoutAnimation()
-            }
-        })
         viewModel.favoriteProducts.observe(this, Observer { p ->
             p?.let {
                 container_favorite_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
@@ -146,7 +138,6 @@ class HomeFragment : BaseFragment() {
         viewModel.categories.observe(this, Observer { c ->
             c?.let {
                 categoriesAdapter.replaceAll(it)
-                rv_categories.scheduleLayoutAnimation()
 
                 categoryStage1Adapter.replaceAll(it)
                 view_list_category_stage1.scheduleLayoutAnimation()
@@ -209,7 +200,6 @@ class HomeFragment : BaseFragment() {
 
         val context = view.context
 
-        setupSuggestedProducts(context)
         setupHighlightBrands(context)
         setupHighlightProducts(context)
         setupCategories(context)
@@ -263,21 +253,17 @@ class HomeFragment : BaseFragment() {
         more_favorite_products.setOnClickListener {
             openFavoriteProducts()
         }
-        more_suggest_products.setOnClickListener {
-            openSuggestedProducts()
-        }
         more_latest_news.setOnClickListener {
             openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
         }
         swipe.setOnRefreshListener {
             if (!animationSettingUp) {
-                view_list_suggest_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
                 view_list_highlight_brand.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
                 view_list_latest_news.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
                 view_list_viewed_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
                 view_list_favorite_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
                 view_list_category_stage1.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
-                view_list_highlight_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
+                view_list_highlight_products.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.grid_layout_animation_from_bottom)
                 animationSettingUp = true
             }
             loadData()
@@ -337,12 +323,6 @@ class HomeFragment : BaseFragment() {
         categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
             override fun click(position: Int, data: CategoryProvider, code: Int) {
                 mainViewModel.showCategoriedProducts(data)
-            }
-
-        }
-        suggestedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
-                openProductDetail(data)
             }
 
         }
@@ -420,7 +400,6 @@ class HomeFragment : BaseFragment() {
         viewModel.loadHighlightBrands()
         viewModel.loadHighlightProducts()
         viewModel.loadLatestNews()
-        viewModel.loadSuggestedProducts()
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         if (isUserLoggedIn) {
@@ -451,21 +430,6 @@ class HomeFragment : BaseFragment() {
                 startActivity(intent)
             }
         }
-    }
-
-    private fun setupSuggestedProducts(context: Context) {
-        // dummy product
-        val dummy = mutableListOf<ProductProvider>()
-        for (i in 0..6)
-            dummy.add(DummyProductProvider())
-        suggestedProductAdapter.addAll(dummy)
-
-        view_list_suggest_products.adapter = suggestedProductAdapter
-        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-        layoutManager.isAutoMeasureEnabled = true
-        view_list_suggest_products.layoutManager = layoutManager
-        view_list_suggest_products.isNestedScrollingEnabled = false
-        view_list_suggest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupHighlightBrands(context: Context) {
@@ -540,7 +504,7 @@ class HomeFragment : BaseFragment() {
         highlightProductAdapter.addAll(dummy)
 
         view_list_highlight_products.adapter = highlightProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_highlight_products.layoutManager = layoutManager
         view_list_highlight_products.isNestedScrollingEnabled = false
         view_list_highlight_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -549,9 +513,9 @@ class HomeFragment : BaseFragment() {
     private fun setupCategories(context: Context) {
         rv_categories.adapter = categoriesAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        layoutManager.isAutoMeasureEnabled = true
         rv_categories.layoutManager = layoutManager
         rv_categories.isNestedScrollingEnabled = false
-        rv_categories.layoutAnimation = AnimationUtils.loadLayoutAnimation(context, R.anim.linear_layout_animation_from_bottom)
     }
 }
 
