@@ -139,6 +139,12 @@ class ApiService {
 
         @GET("question/get-categories")
         fun getQuestionCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>>
+
+        @GET("fair")
+        fun getExpos(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoConfig>>>
+
+        @GET("map/list/{id}")
+        fun getExpoShopLocations(@Path("id") expoId: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoShop>>>
     }
 
     interface Auth {
@@ -295,6 +301,8 @@ class ApiService {
         @GET("customer-visit")
         fun getVisitors(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageVisitor>>
 
+        @POST("fair/add")
+        fun addExpo(@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
@@ -304,6 +312,9 @@ class ApiService {
 
         @GET("notifications")
         fun getNotifications(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Notification>>>
+
+        @GET("notifications/{id}")
+        fun getNotificationDetail(@Path("id") id: Long): Single<BaseResponse<Notification>>
 
         @POST("read-notifications")
         fun readNotification(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>

@@ -3,29 +3,33 @@ package ishopgo.com.exhibition.ui.community.notification
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import android.view.animation.AnimationUtils
+import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.Notification
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.service.NotificationUtils
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.notification.NotificationAdapter
-import ishopgo.com.exhibition.ui.main.notification.NotificationProvider
 import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class CommunityNotificationFragment : BaseListFragment<List<NotificationProvider>, NotificationProvider>() {
+class CommunityNotificationFragment : BaseListFragment<List<Notification>, Notification>() {
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<NotificationProvider>) {
+    override fun populateData(data: List<Notification>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -39,18 +43,18 @@ class CommunityNotificationFragment : BaseListFragment<List<NotificationProvider
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<NotificationProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Notification> {
         val adapter = NotificationAdapter()
-        adapter.listener = object: ClickableAdapter.BaseAdapterAction<NotificationProvider> {
-            override fun click(position: Int, data: NotificationProvider, code: Int) {
-
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<Notification> {
+            override fun click(position: Int, data: Notification, code: Int) {
+                NotificationUtils.resolveNotification(requireContext(), data)
             }
 
         }
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<NotificationProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Notification>> {
         return obtainViewModel(NotificationViewModel::class.java, false)
     }
 
@@ -77,6 +81,12 @@ class CommunityNotificationFragment : BaseListFragment<List<NotificationProvider
         showProgressDialog()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -85,13 +95,11 @@ class CommunityNotificationFragment : BaseListFragment<List<NotificationProvider
                 hideProgressDialog()
                 firstLoad()
             })
-
-            (viewModel as NotificationViewModel).markNotificationSuccess.observe(this, Observer {
-                toast("Đang phát triển")
-//            val intent = Intent(context, NotificationDetailActivity::class.java)
-//            startActivityForResult(intent, Const.RequestCode.NOTIFICATION_DETAIL)
-            })
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     companion object {

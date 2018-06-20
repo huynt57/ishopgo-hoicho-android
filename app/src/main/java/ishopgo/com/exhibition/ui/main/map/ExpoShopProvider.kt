@@ -8,5 +8,6 @@ interface ExpoShopProvider {
     fun provideName(): CharSequence
     fun provideNumber(): CharSequence
     fun provideRegion(): CharSequence
+    fun isSetup(): Boolean
 
 }

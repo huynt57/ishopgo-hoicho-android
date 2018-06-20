@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import ishopgo.com.exhibition.domain.response.Notification
 import ishopgo.com.exhibition.domain.response.NotificationPayload
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
+import ishopgo.com.exhibition.ui.main.notification.detail.NotificationDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 
 /**
@@ -24,12 +26,32 @@ object NotificationUtils {
             }
             NotificationPayload.TYPE_CHAT -> {
                 val conversationId = extras.getString("idConversion")
-                conversationId?.let {
-                    showConversation(context, it)
-                }
+                conversationId?.let { showConversation(context, it) }
             }
             else -> {
-                showCommonNotification(context, extras)
+                val notificationId = extras.get("id") as? Long
+                notificationId?.let { showCommonNotification(context, it) }
+            }
+        }
+    }
+
+    fun resolveNotification(context: Context, notification: Notification) {
+        Log.d("NotificationUtils", "notification:  $notification")
+        val type = notification.payloadData?.type ?: -1
+        when (type) {
+            NotificationPayload.TYPE_PRODUCT -> {
+                val productId = notification.payloadData?.id ?: -1L
+                if (productId != -1L) showProduct(context, productId)
+            }
+            NotificationPayload.TYPE_CHAT -> {
+                // we do not have notification for chat now
+//                val conversationId = extras.getString("idConversion")
+//                conversationId?.let {
+//                    showConversation(context, it)
+//                }
+            }
+            else -> {
+                showCommonNotification(context, notification.id)
             }
         }
     }
@@ -49,10 +71,10 @@ object NotificationUtils {
         context.startActivity(intent)
     }
 
-    private fun showCommonNotification(context: Context?, obj: Bundle) {
-        context?.apply {
-
-        }
+    private fun showCommonNotification(context: Context, notificationId: Long) {
+        val intent = Intent(context, NotificationDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, notificationId)
+        context.startActivity(intent)
 
     }
 

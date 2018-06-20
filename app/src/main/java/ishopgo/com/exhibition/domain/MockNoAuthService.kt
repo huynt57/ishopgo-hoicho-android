@@ -27,6 +27,20 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getExpoShopLocations(expoId: Long, fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoShop>>> {
+        val response = BaseResponse<QuestionManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getExpoShopLocations(expoId, fields)
+    }
+
+    override fun getExpos(fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoConfig>>> {
+        val response = BaseResponse<QuestionManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getExpos(fields)
+    }
+
     override fun getQuestion(fields: MutableMap<String, Any>): Single<BaseResponse<QuestionManager>> {
         val response = BaseResponse<QuestionManager>()
         response.status = 1

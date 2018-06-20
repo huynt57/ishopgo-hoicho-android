@@ -9,7 +9,7 @@ open class LoadMoreRequest : Request() {
 
     var offset: Int = 0
 
-    fun toMap(): MutableMap<String, Any> {
+    open fun toMap(): MutableMap<String, Any> {
         val fields = mutableMapOf<String, Any>()
         fields["limit"] = limit
         fields["offset"] = offset

@@ -13,21 +13,20 @@ import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.SearchShopRequest
+import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
+import ishopgo.com.exhibition.domain.response.ExpoConfig
+import ishopgo.com.exhibition.domain.response.ExpoShop
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_expo_map.*
 
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -35,55 +34,64 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoShopProvider>() {
+class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
 
-    override fun populateData(data: List<ExpoShopProvider>) {
+    override fun populateData(data: List<ExpoShop>) {
         if (reloadData) {
             adapter.replaceAll(data)
         } else
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ExpoShopProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ExpoShop> {
         val expoShopAdapter = ExpoShopAdapter()
-        expoShopAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoShopProvider> {
-            override fun click(position: Int, data: ExpoShopProvider, code: Int) {
-
+        expoShopAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoShop> {
+            override fun click(position: Int, data: ExpoShop, code: Int) {
+                if (data.boothId != null && data.boothId != 0L) {
+                    openShopDetail(data.boothId!!)
+                }
             }
 
         }
         return expoShopAdapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ExpoShopProvider>> {
+    private fun openShopDetail(shopId: Long) {
+        val intent = Intent(context, ShopDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
+        startActivity(intent)
+    }
+
+    override fun obtainViewModel(): BaseListViewModel<List<ExpoShop>> {
         return obtainViewModel(ExpoShopViewModel::class.java, false)
     }
 
     override fun firstLoad() {
         super.firstLoad()
         Log.d(TAG, "search: $searchKeyword")
-        val request = SearchShopRequest()
+        val request = ExpoShopLocationRequest()
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
-        request.keyword = searchKeyword
+        request.searchKeyword = searchKeyword
+        request.expoId = expoId
         viewModel.loadData(request)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val request = SearchShopRequest()
+        val request = ExpoShopLocationRequest()
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
-        request.keyword = searchKeyword
+        request.searchKeyword = searchKeyword
+        request.expoId = expoId
         viewModel.loadData(request)
     }
 
     private var isSearchMode = false
     private var searchKeyword = ""
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var expoId: Long = 0L
+    private lateinit var expoInfo: ExpoConfig
 
     private val searchRunnable = Runnable {
         firstLoad()
@@ -91,10 +99,14 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoSh
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
+        expoId = requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
+        val json = requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_JSON)
+        json?.let {
+            expoInfo = Toolbox.gson.fromJson(it, ExpoConfig::class.java)
         }
+
+        requireNotNull(expoInfo)
     }
 
     override fun contentLayoutRes(): Int {
@@ -132,12 +144,12 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoSh
                 if (searchKeyword.isNotBlank()) {
                     searchKeyword = ""
                     firstLoad()
+                    view_search_name.setText("")
                 }
 
                 val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.hideSoftInputFromWindow(view_search_name.windowToken, 0)
-            }
-            else {
+            } else {
                 view_search_name.requestFocus()
                 val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
                 inputMethodManager?.showSoftInput(view_search_name, 0)
@@ -145,18 +157,23 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoSh
         }
         view_zoom.setOnClickListener {
             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, arrayOf("http://www.visitsingapore.com/content/dam/MICE/Global/plan-your-event/venues/Singapore-EXPO/ExpoFE_Map_Jun3_2014-page-001.jpg"))
+            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, arrayOf(expoInfo.map ?: ""))
+            intent.putExtra(Const.TransferKey.EXTRA_FETCH_FULL_SIZE, true)
             startActivity(intent)
         }
         Glide.with(view.context)
-                .load("http://www.visitsingapore.com/content/dam/MICE/Global/plan-your-event/venues/Singapore-EXPO/ExpoFE_Map_Jun3_2014-page-001.jpg")
-                .apply(RequestOptions().centerCrop())
+                .load(expoInfo.map ?: "")
+                .apply(RequestOptions().centerCrop()
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder)
+                )
                 .into(view_image)
 
     }
 
     private fun setupToolbar() {
-        toolbar.setCustomTitle("Sơ đồ hội chợ")
+        toolbar.setCustomTitle(if (::expoInfo.isInitialized) expoInfo.name
+                ?: "" else "Sơ đồ hội chợ")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
@@ -164,23 +181,8 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShopProvider>, ExpoSh
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ExpoMapFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                ExpoMapFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
+        fun newInstance(param1: String, param2: String) = ExpoMapFragment()
 
         private const val TAG = "ExpoMapFragment"
     }

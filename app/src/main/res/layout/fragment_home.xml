@@ -6,8 +6,9 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
+
     >
+    <!--tools:openDrawer="start"-->
 
     <FrameLayout
         android:id="@+id/view_frame_content"
@@ -63,7 +64,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/label_category_stage1"
@@ -94,7 +96,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/label_highlight_brand"
@@ -134,7 +137,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/label_highlight_products"
@@ -154,7 +158,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/view_list_highlight_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -174,7 +178,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/label_favorite_products"
@@ -194,7 +199,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/view_list_favorite_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -214,7 +219,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/label_viewed_products"
@@ -234,7 +240,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/view_list_viewed_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -254,7 +260,8 @@
                         android:layout_height="wrap_content"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
+                        app:layout_constraintTop_toBottomOf="@+id/container_banner"
+                        tools:visibility="gone">
 
                         <TextView
                             android:id="@+id/label_latest_news"
@@ -274,7 +281,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
+                        <android.support.v7.widget.RecyclerView
                             android:id="@+id/view_list_latest_news"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -328,6 +335,57 @@
 
                     </android.support.constraint.ConstraintLayout>
 
+                    <android.support.constraint.ConstraintLayout
+                        android:id="@+id/container_footer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/container_suggest_products">
+
+                        <ImageView
+                            android:id="@+id/view_registered"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/image_registered"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline6"
+                            app:layout_constraintStart_toStartOf="@+id/guideline5"
+                            app:layout_constraintTop_toTopOf="parent"/>
+
+                        <TextView
+                            android:id="@+id/view_company_info"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:lineSpacingMultiplier="1.3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/view_registered"
+                            tools:text="company_info"
+                            />
+
+                        <android.support.constraint.Guideline
+                            android:id="@+id/guideline5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.25"/>
+
+                        <android.support.constraint.Guideline
+                            android:id="@+id/guideline6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.75"/>
+
+                    </android.support.constraint.ConstraintLayout>
+
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
         </android.support.v4.widget.SwipeRefreshLayout>
@@ -340,26 +398,27 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="@color/colorPureWhite"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        tools:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingBottom="16dp">
 
             <ImageView
-                android:paddingStart="8dp"
-                android:paddingEnd="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:src="@drawable/expo_horizontal" />
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:src="@drawable/expo_horizontal"/>
 
             <View
                 style="@style/AppTheme.DividerLine"
                 android:layout_width="match_parent"/>
 
-            <ishopgo.com.exhibition.ui.widget.GridRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_categories"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -367,9 +426,9 @@
                 />
 
             <TextView
-                android:background="@color/md_grey_300"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/md_grey_300"
                 android:gravity="center_vertical"
                 android:padding="8dp"
                 android:text="Thông tin hội chợ"
@@ -389,7 +448,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:text="Thông tin hội chợ"
+                android:text="Tin tức"
                 app:drawableStartCompat="@drawable/newspaper"
                 app:drawableStartSquareSize="24dp"
                 />

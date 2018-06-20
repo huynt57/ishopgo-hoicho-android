@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 /**
  * Created by hoangnh on 5/7/2018.
  */
-class NotificationViewModel : BaseListViewModel<List<NotificationProvider>>(), AppComponent.Injectable {
+class NotificationViewModel : BaseListViewModel<List<Notification>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         if (params is LoadMoreRequest) {
@@ -55,18 +55,14 @@ class NotificationViewModel : BaseListViewModel<List<NotificationProvider>>(), A
         )
     }
 
-    var markNotificationSuccess = MutableLiveData<Boolean>()
-
-    fun markAsReadThenShowDetail(notification_Id: Long) {
+    fun markAsRead(notification_Id: Long) {
         val fields = mutableMapOf<String, Any>()
         fields["ids[]"] = notification_Id
 
         addDisposable(isgService.readNotification(fields)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
-                    override fun success(data: Any?) {
-                        markNotificationSuccess.postValue(true)
-                    }
+                    override fun success(data: Any?) {}
 
                     override fun failure(status: Int, message: String) {
                         resolveError(status, message)
@@ -78,6 +74,25 @@ class NotificationViewModel : BaseListViewModel<List<NotificationProvider>>(), A
     val TAG = "NotificationViewModel"
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
+    }
+
+    var notificationDetail = MutableLiveData<Notification>()
+
+    fun getNotificationDetail(notificationId: Long) {
+        addDisposable(isgService.getNotificationDetail(notificationId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Notification>() {
+                    override fun success(data: Notification?) {
+                        data?.let { notificationDetail.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+
+
     }
 
 }

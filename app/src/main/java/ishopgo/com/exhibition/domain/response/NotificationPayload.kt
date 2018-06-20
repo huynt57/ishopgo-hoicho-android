@@ -6,16 +6,16 @@ import com.google.gson.annotations.SerializedName
  * Created by xuanhong on 5/7/18. HappyCoding!
  */
 class NotificationPayload {
-    @field:SerializedName("domain")
+    @SerializedName("domain")
     val domain: String? = null
 
-    @field:SerializedName("id")
+    @SerializedName("id")
     val id: Long = 0
 
-    @field:SerializedName("type")
+    @SerializedName("type")
     val type: String? = null
 
-    @field:SerializedName("phone")
+    @SerializedName("phone")
     val phone: String? = null
 
     companion object {

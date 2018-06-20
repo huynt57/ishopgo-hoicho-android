@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/nav_expo_map_config.xml"
+            app:startDestination="@id/expoMapConfigFragment">
+
+    <fragment
+        android:id="@+id/expoMapConfigFragment"
+        android:name="ishopgo.com.exhibition.ui.main.map.config.ExpoMapConfigFragment"
+        android:label="fragment_expo_map_config"
+        tools:layout="@layout/fragment_expo_map_config">
+        <action
+            android:id="@+id/action_expoMapConfigFragment_to_expoAddFragmentActionBar"
+            app:destination="@id/expoAddFragmentActionBar"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+    <fragment
+        android:id="@+id/expoAddFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.map.config.add.ExpoAddFragmentActionBar"
+        android:label="ExpoAddFragmentActionBar"/>
+
+</navigation>

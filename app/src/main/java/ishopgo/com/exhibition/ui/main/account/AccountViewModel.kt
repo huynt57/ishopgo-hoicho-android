@@ -33,6 +33,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng tham quan"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET, R.drawable.ic_ticket, "Vé thăm quan của tôi"))
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Quản lý điểm bán"))
         }
@@ -48,13 +49,15 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
-            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
-            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_MEMBER_MANAGER, R.drawable.ic_customer_white, "Quản lý thành viên"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_BOOTH_MANAGER, R.drawable.ic_store_white, "Quản lý gian hàng"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_store_white, "Quản lý điểm bán"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET_MANAGER, R.drawable.ic_sight_seeing, "Quản lý vé tham quan"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
 //            val childs = ArrayList<AccountMenuItem>()
 //            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NEWS_MANAGER, R.drawable.ic_news_pager, "Quản lý tin tức", isParent = false))

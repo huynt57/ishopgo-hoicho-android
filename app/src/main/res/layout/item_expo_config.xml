@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?attr/selectableItemBackground"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/view_avatar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="13"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="16dp"
+        android:textColor="@color/colorPrimaryText"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/view_avatar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Medi White"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_name"
+        app:layout_constraintTop_toBottomOf="@+id/view_name"
+        tools:text="ngay bat dau"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_address"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/view_name"
+        app:layout_constraintTop_toBottomOf="@+id/view_time"
+        tools:text="dia chi"/>
+
+</android.support.constraint.ConstraintLayout>

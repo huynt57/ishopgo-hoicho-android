@@ -11,6 +11,8 @@ import android.view.animation.GridLayoutAnimationController
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
+ *
+ * ref: https://proandroiddev.com/enter-animation-using-recyclerview-and-layoutanimation-part-2-grids-688829b1d29b
  */
 open class GridRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : RecyclerView(context, attrs, defStyleAttr) {
 
