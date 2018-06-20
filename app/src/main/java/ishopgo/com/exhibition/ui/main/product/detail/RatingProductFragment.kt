@@ -27,6 +27,7 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_rating_product.*
 import com.google.android.gms.common.util.InputMethodUtils.showSoftInput
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.support.v7.widget.GridLayoutManager
 import android.view.inputmethod.InputMethodManager
 
 
@@ -84,7 +85,7 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
 
     private fun setupImageRecycleview() {
         context?.let {
-            rv_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_image.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
             rv_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_image.adapter = adapterImages
             adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {

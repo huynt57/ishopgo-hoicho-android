@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -20,10 +21,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.Profile
-import ishopgo.com.exhibition.model.Region
-import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -31,6 +29,7 @@ import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
+import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
 
 class ProfileEditFragment : BaseFragment() {
@@ -38,6 +37,7 @@ class ProfileEditFragment : BaseFragment() {
     private lateinit var viewModel: ProfileViewModel
     private var image: String = ""
     private val adapterRegion = RegionAdapter()
+    private val adapterDistrict = DistrictAdapter()
 
     companion object {
         fun newInstance(params: Bundle): ProfileEditFragment {
@@ -82,6 +82,11 @@ class ProfileEditFragment : BaseFragment() {
                 adapterRegion.replaceAll(it)
             }
         })
+        viewModel.loadDistrict.observe(this, Observer { p ->
+            p?.let {
+                adapterDistrict.replaceAll(it)
+            }
+        })
 
         viewModel.loadRegion()
         val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
@@ -105,6 +110,7 @@ class ProfileEditFragment : BaseFragment() {
                 view_email.setText(profile.email ?: "")
                 view_company.setText(profile.company ?: "")
                 view_region.setText(profile.region ?: "")
+                view_district.setText(profile.district ?: "")
                 view_address.setText(profile.address ?: "")
                 view_introduction.setText(profile.introduction ?: "")
                 view_account_type.setText(profile.typeTextExpo ?: "")
@@ -113,7 +119,7 @@ class ProfileEditFragment : BaseFragment() {
 
             view_submit.setOnClickListener {
                 submitChanges(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                        view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString())
+                        view_company.text.toString(), view_region.text.toString(), view_district.text.toString(), view_address.text.toString(), view_introduction.text.toString())
             }
 
             tv_profile_name.setOnClickListener { showDialogChangeName() }
@@ -121,6 +127,7 @@ class ProfileEditFragment : BaseFragment() {
             view_avatar.setOnClickListener { launchPickPhotoIntent() }
 
             view_region.setOnClickListener { getRegion(view_region) }
+            view_district.setOnClickListener { getDistrict(view_district) }
         }
     }
 
@@ -146,6 +153,38 @@ class ProfileEditFragment : BaseFragment() {
                 override fun click(position: Int, data: Region, code: Int) {
                     context?.let {
                         dialog.dismiss()
+                        data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
+                        view.text = data.name
+                        view.error = null
+                    }
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getDistrict(view: TextView) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn quận huyện")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
+
+            rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+
+            rv_search.adapter = adapterDistrict
+            adapterDistrict.listener = object : ClickableAdapter.BaseAdapterAction<District> {
+                override fun click(position: Int, data: District, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
                         view.text = data.name
                         view.error = null
                     }
@@ -164,7 +203,7 @@ class ProfileEditFragment : BaseFragment() {
                     .onPositive { dialog, which ->
                         val edit_profile_name = dialog.findViewById(R.id.edit_profile_name) as TextInputEditText
                         submitChanges(edit_profile_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),
-                                view_company.text.toString(), view_region.text.toString(), view_address.text.toString(), view_introduction.text.toString())
+                                view_company.text.toString(), view_region.text.toString(), view_district.text.toString(), view_address.text.toString(), view_introduction.text.toString())
                         dialog.dismiss()
                     }
                     .negativeText("Huỷ")
@@ -180,8 +219,8 @@ class ProfileEditFragment : BaseFragment() {
         }
     }
 
-    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String, introduction: String) {
-        viewModel.updateProfile(name, dob, email, company, region, address, introduction, image)
+    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, district: String, address: String, introduction: String) {
+        viewModel.updateProfile(name, dob, email, company, region, district, address, introduction, image)
         showProgressDialog()
     }
 

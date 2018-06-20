@@ -126,4 +126,7 @@ class Profile : IdentityData(), ProfileProvider {
     @SerializedName("introduction")
     @Expose
     var introduction: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
 }

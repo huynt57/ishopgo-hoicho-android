@@ -2,9 +2,7 @@ package ishopgo.com.exhibition.ui.main.profile
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -13,7 +11,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
@@ -172,7 +169,7 @@ class ProfileFragment : BaseFragment() {
                     .onPositive { dialog, which ->
                         val edit_profile_name = dialog.findViewById(R.id.edit_profile_name) as TextInputEditText
                         submitChanges(edit_profile_name.text.toString(), "", "",
-                                "", "", "", "")
+                                "", "", "", "", "")
                         dialog.dismiss()
                     }
                     .negativeText("Huỷ")
@@ -188,8 +185,8 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, address: String, introduction: String) {
-        viewModel.updateProfile(name, dob, email, company, region, address, introduction, image)
+    private fun submitChanges(name: String, dob: String, email: String, company: String, region: String, district: String, address: String, introduction: String) {
+        viewModel.updateProfile(name, dob, email, company, region, district, address, introduction, image)
         showProgressDialog()
     }
 
@@ -219,7 +216,7 @@ class ProfileFragment : BaseFragment() {
                     .into(view_avatar)
 
             viewModel.updateProfile("", "", "",
-                    "", "", "", "", data.data.toString())
+                    "", "", "", "", "", data.data.toString())
             showProgressDialog()
         }
 
