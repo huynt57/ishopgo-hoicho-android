@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.AdapterView
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
@@ -142,11 +143,32 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
 
         (viewModel as QuestionMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
+                val category = QuestionCategory()
+                category.id = 0
+                category.name = "Tất cả danh mục"
+                val listCategory = mutableListOf<QuestionCategory>()
+                listCategory.add(0, category)
+                it?.let { it1 -> listCategory.addAll(it1) }
+                val adapter = SpQuestionAdapter(listCategory)
+                sp_category.adapter = adapter
+                sp_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                        if (it != null && it.isNotEmpty()) {
+                            categoryId = if (position == 0) {
+                                0
+                            } else
+                                it[position - 1].id
+                            firstLoad()
+                        }
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+
+                    }
+                }
+
                 if (reloadCategory) it?.let { it1 ->
                     adapterCategory.replaceAll(it1)
-                    val category = QuestionCategory()
-                    category.id = 0
-                    category.name = "Tất cả danh mục"
                     adapterCategory.addData(0, category)
                 }
                 else it?.let { it1 -> adapterCategory.addAll(it1) }

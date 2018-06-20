@@ -73,7 +73,7 @@ class QuestionMenuViewModel : BaseListViewModel<List<QuestionObject>>(), AppComp
     fun loadCategory(params: Request) {
         if (params is LoadMoreRequest) {
             val fields = mutableMapOf<String, Any>()
-            fields["limit"] = params.limit
+            fields["limit"] = 999
             fields["offset"] = params.offset
 
             addDisposable(noAuthService.getQuestionCategory(fields)
