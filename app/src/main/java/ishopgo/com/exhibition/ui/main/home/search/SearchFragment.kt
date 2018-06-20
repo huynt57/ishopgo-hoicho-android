@@ -5,15 +5,10 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
-import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.ProductResultsFragment
@@ -25,7 +20,24 @@ import kotlinx.android.synthetic.main.fragment_home_search.*
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
  */
-class SearchFragment : BaseFragment(), BackpressConsumable {
+class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
+    override fun contentLayoutRes(): Int {
+        return R.layout.fragment_home_search
+    }
+
+    override fun triggerSearch(key: String) {
+        searchKey = key
+        searchViewModel.search(searchKey)
+    }
+
+    override fun cancelSearch() {
+        searchKey = ""
+        searchViewModel.search(searchKey)
+    }
+
+    override fun dismissSearch() {
+        activity?.onBackPressed()
+    }
 
     override fun onBackPressConsumed(): Boolean {
         return hideKeyboard()
@@ -38,45 +50,19 @@ class SearchFragment : BaseFragment(), BackpressConsumable {
     private lateinit var viewModel: MainViewModel
     private lateinit var searchViewModel: SearchViewModel
     private var searchKey: String = ""
-    private val searchRunnable = Runnable { Log.d(TAG, "start searching: $searchKey"); searchViewModel.search(searchKey) }
 
     override fun onDestroyView() {
         hideKeyboard()
         super.onDestroyView()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home_search, container, false)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        view.setOnTouchListener { v, event -> true }
-        view_back.setOnClickListener {
-            activity?.onBackPressed()
-        }
 
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
         view_pager.offscreenPageLimit = 3
         view_pager.adapter = ResultAdapter(childFragmentManager)
-
-        view_search_field.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                searchKey = s.toString()
-                view_search_field.handler.removeCallbacks(searchRunnable)
-                view_search_field.handler.postDelayed(searchRunnable, 500)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
-
-//        val inputMethodManager = view_search_field.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        inputMethodManager.showSoftInput(view_search_field, InputMethodManager.SHOW_IMPLICIT)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

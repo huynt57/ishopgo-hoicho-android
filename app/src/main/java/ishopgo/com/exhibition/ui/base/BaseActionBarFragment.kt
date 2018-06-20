@@ -20,10 +20,7 @@ abstract class BaseActionBarFragment : BaseFragment(), ContentDescription {
             inflater.inflate(contentLayoutRes, view.content, true)
         }
 
-        // prevent click through fragment
-        view.setOnTouchListener { _, _ -> true }
         return view
     }
-
 
 }

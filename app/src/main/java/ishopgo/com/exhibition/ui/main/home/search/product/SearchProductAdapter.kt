@@ -9,13 +9,14 @@ import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import kotlinx.android.synthetic.main.item_search_product.view.*
 import kotlinx.android.synthetic.main.item_search_total.view.*
 
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
  */
-class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<SearchProductProvider>() {
+class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<Product>() {
     companion object {
         const val PRODUCT_TOTAL = 0
         const val PRODUCT_LIST = 1
@@ -32,11 +33,11 @@ class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio:
         return if (position == PRODUCT_TOTAL) PRODUCT_TOTAL else PRODUCT_LIST
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<SearchProductProvider> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Product> {
         return if (viewType == PRODUCT_TOTAL) {
             TotalHodel(v)
         } else {
-            val productHolder = ProductHolder(v)
+            val productHolder = ProductHolder(v, ConverterSearchProduct())
             val layoutParams = productHolder.itemView.layoutParams
 
             if (itemWidthRatio > 0)
@@ -48,7 +49,7 @@ class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio:
         }
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<SearchProductProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Product>, position: Int) {
         super.onBindViewHolder(holder, position)
         if (holder is TotalHodel) {
             holder.apply {
@@ -62,33 +63,56 @@ class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio:
         }
     }
 
-    inner class TotalHodel(v: View) : BaseRecyclerViewAdapter.ViewHolder<SearchProductProvider>(v) {
+    inner class TotalHodel(v: View) : BaseRecyclerViewAdapter.ViewHolder<Product>(v) {
 
         @SuppressLint("SetTextI18n")
-        override fun populate(data: SearchProductProvider) {
+        override fun populate(data: Product) {
             super.populate(data)
             itemView.apply {
-                if (data is Product)
-                    tv_total.text = "${data.id} kết quả được tìm thấy"
+                tv_total.text = "${data.id} kết quả được tìm thấy"
             }
         }
     }
 
-    internal inner class ProductHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<SearchProductProvider>(view) {
+    internal inner class ProductHolder(view: View, private val converter: Converter<Product, SearchProductProvider>) : BaseRecyclerViewAdapter.ViewHolder<Product>(view) {
 
-        override fun populate(data: SearchProductProvider) {
+        override fun populate(data: Product) {
             super.populate(data)
 
+            val converted = converter.convert(data)
             itemView.apply {
-                Glide.with(itemView.context).load(data.provideImage())
+                Glide.with(itemView.context).load(converted.provideImage())
                         .apply(RequestOptions
                                 .placeholderOf(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder)
                         )
                         .into(iv_thumb)
-                view_name.text = data.provideName()
-                view_code.text = data.provideCode()
+                view_name.text = converted.provideName()
+                view_code.text = converted.provideCode()
             }
         }
     }
+
+    internal class ConverterSearchProduct : Converter<Product, SearchProductProvider> {
+
+        override fun convert(from: Product): SearchProductProvider {
+            return object : SearchProductProvider {
+                override fun provideImage(): String {
+                    return from.image ?: ""
+                }
+
+                override fun provideName(): String {
+                    return from.name ?: ""
+                }
+
+                override fun provideCode(): String {
+                    return from.code ?: ""
+                }
+
+            }
+        }
+
+    }
+
+
 }

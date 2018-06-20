@@ -20,7 +20,6 @@ import ishopgo.com.exhibition.ui.main.product.ProductProvider
 class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     companion object {
-        const val DEFAULT_MAX_HOME_ITEMS = 5
         const val DEFAULT_MAX_HOME_PRODUCT_ITEMS = 10
     }
 
@@ -53,7 +52,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadLatestNews() {
         val params = mutableMapOf<String, Any>()
-        params["limit"] = DEFAULT_MAX_HOME_ITEMS
+        params["limit"] = 5
         params["offset"] = 0
         params["type"] = 1 // news
 
@@ -79,7 +78,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadHighlightProducts() {
         val params = mutableMapOf<String, Any>()
-        params["limit"] = DEFAULT_MAX_HOME_ITEMS
+        params["limit"] = 20
         params["offset"] = 0
 
         addDisposable(noAuthService.getHighlightProducts(params)

@@ -168,6 +168,10 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
         }
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            mainViewModel.searchInCategory(category)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

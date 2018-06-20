@@ -13,7 +13,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
-class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(), AppComponent.Injectable {
+class SearchProductViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
 
     companion object {
         private val TAG = "SearchProductViewModel"
@@ -27,13 +27,14 @@ class SearchProductViewModel : BaseListViewModel<List<SearchProductProvider>>(),
             fields["limit"] = params.limit
             fields["offset"] = params.offset
             fields["q"] = params.keyword
+            if (params.categoryId != 0L) fields["category_id"] = params.categoryId
 
             addDisposable(noAuthService.searchProducts(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerProduct>() {
                         override fun success(data: ManagerProduct?) {
                             total.postValue(data?.total ?: 0)
-                            dataReturned.postValue(data?.product ?: mutableListOf<Product>())
+                            dataReturned.postValue(data?.product ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {

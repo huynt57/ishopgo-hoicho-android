@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
@@ -84,5 +85,11 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 })
         )
 
+    }
+
+    var openSearchInCategory = MutableLiveData<Category>()
+
+    fun searchInCategory(category: Category) {
+        openSearchInCategory.postValue(category)
     }
 }

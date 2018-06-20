@@ -158,7 +158,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
 
-                        <android.support.v7.widget.RecyclerView
+                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
                             android:id="@+id/view_list_highlight_products"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -296,46 +296,6 @@
                     </android.support.constraint.ConstraintLayout>
 
                     <android.support.constraint.ConstraintLayout
-                        android:id="@+id/container_suggest_products"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_banner">
-
-                        <TextView
-                            android:id="@+id/label_suggest_products"
-                            style="@style/AppTheme.SectionLabel"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Sản phẩm gợi ý"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <TextView
-                            android:id="@+id/more_suggest_products"
-                            style="@style/AppTheme.MoreInfo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Xem thêm"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <ishopgo.com.exhibition.ui.widget.GridRecyclerView
-                            android:id="@+id/view_list_suggest_products"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:clipToPadding="false"
-                            android:padding="@dimen/item_spacing"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/label_suggest_products"
-                            />
-
-                    </android.support.constraint.ConstraintLayout>
-
-                    <android.support.constraint.ConstraintLayout
                         android:id="@+id/container_footer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -343,7 +303,7 @@
                         android:paddingBottom="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/container_suggest_products">
+                        app:layout_constraintTop_toBottomOf="@+id/container_latest_news">
 
                         <ImageView
                             android:id="@+id/view_registered"
@@ -392,7 +352,7 @@
 
     </FrameLayout>
 
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
         android:id="@+id/drawer_main"
         android:layout_width="240dp"
         android:layout_height="match_parent"
@@ -421,8 +381,7 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_categories"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
+                android:layout_height="wrap_content"
                 />
 
             <TextView
@@ -490,12 +449,12 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:text="Sơ đồ hội chợ"
+                android:text="Lịch hội chợ"
                 app:drawableStartCompat="@drawable/ic_expo_map_24dp"
                 app:drawableStartSquareSize="24dp"
                 />
 
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.v4.widget.DrawerLayout>

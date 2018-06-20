@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**

@@ -2,10 +2,17 @@ package ishopgo.com.exhibition.ui.extensions
 
 import android.content.Context
 import android.os.Build
+import android.text.Editable
 import android.text.Html
 import android.text.Spanned
+import android.text.TextWatcher
 import android.util.TypedValue
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.google.i18n.phonenumbers.PhoneNumberUtil
+import io.reactivex.Observable
+import io.reactivex.subjects.PublishSubject
+import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.NumberFormat
@@ -110,4 +117,38 @@ fun Int.dpToPx(ctx: Context): Int {
 fun Int.pxToDp(ctx: Context): Float {
     val displayMetrics = ctx.resources.displayMetrics
     return this.toFloat() / (displayMetrics.densityDpi / 160f)
+}
+
+fun View.showSoftKeyboard() {
+    if (requestFocus()) {
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        imm?.showSoftInput(this, InputMethodManager.SHOW_IMPLICIT)
+    }
+}
+
+fun View.hideKeyboard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(windowToken, 0)
+}
+
+
+fun VectorSupportEditText.observable(): Observable<String> {
+
+    val subject = PublishSubject.create<String>()
+
+    addTextChangedListener(object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+            subject.onNext(s.toString())
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+        }
+
+    })
+
+    return subject
 }

@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.login.require.RequireLoginFragment
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
+import ishopgo.com.exhibition.ui.main.home.category.product.search.SearchProductsOfCategoryFragment
 import ishopgo.com.exhibition.ui.main.home.search.SearchFragment
 import ishopgo.com.exhibition.ui.main.scan.ScanFragmentActionBar
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
@@ -75,6 +76,11 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         viewModel.isSearchEnable.observe(this, Observer {
             if (it == true) {
                 showSearch()
+            }
+        })
+        viewModel.openSearchInCategory.observe(this, Observer {
+            it?.let {
+                showSearchInCategory(it)
             }
         })
         viewModel.enableSearchInbox.observe(this, Observer {
@@ -129,6 +135,19 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         if (isUserLoggedIn) {
             viewModel.loadUnreadNotificationCount()
             viewModel.loadUnreadInboxCount()
+        }
+    }
+
+    private fun showSearchInCategory(cat: Category) {
+        val fragment = childFragmentManager.findFragmentByTag(SearchProductsOfCategoryFragment.TAG)
+        if (fragment == null) {
+            val extra = Bundle()
+            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(cat))
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
+                    .add(R.id.content_main_container, SearchProductsOfCategoryFragment.newInstance(extra), SearchProductsOfCategoryFragment.TAG)
+                    .addToBackStack(SearchProductsOfCategoryFragment.TAG)
+                    .commit()
         }
     }
 
