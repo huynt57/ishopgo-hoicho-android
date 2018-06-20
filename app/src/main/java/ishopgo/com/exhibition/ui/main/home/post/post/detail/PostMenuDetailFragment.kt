@@ -76,12 +76,13 @@ class PostMenuDetailFragment : BaseFragment() {
                 view_webview.webChromeClient = object : WebChromeClient() {
                     override fun onProgressChanged(view: WebView?, newProgress: Int) {
                         super.onProgressChanged(view, newProgress)
-                        if (newProgress == 100) {
-                            progressBar.visibility = View.GONE
-                        } else if (newProgress < 100) {
-                            progressBar.visibility = View.VISIBLE
-                            progressBar.progress = newProgress
-                        }
+                        if (progressBar != null)
+                            if (newProgress == 100) {
+                                progressBar.visibility = View.GONE
+                            } else if (newProgress < 100) {
+                                progressBar.visibility = View.VISIBLE
+                                progressBar.progress = newProgress
+                            }
                     }
                 }
             }

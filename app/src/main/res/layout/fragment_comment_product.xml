@@ -10,7 +10,16 @@
         layout="@layout/content_swipable_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/rv_comment_community_image" />
+        android:layout_above="@+id/ratingBar" />
+
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:numStars="5" />
 
 
     <android.support.v7.widget.RecyclerView

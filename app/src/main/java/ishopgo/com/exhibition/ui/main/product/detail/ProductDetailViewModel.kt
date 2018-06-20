@@ -221,11 +221,12 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var postCommentSuccess = MutableLiveData<Boolean>()
 
-    fun postCommentProduct(productId: Long, content: String, parentId: Long, postMedias: ArrayList<PostMedia> = ArrayList()) {
+    fun postCommentProduct(productId: Long, content: String, parentId: Long, postMedias: ArrayList<PostMedia> = ArrayList(), rate: Float) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("content", content)
                 .addFormDataPart("parent_id", parentId.toString())
+                .addFormDataPart("rate", rate.toString())
 
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {

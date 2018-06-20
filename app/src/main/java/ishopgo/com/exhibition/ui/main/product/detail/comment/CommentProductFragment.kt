@@ -47,6 +47,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
     private lateinit var scroller: LinearSmoothScroller
     private lateinit var viewModel: ProductCommentViewModel
     private var productId: Long = -1
+    private var ratingNumber: Float = 0.0f
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_comment_product, container, false)
@@ -71,7 +72,11 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         super.onViewCreated(view, savedInstanceState)
         if (UserDataManager.currentUserId > 0) {
             linearLayout.visibility = View.VISIBLE
-        } else linearLayout.visibility = View.GONE
+            ratingBar.visibility = View.VISIBLE
+        } else {
+            linearLayout.visibility = View.GONE
+            ratingBar.visibility = View.GONE
+        }
 
         scroller = object : LinearSmoothScroller(context) {
 
@@ -94,7 +99,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         img_comment_sent.setOnClickListener {
             if (checkRequireFields(edt_comment.text.toString())) {
                 showProgressDialog()
-                viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+                viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias, ratingNumber)
             }
         }
 
@@ -113,6 +118,9 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         }
 
         setupImageRecycleview()
+        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            ratingNumber = rating
+        }
     }
 
     private fun setupImageRecycleview() {
@@ -152,7 +160,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         viewModel.postCommentSuccess.observe(this, Observer { c ->
             c?.let {
                 firstLoad()
-
+                ratingBar.rating = 0.0f
                 hideProgressDialog()
                 edt_comment.setText("")
                 postMedias.clear()

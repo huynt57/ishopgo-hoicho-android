@@ -453,7 +453,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="Bình luận"
+                    android:text="Đánh giá"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -541,6 +541,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
 
+                <RatingBar
+                    android:id="@+id/ratingBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:numStars="5"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
+
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv_comment_community_image"
                     android:layout_width="match_parent"
@@ -553,7 +565,7 @@
                     android:paddingStart="@dimen/default_margin"
                     android:paddingTop="8dp"
                     android:visibility="gone"
-                    app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
+                    app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
                 <View
                     android:id="@+id/view"
@@ -572,8 +584,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentStart="true"
                     android:background="@drawable/bg_boder"
-                    android:weightSum="2"
-                    app:layout_constraintTop_toBottomOf="@+id/view">
+                    app:layout_constraintTop_toBottomOf="@+id/view"
+                    android:weightSum="2">
 
                     <ImageView
                         android:id="@+id/img_comment_gallery"

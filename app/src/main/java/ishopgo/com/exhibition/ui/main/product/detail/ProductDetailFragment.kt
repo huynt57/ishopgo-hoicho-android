@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
@@ -78,6 +79,7 @@ class ProductDetailFragment : BaseFragment() {
     private var adapterImages = ComposingPostMediaAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var productId: Long = -1L
+    private var ratingNumber: Float = 0.0f
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
         val currentItem = view_product_image.currentItem
@@ -170,6 +172,8 @@ class ProductDetailFragment : BaseFragment() {
         })
 
         viewModel.postCommentSuccess.observe(this, Observer {
+            ratingBar.rating = 0.0f
+            ratingBar.onRatingBarChangeListener = rateListener
             toast("Tạo thảo luận thành công")
             hideProgressDialog()
             edt_comment.setText("")
@@ -277,7 +281,7 @@ class ProductDetailFragment : BaseFragment() {
                 img_comment_sent.setOnClickListener {
                     if (checkRequireFields(edt_comment.text.toString())) {
                         showProgressDialog()
-                        viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias)
+                        viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias, ratingNumber)
                     }
                 }
                 view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
@@ -313,6 +317,8 @@ class ProductDetailFragment : BaseFragment() {
     }
 
     private fun openActivtyLogin() {
+        ratingBar.rating = 0.0f
+        ratingBar.onRatingBarChangeListener = rateListener
         val intent = Intent(context, LoginSelectOptionActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
         startActivity(intent)
@@ -434,6 +440,17 @@ class ProductDetailFragment : BaseFragment() {
         setupSalePointRecycleview()
         setupListeners()
 
+        ratingBar.onRatingBarChangeListener = rateListener
+
+    }
+
+    private val rateListener = RatingBar.OnRatingBarChangeListener { ratingBar, rating, fromUser ->
+        if (UserDataManager.currentUserId > 0) {
+            ratingNumber = rating
+        } else {
+            ratingBar.onRatingBarChangeListener = null
+            openActivtyLogin()
+        }
     }
 
     private fun setupImageRecycleview() {

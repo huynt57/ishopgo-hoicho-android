@@ -10,6 +10,10 @@ import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvi
  * Created by xuanhong on 5/3/18. HappyCoding!
  */
 class ProductComment : IdentityData(), ProductCommentProvider {
+    override fun provideRate(): Float {
+        return rate ?: 0.0f
+    }
+
     override fun provideName(): String {
         return accountName ?: "unknown"
     }
@@ -56,5 +60,8 @@ class ProductComment : IdentityData(), ProductCommentProvider {
     @SerializedName("last_comment")
     @Expose
     var lastComment: ProductComment? = null
+    @SerializedName("rate")
+    @Expose
+    var rate: Float? = null
 
 }
