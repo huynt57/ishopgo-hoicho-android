@@ -21,7 +21,7 @@ object NotificationUtils {
         val type = extras.getString("type")
         when (type) {
             NotificationPayload.TYPE_PRODUCT -> {
-                val productId = extras.get("id") as? Long
+                val productId = extras.getString("id")?.toLong()
                 productId?.let { showProduct(context, it) }
             }
             NotificationPayload.TYPE_CHAT -> {
