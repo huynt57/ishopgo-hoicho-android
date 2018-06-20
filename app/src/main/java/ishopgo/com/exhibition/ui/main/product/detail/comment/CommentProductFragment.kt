@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail.comment
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -18,14 +17,15 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductComment
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailProvider
+import ishopgo.com.exhibition.ui.main.product.detail.RatingProductViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -41,13 +41,11 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         firstLoad()
     }
 
-    private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private var adapterImages = ComposingPostMediaAdapter()
     private var adapter = ProductCommentAdapter()
     private lateinit var scroller: LinearSmoothScroller
     private lateinit var viewModel: ProductCommentViewModel
-    private var productId: Long = -1
-    private var ratingNumber: Float = 0.0f
+    private lateinit var ratingViewModel: RatingProductViewModel
+    private var dataProduct: ProductDetail? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_comment_product, container, false)
@@ -64,18 +62,22 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
-        Log.d("productId", productId.toString())
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        dataProduct = Toolbox.gson.fromJson(json, ProductDetail::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (UserDataManager.currentUserId > 0) {
             linearLayout.visibility = View.VISIBLE
-            ratingBar.visibility = View.VISIBLE
+            edt_comment.setOnClickListener {
+                dataProduct?.let { it1 -> ratingViewModel.enableCommentRating(it1) }
+            }
+            linearLayout.setOnClickListener {
+                dataProduct?.let { it1 -> ratingViewModel.enableCommentRating(it1) }
+            }
         } else {
             linearLayout.visibility = View.GONE
-            ratingBar.visibility = View.GONE
         }
 
         scroller = object : LinearSmoothScroller(context) {
@@ -94,15 +96,6 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
             }
         })
 
-        img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
-
-        img_comment_sent.setOnClickListener {
-            if (checkRequireFields(edt_comment.text.toString())) {
-                showProgressDialog()
-                viewModel.postCommentProduct(productId, edt_comment.text.toString(), 0, postMedias, ratingNumber)
-            }
-        }
-
         swipe.setOnRefreshListener(this)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
@@ -116,61 +109,27 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
                 }
             }
         }
-
-        setupImageRecycleview()
-        ratingBar.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
-            ratingNumber = rating
-        }
     }
 
-    private fun setupImageRecycleview() {
-        context?.let {
-            rv_comment_community_image.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_comment_community_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
-            rv_comment_community_image.adapter = adapterImages
-            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
-                override fun click(position: Int, data: PostMedia, code: Int) {
-                    postMedias.remove(data)
-                    if (postMedias.isEmpty()) rv_comment_community_image.visibility = View.GONE
-                    adapterImages.replaceAll(postMedias)
-                }
-            }
-        }
-    }
-
-    private fun launchPickPhotoIntent() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
-    }
 
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        ratingViewModel = obtainViewModel(RatingProductViewModel::class.java, true)
+        ratingViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        ratingViewModel.isSusscess.observe(this, Observer {
+            firstLoad()
+            view_recyclerview.post {
+                scroller.targetPosition = 0
+                view_recyclerview.layoutManager.startSmoothScroll(scroller)
+            }
+        })
+
         viewModel = obtainViewModel(ProductCommentViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
                 hideProgressDialog()
                 resolveError(it)
-            }
-        })
-
-        viewModel.postCommentSuccess.observe(this, Observer { c ->
-            c?.let {
-                firstLoad()
-                ratingBar.rating = 0.0f
-                hideProgressDialog()
-                edt_comment.setText("")
-                postMedias.clear()
-                adapterImages.replaceAll(postMedias)
-                rv_comment_community_image.visibility = View.GONE
-
-                view_recyclerview.post {
-                    scroller.targetPosition = 0
-                    view_recyclerview.layoutManager.startSmoothScroll(scroller)
-                }
             }
         })
 
@@ -201,7 +160,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         val loadMore = ProductCommentsRequest()
         loadMore.lastId = -1L
         loadMore.parentId = -1L
-        loadMore.productId = productId
+        loadMore.productId = dataProduct?.id ?: -1L
         loadMore.limit = Const.PAGE_LIMIT
         viewModel.loadData(loadMore)
         view_recyclerview.scheduleLayoutAnimation()
@@ -214,47 +173,9 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         if (item is IdentityData) {
             loadMore.lastId = item.id
             loadMore.parentId = -1L
-            loadMore.productId = productId
+            loadMore.productId = dataProduct?.id ?: -1L
             loadMore.limit = Const.PAGE_LIMIT
             viewModel.loadData(loadMore)
-        }
-    }
-
-    private fun checkRequireFields(content: String): Boolean {
-        if (content.trim().isEmpty()) {
-            toast("Nội dung quá ngắn hoặc chưa đầy đủ")
-            return false
-        }
-        return true
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (data.clipData == null) {
-                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                    return
-                }
-                val postMedia = PostMedia()
-                postMedia.uri = data.data
-                postMedias.add(postMedia)
-
-
-            } else {
-                for (i in 0 until data.clipData.itemCount) {
-                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
-                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                        return
-                    }
-                    val postMedia = PostMedia()
-                    postMedia.uri = data.clipData.getItemAt(i).uri
-                    postMedias.add(postMedia)
-                }
-            }
-            adapterImages.replaceAll(postMedias)
-            rv_comment_community_image.visibility = View.VISIBLE
         }
     }
 }

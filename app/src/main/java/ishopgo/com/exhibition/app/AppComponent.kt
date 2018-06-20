@@ -41,6 +41,7 @@ import ishopgo.com.exhibition.ui.main.notification.NotificationViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.PostViewModel
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.RatingProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
@@ -148,4 +149,5 @@ interface AppComponent {
     fun inject(visitorsViewModel: VisitorsViewModel)
     fun inject(expoShopViewModel: ExpoShopViewModel)
     fun inject(expoConfigViewModel: ExpoConfigViewModel)
+    fun inject(ratingProductViewModel: RatingProductViewModel)
 }

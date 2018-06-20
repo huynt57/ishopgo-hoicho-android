@@ -18,7 +18,7 @@
     <EditText
         android:id="@+id/view_search_field"
         android:layout_width="0dp"
-        android:layout_height="198dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_search_box"
         android:hint="từ khoá"
