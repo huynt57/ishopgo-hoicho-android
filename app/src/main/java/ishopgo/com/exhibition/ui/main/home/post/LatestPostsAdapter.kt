@@ -9,6 +9,8 @@ import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asDate
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import kotlinx.android.synthetic.main.item_latest_news_item.view.*
 
 /**
@@ -44,7 +46,7 @@ class LatestPostsAdapter(private var itemWidthRatio: Float = -1f, private var it
         }
     }
 
-    inner class BrandHolder(v: View, private val converter: Converter<PostObject, LatestPostProvider>) : BaseRecyclerViewAdapter.ViewHolder<PostObject>(v) {
+    class BrandHolder(v: View, private val converter: Converter<PostObject, LatestPostProvider>) : BaseRecyclerViewAdapter.ViewHolder<PostObject>(v) {
 
         override fun populate(data: PostObject) {
             super.populate(data)
@@ -65,4 +67,34 @@ class LatestPostsAdapter(private var itemWidthRatio: Float = -1f, private var it
         }
     }
 
+    interface LatestPostProvider {
+        fun provideAvatar(): CharSequence
+        fun provideTitle(): CharSequence
+        fun provideTime(): CharSequence
+        fun provideShortDescription(): CharSequence
+    }
+
+    class PostConverter : Converter<PostObject, LatestPostProvider> {
+
+        override fun convert(from: PostObject): LatestPostProvider {
+            return object : LatestPostProvider {
+                override fun provideAvatar(): CharSequence {
+                    return from.image ?: ""
+                }
+
+                override fun provideTitle(): CharSequence {
+                    return from.name ?: ""
+                }
+
+                override fun provideTime(): CharSequence {
+                    return "${from.createdAt?.asDate() ?: ""}".asHtml()
+                }
+
+                override fun provideShortDescription(): CharSequence {
+                    return from.shortContent?.asHtml() ?: ""
+                }
+            }
+        }
+
+    }
 }
