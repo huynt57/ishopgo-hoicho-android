@@ -12,6 +12,7 @@
     </declare-styleable>
 
     <declare-styleable name="VectorSupportTextView">
+        <attr name="drawableTintCompat" format="color"/>
         <attr name="drawableStartCompat" format="reference"/>
         <attr name="drawableEndCompat" format="reference"/>
         <attr name="drawableTopCompat" format="reference"/>

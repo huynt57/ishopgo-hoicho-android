@@ -16,7 +16,14 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 /**
  * Created by xuanhong on 6/11/18. HappyCoding!
  */
-abstract class BaseListActionBarFragment<DATA, ITEM> : BaseActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+abstract class BaseListActionBarFragment<DATA, ITEM> : BaseActionBarFragment(), SwipeRefreshLayout.OnRefreshListener, Observer<DATA> {
+    override fun onChanged(t: DATA?) {
+        t?.let {
+            populateData(it)
+
+            finishLoading()
+        }
+    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.content_swipable_recyclerview
@@ -55,14 +62,7 @@ abstract class BaseListActionBarFragment<DATA, ITEM> : BaseActionBarFragment(), 
                 resolveError(it)
             }
         })
-        viewModel.dataReturned.observe(this, Observer { data ->
-            data?.let {
-                populateData(it)
-
-                finishLoading()
-            }
-        })
-
+        viewModel.dataReturned.observe(this, this)
 
         firstLoad()
     }

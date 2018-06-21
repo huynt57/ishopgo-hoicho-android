@@ -1,10 +1,13 @@
 package ishopgo.com.exhibition.ui.main.map.config
 
 
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
@@ -31,14 +34,76 @@ class ExpoMapConfigFragment : BaseListActionBarFragment<List<ExpoConfig>, ExpoCo
         val expoAdapter = ExpoConfigAdapter()
         expoAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoConfig> {
             override fun click(position: Int, data: ExpoConfig, code: Int) {
-                val intent = Intent(requireContext(), ExpoMapActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                startActivity(intent)
+                when (code) {
+                    ExpoConfigAdapter.CLICK_SETTING -> {
+                        showSettings(data)
+                    }
+                    ExpoConfigAdapter.CLICK_DETAIL -> {
+                        val intent = Intent(requireContext(), ExpoMapActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        startActivity(intent)
+                    }
+                }
+
             }
 
         }
         return expoAdapter
+    }
+
+    private fun showSettings(config: ExpoConfig) {
+        val fragment = ExpoConfigBottomSheet.newInstance(Bundle())
+        fragment.chooseEdit = View.OnClickListener { editExpo(config) }
+        fragment.chooseSetting = View.OnClickListener { settingExpo(config) }
+        fragment.chooseDelete = View.OnClickListener { deleteExpo(config) }
+        fragment.show(childFragmentManager, "ExpoConfigBottomSheet")
+    }
+
+    private fun deleteExpo(config: ExpoConfig) {
+        MaterialDialog.Builder(requireContext())
+                .title("Xác nhận")
+                .content("Xoá hội chợ ${config.name} ?")
+                .positiveText("OK")
+                .onPositive { _, _ -> removeExpo(config.id) }
+                .negativeText("Huỷ")
+                .show()
+    }
+
+    private fun removeExpo(id: Long?) {
+        if (viewModel is ExpoConfigViewModel) {
+            id?.let {
+                (viewModel as ExpoConfigViewModel).removeExpo(it)
+            }
+        }
+    }
+
+    private val removeSuccessObserver = Observer<Boolean> {
+        toast("Xoá thành công")
+        firstLoad()
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d(TAG, "onActivityCreated: savedInstanceState = [${savedInstanceState}]")
+
+        if (viewModel is ExpoConfigViewModel) {
+            (viewModel as ExpoConfigViewModel).removeSuccess.observe(this, removeSuccessObserver)
+        }
+    }
+
+    private fun settingExpo(config: ExpoConfig) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(config))
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment)
+                .navigate(R.id.action_expoMapConfigFragment_to_expoSettingFragmentActionBar, extra)
+    }
+
+    private fun editExpo(config: ExpoConfig) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(config))
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment)
+                .navigate(R.id.action_expoMapConfigFragment_to_expoEditFragmentActionBar, extra)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ExpoConfig>> {
@@ -63,12 +128,13 @@ class ExpoMapConfigFragment : BaseListActionBarFragment<List<ExpoConfig>, ExpoCo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG, "onViewCreated: view = [${view}], savedInstanceState = [${savedInstanceState}]")
 
         setupToolbar()
     }
 
     private fun setupToolbar() {
-        toolbar.setCustomTitle("Danh sách hội chợ")
+        toolbar.setCustomTitle("Lịch hội chợ")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
@@ -88,6 +154,8 @@ class ExpoMapConfigFragment : BaseListActionBarFragment<List<ExpoConfig>, ExpoCo
     }
 
     companion object {
+        private val TAG = "ExpoMapConfigFragment"
+
         @JvmStatic
         fun newInstance(arg: Bundle) =
                 ExpoMapConfigFragment().apply {
