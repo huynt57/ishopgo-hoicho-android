@@ -38,7 +38,7 @@ class CommunityImageAdapter : ClickableAdapter<String>() {
                 if (adapterPosition == 3)
                     if (size != 0) {
                         tv_number_image.text = "+$size"
-                        linearLayout.visibility = View.VISIBLE
+                        tv_number_image.visibility = View.VISIBLE
                     }
 
                 Glide.with(this).load(data)
