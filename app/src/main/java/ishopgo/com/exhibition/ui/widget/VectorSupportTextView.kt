@@ -3,7 +3,9 @@ package ishopgo.com.exhibition.ui.widget
 import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
+import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.AppCompatTextView
 import android.util.AttributeSet
@@ -85,6 +87,12 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
                 setCompoundDrawablesRelative(dStart, dTop, dEnd, dBottom)
             else
                 setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
+
+            val color = attributeArray.getColor(R.styleable.VectorSupportTextView_drawableTintCompat, 0)
+            if (color != 0)
+                tintDrawable(color)
+
+
             attributeArray.recycle()
         }
     }
@@ -105,5 +113,19 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
             dTop = AppCompatResources.getDrawable(context, topResId)
 
         setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
+    }
+
+    fun tintDrawable(@ColorInt color: Int) {
+        compoundDrawablesRelative.map {
+            it?.let {
+                DrawableCompat.setTint(it, color)
+            }
+        }
+
+        compoundDrawables.map {
+            it?.let {
+                DrawableCompat.setTint(it, color)
+            }
+        }
     }
 }

@@ -303,6 +303,12 @@ class ApiService {
 
         @POST("fair/add")
         fun addExpo(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("fair/setup-map/{id}")
+        fun settingExpo(@Path("id") expoId: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @DELETE("fair/delete/{id}")
+        fun deleteExpo(@Path("id") expoId: Long): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

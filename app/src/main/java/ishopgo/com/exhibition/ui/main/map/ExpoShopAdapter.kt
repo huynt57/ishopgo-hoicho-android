@@ -56,4 +56,39 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
             }
         }
     }
+
+    interface ExpoShopProvider {
+
+        fun provideName(): CharSequence
+        fun provideNumber(): CharSequence
+        fun provideRegion(): CharSequence
+        fun isSetup(): Boolean
+
+    }
+
+    class ConverterExpoShop : Converter<ExpoShop, ExpoShopProvider> {
+
+        override fun convert(from: ExpoShop): ExpoShopProvider {
+            return object : ExpoShopProvider {
+                override fun isSetup(): Boolean {
+                    return from.booth != null
+                }
+
+                override fun provideName(): CharSequence {
+                    return from.booth?.name ?: ""
+                }
+
+                override fun provideNumber(): CharSequence {
+                    return "${from.priority ?: 0}"
+                }
+
+                override fun provideRegion(): CharSequence {
+                    return from.booth?.city ?: ""
+                }
+
+            }
+        }
+
+
+    }
 }

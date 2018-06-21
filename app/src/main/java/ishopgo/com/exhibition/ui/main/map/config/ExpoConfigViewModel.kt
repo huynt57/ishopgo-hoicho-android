@@ -79,6 +79,50 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
         )
     }
 
+    var settingSuccess = MutableLiveData<Boolean>()
+    fun settingExpo(expoId: Long, avatar: Uri?, boothCount: Int) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("count", boothCount.toString())
+
+        avatar?.let {
+            val imageFile = File(appContext.cacheDir, "postImage13213.jpg")
+            imageFile.deleteOnExit()
+            Toolbox.reEncodeBitmap(appContext, it, 4096, Uri.fromFile(imageFile))
+            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+            builder.addFormDataPart("image", imageFile.name, imageBody)
+        }
+
+        addDisposable(authService.settingExpo(expoId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        settingSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var removeSuccess = MutableLiveData<Boolean>()
+    fun removeExpo(id: Long) {
+        addDisposable(authService.deleteExpo(id)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        removeSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

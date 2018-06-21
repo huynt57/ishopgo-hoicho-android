@@ -17,10 +17,37 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_expoMapConfigFragment_to_expoEditFragmentActionBar"
+            app:destination="@id/expoEditFragmentActionBar"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+        <action
+            android:id="@+id/action_expoMapConfigFragment_to_expoSettingFragmentActionBar"
+            app:destination="@id/expoSettingFragmentActionBar"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
     </fragment>
     <fragment
         android:id="@+id/expoAddFragmentActionBar"
         android:name="ishopgo.com.exhibition.ui.main.map.config.add.ExpoAddFragmentActionBar"
-        android:label="ExpoAddFragmentActionBar"/>
+        android:label="ExpoAddFragmentActionBar"
+        tools:layout="@layout/fragment_config_expo_add"/>
+    <fragment
+        android:id="@+id/expoEditFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.map.config.edit.ExpoEditFragmentActionBar"
+        android:label="ExpoEditFragmentActionBar"
+        tools:layout="@layout/fragment_config_expo_edit"/>
+    <fragment
+        android:id="@+id/expoSettingFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.map.config.setting.ExpoSettingFragmentActionBar"
+        android:label="ExpoSettingFragmentActionBar"
+        tools:layout="@layout/fragment_config_expo_setting"/>
 
 </navigation>
