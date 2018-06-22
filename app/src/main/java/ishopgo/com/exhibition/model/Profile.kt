@@ -46,7 +46,7 @@ class Profile : IdentityData(), ProfileProvider {
     }
 
     override fun provideRegion(): CharSequence {
-        return "Khu vực: <b>${region ?: ""}</b>".asHtml()
+        return "Khu vực: <b>${district ?: ""} - ${region ?: ""}</b>".asHtml()
     }
 
     override fun provideAddress(): CharSequence {

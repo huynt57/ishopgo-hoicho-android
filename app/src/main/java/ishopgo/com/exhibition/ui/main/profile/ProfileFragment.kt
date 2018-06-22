@@ -220,8 +220,7 @@ class ProfileFragment : BaseFragment() {
             showProgressDialog()
         }
 
-        if (resultCode == Activity.RESULT_OK && requestCode == Const.RequestCode.EDIT_PROFILE && null != data) {
-            activity?.setResult(Activity.RESULT_OK)
+        if (resultCode == Activity.RESULT_OK && requestCode == Const.RequestCode.UPDATE_PROFILE) {
             viewModel.loadUserProfile()
         }
     }
