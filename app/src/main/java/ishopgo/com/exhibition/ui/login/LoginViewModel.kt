@@ -21,7 +21,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var loadRegion = MutableLiveData<MutableList<Region>>()
     var getUserByPhone = MutableLiveData<PhoneInfo>()
     var checkSurveySusscess = MutableLiveData<Int>()
-
+    var loadDistrict = MutableLiveData<MutableList<District>>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -50,7 +50,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String,
-                        region: String, address: String, password: String) {
+                        region: String, district: String, address: String, password: String) {
 
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -59,6 +59,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("name", fullname)
                 .addFormDataPart("company_store", company)
                 .addFormDataPart("region", region)
+                .addFormDataPart("district", district)
                 .addFormDataPart("address", address)
                 .addFormDataPart("password", password)
 
@@ -119,6 +120,23 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
                     override fun success(data: MutableList<Region>?) {
                         loadRegion.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    fun loadDistrict(province_id: String) {
+        val fields = mutableMapOf<String, Any>()
+        fields["province_id"] = province_id
+
+        addDisposable(isgService.getDistricts(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<District>>() {
+                    override fun success(data: MutableList<District>?) {
+                        loadDistrict.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {

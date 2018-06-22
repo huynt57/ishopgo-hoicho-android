@@ -46,7 +46,7 @@ class Profile : IdentityData(), ProfileProvider {
     }
 
     override fun provideRegion(): CharSequence {
-        return "Khu vực: <b>${region ?: ""}</b>".asHtml()
+        return "Khu vực: <b>${district ?: ""} - ${region ?: ""}</b>".asHtml()
     }
 
     override fun provideAddress(): CharSequence {
@@ -126,4 +126,7 @@ class Profile : IdentityData(), ProfileProvider {
     @SerializedName("introduction")
     @Expose
     var introduction: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
 }

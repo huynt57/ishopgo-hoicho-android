@@ -6,6 +6,7 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.UserDataManager
@@ -47,7 +48,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var profileUpdated = MutableLiveData<ProfileProvider>()
 
-    fun updateProfile(name: String, dob: String, email: String, company: String, region: String, address: String, introduction: String, image: String) {
+    fun updateProfile(name: String, dob: String, email: String, company: String, region: String, district: String, address: String, introduction: String, image: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
 
@@ -56,6 +57,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (email.isNotEmpty()) builder.addFormDataPart("email", email)
         if (company.isNotEmpty()) builder.addFormDataPart("company_store", company)
         if (region.isNotEmpty()) builder.addFormDataPart("region", region)
+        if (district.isNotEmpty()) builder.addFormDataPart("district", district)
         if (address.isNotEmpty()) builder.addFormDataPart("address", address)
         if (introduction.isNotEmpty()) builder.addFormDataPart("introduction", introduction)
 
@@ -93,6 +95,25 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
                     override fun success(data: MutableList<Region>?) {
                         loadRegion.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    var loadDistrict = MutableLiveData<MutableList<District>>()
+
+    fun loadDistrict(province_id: String) {
+        val fields = mutableMapOf<String, Any>()
+        fields["province_id"] = province_id
+
+        addDisposable(isgService.getDistricts(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<District>>() {
+                    override fun success(data: MutableList<District>?) {
+                        loadDistrict.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {
