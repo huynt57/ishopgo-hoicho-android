@@ -277,7 +277,7 @@ class ApiModule {
 
     companion object {
         const val TIME_OUT: Long = 30
-        const val BASE_URL = "http://ishopgo.com/api/v1/expo/"
-        const val BASE_URL_ISG = "http://ishopgo.com/api/v1/"
+        const val BASE_URL = "http://ishopgo.expo360.vn/api/v1/expo/"
+        const val BASE_URL_ISG = "http://ishopgo.expo360.vn/api/v1/"
     }
 }

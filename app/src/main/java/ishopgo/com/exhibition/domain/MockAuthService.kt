@@ -19,6 +19,13 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun editExpo(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<ManageMember>()
+        response.status = 1
+
+        return delegate.returningResponse(response).editExpo(id, body)
+    }
+
     override fun settingExpo(expoId: Long, body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<ManageMember>()
         response.status = 1
