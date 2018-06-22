@@ -24,11 +24,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.model.PhoneInfo
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_signup.*
 
 
@@ -47,6 +49,7 @@ class SignupFragment : BaseFragment() {
 
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
+    private val adapterDistrict = DistrictAdapter()
     private var image: String = ""
     private var searchKeyword = ""
     private val handler = Handler()
@@ -75,9 +78,14 @@ class SignupFragment : BaseFragment() {
             activity?.finish()
         }
 
-        tv_signup_region.setOnClickListener {
-            getRegion(tv_signup_region)
+        tv_signup_city.setOnClickListener {
+            getRegion(tv_signup_city)
         }
+
+        tv_signup_district.setOnClickListener {
+            getDistrict(tv_signup_district)
+        }
+
 
         btn_signup.setOnClickListener {
             signupAccount()
@@ -116,12 +124,12 @@ class SignupFragment : BaseFragment() {
 
     private fun signupAccount() {
         if (checkRequireFields(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
-                        tv_signup_region.text.toString(), tv_signup_address.text.toString(), tv_signup_password.text.toString(),
+                        tv_signup_city.text.toString(), tv_signup_district.text.toString(), tv_signup_address.text.toString(), tv_signup_password.text.toString(),
                         tv_signup_retry_password.text.toString())) {
             showProgressDialog()
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
-                    tv_signup_company.text.toString(), tv_signup_region.text.toString(),
+                    tv_signup_company.text.toString(), tv_signup_city.text.toString(), tv_signup_district.text.toString(),
                     tv_signup_address.text.toString(), tv_signup_password.text.toString())
         }
     }
@@ -150,6 +158,11 @@ class SignupFragment : BaseFragment() {
                 adapterRegion.replaceAll(it)
             }
         })
+        viewModel.loadDistrict.observe(this, Observer { p ->
+            p?.let {
+                adapterDistrict.replaceAll(it)
+            }
+        })
 
         viewModel.getUserByPhone.observe(this, Observer { p ->
             p?.let {
@@ -160,7 +173,7 @@ class SignupFragment : BaseFragment() {
         viewModel.loadRegion()
     }
 
-    private fun checkRequireFields(phone: String, email: String, fullname: String, region: String, address: String,
+    private fun checkRequireFields(phone: String, email: String, fullname: String, region: String, district: String, address: String,
                                    password: String, retry_password: String): Boolean {
 
         if (phone.trim().isEmpty()) {
@@ -185,9 +198,16 @@ class SignupFragment : BaseFragment() {
         }
 
         if (region.trim().isEmpty()) {
-            toast("Khu vực không được để trống")
-            tv_signup_region.error = "Trường này còn trống"
-            requestFocusEditText(tv_signup_region)
+            toast("Thành phố không được để trống")
+            tv_signup_city.error = "Trường này còn trống"
+            requestFocusEditText(tv_signup_city)
+            return false
+        }
+
+        if (district.trim().isEmpty()) {
+            toast("Quận huyện không được để trống")
+            tv_signup_district.error = "Trường này còn trống"
+            requestFocusEditText(tv_signup_district)
             return false
         }
 
@@ -244,6 +264,39 @@ class SignupFragment : BaseFragment() {
                 override fun click(position: Int, data: Region, code: Int) {
                     context?.let {
                         dialog.dismiss()
+                        data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
+                        textInputLayout7.visibility = View.VISIBLE
+                        view.text = data.name
+                        view.error = null
+                    }
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getDistrict(view: TextView) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn quận huyện")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
+
+            rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+
+            rv_search.adapter = adapterDistrict
+            adapterDistrict.listener = object : ClickableAdapter.BaseAdapterAction<District> {
+                override fun click(position: Int, data: District, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
                         view.text = data.name
                         view.error = null
                     }
@@ -287,7 +340,8 @@ class SignupFragment : BaseFragment() {
     private fun fillInfo(user: PhoneInfo?) {
         tv_signup_mail.setText(user?.email ?: "")
         tv_signup_name.setText(user?.name ?: "")
-        tv_signup_region.setText(user?.region ?: "")
+        tv_signup_city.setText(user?.region ?: "")
+        tv_signup_district.setText(user?.region ?: "")
         tv_signup_company.setText(user?.company ?: "")
         tv_signup_address.setText(user?.address ?: "")
     }

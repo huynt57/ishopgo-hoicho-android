@@ -6,15 +6,14 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.shop.info.SalePointProvider
 import kotlinx.android.synthetic.main.item_image_only.view.*
-import kotlinx.android.synthetic.main.item_sale_point.view.*
 
 /**
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityImageAdapter : ClickableAdapter<String>() {
-
+    private var size = 0
+    private var dataList = mutableListOf<String>()
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_image_only
     }
@@ -34,13 +33,36 @@ class CommunityImageAdapter : ClickableAdapter<String>() {
 
         override fun populate(data: String) {
             super.populate(data)
-
+//            if (adapterPosition <= 3) {
             itemView.apply {
+                if (adapterPosition == 3)
+                    if (size != 0) {
+                        tv_number_image.text = "+$size"
+                        tv_number_image.visibility = View.VISIBLE
+                    }
+
                 Glide.with(this).load(data)
                         .apply(RequestOptions
                                 .placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(image)
             }
-
         }
+    }
+
+    override fun replaceAll(data: List<String>) {
+        super.replaceAll(data)
+        dataList.addAll(data)
+
+        if (dataList.size >= 4) {
+            size = dataList.size - 4
+        }
+
+        for (i in dataList.indices)
+            if (i >= 4) {
+                dataList.removeAt(4)
+            }
+
+        clear()
+        addAll(dataList)
+        notifyDataSetChanged()
     }
 }
