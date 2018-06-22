@@ -9,9 +9,9 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.domain.response.NewConversation
 import ishopgo.com.exhibition.model.Profile
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.community.CommunityProvider
 
 /**
  * Created by xuanhong on 4/6/18. HappyCoding!
@@ -43,7 +43,7 @@ class MemberProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var dataCommunity = MutableLiveData<List<CommunityProvider>>()
+    var dataCommunity = MutableLiveData<List<Community>>()
 
     fun loadProfileCommunity(params: Request) {
         if (params is SearchCommunityRequest) {

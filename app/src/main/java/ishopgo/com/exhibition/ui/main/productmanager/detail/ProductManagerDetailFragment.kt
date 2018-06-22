@@ -40,7 +40,6 @@ import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
-import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.*
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
@@ -77,7 +76,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var listCategory = mutableListOf<Category>()
     private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
-    private var listProductRelated = ArrayList<ProductManagerProvider>()
+    private var listProductRelated = ArrayList<ProductManager>()
 
     private var brand_id: Long = 0L
 
@@ -368,8 +367,8 @@ class ProductManagerDetailFragment : BaseFragment() {
                                 loadMoreProductRelated(totalItemsCount)
                             }
                         })
-                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
-                            override fun click(position: Int, data: ProductManagerProvider, code: Int) {
+                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                            override fun click(position: Int, data: ProductManager, code: Int) {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
                                     adapterProductRelatedImage.replaceAll(listProductRelated)
@@ -407,8 +406,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         context?.let {
             rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_product_related_products.adapter = adapterProductRelatedImage
-            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
-                override fun click(position: Int, data: ProductManagerProvider, code: Int) {
+            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                override fun click(position: Int, data: ProductManager, code: Int) {
                     listProductRelated.remove(data)
                     adapterProductRelatedImage.replaceAll(listProductRelated)
                 }

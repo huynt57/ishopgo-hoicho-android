@@ -22,7 +22,6 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointAdapter
-import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -30,7 +29,7 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_product_sale_point_detail.*
 
-class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>, ProductSalePointProvider>() {
+class ProductSalePointFragment : BaseListFragment<List<ProductSalePoint>, ProductSalePoint>() {
     private lateinit var data: ProductDetail
 
     override fun firstLoad() {
@@ -52,7 +51,7 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ProductSalePointProvider>) {
+    override fun populateData(data: List<ProductSalePoint>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -72,13 +71,13 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
         data = Toolbox.gson.fromJson(json, ProductDetail::class.java)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductSalePointProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductSalePoint> {
         val adapter = ProductSalePointAdapter()
         adapter.addData(ProductSalePoint())
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ProductSalePointProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<ProductSalePoint>> {
         return obtainViewModel(ProductSalePointViewModel::class.java, false)
     }
 
@@ -86,14 +85,12 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePointProvider>
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        (adapter as  ProductSalePointAdapter).listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePointProvider> {
-            override fun click(position: Int, dataSalePoint: ProductSalePointProvider, code: Int) {
-                if (dataSalePoint is ProductSalePoint) {
-                    val intent = Intent(context, SalePointDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, dataSalePoint.phone)
-                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                    startActivity(intent)
-                }
+        (adapter as ProductSalePointAdapter).listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePoint> {
+            override fun click(position: Int, dataSalePoint: ProductSalePoint, code: Int) {
+                val intent = Intent(context, SalePointDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, dataSalePoint.phone)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(intent)
             }
         }
         Glide.with(context).load(data.image)

@@ -32,12 +32,12 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
-import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -69,7 +69,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private var provider_id: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
-    private var listProductRelated: ArrayList<ProductManagerProvider> = ArrayList()
+    private var listProductRelated: ArrayList<ProductManager> = ArrayList()
 
     companion object {
         const val TAG = "ProductManagerFragment"
@@ -617,8 +617,8 @@ class ProductManagerAddFragment : BaseFragment() {
                                 loadMoreProductRelated(totalItemsCount)
                             }
                         })
-                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
-                            override fun click(position: Int, data: ProductManagerProvider, code: Int) {
+                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                            override fun click(position: Int, data: ProductManager, code: Int) {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
                                     adapterProductRelatedImage.replaceAll(listProductRelated)
@@ -658,8 +658,8 @@ class ProductManagerAddFragment : BaseFragment() {
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_related_products.adapter = adapterProductRelatedImage
-            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
-                override fun click(position: Int, data: ProductManagerProvider, code: Int) {
+            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                override fun click(position: Int, data: ProductManager, code: Int) {
                     listProductRelated.remove(data)
                     adapterProductRelatedImage.replaceAll(listProductRelated)
                 }

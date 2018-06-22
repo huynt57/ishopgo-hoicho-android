@@ -20,7 +20,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.BoothCategoriesRequest
 import ishopgo.com.exhibition.domain.request.SameShopProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -28,7 +28,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -38,7 +37,7 @@ import kotlinx.android.synthetic.main.fragment_products.*
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider>() {
+class ProductsFragment : BaseListFragment<List<Product>, Product>() {
     private val adapterCategory = ProductBoothCategoryAdapter()
 
     companion object {
@@ -74,7 +73,7 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ProductProvider>) {
+    override fun populateData(data: List<Product>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -88,7 +87,7 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Product> {
         return ProductAdapter()
     }
 
@@ -137,15 +136,13 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         }
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<ProductProvider>)
-            (adapter as ClickableAdapter<ProductProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-                override fun click(position: Int, data: ProductProvider, code: Int) {
+        if (adapter is ClickableAdapter<Product>)
+            (adapter as ClickableAdapter<Product>).listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
                     context?.let {
-                        if (data is IdentityData) {
-                            val intent = Intent(it, ProductDetailActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                            startActivity(intent)
-                        }
+                        val intent = Intent(it, ProductDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        startActivity(intent)
                     }
                 }
             }
@@ -253,7 +250,7 @@ class ProductsFragment : BaseListFragment<List<ProductProvider>, ProductProvider
         firstLoadBoothCategory()
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ProductProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Product>> {
         return obtainViewModel(ProductsOfShopViewModel::class.java, false)
     }
 }

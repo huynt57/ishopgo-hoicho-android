@@ -21,7 +21,7 @@ import javax.inject.Inject
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class ProductCommentViewModel : BaseListViewModel<List<ProductCommentProvider>>(), AppComponent.Injectable {
+class ProductCommentViewModel : BaseListViewModel<List<ProductComment>>(), AppComponent.Injectable {
     @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application

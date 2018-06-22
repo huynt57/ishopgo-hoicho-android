@@ -18,7 +18,7 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-class BoothManagerViewModel : BaseListViewModel<List<BoothManagerProvider>>(), AppComponent.Injectable {
+class BoothManagerViewModel : BaseListViewModel<List<BoothManager>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

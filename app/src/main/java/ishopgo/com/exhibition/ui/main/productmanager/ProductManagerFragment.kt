@@ -9,7 +9,9 @@ import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
@@ -26,7 +28,7 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, ProductManagerProvider>() {
+class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductManager>() {
     private var name: String = ""
     private var code: String = ""
 
@@ -59,7 +61,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ProductManagerProvider>) {
+    override fun populateData(data: List<ProductManager>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -74,13 +76,20 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
         hideProgressDialog()
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductManagerProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductManager> {
         val adapter = ProductManagerAdapter()
         adapter.addData(ProductManager())
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+            override fun click(position: Int, data: ProductManager, code: Int) {
+                val intent = Intent(context, ProductManagerDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
+            }
+        }
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ProductManagerProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<ProductManager>> {
         return obtainViewModel(ProductManagerViewModel::class.java, false)
     }
 
@@ -136,18 +145,6 @@ class ProductManagerFragment : BaseListFragment<List<ProductManagerProvider>, Pr
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<ProductManagerProvider>) {
-            (adapter as ClickableAdapter<ProductManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductManagerProvider> {
-                override fun click(position: Int, data: ProductManagerProvider, code: Int) {
-                    if (data is ProductManager) {
-                        val intent = Intent(context, ProductManagerDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
-                    }
-                }
-
-            }
-        }
     }
 
     companion object {

@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
@@ -26,7 +25,6 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Environment
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
@@ -37,9 +35,9 @@ import com.bumptech.glide.request.transition.Transition
 import java.io.*
 
 
-class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothManagerProvider>() {
+class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>() {
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<BoothManagerProvider>) {
+    override fun populateData(data: List<BoothManager>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -53,13 +51,13 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<BoothManagerProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<BoothManager> {
         val adapter = BoothManagerAdapter()
         adapter.addData(BoothManager())
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<BoothManagerProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<BoothManager>> {
         return obtainViewModel(BoothManagerViewModel::class.java, false)
     }
 
@@ -86,10 +84,10 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
     }
 
     private fun saveQRcodeStorage() {
-        if (adapter is ClickableAdapter<BoothManagerProvider>)
-            (adapter as ClickableAdapter<BoothManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BoothManagerProvider> {
+        if (adapter is ClickableAdapter<BoothManager>)
+            (adapter as ClickableAdapter<BoothManager>).listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 @SuppressLint("ObsoleteSdkInt")
-                override fun click(position: Int, data: BoothManagerProvider, code: Int) {
+                override fun click(position: Int, data: BoothManager, code: Int) {
                     when (code) {
                         SAVE_QRCODE_TO_STORAGE -> {
                             context?.let {
@@ -98,22 +96,22 @@ class BoothManagerFragment : BaseListFragment<List<BoothManagerProvider>, BoothM
                                 else
                                     Glide.with(context)
                                             .asBitmap()
-                                            .load(data.provideQrCode())
+                                            .load(data.qrcode)
                                             .into(object : SimpleTarget<Bitmap>(300, 300) {
                                                 override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
-                                                    resource?.let { storeImage(it, data.provideName()) }
+                                                    resource?.let {
+                                                        storeImage(it, data.name ?: "unknown")
+                                                    }
                                                 }
                                             })
                             }
 
                         }
                         CLICK_ITEM_TO_BOOTH -> {
-                            if (data is BoothManager) {
-                                val boothId = data.id
-                                val intent = Intent(context, ShopDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
-                                startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_DELETE)
-                            }
+                            val boothId = data.id
+                            val intent = Intent(context, ShopDetailActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
+                            startActivityForResult(intent, Const.RequestCode.BOOTH_MANAGER_DELETE)
                         }
                     }
                 }

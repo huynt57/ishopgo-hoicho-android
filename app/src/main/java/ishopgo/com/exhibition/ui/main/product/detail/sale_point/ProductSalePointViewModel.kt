@@ -7,9 +7,8 @@ import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 
-class ProductSalePointViewModel : BaseListViewModel<List<ProductSalePointProvider>>(), AppComponent.Injectable {
+class ProductSalePointViewModel : BaseListViewModel<List<ProductSalePoint>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

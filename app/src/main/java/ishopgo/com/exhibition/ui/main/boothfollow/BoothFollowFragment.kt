@@ -36,7 +36,7 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import java.io.*
 
-class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFollowProvider>() {
+class BoothFollowFragment : BaseListFragment<List<BoothFollow>, BoothFollow>() {
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -59,7 +59,7 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<BoothFollowProvider>) {
+    override fun populateData(data: List<BoothFollow>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -74,11 +74,11 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
         hideProgressDialog()
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<BoothFollowProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<BoothFollow> {
         return BoothFollowAdapter()
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<BoothFollowProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<BoothFollow>> {
         return obtainViewModel(BoothFollowViewModel::class.java, false)
     }
 
@@ -86,9 +86,9 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<BoothFollowProvider>) {
-            (adapter as ClickableAdapter<BoothFollowProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BoothFollowProvider> {
-                override fun click(position: Int, data: BoothFollowProvider, code: Int) {
+        if (adapter is ClickableAdapter<BoothFollow>) {
+            (adapter as ClickableAdapter<BoothFollow>).listener = object : ClickableAdapter.BaseAdapterAction<BoothFollow> {
+                override fun click(position: Int, data: BoothFollow, code: Int) {
                     if (data is BoothFollow) {
                         val intent = Intent(context, ShopDetailActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
@@ -152,10 +152,10 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
     }
 
     private fun saveQRcodeStorage() {
-        if (adapter is ClickableAdapter<BoothFollowProvider>)
-            (adapter as ClickableAdapter<BoothFollowProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BoothFollowProvider> {
+        if (adapter is ClickableAdapter<BoothFollow>)
+            (adapter as ClickableAdapter<BoothFollow>).listener = object : ClickableAdapter.BaseAdapterAction<BoothFollow> {
                 @SuppressLint("ObsoleteSdkInt")
-                override fun click(position: Int, data: BoothFollowProvider, code: Int) {
+                override fun click(position: Int, data: BoothFollow, code: Int) {
                     when (code) {
                         SAVE_QRCODE_TO_STORAGE -> {
                             context?.let {
@@ -164,21 +164,21 @@ class BoothFollowFragment : BaseListFragment<List<BoothFollowProvider>, BoothFol
                                 else
                                     Glide.with(context)
                                             .asBitmap()
-                                            .load(data.provideQrCode())
+                                            .load(data.qrcode)
                                             .into(object : SimpleTarget<Bitmap>(300, 300) {
                                                 override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
-                                                    resource?.let { storeImage(it, data.provideName()) }
+                                                    resource?.let {
+                                                        storeImage(it, data.name ?: "unknown")
+                                                    }
                                                 }
                                             })
                             }
 
                         }
                         CLICK_ITEM_TO_BOOTH -> {
-                            if (data is BoothFollow) {
-                                val intent = Intent(context, ShopDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                                startActivityForResult(intent, BOOTH_FOLLOW)
-                            }
+                            val intent = Intent(context, ShopDetailActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                            startActivityForResult(intent, BOOTH_FOLLOW)
                         }
                     }
                 }

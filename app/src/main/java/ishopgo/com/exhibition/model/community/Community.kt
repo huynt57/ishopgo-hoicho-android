@@ -3,55 +3,12 @@ package ishopgo.com.exhibition.model.community
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.community.CommunityProductProvider
-import ishopgo.com.exhibition.ui.community.CommunityProvider
-import ishopgo.com.exhibition.ui.extensions.asDateTime
 
 
 /**
  * Created by hoangnh on 5/3/2018.
  */
-class Community : IdentityData(), CommunityProvider {
-    override fun provideLiked(): Boolean {
-        return isLiked()
-    }
-
-    override fun providerUserName(): String {
-        return if (accountName.isNullOrBlank()) "Người dùng ẩn danh" else accountName!!
-    }
-
-    override fun providerUserAvatar(): String {
-        return accountImage ?: ""
-    }
-
-    override fun provideContent(): String {
-        return content ?: ""
-    }
-
-    override fun provideTime(): String {
-        return createdAt?.asDateTime() ?: ""
-    }
-
-    override fun provideLikeCount(): Int {
-        return likeCount ?: 0
-    }
-
-    override fun provideCommentCount(): Int {
-        return commentCount ?: 0
-    }
-
-    override fun provideShareCount(): Int {
-        return shareCount ?: 0
-    }
-
-    override fun provideProduct(): CommunityProductProvider? {
-        return product
-    }
-
-    override fun provideListImage(): MutableList<String> {
-        return images ?: mutableListOf()
-    }
-
+class Community : IdentityData() {
     @SerializedName("created_at")
     @Expose
     var createdAt: String? = null
@@ -88,11 +45,4 @@ class Community : IdentityData(), CommunityProvider {
     @SerializedName("share_count")
     @Expose
     var shareCount: Int? = null
-
-    companion object {
-        val LIKED = 1
-    }
-
-    private fun isLiked() = liked == LIKED
-
 }

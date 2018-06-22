@@ -11,7 +11,7 @@ import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.SalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
-class SalePointViewModel : BaseListViewModel<List<SalePointProvider>>(), AppComponent.Injectable {
+class SalePointViewModel : BaseListViewModel<List<SalePoint>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

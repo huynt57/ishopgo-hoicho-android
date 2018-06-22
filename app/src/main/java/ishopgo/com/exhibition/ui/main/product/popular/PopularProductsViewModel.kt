@@ -7,9 +7,8 @@ import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
-class PopularProductsViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
+class PopularProductsViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         if (params is LoadMoreRequest) {

@@ -7,9 +7,10 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.ManageVisitor
+import ishopgo.com.exhibition.model.Visitor
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
-class VisitorsViewModel : BaseListViewModel<List<VisitorsProvider>>(), AppComponent.Injectable {
+class VisitorsViewModel : BaseListViewModel<List<Visitor>>(), AppComponent.Injectable {
 
     var total = MutableLiveData<Long>()
 

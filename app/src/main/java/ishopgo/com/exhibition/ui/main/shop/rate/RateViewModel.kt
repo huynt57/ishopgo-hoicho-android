@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 /**
  * Created by xuanhong on 5/3/18. HappyCoding!
  */
-class RateViewModel : BaseListViewModel<List<ShopRateProvider>>(), AppComponent.Injectable {
+class RateViewModel : BaseListViewModel<List<ShopRate>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         if (params is ShopRatesRequest) {

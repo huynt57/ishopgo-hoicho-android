@@ -4,34 +4,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asPhone
-import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerProvider
 
 
-class MemberManager : IdentityData(), MemberManagerProvider {
-    override fun provideAvatar(): String {
-        return image ?: ""
-    }
-
-    override fun provideName(): String {
-        return name ?: ""
-    }
-
-    override fun providePhone(): String {
-        return phone?.asPhone() ?: ""
-    }
-
-    override fun provideEmail(): String {
-        return email ?: ""
-    }
-
-    override fun provideRegion(): String {
-        return region?.trim() ?: ""
-    }
-
-    override fun provideBooth(): String {
-        return ""
-    }
-
+class MemberManager : IdentityData() {
     @SerializedName("name")
     @Expose
     var name: String? = null
@@ -188,5 +163,4 @@ class MemberManager : IdentityData(), MemberManagerProvider {
     @SerializedName("install_app")
     @Expose
     var installApp: String? = null
-
 }

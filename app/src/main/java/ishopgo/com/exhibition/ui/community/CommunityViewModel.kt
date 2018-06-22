@@ -11,6 +11,7 @@ import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -23,7 +24,7 @@ import javax.inject.Inject
 /**
  * Created by hoangnh on 4/23/2018.
  */
-class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComponent.Injectable {
+class CommunityViewModel : BaseListViewModel<List<Community>>(), AppComponent.Injectable {
     var sentShareSuccess = MutableLiveData<Boolean>()
     var total = MutableLiveData<Int>()
 

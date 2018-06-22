@@ -2,34 +2,12 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 
 
 /**
  * Created by xuanhong on 5/3/18. HappyCoding!
  */
-class ProductComment : IdentityData(), ProductCommentProvider {
-    override fun provideRate(): Float {
-        return rate ?: 0.0f
-    }
-
-    override fun provideName(): String {
-        return accountName ?: "unknown"
-    }
-
-    override fun provideAvatar(): String {
-        return accountImage ?: ""
-    }
-
-    override fun provideTime(): String {
-        return updatedAt?.asDate() ?: ""
-    }
-
-    override fun provideContent(): String {
-        return content ?: ""
-    }
-
+class ProductComment : IdentityData() {
     @SerializedName("content")
     @Expose
     var content: String? = null

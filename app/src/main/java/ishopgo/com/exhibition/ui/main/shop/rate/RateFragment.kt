@@ -31,7 +31,7 @@ import kotlinx.android.synthetic.main.fragment_shop_rating.*
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>() {
+class RateFragment : BaseListFragment<List<ShopRate>, ShopRate>() {
 
     companion object {
         fun newInstance(params: Bundle): RateFragment {
@@ -50,7 +50,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ShopRateProvider>) {
+    override fun populateData(data: List<ShopRate>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -63,7 +63,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ShopRateProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ShopRate> {
         return RateAdapter()
     }
 
@@ -97,9 +97,9 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
 
         ratingBar.onRatingBarChangeListener = rateListener
 
-        if (adapter is ClickableAdapter<ShopRateProvider>) {
-            (adapter as ClickableAdapter<ShopRateProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ShopRateProvider> {
-                override fun click(position: Int, data: ShopRateProvider, code: Int) {
+        if (adapter is ClickableAdapter<ShopRate>) {
+            (adapter as ClickableAdapter<ShopRate>).listener = object : ClickableAdapter.BaseAdapterAction<ShopRate> {
+                override fun click(position: Int, data: ShopRate, code: Int) {
                     if (data is ShopRate) {
                         val intent = Intent(view.context, MemberProfileActivity::class.java)
                         val memberId = data.account?.id ?: 0
@@ -180,7 +180,7 @@ class RateFragment : BaseListFragment<List<ShopRateProvider>, ShopRateProvider>(
         })
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ShopRateProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<ShopRate>> {
         return obtainViewModel(RateViewModel::class.java, false)
     }
 

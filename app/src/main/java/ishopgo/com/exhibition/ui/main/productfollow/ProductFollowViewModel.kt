@@ -9,10 +9,9 @@ import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import javax.inject.Inject
 
-class ProductFollowViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
+class ProductFollowViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
