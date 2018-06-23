@@ -2,7 +2,6 @@ package ishopgo.com.exhibition.ui.main.salepoint
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -20,7 +19,7 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class SalePointFragment : BaseListFragment<List<SalePointProvider>, SalePointProvider>() {
+class SalePointFragment : BaseListFragment<List<SalePoint>, SalePoint>() {
 
     override fun firstLoad() {
         super.firstLoad()
@@ -39,7 +38,7 @@ class SalePointFragment : BaseListFragment<List<SalePointProvider>, SalePointPro
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<SalePointProvider>) {
+    override fun populateData(data: List<SalePoint>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -53,13 +52,20 @@ class SalePointFragment : BaseListFragment<List<SalePointProvider>, SalePointPro
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<SalePointProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<SalePoint> {
         val adapter = SalePointAdapter()
         adapter.addData(SalePoint())
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<SalePoint> {
+            override fun click(position: Int, data: SalePoint, code: Int) {
+                if (viewModel is SalePointViewModel) {
+                    (viewModel as SalePointViewModel).changeStatusSalePoint(data.id)
+                }
+            }
+        }
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<SalePointProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<SalePoint>> {
         return obtainViewModel(SalePointViewModel::class.java, false)
     }
 
@@ -67,16 +73,6 @@ class SalePointFragment : BaseListFragment<List<SalePointProvider>, SalePointPro
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-
-        if (adapter is ClickableAdapter<SalePointProvider>) {
-            (adapter as ClickableAdapter<SalePointProvider>).listener = object : ClickableAdapter.BaseAdapterAction<SalePointProvider> {
-                override fun click(position: Int, data: SalePointProvider, code: Int) {
-                    if (viewModel is SalePointViewModel) {
-                        (viewModel as SalePointViewModel).changeStatusSalePoint(data.provideId())
-                    }
-                }
-            }
-        }
     }
 
     fun openAddSalePoint() {

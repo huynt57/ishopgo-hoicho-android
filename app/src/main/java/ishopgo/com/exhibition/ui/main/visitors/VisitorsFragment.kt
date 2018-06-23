@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 
-class VisitorsFragment : BaseListFragment<List<VisitorsProvider>, VisitorsProvider>() {
+class VisitorsFragment : BaseListFragment<List<Visitor>, Visitor>() {
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -45,7 +45,7 @@ class VisitorsFragment : BaseListFragment<List<VisitorsProvider>, VisitorsProvid
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<VisitorsProvider>) {
+    override fun populateData(data: List<Visitor>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -60,16 +60,14 @@ class VisitorsFragment : BaseListFragment<List<VisitorsProvider>, VisitorsProvid
         hideProgressDialog()
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<VisitorsProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Visitor> {
         val visitorsAdapter = VisitorsAdapter()
-        visitorsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<VisitorsProvider> {
-            override fun click(position: Int, data: VisitorsProvider, code: Int) {
+        visitorsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Visitor> {
+            override fun click(position: Int, data: Visitor, code: Int) {
                 context?.let {
-                    if (data is Visitor) {
-                        val intent = Intent(it, MemberProfileActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                        it.startActivity(intent)
-                    }
+                    val intent = Intent(it, MemberProfileActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                    it.startActivity(intent)
                 }
             }
         }
@@ -77,7 +75,7 @@ class VisitorsFragment : BaseListFragment<List<VisitorsProvider>, VisitorsProvid
         return visitorsAdapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<VisitorsProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Visitor>> {
         return obtainViewModel(VisitorsViewModel::class.java, false)
     }
 

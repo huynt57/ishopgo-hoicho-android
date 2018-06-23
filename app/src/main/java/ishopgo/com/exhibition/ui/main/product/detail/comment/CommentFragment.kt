@@ -7,6 +7,7 @@ import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCommentProvider>() {
+class CommentFragment : BaseListFragment<List<ProductComment>, ProductComment>() {
 
     companion object {
         fun newInstance(params: Bundle): CommentFragment {
@@ -38,7 +39,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ProductCommentProvider>) {
+    override fun populateData(data: List<ProductComment>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -51,7 +52,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductCommentProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductComment> {
         return ProductCommentAdapter()
     }
 
@@ -69,13 +70,11 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
         super.loadMore(currentCount)
         val loadMore = ProductCommentsRequest()
         val item = adapter.getItem(adapter.itemCount - 1)
-        if (item is IdentityData) {
             loadMore.lastId = item.id
             loadMore.parentId = -1L
             loadMore.productId = productId
             loadMore.limit = Const.PAGE_LIMIT
             viewModel.loadData(loadMore)
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -85,7 +84,7 @@ class CommentFragment : BaseListFragment<List<ProductCommentProvider>, ProductCo
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ProductCommentProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<ProductComment>> {
         return obtainViewModel(ProductCommentViewModel::class.java, false)
     }
 

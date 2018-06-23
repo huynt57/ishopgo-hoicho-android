@@ -30,14 +30,14 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, MemberManagerProvider>() {
+class MemberManagerFragment : BaseListFragment<List<MemberManager>, MemberManager>() {
     private var phone = ""
     private var name = ""
     private var region = ""
     private val adapterRegion = RegionAdapter()
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<MemberManagerProvider>) {
+    override fun populateData(data: List<MemberManager>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -77,13 +77,23 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         viewModel.loadData(loadMore)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<MemberManagerProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<MemberManager> {
         val adapter = MemberManagerAdapter()
         adapter.addData(MemberManager())
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<MemberManager> {
+            @SuppressLint("SetTextI18n")
+            override fun click(position: Int, data: MemberManager, code: Int) {
+                context?.let {
+                    val intent = Intent(context, MemberProfileActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                    startActivityForResult(intent, Const.RequestCode.DELETED_MEMBER)
+                }
+            }
+        }
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<MemberManagerProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<MemberManager>> {
         return obtainViewModel(MemberManagerViewModel::class.java, false)
     }
 
@@ -136,20 +146,6 @@ class MemberManagerFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<MemberManagerProvider>) {
-            (adapter as ClickableAdapter<MemberManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<MemberManagerProvider> {
-                @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: MemberManagerProvider, code: Int) {
-                    if (data is MemberManager) {
-                        context?.let {
-                            val intent = Intent(context, MemberProfileActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                            startActivityForResult(intent, Const.RequestCode.DELETED_MEMBER)
-                        }
-                    }
-                }
-            }
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

@@ -1,32 +1,10 @@
 package ishopgo.com.exhibition.model
 
-import android.text.Spanned
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asMoney
-import ishopgo.com.exhibition.ui.extensions.asPhone
-import ishopgo.com.exhibition.ui.main.product.detail.ProductSalePointProvider
 
-
-class ProductSalePoint : IdentityData(), ProductSalePointProvider {
-    override fun provideAddress(): String {
-        return "${address ?:""}, ${district?:""}, ${city?:""}"
-    }
-
-    override fun providePrice(): String {
-        return price?.asMoney() ?: "0 đ"
-    }
-
-    override fun providePhone(): String {
-        return phone?.asPhone() ?: ""
-    }
-
-    override fun provideName(): Spanned {
-        return "<b>${name ?: ""}</b>".asHtml()
-    }
-
+class ProductSalePoint : IdentityData() {
     @SerializedName("name")
     @Expose
     var name: String? = null

@@ -37,7 +37,7 @@ import java.io.*
 import java.io.File.separator
 
 
-class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, TicketManagerProvider>() {
+class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -60,7 +60,7 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<TicketManagerProvider>) {
+    override fun populateData(data: List<Ticket>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -75,11 +75,11 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
         hideProgressDialog()
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<TicketManagerProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Ticket> {
         return TicketManagerAdapter()
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<TicketManagerProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Ticket>> {
         return obtainViewModel(TicketManagerViewModel::class.java, false)
     }
 
@@ -90,25 +90,24 @@ class TicketManagerFragment : BaseListFragment<List<TicketManagerProvider>, Tick
     }
 
     private fun saveTicketStorage() {
-        if (adapter is ClickableAdapter<TicketManagerProvider>)
-            (adapter as ClickableAdapter<TicketManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<TicketManagerProvider> {
+        if (adapter is ClickableAdapter<Ticket>)
+            (adapter as ClickableAdapter<Ticket>).listener = object : ClickableAdapter.BaseAdapterAction<Ticket> {
                 @SuppressLint("ObsoleteSdkInt")
-                override fun click(position: Int, data: TicketManagerProvider, code: Int) {
+                override fun click(position: Int, data: Ticket, code: Int) {
                     when (code) {
                         SAVE_QRCODE_TO_STORAGE -> {
                             context?.let {
                                 if (!hasCameraPermission(it))
                                     requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
                                 else
-                                    storeImage(QRCode.from(data.provideTicketCode()).withSize(300, 300).bitmap(), data.provideBoothName())
+                                    storeImage(QRCode.from(data.code).withSize(300, 300).bitmap(), data.name
+                                            ?: "unknown")
                             }
                         }
                         CLICK_ITEM_TO_PROFILE -> {
-                            if (data is Ticket) {
-                                val intent = Intent(context, MemberProfileActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                                startActivity(intent)
-                            }
+                            val intent = Intent(context, MemberProfileActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                            startActivity(intent)
                         }
                     }
                 }

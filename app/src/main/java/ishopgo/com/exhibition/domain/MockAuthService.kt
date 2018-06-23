@@ -4,6 +4,9 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.community.Community
+import ishopgo.com.exhibition.model.community.CommunityProduct
+import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
@@ -19,6 +22,57 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getCommunity(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerCommunity>> {
+        val ps = mutableListOf<Community>()
+        for (i in 0..5)
+            ps.add(generateCommunity(i))
+
+        val response = BaseResponse<List<Community>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getCommunity(fields)
+    }
+
+    private fun generateCommunity(i: Int): Community {
+        val b = Community()
+        b.id = random.nextInt(1000).toLong()
+        b.createdAt = "2018/04/28 12:42:08"
+        b.shopId = 17288
+        b.content = "Chào các bạn"
+        b.accountId = 18396
+        b.accountName = "Vương Xuân Hồng"
+        b.accountImage = "http://uptheme.ishopgo.com/files//tmp/phpzwxAWr"
+
+        if (i % 3 == 0) {
+            val c = CommunityProduct()
+            c.name = "Trĩ Medi Medi Happy"
+            c.price = 390000
+            c.image = "https://static.ishopgo.com/17288/clone-5ac88a1b532731523091995.jpg"
+            c.id = 16352
+            b.product = c
+        } else b.product = null
+
+        if (i % 2 == 0) {
+            val c = mutableListOf<String>()
+            c.add("https://static.ishopgo.com/17288/fe0eb451a22ca727e6b2bd91baf8f3b4ozed-4e29d62a55f4dae4fc69899975657ab5wd-melasma-projpgjpg.jpg")
+            b.images = c
+        }
+
+        if (i % 5 == 0) {
+            val c = mutableListOf<String>()
+            for (i in 0..1) {
+                c.add("https://static.ishopgo.com/17288/fe0eb451a22ca727e6b2bd91baf8f3b4ozed-4e29d62a55f4dae4fc69899975657ab5wd-melasma-projpgjpg.jpg")
+            }
+            b.images = c
+        }
+
+        b.likeCount = 2
+        b.commentCount = 0
+        b.shareCount = 10
+        return b
+    }
+
     override fun editExpo(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<ManageMember>()
         response.status = 1

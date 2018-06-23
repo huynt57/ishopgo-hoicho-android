@@ -5,15 +5,18 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_product_grid.view.*
 
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
  */
-class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<ProductProvider>() {
+class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<Product>() {
 
     private var screenWidth: Int = UserDataManager.displayWidth
     private var screenHeight: Int = UserDataManager.displayHeight
@@ -22,8 +25,8 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
         return R.layout.item_product_grid
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<ProductProvider> {
-        val productHolder = ProductHolder(v)
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Product> {
+        val productHolder = ProductHolder(v, ProductConverter())
         val layoutParams = productHolder.itemView.layoutParams
 
         if (itemWidthRatio > 0)
@@ -34,7 +37,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
         return productHolder
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<ProductProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Product>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         holder.itemView.setOnClickListener {
@@ -43,29 +46,59 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
         }
     }
 
-    internal inner class ProductHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<ProductProvider>(view) {
+    internal inner class ProductHolder(view: View, private val converter: Converter<Product, ProductProvider>) : BaseRecyclerViewAdapter.ViewHolder<Product>(view) {
 
-        override fun populate(data: ProductProvider) {
+        override fun populate(data: Product) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
-                Glide.with(itemView.context).load(data.provideImage())
+                Glide.with(itemView.context).load(data.image)
                         .apply(RequestOptions
                                 .placeholderOf(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder)
                         )
                         .into(iv_thumb)
-                tv_item_name.text = data.provideName()
+                tv_item_name.text = convert.provideName()
 
-                tv_price.text = data.providePrice()
-                val hideMarketPrice = data.provideMarketPrice().equals(data.providePrice(), true)
-                tv_tt_price.visibility = if (data.provideMarketPrice() == "0 đ" || hideMarketPrice) View.INVISIBLE else View.VISIBLE
+                tv_price.text = convert.providePrice()
+                val hideMarketPrice = convert.provideMarketPrice().equals(convert.providePrice(), true)
+                tv_tt_price.visibility = if (convert.provideMarketPrice() == "0 đ" || hideMarketPrice) View.INVISIBLE else View.VISIBLE
                 tv_tt_price.paintFlags = tv_tt_price.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                tv_tt_price.text = data.provideMarketPrice()
+                tv_tt_price.text = convert.provideMarketPrice()
             }
 
         }
-
     }
 
+    interface ProductProvider {
+        fun provideImage(): String
+        fun provideName(): String
+        fun providePrice(): String
+        fun provideMarketPrice(): String
+    }
+
+    class ProductConverter : Converter<Product, ProductProvider> {
+
+        override fun convert(from: Product): ProductProvider {
+            return object : ProductProvider {
+
+                override fun provideImage(): String {
+                    return from.image?.trim() ?: ""
+                }
+
+                override fun provideName(): String {
+                    return from.name?.trim() ?: "unknown"
+                }
+
+                override fun providePrice(): String {
+                    return from.price.asMoney()
+                }
+
+                override fun provideMarketPrice(): String {
+                    return from.ttPrice.asMoney()
+                }
+            }
+        }
+    }
 }

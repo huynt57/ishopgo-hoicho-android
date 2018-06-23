@@ -19,12 +19,12 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var menu = MutableLiveData<List<AccountMenuProvider>>()
+    var menu = MutableLiveData<List<AccountMenuItem>>()
     var changePassword = MutableLiveData<Boolean>()
     var getOTP = MutableLiveData<Boolean>()
 
     fun loadMenu() {
-        val items = mutableListOf<AccountMenuProvider>()
+        val items = mutableListOf<AccountMenuItem>()
 
         if (UserDataManager.currentType == "Chủ gian hàng") {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SETTING_BOTTH, R.drawable.ic_booth_manager, "Gian hàng của tôi"))

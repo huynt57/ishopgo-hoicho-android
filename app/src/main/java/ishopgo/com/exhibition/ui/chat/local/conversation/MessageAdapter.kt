@@ -15,6 +15,7 @@ import ishopgo.com.exhibition.model.chat.ChatTextMessage
 import ishopgo.com.exhibition.model.chat.IChatMessage
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import kotlinx.android.synthetic.main.stream_item_center.view.*
 import kotlinx.android.synthetic.main.stream_item_left.view.*
@@ -191,8 +192,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                                 .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
                                         .error(R.drawable.image_placeholder))
                                 .into(right_productImage)
-                        right_productName.text = it.provideName()
-                        right_productPrice.text = it.providePrice()
+                        right_productName.text = it.name ?: ""
+                        right_productPrice.text = it.price.asMoney()
                     }
 
                 }
@@ -237,8 +238,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                                 .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
                                         .error(R.drawable.image_placeholder))
                                 .into(left_productImage)
-                        left_productName.text = it.provideName()
-                        left_productPrice.text = it.providePrice()
+                        left_productName.text = it.name ?: ""
+                        left_productPrice.text = it.price.asMoney()
                     }
 
                 }

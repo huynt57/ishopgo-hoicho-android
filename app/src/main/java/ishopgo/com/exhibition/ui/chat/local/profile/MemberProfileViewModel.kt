@@ -9,9 +9,10 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.domain.response.NewConversation
 import ishopgo.com.exhibition.model.Profile
+import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.community.CommunityProvider
 
 /**
  * Created by xuanhong on 4/6/18. HappyCoding!
@@ -43,7 +44,7 @@ class MemberProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var dataCommunity = MutableLiveData<List<CommunityProvider>>()
+    var dataCommunity = MutableLiveData<List<Community>>()
 
     fun loadProfileCommunity(params: Request) {
         if (params is SearchCommunityRequest) {
@@ -52,7 +53,8 @@ class MemberProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
             fields["last_id"] = params.last_id
             fields["account_id"] = params.account_id
 
-            addDisposable(noAuthService.getCommunity(fields)
+            val request = if (UserDataManager.currentUserId > 0) authService.getCommunity(fields) else noAuthService.getCommunity(fields)
+            addDisposable(request
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
                         override fun success(data: ManagerCommunity?) {

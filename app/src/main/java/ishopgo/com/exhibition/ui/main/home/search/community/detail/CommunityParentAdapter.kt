@@ -7,13 +7,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.CommunityImageAdapter
-import ishopgo.com.exhibition.ui.community.CommunityProvider
+import ishopgo.com.exhibition.ui.community.CommunityProductProvider
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.item_community.view.*
 
-class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<CommunityProvider>() {
+class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<Community>() {
     companion object {
         const val COMMUNITY_LIKE_CLICK = 2
         const val COMMUNITY_COMMENT_CLICK = 3
@@ -22,6 +25,8 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         const val COMMUNITY_PRODUCT_CLICK = 6
         const val COMMUNITY_IMAGE_CLICK = 7
         const val COMMUNITY_PROFILE_CLICK = 8
+
+        const val LIKED = 1
     }
 
     var screenWidth: Int = UserDataManager.displayWidth
@@ -32,8 +37,8 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
     }
 
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<CommunityProvider> {
-        val productHolder = ProductHolder(v)
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Community> {
+        val productHolder = ProductHolder(v, CommunityConverter())
         val layoutParams = productHolder.itemView.layoutParams
 
         if (itemWidthRatio > 0)
@@ -44,7 +49,7 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         return productHolder
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<CommunityProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Community>, position: Int) {
         super.onBindViewHolder(holder, position)
         if (holder is ProductHolder) {
             holder.apply {
@@ -59,20 +64,28 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 if (UserDataManager.currentUserId > 0) {
                     itemView.toggle_community_like.setOnClickListener {
                         if (itemView.toggle_community_like.isChecked) {
-                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() + 1).toString()
+                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).likeCount ?: 0) {
+                                itemView.tv_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0+1).toString()
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0+1).toString()
                             } else {
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0).toString()
                             }
                         } else
-                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).provideLikeCount()) {
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount() - 1).toString()
+                            if (itemView.tv_community_like.text.toString().toInt() == getItem(adapterPosition).likeCount ?: 0) {
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0-1).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0-1).toString()
                             } else {
-                                itemView.toggle_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
-                                itemView.tv_community_like.text = (getItem(adapterPosition).provideLikeCount()).toString()
+                                itemView.toggle_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0).toString()
+                                itemView.tv_community_like.text = (getItem(adapterPosition).likeCount
+                                        ?: 0).toString()
                             }
 
                         listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_LIKE_CLICK)
@@ -82,52 +95,53 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         }
     }
 
-    internal inner class ProductHolder(view: View) : BaseRecyclerViewAdapter.ViewHolder<CommunityProvider>(view) {
+    internal inner class ProductHolder(view: View, private val converter: Converter<Community, CommunityProvider>) : BaseRecyclerViewAdapter.ViewHolder<Community>(view) {
 
         @SuppressLint("SetTextI18n")
-        override fun populate(data: CommunityProvider) {
+        override fun populate(data: Community) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
-                tv_community_username.text = data.providerUserName()
-                tv_community_time.text = data.provideTime()
-                tv_community_content.text = data.provideContent()
-                tv_community_comment.text = data.provideCommentCount().toString()
-                tv_community_number_share.text = data.provideShareCount().toString()
-                toggle_community_like.isChecked = data.provideLiked()
-                toggle_community_like.text = data.provideLikeCount().toString()
-                tv_community_like.text = data.provideLikeCount().toString()
+                tv_community_username.text = convert.providerUserName()
+                tv_community_time.text = convert.provideTime()
+                tv_community_content.text = convert.provideContent()
+                tv_community_comment.text = convert.provideCommentCount().toString()
+                tv_community_number_share.text = convert.provideShareCount().toString()
+                toggle_community_like.isChecked = convert.provideLiked()
+                toggle_community_like.text = convert.provideLikeCount().toString()
+                tv_community_like.text = convert.provideLikeCount().toString()
 
-                Glide.with(this).load(data.providerUserAvatar())
+                Glide.with(this).load(convert.providerUserAvatar())
                         .apply(RequestOptions.circleCropTransform()
                                 .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_community_avatar)
 
                 tv_community_number_share.visibility = View.GONE
 
-                if (data.provideProduct() != null) {
+                if (convert.provideProduct() != null) {
                     cv_community_product.visibility = View.VISIBLE
                     tv_community_number_share.visibility = View.VISIBLE
                     tv_community_like.visibility = View.VISIBLE
-                    tv_community_like.text = "${data.provideLikeCount()} thích"
+                    tv_community_like.text = "${convert.provideLikeCount()} thích"
                     toggle_community_like.visibility = View.GONE
 
-                    Glide.with(this).load(data.provideProduct()?.providerImage())
+                    Glide.with(this).load(convert.provideProduct()?.providerImage())
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
-                    tv_community_product_name.text = data.provideProduct()?.providerName()
-                    tv_community_product_price.text = data.provideProduct()?.providerPrice()
+                    tv_community_product_name.text = convert.provideProduct()?.providerName()
+                    tv_community_product_price.text = convert.provideProduct()?.providerPrice()
                 } else {
                     cv_community_product.visibility = View.GONE
                     toggle_community_like.visibility = View.VISIBLE
                     tv_community_like.visibility = View.GONE
                 }
 
-                if (data.provideListImage().isNotEmpty()) {
-                    if (data.provideListImage().size > 1) {
+                if (convert.provideListImage().isNotEmpty()) {
+                    if (convert.provideListImage().size > 1) {
                         img_community_image.visibility = View.GONE
                         rv_community_image.visibility = View.VISIBLE
 
                         val adapter = CommunityImageAdapter()
-                        adapter.replaceAll(data.provideListImage())
+                        adapter.replaceAll(convert.provideListImage())
                         rv_community_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_community_image.adapter = adapter
                         (adapter as ClickableAdapter<String>).listener = object : ClickableAdapter.BaseAdapterAction<String> {
@@ -139,13 +153,75 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                         img_community_image.visibility = View.VISIBLE
                         rv_community_image.visibility = View.GONE
 
-                        Glide.with(this).load(data.provideListImage()[0])
+                        Glide.with(this).load(convert.provideListImage()[0])
                                 .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_image)
                     }
                 } else {
                     img_community_image.visibility = View.GONE
                     rv_community_image.visibility = View.GONE
                 }
+            }
+        }
+    }
+
+    interface CommunityProvider {
+        fun providerUserName(): String
+        fun providerUserAvatar(): String
+        fun provideContent(): String
+        fun provideTime(): String
+        fun provideLikeCount(): Int
+        fun provideLiked(): Boolean
+        fun provideCommentCount(): Int
+        fun provideShareCount(): Int
+        fun provideProduct(): CommunityProductProvider?
+        fun provideListImage(): MutableList<String>
+    }
+
+    class CommunityConverter : Converter<Community, CommunityProvider> {
+        override fun convert(from: Community): CommunityProvider {
+            return object : CommunityProvider {
+                override fun provideLiked(): Boolean {
+                    return isLiked()
+                }
+
+                override fun providerUserName(): String {
+                    return if (from.accountName.isNullOrBlank()) "Người dùng ẩn danh" else from.accountName!!
+                }
+
+                override fun providerUserAvatar(): String {
+                    return from.accountImage ?: ""
+                }
+
+                override fun provideContent(): String {
+                    return from.content ?: ""
+                }
+
+                override fun provideTime(): String {
+                    return from.createdAt?.asDateTime() ?: ""
+                }
+
+                override fun provideLikeCount(): Int {
+                    return from.likeCount ?: 0
+                }
+
+                override fun provideCommentCount(): Int {
+                    return from.commentCount ?: 0
+                }
+
+                override fun provideShareCount(): Int {
+                    return from.shareCount ?: 0
+                }
+
+                override fun provideProduct(): CommunityProductProvider? {
+                    return from.product
+                }
+
+                override fun provideListImage(): MutableList<String> {
+                    return from.images ?: mutableListOf()
+                }
+
+                private fun isLiked() = from.liked == LIKED
+
             }
         }
     }

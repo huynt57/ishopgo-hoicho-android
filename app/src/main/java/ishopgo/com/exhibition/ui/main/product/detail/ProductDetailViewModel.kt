@@ -18,8 +18,6 @@ import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
-import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -34,7 +32,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var sameShopProducts = MutableLiveData<List<ProductProvider>>()
+    var sameShopProducts = MutableLiveData<List<Product>>()
 
     fun loadSameShopProducts(productId: Long) {
         val fields = mutableMapOf<String, Any>()
@@ -55,7 +53,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var viewedProducts = MutableLiveData<List<ProductProvider>>()
+    var viewedProducts = MutableLiveData<List<Product>>()
 
     fun loadViewedProducts(productId: Long) {
         val fields = mutableMapOf<String, Any>()
@@ -78,7 +76,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var favoriteProducts = MutableLiveData<List<ProductProvider>>()
+    var favoriteProducts = MutableLiveData<List<Product>>()
 
     fun loadFavoriteProducts(productId: Long) {
         val fields = mutableMapOf<String, Any>()
@@ -122,7 +120,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var productComments = MutableLiveData<List<ProductCommentProvider>>()
+    var productComments = MutableLiveData<List<ProductComment>>()
 
     fun loadProductComments(productId: Long) {
         val fields = mutableMapOf<String, Any>()

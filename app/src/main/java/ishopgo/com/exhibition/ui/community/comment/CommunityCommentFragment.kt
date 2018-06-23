@@ -21,7 +21,6 @@ import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.community.CommunityCommentProvider
 import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -100,14 +99,11 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
             }
         }
 
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<CommunityCommentProvider> {
-            override fun click(position: Int, data: CommunityCommentProvider, code: Int) {
-
-                if (data is CommunityComment) {
-                    val intent = Intent(view.context, MemberProfileActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                    startActivity(intent)
-                }
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<CommunityComment> {
+            override fun click(position: Int, data: CommunityComment, code: Int) {
+                val intent = Intent(view.context, MemberProfileActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                startActivity(intent)
             }
         }
 

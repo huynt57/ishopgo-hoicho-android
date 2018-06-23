@@ -9,9 +9,10 @@ import ishopgo.com.exhibition.domain.request.MemberRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.model.member.ManageMember
+import ishopgo.com.exhibition.model.member.MemberManager
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
-class MemberManagerViewModel : BaseListViewModel<List<MemberManagerProvider>>(), AppComponent.Injectable {
+class MemberManagerViewModel : BaseListViewModel<List<MemberManager>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

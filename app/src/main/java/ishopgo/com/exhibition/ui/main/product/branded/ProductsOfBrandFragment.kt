@@ -11,13 +11,13 @@ import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.BrandProductsRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductProvider>() {
+class ProductsOfBrandFragment : BaseListFragment<List<Product>, Product>() {
 
     private var brandId: Long = -1L
 
@@ -51,7 +51,7 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ProductProvider>) {
+    override fun populateData(data: List<Product>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -65,7 +65,7 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Product> {
         return ProductAdapter()
     }
 
@@ -91,9 +91,9 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<ProductProvider>) {
-            (adapter as ClickableAdapter<ProductProvider>).listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-                override fun click(position: Int, data: ProductProvider, code: Int) {
+        if (adapter is ClickableAdapter<Product>) {
+            (adapter as ClickableAdapter<Product>).listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
                     context?.let {
                         if (data is IdentityData) {
                             val intent = Intent(it, ProductDetailActivity::class.java)
@@ -108,7 +108,7 @@ class ProductsOfBrandFragment : BaseListFragment<List<ProductProvider>, ProductP
 
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ProductProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Product>> {
         return obtainViewModel(ProductsOfBrandViewModel::class.java, false)
     }
 }

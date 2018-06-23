@@ -6,11 +6,12 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
+import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.community.CommunityProvider
 
-class SearchCommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComponent.Injectable {
+class SearchCommunityViewModel : BaseListViewModel<List<Community>>(), AppComponent.Injectable {
 
     companion object {
         private val TAG = "SearchCommunityViewModel"
@@ -25,7 +26,8 @@ class SearchCommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), A
             fields["last_id"] = params.last_id
             fields["content"] = params.content
 
-            addDisposable(noAuthService.getCommunity(fields)
+            val request = if (UserDataManager.currentUserId > 0) authService.getCommunity(fields) else noAuthService.getCommunity(fields)
+            addDisposable(request
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
                         override fun success(data: ManagerCommunity?) {

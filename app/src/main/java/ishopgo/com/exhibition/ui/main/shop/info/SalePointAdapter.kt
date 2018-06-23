@@ -1,26 +1,30 @@
 package ishopgo.com.exhibition.ui.main.shop.info
 
+import android.text.Spanned
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointProvider
+import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class SalePointAdapter : ClickableAdapter<SearchSalePointProvider>() {
+class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_product_sale_point
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<SearchSalePointProvider> {
-        return SalePointHolder(v)
+    override fun createHolder(v: View, viewType: Int): ViewHolder<SearchSalePoint> {
+        return SalePointHolder(v, SearchSalePointConverter())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<SearchSalePointProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<SearchSalePoint>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
             holder.itemView.setOnClickListener {
@@ -29,18 +33,51 @@ class SalePointAdapter : ClickableAdapter<SearchSalePointProvider>() {
         }
     }
 
-    inner class SalePointHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<SearchSalePointProvider>(v) {
+    inner class SalePointHolder(v: View, private val converter: Converter<SearchSalePoint, SearchSalePointProvider>) : BaseRecyclerViewAdapter.ViewHolder<SearchSalePoint>(v) {
 
-        override fun populate(data: SearchSalePointProvider) {
+        override fun populate(data: SearchSalePoint) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
-                tv_product_sale_point_name.text = data.provideName()
-                tv_product_sale_point_address.text = data.provideAddress()
-                tv_product_sale_point_price.text = data.provideCountProduct()
-                tv_product_sale_point_phone.text = data.providePhone()
+                tv_product_sale_point_name.text = convert.provideName()
+                tv_product_sale_point_address.text = convert.provideAddress()
+                tv_product_sale_point_price.text = convert.provideCountProduct()
+                tv_product_sale_point_phone.text = convert.providePhone()
             }
 
         }
+    }
+
+    interface SearchSalePointProvider {
+        fun provideAddress(): Spanned
+        fun provideName(): Spanned
+        fun providePhone(): String
+        fun provideCountProduct(): String
+    }
+
+    class SearchSalePointConverter : Converter<SearchSalePoint, SearchSalePointProvider> {
+
+        override fun convert(from: SearchSalePoint): SearchSalePointProvider {
+            return object : SearchSalePointProvider {
+                override fun provideAddress(): Spanned {
+                    return "${from.address ?: ""}, ${from.district ?: ""}, ${from.city
+                            ?: ""}".asHtml()
+                }
+
+                override fun provideName(): Spanned {
+                    return "<b>${from.name ?: ""}</b>".asHtml()
+                }
+
+                override fun providePhone(): String {
+                    return from.phone?.asPhone() ?: ""
+                }
+
+                override fun provideCountProduct(): String {
+                    return "${from.countProduct ?: 0} sản phẩm"
+                }
+            }
+        }
+
     }
 }

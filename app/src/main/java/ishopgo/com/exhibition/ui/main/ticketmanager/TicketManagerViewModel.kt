@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.Ticket
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
-class TicketManagerViewModel : BaseListViewModel<List<TicketManagerProvider>>(), AppComponent.Injectable {
+class TicketManagerViewModel : BaseListViewModel<List<Ticket>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

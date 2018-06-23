@@ -13,7 +13,7 @@ import android.widget.TextView
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -21,7 +21,6 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -64,7 +63,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     private val childAdapter = CategoryChildAdapter()
     private val productAdapter = ProductAdapter()
-    protected lateinit var scrollListener: EndlessRecyclerViewScrollListener
+    private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     private lateinit var viewModel: ProductsByCategoryViewModel
 
@@ -112,20 +111,18 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         view_breadcrumb_container.post { view_breadcrumb.fullScroll(View.FOCUS_RIGHT) }
     }
 
-    private fun openProductDetail(product: ProductProvider) {
+    private fun openProductDetail(product: Product) {
         context?.let {
-            if (product is IdentityData) {
                 val intent = Intent(it, ProductDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
                 startActivity(intent)
-            }
         }
     }
 
     private fun setupProducts(view: View) {
         view_recyclerview.adapter = productAdapter
-        productAdapter.listener = object: ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        productAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 openProductDetail(data)
             }
 

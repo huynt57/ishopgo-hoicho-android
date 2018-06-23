@@ -21,9 +21,9 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class BrandManagerFragment : BaseListFragment<List<BrandManagerProvider>, BrandManagerProvider>() {
+class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<BrandManagerProvider>) {
+    override fun populateData(data: List<Brand>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -37,13 +37,32 @@ class BrandManagerFragment : BaseListFragment<List<BrandManagerProvider>, BrandM
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<BrandManagerProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Brand> {
         val adapter = BrandManagerAdapter()
         adapter.addData(Brand())
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<Brand> {
+            @SuppressLint("SetTextI18n")
+            override fun click(position: Int, data: Brand, code: Int) {
+                when (code) {
+                    BRAND_EDIT_CLICK -> {
+                        val intent = Intent(context, BrandManagerUpdateActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
+                    }
+                    BRAND_FEATURED_CLICK -> {
+                        val isFeatured = if (data.isFeatured == BRAND_FEATURED) BRAND_NOT_FEATURED else BRAND_FEATURED
+                        if (viewModel is BrandManagerViewModel) (viewModel as BrandManagerViewModel).updateBrand(data.id, data.name
+                                ?: "", "", isFeatured.toString())
+                    }
+                }
+
+            }
+        }
+
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<BrandManagerProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Brand>> {
         return obtainViewModel(BrandManagerViewModel::class.java, false)
     }
 
@@ -67,30 +86,6 @@ class BrandManagerFragment : BaseListFragment<List<BrandManagerProvider>, BrandM
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<BrandManagerProvider>) {
-            (adapter as ClickableAdapter<BrandManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<BrandManagerProvider> {
-                @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: BrandManagerProvider, code: Int) {
-                    when (code) {
-                        BRAND_EDIT_CLICK -> {
-                            if (data is Brand) {
-                                val intent = Intent(context, BrandManagerUpdateActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                                startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
-                            }
-                        }
-                        BRAND_FEATURED_CLICK -> {
-                            if (data is Brand) {
-                                val isFeatured = if (data.provideIsFeatured()) BRAND_NOT_FEATURED else BRAND_FEATURED
-                                if (viewModel is BrandManagerViewModel) (viewModel as BrandManagerViewModel).updateBrand(data.id, data.provideName(), "", isFeatured.toString())
-                            }
-                        }
-                    }
-
-                }
-
-            }
-        }
     }
 
     fun openAddBrand() {

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.AccountMenuItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -72,8 +73,8 @@ class AccountFragment : BaseFragment() {
                 openProfile()
             }
 
-            adapter.listener = object : ClickableAdapter.BaseAdapterAction<AccountMenuProvider> {
-                override fun click(position: Int, data: AccountMenuProvider, code: Int) {
+            adapter.listener = object : ClickableAdapter.BaseAdapterAction<AccountMenuItem> {
+                override fun click(position: Int, data: AccountMenuItem, code: Int) {
                     handleClick(data)
                 }
             }
@@ -97,8 +98,8 @@ class AccountFragment : BaseFragment() {
         }
     }
 
-    private fun handleClick(data: AccountMenuProvider) {
-        val action = data.provideAction()
+    private fun handleClick(data: AccountMenuItem) {
+        val action = data.action
         when (action) {
             Const.AccountAction.ACTION_PROFILE -> {
                 openProfile()
