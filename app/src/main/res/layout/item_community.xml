@@ -202,7 +202,7 @@
             android:foreground="?android:attr/selectableItemBackground"
             android:gravity="center_horizontal|center_vertical"
             android:text="0"
-            app:drawableStartCompat="@drawable/ic_comment"
+            app:drawableStartCompat="@drawable/ic_comment_highlight_24dp"
             app:layout_constraintStart_toEndOf="@+id/linear_like"/>
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

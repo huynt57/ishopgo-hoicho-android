@@ -484,7 +484,7 @@
                     android:layout_marginTop="8dp"
                     android:drawablePadding="8dp"
                     android:text="10 bình luận"
-                    app:drawableStartCompat="@drawable/ic_comment"
+                    app:drawableStartCompat="@drawable/ic_comment_highlight_24dp"
                     app:layout_constraintEnd_toStartOf="@+id/view_product_share_count"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/view_product_like_count"
@@ -497,7 +497,7 @@
                     android:layout_marginTop="8dp"
                     android:drawablePadding="8dp"
                     android:text="10 chia sẻ"
-                    app:drawableStartCompat="@drawable/ic_share"
+                    app:drawableStartCompat="@drawable/ic_share_highlight_24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/view_product_comment_count"
@@ -796,7 +796,7 @@
             android:paddingBottom="8dp"
             android:paddingTop="8dp"
             android:text="Nhắn tin"
-            app:drawableTopCompat="@drawable/ic_comment" />
+            app:drawableTopCompat="@drawable/ic_comment_highlight_24dp" />
     </LinearLayout>
 
 </RelativeLayout>

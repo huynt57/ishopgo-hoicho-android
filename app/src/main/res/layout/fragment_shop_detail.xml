@@ -110,7 +110,7 @@
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:text="Nhắn tin"
-                    app:drawableTopCompat="@drawable/ic_comment"/>
+                    app:drawableTopCompat="@drawable/ic_comment_highlight_24dp"/>
             </LinearLayout>
 
             <View
