@@ -17,7 +17,7 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-class BrandManagerViewModel : BaseListViewModel<List<BrandManagerProvider>>(), AppComponent.Injectable {
+class BrandManagerViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

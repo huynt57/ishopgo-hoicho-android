@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.post.PostObject
@@ -38,9 +39,7 @@ import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
 import ishopgo.com.exhibition.ui.main.map.config.ExpoMapConfigActivity
-import ishopgo.com.exhibition.ui.main.product.DummyProductProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
@@ -314,8 +313,8 @@ class HomeFragment : BaseFragment() {
             }
 
         }
-        favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 openProductDetail(data)
             }
 
@@ -326,14 +325,14 @@ class HomeFragment : BaseFragment() {
             }
 
         }
-        viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 openProductDetail(data)
             }
 
         }
-        highlightProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        highlightProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 openProductDetail(data)
             }
 
@@ -411,13 +410,11 @@ class HomeFragment : BaseFragment() {
         container_favorite_products.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
     }
 
-    private fun openProductDetail(product: ProductProvider) {
+    private fun openProductDetail(product: Product) {
         context?.let {
-            if (product is IdentityData) {
                 val intent = Intent(it, ProductDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
                 startActivity(intent)
-            }
         }
     }
 
@@ -456,9 +453,9 @@ class HomeFragment : BaseFragment() {
 
     private fun setupViewedProducts(context: Context) {
         // dummy product
-        val dummy = mutableListOf<ProductProvider>()
+        val dummy = mutableListOf<Product>()
         for (i in 0..6)
-            dummy.add(DummyProductProvider())
+            dummy.add(Product())
         viewedProductAdapter.addAll(dummy)
 
         view_list_viewed_products.adapter = viewedProductAdapter
@@ -470,9 +467,9 @@ class HomeFragment : BaseFragment() {
 
     private fun setupFavoriteProducts(context: Context) {
         // dummy product
-        val dummy = mutableListOf<ProductProvider>()
+        val dummy = mutableListOf<Product>()
         for (i in 0..6)
-            dummy.add(DummyProductProvider())
+            dummy.add(Product())
         favoriteProductAdapter.addAll(dummy)
 
         view_list_favorite_products.adapter = favoriteProductAdapter
@@ -498,9 +495,9 @@ class HomeFragment : BaseFragment() {
 
     private fun setupHighlightProducts(context: Context) {
         // dummy product
-        val dummy = mutableListOf<ProductProvider>()
+        val dummy = mutableListOf<Product>()
         for (i in 0..6)
-            dummy.add(DummyProductProvider())
+            dummy.add(Product())
         highlightProductAdapter.addAll(dummy)
 
         view_list_highlight_products.adapter = highlightProductAdapter

@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
+import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -26,7 +27,7 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(), AppComponent.Injectable {
+class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppComponent.Injectable {
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -68,7 +69,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
     fun createProductManager(name: String, code: String, title: String, price: Long, dvt: String,
                              provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                              description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String) {
+                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -102,15 +103,13 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
 
         if (!listProducts_bsp.isEmpty()) {
             for (i in listProducts_bsp.indices) {
-                builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
-                Log.d("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
+                builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].id.toString())
             }
         }
 
         if (listCategory.isNotEmpty()) {
             for (i in listCategory.indices) {
                 builder.addFormDataPart("categories[]", listCategory[i].id.toString())
-                Log.d("categories[]", listCategory[i].id.toString())
             }
         }
 
@@ -161,7 +160,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
     fun editProductManager(productId: Long, name: String, code: String, title: String, price: Long, dvt: String,
                            provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                            description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                           listCategory: List<Category>, listProducts_bsp: ArrayList<ProductManagerProvider>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>) {
+                           listCategory: List<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -194,7 +193,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManagerProvider>>(
 
         if (!listProducts_bsp.isEmpty()) {
             for (i in listProducts_bsp.indices) {
-                builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].provideId().toString())
+                builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].id.toString())
             }
         }
 

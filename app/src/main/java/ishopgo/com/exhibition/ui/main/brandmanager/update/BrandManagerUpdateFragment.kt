@@ -48,7 +48,7 @@ class BrandManagerUpdateFragment : BaseFragment() {
         edit_brand_name.setText(data?.provideName())
 
         Glide.with(context)
-                .load(data?.provideLogo())
+                .load(data?.logo)
                 .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                 .into(view_image_brands_update)
 

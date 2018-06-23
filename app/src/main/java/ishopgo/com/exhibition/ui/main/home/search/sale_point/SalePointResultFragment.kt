@@ -19,7 +19,7 @@ import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
-class SalePointResultFragment : BaseListFragment<List<SearchSalePointProvider>, SearchSalePointProvider>() {
+class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSalePoint>() {
     companion object {
         private val TAG = "SalePointResultFragment"
     }
@@ -58,7 +58,7 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePointProvider>, 
         })
     }
 
-    override fun populateData(data: List<SearchSalePointProvider>) {
+    override fun populateData(data: List<SearchSalePoint>) {
         if (reloadData) {
             adapter.replaceAll(data)
             val salePoint = SearchSalePoint()
@@ -69,11 +69,11 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePointProvider>, 
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<SearchSalePointProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<SearchSalePoint> {
         return SearchSalePointAdapter()
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<SearchSalePointProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<SearchSalePoint>> {
         return obtainViewModel(SearchSalePointViewModel::class.java, false)
     }
 
@@ -101,15 +101,13 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePointProvider>, 
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
 
-        if (adapter is ClickableAdapter<SearchSalePointProvider>) {
-            (adapter as ClickableAdapter<SearchSalePointProvider>).listener = object : ClickableAdapter.BaseAdapterAction<SearchSalePointProvider> {
-                override fun click(position: Int, data: SearchSalePointProvider, code: Int) {
+        if (adapter is ClickableAdapter<SearchSalePoint>) {
+            (adapter as ClickableAdapter<SearchSalePoint>).listener = object : ClickableAdapter.BaseAdapterAction<SearchSalePoint> {
+                override fun click(position: Int, data: SearchSalePoint, code: Int) {
                     context?.let {
-                        if (data is SearchSalePoint) {
-                            val intent = Intent(it, SalePointDetailActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
-                            startActivity(intent)
-                        }
+                        val intent = Intent(it, SalePointDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
+                        startActivity(intent)
                     }
 
                 }

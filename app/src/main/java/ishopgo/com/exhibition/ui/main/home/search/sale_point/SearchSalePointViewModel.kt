@@ -7,9 +7,10 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchSalePointRequest
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSearchSalePoint
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
-class SearchSalePointViewModel : BaseListViewModel<List<SearchSalePointProvider>>(), AppComponent.Injectable {
+class SearchSalePointViewModel : BaseListViewModel<List<SearchSalePoint>>(), AppComponent.Injectable {
     var total = MutableLiveData<Int>()
 
     override fun loadData(params: Request) {

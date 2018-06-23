@@ -22,21 +22,19 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.login.RegionAdapter
-import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerProvider
 import ishopgo.com.exhibition.ui.main.membermanager.MemberManagerViewModel
-import ishopgo.com.exhibition.ui.widget.DateInputEditText
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class DeletedMemberFragment : BaseListFragment<List<MemberManagerProvider>, MemberManagerProvider>() {
+class DeletedMemberFragment : BaseListFragment<List<MemberManager>, MemberManager>() {
     private var phone = ""
     private var name = ""
     private var region = ""
     private val adapterRegion = RegionAdapter()
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<MemberManagerProvider>) {
+    override fun populateData(data: List<MemberManager>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -78,13 +76,32 @@ class DeletedMemberFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         (viewModel as MemberManagerViewModel).loadDeletedMember(loadMore)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<MemberManagerProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<MemberManager> {
         val adapter = DeletedMemberAdapter()
         adapter.addData(MemberManager())
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<MemberManager> {
+            @SuppressLint("SetTextI18n")
+            override fun click(position: Int, data: MemberManager, code: Int) {
+                if (data is MemberManager) {
+                    context?.let {
+                        MaterialDialog.Builder(it)
+                                .content("Bạn có muốn khôi phục thành viên này không?")
+                                .positiveText("Có")
+                                .onPositive { _, _ ->
+                                    if (viewModel is MemberManagerViewModel) (viewModel as MemberManagerViewModel).restoreMembers(data.id)
+                                    showProgressDialog()
+                                }
+                                .negativeText("Không")
+                                .onNegative { dialog, _ -> dialog.dismiss() }
+                                .show()
+                    }
+                }
+            }
+        }
         return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<MemberManagerProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<MemberManager>> {
         return obtainViewModel(MemberManagerViewModel::class.java, false)
     }
 
@@ -130,27 +147,6 @@ class DeletedMemberFragment : BaseListFragment<List<MemberManagerProvider>, Memb
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<MemberManagerProvider>) {
-            (adapter as ClickableAdapter<MemberManagerProvider>).listener = object : ClickableAdapter.BaseAdapterAction<MemberManagerProvider> {
-                @SuppressLint("SetTextI18n")
-                override fun click(position: Int, data: MemberManagerProvider, code: Int) {
-                    if (data is MemberManager) {
-                        context?.let {
-                            MaterialDialog.Builder(it)
-                                    .content("Bạn có muốn khôi phục thành viên này không?")
-                                    .positiveText("Có")
-                                    .onPositive { _, _ ->
-                                        if (viewModel is MemberManagerViewModel) (viewModel as MemberManagerViewModel).restoreMembers(data.id)
-                                        showProgressDialog()
-                                    }
-                                    .negativeText("Không")
-                                    .onNegative { dialog, _ -> dialog.dismiss() }
-                                    .show()
-                        }
-                    }
-                }
-            }
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

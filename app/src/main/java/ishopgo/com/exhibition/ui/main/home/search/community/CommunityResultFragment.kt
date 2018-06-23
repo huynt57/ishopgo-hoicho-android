@@ -15,14 +15,12 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.community.CommunityProvider
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityResultDetailActivity
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
-import kotlinx.android.synthetic.main.empty_list_result.*
 
-class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
+class CommunityResultFragment : BaseListFragment<List<Community>, Community>() {
     companion object {
         private val TAG = "CommunityResultFragment"
         const val COMMUNITY_CLICK = 1
@@ -64,11 +62,10 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<CommunityProvider>) {
+    override fun populateData(data: List<Community>) {
         if (data.isNotEmpty()) {
             val community = data[data.size - 1]
-            if (community is Community)
-                last_id = community.id
+            last_id = community.id
         }
 
         if (reloadData) {
@@ -81,11 +78,11 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<CommunityProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Community> {
         return SearchCommunityAdapter()
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<CommunityProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Community>> {
         return obtainViewModel(SearchCommunityViewModel::class.java, false)
     }
 
@@ -112,23 +109,19 @@ class CommunityResultFragment : BaseListFragment<List<CommunityProvider>, Commun
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
-        if (adapter is ClickableAdapter<CommunityProvider>) {
-            (adapter as ClickableAdapter<CommunityProvider>).listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
-                override fun click(position: Int, data: CommunityProvider, code: Int) {
+        if (adapter is ClickableAdapter<Community>) {
+            (adapter as ClickableAdapter<Community>).listener = object : ClickableAdapter.BaseAdapterAction<Community> {
+                override fun click(position: Int, data: Community, code: Int) {
                     when (code) {
                         COMMUNITY_CLICK -> {
-                            if (data is Community) {
-                                val intent = Intent(context, CommunityResultDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                                startActivity(intent)
-                            }
+                            val intent = Intent(context, CommunityResultDetailActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                            startActivity(intent)
                         }
                         else -> {
-                            if (data is Community) {
-                                val intent = Intent(context, CommunityResultDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                                startActivity(intent)
-                            }
+                            val intent = Intent(context, CommunityResultDetailActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                            startActivity(intent)
                         }
                     }
                 }

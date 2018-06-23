@@ -20,7 +20,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductProvider
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -224,6 +223,12 @@ class SearchProductsOfCategoryFragment : BaseSearchActionBarFragment(), SwipeRef
                 }
             }
         }
+    }
+
+    interface SearchProductProvider {
+        fun provideImage(): String
+        fun provideName(): String
+        fun provideCode(): String
     }
 
     internal class ConverterSearchProduct : Converter<Product, SearchProductProvider> {

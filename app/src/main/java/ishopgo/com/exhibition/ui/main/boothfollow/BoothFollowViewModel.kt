@@ -11,7 +11,7 @@ import ishopgo.com.exhibition.model.BoothFollow
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import javax.inject.Inject
 
-class BoothFollowViewModel : BaseListViewModel<List<BoothFollowProvider>>(), AppComponent.Injectable {
+class BoothFollowViewModel : BaseListViewModel<List<BoothFollow>>(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }

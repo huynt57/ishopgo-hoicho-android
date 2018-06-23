@@ -12,7 +12,6 @@ import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
 /**
  * Created by xuanhong on 4/26/18. HappyCoding!
@@ -74,7 +73,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     }
 
-    var highlightProducts = MutableLiveData<List<ProductProvider>>()
+    var highlightProducts = MutableLiveData<List<Product>>()
 
     fun loadHighlightProducts() {
         val params = mutableMapOf<String, Any>()
@@ -100,7 +99,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     }
 
-    var viewedProducts = MutableLiveData<List<ProductProvider>>()
+    var viewedProducts = MutableLiveData<List<Product>>()
 
     fun loadViewedProducts() {
         val fields = mutableMapOf<String, Any>()
@@ -123,7 +122,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var suggestedProducts = MutableLiveData<List<ProductProvider>>()
+    var suggestedProducts = MutableLiveData<List<Product>>()
 
     fun loadSuggestedProducts() {
         val fields = mutableMapOf<String, Any>()
@@ -146,7 +145,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var favoriteProducts = MutableLiveData<List<ProductProvider>>()
+    var favoriteProducts = MutableLiveData<List<Product>>()
 
     fun loadFavoriteProducts() {
         val fields = mutableMapOf<String, Any>()

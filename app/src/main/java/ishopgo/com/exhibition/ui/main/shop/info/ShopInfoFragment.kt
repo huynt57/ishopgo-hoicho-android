@@ -19,7 +19,6 @@ import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointProvider
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
@@ -193,14 +192,12 @@ class ShopInfoFragment : BaseFragment() {
         view_recyclerview.layoutManager = layoutManager
         view_recyclerview.isNestedScrollingEnabled = false
 
-        salePointAdapter.listener = object : ClickableAdapter.BaseAdapterAction<SearchSalePointProvider> {
-            override fun click(position: Int, data: SearchSalePointProvider, code: Int) {
+        salePointAdapter.listener = object : ClickableAdapter.BaseAdapterAction<SearchSalePoint> {
+            override fun click(position: Int, data: SearchSalePoint, code: Int) {
                 context?.let {
-                    if (data is SearchSalePoint) {
-                        val intent = Intent(it, SalePointDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
-                        startActivity(intent)
-                    }
+                    val intent = Intent(it, SalePointDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
+                    startActivity(intent)
                 }
 
             }

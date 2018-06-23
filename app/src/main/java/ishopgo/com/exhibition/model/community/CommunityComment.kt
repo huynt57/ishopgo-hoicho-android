@@ -3,47 +3,11 @@ package ishopgo.com.exhibition.model.community
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.community.CommunityCommentProvider
-import ishopgo.com.exhibition.ui.extensions.asDateTime
-
 
 /**
  * Created by hoangnh on 5/4/2018.
  */
-class CommunityComment : IdentityData(), CommunityCommentProvider {
-    override fun providerAccountImage(): String {
-        return accountImage ?: ""
-    }
-
-    override fun providerAccountName(): String {
-        return if (accountName.isNullOrBlank()) "Người dùng ẩn danh" else accountName!!
-    }
-
-    override fun providerPostId(): Long {
-        return postId ?: 0
-    }
-
-    override fun providerUpdatedAt(): String {
-        return updatedAt?.asDateTime() ?: ""
-
-    }
-
-    override fun providerCreatedAt(): String {
-        return createdAt?.asDateTime() ?: ""
-    }
-
-    override fun providerImages(): MutableList<String> {
-        return images ?: mutableListOf()
-    }
-
-    override fun provideCommentCount(): Int {
-        return commentCount ?: 0
-    }
-
-    override fun providerContent(): String {
-        return content ?: ""
-    }
-
+class CommunityComment : IdentityData() {
     @SerializedName("content")
     @Expose
     var content: String? = null

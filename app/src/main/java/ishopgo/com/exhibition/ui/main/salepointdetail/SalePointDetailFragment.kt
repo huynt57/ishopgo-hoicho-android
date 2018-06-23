@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.domain.response.ProductDetail
@@ -26,7 +25,6 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_sale_point_detail.*
@@ -78,11 +76,11 @@ class SalePointDetailFragment : BaseFragment() {
     private fun showDetail(data: ManagerSalePointDetail) {
         if (data.salePoint != null) {
             val salePoint = data.salePoint
-            tv_sale_point_name.text = salePoint?.provideName() ?: ""
-            tv_sale_point_phone.text = salePoint?.providePhone() ?: ""
-            tv_sale_point_address.text = salePoint?.provideAddress() ?: ""
+            tv_sale_point_name.text = salePoint?.name ?: ""
+            tv_sale_point_phone.text = salePoint?.phone ?: ""
+            tv_sale_point_address.text = salePoint?.address ?: ""
             linear_footer_call.setOnClickListener {
-                val call = Uri.parse("tel:${salePoint?.providePhone()}")
+                val call = Uri.parse("tel:${salePoint?.phone}")
                 val intent = Intent(Intent.ACTION_DIAL, call)
                 if (intent.resolveActivity(it.context.packageManager) != null)
                     startActivity(intent)
@@ -98,7 +96,7 @@ class SalePointDetailFragment : BaseFragment() {
                 if (!hasValidChatId) {
                     val intent = Intent(Intent.ACTION_SENDTO)
                     intent.type = "text/plain"
-                    intent.data = Uri.parse("smsto:${salePoint?.providePhone()}")
+                    intent.data = Uri.parse("smsto:${salePoint?.phone}")
                     dataProduct?.let {
                         intent.putExtra("sms_body", "Sản phẩm: ${it.provideProductName()}\n")
                     }
@@ -127,10 +125,9 @@ class SalePointDetailFragment : BaseFragment() {
                 val product = data.products!!
                 product.data?.let { productsAdapter.replaceAll(it) }
                 rv_product_sale_point.adapter = productsAdapter
-                productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-                    override fun click(position: Int, data: ProductProvider, code: Int) {
+                productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                    override fun click(position: Int, data: Product, code: Int) {
                         context?.let {
-                            if (data is Product) {
                                 productId = data.id
 
                                 val productDetail = ProductDetail()
@@ -140,7 +137,6 @@ class SalePointDetailFragment : BaseFragment() {
                                 productDetail.code = data.code
                                 dataProduct = productDetail
                                 viewModel.loadData(phone, productId)
-                            }
                         }
                     }
                 }

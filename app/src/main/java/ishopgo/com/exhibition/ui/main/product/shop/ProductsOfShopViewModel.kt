@@ -11,9 +11,8 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 
-class ProductsOfShopViewModel : BaseListViewModel<List<ProductProvider>>(), AppComponent.Injectable {
+class ProductsOfShopViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         if (params is SameShopProductsRequest) {

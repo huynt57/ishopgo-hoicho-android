@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_search_product.view.*
 import kotlinx.android.synthetic.main.item_search_total.view.*
 
@@ -91,6 +92,12 @@ class SearchProductAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio:
                 view_code.text = converted.provideCode()
             }
         }
+    }
+
+    interface SearchProductProvider {
+        fun provideImage(): String
+        fun provideName(): String
+        fun provideCode(): String
     }
 
     internal class ConverterSearchProduct : Converter<Product, SearchProductProvider> {

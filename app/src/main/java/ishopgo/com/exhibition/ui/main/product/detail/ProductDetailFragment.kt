@@ -15,17 +15,12 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.domain.response.LocalConversationItem
-import ishopgo.com.exhibition.domain.response.ProductComment
-import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
@@ -33,16 +28,13 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
-import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentProvider
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointActivity
@@ -430,20 +422,20 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun setupListeners() {
-        favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 context?.let { openProductDetail(it, data) }
             }
 
         }
-        sameShopProductsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        sameShopProductsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 context?.let { openProductDetail(it, data) }
             }
 
         }
-        viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProvider> {
-            override fun click(position: Int, data: ProductProvider, code: Int) {
+        viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 context?.let { openProductDetail(it, data) }
             }
 
@@ -475,24 +467,20 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun openProductSalePoint(product: ProductDetailProvider) {
-        adapterSalePoint.listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePointProvider> {
-            override fun click(position: Int, data: ProductSalePointProvider, code: Int) {
-                if (data is ProductSalePoint) {
-                    val intent = Intent(context, SalePointDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
-                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-                    startActivity(intent)
-                }
+        adapterSalePoint.listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePoint> {
+            override fun click(position: Int, data: ProductSalePoint, code: Int) {
+                val intent = Intent(context, SalePointDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+                startActivity(intent)
             }
         }
     }
 
-    private fun openProductDetail(context: Context, product: ProductProvider) {
-        if (product is IdentityData) {
-            val intent = Intent(context, ProductDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-            startActivity(intent)
-        }
+    private fun openProductDetail(context: Context, product: Product) {
+        val intent = Intent(context, ProductDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+        startActivity(intent)
     }
 
     private fun openProductsOfShop(context: Context, product: ProductDetailProvider) {
@@ -536,13 +524,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         view_list_comments.isNestedScrollingEnabled = false
         view_list_comments.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
 
-        productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductCommentProvider> {
-            override fun click(position: Int, data: ProductCommentProvider, code: Int) {
-                if (data is ProductComment) {
-                    val intent = Intent(context, MemberProfileActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                    startActivity(intent)
-                }
+        productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductComment> {
+            override fun click(position: Int, data: ProductComment, code: Int) {
+                val intent = Intent(context, MemberProfileActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                startActivity(intent)
             }
         }
     }

@@ -56,7 +56,7 @@ import java.net.URL
 /**
  * Created by hoangnh on 4/23/2018.
  */
-class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityProvider>() {
+class CommunityFragment : BaseListFragment<List<Community>, Community>() {
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -69,13 +69,12 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
     private var last_id: Long = 0
     private var keyword = ""
 
-    override fun populateData(data: List<CommunityProvider>) {
+    override fun populateData(data: List<Community>) {
         hideProgressDialog()
 
         if (data.isNotEmpty()) {
             val community = data[data.size - 1]
-            if (community is Community)
-                last_id = community.id
+            last_id = community.id
         }
 
         if (keyword.isNotEmpty()) cardView_total.visibility = View.VISIBLE
@@ -94,7 +93,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<CommunityProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Community> {
         val adapter = CommunityAdapter()
         adapter.addData(Community())
         return adapter
@@ -119,7 +118,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         viewModel.loadData(loadMore)
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<CommunityProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Community>> {
         return obtainViewModel(CommunityViewModel::class.java, false)
     }
 
@@ -140,9 +139,9 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<CommunityProvider>) {
-            (adapter as ClickableAdapter<CommunityProvider>).listener = object : ClickableAdapter.BaseAdapterAction<CommunityProvider> {
-                override fun click(position: Int, data: CommunityProvider, code: Int) {
+        if (adapter is ClickableAdapter<Community>) {
+            (adapter as ClickableAdapter<Community>).listener = object : ClickableAdapter.BaseAdapterAction<Community> {
+                override fun click(position: Int, data: Community, code: Int) {
                     when (code) {
                         COMMUNITY_SHARE_CLICK -> {
                             if (UserDataManager.currentUserId > 0) {
@@ -156,19 +155,15 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         }
 
                         COMMUNITY_LIKE_CLICK -> {
-                            if (data is Community) {
-                                if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.id)
-                            }
+                            if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.id)
                         }
 
                         COMMUNITY_COMMENT_CLICK -> {
                             if (UserDataManager.currentUserId > 0) {
 
-                                if (data is Community) {
                                     val intent = Intent(context, CommunityCommentActivity::class.java)
                                     intent.putExtra(EXTRA_ID, data.id)
                                     startActivity(intent)
-                                }
                             } else openLoginActivity()
                         }
 
@@ -177,7 +172,6 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
 
                         COMMUNITY_PRODUCT_CLICK -> {
-                            if (data is Community) {
                                 val productId = data.product?.id ?: -1L
                                 if (productId != -1L) {
                                     context?.let {
@@ -186,20 +180,17 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                                         startActivity(intent)
                                     }
                                 }
-                            }
                         }
                         COMMUNITY_IMAGE_CLICK -> {
                             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.provideListImage().toTypedArray())
+                            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
                             startActivity(intent)
                         }
 
                         COMMUNITY_PROFILE_CLICK -> {
-                            if (data is Community) {
                                 val intent = Intent(view.context, MemberProfileActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
                                 startActivity(intent)
-                            }
                         }
                     }
                 }
@@ -260,7 +251,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         }
     }
 
-    private fun openDialogShare(data: CommunityProvider) {
+    private fun openDialogShare(data: Community) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .customView(R.layout.dialog_community_share, false)
@@ -281,7 +272,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
     private var callbackManager: CallbackManager? = null
 
-    private fun shareFacebook(data: CommunityProvider, dialog: Dialog) {
+    private fun shareFacebook(data: Community, dialog: Dialog) {
         callbackManager = CallbackManager.Factory.create()
         val shareDialog = ShareDialog(this)
 
@@ -302,24 +293,24 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         })
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
-            if (data.provideProduct() != null) {
-                val urlToShare = data.provideProduct()?.providerLink()
+            if (data.product != null) {
+                val urlToShare = data.product?.providerLink()
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse(urlToShare))
-                        .setQuote(data.provideContent())
+                        .setQuote(data.content)
                         .build()
 
                 shareDialog.show(shareContent)
             }
 
-            if (data.provideListImage().isNotEmpty()) {
-                if (data.provideListImage().size > 1) {
+            if (data.images != null && data.images!!.isNotEmpty()) {
+                if (data.images!!.size > 1) {
                     val thread = Thread(Runnable {
                         try {
                             val listSharePhoto = mutableListOf<SharePhoto>()
-                            for (i in data.provideListImage().indices)
+                            for (i in data.images!!.indices)
                                 try {
-                                    val url = URL(data.provideListImage()[i])
+                                    val url = URL(data.images!![i])
                                     val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
                                     val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
                                     listSharePhoto.add(sharePhoto)
@@ -339,7 +330,7 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
 
                 } else Glide.with(context)
                         .asBitmap()
-                        .load(data.provideListImage()[0])
+                        .load(data.images!![0])
                         .into(object : SimpleTarget<Bitmap>(300, 300) {
                             override fun onResourceReady(resource: Bitmap?, transition: Transition<in Bitmap>?) {
                                 val sharePhoto = SharePhoto.Builder().setBitmap(resource).build()
@@ -351,10 +342,10 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
                         })
             }
 
-            if (data.provideProduct() == null && data.provideListImage().isEmpty()) {
+            if (data.product == null && data.images!!.isEmpty()) {
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
-                        .setQuote(data.provideContent())
+                        .setQuote(data.content)
                         .build()
 
                 shareDialog.show(shareContent)
@@ -362,23 +353,23 @@ class CommunityFragment : BaseListFragment<List<CommunityProvider>, CommunityPro
         }
     }
 
-    private fun shareApp(data: CommunityProvider) {
-        val urlToShare = if (data.provideListImage().isNotEmpty()) {
-            if (data.provideListImage().size > 1) {
+    private fun shareApp(data: Community) {
+        val urlToShare = if (data.images!!.isNotEmpty()) {
+            if (data.images!!.size > 1) {
                 var linkImage = ""
-                for (i in data.provideListImage().indices) {
-                    linkImage += "${data.provideListImage()[i]}\n\n"
+                for (i in data.images!!.indices) {
+                    linkImage += "${data.images!![i]}\n\n"
                 }
 
-                "${data.provideContent()}\n $linkImage\n ${data.provideProduct()?.providerLink()
+                "${data.content}\n $linkImage\n ${data.product?.providerLink()
                         ?: ""}"
 
             } else {
-                "${data.provideContent()}\n ${data.provideListImage()[0]}\n ${data.provideProduct()?.providerLink()
+                "${data.content}\n ${data.images!![0]}\n ${data.product?.providerLink()
                         ?: ""}"
             }
         } else
-            "${data.provideContent()}\n ${data.provideProduct()?.providerLink() ?: ""}"
+            "${data.content}\n ${data.product?.providerLink() ?: ""}"
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

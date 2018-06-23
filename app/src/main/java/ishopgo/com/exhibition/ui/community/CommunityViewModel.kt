@@ -11,6 +11,8 @@ import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -23,7 +25,7 @@ import javax.inject.Inject
 /**
  * Created by hoangnh on 4/23/2018.
  */
-class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComponent.Injectable {
+class CommunityViewModel : BaseListViewModel<List<Community>>(), AppComponent.Injectable {
     var sentShareSuccess = MutableLiveData<Boolean>()
     var total = MutableLiveData<Int>()
 
@@ -38,7 +40,9 @@ class CommunityViewModel : BaseListViewModel<List<CommunityProvider>>(), AppComp
             fields["last_id"] = params.last_id
             fields["content"] = params.content
 
-            addDisposable(noAuthService.getCommunity(fields)
+            val request = if (UserDataManager.currentUserId > 0) authService.getCommunity(fields) else noAuthService.getCommunity(fields)
+
+            addDisposable(request
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerCommunity>() {
                         override fun success(data: ManagerCommunity?) {
