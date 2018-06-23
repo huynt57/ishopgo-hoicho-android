@@ -9,5 +9,13 @@
         android:id="@+id/expoMapFragment"
         android:name="ishopgo.com.exhibition.ui.main.map.ExpoMapFragment"
         android:label="fragment_expo_map"
-        tools:layout="@layout/fragment_expo_map"/>
+        tools:layout="@layout/fragment_expo_map">
+        <action
+            android:id="@+id/action_expoMapFragment_to_searchBoothFragment"
+            app:destination="@id/searchBoothFragment"/>
+    </fragment>
+    <fragment
+        android:id="@+id/searchBoothFragment"
+        android:name="ishopgo.com.exhibition.ui.main.map.searchbooth.SearchBoothFragment"
+        android:label="SearchBoothFragment"/>
 </navigation>

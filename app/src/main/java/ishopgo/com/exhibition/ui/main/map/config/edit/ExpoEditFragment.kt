@@ -15,9 +15,10 @@ import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.map.config.ExpoConfigViewModel
 import kotlinx.android.synthetic.main.fragment_config_expo_edit.*
+import java.text.SimpleDateFormat
 
 /**
  * Created by xuanhong on 6/18/18. HappyCoding!
@@ -27,6 +28,8 @@ class ExpoEditFragment : BaseFragment() {
     private lateinit var viewModel: ExpoConfigViewModel
     private var selectedUri: Uri? = null
     private lateinit var expoConfig: ExpoConfig
+    private val timeFormat = "HH:mm dd/MM/yyyy"
+    private val displayDateFormat = SimpleDateFormat(timeFormat, Toolbox.LOCALE_VN)
 
     companion object {
 
@@ -51,27 +54,40 @@ class ExpoEditFragment : BaseFragment() {
                 .load(expoConfig.image)
                 .into(view_avatar)
         view_name.editText?.setText(expoConfig.name)
-        view_start.editText?.setText(expoConfig.startTime?.asDateTime())
-        view_end.editText?.setText(expoConfig.endTime?.asDateTime())
+        view_start.editText?.setText(displayDateFormat.format(Toolbox.apiDateFormat.parse(expoConfig.startTime)))
+        view_end.editText?.setText(displayDateFormat.format(Toolbox.apiDateFormat.parse(expoConfig.endTime)))
         view_address.editText?.setText(expoConfig.address)
-        view_description.editText?.setText(expoConfig.description)
+        view_description.editText?.setText(expoConfig.description?.asHtml())
 
         view_avatar.setOnClickListener {
             launchPickPhotoIntent()
         }
+        tv_edit_image.setOnClickListener {
+            launchPickPhotoIntent()
+        }
         view_submit.setOnClickListener {
-            if (checkRequiredFields()) {
+            val name = view_name.editText?.text.toString()
+            val startTime = view_start.editText?.text.toString()
+            val endTime = view_end.editText?.text.toString()
+            val address = view_address.editText?.text.toString()
+            val description = view_description.editText?.text.toString()
+
+            if (name.isBlank() || address.isBlank() || description.isBlank()) {
                 toast("Chưa điền hết thông tin")
                 return@setOnClickListener
-            } else {
-                val name = view_name.editText?.text?.toString() ?: ""
-                val startTime = view_start.editText?.text?.toString() ?: ""
-                val endTime = view_end.editText?.text?.toString() ?: ""
-                val address = view_address.editText?.text?.toString() ?: ""
-                val description = view_description.editText?.text?.toString() ?: ""
-
-                viewModel.addExpo(selectedUri!!, name, startTime, endTime, address, description)
             }
+
+            if (!isTimeValid(startTime)) {
+                toast("Thời gian bắt đầu không hợp lệ")
+                return@setOnClickListener
+            }
+
+            if (!isTimeValid(endTime)) {
+                toast("Thời gian kết thúc không hợp lệ")
+                return@setOnClickListener
+            }
+
+            viewModel.editExpo(expoConfig.id!!, selectedUri, name, startTime, endTime, address, description)
 
         }
     }
@@ -87,7 +103,7 @@ class ExpoEditFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         viewModel = obtainViewModel(ExpoConfigViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-        viewModel.addSuccess.observe(this, Observer { a ->
+        viewModel.editSuccess.observe(this, Observer { a ->
             a?.let {
                 toast("Sửa thành công")
                 Navigation.findNavController(view_submit).navigateUp()
@@ -114,14 +130,10 @@ class ExpoEditFragment : BaseFragment() {
 
     }
 
-    private fun checkRequiredFields(): Boolean {
-        val name = view_name.editText?.text
-        val startTime = view_start.editText?.text
-        val endTime = view_end.editText?.text
-        val address = view_address.editText?.text
-        val description = view_description.editText?.text
+    private fun isTimeValid(time: String?): Boolean {
+        if (time.isNullOrBlank()) return false
 
-        return name.isNullOrEmpty() || startTime.isNullOrEmpty() || endTime.isNullOrEmpty() || address.isNullOrEmpty() || description.isNullOrEmpty() || selectedUri == null
+        return try { displayDateFormat.parse(time); true } catch (e: Exception) { false }
     }
 
 }

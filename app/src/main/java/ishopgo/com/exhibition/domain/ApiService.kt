@@ -304,6 +304,9 @@ class ApiService {
         @POST("fair/add")
         fun addExpo(@Body body: RequestBody): Single<BaseResponse<Any>>
 
+        @POST("fair/update/{id}")
+        fun editExpo(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
         @POST("fair/setup-map/{id}")
         fun settingExpo(@Path("id") expoId: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 

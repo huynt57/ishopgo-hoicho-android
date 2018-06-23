@@ -29,7 +29,7 @@
                     android:id="@+id/view_image"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="3:2"
+                    app:layout_constraintDimensionRatio="2:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -65,39 +65,24 @@
                     android:layout_height="wrap_content"
                     android:background="@color/md_grey_300"
                     android:padding="8dp"
+                    android:gravity="center"
                     android:text="Danh sách gian hàng"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view_introduce"
+                    />
 
-                <ImageView
-                    android:id="@+id/view_search_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    app:layout_constraintBottom_toBottomOf="@id/view_label_shops"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/view_label_shops"
-                    app:srcCompat="@drawable/ic_search_highlight_24dp" />
-
-                <EditText
-                    android:id="@+id/view_search_name"
-                    android:drawableStart="@drawable/ic_search_default_24dp"
-                    android:drawablePadding="8dp"
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_introduce"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="Tên gian hàng"
+                    android:background="@color/md_grey_200"
+                    android:gravity="center"
                     android:padding="8dp"
-                    android:visibility="gone"
-                    android:textColorHint="@color/md_grey_500"
-                    android:textSize="14sp"
-                    android:textColor="@color/colorPrimaryText"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view_label_shops" />
+                    android:text="Giới thiệu"
+                    app:layout_constraintEnd_toStartOf="@+id/view_label_shops"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"/>
 
             </android.support.constraint.ConstraintLayout>
 

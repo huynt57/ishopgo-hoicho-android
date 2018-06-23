@@ -1,15 +1,12 @@
 package ishopgo.com.exhibition.ui.main.map
 
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.InputMethodManager
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -22,6 +19,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -118,43 +116,51 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
 
         setupToolbar()
 
-        view_search_name.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                if (!isSearchMode) return
-
-                if (searchKeyword != s.toString()) {
-                    searchKeyword = s.toString()
-                    view_search_name.removeCallbacks(searchRunnable)
-                    view_search_name.postDelayed(searchRunnable, 600)
-                }
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
-
-        view_search_shop.setOnClickListener {
-            view_search_name.visibility = if (isSearchMode) View.GONE else View.VISIBLE
-
-            isSearchMode = !isSearchMode
-            view_search_shop.setImageResource(if (isSearchMode) R.drawable.ic_close_default_24dp else R.drawable.ic_search_highlight_24dp)
-            if (!isSearchMode) {
-                if (searchKeyword.isNotBlank()) {
-                    searchKeyword = ""
-                    firstLoad()
-                    view_search_name.setText("")
-                }
-
-                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.hideSoftInputFromWindow(view_search_name.windowToken, 0)
-            } else {
-                view_search_name.requestFocus()
-                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-                inputMethodManager?.showSoftInput(view_search_name, 0)
-            }
+        val json = activity?.intent?.getStringExtra(Const.TransferKey.EXTRA_JSON)
+        val expoConfig = Toolbox.gson.fromJson(json, ExpoConfig::class.java)
+        view_introduce.setOnClickListener {
+            val intent = Intent(context, FullDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, expoConfig.description)
+            startActivity(intent)
         }
+
+//        view_search_name.addTextChangedListener(object : TextWatcher {
+//            override fun afterTextChanged(s: Editable?) {
+//                if (!isSearchMode) return
+//
+//                if (searchKeyword != s.toString()) {
+//                    searchKeyword = s.toString()
+//                    view_search_name.removeCallbacks(searchRunnable)
+//                    view_search_name.postDelayed(searchRunnable, 600)
+//                }
+//            }
+//
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//
+//        })
+//
+//        view_search_shop.setOnClickListener {
+//            view_search_name.visibility = if (isSearchMode) View.GONE else View.VISIBLE
+//
+//            isSearchMode = !isSearchMode
+//            view_search_shop.setImageResource(if (isSearchMode) R.drawable.ic_close_default_24dp else R.drawable.ic_search_highlight_24dp)
+//            if (!isSearchMode) {
+//                if (searchKeyword.isNotBlank()) {
+//                    searchKeyword = ""
+//                    firstLoad()
+//                    view_search_name.setText("")
+//                }
+//
+//                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//                inputMethodManager?.hideSoftInputFromWindow(view_search_name.windowToken, 0)
+//            } else {
+//                view_search_name.requestFocus()
+//                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+//                inputMethodManager?.showSoftInput(view_search_name, 0)
+//            }
+//        }
         view_zoom.setOnClickListener {
             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
             intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, arrayOf(expoInfo.map ?: ""))
@@ -177,6 +183,12 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
+        }
+        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val extra = Bundle()
+            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
+            Navigation.findNavController(it).navigate(R.id.action_expoMapFragment_to_searchBoothFragment, extra)
         }
     }
 

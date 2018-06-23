@@ -79,6 +79,38 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
         )
     }
 
+    var editSuccess = MutableLiveData<Boolean>()
+    fun editExpo(expoId: Long, avatar: Uri?, name: String?, startTime: String?, endTime: String?, address: String?, description: String?) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+        name?.let { builder.addFormDataPart("name", name) }
+        startTime?.let { builder.addFormDataPart("start_time", startTime) }
+        endTime?.let { builder.addFormDataPart("end_time", endTime) }
+        address?.let { builder.addFormDataPart("address", address) }
+        description?.let { builder.addFormDataPart("description", description) }
+
+        avatar?.let {
+            val imageFile = File(appContext.cacheDir, "postImage13213.jpg")
+            imageFile.deleteOnExit()
+            Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+            builder.addFormDataPart("image", imageFile.name, imageBody)
+        }
+
+        addDisposable(authService.editExpo(expoId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        editSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
     var settingSuccess = MutableLiveData<Boolean>()
     fun settingExpo(expoId: Long, avatar: Uri?, boothCount: Int) {
         val builder = MultipartBody.Builder()
