@@ -15,7 +15,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.R.attr.data
 import com.afollestad.materialdialogs.MaterialDialog
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
@@ -314,29 +321,33 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         }
     }
 
+    private var callbackManager: CallbackManager? = null
+
     private fun shareFacebook(product: ProductDetailProvider) {
-        val urlToShare = product.provideProductLinkAffiliate()
-        var intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+        callbackManager = CallbackManager.Factory.create()
+        val shareDialog = ShareDialog(this)
 
-        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
-
-        var facebookAppFound = false
-        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
-        for (info in matches) {
-            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-                intent.`package` = info.activityInfo.packageName
-                facebookAppFound = true
-                break
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onSuccess(result: Sharer.Result?) {
             }
-        }
 
-        if (!facebookAppFound) {
-            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
-        }
+            override fun onCancel() {
+                toast("Chia sẻ bị huỷ bỏ")
+            }
 
-        startActivity(intent)
+            override fun onError(error: FacebookException?) {
+                toast(error.toString())
+            }
+        })
+
+        if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+            val urlToShare = product.provideProductLinkAffiliate().toString()
+            val shareContent = ShareLinkContent.Builder()
+                    .setContentUrl(Uri.parse(urlToShare))
+                    .build()
+
+            shareDialog.show(shareContent)
+        }
     }
 
     private fun shareApp(product: ProductDetailProvider) {
