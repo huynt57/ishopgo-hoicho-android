@@ -4,18 +4,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.ui.extensions.asDateTime
-import ishopgo.com.exhibition.ui.main.questmanager.QuestProvider
 
 
-class QuestionObject : IdentityData(), QuestProvider {
-    override fun provideTitle(): String {
-        return name ?: ""
-    }
-
-    override fun provideTime(): String {
-        return createdAt?.asDateTime() ?: ""
-    }
-
+class QuestionObject : IdentityData() {
     @SerializedName("name")
     @Expose
     var name: String? = null

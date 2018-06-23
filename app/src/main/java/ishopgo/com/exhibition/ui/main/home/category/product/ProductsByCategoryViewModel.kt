@@ -9,7 +9,6 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
@@ -20,7 +19,7 @@ class ProductsByCategoryViewModel : BaseApiViewModel(), AppComponent.Injectable 
         appComponent.inject(this)
     }
 
-    var childCategories = MutableLiveData<List<CategoryProvider>>()
+    var childCategories = MutableLiveData<List<Category>>()
 
     fun loadChildCategory(category: Category) {
         val fields = mutableMapOf<String, Any>()

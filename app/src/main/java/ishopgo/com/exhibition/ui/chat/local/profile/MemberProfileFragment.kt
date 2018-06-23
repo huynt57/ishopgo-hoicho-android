@@ -149,7 +149,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
                 if (it != null)
                     if (it.isNotEmpty()) {
                         val community = it[it.size - 1]
-                            last_id = community.id
+                        last_id = community.id
                     }
 
                 if (reloadData) {
@@ -252,14 +252,14 @@ class MemberProfileFragment : BaseActionBarFragment() {
             override fun click(position: Int, data: Community, code: Int) {
                 when (code) {
                     COMMUNITY_LIKE_CLICK -> {
-                            viewModel.postCommunityLike(data.id)
+                        viewModel.postCommunityLike(data.id)
                     }
 
                     COMMUNITY_COMMENT_CLICK -> {
                         if (UserDataManager.currentUserId > 0) {
-                                val intent = Intent(context, CommunityCommentActivity::class.java)
-                                intent.putExtra(EXTRA_ID, data.id)
-                                startActivity(intent)
+                            val intent = Intent(context, CommunityCommentActivity::class.java)
+                            intent.putExtra(EXTRA_ID, data.id)
+                            startActivity(intent)
                         } else
                             openLoginActivity()
                     }
@@ -271,14 +271,14 @@ class MemberProfileFragment : BaseActionBarFragment() {
 
 
                     COMMUNITY_PRODUCT_CLICK -> {
-                            val productId = data.product?.id ?: -1L
-                            if (productId != -1L) {
-                                context?.let {
-                                    val intent = Intent(it, ProductDetailActivity::class.java)
-                                    intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
-                                    startActivity(intent)
-                                }
+                        val productId = data.product?.id ?: -1L
+                        if (productId != -1L) {
+                            context?.let {
+                                val intent = Intent(it, ProductDetailActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+                                startActivity(intent)
                             }
+                        }
                     }
                     COMMUNITY_IMAGE_CLICK -> {
                         val intent = Intent(context, PhotoAlbumViewActivity::class.java)
@@ -360,7 +360,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
             if (data.product != null) {
-                val urlToShare = data.product?.providerLink()
+                val urlToShare = data.product?.link ?: ""
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse(urlToShare))
                         .setQuote(data.content)
@@ -439,15 +439,15 @@ class MemberProfileFragment : BaseActionBarFragment() {
                     linkImage += "${data.images!![i]}\n\n"
                 }
 
-                "${data.content}\n $linkImage\n ${data.product?.providerLink()
+                "${data.content}\n $linkImage\n ${data.product?.link
                         ?: ""}"
 
             } else {
-                "${data.content}\n ${data.images!![0]}\n ${data.product?.providerLink()
+                "${data.content}\n ${data.images!![0]}\n ${data.product?.link
                         ?: ""}"
             }
         } else
-            "${data.content}\n ${data.product?.providerLink() ?: ""}"
+            "${data.content}\n ${data.product?.link ?: ""}"
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

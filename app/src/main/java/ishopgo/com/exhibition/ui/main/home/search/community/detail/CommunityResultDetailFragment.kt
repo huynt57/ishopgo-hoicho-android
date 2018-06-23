@@ -222,7 +222,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
             if (data.product != null) {
-                val urlToShare = data.product?.providerLink()
+                val urlToShare = data.product?.link ?: ""
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse(urlToShare))
                         .setQuote(data.content)
@@ -301,15 +301,15 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                     linkImage += "${data.images!![i]}\n\n"
                 }
 
-                "${data.content}\n $linkImage\n ${data.product?.providerLink()
+                "${data.content}\n $linkImage\n ${data.product?.link
                         ?: ""}"
 
             } else {
-                "${data.content}\n ${data.images!![0]}\n ${data.product?.providerLink()
+                "${data.content}\n ${data.images!![0]}\n ${data.product?.link
                         ?: ""}"
             }
         } else
-            "${data.content}\n ${data.product?.providerLink() ?: ""}"
+            "${data.content}\n ${data.product?.link ?: ""}"
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

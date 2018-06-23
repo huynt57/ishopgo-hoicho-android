@@ -6,115 +6,8 @@ import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Provider
-import ishopgo.com.exhibition.ui.main.productmanager.detail.ProductManagerDetailProvider
 
-class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
-    override fun providerProviderName(): String {
-        return providerName ?: ""
-    }
-
-    override fun provideWholesaleFrom(): String {
-        return wholesalePriceFrom.toString()
-    }
-
-    override fun provideWholesaleTo(): String {
-        return wholesalePriceTo.toString()
-    }
-
-    override fun provideWholesaleCountProduct(): String {
-        return wholesaleCountProduct.toString()
-    }
-
-    override fun provideCategory(): List<Category>? {
-        return categories ?: mutableListOf()
-    }
-
-    companion object {
-        var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
-        var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
-
-        var IS_FEATURED: Int = 1  //Sản phẩm nổi bật
-
-        const val VIEW_WHOLESALE = 1
-    }
-
-    override fun provideViewWholesale(): Boolean {
-        return viewWholesale == VIEW_WHOLESALE
-    }
-
-    override fun provideName(): String {
-        return name ?: ""
-    }
-
-    override fun provideTitle(): String {
-        return title ?: ""
-    }
-
-    override fun provideDVT(): String {
-        return dvt ?: ""
-    }
-
-    override fun provideCode(): String {
-        return code ?: ""
-    }
-
-    override fun provideTTPrice(): String {
-        return ttPrice.toString()
-    }
-
-    override fun provideProviderPrice(): String {
-        return providerPrice.toString()
-    }
-
-    override fun providePrice(): String {
-        return price.toString()
-    }
-
-    override fun provideStatus(): Boolean {
-        return status == STATUS_DISPLAY_SHOW
-    }
-
-    override fun provideMadeIn(): String {
-        return madeIn ?: ""
-    }
-
-    override fun provideTags(): String {
-        return tags ?: ""
-    }
-
-    override fun provideDescription(): String {
-        return description ?: ""
-    }
-
-    override fun provideMetaDescription(): String {
-        return metaDescription ?: ""
-    }
-
-    override fun provideCollectionProducts(): ProductRelated? {
-        return collectionProducts
-    }
-
-    override fun provideProviderAccount(): Provider? {
-        return providerAccount
-    }
-
-    override fun provideImages(): List<String> {
-        return images ?: mutableListOf()
-    }
-
-    override fun provideDepartments(): List<Brand>? {
-        return departments ?: mutableListOf()
-    }
-
-    override fun provideLink(): String {
-        return link ?: ""
-    }
-
-
-    override fun provideIsFeatured(): Boolean {
-        return wasIsFeatured()
-    }
-
+class ProductManagerDetail : IdentityData() {
     @SerializedName("title")
     @Expose
     var title: String? = null
@@ -218,5 +111,4 @@ class ProductManagerDetail : IdentityData(), ProductManagerDetailProvider {
     @Expose
     var providerId: Long = 0L
 
-    fun wasIsFeatured() = is_featured == IS_FEATURED
 }

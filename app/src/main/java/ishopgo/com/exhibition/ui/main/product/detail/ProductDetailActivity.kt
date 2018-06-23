@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -37,7 +38,7 @@ class ProductDetailActivity : BaseSingleFragmentActivity() {
         })
     }
 
-    private fun openRatingComment(product: ProductDetailProvider) {
+    private fun openRatingComment(product: ProductDetail) {
         val params = Bundle()
         params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
         val transaction = supportFragmentManager.beginTransaction()

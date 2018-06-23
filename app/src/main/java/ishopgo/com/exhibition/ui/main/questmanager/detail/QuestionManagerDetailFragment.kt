@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail.*
 
@@ -55,5 +58,32 @@ class QuestionManagerDetailFragment : BaseFragment() {
         })
 
         viewModel.getPostContent(questionId)
+    }
+
+    interface QuestDetailProvider {
+        fun provideTitle(): String
+        fun provideTime(): String
+        fun provideAnswer(): String
+    }
+
+    class QuestDetailConverter : Converter<QuestionDetail, QuestDetailProvider> {
+
+        override fun convert(from: QuestionDetail): QuestDetailProvider {
+            return object : QuestDetailProvider {
+                override fun provideTitle(): String {
+                    return from.title ?: ""
+                }
+
+                override fun provideTime(): String {
+                    return from.createdAt?.asDateTime() ?: ""
+                }
+
+                override fun provideAnswer(): String {
+                    return "Câu trả lời: ${from.answer}"
+                }
+
+
+            }
+        }
     }
 }

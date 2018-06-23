@@ -11,7 +11,6 @@ import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 /**
  * Created by xuanhong on 4/26/18. HappyCoding!
@@ -167,7 +166,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var categories = MutableLiveData<List<CategoryProvider>>()
+    var categories = MutableLiveData<List<Category>>()
 
     fun loadCategories() {
         addDisposable(noAuthService.getCategories()

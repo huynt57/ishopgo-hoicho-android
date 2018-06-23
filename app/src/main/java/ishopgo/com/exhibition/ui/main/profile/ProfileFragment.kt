@@ -20,8 +20,12 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDate
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.main.profile.edit.ProfileEditActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -74,29 +78,97 @@ class ProfileFragment : BaseFragment() {
         viewModel.loadUserProfile()
     }
 
-    private fun showData(profile: ProfileProvider) {
-        if (profile is Profile) data = profile
+    private fun showData(profile: Profile) {
+        val convert = ProfileConverter().convert(profile)
+        data = profile
         context?.let {
             Glide.with(it)
-                    .load(profile.provideAvatar())
+                    .load(convert.provideAvatar())
                     .apply(RequestOptions
                             .circleCropTransform()
                             .placeholder(R.drawable.avatar_placeholder)
                             .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
-            tv_profile_name.text = profile.provideName()
-            tv_profile_phone.text = profile.providePhone()
-            tv_profile_birthday.text = profile.provideDob()
-            tv_profile_email.text = profile.provideEmail()
-            tv_profile_company.text = profile.provideCompany()
-            tv_profile_region.text = profile.provideRegion()
-            tv_profile_address.text = profile.provideAddress()
-            tv_profile_type.text = profile.provideAccountType()
-            tv_profile_createAt.text = profile.provideJoinedDate()
-            tv_profile_introduction.text = profile.provideIntroduction()
+            tv_profile_name.text = convert.provideName()
+            tv_profile_phone.text = convert.providePhone()
+            tv_profile_birthday.text = convert.provideDob()
+            tv_profile_email.text = convert.provideEmail()
+            tv_profile_company.text = convert.provideCompany()
+            tv_profile_region.text = convert.provideRegion()
+            tv_profile_address.text = convert.provideAddress()
+            tv_profile_type.text = convert.provideAccountType()
+            tv_profile_createAt.text = convert.provideJoinedDate()
+            tv_profile_introduction.text = convert.provideIntroduction()
         }
 
         chooseProfileOption()
+    }
+
+    interface ProfileProvider {
+
+        fun provideAvatar(): String
+        fun providePhone(): CharSequence
+        fun provideName(): CharSequence
+        fun provideDob(): CharSequence
+        fun provideEmail(): CharSequence
+        fun provideCompany(): CharSequence
+        fun provideRegion(): CharSequence
+        fun provideAddress(): CharSequence
+        fun provideAccountType(): CharSequence
+        fun provideJoinedDate(): CharSequence
+        fun provideIntroduction(): CharSequence
+
+    }
+
+    class ProfileConverter : Converter<Profile, ProfileProvider> {
+
+        override fun convert(from: Profile): ProfileProvider {
+            return object : ProfileProvider {
+                override fun provideAccountType(): CharSequence {
+                    return "Loại tài khoản: <b>${from.typeTextExpo ?: ""}</b>".asHtml()
+                }
+
+                override fun provideIntroduction(): CharSequence {
+                    return "Giới thiệu: <b>${from.introduction ?: ""}</b>".asHtml()
+                }
+
+                override fun provideName(): CharSequence {
+                    return from.name ?: ""
+                }
+
+                override fun providePhone(): CharSequence {
+                    return "Số điện thoại: <b>${from.phone?.asPhone() ?: ""}</b>".asHtml()
+                }
+
+                override fun provideAvatar(): String {
+                    return from.image ?: ""
+                }
+
+                override fun provideDob(): CharSequence {
+                    return "Ngày sinh: <b>${from.birthday?.asDate()}</b>".asHtml()
+                }
+
+                override fun provideEmail(): CharSequence {
+                    return "Email: <b>${from.email ?: ""}</b>".asHtml()
+                }
+
+                override fun provideCompany(): CharSequence {
+                    return "Công ty: <b>${from.company ?: ""}</b>".asHtml()
+                }
+
+                override fun provideRegion(): CharSequence {
+                    return "Khu vực: <b>${from.district ?: ""} - ${from.region ?: ""}</b>".asHtml()
+                }
+
+                override fun provideAddress(): CharSequence {
+                    return "Địa chỉ: <b>${from.address ?: ""}</b>".asHtml()
+                }
+
+                override fun provideJoinedDate(): CharSequence {
+                    return "Ngày tham gia: <b>${from.createdAt?.asDate()}</b>".asHtml()
+                }
+            }
+        }
     }
 
     private fun chooseProfileOption() {

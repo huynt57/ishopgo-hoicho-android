@@ -19,7 +19,6 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -145,16 +144,14 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         view_child_categories.adapter = childAdapter
         view_child_categories.layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.HORIZONTAL, false)
         view_child_categories.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        childAdapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-            override fun click(position: Int, data: CategoryProvider, code: Int) {
-                if (data is Category) {
+        childAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+            override fun click(position: Int, data: Category, code: Int) {
                     category = data
                     setupBreadCrumb()
 
                     viewModel.loadChildCategory(category)
                     firstLoad()
                 }
-            }
 
         }
     }

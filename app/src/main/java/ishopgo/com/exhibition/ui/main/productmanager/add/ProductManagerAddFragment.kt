@@ -37,7 +37,6 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -422,33 +421,31 @@ class ProductManagerAddFragment : BaseFragment() {
 
             if (level == CATEGORY_LEVEL_PARENT) {
                 rv_search.adapter = adapterCategory
-                adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                listCategory.clear()
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_1)
-                                listCategory.add(data)
-                                til_category_1.visibility = View.VISIBLE
-                                edt_product_categories_1.setText("")
-                                til_category_2.visibility = View.GONE
-                                edt_product_categories_2.setText("")
-                                til_category_3.visibility = View.GONE
-                                edt_product_categories_3.setText("")
-                                til_category_4.visibility = View.GONE
-                                edt_product_categories_4.setText("")
-                            }
+                            listCategory.clear()
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_1)
+                            listCategory.add(data)
+                            til_category_1.visibility = View.VISIBLE
+                            edt_product_categories_1.setText("")
+                            til_category_2.visibility = View.GONE
+                            edt_product_categories_2.setText("")
+                            til_category_3.visibility = View.GONE
+                            edt_product_categories_3.setText("")
+                            til_category_4.visibility = View.GONE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
             }
             if (level == CATEGORY_LEVEL_1) {
                 rv_search.adapter = adapterCategory_1
-                adapterCategory_1.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_1.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
                             if (listCategory.size >= 2)
@@ -462,18 +459,16 @@ class ProductManagerAddFragment : BaseFragment() {
                                     if (i == 4)
                                         listCategory.removeAt(i - 3)
                                 }
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_2)
-                                listCategory.add(data)
-                                til_category_2.visibility = View.VISIBLE
-                                edt_product_categories_2.setText("")
-                                til_category_3.visibility = View.GONE
-                                edt_product_categories_3.setText("")
-                                til_category_4.visibility = View.GONE
-                                edt_product_categories_4.setText("")
-                            }
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_2)
+                            listCategory.add(data)
+                            til_category_2.visibility = View.VISIBLE
+                            edt_product_categories_2.setText("")
+                            til_category_3.visibility = View.GONE
+                            edt_product_categories_3.setText("")
+                            til_category_4.visibility = View.GONE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
@@ -481,8 +476,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
             if (level == CATEGORY_LEVEL_2) {
                 rv_search.adapter = adapterCategory_2
-                adapterCategory_2.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_2.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
                             if (listCategory.size >= 3)
@@ -494,24 +489,22 @@ class ProductManagerAddFragment : BaseFragment() {
                                     if (i == 4)
                                         listCategory.removeAt(i - 2)
                                 }
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_3)
-                                listCategory.add(data)
-                                til_category_3.visibility = View.VISIBLE
-                                edt_product_categories_3.setText("")
-                                til_category_4.visibility = View.GONE
-                                edt_product_categories_4.setText("")
-                            }
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_3)
+                            listCategory.add(data)
+                            til_category_3.visibility = View.VISIBLE
+                            edt_product_categories_3.setText("")
+                            til_category_4.visibility = View.GONE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
             }
             if (level == CATEGORY_LEVEL_3) {
                 rv_search.adapter = adapterCategory_3
-                adapterCategory_3.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_3.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
                             if (listCategory.size >= 4)
@@ -521,29 +514,25 @@ class ProductManagerAddFragment : BaseFragment() {
                                     if (i == 4)
                                         listCategory.removeAt(i - 1)
                                 }
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_4)
-                                listCategory.add(data)
-                                til_category_4.visibility = View.VISIBLE
-                                edt_product_categories_4.setText("")
-                            }
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_4)
+                            listCategory.add(data)
+                            til_category_4.visibility = View.VISIBLE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
             }
             if (level == CATEGORY_LEVEL_4) {
                 rv_search.adapter = adapterCategory_4
-                adapterCategory_4.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_4.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                listCategory.add(data)
-                            }
+                            listCategory.add(data)
                         }
                     }
                 }

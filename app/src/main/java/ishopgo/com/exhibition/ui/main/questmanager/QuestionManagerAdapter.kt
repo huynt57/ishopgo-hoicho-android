@@ -6,6 +6,7 @@ import ishopgo.com.exhibition.model.question.QuestionObject
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asDate
 import kotlinx.android.synthetic.main.item_qa.view.*
 
 class QuestionManagerAdapter : ClickableAdapter<QuestionObject>() {
@@ -36,6 +37,26 @@ class QuestionManagerAdapter : ClickableAdapter<QuestionObject>() {
                 tv_qa_info.text = convert.provideTime()
             }
         }
+    }
 
+    interface QuestProvider {
+        fun provideTitle(): String
+        fun provideTime(): String
+    }
+
+    class QuestionConverter : Converter<QuestionObject, QuestProvider> {
+
+        override fun convert(from: QuestionObject): QuestProvider {
+            return object : QuestProvider {
+                override fun provideTime(): String {
+                    return from.createdAt?.asDate() ?: ""
+                }
+
+                override fun provideTitle(): String {
+                    return from.name ?: ""
+                }
+
+            }
+        }
     }
 }
