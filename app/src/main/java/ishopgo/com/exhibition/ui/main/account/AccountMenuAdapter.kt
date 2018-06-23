@@ -4,15 +4,17 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.AccountMenuItem
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import kotlinx.android.synthetic.main.item_account_menu_child.view.*
 import kotlinx.android.synthetic.main.item_account_menu_parent.view.*
 
 /**
  * Created by xuanhong on 4/23/18. HappyCoding!
  */
-class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
+class AccountMenuAdapter : ClickableAdapter<AccountMenuItem>() {
 
     companion object {
         const val TYPE_PARENT = 1
@@ -25,7 +27,7 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
     /**
      * Running state of which positions are currently checked
      */
-    private var mExpanding = mutableListOf<AccountMenuProvider>()
+    private var mExpanding = mutableListOf<AccountMenuItem>()
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return when (viewType) {
@@ -40,29 +42,29 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
 
 
     override fun getItemViewType(position: Int): Int {
-        val isParent = getItem(position).provideIsParent()
+        val isParent = getItem(position).isParent
         return if (isParent) TYPE_PARENT else TYPE_CHILD
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<AccountMenuProvider> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<AccountMenuItem> {
         return when (viewType) {
             TYPE_PARENT -> {
-                ParentHolder(v)
+                ParentHolder(v, AccountMenuConverter())
             }
             else -> {
-                ChildHolder(v)
+                ChildHolder(v, AccountMenuConverter())
             }
         }
 
     }
 
-    override fun replaceAll(data: List<AccountMenuProvider>) {
+    override fun replaceAll(data: List<AccountMenuItem>) {
         mExpanding.clear()
 
         super.replaceAll(data)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<AccountMenuProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<AccountMenuItem>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         if (holder is ParentHolder) {
@@ -71,19 +73,23 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
                 val item = getItem(adapterPosition)
 
                 if (mExpanding.any { it == item }) {
-                    // collapse parent, remove childs
-                    mData.subList(adapterPosition + 1, adapterPosition + 1 + item.provideChilds().size).clear()
+                    item.childs?.let {
+                        // collapse parent, remove childs
+                        mData.subList(adapterPosition + 1, adapterPosition + 1 + item.childs.size).clear()
 
-                    notifyItemRangeRemoved(adapterPosition + 1, item.provideChilds().size)
+                        notifyItemRangeRemoved(adapterPosition + 1, item.childs.size)
 
-                    mExpanding.remove(item)
+                        mExpanding.remove(item)
+                    }
                 } else {
-                    // expand childs
-                    mData.addAll(adapterPosition + 1, item.provideChilds())
+                    item.childs?.let {
+                        // expand childs
+                        mData.addAll(adapterPosition + 1, item.childs)
 
-                    notifyItemRangeInserted(adapterPosition + 1, item.provideChilds().size)
+                        notifyItemRangeInserted(adapterPosition + 1, item.childs.size)
 
-                    mExpanding.add(item)
+                        mExpanding.add(item)
+                    }
                 }
 
                 notifyItemChanged(adapterPosition)
@@ -108,22 +114,23 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
         }
     }
 
-    inner class ParentHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<AccountMenuProvider>(v) {
+    inner class ParentHolder(v: View, private val converter: Converter<AccountMenuItem, AccountMenuProvider>) : BaseRecyclerViewAdapter.ViewHolder<AccountMenuItem>(v) {
 
-        override fun populate(data: AccountMenuProvider) {
+        override fun populate(data: AccountMenuItem) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
                 Glide.with(context)
-                        .load(data.provideIcon())
+                        .load(convert.provideIcon())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.ic_finger_highlight_24dp)
                                 .error(R.drawable.ic_finger_highlight_24dp))
                         .into(view_parent_icon)
 
-                view_parent_text.text = data.provideName()
+                view_parent_text.text = convert.provideName()
 
-                if (data.provideChilds().isEmpty()) {
+                if (convert.provideChilds().isEmpty()) {
                     view_parent_expand.setImageResource(0)
                 } else {
                     if (mExpanding.any { it == data })
@@ -135,23 +142,69 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuProvider>() {
         }
     }
 
-    inner class ChildHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<AccountMenuProvider>(v) {
+    inner class ChildHolder(v: View, private val converter: Converter<AccountMenuItem, AccountMenuProvider>) : BaseRecyclerViewAdapter.ViewHolder<AccountMenuItem>(v) {
 
-        override fun populate(data: AccountMenuProvider) {
+        override fun populate(data: AccountMenuItem) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
                 Glide.with(context)
-                        .load(data.provideIcon())
+                        .load(convert.provideIcon())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.ic_finger_highlight_24dp)
                                 .error(R.drawable.ic_finger_highlight_24dp))
                         .into(view_child_icon)
 
-                view_child_text.text = data.provideName()
+                view_child_text.text = convert.provideName()
             }
         }
     }
 
+    interface AccountMenuProvider {
 
+        fun provideIcon(): Int
+
+        fun provideName(): String
+
+        fun provideChilds(): List<AccountMenuItem>
+
+        fun provideIsParent(): Boolean
+
+        fun provideAction(): Int
+
+        fun provideTextColor(): Int
+
+    }
+
+    class AccountMenuConverter : Converter<AccountMenuItem, AccountMenuProvider> {
+
+        override fun convert(from: AccountMenuItem): AccountMenuProvider {
+            return object : AccountMenuProvider {
+                override fun provideTextColor(): Int {
+                    return from.textColor
+                }
+
+                override fun provideIcon(): Int {
+                    return from.icon
+                }
+
+                override fun provideName(): String {
+                    return from.name
+                }
+
+                override fun provideChilds(): List<AccountMenuItem> {
+                    return from.childs ?: listOf()
+                }
+
+                override fun provideIsParent(): Boolean {
+                    return from.isParent
+                }
+
+                override fun provideAction(): Int {
+                    return from.action
+                }
+            }
+        }
+    }
 }
