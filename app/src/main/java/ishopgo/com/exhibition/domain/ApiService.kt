@@ -149,6 +149,11 @@ class ApiService {
 
     interface Auth {
 
+        @GET("community")
+        fun getCommunity(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<ManagerCommunity>>
+
         @GET("shop/{id}")
         fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
