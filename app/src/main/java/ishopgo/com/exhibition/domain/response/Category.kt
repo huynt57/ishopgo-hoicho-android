@@ -1,33 +1,8 @@
 package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
-class Category : IdentityData(), CategoryProvider {
-    override fun provideCount(): Int {
-        return count ?: 0
-    }
-
-    override fun provideLevel(): Int {
-        return level
-    }
-
-    override fun provideIcon(): String {
-        return image ?: ""
-    }
-
-    override fun provideName(): String {
-        return name ?: "unknown"
-    }
-
-    override fun provideChilds(): List<CategoryProvider> {
-        return subs ?: mutableListOf()
-    }
-
-    override fun provideIsParent(): Boolean {
-        return level == 1
-    }
-
+class Category : IdentityData() {
     var level: Int = 1
         set(value) {
             field = value

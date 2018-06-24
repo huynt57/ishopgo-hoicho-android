@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import kotlinx.android.synthetic.main.item_new_manager.view.*
 
@@ -48,6 +49,46 @@ class PostManagerAdapter : ClickableAdapter<PostObject>() {
                 tv_short_desc.text = convert.provideShortDescription()
             }
         }
+    }
 
+    interface PostProvider {
+        fun provideAvatar(): CharSequence
+        fun provideTitle(): CharSequence
+        fun provideTime(): CharSequence
+        fun provideOwner(): CharSequence
+        fun provideShortDescription(): CharSequence
+        fun provideCategory(): CharSequence
+    }
+
+    class PostConverter : Converter<PostObject, PostProvider> {
+
+        override fun convert(from: PostObject): PostProvider {
+            return object : PostProvider {
+                override fun provideOwner(): CharSequence {
+                    return from.accountName ?: ""
+                }
+
+                override fun provideCategory(): CharSequence {
+                    return from.categoryName ?: ""
+                }
+
+                override fun provideAvatar(): CharSequence {
+                    return from.image ?: ""
+                }
+
+                override fun provideTitle(): CharSequence {
+                    return from.name ?: ""
+                }
+
+                override fun provideShortDescription(): CharSequence {
+                    return from.shortContent?.asHtml() ?: ""
+                }
+
+                override fun provideTime(): CharSequence {
+                    return from.createdAt?.asDate() ?: ""
+                }
+
+            }
+        }
     }
 }

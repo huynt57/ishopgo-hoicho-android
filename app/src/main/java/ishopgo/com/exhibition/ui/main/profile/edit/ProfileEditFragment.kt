@@ -10,12 +10,9 @@ import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
@@ -27,7 +24,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.login.RegionAdapter
-import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_edit_profile.*
@@ -93,9 +89,8 @@ class ProfileEditFragment : BaseFragment() {
         showData(Toolbox.gson.fromJson(json, Profile::class.java))
     }
 
-    private fun showData(profile: ProfileProvider) {
+    private fun showData(profile: Profile) {
         context?.let {
-            if (profile is Profile) {
                 Glide.with(it)
                         .load(profile.image)
                         .apply(RequestOptions
@@ -115,7 +110,6 @@ class ProfileEditFragment : BaseFragment() {
                 view_introduction.setText(profile.introduction ?: "")
                 view_account_type.setText(profile.typeTextExpo ?: "")
                 view_joined_date.setText(profile.createdAt?.asDate() ?: "")
-            }
 
             view_submit.setOnClickListener {
                 submitChanges(view_name.text.toString(), view_dob.text.toString(), view_email.text.toString(),

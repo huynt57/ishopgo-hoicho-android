@@ -98,7 +98,7 @@ class SalePointDetailFragment : BaseFragment() {
                     intent.type = "text/plain"
                     intent.data = Uri.parse("smsto:${salePoint?.phone}")
                     dataProduct?.let {
-                        intent.putExtra("sms_body", "Sản phẩm: ${it.provideProductName()}\n")
+                        intent.putExtra("sms_body", "Sản phẩm: ${it.name ?: ""}\n")
                     }
                     context?.let {
                         if (intent.resolveActivity(it.packageManager) != null)
@@ -128,15 +128,15 @@ class SalePointDetailFragment : BaseFragment() {
                 productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
                     override fun click(position: Int, data: Product, code: Int) {
                         context?.let {
-                                productId = data.id
+                            productId = data.id
 
-                                val productDetail = ProductDetail()
-                                productDetail.image = data.image
-                                productDetail.name = data.name
-                                productDetail.price = data.price
-                                productDetail.code = data.code
-                                dataProduct = productDetail
-                                viewModel.loadData(phone, productId)
+                            val productDetail = ProductDetail()
+                            productDetail.image = data.image
+                            productDetail.name = data.name
+                            productDetail.price = data.price
+                            productDetail.code = data.code
+                            dataProduct = productDetail
+                            viewModel.loadData(phone, productId)
                         }
                     }
                 }

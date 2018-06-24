@@ -7,7 +7,6 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
@@ -27,9 +26,9 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
         isSearchEnable.postValue(true)
     }
 
-    var showCategoriedProducts = MutableLiveData<CategoryProvider>()
+    var showCategoriedProducts = MutableLiveData<Category>()
 
-    fun showCategoriedProducts(category: CategoryProvider) {
+    fun showCategoriedProducts(category: Category) {
         showCategoriedProducts.postValue(category)
     }
 

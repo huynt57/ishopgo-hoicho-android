@@ -7,12 +7,11 @@ import ishopgo.com.exhibition.domain.request.BoothCategoriesRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class CategoryViewModel : BaseListViewModel<List<CategoryProvider>>(), AppComponent.Injectable {
+class CategoryViewModel : BaseListViewModel<List<Category>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         if (params is BoothCategoriesRequest) {

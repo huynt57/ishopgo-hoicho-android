@@ -10,7 +10,7 @@ class RatingProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var isCommentEnable = MutableLiveData<ProductDetailProvider>()
+    var isCommentEnable = MutableLiveData<ProductDetail>()
 
     fun enableCommentRating(data: ProductDetail) {
         isCommentEnable.postValue(data)

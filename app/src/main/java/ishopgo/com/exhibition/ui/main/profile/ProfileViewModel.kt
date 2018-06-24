@@ -29,7 +29,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var userInfo = MutableLiveData<ProfileProvider>()
+    var userInfo = MutableLiveData<Profile>()
 
     fun loadUserProfile() {
         addDisposable(authService.getProfile(UserDataManager.currentUserId)
@@ -46,7 +46,7 @@ class ProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    var profileUpdated = MutableLiveData<ProfileProvider>()
+    var profileUpdated = MutableLiveData<Profile>()
 
     fun updateProfile(name: String, dob: String, email: String, company: String, region: String, district: String, address: String, introduction: String, image: String) {
         val builder = MultipartBody.Builder()

@@ -4,15 +4,17 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import kotlinx.android.synthetic.main.item_category_child.view.*
 import kotlinx.android.synthetic.main.item_category_parent.view.*
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
  */
-class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
+class CategoryAdapter : ClickableAdapter<Category>() {
 
     companion object {
         const val TYPE_PARENT = 1
@@ -25,7 +27,7 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
     /**
      * Running state of which positions are currently checked
      */
-    private var mExpanding = mutableListOf<CategoryProvider>()
+    private var mExpanding = mutableListOf<Category>()
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return when (viewType) {
@@ -40,29 +42,29 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
 
 
     override fun getItemViewType(position: Int): Int {
-        val isParent = getItem(position).provideIsParent()
+        val isParent = getItem(position).level == 1
         return if (isParent) TYPE_PARENT else TYPE_CHILD
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<CategoryProvider> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Category> {
         return when (viewType) {
             TYPE_PARENT -> {
-                ParentHolder(v)
+                ParentHolder(v, CategoryConverter())
             }
             else -> {
-                ChildHolder(v)
+                ChildHolder(v, CategoryConverter())
             }
         }
 
     }
 
-    override fun replaceAll(data: List<CategoryProvider>) {
+    override fun replaceAll(data: List<Category>) {
         mExpanding.clear()
 
         super.replaceAll(data)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<CategoryProvider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Category>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         if (holder is ParentHolder) {
@@ -71,19 +73,24 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
                 val item = getItem(adapterPosition)
 
                 if (mExpanding.any { it == item }) {
-                    // collapse parent, remove childs
-                    mData.subList(adapterPosition + 1, adapterPosition + 1 + item.provideChilds().size).clear()
+                    if (item.subs != null && item.subs!!.isNotEmpty()) {
 
-                    notifyItemRangeRemoved(adapterPosition + 1, item.provideChilds().size)
+                        // collapse parent, remove childs
+                        mData.subList(adapterPosition + 1, adapterPosition + 1 + item.subs!!.size).clear()
 
-                    mExpanding.remove(item)
+                        notifyItemRangeRemoved(adapterPosition + 1, item.subs!!.size)
+
+                        mExpanding.remove(item)
+                    }
                 } else {
-                    // expand childs
-                    mData.addAll(adapterPosition + 1, item.provideChilds())
+                    if (item.subs != null && item.subs!!.isNotEmpty()) {
+                        // expand childs
+                        mData.addAll(adapterPosition + 1, item.subs!!)
 
-                    notifyItemRangeInserted(adapterPosition + 1, item.provideChilds().size)
+                        notifyItemRangeInserted(adapterPosition + 1, item.subs!!.size)
 
-                    mExpanding.add(item)
+                        mExpanding.add(item)
+                    }
                 }
 
                 notifyItemChanged(adapterPosition)
@@ -108,22 +115,23 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
         }
     }
 
-    inner class ParentHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<CategoryProvider>(v) {
+    inner class ParentHolder(v: View, private val converter: Converter<Category, CategoryProvider>) : BaseRecyclerViewAdapter.ViewHolder<Category>(v) {
 
-        override fun populate(data: CategoryProvider) {
+        override fun populate(data: Category) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
                 Glide.with(context)
-                        .load(data.provideIcon())
+                        .load(convert.provideIcon())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.ic_finger_highlight_24dp)
                                 .error(R.drawable.ic_finger_highlight_24dp))
                         .into(view_parent_icon)
 
-                view_parent_text.text = data.provideName()
+                view_parent_text.text = convert.provideName()
 
-                if (data.provideChilds().isEmpty()) {
+                if (convert.provideChilds().isEmpty()) {
                     view_parent_expand.setImageResource(0)
                 } else {
                     if (mExpanding.any { it == data })
@@ -135,23 +143,69 @@ class CategoryAdapter : ClickableAdapter<CategoryProvider>() {
         }
     }
 
-    inner class ChildHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<CategoryProvider>(v) {
+    inner class ChildHolder(v: View, private val converter: Converter<Category, CategoryProvider>) : BaseRecyclerViewAdapter.ViewHolder<Category>(v) {
 
-        override fun populate(data: CategoryProvider) {
+        override fun populate(data: Category) {
             super.populate(data)
 
+            val convert = converter.convert(data)
             itemView.apply {
                 Glide.with(context)
-                        .load(data.provideIcon())
+                        .load(convert.provideIcon())
                         .apply(RequestOptions()
                                 .placeholder(R.drawable.ic_finger_highlight_24dp)
                                 .error(R.drawable.ic_finger_highlight_24dp))
                         .into(view_child_icon)
 
-                view_child_text.text = data.provideName()
+                view_child_text.text = convert.provideName()
             }
         }
     }
 
+    interface CategoryProvider {
+
+        fun provideIcon(): String
+
+        fun provideName(): String
+
+        fun provideChilds(): List<Category>
+
+        fun provideIsParent(): Boolean
+
+        fun provideLevel(): Int
+
+        fun provideCount(): Int
+    }
+
+    class CategoryConverter : Converter<Category, CategoryProvider> {
+
+        override fun convert(from: Category): CategoryProvider {
+            return object : CategoryProvider {
+                override fun provideCount(): Int {
+                    return from.count ?: 0
+                }
+
+                override fun provideLevel(): Int {
+                    return from.level
+                }
+
+                override fun provideIcon(): String {
+                    return from.image ?: ""
+                }
+
+                override fun provideName(): String {
+                    return from.name ?: "unknown"
+                }
+
+                override fun provideChilds(): List<Category> {
+                    return from.subs ?: mutableListOf()
+                }
+
+                override fun provideIsParent(): Boolean {
+                    return from.level == 1
+                }
+            }
+        }
+    }
 
 }

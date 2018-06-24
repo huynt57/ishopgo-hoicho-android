@@ -8,12 +8,13 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.community.Community
+import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.CommunityImageAdapter
-import ishopgo.com.exhibition.ui.community.CommunityProductProvider
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_community.view.*
 import kotlinx.android.synthetic.main.item_search_total.view.*
 
@@ -143,10 +144,10 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                     tv_community_like.text = "${convert.provideLikeCount()} thích"
                     toggle_community_like.visibility = View.GONE
 
-                    Glide.with(this).load(convert.provideProduct()?.providerImage())
+                    Glide.with(this).load(convert.provideProduct()?.image ?: "")
                             .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_community_product)
-                    tv_community_product_name.text = convert.provideProduct()?.providerName()
-                    tv_community_product_price.text = convert.provideProduct()?.providerPrice()
+                    tv_community_product_name.text = convert.provideProduct()?.name ?: ""
+                    tv_community_product_price.text = convert.provideProduct()?.price?.asMoney() ?: "0 đ"
                 } else {
                     cv_community_product.visibility = View.GONE
                     toggle_community_like.visibility = View.VISIBLE
@@ -186,7 +187,7 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         fun provideLiked(): Boolean
         fun provideCommentCount(): Int
         fun provideShareCount(): Int
-        fun provideProduct(): CommunityProductProvider?
+        fun provideProduct(): CommunityProduct?
         fun provideListImage(): MutableList<String>
     }
 
@@ -225,7 +226,7 @@ class SearchCommunityAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                     return from.shareCount ?: 0
                 }
 
-                override fun provideProduct(): CommunityProductProvider? {
+                override fun provideProduct(): CommunityProduct? {
                     return from.product
                 }
 

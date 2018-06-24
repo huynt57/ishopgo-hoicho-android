@@ -26,7 +26,6 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -167,12 +166,11 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
             rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
 
             rv_search.adapter = adapterCategory
-            adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                override fun click(position: Int, data: CategoryProvider, code: Int) {
+            adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                override fun click(position: Int, data: Category, code: Int) {
                     context?.let {
-                        if (data is Category)
-                            categoryId = data.id
-                        view.text = data.provideName()
+                        categoryId = data.id
+                        view.text = data.name ?: ""
                         dialog.dismiss()
                         firstLoad()
                     }
