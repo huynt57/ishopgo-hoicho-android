@@ -70,7 +70,7 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
                 }
 
                 override fun provideName(): String {
-                    return from.accountName ?: "unknown"
+                    return from.accountName ?: "Tên tài khoản"
                 }
 
                 override fun provideAvatar(): String {

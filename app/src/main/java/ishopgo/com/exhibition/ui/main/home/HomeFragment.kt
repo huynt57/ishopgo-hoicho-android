@@ -323,25 +323,29 @@ class HomeFragment : BaseFragment() {
         }
         favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
-                openProductDetail(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
             }
 
         }
         categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
             override fun click(position: Int, data: Category, code: Int) {
-                mainViewModel.showCategoriedProducts(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    mainViewModel.showCategoriedProducts(data)
             }
 
         }
         viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
-                openProductDetail(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
             }
 
         }
         highlightProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
-                openProductDetail(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
             }
 
         }
@@ -462,8 +466,11 @@ class HomeFragment : BaseFragment() {
     private fun setupViewedProducts(context: Context) {
         // dummy product
         val dummy = mutableListOf<Product>()
-        for (i in 0..6)
-            dummy.add(Product())
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
         viewedProductAdapter.addAll(dummy)
 
         view_list_viewed_products.adapter = viewedProductAdapter
@@ -476,8 +483,11 @@ class HomeFragment : BaseFragment() {
     private fun setupFavoriteProducts(context: Context) {
         // dummy product
         val dummy = mutableListOf<Product>()
-        for (i in 0..6)
-            dummy.add(Product())
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
         favoriteProductAdapter.addAll(dummy)
 
         view_list_favorite_products.adapter = favoriteProductAdapter
@@ -490,8 +500,11 @@ class HomeFragment : BaseFragment() {
     private fun setupCategoryStage1(context: Context) {
         // dummy category
         val dummy = mutableListOf<Category>()
-        for (i in 0..6)
-            dummy.add(Category())
+        for (i in 0..6) {
+            val d = Category()
+            d.id = -1L
+            dummy.add(d)
+        }
         categoryStage1Adapter.addAll(dummy)
 
         view_list_category_stage1.adapter = categoryStage1Adapter
@@ -504,8 +517,11 @@ class HomeFragment : BaseFragment() {
     private fun setupHighlightProducts(context: Context) {
         // dummy product
         val dummy = mutableListOf<Product>()
-        for (i in 0..6)
-            dummy.add(Product())
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
         highlightProductAdapter.addAll(dummy)
 
         view_list_highlight_products.adapter = highlightProductAdapter

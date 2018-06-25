@@ -49,7 +49,6 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_detail.*
 import org.apache.commons.io.IOUtils
 import java.io.IOException
-import kotlin.collections.ArrayList
 
 class ProductManagerDetailFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel

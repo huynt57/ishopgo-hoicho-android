@@ -96,15 +96,13 @@ class MainFragment : BaseFragment(), BackpressConsumable {
 
         viewModel.showCategoriedProducts.observe(this, Observer { s ->
             s?.let {
-                if (it is Category) {
-                    val params = Bundle()
-                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
-                    childFragmentManager.beginTransaction()
-                            .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                            .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(params))
-                            .addToBackStack(ProductsByCategoryFragment.TAG)
-                            .commit()
-                }
+                val params = Bundle()
+                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+                childFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(params))
+                        .addToBackStack(ProductsByCategoryFragment.TAG)
+                        .commit()
             }
         })
         viewModel.notificationCount.observe(this, Observer { c ->

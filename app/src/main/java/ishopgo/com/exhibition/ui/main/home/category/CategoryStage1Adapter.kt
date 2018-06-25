@@ -96,7 +96,7 @@ class CategoryStage1Adapter(private var itemWidthRatio: Float = -1f) : Clickable
                 }
 
                 override fun provideName(): String {
-                    return from.name ?: "unknown"
+                    return from.name ?: "Danh mục"
                 }
 
                 override fun provideChilds(): List<Category> {

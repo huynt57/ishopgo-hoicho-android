@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
-import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
