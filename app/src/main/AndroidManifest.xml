@@ -149,10 +149,10 @@
             android:name=".ui.main.account.password.ChangePasswordActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
+
         <activity
-            android:name=".ui.main.home.category.product.search.SearchProductsOfCategoryActivity"
+            android:name=".ui.main.home.introduction.IntroductionActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateVisible"
             android:screenOrientation="portrait"/>
 
         <activity

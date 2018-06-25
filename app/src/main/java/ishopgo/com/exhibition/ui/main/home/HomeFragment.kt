@@ -34,6 +34,7 @@ import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
 import ishopgo.com.exhibition.ui.main.home.category.DummyCategoryProvider
+import ishopgo.com.exhibition.ui.main.home.introduction.IntroductionActivity
 import ishopgo.com.exhibition.ui.main.home.post.LatestPostsAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
@@ -231,6 +232,11 @@ class HomeFragment : BaseFragment() {
         view_company_info.text = builder.toString().asHtml()
     }
 
+    private fun openIntroduction() {
+        val intent = Intent(requireContext(), IntroductionActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun openPostManager(typeManager: Int) {
         context?.let {
             val intent = Intent(it, PostActivity::class.java)
@@ -268,6 +274,9 @@ class HomeFragment : BaseFragment() {
             loadData()
         }
 
+        view_open_introduce.setOnClickListener {
+            openIntroduction()
+        }
         view_open_news.setOnClickListener {
             openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
         }
@@ -412,9 +421,9 @@ class HomeFragment : BaseFragment() {
 
     private fun openProductDetail(product: Product) {
         context?.let {
-                val intent = Intent(it, ProductDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-                startActivity(intent)
+            val intent = Intent(it, ProductDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+            startActivity(intent)
         }
     }
 
