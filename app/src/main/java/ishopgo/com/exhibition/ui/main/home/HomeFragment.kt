@@ -15,8 +15,8 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Banner
+import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -27,9 +27,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.MainViewModel
-import ishopgo.com.exhibition.ui.main.brand.DummyHighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
-import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
@@ -312,9 +310,10 @@ class HomeFragment : BaseFragment() {
             }
 
         }
-        highlightBrandAdapter.listener = object : ClickableAdapter.BaseAdapterAction<HighlightBrandProvider> {
-            override fun click(position: Int, data: HighlightBrandProvider, code: Int) {
-                openProductsByBrand(data)
+        highlightBrandAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Brand> {
+            override fun click(position: Int, data: Brand, code: Int) {
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductsByBrand(data)
             }
 
         }
@@ -427,22 +426,22 @@ class HomeFragment : BaseFragment() {
         }
     }
 
-    private fun openProductsByBrand(brand: HighlightBrandProvider) {
+    private fun openProductsByBrand(brand: Brand) {
         context?.let {
-            if (brand is IdentityData) {
-                val intent = Intent(it, ProductsOfBrandActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, brand.id)
-                intent.putExtra(Const.TransferKey.EXTRA_TITLE, brand.provideName())
-                startActivity(intent)
-            }
+            val intent = Intent(it, ProductsOfBrandActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(brand))
+            startActivity(intent)
         }
     }
 
     private fun setupHighlightBrands(context: Context) {
         // dummy product
-        val dummy = mutableListOf<HighlightBrandProvider>()
-        for (i in 0..6)
-            dummy.add(DummyHighlightBrandProvider())
+        val dummy = mutableListOf<Brand>()
+        for (i in 0..6) {
+            val element = Brand()
+            element.id = -1L
+            dummy.add(element)
+        }
         highlightBrandAdapter.addAll(dummy)
 
         view_list_highlight_brand.adapter = highlightBrandAdapter

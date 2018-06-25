@@ -45,7 +45,7 @@ class BrandManagerUpdateFragment : BaseFragment() {
             launchPickPhotoIntent()
         }
 
-        edit_brand_name.setText(data?.provideName())
+        edit_brand_name.setText(data?.name)
 
         Glide.with(context)
                 .load(data?.logo)

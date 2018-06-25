@@ -10,8 +10,8 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.BrandProductsRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.SearchProducts
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class ProductsOfBrandFragment : BaseListFragment<List<Product>, Product>() {
+class ProductsOfBrandFragment : BaseListFragment<SearchProducts, Product>() {
 
     private var brandId: Long = -1L
 
@@ -51,17 +51,18 @@ class ProductsOfBrandFragment : BaseListFragment<List<Product>, Product>() {
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<Product>) {
+    override fun populateData(data: SearchProducts) {
         if (reloadData) {
-            if (data.isEmpty()) {
+            val products = data.data ?: listOf()
+            if (products.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
                 view_empty_result_notice.text = "Nội dung trống"
             } else view_empty_result_notice.visibility = View.GONE
 
-            adapter.replaceAll(data)
+            adapter.replaceAll(products)
             view_recyclerview.scheduleLayoutAnimation()
         } else {
-            adapter.addAll(data)
+            adapter.addAll(data.data ?: listOf())
         }
     }
 
@@ -95,11 +96,9 @@ class ProductsOfBrandFragment : BaseListFragment<List<Product>, Product>() {
             (adapter as ClickableAdapter<Product>).listener = object : ClickableAdapter.BaseAdapterAction<Product> {
                 override fun click(position: Int, data: Product, code: Int) {
                     context?.let {
-                        if (data is IdentityData) {
-                            val intent = Intent(it, ProductDetailActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                            startActivity(intent)
-                        }
+                        val intent = Intent(it, ProductDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        startActivity(intent)
                     }
                 }
             }
@@ -108,7 +107,7 @@ class ProductsOfBrandFragment : BaseListFragment<List<Product>, Product>() {
 
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<Product>> {
+    override fun obtainViewModel(): BaseListViewModel<SearchProducts> {
         return obtainViewModel(ProductsOfBrandViewModel::class.java, false)
     }
 }

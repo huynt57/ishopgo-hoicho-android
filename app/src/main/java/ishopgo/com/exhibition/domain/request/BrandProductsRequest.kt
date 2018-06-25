@@ -6,4 +6,5 @@ package ishopgo.com.exhibition.domain.request
 class BrandProductsRequest : LoadMoreRequest() {
 
     var brandId: Long = 0
+    var name: String? = null
 }

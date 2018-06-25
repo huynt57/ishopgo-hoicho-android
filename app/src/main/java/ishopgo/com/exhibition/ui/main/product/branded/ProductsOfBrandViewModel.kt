@@ -5,22 +5,27 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.BrandProductsRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.SearchProducts
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
-class ProductsOfBrandViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
+class ProductsOfBrandViewModel : BaseListViewModel<SearchProducts>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         if (params is BrandProductsRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
+            params.name?.let {
+                fields["name"] = it
+            }
 
             addDisposable(noAuthService.getBrandProducts(params.brandId, fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<Product>>() {
-                        override fun success(data: List<Product>?) {
-                            dataReturned.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<SearchProducts>() {
+                        override fun success(data: SearchProducts?) {
+                            data?.let {
+                                dataReturned.postValue(it)
+                            }
                         }
 
                         override fun failure(status: Int, message: String) {

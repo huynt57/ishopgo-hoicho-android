@@ -4,7 +4,9 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
@@ -16,6 +18,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
@@ -29,7 +32,6 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
 
     private lateinit var sharedViewModel: SearchViewModel
     private var keyword = ""
-    private var total: Int = 0
 
     private fun search(key: String) {
         Log.d(TAG, "search: key = [${key}]")
@@ -40,6 +42,10 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
             keyword = key
             firstLoad()
         }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -55,8 +61,7 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
 
         (viewModel as SearchProductViewModel).total.observe(this, Observer { p ->
             p.let {
-                if (it != null)
-                    total = it
+                search_total.text = "${it ?: 0} kết quả"
             }
         })
     }
@@ -64,9 +69,6 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
     override fun populateData(data: List<Product>) {
         if (reloadData) {
             adapter.replaceAll(data)
-            val product = Product()
-            product.id = total.toLong()
-            adapter.addData(0, product)
             view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)

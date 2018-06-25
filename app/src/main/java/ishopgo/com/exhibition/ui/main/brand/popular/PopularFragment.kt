@@ -10,14 +10,14 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
-import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -26,14 +26,14 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, HighlightBrandProvider>() {
+class PopularFragment : BaseListFragment<List<Brand>, Brand>() {
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<HighlightBrandProvider>) {
+    override fun populateData(data: List<Brand>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -47,7 +47,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
         }
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<HighlightBrandProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Brand> {
         return HighlightBrandAdapter()
     }
 
@@ -65,16 +65,13 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
         super.onViewCreated(view, savedInstanceState)
 
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        if (adapter is ClickableAdapter<HighlightBrandProvider>) {
-            (adapter as ClickableAdapter<HighlightBrandProvider>).listener = object : ClickableAdapter.BaseAdapterAction<HighlightBrandProvider> {
-                override fun click(position: Int, data: HighlightBrandProvider, code: Int) {
+        if (adapter is ClickableAdapter<Brand>) {
+            (adapter as ClickableAdapter<Brand>).listener = object : ClickableAdapter.BaseAdapterAction<Brand> {
+                override fun click(position: Int, data: Brand, code: Int) {
                     context?.let {
-                        if (data is IdentityData) {
-                            val intent = Intent(it, ProductsOfBrandActivity::class.java)
-                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                            intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.provideName())
-                            startActivity(intent)
-                        }
+                        val intent = Intent(it, ProductsOfBrandActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        startActivity(intent)
                     }
                 }
             }
@@ -82,7 +79,7 @@ class PopularFragment : BaseListFragment<List<HighlightBrandProvider>, Highlight
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<HighlightBrandProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Brand>> {
         return obtainViewModel(PopularBrandsViewModel::class.java, false)
     }
 

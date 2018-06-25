@@ -6,9 +6,8 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 
-class PopularBrandsViewModel : BaseListViewModel<List<HighlightBrandProvider>>(), AppComponent.Injectable {
+class PopularBrandsViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Injectable {
 
     override fun loadData(params: Request) {
         addDisposable(noAuthService.getHighlightBrands()

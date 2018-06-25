@@ -37,7 +37,7 @@ class BrandManagerAdapter : ClickableAdapter<Brand>() {
             itemView.apply {
                 Glide.with(this).load(convert.provideLogo())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(brand_item_picture)
-                brand_item_name.text = data.provideName()
+                brand_item_name.text = convert.provideName()
                 brand_item_highlight.isChecked = convert.provideIsFeatured()
             }
         }

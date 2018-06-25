@@ -1,24 +1,15 @@
 package ishopgo.com.exhibition.domain.response
 
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 
 /**
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
-class Brand : IdentityData(), HighlightBrandProvider {
-    companion object {
-        var IS_FEATURED: Int = 1  //Thương hiệu nổi bật
-    }
-
-    override fun provideName(): String {
-        return name ?: ""
-    }
-
-    override fun provideImage(): String {
-        return logo ?: ""
-    }
-
+class Brand {
+    @SerializedName("id")
+    @Expose
+    var id: Long = -1L
     @SerializedName("logo")
     var logo: String? = null
     @SerializedName("name")

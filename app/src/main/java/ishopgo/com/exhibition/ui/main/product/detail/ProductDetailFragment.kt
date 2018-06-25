@@ -25,10 +25,7 @@ import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
-import ishopgo.com.exhibition.domain.response.LocalConversationItem
-import ishopgo.com.exhibition.domain.response.Product
-import ishopgo.com.exhibition.domain.response.ProductComment
-import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
@@ -272,8 +269,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             container_product_brand.setOnClickListener {
                 val brandId = product.department?.id ?: -1L
                 val brandName = product.department?.name ?: "Sản phẩm cùng thương hiệu"
-                if (brandId != -1L)
-                    showProductsOfBrand(brandId, brandName)
+                if (brandId != -1L) {
+                    val brand = Brand()
+                    brand.id = brandId
+                    brand.name = brandName
+                    showProductsOfBrand(brand)
+                }
             }
 
             if (UserDataManager.currentUserId > 0) {
@@ -565,10 +566,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         }
     }
 
-    private fun showProductsOfBrand(brandId: Long, brandName: String) {
+    private fun showProductsOfBrand(brand: Brand) {
         val intent = Intent(context, ProductsOfBrandActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_ID, brandId)
-        intent.putExtra(Const.TransferKey.EXTRA_TITLE, brandName)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(brand))
         startActivity(intent)
     }
 

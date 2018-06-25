@@ -10,7 +10,6 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 
 /**
  * Created by xuanhong on 4/26/18. HappyCoding!
@@ -25,7 +24,7 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var highlightBrand = MutableLiveData<List<HighlightBrandProvider>>()
+    var highlightBrand = MutableLiveData<List<Brand>>()
 
     fun loadHighlightBrands() {
         addDisposable(noAuthService.getHighlightBrands()
