@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
 import kotlinx.android.synthetic.main.fragment_question_detail.*
 
@@ -79,7 +80,7 @@ class QuestionManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun provideAnswer(): String {
-                    return "Câu trả lời: ${from.answer}"
+                    return "Câu trả lời: ${from.answer?.asHtml()}"
                 }
 
 
