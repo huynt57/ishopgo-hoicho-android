@@ -31,7 +31,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_MY_QR, R.drawable.ic_my_qr, "Mã QR gian hàng"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
-            items.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng tham quan"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET, R.drawable.ic_ticket, "Vé thăm quan của tôi"))
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
