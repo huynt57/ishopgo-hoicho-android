@@ -8,39 +8,26 @@
 
     <ImageView
         android:id="@+id/img_login_back"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_arrow_back_white_24dp"
         tools:ignore="ContentDescription,MissingConstraints" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="60dp"
-        android:fontFamily="@font/ff_roboto"
-        android:text="Đăng nhập"
-        android:textColor="@color/md_white_1000"
-        android:textSize="26sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_login_back"
-        tools:ignore="HardcodedText" />
-
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:paddingEnd="16dp"
         android:paddingStart="16dp"
         android:textColorHint="@color/md_grey_200"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        tools:layout_editor_absoluteY="67dp"
+        tools:ignore="MissingConstraints">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/tv_account"
@@ -82,15 +69,15 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_login"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/button_radius_green"
+        android:background="@drawable/bg_boder"
         android:fontFamily="@font/ff_roboto"
         android:paddingBottom="16dp"
         android:paddingEnd="16dp"
@@ -98,33 +85,48 @@
         android:paddingTop="16dp"
         android:text="Đăng nhập"
         android:textColor="@color/md_white_1000"
-        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
         tools:ignore="HardcodedText" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.4" />
+    <!--style="@style/AppTheme.ActionButton"-->
+    <!--android:background="@drawable/button_radius_green"-->
 
     <TextView
         android:id="@+id/tv_forget_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/ff_roboto"
         android:gravity="end"
         android:text="Quên mật khẩu?"
+        android:textAlignment="center"
         android:textColor="@color/md_white_1000"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/btn_signup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_white_black_top"
+        android:fontFamily="@font/ff_roboto"
+        android:paddingBottom="16dp"
+        android:paddingEnd="16dp"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:gravity="center"
+        android:text="Bạn chưa có tài khoản? Đăng ký ngay"
+        android:textColor="@color/md_white_1000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:ignore="HardcodedText" />
 </android.support.constraint.ConstraintLayout>
