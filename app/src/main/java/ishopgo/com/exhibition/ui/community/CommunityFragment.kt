@@ -21,6 +21,14 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.model.SharePhoto
+import com.facebook.share.model.SharePhotoContent
+import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
@@ -35,6 +43,7 @@ import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.notification.CommunityNotificationActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -42,13 +51,6 @@ import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_search_community.*
-import com.facebook.share.widget.ShareDialog
-import com.facebook.share.model.*
-import com.facebook.CallbackManager
-import com.facebook.FacebookCallback
-import com.facebook.FacebookException
-import com.facebook.share.Sharer
-import ishopgo.com.exhibition.ui.login.LoginActivity
 import java.io.IOException
 import java.net.URL
 
@@ -356,7 +358,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
 
             if (data.product == null && data.images == null) {
                 val shareContent = ShareLinkContent.Builder()
-                        .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                        .setContentUrl(Uri.parse("http://hangviet360.com/cong-dong"))
                         .setQuote(data.content)
                         .build()
 

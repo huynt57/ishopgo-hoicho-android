@@ -10,6 +10,4 @@
     <string name="tab_home">Hội chợ</string>
     <string name="tab_profile">Tài khoản</string>
     <string name="error_field_required">Trường này còn trống</string>
-    <string name="dont_have_account">Bạn chưa có tài khoản? <b>Đăng ký ngay</b></string>
-    <string name="forgot_password">Quên mật khẩu? <b>Tìm lại mật khẩu</b></string>
 </resources>

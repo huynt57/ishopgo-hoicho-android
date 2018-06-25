@@ -398,10 +398,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="expo360.vn"
+                    android:host="hangviet360.com"
                     android:scheme="http" />
                 <data
-                    android:host="expo360.vn"
+                    android:host="hangviet360.com"
                     android:scheme="https" />
             </intent-filter>
         </activity>
