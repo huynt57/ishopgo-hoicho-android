@@ -73,7 +73,7 @@ class ProductBoothCategoryAdapter : ClickableAdapter<Category>() {
                 }
 
                 override fun provideName(): String {
-                    return from.name ?: "unknown"
+                    return from.name ?: "Tên danh mục"
                 }
 
                 override fun provideChilds(): List<Category> {

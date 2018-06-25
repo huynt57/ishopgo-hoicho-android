@@ -11,7 +11,7 @@ import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopResultProvider
  */
 class Shop : IdentityData(), SearchShopResultProvider {
     override fun provideName(): String {
-        return name ?: "unknown"
+        return name ?: "Tên Gian hàng"
     }
 
     override fun provideProductCount(): String {

@@ -14,7 +14,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.SalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment

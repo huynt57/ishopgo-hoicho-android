@@ -57,7 +57,7 @@ class ProductManagerDetailRelatedAdapter : ClickableAdapter<Product>() {
                 }
 
                 override fun provideName(): String {
-                    return from.name?.trim() ?: "unknown"
+                    return from.name?.trim() ?: "Tên Sản phẩm"
                 }
 
                 override fun providePrice(): String {

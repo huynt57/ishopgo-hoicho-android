@@ -400,6 +400,20 @@
                 android:layout_width="match_parent"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/view_open_introduce"
+                style="@style/AppTheme.CategoryTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawablePadding="8dp"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Giới thiệu"
+                app:drawableStartCompat="@drawable/ic_introduce_24dp"
+                app:drawableStartSquareSize="24dp"
+                />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_open_news"
                 style="@style/AppTheme.CategoryTitle"
                 android:layout_width="match_parent"

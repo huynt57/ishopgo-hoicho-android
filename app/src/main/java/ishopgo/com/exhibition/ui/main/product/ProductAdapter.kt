@@ -88,7 +88,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                 }
 
                 override fun provideName(): String {
-                    return from.name?.trim() ?: "unknown"
+                    return from.name?.trim() ?: "Sản phẩm"
                 }
 
                 override fun providePrice(): String {

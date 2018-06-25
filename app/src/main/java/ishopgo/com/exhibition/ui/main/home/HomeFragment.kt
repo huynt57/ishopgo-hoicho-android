@@ -33,6 +33,7 @@ import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
+import ishopgo.com.exhibition.ui.main.home.introduction.IntroductionActivity
 import ishopgo.com.exhibition.ui.main.home.post.LatestPostsAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
@@ -230,6 +231,11 @@ class HomeFragment : BaseFragment() {
         view_company_info.text = builder.toString().asHtml()
     }
 
+    private fun openIntroduction() {
+        val intent = Intent(requireContext(), IntroductionActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun openPostManager(typeManager: Int) {
         context?.let {
             val intent = Intent(it, PostActivity::class.java)
@@ -267,6 +273,9 @@ class HomeFragment : BaseFragment() {
             loadData()
         }
 
+        view_open_introduce.setOnClickListener {
+            openIntroduction()
+        }
         view_open_news.setOnClickListener {
             openPostManager(Const.AccountAction.ACTION_NEWS_MANAGER)
         }
@@ -314,25 +323,29 @@ class HomeFragment : BaseFragment() {
         }
         favoriteProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
-                openProductDetail(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
             }
 
         }
         categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
             override fun click(position: Int, data: Category, code: Int) {
-                mainViewModel.showCategoriedProducts(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    mainViewModel.showCategoriedProducts(data)
             }
 
         }
         viewedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
-                openProductDetail(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
             }
 
         }
         highlightProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
-                openProductDetail(data)
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
             }
 
         }
@@ -411,9 +424,9 @@ class HomeFragment : BaseFragment() {
 
     private fun openProductDetail(product: Product) {
         context?.let {
-                val intent = Intent(it, ProductDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-                startActivity(intent)
+            val intent = Intent(it, ProductDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+            startActivity(intent)
         }
     }
 
@@ -453,8 +466,11 @@ class HomeFragment : BaseFragment() {
     private fun setupViewedProducts(context: Context) {
         // dummy product
         val dummy = mutableListOf<Product>()
-        for (i in 0..6)
-            dummy.add(Product())
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
         viewedProductAdapter.addAll(dummy)
 
         view_list_viewed_products.adapter = viewedProductAdapter
@@ -467,8 +483,11 @@ class HomeFragment : BaseFragment() {
     private fun setupFavoriteProducts(context: Context) {
         // dummy product
         val dummy = mutableListOf<Product>()
-        for (i in 0..6)
-            dummy.add(Product())
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
         favoriteProductAdapter.addAll(dummy)
 
         view_list_favorite_products.adapter = favoriteProductAdapter
@@ -481,8 +500,11 @@ class HomeFragment : BaseFragment() {
     private fun setupCategoryStage1(context: Context) {
         // dummy category
         val dummy = mutableListOf<Category>()
-        for (i in 0..6)
-            dummy.add(Category())
+        for (i in 0..6) {
+            val d = Category()
+            d.id = -1L
+            dummy.add(d)
+        }
         categoryStage1Adapter.addAll(dummy)
 
         view_list_category_stage1.adapter = categoryStage1Adapter
@@ -495,8 +517,11 @@ class HomeFragment : BaseFragment() {
     private fun setupHighlightProducts(context: Context) {
         // dummy product
         val dummy = mutableListOf<Product>()
-        for (i in 0..6)
-            dummy.add(Product())
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
         highlightProductAdapter.addAll(dummy)
 
         view_list_highlight_products.adapter = highlightProductAdapter

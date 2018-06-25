@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.R.attr.data
 import com.afollestad.materialdialogs.MaterialDialog
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -26,7 +25,10 @@ import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
-import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
+import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.ProductComment
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
@@ -355,7 +357,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductName(): CharSequence {
-                    return from.name?.trim() ?: "unknown"
+                    return from.name?.trim() ?: "Tên sản phẩm"
                 }
 
                 override fun provideProductPrice(): CharSequence {
