@@ -43,7 +43,7 @@ import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.notification.CommunityNotificationActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -150,7 +150,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
                             } else {
-                                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                                val intent = Intent(context, LoginActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                                 startActivity(intent)
                             }
@@ -207,7 +207,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
     }
 
     private fun openLoginActivity() {
-        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
         startActivity(intent)
     }
@@ -247,7 +247,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
             val intent = Intent(context, CommunityNotificationActivity::class.java)
             startActivity(intent)
         } else {
-            val intent = Intent(context, LoginSelectOptionActivity::class.java)
+            val intent = Intent(context, LoginActivity::class.java)
             intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
             startActivity(intent)
         }
@@ -358,7 +358,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
 
             if (data.product == null && data.images == null) {
                 val shareContent = ShareLinkContent.Builder()
-                        .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
+                        .setContentUrl(Uri.parse("http://hangviet360.com/cong-dong"))
                         .setQuote(data.content)
                         .build()
 

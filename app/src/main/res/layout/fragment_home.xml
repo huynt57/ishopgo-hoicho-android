@@ -373,7 +373,7 @@
                 android:layout_height="70dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:src="@drawable/expo_horizontal"/>
+                android:src="@drawable/logo_expo_horizontal"/>
 
             <View
                 style="@style/AppTheme.DividerLine"
@@ -410,8 +410,7 @@
                 android:padding="8dp"
                 android:text="Giới thiệu"
                 app:drawableStartCompat="@drawable/ic_introduce_24dp"
-                app:drawableStartSquareSize="24dp"
-                />
+                app:drawableStartSquareSize="24dp" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_open_news"

@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActivity
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainActivity
 
@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                val intent = Intent(this@SplashActivity, LoginSelectOptionActivity::class.java)
+                val intent = Intent(this@SplashActivity, LoginActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 finish()

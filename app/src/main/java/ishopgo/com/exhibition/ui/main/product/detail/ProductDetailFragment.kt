@@ -42,7 +42,7 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.extensions.asPhone
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
@@ -413,7 +413,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun openActivtyLogin() {
-        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
         startActivity(intent)
     }

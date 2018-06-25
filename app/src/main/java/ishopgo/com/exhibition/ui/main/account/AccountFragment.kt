@@ -18,7 +18,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
@@ -88,7 +88,7 @@ class AccountFragment : BaseFragment() {
             view_name.text = "Bạn chưa đăng nhập"
 
             view_profile_current.setOnClickListener {
-                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                val intent = Intent(context, LoginActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
@@ -359,7 +359,7 @@ class AccountFragment : BaseFragment() {
             m?.let {
                 UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
-                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                val intent = Intent(context, LoginActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()

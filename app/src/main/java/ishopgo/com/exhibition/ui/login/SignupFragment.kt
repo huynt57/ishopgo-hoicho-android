@@ -148,6 +148,7 @@ class SignupFragment : BaseFragment() {
             hideProgressDialog()
             toast("Đăng ký thành công")
             val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
             intent.putExtra("phone", tv_signup_phone.text.toString())
             startActivity(intent)
             activity?.finish()
@@ -265,7 +266,7 @@ class SignupFragment : BaseFragment() {
                     context?.let {
                         dialog.dismiss()
                         data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
-                        textInputLayout7.visibility = View.VISIBLE
+                        tv_signup_district.visibility = View.VISIBLE
                         view.text = data.name
                         view.error = null
                     }

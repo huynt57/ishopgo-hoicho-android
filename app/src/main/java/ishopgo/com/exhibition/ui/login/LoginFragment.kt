@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -42,7 +43,21 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        img_login_back.setOnClickListener {
+        tv_forget_password.text = "Quên mật khẩu ? <b><font color=\"#01579B\">Tìm lại mật khẩu</font></b>".asHtml()
+        btn_signup.text = "Chưa có tài khoản ? <b><font color=\"#ff3d00\">Đăng ký ngay</font></b>".asHtml()
+
+        btn_signup.setOnClickListener {
+            val intent = Intent(context, SignupActivity::class.java)
+            startActivity(intent)
+        }
+
+        tv_skip_login.setOnClickListener {
+            // we pass login screen after click skip
+            UserDataManager.passLoginScreen = 1
+
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+            startActivity(intent)
             activity?.finish()
         }
 

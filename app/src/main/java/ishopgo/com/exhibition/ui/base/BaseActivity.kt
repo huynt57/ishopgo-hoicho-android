@@ -28,7 +28,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.extensions.transact
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 
 
 /**
@@ -125,7 +125,7 @@ open class BaseActivity : AppCompatActivity() {
                 Toast.makeText(this, "Xin vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show()
                 UserDataManager.deleteUserInfo()
 
-                val intent = Intent(this, LoginSelectOptionActivity::class.java)
+                val intent = Intent(this, LoginActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
 
