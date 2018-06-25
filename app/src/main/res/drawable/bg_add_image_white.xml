@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item>
+
+        <shape
+            android:shape="rectangle"
+            android:thickness="10dp">
+
+            <stroke
+                android:width="4dp"
+                android:color="@color/colorPureWhite"
+                android:dashGap="@dimen/default_margin"
+                android:dashWidth="@dimen/default_margin"/>
+            <size
+                android:width="300dp"
+                android:height="300dp"/>
+        </shape>
+
+    </item>
+
+    <item>
+        <inset xmlns:android="http://schemas.android.com/apk/res/android"
+               android:drawable="@drawable/ic_add_white_24dp"
+               android:insetBottom="100dp"
+               android:insetLeft="100dp"
+               android:insetRight="100dp"
+               android:insetTop="100dp"
+            />
+    </item>
+</layer-list>

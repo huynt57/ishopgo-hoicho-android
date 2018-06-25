@@ -266,7 +266,7 @@ class SignupFragment : BaseFragment() {
                     context?.let {
                         dialog.dismiss()
                         data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
-                        textInputLayout7.visibility = View.VISIBLE
+                        tv_signup_district.visibility = View.VISIBLE
                         view.text = data.name
                         view.error = null
                     }

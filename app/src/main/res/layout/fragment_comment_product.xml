@@ -19,7 +19,7 @@
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:background="@drawable/bg_boder"
+        android:background="@drawable/bg_border"
         android:weightSum="2">
 
         <ImageView
