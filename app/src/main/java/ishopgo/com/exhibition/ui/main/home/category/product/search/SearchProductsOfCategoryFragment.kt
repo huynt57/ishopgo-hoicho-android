@@ -75,6 +75,7 @@ class SearchProductsOfCategoryFragment : BaseSearchActionBarFragment(), SwipeRef
         super.onViewCreated(view, savedInstanceState)
 
         getSearchField().hint = "Tìm kiếm trong ${currentCategory.name}"
+        search_total.visibility = if (searchKey.isEmpty()) View.GONE else View.VISIBLE
 
         adapter = SearchProductAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
@@ -122,6 +123,7 @@ class SearchProductsOfCategoryFragment : BaseSearchActionBarFragment(), SwipeRef
         viewModel.total.observe(this, Observer { p ->
             p.let {
                 if (it != null) {
+                    search_total.visibility = if (searchKey.isEmpty()) View.GONE else View.VISIBLE
                     search_total.text = "${it} kết quả"
                 }
             }
