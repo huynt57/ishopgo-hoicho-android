@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -47,7 +47,7 @@ class SurveyFragmentActionBar : BaseActionBarFragment() {
             m?.let {
                 UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
-                val intent = Intent(context, LoginSelectOptionActivity::class.java)
+                val intent = Intent(context, LoginActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()

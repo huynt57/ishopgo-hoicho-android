@@ -45,7 +45,7 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
@@ -312,7 +312,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
     }
 
     private fun openLoginActivity() {
-        val intent = Intent(context, LoginSelectOptionActivity::class.java)
+        val intent = Intent(context, LoginActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
         startActivity(intent)
     }

@@ -17,7 +17,7 @@ import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
 import ishopgo.com.exhibition.domain.BaseErrorSignal
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
+import ishopgo.com.exhibition.ui.login.LoginActivity
 
 /**
  * @author Steve
@@ -77,7 +77,7 @@ open class BaseFragment : Fragment() {
                 BaseErrorSignal.ERROR_401 -> {
                     Toast.makeText(it, "Xin vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show()
 
-                    val intent = Intent(it, LoginSelectOptionActivity::class.java)
+                    val intent = Intent(it, LoginActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                     it.startActivity(intent)
 

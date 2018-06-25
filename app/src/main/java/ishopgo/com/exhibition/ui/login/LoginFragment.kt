@@ -42,7 +42,18 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        img_login_back.setOnClickListener {
+        btn_signup.setOnClickListener {
+            val intent = Intent(context, SignupActivity::class.java)
+            startActivity(intent)
+        }
+
+        tv_skip_login.setOnClickListener {
+            // we pass login screen after click skip
+            UserDataManager.passLoginScreen = 1
+
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+            startActivity(intent)
             activity?.finish()
         }
 

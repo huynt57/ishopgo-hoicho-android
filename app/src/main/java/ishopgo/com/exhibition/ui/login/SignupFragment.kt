@@ -148,6 +148,7 @@ class SignupFragment : BaseFragment() {
             hideProgressDialog()
             toast("Đăng ký thành công")
             val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
             intent.putExtra("phone", tv_signup_phone.text.toString())
             startActivity(intent)
             activity?.finish()
