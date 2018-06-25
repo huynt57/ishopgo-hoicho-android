@@ -410,8 +410,7 @@
                 android:padding="8dp"
                 android:text="Giới thiệu"
                 app:drawableStartCompat="@drawable/ic_introduce_24dp"
-                app:drawableStartSquareSize="24dp"
-                />
+                app:drawableStartSquareSize="24dp" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_open_news"
