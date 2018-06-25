@@ -222,7 +222,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
             if (data.product != null) {
-                val urlToShare = data.product?.providerLink()
+                val urlToShare = data.product?.link ?: ""
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse(urlToShare))
                         .setQuote(data.content)
@@ -231,20 +231,32 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                 shareDialog.show(shareContent)
             }
 
-            if (data.images != null && data.images!!.isNotEmpty()) {
+            if (data.images != null && data.images!!.isNotEmpty() && data.product == null) {
                 if (data.images!!.size > 1) {
                     val thread = Thread(Runnable {
                         try {
                             val listSharePhoto = mutableListOf<SharePhoto>()
-                            for (i in data.images!!.indices)
-                                try {
-                                    val url = URL(data.images!![i])
-                                    val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
-                                    val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
-                                    listSharePhoto.add(sharePhoto)
-                                } catch (e: IOException) {
-                                    Log.d("IOException", e.toString())
-                                }
+                            if (data.images!!.size > 5)
+                                for (i in 0..5)
+                                    try {
+                                        val url = URL(data.images!![i])
+                                        val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                        val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                        listSharePhoto.add(sharePhoto)
+                                    } catch (e: IOException) {
+                                        Log.d("IOException", e.toString())
+                                    }
+                            else {
+                                for (i in data.images!!.indices)
+                                    try {
+                                        val url = URL(data.images!![i])
+                                        val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                        val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                        listSharePhoto.add(sharePhoto)
+                                    } catch (e: IOException) {
+                                        Log.d("IOException", e.toString())
+                                    }
+                            }
                             val shareContent = SharePhotoContent.Builder()
                                     .addPhotos(listSharePhoto)
                                     .build()
@@ -270,7 +282,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                         })
             }
 
-            if (data.product == null && data.images!!.isEmpty()) {
+            if (data.product == null && data.images == null) {
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
                         .setQuote(data.content)
@@ -282,22 +294,22 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
     }
 
     private fun shareApp(data: Community) {
-        val urlToShare = if (data.images!!.isNotEmpty()) {
+        val urlToShare = if (data.images != null && data.images!!.isNotEmpty()) {
             if (data.images!!.size > 1) {
                 var linkImage = ""
                 for (i in data.images!!.indices) {
                     linkImage += "${data.images!![i]}\n\n"
                 }
 
-                "${data.content}\n $linkImage\n ${data.product?.providerLink()
+                "${data.content}\n $linkImage\n ${data.product?.link
                         ?: ""}"
 
             } else {
-                "${data.content}\n ${data.images!![0]}\n ${data.product?.providerLink()
+                "${data.content}\n ${data.images!![0]}\n ${data.product?.link
                         ?: ""}"
             }
         } else
-            "${data.content}\n ${data.product?.providerLink() ?: ""}"
+            "${data.content}\n ${data.product?.link ?: ""}"
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

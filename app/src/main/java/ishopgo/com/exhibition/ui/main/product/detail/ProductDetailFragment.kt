@@ -15,7 +15,14 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.R.attr.data
 import com.afollestad.materialdialogs.MaterialDialog
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.share.Sharer
+import com.facebook.share.model.ShareLinkContent
+import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
@@ -26,10 +33,13 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import ishopgo.com.exhibition.ui.login.LoginSelectOptionActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -63,6 +73,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             return fragment
         }
+
+        const val LIKED = 1
+        const val VIEW_WHOLESALE = 1
     }
 
     private lateinit var viewModel: ProductDetailViewModel
@@ -196,25 +209,24 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showProductDetail(product: ProductDetailProvider) {
+    private fun showProductDetail(product: ProductDetail) {
         context?.let {
+            val convert = ProductDetailConverter().convert(product)
 
-            if (product.provideViewWholesale()) {
+            if (convert.provideViewWholesale()) {
                 view_product_wholesale.visibility = View.VISIBLE
-                view_product_wholesale.text = product.provideWholesale()
+                view_product_wholesale.text = convert.provideWholesale()
                 view_product_wholesale_limit.visibility = View.VISIBLE
-                view_product_wholesale_limit.text = product.provideWholesaleLimit()
+                view_product_wholesale_limit.text = convert.provideWholesaleLimit()
             } else {
                 view_product_wholesale.visibility = View.GONE
                 view_product_wholesale_limit.visibility = View.GONE
             }
 
-            if (product is ProductDetail) {
-                if (product.images != null && product.images!!.isNotEmpty())
-                    showBanners(product.images!!)
-            }
+            if (product.images != null && product.images!!.isNotEmpty())
+                showBanners(product.images!!)
 
-            view_product_name.text = product.provideProductName()
+            view_product_name.text = convert.provideProductName()
             if (UserDataManager.currentUserId > 0) {
                 view_shop_follow.setOnClickListener { viewModel.postProductLike(productId) }
                 view_share.setOnClickListener { showDialogShare(product) }
@@ -227,24 +239,24 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
             }
 
-            view_shop_follow.drawableCompat(0, if (product.provideLiked()) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
-            view_product_price.text = product.provideProductPrice()
+            view_shop_follow.drawableCompat(0, if (convert.provideLiked()) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
+            view_product_price.text = convert.provideProductPrice()
 
-            if (product.provideLiked()) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
+            if (convert.provideLiked()) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
 
-            container_product_brand.visibility = if (product.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
-            view_product_brand.text = product.provideProductBrand()
+            container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
+            view_product_brand.text = convert.provideProductBrand()
 
-            view_product_description.setHtml(product.provideProductShortDescription().toString(), HtmlHttpImageGetter(view_product_description))
-            view_shop_name.text = product.provideShopName()
-            view_shop_region.text = "Khu vực: ${product.provideShopRegion()}"
-            view_shop_product_count.text = "<b><font color=\"#00c853\">${product.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
-            view_shop_rating.text = "<b><font color=\"red\">${product.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
-            view_product_like_count.text = "${product.provideProductLikeCount()} thích"
-            view_product_comment_count.text = "${product.provideProductCommentCount()} bình luận"
-            view_product_share_count.text = "${product.provideProductShareCount()} chia sẻ"
-            tv_shop_phone.text = product.provideShopPhone()
-            tv_shop_address.text = product.provideShopAddress()
+            view_product_description.setHtml(convert.provideProductShortDescription().toString(), HtmlHttpImageGetter(view_product_description))
+            view_shop_name.text = convert.provideShopName()
+            view_shop_region.text = "Khu vực: ${convert.provideShopRegion()}"
+            view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
+            view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
+            view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
+            view_product_comment_count.text = "${convert.provideProductCommentCount()} bình luận"
+            view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
+            tv_shop_phone.text = convert.provideShopPhone()
+            tv_shop_address.text = convert.provideShopAddress()
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
@@ -256,21 +268,16 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
             container_product_brand.setOnClickListener {
-                if (product is ProductDetail) {
-                    val brandId = product.department?.id ?: -1L
-                    val brandName = product.department?.name ?: "Sản phẩm cùng thương hiệu"
-                    if (brandId != -1L)
-                        showProductsOfBrand(brandId, brandName)
-                }
+                val brandId = product.department?.id ?: -1L
+                val brandName = product.department?.name ?: "Sản phẩm cùng thương hiệu"
+                if (brandId != -1L)
+                    showProductsOfBrand(brandId, brandName)
             }
 
             if (UserDataManager.currentUserId > 0) {
-
-                if (product is ProductDetail) {
-                    linearLayout.setOnClickListener { ratingViewModel.enableCommentRating(product) }
-                    edt_comment.setOnClickListener {
-                        ratingViewModel.enableCommentRating(product)
-                    }
+                linearLayout.setOnClickListener { ratingViewModel.enableCommentRating(product) }
+                edt_comment.setOnClickListener {
+                    ratingViewModel.enableCommentRating(product)
                 }
 
                 view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
@@ -287,13 +294,129 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         openProductSalePoint(product)
     }
 
+    interface ProductDetailProvider {
+
+        fun provideProductImage(): CharSequence
+        fun provideProductName(): CharSequence
+        fun provideProductPrice(): CharSequence
+        fun provideProductBrand(): CharSequence
+        fun provideProductShortDescription(): CharSequence
+        fun provideShopName(): CharSequence
+        fun provideShopRegion(): CharSequence
+        fun provideShopProductCount(): Int
+        fun provideShopRateCount(): Int
+        fun provideShopPhone(): CharSequence
+        fun provideLiked(): Boolean
+        fun provideShopAddress(): CharSequence
+        fun provideFollowed(): Boolean
+
+        fun provideProductLikeCount(): Int
+        fun provideProductCommentCount(): Int
+        fun provideProductShareCount(): Int
+        fun provideProductLinkAffiliate(): CharSequence
+
+        fun provideViewWholesale(): Boolean
+        fun provideWholesale(): CharSequence
+        fun provideWholesaleLimit(): CharSequence
+
+    }
+
+    class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
+
+        override fun convert(from: ProductDetail): ProductDetailProvider {
+            return object : ProductDetailProvider {
+                override fun provideWholesaleLimit(): CharSequence {
+                    return "Mua tối thiểu <b><font color=\"red\">${from.wholesaleCountProduct}</font></b> sản phẩm".asHtml()
+                }
+
+                override fun provideWholesale(): CharSequence {
+                    return "<b>Giá bán sỉ: Từ <font color=\"red\">${from.wholesalePriceFrom.asMoney()}</font> tới <font color=\"red\">${from.wholesalePriceTo.asMoney()}</font></b>".asHtml()
+                }
+
+                override fun provideViewWholesale(): Boolean {
+                    return from.viewWholesale == VIEW_WHOLESALE
+                }
+
+                override fun provideShopAddress(): CharSequence {
+                    return "${from.booth?.address?.trim() ?: ""}, ${from.booth?.district?.trim()
+                            ?: ""}, ${from.booth?.city?.trim() ?: ""}"
+                }
+
+                override fun provideLiked(): Boolean {
+                    return from.liked == LIKED
+                }
+
+                override fun provideProductLinkAffiliate(): CharSequence {
+                    return from.linkAffiliate ?: ""
+                }
+
+                override fun provideProductImage(): CharSequence {
+                    return from.image ?: ""
+                }
+
+                override fun provideProductName(): CharSequence {
+                    return from.name?.trim() ?: "unknown"
+                }
+
+                override fun provideProductPrice(): CharSequence {
+                    return "<b>Giá bán lẻ: Từ <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                }
+
+                override fun provideProductBrand(): CharSequence {
+                    if (from.department?.id == 0L) return ""
+                    return from.department?.name?.trim() ?: ""
+                }
+
+                override fun provideProductShortDescription(): CharSequence {
+                    return from.description ?: ""
+                }
+
+                override fun provideShopName(): CharSequence {
+                    return from.booth?.name?.trim() ?: ""
+                }
+
+                override fun provideShopRegion(): CharSequence {
+                    return from.booth?.address?.trim() ?: ""
+                }
+
+                override fun provideShopProductCount(): Int {
+                    return from.booth?.count ?: 0
+                }
+
+                override fun provideShopRateCount(): Int {
+                    return from.booth?.rate ?: 0
+                }
+
+                override fun provideShopPhone(): CharSequence {
+                    return from.booth?.hotline?.asPhone() ?: ""
+                }
+
+                override fun provideProductLikeCount(): Int {
+                    return from.likes
+                }
+
+                override fun provideProductCommentCount(): Int {
+                    return from.comments
+                }
+
+                override fun provideProductShareCount(): Int {
+                    return from.shares
+                }
+
+                override fun provideFollowed(): Boolean {
+                    return from.booth?.isFollowed() ?: false
+                }
+            }
+        }
+    }
+
     private fun openActivtyLogin() {
         val intent = Intent(context, LoginSelectOptionActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
         startActivity(intent)
     }
 
-    private fun showDialogShare(product: ProductDetailProvider) {
+    private fun showDialogShare(product: ProductDetail) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .customView(R.layout.dialog_community_share, false)
@@ -314,33 +437,37 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         }
     }
 
-    private fun shareFacebook(product: ProductDetailProvider) {
-        val urlToShare = product.provideProductLinkAffiliate()
-        var intent = Intent(Intent.ACTION_SEND)
-        intent.type = "text/plain"
+    private var callbackManager: CallbackManager? = null
 
-        intent.putExtra(Intent.EXTRA_TEXT, urlToShare)
+    private fun shareFacebook(product: ProductDetail) {
+        callbackManager = CallbackManager.Factory.create()
+        val shareDialog = ShareDialog(this)
 
-        var facebookAppFound = false
-        val matches = context!!.packageManager.queryIntentActivities(intent, 0)
-        for (info in matches) {
-            if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
-                intent.`package` = info.activityInfo.packageName
-                facebookAppFound = true
-                break
+        shareDialog.registerCallback(callbackManager, object : FacebookCallback<Sharer.Result> {
+            override fun onSuccess(result: Sharer.Result?) {
             }
-        }
 
-        if (!facebookAppFound) {
-            val sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=$urlToShare"
-            intent = Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl))
-        }
+            override fun onCancel() {
+                toast("Chia sẻ bị huỷ bỏ")
+            }
 
-        startActivity(intent)
+            override fun onError(error: FacebookException?) {
+                toast(error.toString())
+            }
+        })
+
+        if (ShareDialog.canShow(ShareLinkContent::class.java)) {
+            val urlToShare = product.linkAffiliate.toString()
+            val shareContent = ShareLinkContent.Builder()
+                    .setContentUrl(Uri.parse(urlToShare))
+                    .build()
+
+            shareDialog.show(shareContent)
+        }
     }
 
-    private fun shareApp(product: ProductDetailProvider) {
-        val urlToShare = product.provideProductLinkAffiliate()
+    private fun shareApp(product: ProductDetail) {
+        val urlToShare = product.linkAffiliate
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"
@@ -348,9 +475,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         startActivity(shareIntent)
     }
 
-    private fun showProductFullDescription(context: Context, product: ProductDetailProvider) {
+    private fun showProductFullDescription(context: Context, product: ProductDetail) {
         val intent = Intent(context, FullDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_JSON, product.provideProductShortDescription())
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, product.description)
         startActivity(intent)
     }
 
@@ -360,44 +487,38 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         constraintLayout.visibility = View.VISIBLE
     }
 
-    private fun showMoreComment(context: Context, product: ProductDetailProvider) {
-        if (product is IdentityData) {
-            val intent = Intent(context, ProductCommentsActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-            startActivityForResult(intent, Const.RequestCode.EDIT_PRODUCT_COMMENT)
-        }
+    private fun showMoreComment(context: Context, product: ProductDetail) {
+        val intent = Intent(context, ProductCommentsActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+        startActivityForResult(intent, Const.RequestCode.EDIT_PRODUCT_COMMENT)
     }
 
-    private fun showMoreSalePoint(context: Context, product: ProductDetailProvider) {
-        if (product is IdentityData) {
-            val intent = Intent(context, ProductSalePointActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-            startActivityForResult(intent, Const.RequestCode.PRODUCT_SALE_POINT_DETAIL)
-        }
+    private fun showMoreSalePoint(context: Context, product: ProductDetail) {
+        val intent = Intent(context, ProductSalePointActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+        startActivityForResult(intent, Const.RequestCode.PRODUCT_SALE_POINT_DETAIL)
     }
 
-    private fun messageShop(context: Context, product: ProductDetailProvider) {
+    private fun messageShop(context: Context, product: ProductDetail) {
         if (UserDataManager.currentUserId > 0) {
             // gui tin nhan cho shop
-            if (product is ProductDetail) {
-                val boothId = product.booth?.id
-                boothId?.let {
-                    val request = CreateConversationRequest()
-                    request.type = 1
-                    val members = mutableListOf<Long>()
-                    members.add(UserDataManager.currentUserId)
-                    members.add(it)
-                    request.member = members
-                    viewModel.createConversation(request)
-                }
+            val boothId = product.booth?.id
+            boothId?.let {
+                val request = CreateConversationRequest()
+                request.type = 1
+                val members = mutableListOf<Long>()
+                members.add(UserDataManager.currentUserId)
+                members.add(it)
+                request.member = members
+                viewModel.createConversation(request)
             }
         } else {
             openActivtyLogin()
         }
     }
 
-    private fun callShop(context: Context, product: ProductDetailProvider) {
-        val phoneNumber = product.provideShopPhone()
+    private fun callShop(context: Context, product: ProductDetail) {
+        val phoneNumber = product.booth?.hotline ?: ""
         val call = Uri.parse("tel:" + phoneNumber)
         val intent = Intent(Intent.ACTION_DIAL, call)
         if (intent.resolveActivity(context.packageManager) != null)
@@ -460,13 +581,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         startActivity(intent)
     }
 
-    private fun openAddSalePoint(context: Context, product: ProductDetailProvider) {
+    private fun openAddSalePoint(context: Context, product: ProductDetail) {
         val intent = Intent(context, ProductSalePointAddActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
         startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
     }
 
-    private fun openProductSalePoint(product: ProductDetailProvider) {
+    private fun openProductSalePoint(product: ProductDetail) {
         adapterSalePoint.listener = object : ClickableAdapter.BaseAdapterAction<ProductSalePoint> {
             override fun click(position: Int, data: ProductSalePoint, code: Int) {
                 val intent = Intent(context, SalePointDetailActivity::class.java)
@@ -483,22 +604,18 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         startActivity(intent)
     }
 
-    private fun openProductsOfShop(context: Context, product: ProductDetailProvider) {
-        if (product is ProductDetail) {
-            val boothId = product.booth?.id
-            val intent = Intent(context, ProductsOfShopActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
-            startActivity(intent)
-        }
+    private fun openProductsOfShop(context: Context, product: ProductDetail) {
+        val boothId = product.booth?.id
+        val intent = Intent(context, ProductsOfShopActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
+        startActivity(intent)
     }
 
-    private fun openShopDetail(context: Context, product: ProductDetailProvider) {
-        if (product is ProductDetail) {
-            val boothId = product.booth?.id
-            val intent = Intent(context, ShopDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
-            startActivity(intent)
-        }
+    private fun openShopDetail(context: Context, product: ProductDetail) {
+        val boothId = product.booth?.id
+        val intent = Intent(context, ShopDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
+        startActivity(intent)
     }
 
     private fun loadData(productId: Long) {

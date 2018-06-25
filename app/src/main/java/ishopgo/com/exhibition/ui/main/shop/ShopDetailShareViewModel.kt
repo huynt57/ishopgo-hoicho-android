@@ -1,17 +1,17 @@
 package ishopgo.com.exhibition.ui.main.shop
 
 import android.arch.lifecycle.MutableLiveData
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
  */
 class ShopDetailShareViewModel : BaseApiViewModel() {
 
-    var showCategoriedProducts = MutableLiveData<CategoryProvider>()
+    var showCategoriedProducts = MutableLiveData<Category>()
 
-    fun showCategoriedProducts(category: CategoryProvider) {
+    fun showCategoriedProducts(category: Category) {
         showCategoriedProducts.postValue(category)
     }
 

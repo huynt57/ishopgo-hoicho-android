@@ -3,60 +3,12 @@ package ishopgo.com.exhibition.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asPhone
-import ishopgo.com.exhibition.ui.main.profile.ProfileProvider
 
 
 /**
  * Created by hoangnh on 5/2/2018.
  */
-class Profile : IdentityData(), ProfileProvider {
-    override fun provideAccountType(): CharSequence {
-        return "Loại tài khoản: <b>${typeTextExpo ?: ""}</b>".asHtml()
-    }
-
-    override fun provideIntroduction(): CharSequence {
-        return "Giới thiệu: <b>${introduction ?: ""}</b>".asHtml()
-    }
-
-    override fun provideName(): CharSequence {
-        return name ?: ""
-    }
-
-    override fun providePhone(): CharSequence {
-        return "Số điện thoại: <b>${phone?.asPhone() ?: ""}</b>".asHtml()
-    }
-
-    override fun provideAvatar(): String {
-        return image ?: ""
-    }
-
-    override fun provideDob(): CharSequence {
-        return "Ngày sinh: <b>${birthday?.asDate()}</b>".asHtml()
-    }
-
-    override fun provideEmail(): CharSequence {
-        return "Email: <b>${email ?: ""}</b>".asHtml()
-    }
-
-    override fun provideCompany(): CharSequence {
-        return "Công ty: <b>${company ?: ""}</b>".asHtml()
-    }
-
-    override fun provideRegion(): CharSequence {
-        return "Khu vực: <b>${district ?: ""} - ${region ?: ""}</b>".asHtml()
-    }
-
-    override fun provideAddress(): CharSequence {
-        return "Địa chỉ: <b>${address ?: ""}</b>".asHtml()
-    }
-
-    override fun provideJoinedDate(): CharSequence {
-        return "Ngày tham gia: <b>${createdAt?.asDate()}</b>".asHtml()
-    }
-
+class Profile : IdentityData() {
     @SerializedName("name")
     @Expose
     var name: String? = null

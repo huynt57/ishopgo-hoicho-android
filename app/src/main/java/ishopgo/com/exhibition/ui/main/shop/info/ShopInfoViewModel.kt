@@ -19,7 +19,7 @@ class ShopInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var info = MutableLiveData<ShopInfoProvider>()
+    var info = MutableLiveData<ShopDetail>()
     var listSalePoint = MutableLiveData<List<SearchSalePoint>>()
 
     fun loadInfo(shopId: Long) {

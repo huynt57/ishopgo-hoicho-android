@@ -34,11 +34,12 @@ import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
+import ishopgo.com.exhibition.model.product_manager.ProductRelated
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.*
@@ -417,46 +418,48 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun showDetail(info: ProductManagerDetail) {
+        val convert = ProductManagerConverter().convert(info)
+
         hideProgressDialog()
-        sw_show_wholesale.isChecked = info.provideViewWholesale()
-        sw_show_wholesale.text = if (info.provideViewWholesale()) "Hiển thị giá bán sỉ: Hiển thị"
+        sw_show_wholesale.isChecked = convert.provideViewWholesale()
+        sw_show_wholesale.text = if (convert.provideViewWholesale()) "Hiển thị giá bán sỉ: Hiển thị"
         else "Hiển thị giá bán sỉ: Không hiển thị"
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
             til_product_provider.visibility = View.VISIBLE
-            provider_id = info.providerId
+            provider_id = info.id
 
         } else {
             provider_id = UserDataManager.currentUserId
             til_product_provider.visibility = View.GONE
         }
 
-        if (info.provideViewWholesale()) {
+        if (convert.provideViewWholesale()) {
             linear_wholesale.visibility = View.VISIBLE
-            edit_produt_wholesale_from.setText(info.provideWholesaleFrom())
-            edit_produt_wholesale_to.setText(info.provideWholesaleTo())
-            edit_produt_wholesale_count.setText(info.provideWholesaleCountProduct())
+            edit_produt_wholesale_from.setText(convert.provideWholesaleFrom())
+            edit_produt_wholesale_to.setText(convert.provideWholesaleTo())
+            edit_produt_wholesale_count.setText(convert.provideWholesaleCountProduct())
         } else linear_wholesale.visibility = View.GONE
 
-        if (info.provideImages().isNotEmpty()) {
-            for (i in info.provideImages()) {
+        if (convert.provideImages().isNotEmpty()) {
+            for (i in convert.provideImages()) {
                 val postMedia = PostMedia()
                 postMedia.uri = Uri.parse(i)
                 postMedias.add(postMedia)
             }
             adapterImages.replaceAll(postMedias)
 
-            imageOld = info.provideImages()[0]
+            imageOld = convert.provideImages()[0]
 
             Glide.with(context)
-                    .load(info.provideImages()[0])
+                    .load(convert.provideImages()[0])
                     .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)
                             .error(R.drawable.image_placeholder))
                     .into(view_image_product_detail)
 
             view_image_product_detail.setOnClickListener {
                 val listImage = mutableListOf<String>()
-                listImage.add(info.provideImages()[0])
+                listImage.add(convert.provideImages()[0])
                 val intent = Intent(context, PhotoAlbumViewActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImage.toTypedArray())
                 startActivity(intent)
@@ -472,7 +475,7 @@ class ProductManagerDetailFragment : BaseFragment() {
             imagesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
                 override fun click(position: Int, data: String, code: Int) {
                     val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, info.provideImages().toTypedArray())
+                    intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, convert.provideImages().toTypedArray())
                     startActivity(intent)
                 }
             }
@@ -506,47 +509,47 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         }
 
-        sw_featured.isChecked = info.wasIsFeatured()
-        sw_featured.text = if (info.wasIsFeatured()) "Sản phẩm nổi bật: Nổi bật"
+        sw_featured.isChecked = convert.provideIsFeatured()
+        sw_featured.text = if (convert.provideIsFeatured()) "Sản phẩm nổi bật: Nổi bật"
         else "Sản phẩm nổi bật: Không nổi bật"
 
-        sw_status.isChecked = info.provideStatus()
-        sw_status.text = if (info.provideStatus()) "Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
+        sw_status.isChecked = convert.provideStatus()
+        sw_status.text = if (convert.provideStatus()) "Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
         else "Tuỳ chọn hiển thị: Không hiển thị"
 
-        edit_product_name.setText(info.provideName())
-        edit_product_code.setText(info.provideCode())
-        edit_product_dvt.setText(info.provideDVT())
-        edit_product_madeIn.setText(info.provideMadeIn())
-        edit_product_price.setText(info.providePrice())
-        edit_product_title.setText(info.provideTitle())
-        edit_product_meta_description.setText(info.provideMetaDescription())
-        edit_product_tags.setText(info.provideTags())
-        edit_product_provider.setText(info.providerProviderName())
+        edit_product_name.setText(convert.provideName())
+        edit_product_code.setText(convert.provideCode())
+        edit_product_dvt.setText(convert.provideDVT())
+        edit_product_madeIn.setText(convert.provideMadeIn())
+        edit_product_price.setText(convert.providePrice())
+        edit_product_title.setText(convert.provideTitle())
+        edit_product_meta_description.setText(convert.provideMetaDescription())
+        edit_product_tags.setText(convert.provideTags())
+        edit_product_provider.setText(convert.providerProviderName())
 
-        if (info.provideDepartments() != null && info.provideDepartments()!!.isNotEmpty())
-            edit_product_brand.setText(info.provideDepartments()?.get(0)?.name ?: "")
+        if (convert.provideDepartments() != null && convert.provideDepartments()!!.isNotEmpty())
+            edit_product_brand.setText(convert.provideDepartments()?.get(0)?.name ?: "")
 
-        container_product_detail.visibility = if (info.provideDescription().isEmpty()) View.GONE else View.VISIBLE
+        container_product_detail.visibility = if (convert.provideDescription().isEmpty()) View.GONE else View.VISIBLE
         if (container_product_detail.visibility == View.VISIBLE) {
             try {
                 val css = IOUtils.toString(context?.assets?.open("WebViewStyle.css"), "UTF-8")
                 val fullHtml = String.format(
                         "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
                         css,
-                        info.provideDescription()
+                        convert.provideDescription()
                 )
                 webView_spk_detail_description.loadData(fullHtml, "text/html; charset=UTF-8", null)
             } catch (e: IOException) {
                 e.printStackTrace()
-                webView_spk_detail_description.loadData(info.provideDescription(), "text/html; charset=UTF-8", null)
+                webView_spk_detail_description.loadData(convert.provideDescription(), "text/html; charset=UTF-8", null)
             }
         }
 
         tv_view_details.setOnClickListener(
                 {
                     val i = Intent(context, FullDetailActivity::class.java)
-                    i.putExtra(Const.TransferKey.EXTRA_JSON, info.provideDescription())
+                    i.putExtra(Const.TransferKey.EXTRA_JSON, convert.provideDescription())
                     startActivity(i)
                 })
 
@@ -571,6 +574,142 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         }
     }
+
+    interface ProductManagerDetailProvider {
+        fun provideName(): String
+        fun provideTitle(): String
+        fun provideDVT(): String
+        fun provideCode(): String
+        fun provideTTPrice(): String
+        fun provideProviderPrice(): String
+        fun providePrice(): String
+        fun provideStatus(): Boolean
+        fun provideMadeIn(): String
+        fun provideTags(): String
+        fun provideDescription(): String
+        fun provideMetaDescription(): String
+        fun provideCollectionProducts(): ProductRelated?
+        fun provideProviderAccount(): Provider?
+        fun provideImages(): List<String>
+        fun provideDepartments(): List<Brand>?
+        fun provideCategory(): List<Category>?
+        fun provideLink(): String
+        fun provideIsFeatured(): Boolean
+        fun provideViewWholesale(): Boolean
+        fun provideWholesaleFrom(): String
+        fun provideWholesaleTo(): String
+        fun provideWholesaleCountProduct(): String
+        fun providerProviderName(): String
+
+    }
+
+    class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
+
+        override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
+            return object : ProductManagerDetailProvider {
+                override fun providerProviderName(): String {
+                    return from.providerName ?: ""
+                }
+
+                override fun provideWholesaleFrom(): String {
+                    return from.wholesalePriceFrom.toString()
+                }
+
+                override fun provideWholesaleTo(): String {
+                    return from.wholesalePriceTo.toString()
+                }
+
+                override fun provideWholesaleCountProduct(): String {
+                    return from.wholesaleCountProduct.toString()
+                }
+
+                override fun provideCategory(): List<Category>? {
+                    return from.categories ?: mutableListOf()
+                }
+
+                override fun provideViewWholesale(): Boolean {
+                    return from.viewWholesale == VIEW_WHOLESALE
+                }
+
+                override fun provideName(): String {
+                    return from.name ?: ""
+                }
+
+                override fun provideTitle(): String {
+                    return from.title ?: ""
+                }
+
+                override fun provideDVT(): String {
+                    return from.dvt ?: ""
+                }
+
+                override fun provideCode(): String {
+                    return from.code ?: ""
+                }
+
+                override fun provideTTPrice(): String {
+                    return from.ttPrice.toString()
+                }
+
+                override fun provideProviderPrice(): String {
+                    return from.providerPrice.toString()
+                }
+
+                override fun providePrice(): String {
+                    return from.price.toString()
+                }
+
+                override fun provideStatus(): Boolean {
+                    return from.status == STATUS_DISPLAY_SHOW
+                }
+
+                override fun provideMadeIn(): String {
+                    return from.madeIn ?: ""
+                }
+
+                override fun provideTags(): String {
+                    return from.tags ?: ""
+                }
+
+                override fun provideDescription(): String {
+                    return from.description ?: ""
+                }
+
+                override fun provideMetaDescription(): String {
+                    return from.metaDescription ?: ""
+                }
+
+                override fun provideCollectionProducts(): ProductRelated? {
+                    return from.collectionProducts
+                }
+
+                override fun provideProviderAccount(): Provider? {
+                    return from.providerAccount
+                }
+
+                override fun provideImages(): List<String> {
+                    return from.images ?: mutableListOf()
+                }
+
+                override fun provideDepartments(): List<Brand>? {
+                    return from.departments ?: mutableListOf()
+                }
+
+                override fun provideLink(): String {
+                    return from.link ?: ""
+                }
+
+
+                override fun provideIsFeatured(): Boolean {
+                    return wasIsFeatured()
+                }
+
+                fun wasIsFeatured() = from.is_featured == IS_FEATURED
+
+            }
+        }
+    }
+
 
     @SuppressLint("SetTextI18n")
     private fun stopEditing() {
@@ -790,33 +929,31 @@ class ProductManagerDetailFragment : BaseFragment() {
 
             if (level == CATEGORY_LEVEL_PARENT) {
                 rv_search.adapter = adapterCategory
-                adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                listCategory.clear()
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_1)
-                                listCategory.add(data)
-                                til_category_1.visibility = View.VISIBLE
-                                edt_product_categories_1.setText("")
-                                til_category_2.visibility = View.GONE
-                                edt_product_categories_2.setText("")
-                                til_category_3.visibility = View.GONE
-                                edt_product_categories_3.setText("")
-                                til_category_4.visibility = View.GONE
-                                edt_product_categories_4.setText("")
-                            }
+                            listCategory.clear()
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_1)
+                            listCategory.add(data)
+                            til_category_1.visibility = View.VISIBLE
+                            edt_product_categories_1.setText("")
+                            til_category_2.visibility = View.GONE
+                            edt_product_categories_2.setText("")
+                            til_category_3.visibility = View.GONE
+                            edt_product_categories_3.setText("")
+                            til_category_4.visibility = View.GONE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
             }
             if (level == CATEGORY_LEVEL_1) {
                 rv_search.adapter = adapterCategory_1
-                adapterCategory_1.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_1.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
                             if (listCategory.size >= 2)
@@ -830,18 +967,16 @@ class ProductManagerDetailFragment : BaseFragment() {
                                     if (i == 4)
                                         listCategory.removeAt(i - 3)
                                 }
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_2)
-                                listCategory.add(data)
-                                til_category_2.visibility = View.VISIBLE
-                                edt_product_categories_2.setText("")
-                                til_category_3.visibility = View.GONE
-                                edt_product_categories_3.setText("")
-                                til_category_4.visibility = View.GONE
-                                edt_product_categories_4.setText("")
-                            }
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_2)
+                            listCategory.add(data)
+                            til_category_2.visibility = View.VISIBLE
+                            edt_product_categories_2.setText("")
+                            til_category_3.visibility = View.GONE
+                            edt_product_categories_3.setText("")
+                            til_category_4.visibility = View.GONE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
@@ -849,8 +984,8 @@ class ProductManagerDetailFragment : BaseFragment() {
 
             if (level == CATEGORY_LEVEL_2) {
                 rv_search.adapter = adapterCategory_2
-                adapterCategory_2.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_2.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
                             if (listCategory.size >= 3)
@@ -862,24 +997,22 @@ class ProductManagerDetailFragment : BaseFragment() {
                                     if (i == 4)
                                         listCategory.removeAt(i - 2)
                                 }
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_3)
-                                listCategory.add(data)
-                                til_category_3.visibility = View.VISIBLE
-                                edt_product_categories_3.setText("")
-                                til_category_4.visibility = View.GONE
-                                edt_product_categories_4.setText("")
-                            }
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_3)
+                            listCategory.add(data)
+                            til_category_3.visibility = View.VISIBLE
+                            edt_product_categories_3.setText("")
+                            til_category_4.visibility = View.GONE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
             }
             if (level == CATEGORY_LEVEL_3) {
                 rv_search.adapter = adapterCategory_3
-                adapterCategory_3.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_3.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
                             if (listCategory.size >= 4)
@@ -889,29 +1022,25 @@ class ProductManagerDetailFragment : BaseFragment() {
                                     if (i == 4)
                                         listCategory.removeAt(i - 1)
                                 }
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                firstLoadCategoryChild(data, CATEGORY_LEVEL_4)
-                                listCategory.add(data)
-                                til_category_4.visibility = View.VISIBLE
-                                edt_product_categories_4.setText("")
-                            }
+                            firstLoadCategoryChild(data, CATEGORY_LEVEL_4)
+                            listCategory.add(data)
+                            til_category_4.visibility = View.VISIBLE
+                            edt_product_categories_4.setText("")
                         }
                     }
                 }
             }
             if (level == CATEGORY_LEVEL_4) {
                 rv_search.adapter = adapterCategory_4
-                adapterCategory_4.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-                    override fun click(position: Int, data: CategoryProvider, code: Int) {
+                adapterCategory_4.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+                    override fun click(position: Int, data: Category, code: Int) {
                         context?.let {
                             dialog.dismiss()
-                            view.text = data.provideName()
+                            view.text = data.name ?: ""
                             view.error = null
-                            if (data is Category) {
-                                listCategory.add(data)
-                            }
+                            listCategory.add(data)
                         }
                     }
                 }
@@ -1074,6 +1203,10 @@ class ProductManagerDetailFragment : BaseFragment() {
         const val STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
         const val STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dang landing page
         const val STATUS_DISPLAY_HIDDEN: Int = 0 //Không hiển thị
+
+        const val IS_FEATURED: Int = 1  //Sản phẩm nổi bật
+
+        const val VIEW_WHOLESALE = 1
 
         fun newInstance(params: Bundle): ProductManagerDetailFragment {
             val fragment = ProductManagerDetailFragment()

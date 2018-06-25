@@ -21,7 +21,6 @@ import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -319,7 +318,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
     }
 
 
-    var categories = MutableLiveData<List<CategoryProvider>>()
+    var categories = MutableLiveData<List<Category>>()
 
     fun loadCategories() {
         addDisposable(noAuthService.getCategories()
@@ -337,10 +336,10 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         )
     }
 
-    var childCategories = MutableLiveData<List<CategoryProvider>>()
-    var childCategories_1 = MutableLiveData<List<CategoryProvider>>()
-    var childCategories_2 = MutableLiveData<List<CategoryProvider>>()
-    var childCategories_3 = MutableLiveData<List<CategoryProvider>>()
+    var childCategories = MutableLiveData<List<Category>>()
+    var childCategories_1 = MutableLiveData<List<Category>>()
+    var childCategories_2 = MutableLiveData<List<Category>>()
+    var childCategories_3 = MutableLiveData<List<Category>>()
 
     fun loadChildCategory(category: Category, level: Int) {
         val fields = mutableMapOf<String, Any>()
@@ -366,10 +365,10 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         )
     }
 
-    var childCategoriesDetail = MutableLiveData<List<CategoryProvider>>()
-    var childCategoriesDetail_2 = MutableLiveData<List<CategoryProvider>>()
-    var childCategoriesDetail_3 = MutableLiveData<List<CategoryProvider>>()
-    var childCategoriesDetail_4 = MutableLiveData<List<CategoryProvider>>()
+    var childCategoriesDetail = MutableLiveData<List<Category>>()
+    var childCategoriesDetail_2 = MutableLiveData<List<Category>>()
+    var childCategoriesDetail_3 = MutableLiveData<List<Category>>()
+    var childCategoriesDetail_4 = MutableLiveData<List<Category>>()
 
     fun loadChildCategoryDetail(categoryId: Long, level: Int) {
         val fields = mutableMapOf<String, Any>()

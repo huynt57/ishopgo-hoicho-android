@@ -161,9 +161,9 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                         COMMUNITY_COMMENT_CLICK -> {
                             if (UserDataManager.currentUserId > 0) {
 
-                                    val intent = Intent(context, CommunityCommentActivity::class.java)
-                                    intent.putExtra(EXTRA_ID, data.id)
-                                    startActivity(intent)
+                                val intent = Intent(context, CommunityCommentActivity::class.java)
+                                intent.putExtra(EXTRA_ID, data.id)
+                                startActivity(intent)
                             } else openLoginActivity()
                         }
 
@@ -172,14 +172,14 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                         COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
 
                         COMMUNITY_PRODUCT_CLICK -> {
-                                val productId = data.product?.id ?: -1L
-                                if (productId != -1L) {
-                                    context?.let {
-                                        val intent = Intent(it, ProductDetailActivity::class.java)
-                                        intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
-                                        startActivity(intent)
-                                    }
+                            val productId = data.product?.id ?: -1L
+                            if (productId != -1L) {
+                                context?.let {
+                                    val intent = Intent(it, ProductDetailActivity::class.java)
+                                    intent.putExtra(Const.TransferKey.EXTRA_ID, productId)
+                                    startActivity(intent)
                                 }
+                            }
                         }
                         COMMUNITY_IMAGE_CLICK -> {
                             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
@@ -188,9 +188,9 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                         }
 
                         COMMUNITY_PROFILE_CLICK -> {
-                                val intent = Intent(view.context, MemberProfileActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                                startActivity(intent)
+                            val intent = Intent(view.context, MemberProfileActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                            startActivity(intent)
                         }
                     }
                 }
@@ -294,7 +294,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
             if (data.product != null) {
-                val urlToShare = data.product?.providerLink()
+                val urlToShare = data.product?.link ?: ""
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse(urlToShare))
                         .setQuote(data.content)
@@ -303,20 +303,32 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                 shareDialog.show(shareContent)
             }
 
-            if (data.images != null && data.images!!.isNotEmpty()) {
+            if (data.images != null && data.images!!.isNotEmpty() && data.product == null) {
                 if (data.images!!.size > 1) {
                     val thread = Thread(Runnable {
                         try {
                             val listSharePhoto = mutableListOf<SharePhoto>()
-                            for (i in data.images!!.indices)
-                                try {
-                                    val url = URL(data.images!![i])
-                                    val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
-                                    val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
-                                    listSharePhoto.add(sharePhoto)
-                                } catch (e: IOException) {
-                                    Log.d("IOException", e.toString())
-                                }
+                            if (data.images!!.size > 5)
+                                for (i in 0..5)
+                                    try {
+                                        val url = URL(data.images!![i])
+                                        val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                        val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                        listSharePhoto.add(sharePhoto)
+                                    } catch (e: IOException) {
+                                        Log.d("IOException", e.toString())
+                                    }
+                            else {
+                                for (i in data.images!!.indices)
+                                    try {
+                                        val url = URL(data.images!![i])
+                                        val image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+                                        val sharePhoto = SharePhoto.Builder().setBitmap(image).build()
+                                        listSharePhoto.add(sharePhoto)
+                                    } catch (e: IOException) {
+                                        Log.d("IOException", e.toString())
+                                    }
+                            }
                             val shareContent = SharePhotoContent.Builder()
                                     .addPhotos(listSharePhoto)
                                     .build()
@@ -342,7 +354,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                         })
             }
 
-            if (data.product == null && data.images!!.isEmpty()) {
+            if (data.product == null && data.images == null) {
                 val shareContent = ShareLinkContent.Builder()
                         .setContentUrl(Uri.parse("http://expo360.vn/cong-dong"))
                         .setQuote(data.content)
@@ -354,22 +366,22 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
     }
 
     private fun shareApp(data: Community) {
-        val urlToShare = if (data.images!!.isNotEmpty()) {
+        val urlToShare = if (data.images != null && data.images!!.isNotEmpty()) {
             if (data.images!!.size > 1) {
                 var linkImage = ""
                 for (i in data.images!!.indices) {
                     linkImage += "${data.images!![i]}\n\n"
                 }
 
-                "${data.content}\n $linkImage\n ${data.product?.providerLink()
+                "${data.content}\n $linkImage\n ${data.product?.link
                         ?: ""}"
 
             } else {
-                "${data.content}\n ${data.images!![0]}\n ${data.product?.providerLink()
+                "${data.content}\n ${data.images!![0]}\n ${data.product?.link
                         ?: ""}"
             }
         } else
-            "${data.content}\n ${data.product?.providerLink() ?: ""}"
+            "${data.content}\n ${data.product?.link ?: ""}"
 
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK

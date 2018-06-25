@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Banner
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
@@ -31,9 +32,7 @@ import ishopgo.com.exhibition.ui.main.brand.HighlightBrandAdapter
 import ishopgo.com.exhibition.ui.main.brand.HighlightBrandProvider
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsActivity
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.home.category.CategoryStage1Adapter
-import ishopgo.com.exhibition.ui.main.home.category.DummyCategoryProvider
 import ishopgo.com.exhibition.ui.main.home.introduction.IntroductionActivity
 import ishopgo.com.exhibition.ui.main.home.post.LatestPostsAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
@@ -289,9 +288,9 @@ class HomeFragment : BaseFragment() {
         view_open_expo_map.setOnClickListener {
             openExpoMap()
         }
-        categoriesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
+        categoriesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
 
-            override fun click(position: Int, data: CategoryProvider, code: Int) {
+            override fun click(position: Int, data: Category, code: Int) {
                 when (code) {
                     CategoryAdapter.TYPE_CHILD -> {
                         drawer_layout.closeDrawer(Gravity.START)
@@ -328,8 +327,8 @@ class HomeFragment : BaseFragment() {
             }
 
         }
-        categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-            override fun click(position: Int, data: CategoryProvider, code: Int) {
+        categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+            override fun click(position: Int, data: Category, code: Int) {
                 mainViewModel.showCategoriedProducts(data)
             }
 
@@ -490,9 +489,9 @@ class HomeFragment : BaseFragment() {
 
     private fun setupCategoryStage1(context: Context) {
         // dummy category
-        val dummy = mutableListOf<CategoryProvider>()
+        val dummy = mutableListOf<Category>()
         for (i in 0..6)
-            dummy.add(DummyCategoryProvider())
+            dummy.add(Category())
         categoryStage1Adapter.addAll(dummy)
 
         view_list_category_stage1.adapter = categoryStage1Adapter

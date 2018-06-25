@@ -10,7 +10,6 @@ import ishopgo.com.exhibition.domain.request.SameShopProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 
 class ProductsOfShopViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
 
@@ -41,7 +40,7 @@ class ProductsOfShopViewModel : BaseListViewModel<List<Product>>(), AppComponent
 
     }
 
-    var dataBoothCategory = MutableLiveData<List<CategoryProvider>>()
+    var dataBoothCategory = MutableLiveData<List<Category>>()
 
     fun loadBoothCategory(params: Request) {
         if (params is BoothCategoriesRequest) {

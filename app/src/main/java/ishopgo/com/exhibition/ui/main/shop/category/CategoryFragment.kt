@@ -7,13 +7,13 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.BoothCategoriesRequest
+import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.category.CategoryAdapter
-import ishopgo.com.exhibition.ui.main.home.category.CategoryProvider
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailShareViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 /**
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
-class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvider>() {
+class CategoryFragment : BaseListFragment<List<Category>, Category>() {
 
     companion object {
         fun newInstance(params: Bundle): CategoryFragment {
@@ -50,7 +50,7 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<CategoryProvider>) {
+    override fun populateData(data: List<Category>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -63,10 +63,10 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<CategoryProvider> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Category> {
         val categoryAdapter = CategoryAdapter()
-        categoryAdapter.listener = object: ClickableAdapter.BaseAdapterAction<CategoryProvider> {
-            override fun click(position: Int, data: CategoryProvider, code: Int) {
+        categoryAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+            override fun click(position: Int, data: Category, code: Int) {
                 when (code) {
                     CategoryAdapter.TYPE_CHILD -> {
                         sharedViewModel.showCategoriedProducts(data)
@@ -103,7 +103,7 @@ class CategoryFragment : BaseListFragment<List<CategoryProvider>, CategoryProvid
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing, true, false))
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<CategoryProvider>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Category>> {
         return obtainViewModel(CategoryViewModel::class.java, false)
     }
 }

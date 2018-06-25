@@ -99,7 +99,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    var detail = MutableLiveData<ProductDetailProvider>()
+    var detail = MutableLiveData<ProductDetail>()
 
     fun loadProductDetail(productId: Long) {
         val request = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId) else noAuthService.getProductDetail(productId)

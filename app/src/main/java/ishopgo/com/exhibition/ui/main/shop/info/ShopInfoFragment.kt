@@ -14,10 +14,12 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.SalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
@@ -81,37 +83,112 @@ class ShopInfoFragment : BaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showInfo(info: ShopInfoProvider) {
+    private fun showInfo(info: ShopDetail) {
+        val convert = ShopInfoConverter().convert(info)
 
-        view_name.text = "Chủ gian hàng: <b>${info.provideName()}</b>".asHtml()
-        view_phone.text = "SĐT: <b>${info.provideHotline()}</b>".asHtml()
-        view_product_count.text = "Số sản phẩm: <b>${info.provideProductCount()}</b>".asHtml()
-        view_joined_date.text = "Ngày tham gia: <b>${info.provideJoinedDate()}</b>".asHtml()
-        view_region.text = "Khu vực: <b>${info.provideRegion()}</b>".asHtml()
-        view_rating.text = "Đánh giá shop: <b>${info.provideRating()}/5 điểm</b>".asHtml()
-        view_click_count.text = "Số lượt click: <b>${info.provideClickCount()}</b>".asHtml()
-        view_share_count.text = "Số lượt share: <b>${info.provideShareCount()}</b>".asHtml()
-        view_follow_count.text = "Số lượt quan tâm: <b>${info.provideFollowCount()}</b>".asHtml()
-        view_visit_count.text = "Số lượt tham quan: <b>${info.provideVisitCount()}</b>".asHtml()
-        view_description.text = info.provideDescription().asHtml()
+        view_name.text = "Chủ gian hàng: <b>${convert.provideName()}</b>".asHtml()
+        view_phone.text = "SĐT: <b>${convert.provideHotline()}</b>".asHtml()
+        view_product_count.text = "Số sản phẩm: <b>${convert.provideProductCount()}</b>".asHtml()
+        view_joined_date.text = "Ngày tham gia: <b>${convert.provideJoinedDate()}</b>".asHtml()
+        view_region.text = "Khu vực: <b>${convert.provideRegion()}</b>".asHtml()
+        view_rating.text = "Đánh giá shop: <b>${convert.provideRating()}/5 điểm</b>".asHtml()
+        view_click_count.text = "Số lượt click: <b>${convert.provideClickCount()}</b>".asHtml()
+        view_share_count.text = "Số lượt share: <b>${convert.provideShareCount()}</b>".asHtml()
+        view_follow_count.text = "Số lượt quan tâm: <b>${convert.provideFollowCount()}</b>".asHtml()
+        view_visit_count.text = "Số lượt tham quan: <b>${convert.provideVisitCount()}</b>".asHtml()
+        view_description.text = convert.provideDescription().asHtml()
 
-        if (info is ShopDetail) {
-            sharedViewModel.updateShopImage(info.id, info.follow, info.provideImage())
-            if (UserDataManager.currentUserId == info.id) {
-                view_name.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
-                view_name.setOnClickListener { showDialogChangeName(info.name ?: "") }
-                textView11.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
-                textView11.setOnClickListener {
-                    showDialogChangeDescription(info.introduction ?: "")
+        sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage())
+        if (UserDataManager.currentUserId == info.id) {
+            view_name.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
+            view_name.setOnClickListener { showDialogChangeName(info.name ?: "") }
+            textView11.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
+            textView11.setOnClickListener {
+                showDialogChangeDescription(info.introduction ?: "")
+            }
+            img_add_sale_point.visibility = View.VISIBLE
+            img_add_sale_point.setOnClickListener {
+                val intent = Intent(context, SalePointAddActivity::class.java)
+                startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+            }
+        }
+    }
+
+    interface ShopInfoProvider {
+        fun provideName(): String
+        fun provideHotline(): String
+        fun provideImage(): String
+        fun provideProductCount(): Int
+        fun provideJoinedDate(): String
+        fun provideRegion(): String
+        fun provideRating(): Int
+        fun provideClickCount(): Int
+        fun provideShareCount(): Int
+        fun provideFollowCount(): Int
+        fun provideVisitCount(): Int
+        fun provideDescription(): String
+        fun provideSalePoints(): List<SearchSalePoint>
+    }
+
+    class ShopInfoConverter : Converter<ShopDetail, ShopInfoProvider> {
+
+        override fun convert(from: ShopDetail): ShopInfoProvider {
+            return object : ShopInfoProvider {
+                override fun provideVisitCount(): Int {
+                    return from.visitCount ?: 0
                 }
-                img_add_sale_point.visibility = View.VISIBLE
-                img_add_sale_point.setOnClickListener {
-                    val intent = Intent(context, SalePointAddActivity::class.java)
-                    startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+
+                override fun provideFollowCount(): Int {
+                    return from.followCount ?: 0
+                }
+
+                override fun provideHotline(): String {
+                    return from.hotline ?: ""
+                }
+
+                override fun provideImage(): String {
+                    return from.banner ?: ""
+                }
+
+                override fun provideProductCount(): Int {
+                    return from.productCount
+                }
+
+                override fun provideJoinedDate(): String {
+                    return if (from.createdAt.isNullOrBlank()) "01/05/2018" else from.createdAt!!
+                }
+
+                override fun provideRegion(): String {
+                    return if (from.address.isNullOrBlank()) "Đang cập nhật" else from.address!!
+                }
+
+                override fun provideRating(): Int {
+                    return from.rate
+                }
+
+                override fun provideClickCount(): Int {
+                    return from.clickCount
+                }
+
+                override fun provideShareCount(): Int {
+                    return from.shareCount
+                }
+
+                override fun provideDescription(): String {
+                    return if (from.introduction.isNullOrBlank()) "Đang cập nhật" else from.introduction!!
+                }
+
+                override fun provideSalePoints(): List<SearchSalePoint> {
+                    return mutableListOf()
+                }
+
+                override fun provideName(): String {
+                    return from.name ?: "Đang cập nhật"
                 }
             }
         }
     }
+
 
     private fun showDialogChangeName(name: String) {
         context?.let {
