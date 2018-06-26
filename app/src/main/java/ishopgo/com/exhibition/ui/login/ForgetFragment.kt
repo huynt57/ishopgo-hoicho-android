@@ -7,10 +7,13 @@ import android.support.design.widget.TextInputEditText
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 
 /**
@@ -29,6 +32,22 @@ class ForgetFragment : BaseFragment() {
         img_forget_back.setOnClickListener {
             activity?.finish()
         }
+
+        tv_forget_phone.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
+            if (id == EditorInfo.IME_ACTION_SEND) {
+
+                tv_forget_phone.hideKeyboard()
+
+                if (checkRequireFields(tv_forget_phone.text.toString())) {
+                    showProgressDialog()
+                    viewModel.getOTP(tv_forget_phone.text.toString())
+                }
+                return@OnEditorActionListener true
+            }
+
+            false
+        })
+
 
         btn_forget_sent.setOnClickListener {
             if (checkRequireFields(tv_forget_phone.text.toString())) {
@@ -59,6 +78,7 @@ class ForgetFragment : BaseFragment() {
             toast("Đặt lại mật khẩu thành công. Vui lòng đăng nhập.")
             val intent = Intent(context, LoginActivity::class.java)
             intent.putExtra("phone", tv_forget_phone.text.toString())
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
             startActivity(intent)
             activity?.finish()
         })

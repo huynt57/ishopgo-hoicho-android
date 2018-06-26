@@ -323,8 +323,8 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:textSize="14sp"
                             android:lineSpacingMultiplier="1.3"
+                            android:textSize="14sp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/view_registered"
@@ -365,8 +365,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:orientation="vertical"
-            android:paddingBottom="16dp">
+            android:paddingBottom="8dp">
 
             <ImageView
                 android:layout_width="match_parent"
@@ -388,12 +389,12 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/md_grey_300"
+                android:background="@color/colorPrimary"
                 android:gravity="center_vertical"
                 android:padding="8dp"
                 android:text="Thông tin hội chợ"
                 android:textAllCaps="true"
-                android:textColor="@color/md_grey_800"/>
+                android:textColor="@color/colorPureWhite"/>
 
             <View
                 style="@style/AppTheme.DividerLine"
@@ -410,7 +411,7 @@
                 android:padding="8dp"
                 android:text="Giới thiệu"
                 app:drawableStartCompat="@drawable/ic_introduce_24dp"
-                app:drawableStartSquareSize="24dp" />
+                app:drawableStartSquareSize="24dp"/>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_open_news"
@@ -467,6 +468,20 @@
                 app:drawableStartCompat="@drawable/ic_expo_map_24dp"
                 app:drawableStartSquareSize="24dp"
                 />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/view_info_version"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center"
+                android:padding="8dp"
+                android:textSize="12sp"
+                android:textColor="@color/md_grey_700"
+                tools:text="Phiên bản"
+                />
+
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

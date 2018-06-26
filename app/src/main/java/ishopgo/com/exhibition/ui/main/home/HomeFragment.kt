@@ -13,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import ishopgo.com.exhibition.BuildConfig
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Banner
 import ishopgo.com.exhibition.domain.response.Brand
@@ -224,6 +225,8 @@ class HomeFragment : BaseFragment() {
         builder.append("© Bản quyền 2018| iShopGo® Nền tảng ERP cho doanh nghiệp vừa và nhỏ")
         builder.append("<br>")
         view_company_info.text = builder.toString().asHtml()
+
+        view_info_version.text = "Phiên bản ${BuildConfig.VERSION_NAME}"
     }
 
     private fun openIntroduction() {
