@@ -24,7 +24,7 @@ class BrandManagerAdapter : ClickableAdapter<Brand>() {
         super.onBindViewHolder(holder, position)
         holder.apply {
             itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), BRAND_EDIT_CLICK) }
-            itemView.brand_item_highlight.setOnCheckedChangeListener { _, _ -> listener?.click(adapterPosition, getItem(adapterPosition), BRAND_FEATURED_CLICK) }
+//            itemView.brand_item_highlight.setOnCheckedChangeListener { _, _ -> listener?.click(adapterPosition, getItem(adapterPosition), BRAND_FEATURED_CLICK) }
         }
     }
 
@@ -38,7 +38,7 @@ class BrandManagerAdapter : ClickableAdapter<Brand>() {
                 Glide.with(this).load(convert.provideLogo())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(brand_item_picture)
                 brand_item_name.text = convert.provideName()
-                brand_item_highlight.isChecked = convert.provideIsFeatured()
+//                brand_item_highlight.isChecked = convert.provideIsFeatured()
             }
         }
 

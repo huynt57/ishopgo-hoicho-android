@@ -1,9 +1,10 @@
-package ishopgo.com.exhibition.ui.main.postmanager.detail
+package ishopgo.com.exhibition.ui.main.home.post.question.detail
 
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.main.postmanager.detail.QuestionMenuDetailFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class QuestionMenuDetailFragmentActionBar : BaseActionBarFragment() {
@@ -26,7 +27,8 @@ class QuestionMenuDetailFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, QuestionMenuDetailFragment.newInstance(arguments ?: Bundle())).commit()
+                .replace(R.id.view_main_content, QuestionMenuDetailFragment.newInstance(arguments
+                        ?: Bundle())).commit()
     }
 
     private fun setupToolbars() {

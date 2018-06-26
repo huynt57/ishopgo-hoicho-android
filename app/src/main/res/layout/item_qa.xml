@@ -22,7 +22,6 @@
         android:ellipsize="end"
         android:focusable="true"
         android:fontFamily="@font/ff_roboto"
-        android:maxLines="3"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -49,7 +49,7 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
                     view_name.setTextColor(Color.RED)
 
                     view_number.text = converted.provideNumber()
-                    view_name.text = "Chưa có gian hàng"
+                    view_name.text = "Mua gian này"
                     view_region.text = converted.provideRegion()
                     view_region.visibility = View.GONE
                 }

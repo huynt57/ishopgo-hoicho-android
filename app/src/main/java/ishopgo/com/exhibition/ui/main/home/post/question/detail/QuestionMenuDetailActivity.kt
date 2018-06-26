@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.postmanager.detail
+package ishopgo.com.exhibition.ui.main.home.post.question.detail
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

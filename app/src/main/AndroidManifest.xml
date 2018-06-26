@@ -367,7 +367,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.main.postmanager.detail.QuestionMenuDetailActivity"
+            android:name=".ui.main.home.post.question.detail.QuestionMenuDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
