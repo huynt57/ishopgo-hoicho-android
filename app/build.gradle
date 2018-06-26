@@ -29,8 +29,8 @@ android {
         applicationId "ishopgo.com.exhibition"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 8
-        versionName "1.5.1"
+        versionCode 9
+        versionName "1.5.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
