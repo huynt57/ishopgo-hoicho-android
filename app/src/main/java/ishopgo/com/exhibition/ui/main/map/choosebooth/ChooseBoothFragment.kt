@@ -1,7 +1,6 @@
-package ishopgo.com.exhibition.ui.main.map.searchbooth
+package ishopgo.com.exhibition.ui.main.map.choosebooth
 
 import android.arch.lifecycle.Observer
-import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -9,16 +8,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
-import ishopgo.com.exhibition.domain.response.ExpoConfig
-import ishopgo.com.exhibition.domain.response.ExpoShop
+import ishopgo.com.exhibition.domain.request.SearchBoothRequest
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
 import ishopgo.com.exhibition.ui.main.map.ExpoShopViewModel
-import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -26,23 +21,23 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 /**
  * Created by xuanhong on 6/19/18. HappyCoding!
  */
-class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
-        const val TAG = "SearchBoothFragment"
+        const val TAG = "ChooseBoothFragment"
 
-        fun newInstance(arg: Bundle): SearchBoothFragment {
-            val f = SearchBoothFragment()
+        fun newInstance(arg: Bundle): ChooseBoothFragment {
+            val f = ChooseBoothFragment()
             f.arguments = arg
             return f
         }
     }
 
     private var searchKey = ""
-    private lateinit var adapter: ExpoShopAdapter
+    private lateinit var adapter: ExpoBoothAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewModel: ExpoShopViewModel
-    private lateinit var expoConfig: ExpoConfig
+    private var positionId: Long = -1L
 
     override fun onRefresh() {
         swipe.isRefreshing = false
@@ -67,27 +62,16 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         firstLoad()
     }
 
-    private fun openShopDetail(shopId: Long) {
-        val intent = Intent(context, ShopDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
-        startActivity(intent)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getSearchField().hint = "Tìm kiếm gian hàng"
+        getSearchField().hint = "Tìm gian hàng muốn thêm"
         search_total.visibility = View.GONE
 
-        adapter = ExpoShopAdapter()
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoShop> {
-            override fun click(position: Int, data: ExpoShop, code: Int) {
-                if (data.boothId != null && data.boothId != 0L) {
-                    openShopDetail(data.boothId!!)
-                }
-                else {
-                    chooseShop(data)
-                }
+        adapter = ExpoBoothAdapter()
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+            override fun click(position: Int, data: BoothManager, code: Int) {
+                chooseBooth(data)
             }
 
         }
@@ -107,12 +91,10 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
     }
 
-    private fun chooseShop(data: ExpoShop) {
-        val extra = Bundle()
-        extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
-        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_chooseBoothFragment, extra)
+    private fun chooseBooth(data: BoothManager) {
+        if (positionId != -1L)
+            viewModel.assignBooth(positionId, data.id)
     }
-
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -123,11 +105,18 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
                 resolveError(it)
             }
         })
-        viewModel.dataReturned.observe(this, Observer { data ->
+        viewModel.availableBooths.observe(this, Observer { data ->
             data?.let {
                 populateData(it)
 
                 finishLoading()
+            }
+        })
+
+        viewModel.boothAssigned.observe(this, Observer { i ->
+            if (i == true) {
+                toast("Gắn gian hàng thành công")
+                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.finish_chosing)
             }
         })
 
@@ -139,23 +128,21 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         adapter.clear()
         scrollListener.resetState()
 
-        val request = ExpoShopLocationRequest()
+        val request = SearchBoothRequest()
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
-        request.searchKeyword = searchKey
-        request.expoId = expoConfig.id!!
-        viewModel.loadData(request)
+        request.keyword = searchKey
+        viewModel.loadAvailableBooths(request)
     }
 
     private fun loadMore(currentCount: Int) {
         reloadData = false
 
-        val request = ExpoShopLocationRequest()
+        val request = SearchBoothRequest()
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
-        request.searchKeyword = searchKey
-        request.expoId = expoConfig.id!!
-        viewModel.loadData(request)
+        request.keyword = searchKey
+        viewModel.loadAvailableBooths(request)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -163,11 +150,10 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
         viewModel = obtainViewModel(ExpoShopViewModel::class.java, false)
 
-        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        expoConfig = Toolbox.gson.fromJson(json, ExpoConfig::class.java)
+        positionId = arguments?.getLong(Const.TransferKey.EXTRA_ID) ?: -1L
     }
 
-    private fun populateData(data: List<ExpoShop>) {
+    private fun populateData(data: List<BoothManager>) {
         if (reloadData) {
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()

@@ -48,10 +48,20 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
                 if (data.boothId != null && data.boothId != 0L) {
                     openShopDetail(data.boothId!!)
                 }
+                else {
+                    chooseShop(data)
+                }
             }
 
         }
         return expoShopAdapter
+    }
+
+    private fun chooseShop(data: ExpoShop) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
+        extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoMapFragment_to_chooseBoothFragment, extra)
     }
 
     private fun openShopDetail(shopId: Long) {
@@ -85,15 +95,10 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
         viewModel.loadData(request)
     }
 
-    private var isSearchMode = false
     private var searchKeyword = ""
 
     private var expoId: Long = 0L
     private lateinit var expoInfo: ExpoConfig
-
-    private val searchRunnable = Runnable {
-        firstLoad()
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -124,43 +129,6 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
             startActivity(intent)
         }
 
-//        view_search_name.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                if (!isSearchMode) return
-//
-//                if (searchKeyword != s.toString()) {
-//                    searchKeyword = s.toString()
-//                    view_search_name.removeCallbacks(searchRunnable)
-//                    view_search_name.postDelayed(searchRunnable, 600)
-//                }
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//
-//        })
-//
-//        view_search_shop.setOnClickListener {
-//            view_search_name.visibility = if (isSearchMode) View.GONE else View.VISIBLE
-//
-//            isSearchMode = !isSearchMode
-//            view_search_shop.setImageResource(if (isSearchMode) R.drawable.ic_close_default_24dp else R.drawable.ic_search_highlight_24dp)
-//            if (!isSearchMode) {
-//                if (searchKeyword.isNotBlank()) {
-//                    searchKeyword = ""
-//                    firstLoad()
-//                    view_search_name.setText("")
-//                }
-//
-//                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                inputMethodManager?.hideSoftInputFromWindow(view_search_name.windowToken, 0)
-//            } else {
-//                view_search_name.requestFocus()
-//                val inputMethodManager = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//                inputMethodManager?.showSoftInput(view_search_name, 0)
-//            }
-//        }
         view_zoom.setOnClickListener {
             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
             intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, arrayOf(expoInfo.map ?: ""))

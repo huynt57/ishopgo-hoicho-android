@@ -22,6 +22,13 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun assignBooth(position: Long, fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+
+        return delegate.returningResponse(response).assignBooth(position, fields)
+    }
+
     override fun getCommunity(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerCommunity>> {
         val ps = mutableListOf<Community>()
         for (i in 0..5)

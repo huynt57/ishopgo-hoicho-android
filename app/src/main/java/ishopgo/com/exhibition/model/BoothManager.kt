@@ -15,6 +15,9 @@ class BoothManager : IdentityData() {
     @SerializedName("phone")
     @Expose
     var phone: String? = null
+    @SerializedName("hotline")
+    @Expose
+    var hotline: String? = null
     @SerializedName("company_store")
     @Expose
     var companyStore: String? = null

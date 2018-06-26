@@ -17,9 +17,36 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_expoMapFragment_to_chooseBoothFragment"
+            app:destination="@id/chooseBoothFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/searchBoothFragment"
         android:name="ishopgo.com.exhibition.ui.main.map.searchbooth.SearchBoothFragment"
-        android:label="SearchBoothFragment"/>
+        android:label="SearchBoothFragment">
+        <action
+            android:id="@+id/action_searchBoothFragment_to_chooseBoothFragment"
+            app:destination="@id/chooseBoothFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/chooseBoothFragment"
+        android:name="ishopgo.com.exhibition.ui.main.map.choosebooth.ChooseBoothFragment"
+        android:label="ChooseBoothFragment">
+    </fragment>
+
+    <action
+        android:id="@+id/finish_chosing"
+        app:popUpTo="@id/expoMapFragment"
+        app:popUpToInclusive="true"
+        />
 </navigation>

@@ -320,6 +320,10 @@ class ApiService {
 
         @DELETE("fair/delete/{id}")
         fun deleteExpo(@Path("id") expoId: Long): Single<BaseResponse<Any>>
+
+        @POST("map/choose-booth/{id}")
+        @FormUrlEncoded
+        fun assignBooth(@Path("id") position: Long, @FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {
