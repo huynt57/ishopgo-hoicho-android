@@ -64,10 +64,13 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
                 }
 
                 override fun provideName(): CharSequence {
-                    return from.booth?.name ?: if (UserDataManager.currentType == "Chủ hội chợ")
-                        "<font color=\"red\">Thêm gian hàng</font>".asHtml()
-                    else
-                        "<font color=\"red\">Mua gian này</font>".asHtml()
+                    return when (from.boothId) {
+                        0L -> if (UserDataManager.currentType == "Chủ hội chợ")
+                            "<font color=\"red\">Thêm gian hàng</font>".asHtml()
+                        else
+                            "<font color=\"red\">Mua gian này</font>".asHtml()
+                        else -> from.booth?.name ?: ""
+                    }
                 }
 
                 override fun provideNumber(): CharSequence {

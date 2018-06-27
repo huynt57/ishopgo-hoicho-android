@@ -91,7 +91,6 @@ class ShopInfoFragment : BaseFragment() {
         view_joined_date.text = "Ngày tham gia: <b>${convert.provideJoinedDate()}</b>".asHtml()
         view_region.text = "Khu vực: <b>${convert.provideRegion()}</b>".asHtml()
         view_rating.text = "Đánh giá shop: <b>${convert.provideRating()}/5 điểm</b>".asHtml()
-        view_click_count.text = "Số lượt click: <b>${convert.provideClickCount()}</b>".asHtml()
         view_share_count.text = "Số lượt share: <b>${convert.provideShareCount()}</b>".asHtml()
         view_follow_count.text = "Số lượt quan tâm: <b>${convert.provideFollowCount()}</b>".asHtml()
         view_visit_count.text = "Số lượt tham quan: <b>${convert.provideVisitCount()}</b>".asHtml()
@@ -121,7 +120,6 @@ class ShopInfoFragment : BaseFragment() {
         fun provideJoinedDate(): String
         fun provideRegion(): String
         fun provideRating(): Int
-        fun provideClickCount(): Int
         fun provideShareCount(): Int
         fun provideFollowCount(): Int
         fun provideVisitCount(): Int
@@ -163,10 +161,6 @@ class ShopInfoFragment : BaseFragment() {
 
                 override fun provideRating(): Int {
                     return from.rate
-                }
-
-                override fun provideClickCount(): Int {
-                    return from.clickCount
                 }
 
                 override fun provideShareCount(): Int {

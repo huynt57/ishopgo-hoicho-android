@@ -23,9 +23,6 @@ class ShopDetail : IdentityData() {
     @SerializedName("created_at")
     @Expose
     var createdAt: String? = null
-    @SerializedName("clicks")
-    @Expose
-    var clickCount: Int = 0
     @SerializedName("shares")
     @Expose
     var shareCount: Int = 0
