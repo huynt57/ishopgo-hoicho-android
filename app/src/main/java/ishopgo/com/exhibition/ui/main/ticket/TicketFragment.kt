@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.ticket
 
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.text.Spanned
 import android.view.LayoutInflater
@@ -9,9 +8,11 @@ import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Ticket
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asPhone
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_ticket_account.*
 import net.glxn.qrgen.android.QRCode
 
 class TicketFragment : BaseFragment() {
-    private lateinit var viewModel: TicketViewModel
+    private lateinit var ticket: Ticket
 
     companion object {
         fun newInstance(params: Bundle): TicketFragment {
@@ -34,39 +35,33 @@ class TicketFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_ticket_account, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        ticket = Toolbox.gson.fromJson(json, Ticket::class.java)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = obtainViewModel(TicketViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer {
-            it?.let {
-                hideProgressDialog()
-                resolveError(it)
-            }
-        })
+        val converted = TicketConverter().convert(ticket)
 
-        viewModel.getTicketData.observe(this, Observer { p ->
-            p?.let {
-                val converted = TicketConverter().convert(it)
-
-                Glide.with(context)
-                        .load(converted.provideBanner())
-                        .apply(RequestOptions()
-                                .centerCrop()
-                                .placeholder(R.drawable.expo_ticket_background)
-                                .error(R.drawable.expo_ticket_background)
-                        )
-                        .into(view_image)
-                tv_fair.text = converted.provideTicketName()
-                tv_user_name.text = converted.provideName()
-                tv_user_email.text = converted.provideEmail()
-                tv_user_phone.text = converted.providePhone()
-                tv_ticket_time.text = converted.provideCreateAt()
-                tv_ticket_address.text = converted.provideAddress()
-                tv_ticket_code.text = converted.provideCode()
-                img_qr_code.setImageBitmap(QRCode.from(converted.provideCode()).withSize(300, 300).bitmap())
-            }
-        })
-        viewModel.createTicket()
+        Glide.with(context)
+                .load(converted.provideBanner())
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .placeholder(R.drawable.expo_ticket_background)
+                        .error(R.drawable.expo_ticket_background)
+                )
+                .into(view_image)
+        tv_fair.text = converted.provideTicketName()
+        tv_user_name.text = converted.provideName()
+        tv_user_email.text = converted.provideEmail()
+        tv_user_phone.text = converted.providePhone()
+        tv_ticket_time.text = converted.provideCreateAt()
+        tv_ticket_address.text = converted.provideAddress()
+        tv_ticket_code.text = converted.provideCode()
+        img_qr_code.setImageBitmap(QRCode.from(converted.provideCode()).withSize(300, 300).bitmap())
     }
 
     interface TicketProvider {
@@ -88,7 +83,7 @@ class TicketFragment : BaseFragment() {
                 }
 
                 override fun provideTicketName(): String {
-                    return from.ticketName ?: ""
+                    return from.fair?.name ?: ""
                 }
 
                 override fun provideName(): Spanned {
@@ -104,8 +99,7 @@ class TicketFragment : BaseFragment() {
                 }
 
                 override fun provideAddress(): Spanned {
-                    return "Địa chỉ: <b>${from.address ?: ""}, ${from.district ?: ""}, ${from.city
-                            ?: ""}</b>".asHtml()
+                    return "Địa chỉ: <b>${from.fair?.address ?: ""}</b>".asHtml()
                 }
 
                 override fun provideBanner(): String {
@@ -113,7 +107,7 @@ class TicketFragment : BaseFragment() {
                 }
 
                 override fun provideCreateAt(): Spanned {
-                    return "Thời gian: <b>${from.createdAt?.asDateTime() ?: ""}".asHtml()
+                    return "Thời gian: <b>${from.fair?.startTime?.asDateTime()} - ${from.fair?.endTime?.asDateTime()}".asHtml()
                 }
             }
         }

@@ -248,7 +248,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             view_product_description.setHtml(convert.provideProductShortDescription().toString(), HtmlHttpImageGetter(view_product_description))
             view_shop_name.text = convert.provideShopName()
-            view_shop_region.text = "Khu vực: ${convert.provideShopRegion()}"
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"

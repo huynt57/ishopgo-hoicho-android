@@ -39,7 +39,6 @@ import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
 import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerActivity
 import ishopgo.com.exhibition.ui.main.visitors.VisitorsActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
-import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.fragment_account.*
 
 class AccountFragment : BaseFragment() {
@@ -54,47 +53,59 @@ class AccountFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        swipe.isEnabled = false
+//        swipe.isEnabled = false
         if (UserDataManager.currentUserId > 0) {
-            Glide.with(view.context)
-                    .load(UserDataManager.currentUserAvatar)
-                    .apply(RequestOptions.circleCropTransform()
-                            .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.avatar_placeholder))
-                    .into(view_avatar)
-            view_name.text = UserDataManager.currentUserName
-            view_introduce.text = "${UserDataManager.currentType} - ${UserDataManager.currentUserPhone}"
-
-            view_recyclerview.adapter = adapter
-            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            view_recyclerview.layoutManager = layoutManager
-
-            view_profile_current.setOnClickListener {
-                openProfile()
-            }
-
-            adapter.listener = object : ClickableAdapter.BaseAdapterAction<AccountMenuItem> {
-                override fun click(position: Int, data: AccountMenuItem, code: Int) {
-                    handleClick(data)
-                }
-            }
+            createMenuForLoggedInUser(view)
         } else {
-            Glide.with(view.context)
-                    .load(UserDataManager.currentUserAvatar)
-                    .apply(RequestOptions.circleCropTransform()
-                            .placeholder(R.drawable.avatar_placeholder)
-                            .error(R.drawable.avatar_placeholder))
-                    .into(view_avatar)
-            view_name.text = "Bạn chưa đăng nhập"
+            createMenuForRequestLogin(view)
+        }
+    }
 
-            view_profile_current.setOnClickListener {
-                val intent = Intent(context, LoginActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
-                startActivity(intent)
-                activity?.finish()
+    private fun createMenuForRequestLogin(view: View) {
+        Glide.with(view.context)
+                .load(UserDataManager.currentUserAvatar)
+                .apply(RequestOptions.circleCropTransform()
+                        .placeholder(R.drawable.avatar_placeholder)
+                        .error(R.drawable.avatar_placeholder))
+                .into(view_avatar)
+        view_name.text = "Bạn chưa đăng nhập"
+
+        view_profile_current.setOnClickListener {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            startActivity(intent)
+            activity?.finish()
+        }
+
+        view_introduce.visibility = View.GONE
+    }
+
+    private fun createMenuForLoggedInUser(view: View) {
+        Glide.with(view.context)
+                .load(UserDataManager.currentUserAvatar)
+                .apply(RequestOptions.circleCropTransform()
+                        .placeholder(R.drawable.avatar_placeholder)
+                        .error(R.drawable.avatar_placeholder))
+                .into(view_avatar)
+        view_name.text = UserDataManager.currentUserName
+        view_introduce.text = "${UserDataManager.currentType} - ${UserDataManager.currentUserPhone}"
+
+        view_menu.setLabel("Thành viên")
+        val list = view_menu.getList()
+        val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+        lm.isAutoMeasureEnabled = true
+        list.layoutManager = lm
+        list.isNestedScrollingEnabled = false
+        list.adapter = adapter
+
+        view_profile_current.setOnClickListener {
+            openProfile()
+        }
+
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<AccountMenuItem> {
+            override fun click(position: Int, data: AccountMenuItem, code: Int) {
+                handleClick(data)
             }
-
-            view_introduce.visibility = View.GONE
         }
     }
 

@@ -36,7 +36,7 @@ class PopularBrandsFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Thương hiệu nổi bật")
+        toolbar.setCustomTitle("Nhà tài trợ")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()

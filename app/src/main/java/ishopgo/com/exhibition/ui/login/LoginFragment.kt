@@ -110,15 +110,13 @@ class LoginFragment : BaseFragment() {
                         viewModel.checkSurvey()
                     else {
                         val intent = Intent(context, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
-                        activity?.finishAffinity()
                     }
                 } else {
                     val intent = Intent(context, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
-                    activity?.finishAffinity()
                 }
             }
         })

@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.domain.response.IdentityData
 
 
@@ -12,9 +13,6 @@ class Ticket : IdentityData() {
     @SerializedName("code")
     @Expose
     var code: String? = null
-    @SerializedName("ticket_name")
-    @Expose
-    var ticketName: String? = null
     @SerializedName("name")
     @Expose
     var name: String? = null
@@ -39,4 +37,7 @@ class Ticket : IdentityData() {
     @SerializedName("created_at")
     @Expose
     var createdAt: String? = null
+    @SerializedName("fair")
+    @Expose
+    var fair: ExpoConfig? = null
 }

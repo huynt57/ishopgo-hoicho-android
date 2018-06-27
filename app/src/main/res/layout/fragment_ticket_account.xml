@@ -177,7 +177,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:gravity="center"
-                android:text="Mã sô vé"
+                android:text="Mã vé"
                 android:textColor="@color/md_grey_700"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"

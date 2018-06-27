@@ -233,10 +233,9 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).getShopInfo(id)
     }
 
-    override fun createTicket(): Single<BaseResponse<Ticket>> {
+    override fun createTicket(fields: MutableMap<String, Any>): Single<BaseResponse<Ticket>> {
         val c = Ticket()
         c.id = random.nextInt(1000).toLong()
-        c.ticketName = "Hội chợ iShopGo"
         c.name = "Nguyễn Huy Hoàng"
         c.phone = "0989013403"
         c.district = "Cầu Giấy"
@@ -250,13 +249,12 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         response.status = 1
         response.data = c
 
-        return delegate.returningResponse(response).createTicket()
+        return delegate.returningResponse(response).createTicket(fields)
     }
 
-    override fun getTicket(): Single<BaseResponse<Ticket>> {
+    override fun getMyTicket(): Single<BaseResponse<List<Ticket>>> {
         val c = Ticket()
         c.id = random.nextInt(1000).toLong()
-        c.ticketName = "Hội chợ iShopGo"
         c.name = "Nguyễn Huy Hoàng"
         c.phone = "0989013403"
         c.district = "Cầu Giấy"
@@ -266,11 +264,11 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         c.banner = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
 
 
-        val response = BaseResponse<Ticket>()
+        val response = BaseResponse<List<Ticket>>()
         response.status = 1
-        response.data = c
+        response.data = mutableListOf(c)
 
-        return delegate.returningResponse(response).getTicket()
+        return delegate.returningResponse(response).getMyTicket()
     }
 
     override fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {

@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
+import android.util.TypedValue
 import android.view.View
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
@@ -20,6 +21,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asColor
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
@@ -159,17 +161,21 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
     }
 
     private fun setupToolbar() {
-        toolbar.setCustomTitle(if (::expoInfo.isInitialized) expoInfo.name
-                ?: "" else "Sơ đồ hội chợ")
-        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
-        toolbar.setLeftButtonClickListener {
-            activity?.onBackPressed()
-        }
-        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
-        toolbar.setRightButtonClickListener {
+        toolbar.setCustomTitle("Tìm kiếm gian hàng")
+        val titleView = toolbar.getTitleView()
+        titleView.setBackgroundResource(R.drawable.bg_search_box)
+        titleView.setTextColor(R.color.md_grey_700.asColor(requireContext()))
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+        titleView.setOnClickListener {
             val extra = Bundle()
             extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
             Navigation.findNavController(it).navigate(R.id.action_expoMapFragment_to_searchBoothFragment, extra)
+        }
+        titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
+
+        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
+        toolbar.setLeftButtonClickListener {
+            activity?.onBackPressed()
         }
     }
 

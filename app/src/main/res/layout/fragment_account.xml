@@ -1,62 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/view_profile_current"
+    <LinearLayout
+        android:descendantFocusability="blocksDescendants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/selectableItemBackground"
-        android:padding="16dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/view_avatar"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/avatar_placeholder" />
-
-        <TextView
-            android:id="@+id/view_name"
-            android:layout_width="0dp"
-            android:layout_height="23dp"
-            android:layout_marginStart="16dp"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toTopOf="@+id/view_introduce"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/view_avatar"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Vương Xuân Hồng" />
-
-        <TextView
-            android:id="@+id/view_introduce"
-            android:layout_width="0dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/view_profile_current"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textColor="@color/md_grey_700"
-            android:textSize="13sp"
-            android:textStyle="italic"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/view_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/view_name"
-            tools:text="khách tham quan - 0974427143" />
+            android:background="?attr/selectableItemBackground"
+            android:padding="16dp">
 
-    </android.support.constraint.ConstraintLayout>
+            <ImageView
+                android:id="@+id/view_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/avatar_placeholder"/>
 
-    <View
-        style="@style/AppTheme.DividerLine"
-        android:layout_width="match_parent"
-        />
+            <TextView
+                android:id="@+id/view_name"
+                android:layout_width="0dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="16dp"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/view_introduce"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/view_avatar"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Vương Xuân Hồng"/>
 
-    <include layout="@layout/content_swipable_recyclerview"/>
+            <TextView
+                android:id="@+id/view_introduce"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:textColor="@color/md_grey_700"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/view_avatar"
+                app:layout_constraintTop_toBottomOf="@+id/view_name"
+                tools:text="khách tham quan - 0974427143"/>
 
-</LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <View
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="match_parent"
+            />
+
+        <ishopgo.com.exhibition.ui.widget.HeaderRecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_menu"
+            />
+        <!--<include layout="@layout/content_swipable_recyclerview"/>-->
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

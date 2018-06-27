@@ -1,12 +1,19 @@
 package ishopgo.com.exhibition.ui.main.ticket
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
+import androidx.navigation.Navigation
+import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.base.BaseActivity
 
-class TicketActivity : BaseSingleFragmentActivity() {
+class TicketActivity : BaseActivity() {
 
-    override fun createFragment(startupOption: Bundle): Fragment {
-        return TicketFragmentActionBar.newInstance(startupOption)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_myticket)
     }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return Navigation.findNavController(this, R.id.nav_map_host_fragment).navigateUp()
+    }
+
 }

@@ -288,10 +288,11 @@ class ApiService {
         fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
         @POST("ticket/add")
-        fun createTicket(): Single<BaseResponse<Ticket>>
+        @FormUrlEncoded
+        fun createTicket(@FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Ticket>>
 
         @GET("ticket/account")
-        fun getTicket(): Single<BaseResponse<Ticket>>
+        fun getMyTicket(): Single<BaseResponse<List<Ticket>>>
 
         @GET("detail-sale-point")
         fun getInfoMemberSalePoint(@Query("phone") phone: String

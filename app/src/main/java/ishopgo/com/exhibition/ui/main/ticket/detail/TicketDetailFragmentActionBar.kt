@@ -1,17 +1,22 @@
-package ishopgo.com.exhibition.ui.main.ticket
+package ishopgo.com.exhibition.ui.main.ticket.detail
 
 import android.os.Bundle
 import android.view.View
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.main.ticket.TicketFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
-class TicketFragmentActionBar : BaseActionBarFragment() {
+/**
+ * Created by xuanhong on 6/27/18. HappyCoding!
+ */
+class TicketDetailFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
 
-        fun newInstance(params: Bundle): TicketFragmentActionBar {
-            val fragment = TicketFragmentActionBar()
+        fun newInstance(params: Bundle): TicketDetailFragmentActionBar {
+            val fragment = TicketDetailFragmentActionBar()
             fragment.arguments = params
 
             return fragment
@@ -19,10 +24,10 @@ class TicketFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Vé tham quan của tôi")
+        toolbar.setCustomTitle("Chi tiết vé tham quan")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
-            activity?.finish()
+            Navigation.findNavController(it).navigateUp()
         }
     }
 
@@ -36,7 +41,9 @@ class TicketFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, TicketFragment.newInstance(Bundle()))
+                .replace(R.id.view_main_content, TicketFragment.newInstance(arguments ?: Bundle()))
                 .commit()
     }
+
+
 }
