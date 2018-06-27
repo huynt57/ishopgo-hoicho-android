@@ -43,7 +43,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SURVEY, R.drawable.ic_question, "Bảng khảo sát"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
-            items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET, R.drawable.ic_ticket, "Vé thăm quan của tôi"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET, R.drawable.ic_ticket, "Vé tham quan của tôi"))
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Xem thông báo"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Xem điểm bán của tôi"))
         }
