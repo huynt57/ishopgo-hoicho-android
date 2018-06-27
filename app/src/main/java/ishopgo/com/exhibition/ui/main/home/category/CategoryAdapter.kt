@@ -153,8 +153,8 @@ class CategoryAdapter : ClickableAdapter<Category>() {
                 Glide.with(context)
                         .load(convert.provideIcon())
                         .apply(RequestOptions()
-                                .placeholder(R.drawable.ic_finger_highlight_24dp)
-                                .error(R.drawable.ic_finger_highlight_24dp))
+                                .placeholder(R.drawable.ic_chevron_right_neutral_24dp)
+                                .error(R.drawable.ic_chevron_right_neutral_24dp))
                         .into(view_child_icon)
 
                 view_child_text.text = convert.provideName()

@@ -77,7 +77,8 @@ class SalePointAdapter : ClickableAdapter<SalePoint>() {
                 }
 
                 override fun providePrice(): String {
-                    return from.price?.asMoney() ?: "0 đ"
+                    return if (from.price == 0L) "Liên hệ"
+                    else return from.price?.asMoney() ?: "0 đ"
                 }
 
                 override fun provideStatus(): String {

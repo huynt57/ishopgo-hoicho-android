@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_expo_map.xml"
-            app:startDestination="@id/expoMapFragment">
+            app:startDestination="@+id/expoMapFragment">
 
     <fragment
         android:id="@+id/expoMapFragment"
@@ -20,6 +20,13 @@
         <action
             android:id="@+id/action_expoMapFragment_to_chooseBoothFragment"
             app:destination="@id/chooseBoothFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+        <action
+            android:id="@+id/action_expoMapFragment_to_registerBoothFragmentActionBar"
+            app:destination="@id/registerBoothFragmentActionBar"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
@@ -49,4 +56,8 @@
         app:popUpTo="@id/expoMapFragment"
         app:popUpToInclusive="true"
         />
+    <fragment
+        android:id="@+id/registerBoothFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothFragmentActionBar"
+        android:label="RegisterBoothFragmentActionBar"/>
 </navigation>

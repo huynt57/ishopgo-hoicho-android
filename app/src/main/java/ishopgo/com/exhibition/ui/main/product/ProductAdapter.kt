@@ -92,7 +92,9 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                 }
 
                 override fun providePrice(): String {
-                    return from.price.asMoney()
+                    return if (from.price == 0L) "Liên hệ"
+                    else
+                        return from.price.asMoney()
                 }
 
                 override fun provideMarketPrice(): String {

@@ -362,7 +362,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductPrice(): CharSequence {
-                    return "<b>Giá bán lẻ: Từ <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                    val price = if (from.price == 0L) "Liên hệ" else from.price.asMoney()
+                    return "<b>Giá bán lẻ: Từ <font color=\"#00c853\">$price</font></b>".asHtml()
                 }
 
                 override fun provideProductBrand(): CharSequence {

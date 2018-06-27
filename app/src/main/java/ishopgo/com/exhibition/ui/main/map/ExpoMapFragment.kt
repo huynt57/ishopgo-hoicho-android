@@ -14,11 +14,13 @@ import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.domain.response.ExpoShop
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
@@ -58,10 +60,21 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
     }
 
     private fun chooseShop(data: ExpoShop) {
-        val extra = Bundle()
-        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
-        extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
-        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoMapFragment_to_chooseBoothFragment, extra)
+        if (UserDataManager.currentUserId > 0) {
+            if (UserDataManager.currentType == "Chủ hội chợ") {
+                val extra = Bundle()
+                extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
+                extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
+                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoMapFragment_to_chooseBoothFragment, extra)
+            } else {
+                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoMapFragment_to_registerBoothFragmentActionBar)
+            }
+        }
+        else {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            startActivity(intent)
+        }
     }
 
     private fun openShopDetail(shopId: Long) {

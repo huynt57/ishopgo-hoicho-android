@@ -1,13 +1,13 @@
 package ishopgo.com.exhibition.ui.main.map
 
-import android.graphics.Color
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ExpoShop
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.asColor
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import kotlinx.android.synthetic.main.item_shop_location.view.*
 
 /**
@@ -38,21 +38,10 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
 
             val converted = converter.convert(data)
             itemView.apply {
-                if (converted.isSetup()) {
-                    view_name.setTextColor(R.color.colorPrimaryText.asColor(context))
-
-                    view_number.text = converted.provideNumber()
-                    view_name.text = converted.provideName()
-                    view_region.text = converted.provideRegion()
-                    view_region.visibility = View.VISIBLE
-                } else {
-                    view_name.setTextColor(Color.RED)
-
-                    view_number.text = converted.provideNumber()
-                    view_name.text = "Mua gian này"
-                    view_region.text = converted.provideRegion()
-                    view_region.visibility = View.GONE
-                }
+                view_number.text = converted.provideNumber()
+                view_name.text = converted.provideName()
+                view_region.text = converted.provideRegion()
+                view_region.visibility = if (converted.isSetup()) View.VISIBLE else View.GONE
             }
         }
     }
@@ -75,7 +64,10 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
                 }
 
                 override fun provideName(): CharSequence {
-                    return from.booth?.name ?: ""
+                    return from.booth?.name ?: if (UserDataManager.currentType == "Chủ hội chợ")
+                        "<font color=\"red\">Thêm gian hàng</font>".asHtml()
+                    else
+                        "<font color=\"red\">Mua gian này</font>".asHtml()
                 }
 
                 override fun provideNumber(): CharSequence {
