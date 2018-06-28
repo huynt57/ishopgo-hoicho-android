@@ -89,15 +89,28 @@ class ProfileFragment : BaseFragment() {
                             .error(R.drawable.avatar_placeholder))
                     .into(view_avatar)
             tv_profile_name.text = convert.provideName()
-            tv_profile_phone.text = convert.providePhone()
-            tv_profile_birthday.text = convert.provideDob()
-            tv_profile_email.text = convert.provideEmail()
-            tv_profile_company.text = convert.provideCompany()
-            tv_profile_region.text = convert.provideRegion()
-            tv_profile_address.text = convert.provideAddress()
-            tv_profile_type.text = convert.provideAccountType()
-            tv_profile_createAt.text = convert.provideJoinedDate()
-            tv_profile_introduction.text = convert.provideIntroduction()
+
+            val builder = StringBuilder()
+            builder.append("${convert.providePhone()}")
+            builder.append("<br>")
+            builder.append("${convert.provideDob()}")
+            builder.append("<br>")
+            builder.append("${convert.provideEmail()}")
+            builder.append("<br>")
+            builder.append("${convert.provideCompany()}")
+            builder.append("<br>")
+            builder.append("${convert.provideRegion()}")
+            builder.append("<br>")
+            builder.append("${convert.provideAddress()}")
+            builder.append("<br>")
+            builder.append("${convert.provideAccountType()}")
+            builder.append("<br>")
+            builder.append("${convert.provideJoinedDate()}")
+            builder.append("<br>")
+            builder.append("${convert.provideIntroduction()}")
+
+            tv_profile_info.text = builder.toString().asHtml()
+
         }
 
         chooseProfileOption()
@@ -124,11 +137,11 @@ class ProfileFragment : BaseFragment() {
         override fun convert(from: Profile): ProfileProvider {
             return object : ProfileProvider {
                 override fun provideAccountType(): CharSequence {
-                    return "Loại tài khoản: <b>${from.typeTextExpo ?: ""}</b>".asHtml()
+                    return "Loại tài khoản: <b>${from.typeTextExpo ?: ""}</b>"
                 }
 
                 override fun provideIntroduction(): CharSequence {
-                    return "Giới thiệu: <b>${from.introduction ?: ""}</b>".asHtml()
+                    return "Giới thiệu: <b>${from.introduction ?: ""}</b>"
                 }
 
                 override fun provideName(): CharSequence {
@@ -136,7 +149,7 @@ class ProfileFragment : BaseFragment() {
                 }
 
                 override fun providePhone(): CharSequence {
-                    return "Số điện thoại: <b>${from.phone?.asPhone() ?: ""}</b>".asHtml()
+                    return "Số điện thoại: <b>${from.phone?.asPhone() ?: ""}</b>"
                 }
 
                 override fun provideAvatar(): String {
@@ -144,27 +157,27 @@ class ProfileFragment : BaseFragment() {
                 }
 
                 override fun provideDob(): CharSequence {
-                    return "Ngày sinh: <b>${from.birthday?.asDate()}</b>".asHtml()
+                    return "Ngày sinh: <b>${from.birthday?.asDate()}</b>"
                 }
 
                 override fun provideEmail(): CharSequence {
-                    return "Email: <b>${from.email ?: ""}</b>".asHtml()
+                    return "Email: <b>${from.email ?: ""}</b>"
                 }
 
                 override fun provideCompany(): CharSequence {
-                    return "Công ty: <b>${from.company ?: ""}</b>".asHtml()
+                    return "Công ty: <b>${from.company ?: ""}</b>"
                 }
 
                 override fun provideRegion(): CharSequence {
-                    return "Khu vực: <b>${from.district ?: ""} - ${from.region ?: ""}</b>".asHtml()
+                    return "Khu vực: <b>${from.district ?: ""} - ${from.region ?: ""}</b>"
                 }
 
                 override fun provideAddress(): CharSequence {
-                    return "Địa chỉ: <b>${from.address ?: ""}</b>".asHtml()
+                    return "Địa chỉ: <b>${from.address ?: ""}</b>"
                 }
 
                 override fun provideJoinedDate(): CharSequence {
-                    return "Ngày tham gia: <b>${from.createdAt?.asDate()}</b>".asHtml()
+                    return "Ngày tham gia: <b>${from.createdAt?.asDate()}</b>"
                 }
             }
         }

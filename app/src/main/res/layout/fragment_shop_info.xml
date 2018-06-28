@@ -12,68 +12,13 @@
         android:descendantFocusability="blocksDescendants">
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_name"
+            android:id="@+id/view_info"
             style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Tên: " />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_phone"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:autoLink="phone"
-            tools:text="SDT: " />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_product_count"
-            style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:text="So san pham" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_joined_date"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Ngay tham gia" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_region"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Khu vuc" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_rating"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Danh gia shop" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_share_count"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="luot chia se " />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_follow_count"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="luot quan tam" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_visit_count"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="luot tham quan" />
+            android:lineSpacingMultiplier="1.3"
+            tools:text="Tên: " />
 
         <View
             android:id="@+id/textView10"

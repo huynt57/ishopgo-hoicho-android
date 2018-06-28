@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -157,15 +158,17 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
     }
 
     private fun setupToolbar() {
-        toolbar.setCustomTitle("Danh sách sản phẩm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
         }
-        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
-        toolbar.setRightButtonClickListener {
-            mainViewModel.searchInCategory(category)
-        }
+        toolbar.setCustomTitle("Tìm kiếm sản phẩm")
+        val titleView = toolbar.getTitleView()
+        titleView.setBackgroundResource(R.drawable.bg_search_box)
+        titleView.setTextColor(resources.getColor(R.color.md_grey_700))
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+        titleView.setOnClickListener { mainViewModel.searchInCategory(category) }
+        titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
