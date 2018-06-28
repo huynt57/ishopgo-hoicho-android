@@ -122,7 +122,7 @@ class CommunityShareFragment : BaseFragment() {
                     Log.e("Hong", "khong the tao file", ex)
                 }
                 photoFile?.let {
-                    val photoURI = FileProvider.getUriForFile(context!!, "ishopgo.com.exhibition", it)
+                    val photoURI = FileProvider.getUriForFile(context!!, "ishopgo.com.exhibition.fileprovider", it)
                     sendingPhotoUri = photoURI
 
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)

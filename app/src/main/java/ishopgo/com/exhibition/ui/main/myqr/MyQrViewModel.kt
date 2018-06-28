@@ -16,14 +16,14 @@ class MyQrViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var qrImage = MutableLiveData<String>()
+    var booth = MutableLiveData<Booth>()
 
     fun loadQrCode() {
         addDisposable(authService.getConfigBooth()
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Booth>() {
                     override fun success(data: Booth?) {
-                        data?.let { qrImage.postValue(it.qrcode) }
+                        data?.let { booth.postValue(it) }
                     }
 
                     override fun failure(status: Int, message: String) {
