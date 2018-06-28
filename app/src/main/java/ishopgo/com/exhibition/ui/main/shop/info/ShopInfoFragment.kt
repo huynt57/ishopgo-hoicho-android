@@ -95,6 +95,10 @@ class ShopInfoFragment : BaseFragment() {
         view_follow_count.text = "Số lượt quan tâm: <b>${convert.provideFollowCount()}</b>".asHtml()
         view_visit_count.text = "Số lượt tham quan: <b>${convert.provideVisitCount()}</b>".asHtml()
         view_description.text = convert.provideDescription().asHtml()
+        view_description_more.setOnClickListener {
+            view_description.maxLines = Integer.MAX_VALUE
+            view_description_more.visibility = View.GONE
+        }
 
         sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage())
         if (UserDataManager.currentUserId == info.id) {

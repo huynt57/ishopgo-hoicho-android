@@ -93,12 +93,26 @@
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:ellipsize="end"
             tools:text="Công ty mỹ phẩm hàng đầu Việt Nam" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_description_more"
+            style="@style/AppTheme.ShopInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
+            android:ellipsize="end"
+            android:text="Xem thêm"
+            android:textColor="@color/colorPrimary"
+            android:gravity="end"
+            />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp">
+            >
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/textView15"
