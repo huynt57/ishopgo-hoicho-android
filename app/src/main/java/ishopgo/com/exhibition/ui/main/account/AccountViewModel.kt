@@ -67,6 +67,14 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_NOT_AVALIBLE, R.drawable.ic_authorities, "Phân quyền quản trị viên"))
         }
 
+        if (UserDataManager.currentType == "Quản trị viên") {
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_SURVEY, R.drawable.ic_question, "Bảng khảo sát"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Xem điểm bán của tôi"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_REGISTER_BOOTH, R.drawable.ic_register, "Đăng ký gian hàng"))
+        }
+
         // common
         items.add(AccountMenuItem(Const.AccountAction.ACTION_REPORT, R.drawable.ic_feedback, "Báo lỗi - Đóng góp"))
         items.add(AccountMenuItem(Const.AccountAction.ACTION_CHANGE_PASSWORD, R.drawable.ic_password_white, "Đổi mật khẩu"))

@@ -38,7 +38,7 @@ class CommunityComment : IdentityData() {
     @SerializedName("comment_count")
     @Expose
     var commentCount: Int? = null
-//    @SerializedName("last_comment")
-//    @Expose
-//    var lastComment: Long = 0
+    @SerializedName("last_comment")
+    @Expose
+    var lastComment: CommunityComment? = null
 }

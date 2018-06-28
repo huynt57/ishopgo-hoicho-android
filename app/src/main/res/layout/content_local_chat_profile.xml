@@ -172,7 +172,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:descendantFocusability="blocksDescendants">
 
             <ishopgo.com.exhibition.ui.widget.GridRecyclerView
                 android:id="@+id/view_recyclerview"

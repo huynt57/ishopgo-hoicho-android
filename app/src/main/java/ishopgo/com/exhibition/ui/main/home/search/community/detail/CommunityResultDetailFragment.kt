@@ -49,7 +49,6 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
-import kotlinx.android.synthetic.main.fragment_comment_community.*
 import kotlinx.android.synthetic.main.fragment_community_result_detail.*
 import java.io.IOException
 import java.net.URL
@@ -90,7 +89,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
             if (UserDataManager.currentUserId > 0)
                 if (checkRequireFields(edt_comment.text.toString())) {
                     showProgressDialog()
-                    viewModel.postCommentCommunity(data.id, edt_comment.text.toString(), postMedias)
+                    viewModel.postCommentCommunity(data.id, edt_comment.text.toString(), postMedias, -1L)
                 } else showDiglogLogin()
         }
 
@@ -100,17 +99,19 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
     fun firstLoad() {
         reloadData = true
         val firstLoad = LoadMoreCommunityRequest()
+        firstLoad.post_id = data.id
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.last_id = 0
-        viewModel.loadCommentCommunity(data.id, 0, firstLoad)
+        viewModel.loadCommentCommunity(firstLoad)
     }
 
     fun loadMore() {
         reloadData = false
         val loadMore = LoadMoreCommunityRequest()
+        loadMore.post_id = data.id
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.last_id = last_id
-        viewModel.loadCommentCommunity(data.id, 0, loadMore)
+        viewModel.loadCommentCommunity(loadMore)
     }
 
     private fun checkRequireFields(content: String): Boolean {
@@ -394,8 +395,8 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
 
         if (UserDataManager.currentUserId > 0) {
             firstLoad()
-            include_content.visibility = View.VISIBLE
-        } else include_content.visibility = View.GONE
+            swipe.visibility = View.VISIBLE
+        } else swipe.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
