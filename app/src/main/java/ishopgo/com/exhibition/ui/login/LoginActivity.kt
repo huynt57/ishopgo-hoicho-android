@@ -18,8 +18,6 @@ class LoginActivity : BaseSingleFragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        UserDataManager.appId = Const.ID_APP
-
         val require = intent?.getBooleanExtra(Const.TransferKey.EXTRA_REQUIRE, false) ?: false
         if (require) {
         } else
