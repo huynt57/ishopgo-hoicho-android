@@ -88,7 +88,7 @@ class ShopInfoFragment : BaseFragment() {
 
         val builder = StringBuilder()
         builder.append("Chủ gian hàng: <b>${convert.provideName()}</b>")
-        builder.append("<br>")x
+        builder.append("<br>")
         builder.append("SĐT: <b>${convert.provideHotline()}</b>")
         builder.append("<br>")
         builder.append("Số sản phẩm: <b>${convert.provideProductCount()}</b>")
