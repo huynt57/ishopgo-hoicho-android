@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/view_scrollview"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/view_scrollview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp">
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -22,28 +22,28 @@
                 android:id="@+id/view_avatar"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/avatar_placeholder"
-                tools:ignore="ContentDescription" />
+                tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/tv_profile_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:gravity="center"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view_avatar"
-                tools:text="Lê Đại Dương" />
+                tools:text="Lê Đại Dương"/>
 
 
             <View
@@ -53,7 +53,7 @@
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_profile_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_profile_name"/>
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
@@ -72,7 +72,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Đăng bài"
-                    app:drawableTopCompat="@drawable/ic_edit_default_24dp" />
+                    app:drawableTopCompat="@drawable/ic_edit_default_24dp"/>
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_group"
@@ -83,7 +83,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Bạn bè"
-                    app:drawableTopCompat="@drawable/ic_group_default_24dp" />
+                    app:drawableTopCompat="@drawable/ic_group_default_24dp"/>
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_profile_setting"
@@ -94,7 +94,7 @@
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Thiết lập"
-                    app:drawableTopCompat="@drawable/ic_setting_default_24dp" />
+                    app:drawableTopCompat="@drawable/ic_setting_default_24dp"/>
             </LinearLayout>
 
             <View
@@ -106,81 +106,20 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3"/>
 
         </android.support.constraint.ConstraintLayout>
 
         <TextView
-            android:id="@+id/tv_profile_phone"
+            android:id="@+id/tv_profile_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_birthday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_company"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_region"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_createAt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_profile_introduction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
-            android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="8dp" />
+            android:autoLink="phone"
+            android:lineSpacingMultiplier="1.4"
+            tools:text="info"/>
 
     </LinearLayout>
 

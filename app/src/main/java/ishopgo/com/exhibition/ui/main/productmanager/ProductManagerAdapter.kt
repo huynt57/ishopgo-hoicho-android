@@ -48,7 +48,6 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
                 tv_price.text = convert.providePrice()
                 tv_item_code.text = convert.provideCode()
                 tv_department.text = convert.provideDepartment()
-                tv_status.text = convert.provideStatus()
             }
         }
 
@@ -60,23 +59,12 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
         fun provideCode(): String
         fun provideTTPrice(): String
         fun providePrice(): String
-        fun provideStatus(): String
         fun provideDepartment(): String
     }
 
     class ProductManagerConverter : Converter<ProductManager, ProductManagerProvider> {
         override fun convert(from: ProductManager): ProductManagerProvider {
             return object : ProductManagerProvider {
-                override fun provideStatus(): String {
-                    var provideStatus = "Không hiển thị"
-                    if (from.status == STATUS_DISPLAY_SHOW) {
-                        provideStatus = "Hiển thị dạng chuẩn "
-                    }
-                    if (from.status == STATUS_DISPLAY_LANDING_PAGE)
-                        provideStatus = "Hiển thị dạng landing page"
-
-                    return provideStatus
-                }
 
                 override fun provideDepartment(): String {
                     return from.department ?: ""
@@ -105,8 +93,4 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
         }
     }
 
-    companion object {
-        var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
-        var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
-    }
 }

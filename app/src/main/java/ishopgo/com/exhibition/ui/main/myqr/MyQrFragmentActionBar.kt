@@ -39,13 +39,5 @@ class MyQrFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Mã QR gian hàng")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.onBackPressed() }
-
-        toolbar.rightButton(R.drawable.ic_file_download_highlight_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag("MyQrFragment") as? MyQrFragment
-            fragment?.let {
-                fragment.download()
-            }
-        }
     }
 }

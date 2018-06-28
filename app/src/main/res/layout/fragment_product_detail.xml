@@ -136,7 +136,7 @@
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/view_product_wholesale_limit"
                     android:layout_width="0dp"
-                    android:layout_height="22dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
@@ -197,10 +197,12 @@
             <org.sufficientlysecure.htmltextview.HtmlTextView
                 android:id="@+id/view_product_description"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="wrap_content"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:paddingTop="16dp"
+                android:maxLines="10"
+                android:ellipsize="end"
                 tools:visibility="visible" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

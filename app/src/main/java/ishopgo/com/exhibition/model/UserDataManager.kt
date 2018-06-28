@@ -72,6 +72,8 @@ object UserDataManager {
 
         // TODO this field will be config by server in the future
         currentSurveyIsMandatory = false
+
+        appId = Const.ID_APP
     }
 
     fun deleteUserInfo() {
