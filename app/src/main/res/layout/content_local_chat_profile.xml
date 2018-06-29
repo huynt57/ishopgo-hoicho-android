@@ -125,10 +125,27 @@
                 android:text="Gọi điện"
                 android:textStyle="bold"
                 app:drawableTopCompat="@drawable/ic_phone_highlight_24dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/view_setting"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_message"
                 app:layout_constraintTop_toBottomOf="@+id/textView24"/>
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/view_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/roboto_light"
+                android:text="Thiết lập"
+                android:textStyle="bold"
+                android:visibility="gone"
+                app:drawableTopCompat="@drawable/ic_setting_highlight_24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/view_call"
+                app:layout_constraintTop_toBottomOf="@+id/textView24"
+                tools:visibility="visible"/>
 
             <View
                 android:id="@+id/textView24"
@@ -175,13 +192,13 @@
             android:layout_height="match_parent">
 
             <ishopgo.com.exhibition.ui.widget.GridRecyclerView
-                android:id="@+id/view_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:padding="@dimen/item_spacing"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                />
+            android:id="@+id/view_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:padding="@dimen/item_spacing"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
 
             <include
                 android:id="@+id/view_empty_layout"

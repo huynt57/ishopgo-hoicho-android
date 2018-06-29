@@ -217,24 +217,25 @@ class MemberProfileFragment : BaseActionBarFragment() {
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
-            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
-            toolbar.setRightButtonClickListener {
-                context?.let {
-                    MaterialDialog.Builder(it)
-                            .content("Bạn có muốn xoá thành viên này không?")
-                            .positiveText("Có")
-                            .onPositive { _, _ ->
-                                activity?.let {
-                                    val memberId = it.intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
-                                    viewModel.deleteMember(memberId)
-                                }
-                                showProgressDialog()
-                            }
-                            .negativeText("Không")
-                            .onNegative { dialog, _ -> dialog.dismiss() }
-                            .show()
-                }
-            }
+            view_setting.visibility = View.VISIBLE
+//            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
+//            toolbar.setRightButtonClickListener {
+//                context?.let {
+//                    MaterialDialog.Builder(it)
+//                            .content("Bạn có muốn xoá thành viên này không?")
+//                            .positiveText("Có")
+//                            .onPositive { _, _ ->
+//                                activity?.let {
+//                                    val memberId = it.intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
+//                                    viewModel.deleteMember(memberId)
+//                                }
+//                                showProgressDialog()
+//                            }
+//                            .negativeText("Không")
+//                            .onNegative { dialog, _ -> dialog.dismiss() }
+//                            .show()
+//                }
+//            }
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
