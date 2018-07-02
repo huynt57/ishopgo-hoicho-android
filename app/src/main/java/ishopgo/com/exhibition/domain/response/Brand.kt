@@ -6,10 +6,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
-class Brand {
-    @SerializedName("id")
-    @Expose
-    var id: Long = -1L
+class Brand : IdentityData() {
     @SerializedName("logo")
     var logo: String? = null
     @SerializedName("name")

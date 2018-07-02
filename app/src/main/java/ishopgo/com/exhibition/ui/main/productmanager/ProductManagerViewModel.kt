@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
@@ -157,7 +158,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
     var editProductSusscess = MutableLiveData<Boolean>()
 
     fun editProductManager(productId: Long, name: String, code: String, title: String, price: Long, dvt: String,
-                           provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
+                           boothId: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                            description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
                            listCategory: List<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>) {
 
@@ -168,7 +169,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         builder.addFormDataPart("title", title)
         builder.addFormDataPart("price", price.toString())
         builder.addFormDataPart("dvt", dvt)
-        builder.addFormDataPart("provider_id", provider_id.toString())
+        builder.addFormDataPart("provider_id", boothId.toString())
         builder.addFormDataPart("department_id", brand_id.toString())
         builder.addFormDataPart("madeIn", madeIn)
         builder.addFormDataPart("description", description)
@@ -273,19 +274,19 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         }
     }
 
-    var dataProvider = MutableLiveData<MutableList<Provider>>()
+    var dataBooth = MutableLiveData<List<BoothManager>>()
 
-    fun getProvider(params: Request) {
+    fun getBooth(params: Request) {
         if (params is LoadMoreRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
-            fields["limit"] = params.offset
-            addDisposable(isgService.getProviders(fields)
+            fields["offset"] = params.offset
+            addDisposable(authService.getBooth(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<MutableList<Provider>>() {
-                        override fun success(data: MutableList<Provider>?) {
+                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                        override fun success(data: List<BoothManager>?) {
                             data?.let {
-                                dataProvider.postValue(it)
+                                dataBooth.postValue(it)
                             }
                         }
 

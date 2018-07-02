@@ -140,6 +140,12 @@
                     android:text="Sản phẩm"/>
 
                 <android.support.design.widget.TabItem
+                    android:id="@+id/tab_shop_news"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tin tức" />
+
+                <android.support.design.widget.TabItem
                     android:id="@+id/tab_shop_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -51,13 +51,11 @@
             android:ellipsize="end"
             android:text="Xem thêm"
             android:textColor="@color/colorPrimary"
-            android:gravity="end"
-            />
+            android:gravity="end" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/textView15"

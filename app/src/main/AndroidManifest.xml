@@ -196,8 +196,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.photoview.PhotoAlbumViewActivity"
-            android:launchMode="singleTop"
-            />
+            android:launchMode="singleTop" />
         <activity
             android:name=".ui.main.productmanager.detail.ProductManagerDetailActivity"
             android:launchMode="singleTop"

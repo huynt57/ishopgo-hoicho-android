@@ -28,10 +28,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.model.Provider
-import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -46,7 +43,7 @@ import java.util.*
 class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private val adapterBrands = BrandsAdapter()
-    private val adapterProvider = ProviderAdapter()
+    private val adapterBooth = BoothAdapter()
     private val adapterCategory = CategoryAdapter()
     private val adapterCategory_1 = CategoryAdapter()
     private val adapterCategory_2 = CategoryAdapter()
@@ -65,7 +62,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var image: String = ""
     private var brand_id: Long = 0L
-    private var provider_id: Long = 0L
+    private var booth_id: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
     private var listProductRelated: ArrayList<ProductManager> = ArrayList()
@@ -101,12 +98,12 @@ class ProductManagerAddFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
-        edit_product_provider.setOnClickListener { getProvider(edit_product_provider) }
+        edit_product_booth.setOnClickListener { getBooth(edit_product_booth) }
 
         if (UserDataManager.currentType == "Chủ hội chợ")
-            til_product_provider.visibility = View.VISIBLE else {
-            provider_id = UserDataManager.currentUserId
-            til_product_provider.visibility = View.GONE
+            til_product_booth.visibility = View.VISIBLE else {
+            booth_id = UserDataManager.currentUserId
+            til_product_booth.visibility = View.GONE
         }
 
         view_image_add_product.setOnClickListener {
@@ -157,11 +154,11 @@ class ProductManagerAddFragment : BaseFragment() {
         btn_product_add.setOnClickListener {
             if (UserDataManager.currentType == "Chủ hội chợ") {
                 if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
+                                edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                     showProgressDialog()
                     viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
                             edit_product_price?.money
-                                    ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                                    ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edt_product_madeIn.text.toString(),
                             image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                             edit_product_tag.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
                             ?: 0, edit_produt_wholesale_to.money
@@ -169,11 +166,11 @@ class ProductManagerAddFragment : BaseFragment() {
                 }
             } else
                 if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                edt_product_categories.text.toString(), provider_id.toString(), edit_product_brand.text.toString())) {
+                                edt_product_categories.text.toString(), booth_id.toString(), edit_product_brand.text.toString())) {
                     showProgressDialog()
                     viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
                             edit_product_price?.money
-                                    ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edt_product_madeIn.text.toString(),
+                                    ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edt_product_madeIn.text.toString(),
                             image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                             edit_product_tag.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
                             ?: 0, edit_produt_wholesale_to.money
@@ -234,12 +231,12 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         })
 
-        viewModel.dataProvider.observe(this, Observer { p ->
+        viewModel.dataBooth.observe(this, Observer { p ->
             p.let {
                 if (reloadProvider) {
-                    it?.let { it1 -> adapterProvider.replaceAll(it1) }
+                    it?.let { it1 -> adapterBooth.replaceAll(it1) }
                 } else {
-                    it?.let { it1 -> adapterProvider.addAll(it1) }
+                    it?.let { it1 -> adapterBooth.addAll(it1) }
                 }
             }
         })
@@ -314,7 +311,7 @@ class ProductManagerAddFragment : BaseFragment() {
         val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
-        viewModel.getProvider(firstLoad)
+        viewModel.getBooth(firstLoad)
     }
 
     private fun loadMoreProvider(currentCount: Int) {
@@ -322,7 +319,7 @@ class ProductManagerAddFragment : BaseFragment() {
         val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-        viewModel.getProvider(loadMore)
+        viewModel.getBooth(loadMore)
     }
 
     private fun firstLoadProductRelated() {
@@ -542,11 +539,11 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
-    private fun getProvider(view: TextView) {
+    private fun getBooth(view: TextView) {
         requestProvider = ""
         context?.let {
             val dialog = MaterialDialog.Builder(it)
-                    .title("Chọn nhà cung cấp")
+                    .title("Chọn gian hàng")
                     .customView(R.layout.diglog_search_recyclerview, false)
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ -> dialog.dismiss() }
@@ -561,17 +558,17 @@ class ProductManagerAddFragment : BaseFragment() {
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
 
-            rv_search.adapter = adapterProvider
+            rv_search.adapter = adapterBooth
             rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     loadMoreProvider(totalItemsCount)
                 }
             })
-            adapterProvider.listener = object : ClickableAdapter.BaseAdapterAction<Provider> {
-                override fun click(position: Int, data: Provider, code: Int) {
+            adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
                         dialog.dismiss()
-                        provider_id = data.id
+                        booth_id = data.id
                         view.text = data.name ?: ""
                         view.error = null
                     }
@@ -743,8 +740,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
         if (provider.trim().isEmpty()) {
             toast("Nhà cung cấp không được để trống")
-            edit_product_provider.error = getString(R.string.error_field_required)
-            edit_product_provider.requestFocus()
+            edit_product_booth.error = getString(R.string.error_field_required)
+            edit_product_booth.requestFocus()
             return false
         }
 

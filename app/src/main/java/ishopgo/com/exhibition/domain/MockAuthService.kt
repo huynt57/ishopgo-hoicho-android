@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
+import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
@@ -22,6 +23,13 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getProductManagerDetail(id: Long): Single<BaseResponse<ProductManagerDetail>> {
+        val response = BaseResponse<List<ProductManagerDetail>>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getProductManagerDetail(id)
+    }
+
     override fun assignBooth(position: Long, fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

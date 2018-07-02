@@ -7,10 +7,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreCommunityRequest
 import ishopgo.com.exhibition.model.Const
@@ -57,6 +55,9 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
 
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
+
+        const val SORT_TYPE = "created_at"
+        const val SORT_BY = "ASC"
     }
 
     private lateinit var communityComment: CommunityComment
@@ -85,7 +86,6 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
         firstLoad.last_id = 0
         firstLoad.parent_id = parentId
         viewModel.loadCommentCommunity(firstLoad)
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
     }
 
     fun loadMore() {
@@ -115,6 +115,8 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
             }
         })
 
+        tv_reply.setOnClickListener { tv_reply.visibility = View.GONE }
+
         img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
         img_comment_sent.setOnClickListener {
@@ -131,14 +133,11 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
                     COMMUNITY_REPLY -> {
                         tv_reply.visibility = View.VISIBLE
                         tv_reply.text = "Trả lời bình luận của ${data.accountName}"
-                        parentId = data.id
                     }
 
                     COMMUNITY_REPLY_CHILD -> {
                         tv_reply.visibility = View.VISIBLE
-                        tv_reply.text = "Trả lời bình luận của ${data.lastComment?.accountName
-                                ?: ""}"
-                        parentId = data.id
+                        tv_reply.text = "Trả lời bình luận của ${data.accountName}"
                     }
 
                     else -> {
@@ -177,7 +176,6 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
                 edt_comment.hideKeyboard()
                 firstLoad()
                 tv_reply.visibility = View.GONE
-                parentId = -1L
                 hideProgressDialog()
                 edt_comment.setText("")
                 postMedias.clear()
@@ -198,7 +196,6 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
 
                     adapter.replaceAll(it)
                     adapter.addData(0, communityComment)
-                    view_recyclerview.scheduleLayoutAnimation()
                 } else {
                     adapter.addAll(it)
                 }

@@ -208,6 +208,9 @@ class ShopDetailFragment : BaseFragment() {
                 2 -> {
                     RateFragment.newInstance(arguments ?: Bundle())
                 }
+                3 -> {
+                    RateFragment.newInstance(arguments ?: Bundle())
+                }
                 else -> {
                     Fragment()
                 }

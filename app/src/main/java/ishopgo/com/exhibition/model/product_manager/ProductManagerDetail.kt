@@ -47,9 +47,6 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("description")
     @Expose
     var description: String? = null
-    @SerializedName("meta")
-    @Expose
-    var meta: List<String>? = null
     @SerializedName("meta_detail")
     @Expose
     var metaDetail: Any? = null
@@ -74,9 +71,9 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("images")
     @Expose
     var images: List<String>? = null
-    @SerializedName("departments")
+    @SerializedName("department")
     @Expose
-    var departments: List<Brand>? = null
+    var departments: Brand? = null
     @SerializedName("categories")
     @Expose
     var categories: MutableList<Category>? = null

@@ -42,15 +42,17 @@
 
     </android.support.design.widget.CoordinatorLayout>
 
-    <TextView
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_reply"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/rv_comment_community_image"
+        android:background="@color/md_white_1000"
+        android:padding="8dp"
         android:textColor="@color/colorSecondaryText"
         android:textStyle="bold"
-        android:padding="8dp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:drawableEndCompat="@drawable/ic_close_default_24dp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_comment_community_image"

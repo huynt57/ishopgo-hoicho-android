@@ -325,6 +325,9 @@ class ApiService {
         @POST("map/choose-booth/{id}")
         @FormUrlEncoded
         fun assignBooth(@Path("id") position: Long, @FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @GET("product/{id}")
+        fun getProductManagerDetail(@Path("id") id: Long): Single<BaseResponse<ProductManagerDetail>>
     }
 
     interface ISGApi {

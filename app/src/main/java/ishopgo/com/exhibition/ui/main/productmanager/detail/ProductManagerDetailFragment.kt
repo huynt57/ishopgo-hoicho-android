@@ -27,11 +27,8 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
-import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.model.Provider
-import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
@@ -53,7 +50,7 @@ import java.io.IOException
 class ProductManagerDetailFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private var product_Id: Long = 0L
-    private var provider_id: Long = 0L
+    private var booth_id: Long = 0L
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var status: Int = STATUS_DISPLAY_SHOW
     private var postMedias = ArrayList<PostMedia>()
@@ -64,7 +61,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var requestBrands = ""
     private var requestProvider = ""
     private val adapterBrands = BrandsAdapter()
-    private val adapterProvider = ProviderAdapter()
+    private val adapterBooth = BoothAdapter()
     private var reloadBrands = false
     private var reloadProvider = false
     private var isEditMode = false
@@ -115,11 +112,11 @@ class ProductManagerDetailFragment : BaseFragment() {
             } else {
                 if (UserDataManager.currentType == "Chủ hội chợ") {
                     if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                    edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
+                                    edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                         showProgressDialog()
                         viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
                                 edit_product_price?.money
-                                        ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edit_product_madeIn.text.toString(),
+                                        ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
                                 image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                                 edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
                                 ?: 0, edit_produt_wholesale_to.money
@@ -127,11 +124,11 @@ class ProductManagerDetailFragment : BaseFragment() {
                     }
                 } else
                     if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                    edt_product_categories.text.toString(), edit_product_provider.text.toString(), edit_product_brand.text.toString())) {
+                                    edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                         showProgressDialog()
                         viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
                                 edit_product_price?.money
-                                        ?: 0, edit_product_dvt.text.toString(), provider_id, brand_id, edit_product_madeIn.text.toString(),
+                                        ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
                                 image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
                                 edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
                                 ?: 0, edit_produt_wholesale_to.money
@@ -193,12 +190,12 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         })
 
-        viewModel.dataProvider.observe(this, Observer { p ->
+        viewModel.dataBooth.observe(this, Observer { p ->
             p.let {
                 if (reloadProvider) {
-                    it?.let { it1 -> adapterProvider.replaceAll(it1) }
+                    it?.let { it1 -> adapterBooth.replaceAll(it1) }
                 } else {
-                    it?.let { it1 -> adapterProvider.addAll(it1) }
+                    it?.let { it1 -> adapterBooth.addAll(it1) }
                 }
             }
         })
@@ -308,7 +305,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
-        viewModel.getProvider(firstLoad)
+        viewModel.getBooth(firstLoad)
     }
 
     private fun loadMoreProvider(currentCount: Int) {
@@ -316,7 +313,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-        viewModel.getProvider(loadMore)
+        viewModel.getBooth(loadMore)
     }
 
     private fun firstLoadProductRelated() {
@@ -425,12 +422,12 @@ class ProductManagerDetailFragment : BaseFragment() {
         else "Hiển thị giá bán sỉ: Không hiển thị"
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
-            til_product_provider.visibility = View.VISIBLE
-            provider_id = info.id
+            til_product_booth.visibility = View.VISIBLE
+            booth_id = info.providerId
 
         } else {
-            provider_id = UserDataManager.currentUserId
-            til_product_provider.visibility = View.GONE
+            booth_id = UserDataManager.currentUserId
+            til_product_booth.visibility = View.GONE
         }
 
         if (convert.provideViewWholesale()) {
@@ -524,10 +521,13 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_title.setText(convert.provideTitle())
         edit_product_meta_description.setText(convert.provideMetaDescription())
         edit_product_tags.setText(convert.provideTags())
-        edit_product_provider.setText(convert.providerProviderName())
+        edit_product_booth.setText(convert.providerBoothName())
 
-        if (convert.provideDepartments() != null && convert.provideDepartments()!!.isNotEmpty())
-            edit_product_brand.setText(convert.provideDepartments()?.get(0)?.name ?: "")
+        if (convert.provideDepartments() != null) {
+            brand_id = convert.provideDepartments()!!.id
+            edit_product_brand.setText(convert.provideDepartments()!!.name ?: "")
+
+        }
 
         container_product_detail.visibility = if (convert.provideDescription().isEmpty()) View.GONE else View.VISIBLE
         if (container_product_detail.visibility == View.VISIBLE) {
@@ -590,7 +590,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun provideCollectionProducts(): ProductRelated?
         fun provideProviderAccount(): Provider?
         fun provideImages(): List<String>
-        fun provideDepartments(): List<Brand>?
+        fun provideDepartments(): Brand?
         fun provideCategory(): List<Category>?
         fun provideLink(): String
         fun provideIsFeatured(): Boolean
@@ -598,7 +598,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun provideWholesaleFrom(): String
         fun provideWholesaleTo(): String
         fun provideWholesaleCountProduct(): String
-        fun providerProviderName(): String
+        fun providerBoothName(): String
 
     }
 
@@ -606,7 +606,7 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
-                override fun providerProviderName(): String {
+                override fun providerBoothName(): String {
                     return from.providerName ?: ""
                 }
 
@@ -690,8 +690,8 @@ class ProductManagerDetailFragment : BaseFragment() {
                     return from.images ?: mutableListOf()
                 }
 
-                override fun provideDepartments(): List<Brand>? {
-                    return from.departments ?: mutableListOf()
+                override fun provideDepartments(): Brand? {
+                    return from.departments
                 }
 
                 override fun provideLink(): String {
@@ -758,7 +758,8 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_produt_wholesale_count.isFocusable = false
         edit_produt_wholesale_count.isFocusableInTouchMode = false
         edit_product_price.setOnClickListener(null)
-        edit_product_provider.setOnClickListener(null)
+        edit_product_booth.setOnClickListener(null)
+        edit_product_brand.setOnClickListener(null)
         sw_featured.isClickable = false
         sw_status.isClickable = false
         sw_show_wholesale.isClickable = false
@@ -808,7 +809,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_produt_wholesale_count.isFocusable = true
         edit_produt_wholesale_count.isFocusableInTouchMode = true
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
-        edit_product_provider.setOnClickListener { getProvider(edit_product_provider) }
+        edit_product_booth.setOnClickListener { getBooth(edit_product_booth) }
         sw_featured.isClickable = true
         sw_status.isClickable = true
         sw_show_wholesale.isClickable = true
@@ -1089,11 +1090,11 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
     }
 
-    private fun getProvider(view: TextView) {
+    private fun getBooth(view: TextView) {
         requestProvider = ""
         context?.let {
             val dialog = MaterialDialog.Builder(it)
-                    .title("Chọn nhà cung cấp")
+                    .title("Chọn gian hàng")
                     .customView(R.layout.diglog_search_recyclerview, false)
                     .negativeText("Huỷ")
                     .onNegative { dialog, _ -> dialog.dismiss() }
@@ -1108,17 +1109,17 @@ class ProductManagerDetailFragment : BaseFragment() {
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
 
-            rv_search.adapter = adapterProvider
+            rv_search.adapter = adapterBooth
             rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     loadMoreProvider(totalItemsCount)
                 }
             })
-            adapterProvider.listener = object : ClickableAdapter.BaseAdapterAction<Provider> {
-                override fun click(position: Int, data: Provider, code: Int) {
+            adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
                         dialog.dismiss()
-                        provider_id = data.id
+                        booth_id = data.id
                         view.text = data.name ?: ""
                         view.error = null
                     }
@@ -1174,8 +1175,8 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         if (provider.trim().isEmpty()) {
             toast("Nhà cung cấp không được để trống")
-            edit_product_provider.error = getString(R.string.error_field_required)
-            edit_product_provider.requestFocus()
+            edit_product_booth.error = getString(R.string.error_field_required)
+            edit_product_booth.requestFocus()
             return false
         }
 
