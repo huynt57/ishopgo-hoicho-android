@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
+import ishopgo.com.exhibition.model.post.BoothPostManager
 import ishopgo.com.exhibition.model.post.PostCategory
 import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostsManager
@@ -27,6 +28,13 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getBoothPost(fields: MutableMap<String, Any>): Single<BaseResponse<BoothPostManager>> {
+        val response = BaseResponse<BoothPostManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getBoothPost(fields)
+    }
+
     override fun getIntroduction(): Single<BaseResponse<Introduction>> {
         val response = BaseResponse<QuestionManager>()
         response.status = 1
@@ -66,7 +74,8 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         val response = BaseResponse<QuestionCategory>()
         response.status = 1
 
-        return delegate.returningResponse(response).getQuestionCategory(fields)    }
+        return delegate.returningResponse(response).getQuestionCategory(fields)
+    }
 
     override fun getPostCategory(fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>> {
         val response = BaseResponse<PostCategory>()

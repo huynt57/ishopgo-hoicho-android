@@ -64,14 +64,7 @@ class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<PostObject> {
-        val adapter = PostManagerAdapter()
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<PostObject> {
-            override fun click(position: Int, data: PostObject, code: Int) {
-
-            }
-
-        }
-        return adapter
+        return PostManagerAdapter()
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<PostObject>> {
