@@ -4,8 +4,10 @@ import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.ProductDetailComment
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.detail.RatingProductFragment
@@ -29,7 +31,7 @@ class ProductCommentsActivity : BaseSingleFragmentActivity() {
         })
     }
 
-    private fun openRatingComment(product: ProductDetail) {
+    private fun openRatingComment(product: ProductDetailComment) {
         val params = Bundle()
         params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
         val transaction = supportFragmentManager.beginTransaction()

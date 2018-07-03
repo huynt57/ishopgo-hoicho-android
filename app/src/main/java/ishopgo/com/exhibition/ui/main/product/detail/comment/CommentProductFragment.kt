@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.ProductDetailComment
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -56,6 +57,10 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
             return f
         }
+
+        const val COMMUNITY_REPLY = 0
+        const val COMMUNITY_REPLY_CHILD = 1
+        const val COMMUNITY_SHOW_CHILD = 2
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,10 +74,16 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         if (UserDataManager.currentUserId > 0) {
             linearLayout.visibility = View.VISIBLE
             edt_comment.setOnClickListener {
-                dataProduct?.let { it1 -> ratingViewModel.enableCommentRating(it1) }
+                val productDetailComment = ProductDetailComment()
+                productDetailComment.product = dataProduct
+                productDetailComment.comment = null
+                ratingViewModel.enableCommentRating(productDetailComment)
             }
             linearLayout.setOnClickListener {
-                dataProduct?.let { it1 -> ratingViewModel.enableCommentRating(it1) }
+                val productDetailComment = ProductDetailComment()
+                productDetailComment.product = dataProduct
+                productDetailComment.comment = null
+                ratingViewModel.enableCommentRating(productDetailComment)
             }
         } else {
             linearLayout.visibility = View.GONE
@@ -99,10 +110,40 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductComment> {
+            @SuppressLint("SetTextI18n")
             override fun click(position: Int, data: ProductComment, code: Int) {
-                val intent = Intent(context, MemberProfileActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                startActivity(intent)
+                when (code) {
+                    COMMUNITY_REPLY -> {
+                        if (UserDataManager.currentUserId > 0) {
+                            val productDetailComment = ProductDetailComment()
+                            productDetailComment.product = dataProduct
+                            productDetailComment.comment = data
+                            ratingViewModel.enableCommentRating(productDetailComment)
+                        }
+                    }
+
+                    COMMUNITY_REPLY_CHILD -> {
+                        if (UserDataManager.currentUserId > 0) {
+                            val productDetailComment = ProductDetailComment()
+                            productDetailComment.product = dataProduct
+                            val comment = ProductComment()
+                            comment.accountName = data.lastComment?.accountName
+                            comment.id = data.id
+                            productDetailComment.comment = comment
+                            ratingViewModel.enableCommentRating(productDetailComment)
+                        }
+                    }
+
+                    COMMUNITY_SHOW_CHILD -> {
+
+                    }
+
+                    else -> {
+                        val intent = Intent(view.context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }

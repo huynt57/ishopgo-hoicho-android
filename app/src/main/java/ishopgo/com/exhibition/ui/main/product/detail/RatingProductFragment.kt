@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
@@ -25,10 +26,10 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_rating_product.*
-import com.google.android.gms.common.util.InputMethodUtils.showSoftInput
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.support.v7.widget.GridLayoutManager
 import android.view.inputmethod.InputMethodManager
+import ishopgo.com.exhibition.domain.response.ProductComment
+import ishopgo.com.exhibition.model.ProductDetailComment
 
 
 class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
@@ -56,12 +57,17 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
     private var ratingNumber: Float = 0.0f
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
+    private var data: ProductDetailComment? = null
     private var dataProduct: ProductDetail? = null
+    private var dataComment: ProductComment? = null
+    private var parentId = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        dataProduct = Toolbox.gson.fromJson(json, ProductDetail::class.java)
+        data = Toolbox.gson.fromJson(json, ProductDetailComment::class.java)
+        dataProduct = data?.product
+        dataComment = data?.comment
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -98,6 +104,7 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
@@ -115,8 +122,14 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
         btn_comment.setOnClickListener {
             if (checkRequireFields(edit_comment.text.toString())) {
                 showProgressDialog()
-                dataProduct?.id?.let { it1 -> viewModel.postCommentProduct(it1, edit_comment.text.toString(), 0, postMedias, ratingNumber) }
+                dataProduct?.id?.let { it1 -> viewModel.postCommentProduct(it1, edit_comment.text.toString(), parentId, postMedias, ratingNumber) }
             }
+        }
+
+        if (dataComment != null) {
+            parentId = dataComment!!.id
+            tv_member_reply.visibility = View.VISIBLE
+            tv_member_reply.text = "Trả lời bình luận của ${dataComment?.accountName ?: ""}"
         }
 
         if (dataProduct != null) {

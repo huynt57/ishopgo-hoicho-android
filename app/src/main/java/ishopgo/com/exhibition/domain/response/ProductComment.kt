@@ -31,7 +31,7 @@ class ProductComment : IdentityData() {
     var updatedAt: String? = null
     @SerializedName("images")
     @Expose
-    var images: List<Any>? = null
+    var images: MutableList<String>? = null
     @SerializedName("comment_count")
     @Expose
     var commentCount: Int? = null
