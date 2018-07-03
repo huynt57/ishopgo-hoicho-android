@@ -1,9 +1,5 @@
 package ishopgo.com.exhibition.ui.main.productmanager
 
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,11 +10,6 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_product_manager.view.*
-import android.renderscript.Allocation
-import android.renderscript.Element
-import android.renderscript.ScriptIntrinsicBlur
-import android.renderscript.RenderScript
-
 
 /**
  * Created by xuanhong on 2/2/18. HappyCoding!
@@ -47,13 +38,9 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
 
             val convert = converter.convert(data)
             itemView.apply {
-                if (convert.provideStatus() == STATUS_DISPLAY_HIDDEN) {
+                if (convert.provideStatus() != STATUS_DISPLAY_SHOW && convert.provideStatus() != STATUS_DISPLAY_LANDING_PAGE)
                     img_blur.visibility = View.VISIBLE
-                    Glide.with(context)
-                            .load(R.drawable.bg_glass)
-                            .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
-                            .into(img_blur)
-                }
+                else img_blur.visibility = View.GONE
 
 
 
@@ -71,32 +58,9 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
 
     }
 
-    object BlurBuilder {
-        private val BITMAP_SCALE = 0.4f
-        private val BLUR_RADIUS = 7.5f
-
-        fun blur(context: Context, image: Bitmap): Bitmap {
-            val width = Math.round(image.width * BITMAP_SCALE)
-            val height = Math.round(image.height * BITMAP_SCALE)
-
-            val inputBitmap = Bitmap.createScaledBitmap(image, width, height, false)
-            val outputBitmap = Bitmap.createBitmap(inputBitmap)
-
-            val rs = RenderScript.create(context)
-            val theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs))
-            val tmpIn = Allocation.createFromBitmap(rs, inputBitmap)
-            val tmpOut = Allocation.createFromBitmap(rs, outputBitmap)
-            theIntrinsic.setRadius(BLUR_RADIUS)
-            theIntrinsic.setInput(tmpIn)
-            theIntrinsic.forEach(tmpOut)
-            tmpOut.copyTo(outputBitmap)
-
-            return outputBitmap
-        }
-    }
-
     companion object {
-        var STATUS_DISPLAY_HIDDEN: Int = 1 //Không hiển thị
+        var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
+        var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
     }
 
     interface ProductManagerProvider {

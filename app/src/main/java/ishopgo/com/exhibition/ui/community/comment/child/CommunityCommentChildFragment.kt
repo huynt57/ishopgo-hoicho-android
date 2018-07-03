@@ -55,9 +55,6 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
 
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
-
-        const val SORT_TYPE = "created_at"
-        const val SORT_BY = "ASC"
     }
 
     private lateinit var communityComment: CommunityComment

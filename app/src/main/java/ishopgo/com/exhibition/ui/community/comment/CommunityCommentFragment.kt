@@ -71,12 +71,10 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
     private var adapterParent = CommunityParentAdapter()
     private lateinit var viewModel: CommunityViewModel
     private lateinit var childViewModel: CommentViewModel
-    private lateinit var scroller: LinearSmoothScroller
     private lateinit var data: Community
     private var post_id: Long = -1L
     private var last_id: Long = -1L
     private var parentId: Long = -1L
-    private var size: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_community_result_detail, container, false)
@@ -402,14 +400,6 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
                 adapterImages.replaceAll(postMedias)
                 rv_comment_community_image.adapter = adapterImages
                 rv_comment_community_image.visibility = View.GONE
-                if (parentId == -1L) {
-                    view_recyclerview.post {
-                        Log.d("123123123", "$size")
-                        scroller.targetPosition = size
-                        view_recyclerview.layoutManager.startSmoothScroll(scroller)
-                    }
-                }
-
                 parentId = -1L
             }
         })
@@ -418,7 +408,6 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
             p?.let {
                 if (it.isNotEmpty()) {
                     last_id = it[it.size - 1].id
-                    size = it.size
                 }
 
                 if (reloadData) {
