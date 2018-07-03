@@ -4,6 +4,8 @@ import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.administrator.Administrator
+import ishopgo.com.exhibition.model.administrator.AdminstratorPermissions
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
@@ -332,6 +334,15 @@ class ApiService {
 
         @GET("product/{id}")
         fun getProductManagerDetail(@Path("id") id: Long): Single<BaseResponse<ProductManagerDetail>>
+
+        @GET("list-administrators")
+        fun getAdministrator(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Administrator>>>
+
+        @DELETE("delete-administrators/{id}")
+        fun deleteAdministrator(@Path("id") id: Long): Single<BaseResponse<Any>>
+
+        @GET("account-permissions")
+        fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdminstratorPermissions>>>
     }
 
     interface ISGApi {

@@ -64,7 +64,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 //            childs.add(AccountMenuItem(Const.AccountAction.ACTION_GENEREL_MANAGER, R.drawable.ic_affiliate_order_white, "Quản lý thông tin chung", isParent = false))
 //            childs.add(AccountMenuItem(Const.AccountAction.ACTION_QUESTION_MANAGER, R.drawable.ic_question, "Quản lý hỏi đáp", isParent = false))
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_SYNTHETIC_MANAGER, R.drawable.ic_general, "Quản lý tổng hợp", childs))
-            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOT_AVALIBLE, R.drawable.ic_authorities, "Phân quyền quản trị viên"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Phân quyền quản trị viên"))
         }
 
         if (UserDataManager.currentType == "Quản trị viên") {

@@ -280,7 +280,7 @@
 
         <service
             android:name=".ui.chat.local.service.NotificationCreatorService"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".ui.chat.local.service.PushNotificationMessageReceiver"
             android:exported="false">
@@ -303,35 +303,35 @@
         <activity
             android:name=".ui.chat.local.group.CreateGroupActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.local.group.member.MembersActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.local.profile.MemberProfileActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.local.config.notification.NotificationConfigActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.local.group.addmember.AddMemberActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.local.info.ConversationInfoActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.chat.local.imageinventory.ImageInventoryActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.main.myqr.MyQrActivity"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.main.home.search.community.detail.CommunityResultDetailActivity"
             android:launchMode="singleTop"
@@ -407,12 +407,20 @@
             android:name=".ui.main.map.ExpoMapActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.main.map.config.ExpoMapConfigActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".ui.main.administrator.AdministratorActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.administrator.add.AdministratorAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
