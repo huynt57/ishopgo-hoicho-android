@@ -61,11 +61,17 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                         .into(iv_thumb)
                 tv_item_name.text = convert.provideName()
 
-                tv_price.text = convert.providePrice()
-                val hideMarketPrice = convert.provideMarketPrice().equals(convert.providePrice(), true)
-                tv_tt_price.visibility = if (convert.provideMarketPrice() == "0 đ" || hideMarketPrice) View.INVISIBLE else View.VISIBLE
-                tv_tt_price.paintFlags = tv_tt_price.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-                tv_tt_price.text = convert.provideMarketPrice()
+                if (convert.hasDiscount()) {
+                    tv_price.text = convert.providePromotionPrice()
+                    tv_tt_price.visibility = View.VISIBLE
+                    tv_tt_price.paintFlags = tv_tt_price.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+                    tv_tt_price.text = convert.providePrice()
+                }
+                else {
+                    tv_price.text = convert.providePrice()
+                    tv_tt_price.visibility = View.INVISIBLE
+                    tv_tt_price.text = convert.providePrice()
+                }
             }
 
         }
@@ -75,13 +81,17 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
         fun provideImage(): String
         fun provideName(): String
         fun providePrice(): String
-        fun provideMarketPrice(): String
+        fun providePromotionPrice(): String
+        fun hasDiscount(): Boolean
     }
 
     class ProductConverter : Converter<Product, ProductProvider> {
 
         override fun convert(from: Product): ProductProvider {
             return object : ProductProvider {
+                override fun hasDiscount(): Boolean {
+                    return from.promotionPrice != null && from.promotionPrice != from.price
+                }
 
                 override fun provideImage(): String {
                     return from.image?.trim() ?: ""
@@ -97,8 +107,8 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                         return from.price.asMoney()
                 }
 
-                override fun provideMarketPrice(): String {
-                    return from.ttPrice.asMoney()
+                override fun providePromotionPrice(): String {
+                    return from.promotionPrice?.asMoney() ?: "0 đ"
                 }
             }
         }

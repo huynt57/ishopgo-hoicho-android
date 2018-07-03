@@ -21,6 +21,9 @@ class ProductManager : IdentityData() {
     @SerializedName("price")
     @Expose
     var price: Long? = null
+    @SerializedName("promotion_price")
+    @Expose
+    var promotionPrice: Long? = null
     @SerializedName("status")
     var status: Int? = null
     @SerializedName("department")

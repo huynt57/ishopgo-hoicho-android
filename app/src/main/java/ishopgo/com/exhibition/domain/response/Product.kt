@@ -13,12 +13,12 @@ class Product : IdentityData() {
     @SerializedName("image")
     @Expose
     var image: String? = null
-    @SerializedName("tt_price")
-    @Expose
-    var ttPrice: Long = 0
     @SerializedName("price")
     @Expose
     var price: Long = 0
+    @SerializedName("promotion_price")
+    @Expose
+    var promotionPrice: Long? = 0
     @SerializedName("code")
     @Expose
     var code: String? = null
