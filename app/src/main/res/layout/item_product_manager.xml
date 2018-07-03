@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
@@ -19,8 +18,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="w,1:1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_item_name"
@@ -38,7 +36,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_thumb"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_price"
@@ -51,7 +49,7 @@
         android:textSize="16sp"
         android:textStyle="normal"
         app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
     <TextView
         android:id="@+id/tv_department"
@@ -64,7 +62,7 @@
         android:textColor="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_price"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_name"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
 
     <TextView
         android:id="@+id/tv_item_code"
@@ -73,7 +71,23 @@
         android:layout_marginTop="8dp"
         android:text="MSP: %1$s"
         app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_department"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_department" />
 
+    <TextView
+        android:id="@+id/img_blur"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#99000000"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:text="Đang Ẩn"
+        android:gravity="center"
+        android:textColor="@color/colorPureWhite"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout><!--</android.support.v7.widget.CardView>-->

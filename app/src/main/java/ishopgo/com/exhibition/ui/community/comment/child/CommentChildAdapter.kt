@@ -1,5 +1,6 @@
-package ishopgo.com.exhibition.ui.community.comment
+package ishopgo.com.exhibition.ui.community.comment.child
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.bumptech.glide.Glide
@@ -12,41 +13,90 @@ import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.CommunityImageAdapter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.item_community_comment.view.*
+import kotlinx.android.synthetic.main.item_community_comment_child.view.*
 
-/**
- * Created by hoangnh on 4/19/2018.
- */
-class CommunityCommentAdapter : ClickableAdapter<CommunityComment>() {
+class CommentChildAdapter : ClickableAdapter<CommunityComment>() {
     companion object {
+        const val COMMUNITY_PARENT = 0
+        const val COMMUNITY_LIST = 1
+
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
-        const val COMMUNITY_SHOW_CHILD = 2
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return R.layout.item_community_comment
+        return if (viewType == COMMUNITY_PARENT) R.layout.item_community_comment else R.layout.item_community_comment_child
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == COMMUNITY_PARENT) COMMUNITY_PARENT else COMMUNITY_LIST
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<CommunityComment> {
-        return CommentHodel(v, CommunityConverter())
+        return if (viewType == COMMUNITY_PARENT) ParentHolder(v, CommunityConverter()) else ChildHolder(v, CommunityConverter())
     }
 
     override fun onBindViewHolder(holder: ViewHolder<CommunityComment>, position: Int) {
         super.onBindViewHolder(holder, position)
-        holder.apply {
-            itemView.img_avatar_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
-            itemView.tv_comment_name.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
-            itemView.view_reply.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_REPLY) }
-            itemView.view_reply_child.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_REPLY_CHILD) }
-            itemView.tv_show_child_all.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHOW_CHILD) }
+        if (holder is ParentHolder) {
+            holder.apply {
+                itemView.img_avatar_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+                itemView.tv_comment_name.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+                itemView.view_reply.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_REPLY) }
+            }
+
+        } else if (holder is ChildHolder) {
+            holder.apply {
+                itemView.img_avatar_comment_child.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+                itemView.tv_name_comment_child.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+                itemView.view_reply_comment_child.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_REPLY_CHILD) }
+            }
         }
     }
 
-    inner class CommentHodel(v: View, private val converter: Converter<CommunityComment, CommunityCommentProvider>) : BaseRecyclerViewAdapter.ViewHolder<CommunityComment>(v) {
+    inner class ChildHolder(v: View, private val converter: Converter<CommunityComment, CommunityCommentProvider>) : BaseRecyclerViewAdapter.ViewHolder<CommunityComment>(v) {
+
+        @SuppressLint("SetTextI18n")
+        override fun populate(data: CommunityComment) {
+            super.populate(data)
+            val convert = converter.convert(data)
+            itemView.apply {
+                Glide.with(this).load(convert.providerAccountImage())
+                        .apply(RequestOptions.circleCropTransform()
+                                .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_avatar_comment_child)
+
+                tv_content_comment_child.text = convert.providerContent()
+                tv_name_comment_child.text = convert.providerAccountName()
+                tv_time_comment_child.text = convert.providerCreatedAt()
+
+                if (convert.providerImages().isNotEmpty()) {
+                    if (convert.providerImages().size > 1) {
+                        image_comment_child.visibility = View.GONE
+                        rv_img_comment_child.visibility = View.VISIBLE
+
+                        val adapter = CommunityImageAdapter()
+                        adapter.replaceAll(convert.providerImages())
+                        rv_img_comment_child.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+                        rv_img_comment_child.adapter = adapter
+                    } else {
+                        image_comment_child.visibility = View.VISIBLE
+                        rv_img_comment_child.visibility = View.GONE
+
+                        Glide.with(this).load(convert.providerImages()[0])
+                                .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(image_comment_child)
+                    }
+                } else {
+                    image_comment_child.visibility = View.GONE
+                    rv_img_comment_child.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    inner class ParentHolder(v: View, private val converter: Converter<CommunityComment, CommunityCommentProvider>) : BaseRecyclerViewAdapter.ViewHolder<CommunityComment>(v) {
 
         override fun populate(data: CommunityComment) {
             super.populate(data)
-
             val convert = converter.convert(data)
             itemView.apply {
                 Glide.with(this).load(convert.providerAccountImage())
@@ -57,41 +107,9 @@ class CommunityCommentAdapter : ClickableAdapter<CommunityComment>() {
                 tv_comment_name.text = convert.providerAccountName()
                 tv_comment_time.text = convert.providerCreatedAt()
 
-                if (convert.providerLastComment() != null) {
-                    constraintLayout_child.visibility = View.VISIBLE
-                    val child = convert.providerLastComment()!!
-                    Glide.with(this).load(child.accountImage)
-                            .apply(RequestOptions.circleCropTransform()
-                                    .placeholder(R.drawable.avatar_placeholder).error(R.drawable.avatar_placeholder)).into(img_avatar_child)
+                constraintLayout_child.visibility = View.GONE
 
-                    tv_comment_content_child.text = child.content
-                    tv_comment_name_child.text = child.accountName
-                    tv_comment_time_child.text = child.createdAt
-
-                    if (child.images != null && child.images!!.isNotEmpty()) {
-                        if (child.images!!.size > 1) {
-                            img_comment_child.visibility = View.GONE
-                            rv_comment_image_child.visibility = View.VISIBLE
-
-                            val adapter = CommunityImageAdapter()
-                            adapter.replaceAll(child.images!!)
-                            rv_comment_image_child.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-                            rv_comment_image_child.adapter = adapter
-                        } else {
-                            img_comment_child.visibility = View.VISIBLE
-                            rv_comment_image_child.visibility = View.GONE
-
-                            Glide.with(this).load(child.images!![0])
-                                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_comment_child)
-                        }
-                    }
-                } else {
-                    constraintLayout_child.visibility = View.GONE
-                }
-
-                if (convert.provideCommentCount() > 1) {
-                    tv_show_child_all.visibility = View.VISIBLE
-                } else tv_show_child_all.visibility = View.GONE
+                tv_show_child_all.visibility = View.GONE
 
                 if (convert.providerImages().isNotEmpty()) {
                     if (convert.providerImages().size > 1) {

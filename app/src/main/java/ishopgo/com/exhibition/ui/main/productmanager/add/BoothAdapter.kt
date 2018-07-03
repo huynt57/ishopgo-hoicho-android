@@ -4,21 +4,22 @@ import android.annotation.SuppressLint
 import android.view.View
 import android.widget.TextView
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 
-class ProviderAdapter : ClickableAdapter<Provider>() {
+class BoothAdapter : ClickableAdapter<BoothManager>() {
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_region
     }
 
-    override fun createHolder(v: View, viewType: Int): BaseRecyclerViewAdapter.ViewHolder<Provider> {
+    override fun createHolder(v: View, viewType: Int): BaseRecyclerViewAdapter.ViewHolder<BoothManager> {
         return RegionHodel(v)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<Provider>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<BoothManager>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         holder.apply {
@@ -26,10 +27,10 @@ class ProviderAdapter : ClickableAdapter<Provider>() {
         }
     }
 
-    internal inner class RegionHodel(itemView: View) : BaseRecyclerViewAdapter.ViewHolder<Provider>(itemView) {
+    internal inner class RegionHodel(itemView: View) : BaseRecyclerViewAdapter.ViewHolder<BoothManager>(itemView) {
 
         @SuppressLint("SetTextI18n")
-        override fun populate(data: Provider) {
+        override fun populate(data: BoothManager) {
             super.populate(data)
 
             val textView = itemView as TextView

@@ -35,7 +35,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tên sản phẩm*"
+                android:hint="(*) Tên sản phẩm"
                 android:inputType="text"
                 android:singleLine="true" />
 
@@ -54,7 +54,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mã sản phẩm*"
+                android:hint="(*) Mã sản phẩm"
                 android:inputType="text"
                 android:singleLine="true" />
 
@@ -109,7 +109,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Giá bán lẻ * "
+                android:hint="(*) Giá bán lẻ"
                 android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
@@ -198,7 +198,7 @@
                 style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Danh mục*"
+                android:hint="(*) Danh mục"
                 tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -296,13 +296,13 @@
                 style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Thương hiệu*"
+                android:hint="(*) Thương hiệu"
                 tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_product_provider"
+            android:id="@+id/til_product_booth"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="8dp"
@@ -312,11 +312,11 @@
             android:visibility="gone">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/edit_product_provider"
+                android:id="@+id/edit_product_booth"
                 style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nhà cung cấp*"
+                android:hint="(*) Gian hàng"
                 tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
 
         </android.support.design.widget.TextInputLayout>
@@ -391,7 +391,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Tiêu đề sản phẩm*"
+                android:hint="(*) Tiêu đề sản phẩm"
                 android:inputType="text"
                 android:singleLine="true" />
 

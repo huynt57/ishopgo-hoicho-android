@@ -33,6 +33,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
+import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_JSON
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -43,6 +44,7 @@ import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.community.notification.CommunityNotificationActivity
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
@@ -164,7 +166,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                             if (UserDataManager.currentUserId > 0) {
 
                                 val intent = Intent(context, CommunityCommentActivity::class.java)
-                                intent.putExtra(EXTRA_ID, data.id)
+                                intent.putExtra(EXTRA_JSON, Toolbox.gson.toJson(data))
                                 startActivity(intent)
                             } else openLoginActivity()
                         }

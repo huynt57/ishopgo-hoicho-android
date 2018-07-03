@@ -23,6 +23,7 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
+import ishopgo.com.exhibition.ui.main.shop.news.NewsFragment
 import ishopgo.com.exhibition.ui.main.shop.rate.RateFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_shop_detail.*
@@ -206,6 +207,9 @@ class ShopDetailFragment : BaseFragment() {
                     ProductsFragment.newInstance(arguments ?: Bundle())
                 }
                 2 -> {
+                    NewsFragment.newInstance(arguments ?: Bundle())
+                }
+                3 -> {
                     RateFragment.newInstance(arguments ?: Bundle())
                 }
                 else -> {

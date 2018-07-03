@@ -11,7 +11,6 @@ import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_product_manager.view.*
 
-
 /**
  * Created by xuanhong on 2/2/18. HappyCoding!
  */
@@ -39,6 +38,12 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
 
             val convert = converter.convert(data)
             itemView.apply {
+                if (convert.provideStatus() != STATUS_DISPLAY_SHOW && convert.provideStatus() != STATUS_DISPLAY_LANDING_PAGE)
+                    img_blur.visibility = View.VISIBLE
+                else img_blur.visibility = View.GONE
+
+
+
                 Glide.with(context)
                         .load(convert.provideImage())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
@@ -53,6 +58,11 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
 
     }
 
+    companion object {
+        var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
+        var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
+    }
+
     interface ProductManagerProvider {
         fun provideName(): String
         fun provideImage(): String
@@ -60,11 +70,15 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
         fun provideTTPrice(): String
         fun providePrice(): String
         fun provideDepartment(): String
+        fun provideStatus(): Int
     }
 
     class ProductManagerConverter : Converter<ProductManager, ProductManagerProvider> {
         override fun convert(from: ProductManager): ProductManagerProvider {
             return object : ProductManagerProvider {
+                override fun provideStatus(): Int {
+                    return from.status ?: 0
+                }
 
                 override fun provideDepartment(): String {
                     return from.department ?: ""

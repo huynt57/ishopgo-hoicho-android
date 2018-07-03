@@ -107,7 +107,6 @@ class CommunityAdapter : ClickableAdapter<Community>() {
                 tv_community_content.text = convert.provideContent()
                 tv_community_comment.text = convert.provideCommentCount().toString()
                 tv_community_number_share.text = convert.provideShareCount().toString()
-                Log.d("123123123", convert.provideLiked().toString())
                 toggle_community_like.isChecked = convert.provideLiked()
                 toggle_community_like.text = convert.provideLikeCount().toString()
                 tv_community_like.text = convert.provideLikeCount().toString()

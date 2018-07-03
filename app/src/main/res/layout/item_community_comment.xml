@@ -6,12 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="16dp"
-    android:background="@drawable/bg_white_black_bottom"
     android:baselineAligned="false"
-    android:paddingBottom="16dp"
+    android:paddingBottom="8dp"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    android:paddingTop="16dp"
+    android:paddingTop="8dp"
     tools:layout_editor_absoluteX="0dp"
     tools:layout_editor_absoluteY="25dp">
 
@@ -23,101 +22,248 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-        android:id="@+id/tv_comment_name"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif"
-        android:maxLines="3"
-        android:singleLine="true"
-        android:textColor="#424242"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/tv_comment_time"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:cardCornerRadius="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#44949281">
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_comment_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="3"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/img_comment"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_comment_name" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_comment_image"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_comment" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_comment_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_comment_image" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_comment_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:drawablePadding="4dp"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:textColor="#aa000000"
+        android:textColor="@color/colorSecondaryText"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_name"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
         tools:layout_width="40dp" />
-
-    <ImageView
-        android:id="@+id/img_comment"
-        android:layout_width="0dp"
-        android:layout_height="150dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_name" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_comment_image"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
-        app:layout_constraintTop_toBottomOf="@+id/img_comment" />
-
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-        android:id="@+id/tv_comment_content"
-        android:layout_width="0dp"
-        android:layout_height="17dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:textColor="#aa000000"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
-        app:layout_constraintTop_toBottomOf="@+id/rv_comment_image" />
-
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-        android:id="@+id/view_delete"
-        android:layout_width="0dp"
-        android:layout_height="14dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:ellipsize="end"
-        android:singleLine="true"
-        android:text="Xoá"
-        android:textColor="@color/md_blue_500"
-        android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar_comment"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_content" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/view_reply"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="Trả lời"
-        android:textColor="@color/md_blue_500"
+        android:textColor="@color/colorSecondaryText"
         android:textSize="12sp"
-        android:visibility="gone"
-        app:layout_constraintStart_toEndOf="@+id/view_delete"
-        app:layout_constraintTop_toBottomOf="@+id/tv_comment_content" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_comment_time"
+        app:layout_constraintStart_toEndOf="@+id/tv_comment_time"
+        app:layout_constraintTop_toTopOf="@+id/tv_comment_time" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_comment_time">
+
+        <ImageView
+            android:id="@+id/img_avatar_child"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cardView3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:cardCornerRadius="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/img_avatar_child"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#44949281">
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/tv_comment_name_child"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:fontFamily="sans-serif"
+                    android:maxLines="3"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/img_comment_child"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="4dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_comment_name_child" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_comment_image_child"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/img_comment_child" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/tv_comment_content_child"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_marginTop="4dp"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_comment_image_child" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/tv_comment_time_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="11sp"
+            app:layout_constraintStart_toEndOf="@+id/img_avatar_child"
+            app:layout_constraintTop_toBottomOf="@+id/cardView3"
+            tools:layout_width="40dp" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_reply_child"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="Trả lời"
+            android:textColor="@color/colorSecondaryText"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_comment_time_child"
+            app:layout_constraintStart_toEndOf="@+id/tv_comment_time_child"
+            app:layout_constraintTop_toTopOf="@+id/tv_comment_time_child" />
+    </android.support.constraint.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_show_child_all"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:text="Xem tất cả bình luận"
+        android:textColor="@color/colorSecondaryText"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/constraintLayout_child"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout_child" />
 
 </android.support.constraint.ConstraintLayout>

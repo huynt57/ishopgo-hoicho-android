@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
+import ishopgo.com.exhibition.model.post.BoothPostManager
 import ishopgo.com.exhibition.model.post.PostCategory
 import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostsManager
@@ -148,6 +149,9 @@ class ApiService {
 
         @GET("introduction")
         fun getIntroduction(): Single<BaseResponse<Introduction>>
+
+        @GET("general-info/get-booth-posts")
+        fun getBoothPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<BoothPostManager>>
     }
 
     interface Auth {
@@ -325,6 +329,9 @@ class ApiService {
         @POST("map/choose-booth/{id}")
         @FormUrlEncoded
         fun assignBooth(@Path("id") position: Long, @FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @GET("product/{id}")
+        fun getProductManagerDetail(@Path("id") id: Long): Single<BaseResponse<ProductManagerDetail>>
     }
 
     interface ISGApi {

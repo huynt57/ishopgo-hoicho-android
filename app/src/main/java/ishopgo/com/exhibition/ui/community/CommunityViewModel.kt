@@ -92,8 +92,9 @@ class CommunityViewModel : BaseListViewModel<List<Community>>(), AppComponent.In
     }
 
     var postCommentSusscess = MutableLiveData<Boolean>()
+//    var postCommentSusscess = MutableLiveData<Long>()
 
-    fun postCommentCommunity(post_id: Long, content: String, postMedias: ArrayList<PostMedia> = ArrayList()) {
+    fun postCommentCommunity(post_id: Long, content: String, postMedias: ArrayList<PostMedia> = ArrayList(), parentId: Long) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("content", content)
@@ -109,6 +110,10 @@ class CommunityViewModel : BaseListViewModel<List<Community>>(), AppComponent.In
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
                 }
             }
+        }
+
+        if (parentId != -1L) {
+            builder.addFormDataPart("parent_id", parentId.toString())
         }
 
         addDisposable(authService.postCommentCommunity(post_id, builder.build())
@@ -143,13 +148,13 @@ class CommunityViewModel : BaseListViewModel<List<Community>>(), AppComponent.In
 
     var loadCommentSusscess = MutableLiveData<MutableList<CommunityComment>>()
 
-    fun loadCommentCommunity(post_id: Long, parent_id: Long, params: Request) {
+    fun loadCommentCommunity(params: Request) {
         if (params is LoadMoreCommunityRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["last_id"] = params.last_id
-            fields["parent_id"] = parent_id
-            addDisposable(noAuthService.getCommentCommunity(post_id, fields)
+            fields["parent_id"] = params.parent_id
+            addDisposable(noAuthService.getCommentCommunity(params.post_id, fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<MutableList<CommunityComment>>() {
                         override fun success(data: MutableList<CommunityComment>?) {
