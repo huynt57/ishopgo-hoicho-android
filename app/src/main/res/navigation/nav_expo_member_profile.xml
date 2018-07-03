@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_expo_member_profile.xml"
+    app:startDestination="@+id/memberProfileFragment">
+
+    <fragment
+        android:id="@+id/memberProfileFragment"
+        android:name="ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileFragment"
+        android:label="fragment_expo_map"
+        tools:layout="@layout/content_local_chat_profile">
+        <action
+            android:id="@+id/action_memberProfileFragment_to_upgradeToBoothFragment"
+            app:destination="@id/upgradeToBoothFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/upgradeToBoothFragment"
+        android:name="ishopgo.com.exhibition.ui.chat.local.profile.UpgradeToBoothFragment"
+        android:label="upgradeToBoothFragment" />
+</navigation>

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DataSource
@@ -49,6 +50,7 @@ import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
+import ishopgo.com.exhibition.ui.widget.BottomSheetOptionListener
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_local_chat_profile.*
@@ -94,7 +96,6 @@ class MemberProfileFragment : BaseActionBarFragment() {
         firstLoad.last_id = 0
         firstLoad.account_id = memberId
         viewModel.loadProfileCommunity(firstLoad)
-        view_recyclerview.scheduleLayoutAnimation()
     }
 
     private fun loadMore() {
@@ -121,6 +122,11 @@ class MemberProfileFragment : BaseActionBarFragment() {
             info?.let {
                 currentProfile = it
                 showDetail(ConverterMemberProfile().convert(it))
+            }
+        })
+        viewModel.upgradeSusscess.observe(this, Observer { ok ->
+            ok?.let {
+                toast("Nâng cấp thành công")
             }
         })
         viewModel.conversation.observe(this, Observer { c ->
@@ -185,12 +191,14 @@ class MemberProfileFragment : BaseActionBarFragment() {
                 )
                 .listener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        view_avatar.setBackgroundResource(R.color.md_grey_200)
+                        if (isVisible)
+                            view_avatar.setBackgroundResource(R.color.md_grey_200)
                         return false
                     }
 
                     override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        view_avatar.setBackgroundResource(0)
+                        if (isVisible)
+                            view_avatar.setBackgroundResource(0)
                         return false
                     }
 
@@ -218,24 +226,27 @@ class MemberProfileFragment : BaseActionBarFragment() {
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
             view_setting.visibility = View.VISIBLE
-//            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
-//            toolbar.setRightButtonClickListener {
-//                context?.let {
-//                    MaterialDialog.Builder(it)
-//                            .content("Bạn có muốn xoá thành viên này không?")
-//                            .positiveText("Có")
-//                            .onPositive { _, _ ->
-//                                activity?.let {
-//                                    val memberId = it.intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
-//                                    viewModel.deleteMember(memberId)
-//                                }
-//                                showProgressDialog()
-//                            }
-//                            .negativeText("Không")
-//                            .onNegative { dialog, _ -> dialog.dismiss() }
-//                            .show()
-//                }
-//            }
+            view_setting.setOnClickListener {
+                val options = MemberProfileOptions()
+                options.optionSelectedListener = object: BottomSheetOptionListener {
+                    override fun click(code: Int) {
+                        when (code) {
+                            MemberProfileOptions.OPTION_UPGRADE -> {
+                                val extra = Bundle()
+                                extra.putLong(Const.TransferKey.EXTRA_ID, memberId)
+                                Navigation.findNavController(view_setting).navigate(R.id.action_memberProfileFragment_to_upgradeToBoothFragment, extra)
+//                                confirmUpgradeMember()
+                            }
+                            MemberProfileOptions.OPTION_DELETE -> {
+                                confirmDeleteMember()
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
+                options.show(childFragmentManager, "MemberProfileOptions")
+            }
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -310,6 +321,38 @@ class MemberProfileFragment : BaseActionBarFragment() {
                 viewModel.createConversation(request)
             }
         }
+    }
+
+    private fun confirmUpgradeMember() {
+        MaterialDialog.Builder(requireContext())
+                .content("Bạn có muốn nâng cấp thành viên này lên gian hàng không?")
+                .positiveText("Có")
+                .onPositive { _, _ ->
+                    activity?.let {
+                        val memberId = it.intent.getLongExtra(EXTRA_ID, -1L)
+//                        viewModel.upgradeMemberToBooth(memberId)
+                    }
+                    showProgressDialog()
+                }
+                .negativeText("Không")
+                .onNegative { dialog, _ -> dialog.dismiss() }
+                .show()
+    }
+
+    private fun confirmDeleteMember() {
+        MaterialDialog.Builder(requireContext())
+                .content("Bạn có muốn xoá thành viên này không?")
+                .positiveText("Có")
+                .onPositive { _, _ ->
+                    activity?.let {
+                        val memberId = it.intent.getLongExtra(EXTRA_ID, -1L)
+                        viewModel.deleteMember(memberId)
+                    }
+                    showProgressDialog()
+                }
+                .negativeText("Không")
+                .onNegative { dialog, _ -> dialog.dismiss() }
+                .show()
     }
 
     private fun openLoginActivity() {
