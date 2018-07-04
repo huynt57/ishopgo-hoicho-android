@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.administrator.add
 
+import android.graphics.Color
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.administrator.AdministratorRole
@@ -7,6 +8,8 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import kotlinx.android.synthetic.main.item_administrator_menu_child.view.*
+import android.content.res.ColorStateList
+
 
 class AdministratorRoleAdapter : ClickableAdapter<AdministratorRole>() {
 
@@ -21,7 +24,7 @@ class AdministratorRoleAdapter : ClickableAdapter<AdministratorRole>() {
     override fun onBindViewHolder(holder: ViewHolder<AdministratorRole>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.view_child.setOnCheckedChangeListener { buttonView, isChecked ->
+            itemView.view_child.setOnCheckedChangeListener { _, _ ->
                 listener?.click(adapterPosition, getItem(adapterPosition))
             }
         }
@@ -34,6 +37,11 @@ class AdministratorRoleAdapter : ClickableAdapter<AdministratorRole>() {
 
             val convert = converter.convert(data)
             itemView.apply {
+                view_child.isChecked = convert.provideSelected()
+                if (convert.provideSelected())
+                    view_child.setTextColor(resources.getColor(R.color.colorPrimaryDark))
+                else view_child.setTextColor(resources.getColor(R.color.colorPrimaryText))
+
                 view_child.text = convert.provideName()
             }
         }
@@ -44,12 +52,17 @@ class AdministratorRoleAdapter : ClickableAdapter<AdministratorRole>() {
         fun provideName(): String
         fun provideKey(): String
         fun provideValue(): Boolean
+        fun provideSelected(): Boolean
     }
 
     class MemberConverter : Converter<AdministratorRole, AdministratorRoleProvider> {
 
         override fun convert(from: AdministratorRole): AdministratorRoleProvider {
             return object : AdministratorRoleProvider {
+                override fun provideSelected(): Boolean {
+                    return from.isSelected
+                }
+
                 override fun provideName(): String {
                     return from.name ?: ""
                 }

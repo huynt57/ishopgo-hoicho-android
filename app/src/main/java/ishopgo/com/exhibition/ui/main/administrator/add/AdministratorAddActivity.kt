@@ -12,6 +12,10 @@ class AdministratorAddActivity : BaseSingleFragmentActivity() {
         return AdministratorAddFragmentActionBar.newInstance(startupOption)
     }
 
+    override fun startupOptions(): Bundle {
+        return intent?.extras ?: Bundle()
+    }
+
     private lateinit var viewModel: FragmentAdministratorViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {

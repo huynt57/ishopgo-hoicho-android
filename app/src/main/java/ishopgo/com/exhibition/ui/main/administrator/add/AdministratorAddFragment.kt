@@ -1,5 +1,7 @@
 package ishopgo.com.exhibition.ui.main.administrator.add
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.os.Bundle
@@ -9,11 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.model.administrator.AdministratorRole
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.administrator.AdministratorViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_administrator_add.*
@@ -30,6 +35,14 @@ class AdministratorAddFragment : BaseFragment() {
         }
     }
 
+    private var data: Administrator? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        data = Toolbox.gson.fromJson(json, Administrator::class.java)
+    }
+
     private lateinit var viewModel: AdministratorViewModel
     private lateinit var memberViewModel: FragmentAdministratorViewModel
     private var adapter = AdministratorPermissionsAdapter()
@@ -40,6 +53,7 @@ class AdministratorAddFragment : BaseFragment() {
 
     private val listRole = ArrayList<AdministratorRole>()
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
@@ -70,13 +84,40 @@ class AdministratorAddFragment : BaseFragment() {
         }
         view_recyclerview.adapter = adapter
 
-        edit_member_name.setOnClickListener { memberViewModel.showFragmentMember() }
-        edit_member_phone.setOnClickListener { memberViewModel.showFragmentMember() }
-
-        btn_add_administrator.setOnClickListener {
-            if (checkRequireFields(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
-                viewModel.addAdministrator(listRole, edit_member_phone.text.toString())
+        if (data == null) {
+            edit_member_name.setOnClickListener { memberViewModel.showFragmentMember() }
+            edit_member_phone.setOnClickListener { memberViewModel.showFragmentMember() }
+            btn_add_administrator.setOnClickListener {
+                if (checkRequireFields(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
+                    viewModel.addAdministrator(listRole, edit_member_phone.text.toString())
+                }
             }
+        } else {
+            edit_member_name.setText(data?.name)
+            edit_member_phone.setText(data?.phone)
+            btn_add_administrator.text = "Cập nhật quản trị viên"
+            btn_add_administrator.setOnClickListener {
+                if (checkRequireFields(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
+                    data?.id?.let { it1 -> viewModel.editAdministrator(listRole, it1) }
+                }
+            }
+        }
+    }
+
+    fun deleleAdministrator() {
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .content("Bạn có muốn xoá thành viên này không?")
+                    .positiveText("Có")
+                    .onPositive { _, _ ->
+                        activity?.let {
+                            data?.id?.let { it1 -> viewModel.deleteAdministrator(it1) }
+                        }
+                        showProgressDialog()
+                    }
+                    .negativeText("Không")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
         }
     }
 
@@ -102,6 +143,8 @@ class AdministratorAddFragment : BaseFragment() {
         return true
     }
 
+    private var listPermission = mutableListOf<String>()
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         memberViewModel = obtainViewModel(FragmentAdministratorViewModel::class.java, true)
@@ -118,16 +161,69 @@ class AdministratorAddFragment : BaseFragment() {
                 resolveError(it)
             }
         })
-        viewModel.dataAdministratorPermissions.observe(this, Observer {
-            view_recyclerview.scheduleLayoutAnimation()
-            it?.let { it1 -> adapter.replaceAll(it1) }
+
+        viewModel.getDataPermissions.observe(this, Observer { p ->
+            p?.let {
+                listPermission = it
+                for (i in it.indices) {
+                    val administratorRole = AdministratorRole()
+                    administratorRole.key = it[i]
+                    listRole.add(administratorRole)
+                }
+            }
         })
 
-        viewModel.createSusscess.observe(this, Observer {
+        viewModel.dataAdministratorPermissions.observe(this, Observer { p ->
+            p?.let {
+                view_recyclerview.scheduleLayoutAnimation()
+                if (data == null)
+                    adapter.replaceAll(it)
+                else {
+                    for (i in it.indices) {
+                        for (j in listPermission.indices) {
+                            if (it[i].subMenu != null && it[i].subMenu!!.isNotEmpty()) {
+                                for (k in it[i].subMenu!!.indices)
+                                    if (it[i].subMenu!![k].role != null && it[i].subMenu!![k].role!!.isNotEmpty()) {
+                                        for (s in it[i].subMenu!![k].role!!.indices)
+                                            if (it[i].subMenu!![k].role!![s].key == listPermission[j]) it[i].subMenu!![k].role!![s].isSelected = true
+                                    }
+
+                            } else if (it[i].role != null && it[i].role!!.isNotEmpty()) {
+                                for (s in it[i].role!!.indices)
+                                    if (it[i].role!![s].key == listPermission[j]) it[i].role!![s].isSelected = true
+                            }
+                        }
+                    }
+                    adapter.replaceAll(it)
+                }
+            }
+        })
+
+        viewModel.createSusscess.observe(this, Observer
+        {
             toast("Thêm quản trị viên thành công")
             activity?.setResult(RESULT_OK)
-            activity?.onBackPressed()
+            activity?.finish()
         })
+
+        viewModel.editSusscess.observe(this, Observer
+        {
+            toast("Cập nhật quản trị viên thành công")
+            activity?.setResult(Activity.RESULT_OK)
+            activity?.finish()
+        })
+
+        viewModel.deleteSusscess.observe(this, Observer
+        {
+            hideProgressDialog()
+            toast("Xoá thành công")
+            activity?.setResult(Activity.RESULT_OK)
+            activity?.finish()
+        })
+        if (data != null)
+            data?.id?.let { viewModel.getPermisions(it) }
+
         viewModel.getAdministratorPermissions()
+
     }
 }

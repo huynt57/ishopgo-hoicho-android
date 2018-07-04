@@ -14,4 +14,6 @@ class AdministratorRole {
     @SerializedName("value")
     @Expose
     var value: Boolean? = null
+
+    var isSelected: Boolean = false
 }

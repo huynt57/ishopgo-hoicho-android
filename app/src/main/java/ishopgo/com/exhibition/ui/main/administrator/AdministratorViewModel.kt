@@ -105,4 +105,48 @@ class AdministratorViewModel : BaseListViewModel<List<Administrator>>(), AppComp
                 })
         )
     }
+
+    var editSusscess = MutableLiveData<Boolean>()
+
+    fun editAdministrator(permissions: ArrayList<AdministratorRole>, accountId: Long) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+
+        if (permissions.isNotEmpty())
+            for (i in permissions.indices)
+                builder.addFormDataPart("permissions[]", permissions[i].key ?: "")
+
+        addDisposable(authService.editAdministrator(accountId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        editSusscess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var getDataPermissions = MutableLiveData<MutableList<String>>()
+
+    fun getPermisions(accountId: Long) {
+        val fields = mutableMapOf<String, Any>()
+        fields["account_id"] = accountId
+
+        addDisposable(authService.getAccountPermissions(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
+                    override fun success(data: MutableList<String>?) {
+                        getDataPermissions.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
 }

@@ -16,6 +16,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.administrator.add.AdministratorAddActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -86,7 +87,7 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
 
     private fun showSettings(administrator: Administrator) {
         val fragment = AdministratorBottomSheet.newInstance(Bundle())
-        fragment.chooseEdit = View.OnClickListener { toast("Đang phát triển") }
+        fragment.chooseEdit = View.OnClickListener { openEditAdministrator(administrator) }
         fragment.chooseCancel = View.OnClickListener { fragment.dismiss() }
         fragment.chooseDelete = View.OnClickListener { dialogDeleteAdministrator(administrator) }
         fragment.show(childFragmentManager, "AdministratorBottomSheet")
@@ -112,6 +113,13 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
     @SuppressLint("SetTextI18n")
     fun openAddAdministrator() {
         val intent = Intent(context, AdministratorAddActivity::class.java)
+        startActivityForResult(intent, Const.RequestCode.ADMINISTRATOR_ADD)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun openEditAdministrator(account: Administrator) {
+        val intent = Intent(context, AdministratorAddActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(account))
         startActivityForResult(intent, Const.RequestCode.ADMINISTRATOR_ADD)
     }
 

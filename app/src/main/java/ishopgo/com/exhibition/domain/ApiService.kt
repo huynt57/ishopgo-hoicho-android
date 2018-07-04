@@ -346,6 +346,12 @@ class ApiService {
 
         @POST("add-administrators")
         fun addAdministrator(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("edit-administrators/{id}")
+        fun editAdministrator(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @GET("get-permissions")
+        fun getAccountPermissions(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<String>>>
     }
 
     interface ISGApi {
