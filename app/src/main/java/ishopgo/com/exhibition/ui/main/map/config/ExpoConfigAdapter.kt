@@ -54,8 +54,11 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
             itemView.apply {
                 Glide.with(context)
                         .load(converted.avatar())
-                        .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
+                        .apply(RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
                         .into(view_avatar)
                 view_name.text = converted.name()
                 view_time.text = converted.time()

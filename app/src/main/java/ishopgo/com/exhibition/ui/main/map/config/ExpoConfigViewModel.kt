@@ -6,7 +6,7 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.ExposRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -25,12 +25,8 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
     lateinit var appContext: Application
 
     override fun loadData(params: Request) {
-        if (params is LoadMoreRequest) {
-            val fields = mutableMapOf<String, Any>()
-            fields["limit"] = params.limit
-            fields["offset"] = params.offset
-
-            addDisposable(noAuthService.getExpos(fields)
+        if (params is ExposRequest) {
+            addDisposable(noAuthService.getExpos(params.toMap())
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<ExpoConfig>>() {
                         override fun success(data: List<ExpoConfig>?) {
