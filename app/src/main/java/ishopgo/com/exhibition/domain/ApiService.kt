@@ -5,7 +5,7 @@ import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.administrator.Administrator
-import ishopgo.com.exhibition.model.administrator.AdminstratorPermissions
+import ishopgo.com.exhibition.model.administrator.AdministratorPermissions
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
@@ -342,7 +342,10 @@ class ApiService {
         fun deleteAdministrator(@Path("id") id: Long): Single<BaseResponse<Any>>
 
         @GET("account-permissions")
-        fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdminstratorPermissions>>>
+        fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdministratorPermissions>>>
+
+        @POST("add-administrators")
+        fun addAdministrator(@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

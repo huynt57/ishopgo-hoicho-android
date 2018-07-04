@@ -86,7 +86,7 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
 
     private fun showSettings(administrator: Administrator) {
         val fragment = AdministratorBottomSheet.newInstance(Bundle())
-        fragment.chooseEdit = View.OnClickListener { openAddAdministrator() }
+        fragment.chooseEdit = View.OnClickListener { toast("Đang phát triển") }
         fragment.chooseCancel = View.OnClickListener { fragment.dismiss() }
         fragment.chooseDelete = View.OnClickListener { dialogDeleteAdministrator(administrator) }
         fragment.show(childFragmentManager, "AdministratorBottomSheet")
@@ -111,7 +111,6 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
 
     @SuppressLint("SetTextI18n")
     fun openAddAdministrator() {
-        toast("Đang phát triển")
         val intent = Intent(context, AdministratorAddActivity::class.java)
         startActivityForResult(intent, Const.RequestCode.ADMINISTRATOR_ADD)
     }

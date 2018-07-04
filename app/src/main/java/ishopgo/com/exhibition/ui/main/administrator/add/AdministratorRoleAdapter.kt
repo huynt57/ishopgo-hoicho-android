@@ -21,7 +21,9 @@ class AdministratorRoleAdapter : ClickableAdapter<AdministratorRole>() {
     override fun onBindViewHolder(holder: ViewHolder<AdministratorRole>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.view_child.setOnCheckedChangeListener { buttonView, isChecked ->
+                listener?.click(adapterPosition, getItem(adapterPosition))
+            }
         }
     }
 

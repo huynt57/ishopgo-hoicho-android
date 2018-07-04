@@ -5,7 +5,7 @@ import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.administrator.Administrator
-import ishopgo.com.exhibition.model.administrator.AdminstratorPermissions
+import ishopgo.com.exhibition.model.administrator.AdministratorPermissions
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
@@ -25,8 +25,15 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
-    override fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdminstratorPermissions>>> {
-        val response = BaseResponse<List<AdminstratorPermissions>>()
+    override fun addAdministrator(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+
+        return delegate.returningResponse(response).addAdministrator(body)
+    }
+
+    override fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdministratorPermissions>>> {
+        val response = BaseResponse<List<AdministratorPermissions>>()
         response.status = 1
 
         return delegate.returningResponse(response).getAdministratorPermissions()
