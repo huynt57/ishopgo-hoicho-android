@@ -20,6 +20,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
+import ishopgo.com.exhibition.ui.main.administrator.AdministratorActivity
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowActivity
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerActivity
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerActivity
@@ -189,6 +190,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_CONFIG_EXPO -> {
                 openConfigExpo()
             }
+            Const.AccountAction.ACTION_ADMINISTRATOR -> {
+                openAdminstrator()
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -347,6 +351,13 @@ class AccountFragment : BaseFragment() {
     private fun openConfigExpo() {
         context?.let {
             val intent = Intent(it, ExpoMapConfigActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openAdminstrator() {
+        context?.let {
+            val intent = Intent(it, AdministratorActivity::class.java)
             startActivity(intent)
         }
     }

@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.ProductDetailComment
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
@@ -75,6 +76,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         const val LIKED = 1
         const val VIEW_WHOLESALE = 1
+
+        const val COMMUNITY_REPLY = 0
+        const val COMMUNITY_REPLY_CHILD = 1
+        const val COMMUNITY_SHOW_CHILD = 2
     }
 
     private lateinit var viewModel: ProductDetailViewModel
@@ -207,11 +212,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         firstLoadSalePoint()
     }
 
+    var productDetail = ProductDetail()
+
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetail) {
         context?.let {
+            productDetail = product
             val convert = ProductDetailConverter().convert(product)
-
             if (convert.provideViewWholesale()) {
                 view_product_wholesale.visibility = View.VISIBLE
                 view_product_wholesale.text = convert.provideWholesale()
@@ -277,9 +284,17 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
 
             if (UserDataManager.currentUserId > 0) {
-                linearLayout.setOnClickListener { ratingViewModel.enableCommentRating(product) }
+                linearLayout.setOnClickListener {
+                    val productDetailComment = ProductDetailComment()
+                    productDetailComment.product = product
+                    productDetailComment.comment = null
+                    ratingViewModel.enableCommentRating(productDetailComment)
+                }
                 edt_comment.setOnClickListener {
-                    ratingViewModel.enableCommentRating(product)
+                    val productDetailComment = ProductDetailComment()
+                    productDetailComment.product = product
+                    productDetailComment.comment = null
+                    ratingViewModel.enableCommentRating(productDetailComment)
                 }
 
                 view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
@@ -652,9 +667,38 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductComment> {
             override fun click(position: Int, data: ProductComment, code: Int) {
-                val intent = Intent(context, MemberProfileActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                startActivity(intent)
+                when (code) {
+                    COMMUNITY_REPLY -> {
+                        if (UserDataManager.currentUserId > 0) {
+                            val productDetailComment = ProductDetailComment()
+                            productDetailComment.product = productDetail
+                            productDetailComment.comment = data
+                            ratingViewModel.enableCommentRating(productDetailComment)
+                        }
+                    }
+
+                    COMMUNITY_REPLY_CHILD -> {
+                        if (UserDataManager.currentUserId > 0) {
+                            val productDetailComment = ProductDetailComment()
+                            productDetailComment.product = productDetail
+                            val comment = ProductComment()
+                            comment.accountName = data.lastComment?.accountName
+                            comment.id = data.id
+                            productDetailComment.comment = comment
+                            ratingViewModel.enableCommentRating(productDetailComment)
+                        }
+                    }
+
+                    COMMUNITY_SHOW_CHILD -> {
+
+                    }
+
+                    else -> {
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }

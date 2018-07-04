@@ -48,6 +48,8 @@ object Const {
         const val PRODUCT_FOLLOW = 26
         const val STORAGE_PERMISSION = 27
         const val DELETED_MEMBER = 28
+        const val ADMINISTRATOR_ADD = 29
+        const val ADMINISTRATOR_EDIT = 30
     }
 
     object AccountAction {
@@ -76,6 +78,7 @@ object Const {
         const val ACTION_TICKET_MANAGER = 22
         const val ACTION_VISITORS = 23
         const val ACTION_CONFIG_EXPO = 24
+        const val ACTION_ADMINISTRATOR = 25
     }
 
     object Chat {

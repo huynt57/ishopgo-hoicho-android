@@ -20,6 +20,8 @@ import ishopgo.com.exhibition.ui.community.comment.CommentViewModel
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
+import ishopgo.com.exhibition.ui.main.administrator.AdministratorViewModel
+import ishopgo.com.exhibition.ui.main.administrator.add.FragmentAdministratorViewModel
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowViewModel
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
@@ -156,4 +158,6 @@ interface AppComponent {
     fun inject(introductionViewModel: IntroductionViewModel)
     fun inject(commentViewModel: CommentViewModel)
     fun inject(newsViewModel: NewsViewModel)
+    fun inject(administratorViewModel: AdministratorViewModel)
+    fun inject(fragmentAdministratorViewModel: FragmentAdministratorViewModel)
 }

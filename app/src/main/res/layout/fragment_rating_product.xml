@@ -110,25 +110,36 @@
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar"
                 tools:ignore="HardcodedText" />
 
+            <TextView
+                android:id="@+id/tv_member_reply"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:textColor="@color/colorPrimaryText"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView17"
+                tools:ignore="HardcodedText" />
+
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView17">
+                app:layout_constraintTop_toBottomOf="@+id/tv_member_reply">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_comment"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nhập nội dung bình luận"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
+                    android:hint="Nhập nội dung bình luận"
                     tools:ignore="HardcodedText" />
 
             </android.support.design.widget.TextInputLayout>
