@@ -2,76 +2,82 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_white_black_bottom"
     android:foreground="?attr/selectableItemBackground"
-    android:padding="@dimen/default_margin"
-    tools:layout_editor_absoluteX="0dp"
-    tools:layout_editor_absoluteY="25dp">
+    android:gravity="center_horizontal"
+    tools:layout_editor_absoluteX="3dp"
+    tools:layout_editor_absoluteY="28dp">
+
 
     <ImageView
         android:id="@+id/iv_thumb"
-        android:layout_width="0dp"
-        android:layout_height="110dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintDimensionRatio="w,1:1"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@tools:sample/avatars"/>
 
     <TextView
-        android:id="@+id/tv_item_name"
+        android:id="@+id/view_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginTop="8dp"
         android:ellipsize="end"
-        android:focusable="true"
-        android:fontFamily="@font/ff_roboto"
-        android:maxLines="3"
-        android:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )"
-        android:textColor="@color/md_blue_600"
+        android:gravity="center_vertical"
+        android:lines="2"
+        android:maxLines="2"
+        android:textColor="#3a3a3a"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/iv_thumb"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/iv_thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )"/>
 
-    <TextView
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_code"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/md_grey_800"
+        app:drawableStartCompat="@drawable/ic_barcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/view_name"
+        app:layout_constraintTop_toBottomOf="@id/view_name"
+        tools:text="30.999.000VND"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/ff_roboto"
-        android:text="30.999.000VND"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        android:textStyle="normal"
-        app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
-
-    <TextView
-        android:id="@+id/tv_department"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="right"
-        android:text="Catagory"
-        android:textColor="@color/colorPrimary"
+        android:layout_marginBottom="8dp"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/md_grey_800"
+        app:drawableStartSquareSize="20dp"
+        app:drawableStartCompat="@drawable/ic_tag_price_default_24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_price"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_name" />
+        android:textSize="13sp"
+        app:layout_constraintStart_toStartOf="@id/view_name"
+        app:layout_constraintTop_toBottomOf="@id/view_code"
+        tools:text="30.999.000VND"/>
 
-    <TextView
-        android:id="@+id/tv_item_code"
+    <View
+        style="@style/AppTheme.DividerLine"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="MSP: %1$s"
-        app:layout_constraintStart_toStartOf="@+id/tv_item_name"
-        app:layout_constraintTop_toBottomOf="@+id/tv_department" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 
     <TextView
         android:id="@+id/img_blur"
@@ -79,15 +85,15 @@
         android:layout_height="0dp"
         android:background="#99000000"
         android:visibility="gone"
-        tools:visibility="visible"
+        tools:visibility="gone"
         android:text="Đang Ẩn"
         android:gravity="center"
         android:textColor="@color/colorPureWhite"
         android:textStyle="bold"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</android.support.constraint.ConstraintLayout><!--</android.support.v7.widget.CardView>-->
+</android.support.constraint.ConstraintLayout>

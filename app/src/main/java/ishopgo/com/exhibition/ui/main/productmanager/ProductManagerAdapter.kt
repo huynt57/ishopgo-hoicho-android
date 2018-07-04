@@ -49,10 +49,9 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                         .into(iv_thumb)
 
-                tv_item_name.text = convert.provideName()
+                view_name.text = convert.provideName()
                 tv_price.text = convert.providePrice()
-                tv_item_code.text = convert.provideCode()
-                tv_department.text = convert.provideDepartment()
+                view_code.text = convert.provideCode()
             }
         }
 
@@ -67,9 +66,7 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
         fun provideName(): String
         fun provideImage(): String
         fun provideCode(): String
-        fun provideTTPrice(): String
         fun providePrice(): String
-        fun provideDepartment(): String
         fun provideStatus(): Int
     }
 
@@ -78,10 +75,6 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
             return object : ProductManagerProvider {
                 override fun provideStatus(): Int {
                     return from.status ?: 0
-                }
-
-                override fun provideDepartment(): String {
-                    return from.department ?: ""
                 }
 
                 override fun provideName(): String {
@@ -96,12 +89,10 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
                     return "MSP: ${from.code}"
                 }
 
-                override fun provideTTPrice(): String {
-                    return from.ttPrice?.asMoney() ?: "0 đ"
-                }
-
                 override fun providePrice(): String {
-                    return from.price?.asMoney() ?: "0 đ"
+                    return if (from.price == 0L) "Liên hệ"
+                    else
+                        return from.price?.asMoney() ?: "Liên hệ"
                 }
             }
         }

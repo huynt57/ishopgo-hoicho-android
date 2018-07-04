@@ -13,10 +13,12 @@
 
     <ImageView
         android:id="@+id/view_image"
-        android:layout_width="100dp"
+        android:layout_width="64dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_news_category"
         app:layout_constraintDimensionRatio="h,1:1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -78,17 +80,17 @@
         android:id="@+id/tv_short_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:maxLines="3"
         android:textColor="@color/colorSecondaryText"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view_image"
+        app:layout_constraintTop_toBottomOf="@+id/tv_news_category"
         tools:text="Hiện nay những biến chứng không mong muốn như sạm da, bỏng da, mất nước, để lại " />
 
 
