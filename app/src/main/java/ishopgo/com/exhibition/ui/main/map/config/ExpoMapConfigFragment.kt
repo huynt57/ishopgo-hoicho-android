@@ -18,7 +18,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.map.ExpoMapActivity
+import ishopgo.com.exhibition.ui.main.map.ExpoDetailActivity
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class ExpoMapConfigFragment : BaseListActionBarFragment<List<ExpoConfig>, ExpoConfig>() {
@@ -39,8 +39,7 @@ class ExpoMapConfigFragment : BaseListActionBarFragment<List<ExpoConfig>, ExpoCo
                         showSettings(data)
                     }
                     ExpoConfigAdapter.CLICK_DETAIL -> {
-                        val intent = Intent(requireContext(), ExpoMapActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                         startActivity(intent)
                     }

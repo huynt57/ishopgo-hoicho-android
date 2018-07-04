@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 
-class ExpoMapActivity : AppCompatActivity() {
+class ExpoDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

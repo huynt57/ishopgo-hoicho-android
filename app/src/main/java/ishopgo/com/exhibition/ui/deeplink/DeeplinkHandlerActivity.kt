@@ -6,7 +6,9 @@ import android.util.Log
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActivity
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.MainActivity
+import ishopgo.com.exhibition.ui.main.map.ExpoDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 
 /**
@@ -43,10 +45,10 @@ class DeeplinkHandlerActivity : BaseActivity() {
                             }
                             fairId != null && fairId.isNotBlank() -> {
                                 Log.d("hong", "nhan dc fairId= $fairId")
-//                                val intent = Intent(this, ShopDetailActivity::class.java)
-//                                intent.putExtra(Const.TransferKey.EXTRA_ID, boothId.toLong())
-//                                startActivity(intent)
-//                                finish()
+                                val intent = Intent(this, ExpoDetailActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, fairId.toLong())
+                                startActivity(intent)
+                                finish()
                             }
                             else -> {
                                 Log.d(TAG, "Không hợp lệ")

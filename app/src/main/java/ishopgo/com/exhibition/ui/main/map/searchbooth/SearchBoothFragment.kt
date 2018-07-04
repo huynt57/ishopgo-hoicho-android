@@ -10,14 +10,12 @@ import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
-import ishopgo.com.exhibition.domain.response.ExpoConfig
-import ishopgo.com.exhibition.domain.response.ExpoShop
+import ishopgo.com.exhibition.domain.response.Kiosk
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
-import ishopgo.com.exhibition.ui.main.map.ExpoShopViewModel
+import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
@@ -41,8 +39,8 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
     private var searchKey = ""
     private lateinit var adapter: ExpoShopAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
-    private lateinit var viewModel: ExpoShopViewModel
-    private lateinit var expoConfig: ExpoConfig
+    private lateinit var viewModel: ExpoDetailViewModel
+    private var expoId: Long = -1L
 
     override fun onRefresh() {
         swipe.isRefreshing = false
@@ -80,8 +78,8 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         search_total.visibility = View.GONE
 
         adapter = ExpoShopAdapter()
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoShop> {
-            override fun click(position: Int, data: ExpoShop, code: Int) {
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<Kiosk> {
+            override fun click(position: Int, data: Kiosk, code: Int) {
                 if (data.boothId != null && data.boothId != 0L) {
                     openShopDetail(data.boothId!!)
                 }
@@ -107,7 +105,7 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
     }
 
-    private fun chooseShop(data: ExpoShop) {
+    private fun chooseShop(data: Kiosk) {
         val extra = Bundle()
         extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_chooseBoothFragment, extra)
@@ -143,7 +141,7 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
         request.searchKeyword = searchKey
-        request.expoId = expoConfig.id!!
+        request.expoId = expoId
         viewModel.loadData(request)
     }
 
@@ -154,20 +152,19 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
         request.searchKeyword = searchKey
-        request.expoId = expoConfig.id!!
+        request.expoId = expoId
         viewModel.loadData(request)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = obtainViewModel(ExpoShopViewModel::class.java, false)
+        viewModel = obtainViewModel(ExpoDetailViewModel::class.java, false)
 
-        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        expoConfig = Toolbox.gson.fromJson(json, ExpoConfig::class.java)
+        expoId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
-    private fun populateData(data: List<ExpoShop>) {
+    private fun populateData(data: List<Kiosk>) {
         if (reloadData) {
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()

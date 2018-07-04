@@ -144,8 +144,11 @@ class ApiService {
         @GET("fair")
         fun getExpos(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoConfig>>>
 
+        @GET("fair/detail/{id}")
+        fun getExpoDetail(@Path("id") fairId: Long): Single<BaseResponse<ExpoConfig>>
+
         @GET("map/list/{id}")
-        fun getExpoShopLocations(@Path("id") expoId: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoShop>>>
+        fun getExpoShopLocations(@Path("id") expoId: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Kiosk>>>
 
         @GET("introduction")
         fun getIntroduction(): Single<BaseResponse<Introduction>>
