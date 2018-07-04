@@ -4,10 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.response.Banner
-import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
@@ -155,6 +152,50 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<List<Product>>() {
                     override fun success(data: List<Product>?) {
                         favoriteProducts.postValue(data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+    }
+
+    var newestProducts = MutableLiveData<List<Product>>()
+
+    fun loadNewestProducts() {
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = DEFAULT_MAX_HOME_PRODUCT_ITEMS
+        fields["offset"] = 0
+
+        addDisposable(noAuthService.getNewestProducts(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<NewestProducts>() {
+                    override fun success(data: NewestProducts?) {
+                        newestProducts.postValue(data?.data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+    }
+
+    var promotionProducts = MutableLiveData<List<Product>>()
+
+    fun loadPromotionProducts() {
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = DEFAULT_MAX_HOME_PRODUCT_ITEMS
+        fields["offset"] = 0
+
+        addDisposable(noAuthService.getPromotionProducts(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<Product>>() {
+                    override fun success(data: List<Product>?) {
+                        promotionProducts.postValue(data ?: mutableListOf())
                     }
 
                     override fun failure(status: Int, message: String) {

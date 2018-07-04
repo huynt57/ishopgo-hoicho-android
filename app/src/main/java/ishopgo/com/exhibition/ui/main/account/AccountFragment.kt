@@ -78,6 +78,7 @@ class AccountFragment : BaseFragment() {
         }
 
         view_introduce.visibility = View.GONE
+        view_menu.visibility = View.GONE
     }
 
     private fun createMenuForLoggedInUser(view: View) {
@@ -90,6 +91,7 @@ class AccountFragment : BaseFragment() {
         view_name.text = UserDataManager.currentUserName
         view_introduce.text = "${UserDataManager.currentType} - ${UserDataManager.currentUserPhone}"
 
+        view_menu.visibility = View.VISIBLE
         view_menu.setLabel("Thành viên")
         val list = view_menu.getList()
         val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)

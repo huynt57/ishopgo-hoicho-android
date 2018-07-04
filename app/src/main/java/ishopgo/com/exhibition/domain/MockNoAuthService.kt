@@ -28,6 +28,31 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getNewestProducts(params: MutableMap<String, Any>): Single<BaseResponse<NewestProducts>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<NewestProducts>()
+        response.status = 1
+        response.data?.total = 6
+        response.data?.data = ps
+
+        return delegate.returningResponse(response).getNewestProducts(params)
+    }
+
+    override fun getPromotionProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getPromotionProducts(params)
+    }
+
     override fun getExpoDetail(fairId: Long): Single<BaseResponse<ExpoConfig>> {
         val response = BaseResponse<BoothPostManager>()
         response.status = 1

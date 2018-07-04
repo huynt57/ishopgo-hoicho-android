@@ -63,6 +63,8 @@ class HomeFragment : BaseFragment() {
     private val highlightProductAdapter = ProductAdapter(0.4f)
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
+    private val newestProductAdapter = ProductAdapter(0.4f)
+    private val promotionProductAdapter = ProductAdapter(0.4f)
     private val categoryStage1Adapter = CategoryStage1Adapter(0.3f)
     private val highlightBrandAdapter = HighlightBrandAdapter(0.4f)
     private val latestNewsAdapter = LatestPostsAdapter(0.6f)
@@ -103,6 +105,20 @@ class HomeFragment : BaseFragment() {
                 container_favorite_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 favoriteProductAdapter.replaceAll(it)
                 view_list_favorite_products.scheduleLayoutAnimation()
+            }
+        })
+        viewModel.newestProducts.observe(this, Observer { p ->
+            p?.let {
+                container_newest_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                newestProductAdapter.replaceAll(it)
+                view_list_newest_products.scheduleLayoutAnimation()
+            }
+        })
+        viewModel.promotionProducts.observe(this, Observer { p ->
+            p?.let {
+                container_promotion_products.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                promotionProductAdapter.replaceAll(it)
+                view_list_promotion_products.scheduleLayoutAnimation()
             }
         })
         viewModel.viewedProducts.observe(this, Observer { p ->
@@ -205,6 +221,8 @@ class HomeFragment : BaseFragment() {
         setupViewedProducts(context)
         setupLatestNews(context)
         setupFavoriteProducts(context)
+        setupNewestProducts(context)
+        setupPromotionProducts(context)
 
         setupListeners()
 
@@ -327,6 +345,20 @@ class HomeFragment : BaseFragment() {
             }
 
         }
+        newestProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
+            }
+
+        }
+        promotionProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
+                if (data.id != -1L) // prevent click dummy data of first loading
+                    openProductDetail(data)
+            }
+
+        }
         categoryStage1Adapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
             override fun click(position: Int, data: Category, code: Int) {
                 if (data.id != -1L) // prevent click dummy data of first loading
@@ -409,6 +441,8 @@ class HomeFragment : BaseFragment() {
         viewModel.loadCategories()
         viewModel.loadHighlightBrands()
         viewModel.loadHighlightProducts()
+        viewModel.loadNewestProducts()
+        viewModel.loadPromotionProducts()
         viewModel.loadLatestNews()
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
@@ -477,6 +511,40 @@ class HomeFragment : BaseFragment() {
         view_list_viewed_products.layoutManager = layoutManager
         view_list_viewed_products.isNestedScrollingEnabled = false
         view_list_viewed_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    private fun setupNewestProducts(context: Context) {
+        // dummy product
+        val dummy = mutableListOf<Product>()
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
+        newestProductAdapter.addAll(dummy)
+
+        view_list_newest_products.adapter = newestProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_newest_products.layoutManager = layoutManager
+        view_list_newest_products.isNestedScrollingEnabled = false
+        view_list_newest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    private fun setupPromotionProducts(context: Context) {
+        // dummy product
+        val dummy = mutableListOf<Product>()
+        for (i in 0..6) {
+            val element = Product()
+            element.id = -1L
+            dummy.add(element)
+        }
+        promotionProductAdapter.addAll(dummy)
+
+        view_list_promotion_products.adapter = promotionProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_promotion_products.layoutManager = layoutManager
+        view_list_promotion_products.isNestedScrollingEnabled = false
+        view_list_promotion_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupFavoriteProducts(context: Context) {
