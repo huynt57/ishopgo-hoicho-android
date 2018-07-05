@@ -9,26 +9,42 @@
     tools:layout_editor_absoluteX="3dp"
     tools:layout_editor_absoluteY="28dp">
 
-
     <ImageView
         android:id="@+id/iv_thumb"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars"/>
+        tools:src="@tools:sample/avatars" />
+
+    <ImageView
+        android:id="@+id/iv_display"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#88000000"
+        android:padding="8dp"
+        android:scaleType="centerCrop"
+        android:tint="@color/colorPureWhite"
+        app:layout_constraintBottom_toBottomOf="@id/iv_thumb"
+        app:layout_constraintEnd_toEndOf="@id/iv_thumb"
+        app:layout_constraintStart_toStartOf="@id/iv_thumb"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_visibility_off_default_24dp" />
 
     <TextView
         android:id="@+id/view_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:lines="2"
@@ -36,64 +52,78 @@
         android:textColor="#3a3a3a"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_options"
         app:layout_constraintStart_toEndOf="@id/iv_thumb"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )"/>
+        tools:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/view_code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:textColor="@color/md_grey_800"
-        app:drawableStartCompat="@drawable/ic_barcode"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textSize="13sp"
+        app:drawableStartCompat="@drawable/ic_barcode"
+        app:layout_constraintEnd_toStartOf="@+id/iv_push_top"
         app:layout_constraintStart_toStartOf="@id/view_name"
         app:layout_constraintTop_toBottomOf="@id/view_name"
-        tools:text="30.999.000VND"/>
+        tools:text="30.999.000VND" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_price"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:textColor="@color/md_grey_800"
-        app:drawableStartSquareSize="20dp"
-        app:drawableStartCompat="@drawable/ic_tag_price_default_24dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         android:textSize="13sp"
+        app:drawableStartCompat="@drawable/ic_tag_price_default_24dp"
+        app:drawableStartSquareSize="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/iv_push_top"
         app:layout_constraintStart_toStartOf="@id/view_name"
         app:layout_constraintTop_toBottomOf="@id/view_code"
-        tools:text="30.999.000VND"/>
+        tools:text="30.999.000VND" />
 
     <View
         style="@style/AppTheme.DividerLine"
         android:layout_width="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-    <TextView
-        android:id="@+id/img_blur"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#99000000"
-        android:visibility="gone"
-        tools:visibility="gone"
-        android:text="Đang Ẩn"
-        android:gravity="center"
-        android:textColor="@color/colorPureWhite"
-        android:textStyle="bold"
-        android:textSize="16sp"
+    <ImageView
+        android:id="@+id/iv_options"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:foreground="?attr/selectableItemBackground"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_more_vert_black_24dp" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/iv_push_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:text="Đẩy top"
+        android:textColor="@color/colorAccent"
+        android:textSize="12sp"
+        android:textStyle="italic"
+        app:drawableTopCompat="@drawable/ic_up_arrow_accent_24dp"
+        app:drawableTopSquareSize="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/view_code" />
 
 </android.support.constraint.ConstraintLayout>

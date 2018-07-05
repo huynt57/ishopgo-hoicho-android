@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.productmanager
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -20,8 +21,11 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.productmanager.add.ProductManagerAddActivity
 import ishopgo.com.exhibition.ui.main.productmanager.detail.ProductManagerDetailActivity
+import ishopgo.com.exhibition.ui.widget.BottomSheetOptionListener
+import ishopgo.com.exhibition.ui.widget.OptionsBottomSheet
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
@@ -78,12 +82,67 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
         adapter.addData(ProductManager())
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
             override fun click(position: Int, data: ProductManager, code: Int) {
-                val intent = Intent(context, ProductManagerDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
+                when (code) {
+                    ProductManagerAdapter.CLICK_OPTION -> {
+                        val options = mutableListOf<OptionsBottomSheet.Option>()
+                        options.add(OptionsBottomSheet.Option("Sửa", R.drawable.ic_edit_default_24dp))
+                        if (data.status == 0) // do not display
+                            options.add(OptionsBottomSheet.Option("Hiện", R.drawable.ic_visibility_default_24dp))
+                        else
+                            options.add(OptionsBottomSheet.Option("Ẩn", R.drawable.ic_visibility_off_default_24dp))
+                        val bottomSheet = OptionsBottomSheet.Builder()
+                                .options(options)
+                                .listener(object : BottomSheetOptionListener {
+                                    override fun click(code: Int) {
+                                        when (code) {
+                                            0 -> { // edit
+                                                val intent = Intent(context, ProductManagerDetailActivity::class.java)
+                                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                                                startActivityForResult(intent, Const.RequestCode.PRODUCT_MANAGER_DETAIL)
+                                            }
+                                            1 -> { // show/hide
+                                                displayProduct(data)
+                                            }
+                                            else -> { // do nothing
+                                            }
+                                        }
+                                    }
+
+                                })
+                                .build()
+
+                        bottomSheet.show(childFragmentManager, "Options")
+
+                    }
+                    ProductManagerAdapter.CLICK_PUSH_TOP -> {
+                        confirmPushTop(data.id)
+                    }
+                }
+
             }
         }
         return adapter
+    }
+
+    private fun displayProduct(data: ProductManager) {
+        if (viewModel is ProductManagerViewModel) {
+            val managerViewModel = viewModel as ProductManagerViewModel
+            managerViewModel.updateVisibility(data.id, if (data.status == 0) 2 else 0)
+        }
+    }
+
+    private fun confirmPushTop(productId: Long) {
+        MaterialDialog.Builder(requireContext())
+                .title("Đẩy sản phẩm này lên top ?".asHtml())
+                .content("<font color=\"red\">(*)</font> Chỉ được đẩy top 1 lần/ngày".asHtml())
+                .positiveText("OK")
+                .onPositive { _, _ ->
+                    if (viewModel is ProductManagerViewModel) {
+                        (viewModel as ProductManagerViewModel).pushToTop(productId)
+                    }
+                }
+                .negativeText("Hủy")
+                .show()
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ProductManager>> {
@@ -94,8 +153,15 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
         super.onActivityCreated(savedInstanceState)
 
         if (viewModel is ProductManagerViewModel) {
-            (viewModel as ProductManagerViewModel).totalProduct.observe(this, Observer {
+            val managerViewModel = viewModel as ProductManagerViewModel
+            managerViewModel.totalProduct.observe(this, Observer {
                 //                tv_number_item.setText(it ?: 0)
+            })
+            managerViewModel.pushTopSuccess.observe(this, Observer {
+                toast("Chức năng đang được hoàn thiện")
+            })
+            managerViewModel.updateVisibilityOk.observe(this, Observer {
+                toast("Thành công")
             })
         }
     }
