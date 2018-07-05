@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.shop
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
@@ -82,6 +83,22 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
                     shareFragment.deleleBooth()
                 }
             }
+        } else if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.DELETE_PROVIDER == listPermission[i]) {
+                        toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
+                        toolbar.setRightButtonClickListener {
+                            val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
+                            if (fragment != null) {
+                                val shareFragment = fragment as ShopDetailFragment
+                                shareFragment.deleleBooth()
+                            }
+                        }
+                        break
+                    }
         }
     }
 

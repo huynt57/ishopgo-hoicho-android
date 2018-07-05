@@ -2,8 +2,13 @@ package ishopgo.com.exhibition.ui.main.brandmanager
 
 import android.os.Bundle
 import android.view.View
+import com.google.android.gms.dynamic.IFragmentWrapper
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class BrandManagerFragmentActionBar : BaseActionBarFragment() {
@@ -35,12 +40,30 @@ class BrandManagerFragmentActionBar : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(BrandManagerFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as BrandManagerFragment
+        if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.ADD_BRAND == listPermission[i]) {
+                        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRightButtonClickListener {
+                            val fragment = childFragmentManager.findFragmentByTag(BrandManagerFragment.TAG)
+                            if (fragment != null) {
+                                val shareFragment = fragment as BrandManagerFragment
+                                shareFragment.openAddBrand()
+                            }
+                        }
+                        break
+                    }
+        } else {
+            toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+            toolbar.setRightButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(BrandManagerFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as BrandManagerFragment
                     shareFragment.openAddBrand()
+                }
             }
         }
     }

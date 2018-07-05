@@ -6,10 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -45,17 +47,24 @@ class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
             override fun click(position: Int, data: Brand, code: Int) {
                 when (code) {
                     BRAND_EDIT_CLICK -> {
-                        val intent = Intent(context, BrandManagerUpdateActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                        startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
-                    }
-                    BRAND_FEATURED_CLICK -> {
-                        val isFeatured = if (data.isFeatured == BRAND_FEATURED) BRAND_NOT_FEATURED else BRAND_FEATURED
-                        if (viewModel is BrandManagerViewModel) (viewModel as BrandManagerViewModel).updateBrand(data.id, data.name
-                                ?: "", "", isFeatured.toString())
+                        if (UserDataManager.currentType == "Quản trị viên") {
+                            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+                            if (listPermission.isNotEmpty())
+                                for (i in listPermission.indices)
+                                    if (Const.Permission.EDIT_BRAND == listPermission[i]) {
+                                        val intent = Intent(context, BrandManagerUpdateActivity::class.java)
+                                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                                        startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
+                                        break
+                                    }
+                        } else {
+                            val intent = Intent(context, BrandManagerUpdateActivity::class.java)
+                            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                            startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
+                        }
                     }
                 }
-
             }
         }
 

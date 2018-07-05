@@ -3,12 +3,15 @@ package ishopgo.com.exhibition.ui.main.map.config
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ExpoConfig
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.item_expo_config.view.*
 
@@ -66,6 +69,18 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
                 }
                 else
                     view_setting.visibility = View.GONE
+
+                if (UserDataManager.currentType == "Quản trị viên") {
+                    val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+                    if (listPermission.isNotEmpty())
+                        for (i in listPermission.indices) {
+                            if (Const.Permission.EXPO_FAIR_EDIT == listPermission[i] || Const.Permission.EXPO_FAIR_SETUP == listPermission[i] || Const.Permission.EXPO_FAIR_DELETE == listPermission[i]) {
+                                view_setting.visibility = View.VISIBLE
+                                break
+                            } else view_setting.visibility = View.GONE
+                        }
+                }
             }
         }
     }

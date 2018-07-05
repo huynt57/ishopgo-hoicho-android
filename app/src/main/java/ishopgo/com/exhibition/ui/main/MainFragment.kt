@@ -1,12 +1,14 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.content.res.AppCompatResources
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -124,6 +126,9 @@ class MainFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
+        if (UserDataManager.currentType == "Quản trị viên") {
+            viewModel.loadPermisstion()
+        }
     }
 
     override fun onResume() {

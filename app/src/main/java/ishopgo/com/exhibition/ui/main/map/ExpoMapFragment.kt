@@ -10,6 +10,7 @@ import android.view.View
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
@@ -51,9 +52,18 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
             override fun click(position: Int, data: ExpoShop, code: Int) {
                 if (data.boothId != null && data.boothId != 0L) {
                     openShopDetail(data.boothId!!)
-                }
-                else {
-                    chooseShop(data)
+                } else {
+                    if (UserDataManager.currentType == "Quản trị viên") {
+                        val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+                        if (listPermission.isNotEmpty()) {
+                            for (i in listPermission.indices)
+                                if (Const.Permission.EXPO_MAP_ADD == listPermission[i]) {
+                                    chooseShop(data)
+                                } else toast("Bạn không có quyền để thêm gian hàng")
+                        }
+                    } else
+                        chooseShop(data)
                 }
             }
 
@@ -71,8 +81,7 @@ class ExpoMapFragment : BaseListActionBarFragment<List<ExpoShop>, ExpoShop>() {
             } else {
                 Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoMapFragment_to_registerBoothFragmentActionBar)
             }
-        }
-        else {
+        } else {
             val intent = Intent(context, LoginActivity::class.java)
             intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
             startActivity(intent)

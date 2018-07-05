@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
@@ -144,6 +145,18 @@ class ExpoMapConfigFragment : BaseListActionBarFragment<List<ExpoConfig>, ExpoCo
             toolbar.setRightButtonClickListener {
                 openAddExpoActivity()
             }
+        } else if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.EXPO_FAIR_ADD == listPermission[i]) {
+                        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRightButtonClickListener {
+                            openAddExpoActivity()
+                        }
+                        break
+                    }
         }
 
     }

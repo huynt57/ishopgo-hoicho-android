@@ -32,6 +32,7 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareDialog
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
@@ -45,6 +46,7 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -235,6 +237,32 @@ class MemberProfileFragment : BaseActionBarFragment() {
                             .show()
                 }
             }
+        } else if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.DELETE_MEMBER == listPermission[i]) {
+                        toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
+                        toolbar.setRightButtonClickListener {
+                            context?.let {
+                                MaterialDialog.Builder(it)
+                                        .content("Bạn có muốn xoá thành viên này không?")
+                                        .positiveText("Có")
+                                        .onPositive { _, _ ->
+                                            activity?.let {
+                                                val memberId = it.intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
+                                                viewModel.deleteMember(memberId)
+                                            }
+                                            showProgressDialog()
+                                        }
+                                        .negativeText("Không")
+                                        .onNegative { dialog, _ -> dialog.dismiss() }
+                                        .show()
+                            }
+                        }
+                        break
+                    }
         }
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

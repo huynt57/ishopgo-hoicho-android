@@ -1,12 +1,16 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
@@ -75,6 +79,26 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<Int>() {
                     override fun success(data: Int?) {
                         inboxUnreadCount.postValue(data ?: 0)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+
+    }
+
+    fun loadPermisstion() {
+        val fields = mutableMapOf<String, Any>()
+
+        addDisposable(authService.getAccountPermissions(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
+                    override fun success(data: MutableList<String>?) {
+                        UserDataManager.listPermission = Toolbox.gson.toJson(data)
+                        Log.d("123123123", Toolbox.gson.toJson(data))
                     }
 
                     override fun failure(status: Int, message: String) {
