@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_product_grid.view.*
 
@@ -66,11 +67,15 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                     tv_tt_price.visibility = View.VISIBLE
                     tv_tt_price.paintFlags = tv_tt_price.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
                     tv_tt_price.text = convert.providePrice()
+
+                    view_discount.visibility = View.VISIBLE
+                    view_discount.text = convert.discountPercent()
                 }
                 else {
                     tv_price.text = convert.providePrice()
                     tv_tt_price.visibility = View.INVISIBLE
                     tv_tt_price.text = convert.providePrice()
+                    view_discount.visibility = View.GONE
                 }
             }
 
@@ -83,14 +88,34 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
         fun providePrice(): String
         fun providePromotionPrice(): String
         fun hasDiscount(): Boolean
+        fun discountPercent(): CharSequence
     }
 
     class ProductConverter : Converter<Product, ProductProvider> {
 
         override fun convert(from: Product): ProductProvider {
             return object : ProductProvider {
+                override fun discountPercent(): CharSequence {
+                    if (hasDiscount()) {
+                        val pPrice = from.promotionPrice ?: 0L
+                        val rPrice = from.price ?: 0L
+
+                        if (rPrice == 0L) return "0%"
+                        val percent = (1 - pPrice.toFloat()/rPrice.toFloat()) * 100
+
+                        val displayed = if (percent.toInt() == 100) "<small><b><font color=\"red\">FREE</font></b></small>"
+                        else "<small>GIẢM</small>" +
+                                "<br>" +
+                                "<b><font color=\"red\">${percent.toInt()}%</font></b>"
+
+                        return displayed.asHtml()
+                    }
+                    else
+                        return "0%"
+                }
+
                 override fun hasDiscount(): Boolean {
-                    return from.promotionPrice != null && from.promotionPrice != from.price
+                    return from.promotionPrice != null && from.promotionPrice!! < from.price
                 }
 
                 override fun provideImage(): String {

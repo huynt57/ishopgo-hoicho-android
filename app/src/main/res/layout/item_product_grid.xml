@@ -1,76 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             android:background="@drawable/bg_stroked_rounded_rectangle"
-                                             android:foreground="?attr/selectableItemBackground"
-                                             android:gravity="center_horizontal"
-                                             tools:layout_editor_absoluteX="3dp"
-                                             tools:layout_editor_absoluteY="28dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_stroked_rounded_rectangle"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_horizontal"
+    tools:layout_editor_absoluteX="3dp"
+    tools:layout_editor_absoluteY="28dp">
 
 
     <ImageView
         android:id="@+id/iv_thumb"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:scaleType="centerCrop"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:scaleType="centerCrop"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars"/>
+        tools:src="@tools:sample/avatars" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_discount"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:gravity="center"
+        android:textSize="12sp"
+        android:background="@drawable/bg_discount"
+        android:text="46%\nGiảm"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_item_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:gravity="start"
         android:lines="2"
-        android:textSize="13sp"
         android:maxLines="2"
         android:textColor="#3a3a3a"
+        android:textSize="13sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_thumb"
-        tools:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )"/>
+        tools:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )" />
 
 
     <TextView
         android:id="@+id/tv_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
-        android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_name"
-        tools:text="30.999.000VND"/>
+        tools:text="30.999.000VND" />
 
     <TextView
         android:id="@+id/tv_tt_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
         android:textColor="@color/md_grey_500"
-        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_price"
-        tools:text="30.999.000VND"/>
+        tools:text="30.999.000VND" />
 
 
 </android.support.constraint.ConstraintLayout>
