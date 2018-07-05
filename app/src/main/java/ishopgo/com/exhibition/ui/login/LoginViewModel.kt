@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.login
 
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
@@ -8,6 +9,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
 
 /**
@@ -39,7 +41,9 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         UserDataManager.currentUserName = data?.name ?: ""
                         UserDataManager.currentUserAvatar = data?.image ?: ""
                         UserDataManager.currentType = data?.type ?: ""
-
+                        if (data?.type ?: "" == "Quản trị viên") {
+                            loadPermisstion()
+                        }
                         loginSuccess.postValue(data)
                     }
 
@@ -47,6 +51,24 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    private fun loadPermisstion() {
+        val fields = mutableMapOf<String, Any>()
+
+        addDisposable(authService.getAccountPermissions(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
+                    override fun success(data: MutableList<String>?) {
+                        UserDataManager.listPermission = Toolbox.gson.toJson(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String,

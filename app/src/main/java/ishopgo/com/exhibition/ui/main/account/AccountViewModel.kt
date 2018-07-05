@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.account
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import com.google.gson.reflect.TypeToken
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
@@ -11,6 +12,7 @@ import ishopgo.com.exhibition.model.AccountMenuItem
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
 
 class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
@@ -73,6 +75,60 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Xem điểm bán của tôi"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_REGISTER_BOOTH, R.drawable.ic_register, "Đăng ký gian hàng"))
+
+            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+
+            if (listPermission.isNotEmpty()) {
+                for (i in listPermission.indices) {
+                    if (Const.Permission.MANAGER_MEMBER == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_MEMBER_MANAGER, R.drawable.ic_customer_white, "Quản lý thành viên"))
+                        break
+                    }
+                }
+                for (i in listPermission.indices) {
+                    if (Const.Permission.MANAGER_PROVIDER == listPermission[i]
+                            || Const.Permission.DELETE_PROVIDER == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_BOOTH_MANAGER, R.drawable.ic_store_white, "Quản lý gian hàng"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.MANAGER_BRAND == listPermission[i]
+                            || Const.Permission.DELETE_BRAND == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.LIST_PRODUCT == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.LIST_PRODUCT == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.EXPO_LIST_TICKET == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET_MANAGER, R.drawable.ic_sight_seeing, "Quản lý vé tham quan"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.EXPO_FAIR_LIST == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
+                        break
+                    }
+                }
+            }
         }
 
         // common

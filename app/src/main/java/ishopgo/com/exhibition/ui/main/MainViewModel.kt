@@ -90,26 +90,6 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     }
 
-    fun loadPermisstion() {
-        val fields = mutableMapOf<String, Any>()
-
-        addDisposable(authService.getAccountPermissions(fields)
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
-                    override fun success(data: MutableList<String>?) {
-                        UserDataManager.listPermission = Toolbox.gson.toJson(data)
-                        Log.d("123123123", Toolbox.gson.toJson(data))
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-
-                })
-        )
-
-    }
-
     var openSearchInCategory = MutableLiveData<Category>()
 
     fun searchInCategory(category: Category) {
