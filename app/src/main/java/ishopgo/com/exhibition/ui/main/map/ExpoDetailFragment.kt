@@ -100,7 +100,6 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
     override fun firstLoad() {
         super.firstLoad()
         if (::expoInfo.isInitialized) {
-            Log.d(TAG, "search: $searchKeyword")
             val request = ExpoShopLocationRequest()
             request.limit = Const.PAGE_LIMIT
             request.offset = 0
@@ -171,6 +170,8 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
                 requireNotNull(expoInfo)
 
                 setupWithConfig()
+
+                firstLoad()
             }
         }
     }
