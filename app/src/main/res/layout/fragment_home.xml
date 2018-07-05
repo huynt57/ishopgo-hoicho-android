@@ -230,7 +230,7 @@
                             android:layout_height="wrap_content"
                             android:text="Sản phẩm khuyến mãi"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/more_promotion_products"
@@ -239,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:text="Xem thêm"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/view_list_promotion_products"
@@ -250,8 +250,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/label_promotion_products"
-                            />
+                            app:layout_constraintTop_toBottomOf="@+id/label_promotion_products" />
 
                     </android.support.constraint.ConstraintLayout>
 
@@ -312,7 +311,7 @@
                             android:layout_height="wrap_content"
                             android:text="Sản phẩm mới nhất"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:id="@+id/more_newest_products"
@@ -321,7 +320,7 @@
                             android:layout_height="wrap_content"
                             android:text="Xem thêm"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/view_list_newest_products"
@@ -332,8 +331,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/label_newest_products"
-                            />
+                            app:layout_constraintTop_toBottomOf="@+id/label_newest_products" />
 
                     </android.support.constraint.ConstraintLayout>
 

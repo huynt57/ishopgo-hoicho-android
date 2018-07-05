@@ -145,11 +145,11 @@ class MemberProfileViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         var imagePart: MultipartBody.Part? = null
 
-            val imageFile = File(appContext.cacheDir, "booth_" + System.currentTimeMillis() + ".jpg")
-            imageFile.deleteOnExit()
-            Toolbox.reEncodeBitmap(appContext, banner, 640, Uri.fromFile(imageFile))
-            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-            imagePart = MultipartBody.Part.createFormData("banner", imageFile.name, imageBody)
+        val imageFile = File(appContext.cacheDir, "booth_" + System.currentTimeMillis() + ".jpg")
+        imageFile.deleteOnExit()
+        Toolbox.reEncodeBitmap(appContext, banner, 640, Uri.fromFile(imageFile))
+        val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+        imagePart = MultipartBody.Part.createFormData("banner", imageFile.name, imageBody)
 
         if (imagePart != null) {
             builder.addPart(imagePart)

@@ -3,7 +3,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_expo_map.xml"
-            app:startDestination="@+id/expoDetailFragment">
+    app:startDestination="@+id/expoDetailFragment">
 
     <fragment
         android:id="@+id/expoDetailFragment"

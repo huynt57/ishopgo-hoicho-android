@@ -230,7 +230,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
             view_setting.visibility = View.VISIBLE
             view_setting.setOnClickListener {
                 val options = MemberProfileOptions()
-                options.optionSelectedListener = object: BottomSheetOptionListener {
+                options.optionSelectedListener = object : BottomSheetOptionListener {
                     override fun click(code: Int) {
                         when (code) {
                             MemberProfileOptions.OPTION_UPGRADE -> {

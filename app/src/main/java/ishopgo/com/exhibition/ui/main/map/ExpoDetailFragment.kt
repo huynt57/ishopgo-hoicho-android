@@ -49,8 +49,7 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
                 view_empty_result_notice.text = "Chưa có gian hàng nào"
-            }
-            else
+            } else
                 view_empty_result_notice.visibility = View.GONE
         } else
             adapter.addAll(data)

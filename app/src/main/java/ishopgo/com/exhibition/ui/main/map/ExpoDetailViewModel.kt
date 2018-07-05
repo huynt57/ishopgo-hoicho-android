@@ -69,20 +69,20 @@ class ExpoDetailViewModel : BaseListViewModel<List<Kiosk>>(), AppComponent.Injec
     var expoDetail = MutableLiveData<ExpoConfig>()
 
     fun loadExpoDetail(expoId: Long) {
-            addDisposable(noAuthService.getExpoDetail(expoId)
-                    .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<ExpoConfig>() {
-                        override fun success(data: ExpoConfig?) {
-                            data?.let {
-                                expoDetail.postValue(it)
-                            }
+        addDisposable(noAuthService.getExpoDetail(expoId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<ExpoConfig>() {
+                    override fun success(data: ExpoConfig?) {
+                        data?.let {
+                            expoDetail.postValue(it)
                         }
+                    }
 
-                        override fun failure(status: Int, message: String) {
-                            resolveError(status, message)
-                        }
-                    })
-            )
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     var boothAssigned = MutableLiveData<Any>()
