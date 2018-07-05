@@ -32,7 +32,7 @@ class ProductSalePointFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Danh sách điểm bán")
+        toolbar.setCustomTitle("Điểm bán lẻ")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 

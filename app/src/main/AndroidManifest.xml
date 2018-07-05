@@ -106,6 +106,14 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.main.product.promotion.PromotionProductsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.newest.NewestProductsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.main.product.popular.PopularProductsActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
@@ -404,7 +412,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.main.map.ExpoMapActivity"
+            android:name=".ui.main.map.ExpoDetailActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />

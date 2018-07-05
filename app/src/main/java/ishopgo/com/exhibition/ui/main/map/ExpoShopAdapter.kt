@@ -2,7 +2,7 @@ package ishopgo.com.exhibition.ui.main.map
 
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.ExpoShop
+import ishopgo.com.exhibition.domain.response.Kiosk
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
@@ -13,16 +13,16 @@ import kotlinx.android.synthetic.main.item_shop_location.view.*
 /**
  * Created by xuanhong on 6/11/18. HappyCoding!
  */
-class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
+class ExpoShopAdapter : ClickableAdapter<Kiosk>() {
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_shop_location
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<ExpoShop> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Kiosk> {
         return ExpoShopHolder(v, ConverterExpoShop())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<ExpoShop>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Kiosk>, position: Int) {
         super.onBindViewHolder(holder, position)
 
         holder.itemView.setOnClickListener {
@@ -31,9 +31,9 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
         }
     }
 
-    inner class ExpoShopHolder(v: View, private val converter: Converter<ExpoShop, ExpoShopProvider>) : BaseRecyclerViewAdapter.ViewHolder<ExpoShop>(v) {
+    inner class ExpoShopHolder(v: View, private val converter: Converter<Kiosk, ExpoShopProvider>) : BaseRecyclerViewAdapter.ViewHolder<Kiosk>(v) {
 
-        override fun populate(data: ExpoShop) {
+        override fun populate(data: Kiosk) {
             super.populate(data)
 
             val converted = converter.convert(data)
@@ -55,9 +55,9 @@ class ExpoShopAdapter : ClickableAdapter<ExpoShop>() {
 
     }
 
-    class ConverterExpoShop : Converter<ExpoShop, ExpoShopProvider> {
+    class ConverterExpoShop : Converter<Kiosk, ExpoShopProvider> {
 
-        override fun convert(from: ExpoShop): ExpoShopProvider {
+        override fun convert(from: Kiosk): ExpoShopProvider {
             return object : ExpoShopProvider {
                 override fun isSetup(): Boolean {
                     return from.booth != null

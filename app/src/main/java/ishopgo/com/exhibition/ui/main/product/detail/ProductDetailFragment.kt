@@ -191,7 +191,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         viewModel.getProductLike.observe(this, Observer { c ->
             c?.let {
                 view_shop_follow.drawableCompat(0, if (it.status == 1) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
-                if (it.status == 1) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
+                if (it.status == 1) view_shop_follow.text = "Đã quan tâm" else view_shop_follow.text = "Quan tâm"
 
                 activity?.setResult(RESULT_OK)
             }
@@ -248,7 +248,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_shop_follow.drawableCompat(0, if (convert.provideLiked()) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
             view_product_price.text = convert.provideProductPrice()
 
-            if (convert.provideLiked()) view_shop_follow.text = "Bỏ quan tâm" else view_shop_follow.text = "Quan tâm"
+            if (convert.provideLiked()) view_shop_follow.text = "Đã quan tâm" else view_shop_follow.text = "Quan tâm"
 
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
@@ -376,8 +376,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductPrice(): CharSequence {
-                    val price = if (from.price == 0L) "Liên hệ" else from.price.asMoney()
-                    return "<b>Giá bán lẻ: Từ <font color=\"#00c853\">$price</font></b>".asHtml()
+                    if (from.price == 0L) {
+                        return "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
+                    }
+                    else if (from.promotionPrice != null && from.promotionPrice != from.price){
+                        return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> -> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
+                    }
+                    else {
+                        return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                    }
                 }
 
                 override fun provideProductBrand(): CharSequence {

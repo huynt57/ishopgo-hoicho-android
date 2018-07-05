@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName
 /**
  * Created by xuanhong on 6/18/18. HappyCoding!
  */
-class ExpoShop {
+class Kiosk {
 
     @SerializedName("id")
     @Expose

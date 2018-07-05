@@ -575,7 +575,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                 val productManager = ProductManager()
                 productManager.code = productCollection.code
                 productManager.name = productCollection.name
-                productManager.ttPrice = productCollection.ttPrice
+                productManager.promotionPrice = productCollection.promotionPrice
                 productManager.price = productCollection.price
                 productManager.image = productCollection.image
                 productManager.id = productCollection.id

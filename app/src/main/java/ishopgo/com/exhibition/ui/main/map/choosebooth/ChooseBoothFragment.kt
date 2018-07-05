@@ -13,7 +13,7 @@ import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.main.map.ExpoShopViewModel
+import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -36,7 +36,7 @@ class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
     private var searchKey = ""
     private lateinit var adapter: ExpoBoothAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
-    private lateinit var viewModel: ExpoShopViewModel
+    private lateinit var viewModel: ExpoDetailViewModel
     private var positionId: Long = -1L
 
     override fun onRefresh() {
@@ -148,7 +148,7 @@ class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = obtainViewModel(ExpoShopViewModel::class.java, false)
+        viewModel = obtainViewModel(ExpoDetailViewModel::class.java, false)
 
         positionId = arguments?.getLong(Const.TransferKey.EXTRA_ID) ?: -1L
     }

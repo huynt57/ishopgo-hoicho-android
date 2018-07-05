@@ -30,6 +30,9 @@ class ExpoConfig {
     @SerializedName("qrcode")
     @Expose
     var qrcode: String? = null
+    @SerializedName("qrcode_png")
+    @Expose
+    var qrcodePNG: String? = null
     @SerializedName("image")
     @Expose
     var image: String? = null

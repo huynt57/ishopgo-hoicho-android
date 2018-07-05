@@ -20,6 +20,9 @@ class ProductDetail : IdentityData() {
     @SerializedName("price")
     @Expose
     var price: Long = 0
+    @SerializedName("promotion_price")
+    @Expose
+    var promotionPrice: Long = 0
     @SerializedName("tt_price")
     @Expose
     var ttPrice: Long = 0

@@ -40,11 +40,11 @@ class ProductManagerDetailRelatedAdapter : ClickableAdapter<Product>() {
         }
     }
 
+
     interface ProductProvider {
         fun provideImage(): String
         fun provideName(): String
         fun providePrice(): String
-        fun provideMarketPrice(): String
     }
 
     class ProductConverter : Converter<Product, ProductProvider> {
@@ -61,14 +61,13 @@ class ProductManagerDetailRelatedAdapter : ClickableAdapter<Product>() {
                 }
 
                 override fun providePrice(): String {
-                    return from.price.asMoney()
-                }
-
-                override fun provideMarketPrice(): String {
-                    return from.ttPrice.asMoney()
+                    return if (from.price == 0L) "Liên hệ"
+                    else
+                        return from.price.asMoney()
                 }
             }
         }
 
     }
+
 }

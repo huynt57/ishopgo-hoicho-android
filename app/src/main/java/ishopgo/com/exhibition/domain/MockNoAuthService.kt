@@ -28,6 +28,38 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getNewestProducts(params: MutableMap<String, Any>): Single<BaseResponse<NewestProducts>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<NewestProducts>()
+        response.status = 1
+        response.data?.total = 6
+        response.data?.data = ps
+
+        return delegate.returningResponse(response).getNewestProducts(params)
+    }
+
+    override fun getPromotionProducts(params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>> {
+        val ps = mutableListOf<Product>()
+        for (i in 0..5)
+            ps.add(generateProduct())
+
+        val response = BaseResponse<List<Product>>()
+        response.status = 1
+        response.data = ps
+
+        return delegate.returningResponse(response).getPromotionProducts(params)
+    }
+
+    override fun getExpoDetail(fairId: Long): Single<BaseResponse<ExpoConfig>> {
+        val response = BaseResponse<BoothPostManager>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getExpoDetail(fairId)
+    }
+
     override fun getBoothPost(fields: MutableMap<String, Any>): Single<BaseResponse<BoothPostManager>> {
         val response = BaseResponse<BoothPostManager>()
         response.status = 1
@@ -42,7 +74,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getIntroduction()
     }
 
-    override fun getExpoShopLocations(expoId: Long, fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoShop>>> {
+    override fun getExpoShopLocations(expoId: Long, fields: MutableMap<String, Any>): Single<BaseResponse<List<Kiosk>>> {
         val response = BaseResponse<QuestionManager>()
         response.status = 1
 
@@ -508,7 +540,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         p.id = random.nextInt(1000).toLong()
         p.image = "https://ishopgo.com/local/files/11793/clone-5a3c7e16148537e649a88ce4d2f28da1a1ae9ab1c48d2lotion-duong-da-toan-than-napie-skinjpg.jpg"
         p.name = "Lotion dưỡng trắng da toàn thân NAPIE SKIN WHITENING BODY LOTION"
-        p.ttPrice = 50000
+        p.promotionPrice = 50000
         p.price = 45000
         return p
     }

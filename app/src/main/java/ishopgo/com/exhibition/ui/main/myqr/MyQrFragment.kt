@@ -59,21 +59,23 @@ class MyQrFragment : BaseFragment() {
                                 .error(R.drawable.image_placeholder))
                         .listener(object : RequestListener<Bitmap> {
                             override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                                view_download.setOnClickListener {
-                                    toast("Lỗi khi tải ảnh.")
-                                }
+                                if (isVisible)
+                                    view_download.setOnClickListener {
+                                        toast("Lỗi khi tải ảnh.")
+                                    }
 
                                 return false
                             }
 
                             override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                view_download.setOnClickListener {
-                                    if (!hasCameraPermission(it.context))
-                                        requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                    else
-                                        storeImage(booth.name ?: "unknown")
+                                if (isVisible)
+                                    view_download.setOnClickListener {
+                                        if (!hasCameraPermission(it.context))
+                                            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                        else
+                                            storeImage(booth.name ?: "unknown")
 
-                                }
+                                    }
 
                                 return false
                             }

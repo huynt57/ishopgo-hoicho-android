@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.map.ExpoMapActivity">
+    tools:context=".ui.main.map.ExpoDetailActivity">
 
     <fragment
         android:id="@+id/nav_map_host_fragment"

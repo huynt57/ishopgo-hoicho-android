@@ -24,7 +24,7 @@ class TicketDetailFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Chi tiết vé tham quan")
+        toolbar.setCustomTitle("Vé tham quan")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             Navigation.findNavController(it).navigateUp()
