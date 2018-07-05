@@ -51,35 +51,30 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <LinearLayout
+                <FrameLayout
                     android:id="@+id/view_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_rounded_rectangle"
-                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
                     android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
                     app:layout_constraintBottom_toBottomOf="@id/view_product_image"
                     app:layout_constraintEnd_toEndOf="@id/view_product_image"
                     app:layout_constraintTop_toBottomOf="@id/view_product_image">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:layout_gravity="center_vertical"
-                        app:srcCompat="@drawable/ic_share_white_18dp" />
 
                     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginStart="8dp"
+                        android:drawablePadding="4dp"
                         android:text="Chia sẻ"
                         android:textColor="@color/colorPureWhite"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        app:drawableStartCompat="@drawable/ic_share_white_18dp" />
 
-                </LinearLayout>
+                </FrameLayout>
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/view_product_name"
@@ -241,7 +236,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
                     android:text="Gian hàng trưng bày"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toStartOf="@+id/view_shop_detail"
                     app:layout_constraintStart_toStartOf="parent"
@@ -455,6 +450,7 @@
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="Đánh giá"
+                    android:textSize="16sp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
