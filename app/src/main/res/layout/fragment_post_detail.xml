@@ -25,6 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textSize="12sp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toStartOf="@+id/tv_category"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_post_title"/>
@@ -32,16 +33,14 @@
         <TextView
             android:id="@+id/tv_category"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/bg_rounded_rectangle"
-            android:textColor="@color/colorPureWhite"
-            android:textSize="12sp"
             android:gravity="center"
             android:padding="8dp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_post_time"
+            android:textColor="@color/colorPureWhite"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tv_post_time"
-            />
+            app:layout_constraintTop_toTopOf="@id/tv_post_time" />
 
     </android.support.constraint.ConstraintLayout>
 
