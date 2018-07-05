@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_expo_map.*
 
@@ -43,6 +44,13 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
     override fun populateData(data: List<Kiosk>) {
         if (reloadData) {
             adapter.replaceAll(data)
+
+            if (data.isEmpty()) {
+                view_empty_result_notice.visibility = View.VISIBLE
+                view_empty_result_notice.text = "Chưa có gian hàng nào"
+            }
+            else
+                view_empty_result_notice.visibility = View.GONE
         } else
             adapter.addAll(data)
     }

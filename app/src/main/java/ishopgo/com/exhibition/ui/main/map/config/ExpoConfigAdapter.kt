@@ -60,6 +60,16 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
                                 .error(R.drawable.image_placeholder)
                         )
                         .into(view_avatar)
+
+                Glide.with(context)
+                        .load(converted.qrcode())
+                        .apply(RequestOptions()
+                                .centerCrop()
+                                .placeholder(R.drawable.image_placeholder)
+                                .error(R.drawable.image_placeholder)
+                        )
+                        .into(view_qrcode)
+
                 view_name.text = converted.name()
                 view_time.text = converted.time()
                 view_address.text = converted.address()
@@ -77,6 +87,10 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
 
         override fun convert(from: ExpoConfig): ExpoMapConfigProvider {
             return object : ExpoMapConfigProvider {
+                override fun qrcode(): CharSequence {
+                    return from.qrcodePNG ?: ""
+                }
+
                 override fun avatar(): CharSequence {
                     return from.image ?: ""
                 }
@@ -101,6 +115,7 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
     interface ExpoMapConfigProvider {
 
         fun avatar(): CharSequence
+        fun qrcode(): CharSequence
         fun name(): CharSequence
         fun time(): CharSequence
         fun address(): CharSequence

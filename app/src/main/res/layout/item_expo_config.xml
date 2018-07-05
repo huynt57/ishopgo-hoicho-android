@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="10dp"
-    app:cardUseCompatPadding="true"
-    >
+    app:cardUseCompatPadding="true">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:foreground="?attr/selectableItemBackground"
-        >
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/view_avatar"
@@ -26,19 +23,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/image_placeholder"
-            tools:text="13"/>
+            tools:text="13" />
 
         <ImageView
             android:id="@+id/view_avatar_shadow"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:src="#44000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="3:2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:src="#44000000"
-            tools:text="13"/>
+            tools:text="13" />
 
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -51,13 +48,13 @@
             android:layout_marginBottom="8dp"
             android:textAllCaps="true"
             android:textColor="@color/colorPureWhite"
-            android:textStyle="bold"
             android:textSize="16sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/view_time"
-            app:layout_constraintEnd_toEndOf="@+id/view_avatar"
+            app:layout_constraintEnd_toStartOf="@+id/view_qrcode"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/view_avatar"
-            tools:text="Medi White"/>
+            tools:text="Medi White" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_time"
@@ -69,7 +66,7 @@
             app:layout_constraintBottom_toTopOf="@+id/view_address"
             app:layout_constraintEnd_toEndOf="@id/view_name"
             app:layout_constraintStart_toStartOf="@+id/view_name"
-            tools:text="ngay bat dau"/>
+            tools:text="ngay bat dau" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_address"
@@ -81,7 +78,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/view_avatar"
             app:layout_constraintEnd_toEndOf="@id/view_name"
             app:layout_constraintStart_toStartOf="@+id/view_name"
-            tools:text="dia chi"/>
+            tools:text="dia chi" />
 
         <ImageView
             android:id="@+id/view_setting"
@@ -91,8 +88,17 @@
             android:layout_marginEnd="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_more_vertical_whilte_24dp"
-            />
+            app:srcCompat="@drawable/ic_more_vertical_whilte_24dp" />
+
+        <ImageView
+            android:id="@+id/view_qrcode"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/view_name"
+            tools:srcCompat="@tools:sample/avatars" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.v7.widget.CardView>
