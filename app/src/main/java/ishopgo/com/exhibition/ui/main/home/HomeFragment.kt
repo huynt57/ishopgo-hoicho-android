@@ -45,6 +45,8 @@ import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsActivity
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
+import ishopgo.com.exhibition.ui.main.product.newest.NewestProductsActivity
+import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -264,6 +266,12 @@ class HomeFragment : BaseFragment() {
         more_highlight_brand.setOnClickListener {
             openPopularBrands()
         }
+        more_promotion_products.setOnClickListener {
+            openPromotionProducts()
+        }
+        more_newest_products.setOnClickListener {
+            openNewestProducts()
+        }
         more_highlight_products.setOnClickListener {
             openHighlightProducts()
         }
@@ -381,6 +389,20 @@ class HomeFragment : BaseFragment() {
 
         }
 
+    }
+
+    private fun openNewestProducts() {
+        context?.let {
+            val intent = Intent(it, NewestProductsActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openPromotionProducts() {
+        context?.let {
+            val intent = Intent(it, PromotionProductsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun openQuestionAnswer() {

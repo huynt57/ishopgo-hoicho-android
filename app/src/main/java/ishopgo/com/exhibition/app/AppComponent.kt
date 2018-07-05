@@ -49,6 +49,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.RatingProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
+import ishopgo.com.exhibition.ui.main.product.newest.NewestProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopViewModel
 import ishopgo.com.exhibition.ui.main.product.suggested.SuggestedProductsViewModel
@@ -56,6 +57,7 @@ import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsViewModel
 import ishopgo.com.exhibition.ui.main.productfollow.ProductFollowViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
+import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothViewModel
@@ -160,4 +162,6 @@ interface AppComponent {
     fun inject(newsViewModel: NewsViewModel)
     fun inject(administratorViewModel: AdministratorViewModel)
     fun inject(fragmentAdministratorViewModel: FragmentAdministratorViewModel)
+    fun inject(promotionProductsViewModel: PromotionProductsViewModel)
+    fun inject(newestProductsViewModel: NewestProductsViewModel)
 }
