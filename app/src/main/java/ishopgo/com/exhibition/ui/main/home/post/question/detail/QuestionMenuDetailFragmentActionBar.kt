@@ -28,12 +28,21 @@ class QuestionMenuDetailFragmentActionBar : BaseActionBarFragment() {
 
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, QuestionMenuDetailFragment.newInstance(arguments
-                        ?: Bundle())).commit()
+                        ?: Bundle()), "QuestionMenuDetailFragment").commit()
     }
 
     private fun setupToolbars() {
         toolbar.setCustomTitle("Thông tin chi tiết")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
+
+        toolbar.rightButton(R.drawable.ic_share_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(QuestionMenuDetailFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as QuestionMenuDetailFragment
+                shareFragment.sharePost()
+            }
+        }
     }
 }
