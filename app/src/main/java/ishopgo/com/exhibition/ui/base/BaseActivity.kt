@@ -50,7 +50,7 @@ open class BaseActivity : AppCompatActivity() {
     protected open fun requireInput(): List<String> = listOf()
 
     // verify input of activity has all key
-    protected open fun inputVerified(intent: Intent?): Boolean{
+    protected open fun validateInput(intent: Intent?): Boolean{
         if (intent == null) return true
 
         var inputOK = true
@@ -68,7 +68,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
 
-        if (!inputVerified(intent))
+        if (!validateInput(intent))
             throw IllegalArgumentException("Chưa truyền đủ tham số")
 
     }
@@ -76,7 +76,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (!inputVerified(intent))
+        if (!validateInput(intent))
             throw IllegalArgumentException("Chưa truyền đủ tham số")
 
         val checkingViewModel = obtainViewModel(VersionCheckingViewModel::class.java)
