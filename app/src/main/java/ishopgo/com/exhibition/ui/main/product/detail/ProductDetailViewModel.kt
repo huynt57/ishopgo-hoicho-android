@@ -10,10 +10,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.domain.response.NewConversation
-import ishopgo.com.exhibition.domain.response.Product
-import ishopgo.com.exhibition.domain.response.ProductComment
-import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel

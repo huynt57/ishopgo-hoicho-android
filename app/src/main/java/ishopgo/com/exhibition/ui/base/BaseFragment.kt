@@ -25,6 +25,27 @@ import ishopgo.com.exhibition.ui.login.LoginActivity
  */
 open class BaseFragment : Fragment() {
 
+    /**
+     * require input of activity is a list of key in intent
+     */
+    protected open fun requireInput(): List<String> = listOf()
+
+    // verify input of activity has all key
+    protected open fun inputVerified(argument: Bundle?): Boolean{
+        if (argument == null) return true
+
+        var inputOK = true
+        val requireInput = requireInput()
+        for (s in requireInput) {
+            if (!argument.containsKey(s)) {
+                inputOK = false
+                break
+            }
+        }
+
+        return inputOK
+    }
+
     protected var reloadData = false
     protected var toast: Toast? = null
     protected var progressDialog: ProgressDialog? = null
@@ -33,6 +54,8 @@ open class BaseFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
+        if (!inputVerified(arguments))
+            throw IllegalArgumentException("Chưa truyền đủ tham số")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

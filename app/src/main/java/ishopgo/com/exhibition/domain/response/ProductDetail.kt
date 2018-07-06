@@ -74,4 +74,7 @@ class ProductDetail : IdentityData() {
     @SerializedName("view_wholesale")
     @Expose
     var viewWholesale: Int? = null
+    @SerializedName("desc")
+    @Expose
+    var process: List<ProductProcess>? = null
 }

@@ -44,8 +44,40 @@ open class BaseActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * require input of activity is a list of key in intent
+     */
+    protected open fun requireInput(): List<String> = listOf()
+
+    // verify input of activity has all key
+    protected open fun inputVerified(intent: Intent?): Boolean{
+        if (intent == null) return true
+
+        var inputOK = true
+        val requireInput = requireInput()
+        for (s in requireInput) {
+            if (!intent.hasExtra(s)) {
+                inputOK = false
+                break
+            }
+        }
+
+        return inputOK
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+        if (!inputVerified(intent))
+            throw IllegalArgumentException("Chưa truyền đủ tham số")
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        if (!inputVerified(intent))
+            throw IllegalArgumentException("Chưa truyền đủ tham số")
 
         val checkingViewModel = obtainViewModel(VersionCheckingViewModel::class.java)
         checkingViewModel
