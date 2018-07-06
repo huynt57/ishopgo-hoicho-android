@@ -189,16 +189,21 @@
                 style="@style/AppTheme.DividerLine"
                 android:layout_width="match_parent" />
 
-            <org.sufficientlysecure.htmltextview.HtmlTextView
-                android:id="@+id/view_product_description"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="250dp"
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
-                android:paddingTop="16dp"
-                android:maxLines="10"
-                android:ellipsize="end"
-                tools:visibility="visible" />
+                android:paddingTop="16dp">
+
+                <WebView
+                    android:id="@+id/view_product_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:visibility="visible" />
+
+
+            </FrameLayout>
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_product_show_more_description"

@@ -253,7 +253,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
 
-            view_product_description.setHtml(convert.provideProductShortDescription().toString(), HtmlHttpImageGetter(view_product_description))
+            view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
@@ -393,7 +393,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductShortDescription(): CharSequence {
-                    return from.description ?: ""
+                    val fullHtml = String.format(
+                            "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
+                            Const.webViewCSS, from.description)
+                    return fullHtml
                 }
 
                 override fun provideShopName(): CharSequence {
