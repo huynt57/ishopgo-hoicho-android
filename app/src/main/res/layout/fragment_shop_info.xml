@@ -8,17 +8,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:descendantFocusability="blocksDescendants">
+        android:descendantFocusability="blocksDescendants"
+        android:orientation="vertical">
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_info"
             style="@style/AppTheme.ShopInfo"
-            android:autoLink="phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoLink="phone"
             android:lineSpacingMultiplier="1.3"
-            tools:text="Tên: " />
+            tools:text="Thông tin gian hàng: " />
 
         <View
             android:id="@+id/textView10"
@@ -31,15 +31,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/md_grey_300"
-            android:text="Mô tả" />
+            android:text="Giới thiệu" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_description"
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="5"
             android:ellipsize="end"
+            android:maxLines="5"
             tools:text="Công ty mỹ phẩm hàng đầu Việt Nam" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -47,11 +47,11 @@
             style="@style/AppTheme.ShopInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="5"
             android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="5"
             android:text="Xem thêm"
-            android:textColor="@color/colorPrimary"
-            android:gravity="end" />
+            android:textColor="@color/colorPrimary" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -70,17 +70,33 @@
                 android:id="@+id/img_add_sale_point"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:background="@color/md_grey_300"
                 android:padding="5dp"
-                app:srcCompat="@drawable/ic_add_highlight_24dp"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_add_highlight_24dp" />
         </RelativeLayout>
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="@dimen/item_spacing"
+            tools:listitem="@layout/item_sale_point" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/label_source_description"
+            style="@style/AppTheme.ShopInfo.Section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_300"
+            android:text="Mô tả"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recyclerview_source_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
