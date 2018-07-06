@@ -28,6 +28,14 @@
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             />
+        <action
+            android:id="@+id/action_productDetailFragmentActionBar_to_productProcessFragment"
+            app:destination="@id/productProcessFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
 
     </fragment>
 
@@ -35,4 +43,8 @@
         android:id="@+id/ratingProductFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.detail.RatingProductFragment"
         android:label="RatingProductFragment" />
+    <fragment
+        android:id="@+id/productProcessFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.process.ProductProcessFragment"
+        android:label="ProductProcessFragment" />
 </navigation>

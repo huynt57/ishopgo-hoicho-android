@@ -328,12 +328,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun showMoreProductProcess(product: ProductDetail) {
-        val process = product.process ?: listOf()
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
 
-//
-//        val intent = Intent(requireContext(), ProductCommentsActivity::class.java)
-//        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-//        startActivityForResult(intent, Const.RequestCode.EDIT_PRODUCT_COMMENT)
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productProcessFragment, extra)
     }
 
     interface ProductDetailProvider {
