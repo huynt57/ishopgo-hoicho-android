@@ -8,7 +8,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import kotlinx.android.synthetic.main.item_source_description.view.*
 
-class ShopProcessAdapter: ClickableAdapter<ShopProcess>() {
+class ShopProcessAdapter : ClickableAdapter<ShopProcess>() {
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_source_description
     }
@@ -26,7 +26,7 @@ class ShopProcessAdapter: ClickableAdapter<ShopProcess>() {
         }
     }
 
-    class ProcessHolder(v: View, private val converter: Converter<ShopProcess, ProcessProvider>): BaseRecyclerViewAdapter.ViewHolder<ShopProcess>(v) {
+    class ProcessHolder(v: View, private val converter: Converter<ShopProcess, ProcessProvider>) : BaseRecyclerViewAdapter.ViewHolder<ShopProcess>(v) {
 
         override fun populate(data: ShopProcess) {
             super.populate(data)
@@ -42,9 +42,9 @@ class ShopProcessAdapter: ClickableAdapter<ShopProcess>() {
         fun processName(): CharSequence
     }
 
-    class ConverterShopProcess: Converter<ShopProcess, ProcessProvider> {
+    class ConverterShopProcess : Converter<ShopProcess, ProcessProvider> {
         override fun convert(from: ShopProcess): ProcessProvider {
-            return object: ProcessProvider {
+            return object : ProcessProvider {
                 override fun processName(): CharSequence {
                     return from.title ?: ""
                 }

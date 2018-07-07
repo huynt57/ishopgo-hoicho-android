@@ -50,7 +50,7 @@ open class BaseActivity : AppCompatActivity() {
     protected open fun requireInput(): List<String> = listOf()
 
     // verify input of activity has all key
-    protected open fun validateInput(intent: Intent?): Boolean{
+    protected open fun validateInput(intent: Intent?): Boolean {
         if (intent == null) return true
 
         var inputOK = true

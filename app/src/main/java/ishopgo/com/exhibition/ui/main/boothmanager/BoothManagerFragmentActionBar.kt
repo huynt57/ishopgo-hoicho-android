@@ -2,8 +2,12 @@ package ishopgo.com.exhibition.ui.main.boothmanager
 
 import android.os.Bundle
 import android.view.View
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class BoothManagerFragmentActionBar : BaseActionBarFragment() {
@@ -36,12 +40,30 @@ class BoothManagerFragmentActionBar : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(BoothManagerFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as BoothManagerFragment
+        if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Const.listPermission
+
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.ADD_PROVIDER == listPermission[i]) {
+                        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRightButtonClickListener {
+                            val fragment = childFragmentManager.findFragmentByTag(BoothManagerFragment.TAG)
+                            if (fragment != null) {
+                                val shareFragment = fragment as BoothManagerFragment
+                                shareFragment.openAddBoothManager()
+                            }
+                        }
+                        break
+                    }
+        } else {
+            toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+            toolbar.setRightButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(BoothManagerFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as BoothManagerFragment
                     shareFragment.openAddBoothManager()
+                }
             }
         }
     }

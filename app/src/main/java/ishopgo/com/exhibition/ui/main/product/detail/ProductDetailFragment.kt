@@ -412,11 +412,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 override fun provideProductPrice(): CharSequence {
                     if (from.price == 0L) {
                         return "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
-                    }
-                    else if (from.promotionPrice != null && from.promotionPrice != from.price){
+                    } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
                         return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> -> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
-                    }
-                    else {
+                    } else {
                         return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                     }
                 }
@@ -696,7 +694,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun setupProductProcess(context: Context) {
-        productProcessAdapter.listener = object: ClickableAdapter.BaseAdapterAction<ProductProcess> {
+        productProcessAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProcess> {
             override fun click(position: Int, data: ProductProcess, code: Int) {
                 openProcessDetail(data)
             }
@@ -713,7 +711,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun openProcessDetail(data: ProductProcess) {
         val intent = Intent(requireContext(), FullDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title?: "")
+        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title ?: "")
         intent.putExtra(Const.TransferKey.EXTRA_JSON, data.description ?: "")
         startActivity(intent)
     }

@@ -55,7 +55,6 @@ object UserDataManager {
         get() = pref.getBoolean(KEY_SKIP_UPDATE, false)
         set(value) = pref.edit().putBoolean(KEY_SKIP_UPDATE, value).apply()
 
-
     var displayWidth: Int = 0
     var displayHeight: Int = 0
 
@@ -77,6 +76,8 @@ object UserDataManager {
     }
 
     fun deleteUserInfo() {
+        Const.listPermission.clear()
+
         val edit = pref.edit()
         edit.remove(KEY_ACCESS_TOKEN)
         edit.remove(KEY_USER_ID)
@@ -89,5 +90,4 @@ object UserDataManager {
         edit.remove(KEY_USER_SURVEY)
         edit.apply()
     }
-
 }

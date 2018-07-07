@@ -10,6 +10,7 @@ import android.view.View
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
@@ -40,8 +41,7 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
                 view_empty_result_notice.text = "Chưa có gian hàng nào"
-            }
-            else
+            } else
                 view_empty_result_notice.visibility = View.GONE
         } else
             adapter.addAll(data)
@@ -54,7 +54,17 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
                 if (data.boothId != null && data.boothId != 0L) {
                     openShopDetail(data.boothId!!)
                 } else {
-                    chooseKiosk(data)
+                    if (UserDataManager.currentType == "Quản trị viên") {
+                        val listPermission = Const.listPermission
+
+                        if (listPermission.isNotEmpty()) {
+                            for (i in listPermission.indices)
+                                if (Const.Permission.EXPO_MAP_ADD == listPermission[i]) {
+                                    chooseKiosk(data)
+                                } else toast("Bạn không có quyền để thêm gian hàng")
+                        }
+                    } else
+                        chooseKiosk(data)
                 }
             }
 

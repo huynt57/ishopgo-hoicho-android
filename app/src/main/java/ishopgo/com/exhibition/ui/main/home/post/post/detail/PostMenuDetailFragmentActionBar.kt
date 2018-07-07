@@ -27,7 +27,7 @@ class PostMenuDetailFragmentActionBar : BaseActionBarFragment() {
 
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, PostMenuDetailFragment.newInstance(arguments
-                        ?: Bundle())).commit()
+                        ?: Bundle()), "PostMenuDetailFragment").commit()
     }
 
     private fun setupToolbars() {
@@ -35,5 +35,13 @@ class PostMenuDetailFragmentActionBar : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
+        toolbar.rightButton(R.drawable.ic_share_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(PostMenuDetailFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as PostMenuDetailFragment
+                shareFragment.sharePost()
+            }
+        }
     }
 }

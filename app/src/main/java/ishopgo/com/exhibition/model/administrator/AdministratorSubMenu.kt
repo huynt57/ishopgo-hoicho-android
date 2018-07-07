@@ -14,4 +14,6 @@ class AdministratorSubMenu {
     @SerializedName("role")
     @Expose
     var role: List<AdministratorRole>? = null
+
+    var isSelected: Boolean = false
 }

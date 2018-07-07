@@ -30,9 +30,8 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
 
         val productId = if (arguments?.containsKey(Const.TransferKey.EXTRA_ID) == true) {
             // click another product in product detail screen
-             arguments!!.getLong(Const.TransferKey.EXTRA_ID)
-        }
-        else {
+            arguments!!.getLong(Const.TransferKey.EXTRA_ID)
+        } else {
             requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
         }
 

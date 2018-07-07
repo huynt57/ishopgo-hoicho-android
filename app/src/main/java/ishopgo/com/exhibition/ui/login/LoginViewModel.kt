@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.login
 
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
@@ -8,7 +9,9 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
+import java.util.*
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -28,7 +31,8 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun loginAccount(phone: String, password: String) {
-        addDisposable(noAuthService.login(phone, password, Const.ID_APP, FirebaseInstanceId.getInstance().token ?: "")
+        addDisposable(noAuthService.login(phone, password, Const.ID_APP, FirebaseInstanceId.getInstance().token
+                ?: "")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<User>() {
                     override fun success(data: User?) {

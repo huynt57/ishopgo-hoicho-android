@@ -2,10 +2,13 @@ package ishopgo.com.exhibition.ui.main.postmanager
 
 import android.os.Bundle
 import android.view.View
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_REQUIRE
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class PostManagerFragmentActionBar : BaseActionBarFragment() {
@@ -37,7 +40,7 @@ class PostManagerFragmentActionBar : BaseActionBarFragment() {
 
     private fun setupToolbars() {
         if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER)
-        toolbar.setCustomTitle("Quản lý tin tức")
+            toolbar.setCustomTitle("Quản lý tin tức")
         if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER)
             toolbar.setCustomTitle("Quản lý thông tin chung")
 
@@ -52,13 +55,44 @@ class PostManagerFragmentActionBar : BaseActionBarFragment() {
                 shareFragment.performSearching()
             }
         }
+        if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Const.listPermission
 
-        toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
-        toolbar.setRight2ButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(PostManagerFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as PostManagerFragment
-                shareFragment.openDialogCreateOption()
+            if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER && listPermission.isNotEmpty()) {
+                for (i in listPermission.indices)
+                    if (Const.Permission.ADD_NEW == listPermission[i]) {
+                        toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRight2ButtonClickListener {
+                            val fragment = childFragmentManager.findFragmentByTag(PostManagerFragment.TAG)
+                            if (fragment != null) {
+                                val shareFragment = fragment as PostManagerFragment
+                                shareFragment.openDialogCreateOption()
+                            }
+                        }
+                        break
+                    }
+            } else if (typeManager == Const.AccountAction.ACTION_GENEREL_MANAGER && listPermission.isNotEmpty()) {
+                for (i in listPermission.indices)
+                    if (Const.Permission.ADD_POST_INFORMATION == listPermission[i]) {
+                        toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRight2ButtonClickListener {
+                            val fragment = childFragmentManager.findFragmentByTag(PostManagerFragment.TAG)
+                            if (fragment != null) {
+                                val shareFragment = fragment as PostManagerFragment
+                                shareFragment.openDialogCreateOption()
+                            }
+                        }
+                        break
+                    }
+            }
+        } else {
+            toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
+            toolbar.setRight2ButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(PostManagerFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as PostManagerFragment
+                    shareFragment.openDialogCreateOption()
+                }
             }
         }
     }

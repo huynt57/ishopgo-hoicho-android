@@ -93,7 +93,9 @@ class AccountFragment : BaseFragment() {
         view_introduce.text = "${UserDataManager.currentType} - ${UserDataManager.currentUserPhone}"
 
         view_menu.visibility = View.VISIBLE
-        view_menu.setLabel("Thành viên")
+
+        if (UserDataManager.currentType == "Quản trị viên") view_menu.setLabel("Quản trị viên") else view_menu.setLabel("Thành viên")
+
         val list = view_menu.getList()
         val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         lm.isAutoMeasureEnabled = true

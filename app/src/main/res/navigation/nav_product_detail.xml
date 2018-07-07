@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:id="@+id/nav_product_detail.xml"
-            app:startDestination="@+id/productDetailFragmentActionBar">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_product_detail.xml"
+    app:startDestination="@+id/productDetailFragmentActionBar">
 
 
     <fragment
@@ -18,24 +18,21 @@
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_productDetailFragmentActionBar_self"
             app:destination="@id/productDetailFragmentActionBar"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productProcessFragment"
             app:destination="@id/productProcessFragment"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 
     </fragment>
 
