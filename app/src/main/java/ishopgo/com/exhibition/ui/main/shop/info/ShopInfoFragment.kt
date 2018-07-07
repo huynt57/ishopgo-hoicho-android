@@ -301,11 +301,11 @@ class ShopInfoFragment : BaseFragment() {
         view_recyclerview_source_description.layoutManager = lm
         view_recyclerview_source_description.isNestedScrollingEnabled = false
 
-        shopProcessAdapter .listener = object : ClickableAdapter.BaseAdapterAction<ShopProcess> {
+        shopProcessAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ShopProcess> {
             override fun click(position: Int, data: ShopProcess, code: Int) {
                 context?.let {
                     val intent = Intent(requireContext(), FullDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title?: "")
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title ?: "")
                     intent.putExtra(Const.TransferKey.EXTRA_JSON, data.description ?: "")
                     startActivity(intent)
                 }

@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExposRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
@@ -29,7 +30,7 @@ import kotlinx.android.synthetic.main.content_expo_calendar.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
-class ExpoMapConfigFragment: BaseActionBarFragment() {
+class ExpoMapConfigFragment : BaseActionBarFragment() {
     override fun contentLayoutRes(): Int {
         return R.layout.content_expo_calendar
     }
@@ -55,6 +56,18 @@ class ExpoMapConfigFragment: BaseActionBarFragment() {
             toolbar.setRightButtonClickListener {
                 openAddExpoActivity()
             }
+        } else if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Const.listPermission
+
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.EXPO_FAIR_ADD == listPermission[i]) {
+                        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRightButtonClickListener {
+                            openAddExpoActivity()
+                        }
+                        break
+                    }
         }
 
     }
@@ -94,7 +107,7 @@ class ExpoMapConfigFragment: BaseActionBarFragment() {
 
     }
 
-    class ExposFragment: BaseListFragment<List<ExpoConfig>, ExpoConfig>() {
+    class ExposFragment : BaseListFragment<List<ExpoConfig>, ExpoConfig>() {
 
         companion object {
             fun newInstance(type: Int): ExposFragment {
@@ -122,8 +135,7 @@ class ExpoMapConfigFragment: BaseActionBarFragment() {
                 if (data.isEmpty()) {
                     view_empty_result_notice.visibility = View.VISIBLE
                     view_empty_result_notice.text = "Không có hội chợ nào"
-                }
-                else
+                } else
                     view_empty_result_notice.visibility = View.GONE
             } else
                 adapter.addAll(data)

@@ -2,8 +2,12 @@ package ishopgo.com.exhibition.ui.main.productmanager
 
 import android.os.Bundle
 import android.view.View
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class ProductManagerFragmentActionBar : BaseActionBarFragment() {
@@ -45,13 +49,30 @@ class ProductManagerFragmentActionBar : BaseActionBarFragment() {
             }
         }
 
+        if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Const.listPermission
 
-        toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
-        toolbar.setRight2ButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(ProductManagerFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as ProductManagerFragment
-                shareFragment.openAddProductManager()
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.ADD_PRODUCT == listPermission[i]) {
+                        toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
+                        toolbar.setRight2ButtonClickListener {
+                            val fragment = childFragmentManager.findFragmentByTag(ProductManagerFragment.TAG)
+                            if (fragment != null) {
+                                val shareFragment = fragment as ProductManagerFragment
+                                shareFragment.openAddProductManager()
+                            }
+                        }
+                        break
+                    }
+        } else {
+            toolbar.rightButton2(R.drawable.ic_add_highlight_24dp)
+            toolbar.setRight2ButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(ProductManagerFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as ProductManagerFragment
+                    shareFragment.openAddProductManager()
+                }
             }
         }
     }

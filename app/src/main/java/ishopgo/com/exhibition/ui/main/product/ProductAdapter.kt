@@ -70,8 +70,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
 
                     view_discount.visibility = View.VISIBLE
                     view_discount.text = convert.discountPercent()
-                }
-                else {
+                } else {
                     tv_price.text = convert.providePrice()
                     tv_tt_price.visibility = View.INVISIBLE
                     tv_tt_price.text = convert.providePrice()
@@ -101,7 +100,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                         val rPrice = from.price ?: 0L
 
                         if (rPrice == 0L) return "0%"
-                        val percent = (1 - pPrice.toFloat()/rPrice.toFloat()) * 100
+                        val percent = (1 - pPrice.toFloat() / rPrice.toFloat()) * 100
 
                         val displayed = if (percent.toInt() == 100) "<small><b><font color=\"red\">FREE</font></b></small>"
                         else "<small>GIẢM</small>" +
@@ -109,8 +108,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                                 "<b><font color=\"red\">${percent.toInt()}%</font></b>"
 
                         return displayed.asHtml()
-                    }
-                    else
+                    } else
                         return "0%"
                 }
 

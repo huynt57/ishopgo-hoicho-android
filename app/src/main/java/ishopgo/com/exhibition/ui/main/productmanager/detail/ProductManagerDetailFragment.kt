@@ -21,6 +21,7 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
@@ -104,36 +105,46 @@ class ProductManagerDetailFragment : BaseFragment() {
         img_add_related_product.setOnClickListener {
             performSearchingProduct()
         }
+        if (UserDataManager.currentType == "Quản trị viên") {
+            val listPermission = Const.listPermission
 
-        btn_product_update.setOnClickListener {
-            if (!isEditMode) {
-                startEditing()
-                isEditMode = true
-            } else {
-                if (UserDataManager.currentType == "Chủ hội chợ") {
-                    if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                    edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
-                        showProgressDialog()
-                        viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-                                edit_product_price?.money
-                                        ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
-                                image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                                edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-                                ?: 0, edit_produt_wholesale_to.money
-                                ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
+            if (listPermission.isNotEmpty())
+                for (i in listPermission.indices)
+                    if (Const.Permission.EDIT_PRODUCT == listPermission[i]) {
+                        btn_product_update.visibility = View.GONE
+                        break
                     }
-                } else
-                    if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                    edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
-                        showProgressDialog()
-                        viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-                                edit_product_price?.money
-                                        ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
-                                image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                                edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-                                ?: 0, edit_produt_wholesale_to.money
-                                ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
-                    }
+        } else {
+            btn_product_update.setOnClickListener {
+                if (!isEditMode) {
+                    startEditing()
+                    isEditMode = true
+                } else {
+                    if (UserDataManager.currentType == "Chủ hội chợ") {
+                        if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                                        edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
+                            showProgressDialog()
+                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
+                                    edit_product_price?.money
+                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
+                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
+                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
+                                    ?: 0, edit_produt_wholesale_to.money
+                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
+                        }
+                    } else
+                        if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                                        edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
+                            showProgressDialog()
+                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
+                                    edit_product_price?.money
+                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
+                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
+                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
+                                    ?: 0, edit_produt_wholesale_to.money
+                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
+                        }
+                }
             }
         }
     }

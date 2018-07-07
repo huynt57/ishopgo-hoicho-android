@@ -61,6 +61,10 @@ class AdministratorPermissionsAdapter : ClickableAdapter<AdministratorPermission
             itemView.apply {
                 view_parent_text.text = convert.provideName()
 
+                if (convert.provideSelected())
+                    view_parent_text.setTextColor(resources.getColor(R.color.colorPrimaryDark))
+                else view_parent_text.setTextColor(resources.getColor(R.color.colorPrimaryText))
+
                 if (convert.provideSubMenu() != null && convert.provideSubMenu()!!.isNotEmpty()) {
                     val adapterSubMenu = AdministratorSubMenuAdapter()
                     adapterSubMenu.replaceAll(convert.provideSubMenu()!!)
@@ -110,12 +114,17 @@ class AdministratorPermissionsAdapter : ClickableAdapter<AdministratorPermission
         fun provideValue(): Boolean
         fun provideRole(): List<AdministratorRole>?
         fun provideSubMenu(): List<AdministratorSubMenu>?
+        fun provideSelected(): Boolean
     }
 
     class AdministatorConverter : Converter<AdministratorPermissions, AdministatorProvider> {
 
         override fun convert(from: AdministratorPermissions): AdministatorProvider {
             return object : AdministatorProvider {
+                override fun provideSelected(): Boolean {
+                    return from.isSelected
+                }
+
                 override fun provideValue(): Boolean {
                     return from.value ?: true
                 }

@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_upgrade_to_booth.*
 import kotlinx.android.synthetic.main.item_image_only.*
 
-class UpgradeToBoothFragment: BaseActionBarFragment() {
+class UpgradeToBoothFragment : BaseActionBarFragment() {
 
     private var currentMemberId = -1L
     private lateinit var viewModel: MemberProfileViewModel
@@ -62,6 +62,7 @@ class UpgradeToBoothFragment: BaseActionBarFragment() {
 
         viewModel.loadRegion()
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -192,12 +193,24 @@ class UpgradeToBoothFragment: BaseActionBarFragment() {
         var isValid = true
         var msg = ""
         when {
-            name.isBlank() -> { isValid = false; msg = "Chưa điền tên gian hàng" }
-            introduction.isBlank() -> { isValid = false; msg = "Chưa điền tên lời giới thiệu" }
-            hotline.isBlank() -> { isValid = false; msg = "Chưa điền hotline" }
-            city.isBlank() -> { isValid = false; msg = "Chưa chọn tỉnh/thành phố" }
-            district.isBlank() -> { isValid = false; msg = "Chưa chọn quận/huyện" }
-            bannerUri == null -> { isValid = false; msg = "Chưa chọn banner" }
+            name.isBlank() -> {
+                isValid = false; msg = "Chưa điền tên gian hàng"
+            }
+            introduction.isBlank() -> {
+                isValid = false; msg = "Chưa điền tên lời giới thiệu"
+            }
+            hotline.isBlank() -> {
+                isValid = false; msg = "Chưa điền hotline"
+            }
+            city.isBlank() -> {
+                isValid = false; msg = "Chưa chọn tỉnh/thành phố"
+            }
+            district.isBlank() -> {
+                isValid = false; msg = "Chưa chọn quận/huyện"
+            }
+            bannerUri == null -> {
+                isValid = false; msg = "Chưa chọn banner"
+            }
         }
 
         if (!isValid) {

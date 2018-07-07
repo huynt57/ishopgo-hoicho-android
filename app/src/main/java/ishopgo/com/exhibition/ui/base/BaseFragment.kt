@@ -31,7 +31,7 @@ open class BaseFragment : Fragment() {
     protected open fun requireInput(): List<String> = listOf()
 
     // verify input of activity has all key
-    protected open fun inputVerified(argument: Bundle?): Boolean{
+    protected open fun inputVerified(argument: Bundle?): Boolean {
         if (argument == null) return true
 
         var inputOK = true

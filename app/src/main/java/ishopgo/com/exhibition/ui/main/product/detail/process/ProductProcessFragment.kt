@@ -17,7 +17,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivi
 import kotlinx.android.synthetic.main.fragment_question_tab.*
 import kotlinx.android.synthetic.main.fragment_shop_info.*
 
-class ProductProcessFragment: BaseActionBarFragment() {
+class ProductProcessFragment : BaseActionBarFragment() {
     override fun contentLayoutRes(): Int {
         return R.layout.content_swipable_recyclerview
     }
@@ -41,10 +41,10 @@ class ProductProcessFragment: BaseActionBarFragment() {
         val productDetail = Toolbox.gson.fromJson(json, ProductDetail::class.java)
         productProcessAdapter.replaceAll(productDetail.process ?: listOf())
 
-        productProcessAdapter.listener = object: ClickableAdapter.BaseAdapterAction<ProductProcess> {
+        productProcessAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProcess> {
             override fun click(position: Int, data: ProductProcess, code: Int) {
                 val intent = Intent(requireContext(), FullDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title?: "")
+                intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title ?: "")
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, data.description ?: "")
                 startActivity(intent)
             }
