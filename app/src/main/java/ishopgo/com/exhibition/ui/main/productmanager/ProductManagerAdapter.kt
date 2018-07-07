@@ -26,9 +26,14 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
 
     override fun onBindViewHolder(holder: ViewHolder<ProductManager>, position: Int) {
         super.onBindViewHolder(holder, position)
-        holder.apply {
-            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+        if (holder is Holder) {
+            holder.apply {
+                itemView.iv_options.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_OPTION) }
+                itemView.iv_push_top.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_PUSH_TOP) }
+            }
+
         }
+
     }
 
     inner class Holder(v: View, private val converter: Converter<ProductManager, ProductManagerProvider>) : BaseRecyclerViewAdapter.ViewHolder<ProductManager>(v) {
@@ -39,8 +44,8 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
             val convert = converter.convert(data)
             itemView.apply {
                 if (convert.provideStatus() != STATUS_DISPLAY_SHOW && convert.provideStatus() != STATUS_DISPLAY_LANDING_PAGE)
-                    img_blur.visibility = View.VISIBLE
-                else img_blur.visibility = View.GONE
+                    iv_display.visibility = View.VISIBLE
+                else iv_display.visibility = View.GONE
 
 
 
@@ -58,8 +63,10 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
     }
 
     companion object {
-        var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
-        var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
+        const val STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
+        const val STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
+        const val CLICK_OPTION = 1
+        const val CLICK_PUSH_TOP = 2
     }
 
     interface ProductManagerProvider {

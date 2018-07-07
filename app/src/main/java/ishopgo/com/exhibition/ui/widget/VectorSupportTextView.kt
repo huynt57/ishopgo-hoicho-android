@@ -69,13 +69,13 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
                 dStart?.setBounds(0, 0, drawableStartSquareSize, drawableStartSquareSize)
             }
             if (drawableEndSquareSize != -1) {
-                dStart?.setBounds(0, 0, drawableEndSquareSize, drawableEndSquareSize)
+                dEnd?.setBounds(0, 0, drawableEndSquareSize, drawableEndSquareSize)
             }
             if (drawableBottomSquareSize != -1) {
-                dStart?.setBounds(0, 0, drawableBottomSquareSize, drawableBottomSquareSize)
+                dBottom?.setBounds(0, 0, drawableBottomSquareSize, drawableBottomSquareSize)
             }
             if (drawableTopSquareSize != -1) {
-                dStart?.setBounds(0, 0, drawableTopSquareSize, drawableTopSquareSize)
+                dTop?.setBounds(0, 0, drawableTopSquareSize, drawableTopSquareSize)
             }
 
             val hasCustomSize = drawableStartSquareSize != -1

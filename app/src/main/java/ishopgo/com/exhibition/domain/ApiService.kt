@@ -131,6 +131,9 @@ class ApiService {
         @GET("booth/detail-sale-point")
         fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>>
 
+//        @GET("booth/list-sale-point/{id}")
+//        fun getBoothSalePoints(@Path("id") boothId: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>>
+
         @GET("general-info/get-posts")
         fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostMenuManager>>
 

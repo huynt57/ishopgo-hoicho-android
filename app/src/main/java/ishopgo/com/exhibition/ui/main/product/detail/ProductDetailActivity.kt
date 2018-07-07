@@ -1,64 +1,35 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
-import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.util.Log
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.ProductDetailComment
-import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.transact
+import ishopgo.com.exhibition.ui.base.BaseActivity
 
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
  */
-class ProductDetailActivity : BaseSingleFragmentActivity() {
+class ProductDetailActivity : BaseActivity() {
     companion object {
         private val TAG = "ProductDetailActivity"
     }
 
-    private lateinit var ratingViewModel: RatingProductViewModel
-
-    override fun createFragment(startupOption: Bundle): Fragment {
-        return ProductDetailFragmentActionBar.newInstance(startupOption)
-    }
-
-    override fun startupOptions(): Bundle {
-        return intent.extras ?: Bundle()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ratingViewModel = obtainViewModel(RatingProductViewModel::class.java)
-        ratingViewModel.isCommentEnable.observe(this, Observer {
-            it?.let { it1 -> openRatingComment(it1) }
-        })
+        setContentView(R.layout.activity_product_detail)
     }
 
-    private fun openRatingComment(product: ProductDetailComment) {
-        val params = Bundle()
-        params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-        val transaction = supportFragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                .add(R.id.fragment_container, RatingProductFragment.newInstance(params))
-                .addToBackStack(RatingProductFragment.TAG)
-        transaction.commit()
+    override fun requireInput(): List<String> {
+        return listOf(Const.TransferKey.EXTRA_ID)
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        Log.d(TAG, "onNewIntent: intent = [${intent}]")
 
-        supportFragmentManager.transact {
-            setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-            add(R.id.fragment_container, ProductDetailFragmentActionBar.newInstance(intent?.extras
-                    ?: Bundle()))
-            addToBackStack(null)
-        }
+        val extra = Bundle()
+        extra.putLong(Const.TransferKey.EXTRA_ID, intent?.getLongExtra(Const.TransferKey.EXTRA_ID, -1L) ?: -1L)
+        Navigation.findNavController(this, R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_self, extra)
     }
 
 

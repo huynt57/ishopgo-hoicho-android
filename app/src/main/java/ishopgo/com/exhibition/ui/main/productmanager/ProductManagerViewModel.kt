@@ -16,7 +16,6 @@ import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.model.Provider
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
@@ -147,6 +146,27 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         createProductSusscess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    var updateVisibilityOk = MutableLiveData<Boolean>()
+
+    fun updateVisibility(productId: Long, status: Int) {
+        val builder = MultipartBody.Builder()
+        builder.setType(MultipartBody.FORM)
+        builder.addFormDataPart("status", status.toString())
+
+        addDisposable(isgService.editProduct(productId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        updateVisibilityOk.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -318,6 +338,24 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                 }))
     }
 
+    var pushTopSuccess = MutableLiveData<Boolean>()
+
+    fun pushToTop(productId: Long) {
+        pushTopSuccess.postValue(true)
+//        addDisposable(noAuthService.getCategories()
+//                .subscribeOn(Schedulers.single())
+//                .subscribeWith(object : BaseSingleObserver<List<Category>>() {
+//                    override fun success(data: List<Category>?) {
+//                        val filtered = data?.filter { it.id != 0L }
+//                        categories.postValue(filtered ?: mutableListOf())
+//                    }
+//
+//                    override fun failure(status: Int, message: String) {
+//                        resolveError(status, message)
+//                    }
+//                })
+//        )
+    }
 
     var categories = MutableLiveData<List<Category>>()
 

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ShopDetail
+import ishopgo.com.exhibition.domain.response.ShopProcess
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
@@ -21,6 +22,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asPhone
+import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
@@ -34,6 +36,7 @@ class ShopInfoFragment : BaseFragment() {
     private lateinit var viewModel: ShopInfoViewModel
     private lateinit var sharedViewModel: ShopDetailViewModel
     private val salePointAdapter = SalePointAdapter()
+    private val shopProcessAdapter = ShopProcessAdapter()
     private var shopId = -1L
 
     companion object {
@@ -112,6 +115,8 @@ class ShopInfoFragment : BaseFragment() {
             view_description.maxLines = Integer.MAX_VALUE
             view_description_more.visibility = View.GONE
         }
+
+        shopProcessAdapter.replaceAll(info.process ?: listOf())
 
         sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage())
         if (UserDataManager.currentUserId == info.id) {
@@ -284,6 +289,24 @@ class ShopInfoFragment : BaseFragment() {
                 context?.let {
                     val intent = Intent(it, SalePointDetailActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
+                    startActivity(intent)
+                }
+
+            }
+        }
+
+        view_recyclerview_source_description.adapter = shopProcessAdapter
+        val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+        lm.isAutoMeasureEnabled = true
+        view_recyclerview_source_description.layoutManager = lm
+        view_recyclerview_source_description.isNestedScrollingEnabled = false
+
+        shopProcessAdapter .listener = object : ClickableAdapter.BaseAdapterAction<ShopProcess> {
+            override fun click(position: Int, data: ShopProcess, code: Int) {
+                context?.let {
+                    val intent = Intent(requireContext(), FullDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title?: "")
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, data.description ?: "")
                     startActivity(intent)
                 }
 

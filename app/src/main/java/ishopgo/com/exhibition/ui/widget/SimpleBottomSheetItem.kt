@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.widget
 
 import android.content.Context
+import android.support.annotation.DrawableRes
 import android.support.v7.content.res.AppCompatResources
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -44,6 +45,16 @@ class SimpleBottomSheetItem @JvmOverloads constructor(context: Context, attrs: A
         }
 
         a.recycle()
+    }
+
+    fun setText(text: CharSequence) {
+        view_text.text = text
+    }
+
+    fun setIcon(@DrawableRes iconRes: Int) {
+        val drawable = AppCompatResources.getDrawable(context, iconRes)
+        if (drawable != null)
+            view_icon.setImageDrawable(drawable)
     }
 
 }

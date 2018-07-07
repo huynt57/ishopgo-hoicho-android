@@ -11,10 +11,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -56,7 +58,6 @@ import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_detail.*
-import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
@@ -66,6 +67,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         return childFragmentManager.popBackStackImmediate()
     }
 
+    override fun requireInput(): List<String> {
+        return listOf(Const.TransferKey.EXTRA_ID)
+    }
     companion object {
         fun newInstance(params: Bundle): ProductDetailFragment {
             val fragment = ProductDetailFragment()
@@ -89,6 +93,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
+    private val productProcessAdapter = ProductProcessAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var productId: Long = -1L
     private var mPagerAdapter: FragmentPagerAdapter? = null
@@ -117,7 +122,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        productId = arguments?.getLong(Const.TransferKey.EXTRA_ID) ?: -1L
+        productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
         if (productId == -1L)
             throw RuntimeException("Sai dinh dang")
     }
@@ -187,7 +192,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
 
         })
-
         viewModel.getProductLike.observe(this, Observer { c ->
             c?.let {
                 view_shop_follow.drawableCompat(0, if (it.status == 1) R.drawable.ic_favorite_accent_24dp else R.drawable.ic_favorite_border_default_24dp, 0, 0)
@@ -218,6 +222,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private fun showProductDetail(product: ProductDetail) {
         context?.let {
             productDetail = product
+
+            val processes = product.process ?: listOf()
+            container_product_process.visibility = if (processes.isEmpty()) View.GONE else View.VISIBLE
+            productProcessAdapter.replaceAll(processes)
+
             val convert = ProductDetailConverter().convert(product)
             if (convert.provideViewWholesale()) {
                 view_product_wholesale.visibility = View.VISIBLE
@@ -253,7 +262,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
 
-            view_product_description.setHtml(convert.provideProductShortDescription().toString(), HtmlHttpImageGetter(view_product_description))
+            view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
@@ -269,6 +278,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
             view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }
+            view_shop_more_product_process.setOnClickListener { showMoreProductProcess(product) }
             more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, product) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
@@ -288,13 +298,19 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     val productDetailComment = ProductDetailComment()
                     productDetailComment.product = product
                     productDetailComment.comment = null
-                    ratingViewModel.enableCommentRating(productDetailComment)
+
+                    val extra = Bundle()
+                    extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
+                    Navigation.findNavController(it).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment, extra)
                 }
                 edt_comment.setOnClickListener {
                     val productDetailComment = ProductDetailComment()
                     productDetailComment.product = product
                     productDetailComment.comment = null
-                    ratingViewModel.enableCommentRating(productDetailComment)
+
+                    val extra = Bundle()
+                    extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
+                    Navigation.findNavController(it).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment, extra)
                 }
 
                 view_shop_add_sale_point.setOnClickListener { openAddSalePoint(it.context, product) }
@@ -309,6 +325,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         }
         openProductSalePoint(product)
+    }
+
+    private fun showMoreProductProcess(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productProcessFragment, extra)
     }
 
     interface ProductDetailProvider {
@@ -336,12 +359,23 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideWholesale(): CharSequence
         fun provideWholesaleLimit(): CharSequence
 
+        fun provideProductProcess(): List<CharSequence>
+
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideProductProcess(): List<CharSequence> {
+                    val titles = mutableListOf<String>()
+                    from.process?.map {
+                        if (!it.title.isNullOrEmpty()) titles.add(it.title ?: "")
+                    }
+
+                    return titles
+                }
+
                 override fun provideWholesaleLimit(): CharSequence {
                     return "Mua tối thiểu <b><font color=\"red\">${from.wholesaleCountProduct}</font></b> sản phẩm".asHtml()
                 }
@@ -391,7 +425,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductShortDescription(): CharSequence {
-                    return from.description ?: ""
+                    val fullHtml = String.format(
+                            "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
+                            Const.webViewCSS, from.description)
+                    return fullHtml
                 }
 
                 override fun provideShopName(): CharSequence {
@@ -551,6 +588,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupProductProcess(view.context)
         setupProductComments(view.context)
         setupFavoriteProducts(view.context)
         setupSameShopProducts(view.context)
@@ -655,6 +693,29 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         container_favorite.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
     }
 
+    private fun setupProductProcess(context: Context) {
+        productProcessAdapter.listener = object: ClickableAdapter.BaseAdapterAction<ProductProcess> {
+            override fun click(position: Int, data: ProductProcess, code: Int) {
+                openProcessDetail(data)
+            }
+        }
+        view_product_product_process.adapter = productProcessAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        layoutManager.isAutoMeasureEnabled = true
+        view_product_product_process.layoutManager = layoutManager
+        view_product_product_process.isNestedScrollingEnabled = false
+
+        val dividerDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+        view_product_product_process.addItemDecoration(dividerDecorator)
+    }
+
+    private fun openProcessDetail(data: ProductProcess) {
+        val intent = Intent(requireContext(), FullDetailActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title?: "")
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, data.description ?: "")
+        startActivity(intent)
+    }
+
     private fun setupProductComments(context: Context) {
         view_list_comments.adapter = productCommentAdapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -671,7 +732,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                             val productDetailComment = ProductDetailComment()
                             productDetailComment.product = productDetail
                             productDetailComment.comment = data
-                            ratingViewModel.enableCommentRating(productDetailComment)
+
+                            val extra = Bundle()
+                            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
+                            Navigation.findNavController(view_list_comments).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment, extra)
                         }
                     }
 
@@ -683,7 +747,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                             comment.accountName = data.lastComment?.accountName
                             comment.id = data.id
                             productDetailComment.comment = comment
-                            ratingViewModel.enableCommentRating(productDetailComment)
+
+                            val extra = Bundle()
+                            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
+                            Navigation.findNavController(view_list_comments).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment)
                         }
                     }
 
