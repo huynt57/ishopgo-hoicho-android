@@ -15,10 +15,8 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.BuildConfig
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.Banner
-import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.request.ExposRequest
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.post.PostObject
@@ -37,6 +35,9 @@ import ishopgo.com.exhibition.ui.main.home.post.LatestPostsAdapter
 import ishopgo.com.exhibition.ui.main.home.post.post.PostActivity
 import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionActivity
+import ishopgo.com.exhibition.ui.main.map.ExpoDetailActivity
+import ishopgo.com.exhibition.ui.main.map.config.ExpoConfigAdapter
+import ishopgo.com.exhibition.ui.main.map.config.ExpoConfigBottomSheet
 import ishopgo.com.exhibition.ui.main.map.config.ExpoMapConfigActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -57,6 +58,8 @@ class HomeFragment : BaseFragment() {
 
     companion object {
         private const val CHANGE_BANNER_PERIOD = 3000L
+        const val TYPE_CURRENT = 0
+        const val TYPE_GOING = 1
     }
 
     private lateinit var viewModel: HomeViewModel
@@ -67,6 +70,7 @@ class HomeFragment : BaseFragment() {
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val newestProductAdapter = ProductAdapter(0.4f)
     private val promotionProductAdapter = ProductAdapter(0.4f)
+    private val expoConfigAdapter = HomeExpoConfigAdapter()
     private val categoryStage1Adapter = CategoryStage1Adapter(0.3f)
     private val highlightBrandAdapter = HighlightBrandAdapter(0.4f)
     private val latestNewsAdapter = LatestPostsAdapter(0.6f)
@@ -172,6 +176,44 @@ class HomeFragment : BaseFragment() {
             }
         })
 
+        viewModel.exposFairGoing.observe(this, Observer { b ->
+            b?.let {
+                if (it) {
+                    viewModel.exposFair.observe(this, Observer { p ->
+                        p?.let {
+                            if (it.isNotEmpty()) {
+                                val listExpoConfig = mutableListOf<ExpoConfig>()
+                                listExpoConfig.add(it[0])
+                                expoConfigAdapter.replaceAll(listExpoConfig)
+                                container_expo.visibility = View.VISIBLE
+                            } else {
+                                firtsLoadExpoFair(TYPE_CURRENT)
+                            }
+                        }
+                    })
+                }
+            }
+        })
+
+        viewModel.exposFairCurrent.observe(this, Observer { b ->
+            b?.let {
+                if (it) {
+                    viewModel.exposFair.observe(this, Observer { p ->
+                        p?.let {
+                            if (it.isNotEmpty()) {
+                                val listExpoConfig = mutableListOf<ExpoConfig>()
+                                listExpoConfig.add(it[0])
+                                expoConfigAdapter.replaceAll(listExpoConfig)
+                                container_expo.visibility = View.VISIBLE
+                            } else {
+                                container_expo.visibility = View.GONE
+                            }
+                        }
+                    })
+                }
+            }
+        })
+
         loadData()
     }
 
@@ -225,7 +267,7 @@ class HomeFragment : BaseFragment() {
         setupFavoriteProducts(context)
         setupNewestProducts(context)
         setupPromotionProducts(context)
-
+        setupExpoFair(context)
         setupListeners()
 
         val builder = StringBuilder()
@@ -312,6 +354,8 @@ class HomeFragment : BaseFragment() {
         view_open_expo_map.setOnClickListener {
             openExpoMap()
         }
+        more_expo.setOnClickListener { openExpoMap() }
+
         categoriesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
 
             override fun click(position: Int, data: Category, code: Int) {
@@ -459,6 +503,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun loadData() {
+        firtsLoadExpoFair(TYPE_GOING)
         viewModel.loadBanners()
         viewModel.loadCategories()
         viewModel.loadHighlightBrands()
@@ -475,6 +520,15 @@ class HomeFragment : BaseFragment() {
 
         container_viewed_products.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
         container_favorite_products.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
+
+    }
+
+    private fun firtsLoadExpoFair(currentType: Int) {
+        val request = ExposRequest()
+        request.limit = Const.PAGE_LIMIT
+        request.offset = 0
+        request.time = currentType
+        viewModel.loadExpoFair(request)
     }
 
     private fun openProductDetail(product: Product) {
@@ -550,6 +604,29 @@ class HomeFragment : BaseFragment() {
         view_list_newest_products.layoutManager = layoutManager
         view_list_newest_products.isNestedScrollingEnabled = false
         view_list_newest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    private fun setupExpoFair(context: Context) {
+        // dummy product
+        val dummy = mutableListOf<ExpoConfig>()
+        val element = ExpoConfig()
+        element.id = -1L
+        dummy.add(element)
+        expoConfigAdapter.addAll(dummy)
+
+        expoConfigAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoConfig> {
+            override fun click(position: Int, data: ExpoConfig, code: Int) {
+                val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(intent)
+            }
+        }
+
+        view_list_expo_fair.adapter = expoConfigAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_expo_fair.layoutManager = layoutManager
+        view_list_expo_fair.isNestedScrollingEnabled = false
+        view_list_expo_fair.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupPromotionProducts(context: Context) {
