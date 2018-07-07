@@ -11,6 +11,7 @@ import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
+import java.util.*
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -30,7 +31,8 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun loginAccount(phone: String, password: String) {
-        addDisposable(noAuthService.login(phone, password, Const.ID_APP, FirebaseInstanceId.getInstance().token ?: "")
+        addDisposable(noAuthService.login(phone, password, Const.ID_APP, FirebaseInstanceId.getInstance().token
+                ?: "")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<User>() {
                     override fun success(data: User?) {
@@ -41,9 +43,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         UserDataManager.currentUserName = data?.name ?: ""
                         UserDataManager.currentUserAvatar = data?.image ?: ""
                         UserDataManager.currentType = data?.type ?: ""
-                        if (data?.type ?: "" == "Quản trị viên") {
-                            loadPermisstion()
-                        }
+
                         loginSuccess.postValue(data)
                     }
 
@@ -51,24 +51,6 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
-    }
-
-    private fun loadPermisstion() {
-        val fields = mutableMapOf<String, Any>()
-
-        addDisposable(authService.getAccountPermissions(fields)
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
-                    override fun success(data: MutableList<String>?) {
-                        UserDataManager.listPermission = Toolbox.gson.toJson(data)
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-                })
-        )
-
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String,

@@ -17,4 +17,6 @@ class AdministratorPermissions {
     @SerializedName("sub_menu")
     @Expose
     var subMenu: List<AdministratorSubMenu>? = null
+
+    var isSelected: Boolean = false
 }

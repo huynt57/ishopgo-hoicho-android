@@ -76,7 +76,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Xem điểm bán của tôi"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_REGISTER_BOOTH, R.drawable.ic_register, "Đăng ký gian hàng"))
 
-            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+            val listPermission = Const.listPermission
 
             if (listPermission.isNotEmpty()) {
                 for (i in listPermission.indices) {
@@ -94,16 +94,8 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }
 
                 for (i in listPermission.indices) {
-                    if (Const.Permission.MANAGER_BRAND == listPermission[i]
-                            || Const.Permission.DELETE_BRAND == listPermission[i]) {
+                    if (Const.Permission.MANAGER_BRAND == listPermission[i]) {
                         items.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
-                        break
-                    }
-                }
-
-                for (i in listPermission.indices) {
-                    if (Const.Permission.LIST_PRODUCT == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
                         break
                     }
                 }

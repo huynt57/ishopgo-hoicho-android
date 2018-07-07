@@ -185,12 +185,19 @@ class AdministratorAddFragment : BaseFragment() {
                                 for (k in it[i].subMenu!!.indices)
                                     if (it[i].subMenu!![k].role != null && it[i].subMenu!![k].role!!.isNotEmpty()) {
                                         for (s in it[i].subMenu!![k].role!!.indices)
-                                            if (it[i].subMenu!![k].role!![s].key == listPermission[j]) it[i].subMenu!![k].role!![s].isSelected = true
+                                            if (it[i].subMenu!![k].role!![s].key == listPermission[j]) {
+                                                it[i].subMenu!![k].role!![s].isSelected = true
+                                                it[i].subMenu!![k].isSelected = true
+                                                it[i].isSelected = true
+                                            }
                                     }
 
                             } else if (it[i].role != null && it[i].role!!.isNotEmpty()) {
                                 for (s in it[i].role!!.indices)
-                                    if (it[i].role!![s].key == listPermission[j]) it[i].role!![s].isSelected = true
+                                    if (it[i].role!![s].key == listPermission[j]) {
+                                        it[i].role!![s].isSelected = true
+                                        it[i].isSelected = true
+                                    }
                             }
                         }
                     }

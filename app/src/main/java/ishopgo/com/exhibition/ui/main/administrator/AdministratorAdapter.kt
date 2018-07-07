@@ -18,7 +18,7 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<Administrator> {
-        return Holder(v, AdministatorConverter())
+        return Holder(v, AdministratorConverter())
     }
 
     override fun onBindViewHolder(holder: ViewHolder<Administrator>, position: Int) {
@@ -28,7 +28,7 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
         }
     }
 
-    inner class Holder(v: View, private val converter: Converter<Administrator, AdministatorProvider>) : BaseRecyclerViewAdapter.ViewHolder<Administrator>(v) {
+    inner class Holder(v: View, private val converter: Converter<Administrator, AdministratorProvider>) : BaseRecyclerViewAdapter.ViewHolder<Administrator>(v) {
 
         override fun populate(data: Administrator) {
             super.populate(data)
@@ -48,16 +48,16 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
         }
     }
 
-    interface AdministatorProvider {
+    interface AdministratorProvider {
         fun provideName(): String
         fun providePhone(): String
         fun provideAvatar(): String
     }
 
-    class AdministatorConverter : Converter<Administrator, AdministatorProvider> {
+    class AdministratorConverter : Converter<Administrator, AdministratorProvider> {
 
-        override fun convert(from: Administrator): AdministatorProvider {
-            return object : AdministatorProvider {
+        override fun convert(from: Administrator): AdministratorProvider {
+            return object : AdministratorProvider {
                 override fun providePhone(): String {
                     return from.phone?.asPhone() ?: ""
                 }

@@ -694,7 +694,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun setupProductProcess(context: Context) {
-        productProcessAdapter.listener = object: ClickableAdapter.BaseAdapterAction<ProductProcess> {
+        productProcessAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductProcess> {
             override fun click(position: Int, data: ProductProcess, code: Int) {
                 openProcessDetail(data)
             }
@@ -711,7 +711,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun openProcessDetail(data: ProductProcess) {
         val intent = Intent(requireContext(), FullDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title?: "")
+        intent.putExtra(Const.TransferKey.EXTRA_TITLE, data.title ?: "")
         intent.putExtra(Const.TransferKey.EXTRA_JSON, data.description ?: "")
         startActivity(intent)
     }

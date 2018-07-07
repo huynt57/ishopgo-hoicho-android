@@ -108,6 +108,8 @@ object Const {
             "#926C00"
     )
 
+    var listPermission = mutableListOf<String>()
+
     object Permission {
         const val ADD_BRANCH = "add-branch"
         const val ADD_BRAND = "add-brand"

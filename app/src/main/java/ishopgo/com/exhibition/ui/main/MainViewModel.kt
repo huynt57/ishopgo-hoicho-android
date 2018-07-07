@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -88,6 +89,23 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 })
         )
 
+    }
+
+    fun loadPermission() {
+        val fields = mutableMapOf<String, Any>()
+
+        addDisposable(authService.getAccountPermissions(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
+                    override fun success(data: MutableList<String>?) {
+                        Const.listPermission = data ?: mutableListOf()
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     var openSearchInCategory = MutableLiveData<Category>()

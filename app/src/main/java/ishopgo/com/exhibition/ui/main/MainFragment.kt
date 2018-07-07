@@ -125,6 +125,10 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 }
             }
         })
+
+        if (UserDataManager.currentType == "Quản trị viên") {
+            viewModel.loadPermission()
+        }
     }
 
     override fun onResume() {

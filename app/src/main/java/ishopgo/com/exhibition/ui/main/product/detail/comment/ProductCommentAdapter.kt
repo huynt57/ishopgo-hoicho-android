@@ -63,7 +63,7 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
                 view_rating.rating = convert.provideRate()
 
                 if (convert.providerLastComment() != null) {
-                    constraintLayout_child.visibility = View.VISIBLE
+                    constraintLayout_child.visibility = View.GONE
                     val child = convert.providerLastComment()!!
                     Glide.with(this).load(child.accountImage)
                             .apply(RequestOptions.circleCropTransform()

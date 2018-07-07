@@ -56,8 +56,11 @@ class ProductCommentViewModel : BaseListViewModel<List<ProductComment>>(), AppCo
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("content", content)
-                .addFormDataPart("parent_id", parentId.toString())
                 .addFormDataPart("rate", rating.toString())
+
+        if (parentId != -1L) {
+            builder.addFormDataPart("parent_id", parentId.toString())
+        }
 
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {

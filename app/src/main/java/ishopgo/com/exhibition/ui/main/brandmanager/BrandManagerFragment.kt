@@ -48,7 +48,7 @@ class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
                 when (code) {
                     BRAND_EDIT_CLICK -> {
                         if (UserDataManager.currentType == "Quản trị viên") {
-                            val listPermission = Toolbox.gson.fromJson<ArrayList<String>>(UserDataManager.listPermission, object : TypeToken<ArrayList<String>>() {}.type)
+                            val listPermission = Const.listPermission
 
                             if (listPermission.isNotEmpty())
                                 for (i in listPermission.indices)

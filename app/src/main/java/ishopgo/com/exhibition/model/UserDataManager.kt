@@ -20,7 +20,6 @@ object UserDataManager {
     private const val KEY_USER_TYPE = "type"
     private const val KEY_USER_SURVEY = "survey"
     private const val KEY_USER_SURVEY_IS_MANDATORY = "survey_mandatory"
-    private const val KEY_LIST_PERMISSION = "list_permission"
 
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")
@@ -55,10 +54,6 @@ object UserDataManager {
     var skipUpdate: Boolean
         get() = pref.getBoolean(KEY_SKIP_UPDATE, false)
         set(value) = pref.edit().putBoolean(KEY_SKIP_UPDATE, value).apply()
-    var listPermission: String
-        get() = pref.getString(KEY_LIST_PERMISSION, "")
-        set(value) = pref.edit().putString(KEY_LIST_PERMISSION, value).apply()
-
 
     var displayWidth: Int = 0
     var displayHeight: Int = 0
@@ -81,6 +76,8 @@ object UserDataManager {
     }
 
     fun deleteUserInfo() {
+        Const.listPermission.clear()
+
         val edit = pref.edit()
         edit.remove(KEY_ACCESS_TOKEN)
         edit.remove(KEY_USER_ID)
@@ -91,8 +88,6 @@ object UserDataManager {
         edit.remove(KEY_USER_NAME)
         edit.remove(KEY_USER_TYPE)
         edit.remove(KEY_USER_SURVEY)
-        edit.remove(KEY_LIST_PERMISSION)
         edit.apply()
     }
-
 }
