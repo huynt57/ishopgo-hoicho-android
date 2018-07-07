@@ -14,6 +14,7 @@
         android:gravity="center"
         android:padding="4dp"
         android:singleLine="true"
+        android:visibility="gone"
         android:textColor="@color/colorPureWhite"
         tools:text="10 ket qua"
         />

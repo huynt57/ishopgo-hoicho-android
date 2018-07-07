@@ -52,7 +52,7 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
             view_search_field.hideKeyboard()
 
             val currentKeyword = view_search_field.text.toString()
-            if (currentKeyword.isBlank())
+            if (currentKeyword.isEmpty())
                 dismissSearch()
             else {
                 view_search_field.setText("")

@@ -546,7 +546,7 @@ class HomeFragment : BaseFragment() {
         newestProductAdapter.addAll(dummy)
 
         view_list_newest_products.adapter = newestProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_newest_products.layoutManager = layoutManager
         view_list_newest_products.isNestedScrollingEnabled = false
         view_list_newest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -563,7 +563,7 @@ class HomeFragment : BaseFragment() {
         promotionProductAdapter.addAll(dummy)
 
         view_list_promotion_products.adapter = promotionProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_promotion_products.layoutManager = layoutManager
         view_list_promotion_products.isNestedScrollingEnabled = false
         view_list_promotion_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
