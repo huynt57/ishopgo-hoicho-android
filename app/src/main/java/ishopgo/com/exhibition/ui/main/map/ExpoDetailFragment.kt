@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.map
 
-
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -33,13 +32,6 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_expo_map.*
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ExpoDetailFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
- */
 class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
 
     override fun populateData(data: List<Kiosk>) {
