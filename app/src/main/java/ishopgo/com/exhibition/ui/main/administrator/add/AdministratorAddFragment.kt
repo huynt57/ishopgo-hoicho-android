@@ -181,21 +181,30 @@ class AdministratorAddFragment : BaseFragment() {
                 else {
                     for (i in it.indices) {
                         for (j in listPermission.indices) {
-                            if (it[i].subMenu != null && it[i].subMenu!!.isNotEmpty()) {
-                                for (k in it[i].subMenu!!.indices)
-                                    if (it[i].subMenu!![k].role != null && it[i].subMenu!![k].role!!.isNotEmpty()) {
-                                        for (s in it[i].subMenu!![k].role!!.indices)
-                                            if (it[i].subMenu!![k].role!![s].key == listPermission[j]) {
-                                                it[i].subMenu!![k].role!![s].isSelected = true
-                                                it[i].subMenu!![k].isSelected = true
+                            if (it[i].subMenu?.isNotEmpty() == true) {
+
+                                val subMenu = it[i].subMenu!!
+
+                                for (k in subMenu.indices)
+                                    if (subMenu[k].role?.isNotEmpty() == true) {
+
+                                        val role = subMenu[k].role!!
+
+                                        for (s in role.indices)
+                                            if (role[s].key == listPermission[j]) {
+                                                role[s].isSelected = true
+                                                subMenu[k].isSelected = true
                                                 it[i].isSelected = true
                                             }
                                     }
 
-                            } else if (it[i].role != null && it[i].role!!.isNotEmpty()) {
-                                for (s in it[i].role!!.indices)
-                                    if (it[i].role!![s].key == listPermission[j]) {
-                                        it[i].role!![s].isSelected = true
+                            } else if (it[i].role?.isNotEmpty() == true) {
+
+                                val role = it[i].role!!
+
+                                for (s in role.indices)
+                                    if (role[s].key == listPermission[j]) {
+                                        role[s].isSelected = true
                                         it[i].isSelected = true
                                     }
                             }

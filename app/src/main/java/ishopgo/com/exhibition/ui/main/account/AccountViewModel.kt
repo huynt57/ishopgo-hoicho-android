@@ -22,6 +22,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     var menu = MutableLiveData<List<AccountMenuItem>>()
+    var menuAdministrator = MutableLiveData<List<AccountMenuItem>>()
     var changePassword = MutableLiveData<Boolean>()
     var getOTP = MutableLiveData<Boolean>()
 
@@ -76,50 +77,54 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Xem điểm bán của tôi"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_REGISTER_BOOTH, R.drawable.ic_register, "Đăng ký gian hàng"))
 
+            val itemsAdmninistrator = mutableListOf<AccountMenuItem>()
+
             val listPermission = Const.listPermission
 
             if (listPermission.isNotEmpty()) {
                 for (i in listPermission.indices) {
                     if (Const.Permission.MANAGER_MEMBER == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_MEMBER_MANAGER, R.drawable.ic_customer_white, "Quản lý thành viên"))
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_MEMBER_MANAGER, R.drawable.ic_customer_white, "Quản lý thành viên"))
                         break
                     }
                 }
                 for (i in listPermission.indices) {
                     if (Const.Permission.MANAGER_PROVIDER == listPermission[i]
                             || Const.Permission.DELETE_PROVIDER == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_BOOTH_MANAGER, R.drawable.ic_store_white, "Quản lý gian hàng"))
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_BOOTH_MANAGER, R.drawable.ic_store_white, "Quản lý gian hàng"))
                         break
                     }
                 }
 
                 for (i in listPermission.indices) {
                     if (Const.Permission.MANAGER_BRAND == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
                         break
                     }
                 }
 
                 for (i in listPermission.indices) {
                     if (Const.Permission.LIST_PRODUCT == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
                         break
                     }
                 }
 
                 for (i in listPermission.indices) {
                     if (Const.Permission.EXPO_LIST_TICKET == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET_MANAGER, R.drawable.ic_sight_seeing, "Quản lý vé tham quan"))
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET_MANAGER, R.drawable.ic_sight_seeing, "Quản lý vé tham quan"))
                         break
                     }
                 }
 
                 for (i in listPermission.indices) {
                     if (Const.Permission.EXPO_FAIR_LIST == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
                         break
                     }
                 }
+
+                menuAdministrator.postValue(itemsAdmninistrator)
             }
         }
 

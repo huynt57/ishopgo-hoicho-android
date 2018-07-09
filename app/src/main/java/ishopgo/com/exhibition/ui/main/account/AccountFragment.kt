@@ -45,6 +45,7 @@ import kotlinx.android.synthetic.main.fragment_account.*
 class AccountFragment : BaseFragment() {
 
     private val adapter = AccountMenuAdapter()
+    private val adapterAdministrator = AccountMenuAdapter()
     private lateinit var viewModel: AccountViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -94,7 +95,7 @@ class AccountFragment : BaseFragment() {
 
         view_menu.visibility = View.VISIBLE
 
-        if (UserDataManager.currentType == "Quản trị viên") view_menu.setLabel("Quản trị viên") else view_menu.setLabel("Thành viên")
+        view_menu.setLabel("Thành viên")
 
         val list = view_menu.getList()
         val lm = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
@@ -110,6 +111,24 @@ class AccountFragment : BaseFragment() {
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<AccountMenuItem> {
             override fun click(position: Int, data: AccountMenuItem, code: Int) {
                 handleClick(data)
+            }
+        }
+
+        if (UserDataManager.currentType == "Quản trị viên") {
+            view_menu_administrator.visibility = View.VISIBLE
+            view_menu_administrator.setLabel("Quản trị viên")
+
+            val listAdministrator = view_menu_administrator.getList()
+            val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+            layoutManager.isAutoMeasureEnabled = true
+            listAdministrator.layoutManager = layoutManager
+            listAdministrator.isNestedScrollingEnabled = false
+            listAdministrator.adapter = adapterAdministrator
+
+            adapterAdministrator.listener = object : ClickableAdapter.BaseAdapterAction<AccountMenuItem> {
+                override fun click(position: Int, data: AccountMenuItem, code: Int) {
+                    handleClick(data)
+                }
             }
         }
     }
@@ -379,6 +398,12 @@ class AccountFragment : BaseFragment() {
         viewModel.menu.observe(this, Observer { m ->
             m?.let {
                 adapter.replaceAll(it)
+            }
+        })
+
+        viewModel.menuAdministrator.observe(this, Observer { m ->
+            m?.let {
+                adapterAdministrator.replaceAll(it)
             }
         })
         viewModel.loggedOut.observe(this, Observer { m ->
