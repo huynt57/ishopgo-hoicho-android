@@ -91,10 +91,10 @@ class ExpoMapConfigFragment : BaseActionBarFragment() {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
-                    ExposFragment.newInstance(ExposRequest.TYPE_COMPLETED)
+                    ExposFragment.newInstance(ExposRequest.TYPE_CURRENT)
                 }
                 1 -> {
-                    ExposFragment.newInstance(ExposRequest.TYPE_CURRENT)
+                    ExposFragment.newInstance(ExposRequest.TYPE_COMPLETED)
                 }
                 2 -> {
                     ExposFragment.newInstance(ExposRequest.TYPE_GOING)
