@@ -4,6 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.ExposRequest
+import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
@@ -15,6 +17,8 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     companion object {
         const val DEFAULT_MAX_HOME_PRODUCT_ITEMS = 10
+        const val TYPE_CURRENT = 0
+        const val TYPE_GOING = 1
     }
 
     override fun inject(appComponent: AppComponent) {
@@ -245,4 +249,29 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var exposFair = MutableLiveData<List<ExpoConfig>>()
+    var exposFairGoing = MutableLiveData<Boolean>()
+    var exposFairCurrent = MutableLiveData<Boolean>()
+
+    fun loadExpoFair(params: Request) {
+        if (params is ExposRequest) {
+            addDisposable(noAuthService.getExpos(params.toMap())
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<List<ExpoConfig>>() {
+                        override fun success(data: List<ExpoConfig>?) {
+                            if (params.time == TYPE_GOING)
+                                exposFairGoing.postValue(true)
+                            else if (params.time == TYPE_CURRENT)
+                                exposFairCurrent.postValue(true)
+
+                            exposFair.postValue(data ?: listOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
+    }
 }
