@@ -1,12 +1,14 @@
 package ishopgo.com.exhibition.ui.main.home
 
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.ExposRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
@@ -255,22 +257,36 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun loadExpoFair(params: Request) {
         if (params is ExposRequest) {
-            addDisposable(noAuthService.getExpos(params.toMap())
-                    .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<ExpoConfig>>() {
-                        override fun success(data: List<ExpoConfig>?) {
-                            if (params.time == TYPE_GOING)
-                                exposFairGoing.postValue(true)
-                            else if (params.time == TYPE_CURRENT)
-                                exposFairCurrent.postValue(true)
+            val requestGoing = ExposRequest()
+            requestGoing.limit = Const.PAGE_LIMIT
+            requestGoing.offset = 0
+            requestGoing.time = TYPE_GOING
+            val goingEvent = noAuthService.getExpos(requestGoing.toMap())
 
-                            exposFair.postValue(data ?: listOf())
-                        }
+            val requestCurrent = ExposRequest()
+            requestCurrent.limit = Const.PAGE_LIMIT
+            requestCurrent.offset = 0
+            requestCurrent.time = TYPE_CURRENT
+            val currentEvent = noAuthService.getExpos(requestCurrent.toMap())
 
-                        override fun failure(status: Int, message: String) {
-                            resolveError(status, message)
+            addDisposable(
+                    goingEvent.flatMap {
+                        if (it.data?.isEmpty() == true) {
+                            return@flatMap currentEvent
+                        } else {
+                            return@flatMap Single.just(it)
                         }
-                    })
+                    }
+                            .subscribeOn(Schedulers.single())
+                            .subscribeWith(object : BaseSingleObserver<List<ExpoConfig>>() {
+                                override fun success(data: List<ExpoConfig>?) {
+                                    exposFair.postValue(data ?: listOf())
+                                }
+
+                                override fun failure(status: Int, message: String) {
+                                    resolveError(status, message)
+                                }
+                            })
             )
         }
     }

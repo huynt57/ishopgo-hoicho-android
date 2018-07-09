@@ -174,40 +174,15 @@ class HomeFragment : BaseFragment() {
             }
         })
 
-        viewModel.exposFairGoing.observe(this, Observer { b ->
-            b?.let {
-                if (it) {
-                    viewModel.exposFair.observe(this, Observer { p ->
-                        p?.let {
-                            if (it.isNotEmpty()) {
-                                val listExpoConfig = mutableListOf<ExpoConfig>()
-                                listExpoConfig.add(it[0])
-                                expoConfigAdapter.replaceAll(listExpoConfig)
-                                container_expo.visibility = View.VISIBLE
-                            } else {
-                                firtsLoadExpoFair(TYPE_CURRENT)
-                            }
-                        }
-                    })
-                }
-            }
-        })
-
-        viewModel.exposFairCurrent.observe(this, Observer { b ->
-            b?.let {
-                if (it) {
-                    viewModel.exposFair.observe(this, Observer { p ->
-                        p?.let {
-                            if (it.isNotEmpty()) {
-                                val listExpoConfig = mutableListOf<ExpoConfig>()
-                                listExpoConfig.add(it[0])
-                                expoConfigAdapter.replaceAll(listExpoConfig)
-                                container_expo.visibility = View.VISIBLE
-                            } else {
-                                container_expo.visibility = View.GONE
-                            }
-                        }
-                    })
+        viewModel.exposFair.observe(this, Observer { p ->
+            p?.let {
+                if (it.isNotEmpty()) {
+                    val listExpoConfig = mutableListOf<ExpoConfig>()
+                    listExpoConfig.add(it[0])
+                    expoConfigAdapter.replaceAll(listExpoConfig)
+                    container_expo.visibility = View.VISIBLE
+                } else {
+                    container_expo.visibility = View.GONE
                 }
             }
         })
