@@ -614,9 +614,11 @@ class HomeFragment : BaseFragment() {
 
         expoConfigAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoConfig> {
             override fun click(position: Int, data: ExpoConfig, code: Int) {
-                val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                startActivity(intent)
+                if (data.id != -1L) {
+                    val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                    startActivity(intent)
+                }
             }
         }
 
