@@ -33,7 +33,7 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, PopularFragment())
+                .replace(R.id.view_main_content, PopularFragment.newInstance(Bundle()), "PopularFragment")
                 .commit()
     }
 
@@ -50,6 +50,14 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
+        }
+        toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(PopularFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as PopularFragment
+                shareFragment.openFilterFragment()
+            }
         }
     }
 

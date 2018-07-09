@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.popular
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -10,8 +11,12 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.FilterProduct
+import ishopgo.com.exhibition.ui.FilterProduct.FilterProductViewModel
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -26,6 +31,18 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PopularFragment : BaseListFragment<List<Product>, Product>() {
+    private lateinit var filterViewModel: FilterProductViewModel
+    private var filterProduct = FilterProduct()
+
+    companion object {
+        const val TAG = "PopularFragment"
+        fun newInstance(params: Bundle): PopularFragment {
+            val fragment = PopularFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
@@ -52,17 +69,23 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
 
     override fun firstLoad() {
         super.firstLoad()
-        val loadMore = LoadMoreRequest()
+        val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
+        loadMore.sort_by = filterProduct.sort_by
+        loadMore.sort_type = filterProduct.sort_type
+        loadMore.type_filter = filterProduct.filter
         viewModel.loadData(loadMore)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequest()
+        val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
+        loadMore.sort_by = filterProduct.sort_by
+        loadMore.sort_type = filterProduct.sort_type
+        loadMore.type_filter = filterProduct.filter
         viewModel.loadData(loadMore)
     }
 
@@ -83,6 +106,23 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
         }
 
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        filterViewModel.getDataFilter.observe(this, Observer { p ->
+            p?.let {
+                filterProduct = it
+                firstLoad()
+            }
+        })
+    }
+
+    fun openFilterFragment() {
+        filterViewModel.showFragmentFilter()
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {
