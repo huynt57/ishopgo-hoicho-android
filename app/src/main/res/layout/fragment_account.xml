@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:descendantFocusability="blocksDescendants"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
@@ -25,7 +24,7 @@
                 android:layout_height="40dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/avatar_placeholder"/>
+                app:srcCompat="@drawable/avatar_placeholder" />
 
             <TextView
                 android:id="@+id/view_name"
@@ -38,7 +37,7 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_avatar"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Vương Xuân Hồng"/>
+                tools:text="Vương Xuân Hồng" />
 
             <TextView
                 android:id="@+id/view_introduce"
@@ -53,21 +52,24 @@
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/view_avatar"
                 app:layout_constraintTop_toBottomOf="@+id/view_name"
-                tools:text="khách tham quan - 0974427143"/>
+                tools:text="khách tham quan - 0974427143" />
 
         </android.support.constraint.ConstraintLayout>
 
         <View
             style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent"
-            />
+            android:layout_width="match_parent" />
 
         <ishopgo.com.exhibition.ui.widget.HeaderRecyclerView
+            android:id="@+id/view_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ishopgo.com.exhibition.ui.widget.HeaderRecyclerView
+            android:id="@+id/view_menu_administrator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/view_menu"
-            />
-        <!--<include layout="@layout/content_swipable_recyclerview"/>-->
+            android:visibility="gone" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
