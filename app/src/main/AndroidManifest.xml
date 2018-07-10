@@ -62,7 +62,7 @@
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider224784164969506"
+            android:authorities="@string/fb_provider_id"
             android:exported="true" />
 
         <activity
@@ -276,7 +276,7 @@
 
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="ishopgo.com.exhibition.fileprovider"
+            android:authorities="@string/file_provider_authority"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

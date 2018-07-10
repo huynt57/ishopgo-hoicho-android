@@ -65,6 +65,40 @@ android {
         }
     }
 
+    flavorDimensions "default"
+
+    productFlavors {
+        hangviet {
+            applicationId "ishopgo.com.exhibition"
+            resValue "string", "app_id", "hoichone"
+            resValue "string", "app_name", "Hàng Việt 360"
+            resValue "string", "app_host", "hangviet360.com"
+            resValue "string", "app_protocol", "http"
+            resValue "string", "host_deeplink", "hangviet360.com"
+            resValue "string", "file_provider_authority", "ishopgo.com.exhibition.fileprovider"
+            resValue "string", "external_file_path", "Android/data/ishopgo.com.exhibition/files/Pictures"
+
+            resValue "string", "facebook_app_id", "224784164969506"
+            resValue "string", "fb_login_protocol_scheme", "fb224784164969506"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider224784164969506"
+
+        }
+        agri {
+            applicationId "ishopgo.com.agri"
+            resValue "string", "app_id", "1839d59174da18dde3d19118052f6fb0"
+            resValue "string", "app_name", "Agri 360"
+            resValue "string", "app_host", "agri360.vn"
+            resValue "string", "app_protocol", "http"
+            resValue "string", "host_deeplink", "agri360.vn"
+            resValue "string", "file_provider_authority", "ishopgo.com.agri.fileprovider"
+            resValue "string", "external_file_path", "Android/data/ishopgo.com.agri/files/Pictures"
+
+            resValue "string", "facebook_app_id", "1717430191705121"
+            resValue "string", "fb_login_protocol_scheme", "fb1717430191705121"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1717430191705121"
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/rxjava.properties'
     }
