@@ -25,6 +25,8 @@ import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.login.require.RequireLoginFragment
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
@@ -65,6 +67,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var pagerAdapter: MainPagerAdapter
+    private lateinit var filterViewModel: FilterProductViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -73,7 +76,19 @@ class MainFragment : BaseFragment(), BackpressConsumable {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+        filterViewModel.showFragmentFilter.observe(this, Observer {
+            val extra = Bundle()
+            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                    .add(R.id.content_main_container, FilterProductFragment.newInstance(extra))
+                    .addToBackStack(FilterProductFragment.TAG)
+                    .commit()
+        })
+
         viewModel = obtainViewModel(MainViewModel::class.java, true)
+
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.isSearchEnable.observe(this, Observer {
             if (it == true) {

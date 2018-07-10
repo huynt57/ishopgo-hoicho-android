@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.FilterProduct
+package ishopgo.com.exhibition.ui.filterproduct
 
 import android.arch.lifecycle.MutableLiveData
 import ishopgo.com.exhibition.app.AppComponent
@@ -10,10 +10,10 @@ class FilterProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var showFragmentFilter = MutableLiveData<Boolean>()
+    var showFragmentFilter = MutableLiveData<FilterProduct>()
 
-    fun showFragmentFilter() {
-        showFragmentFilter.postValue(true)
+    fun showFragmentFilter(filterProduct: FilterProduct) {
+        showFragmentFilter.postValue(filterProduct)
     }
 
     var getDataFilter = MutableLiveData<FilterProduct>()

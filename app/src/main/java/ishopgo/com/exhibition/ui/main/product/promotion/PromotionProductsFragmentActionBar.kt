@@ -1,17 +1,21 @@
 package ishopgo.com.exhibition.ui.main.product.promotion
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
+import ishopgo.com.exhibition.ui.main.product.popular.PopularFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PromotionProductsFragmentActionBar : BaseActionBarFragment() {
+    private lateinit var filterViewModel: FilterProductViewModel
 
     companion object {
 
@@ -33,7 +37,7 @@ class PromotionProductsFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, PromotionProductsFragment())
+                .replace(R.id.view_main_content, PromotionProductsFragment.newInstance(Bundle()), "PromotionProductsFragment")
                 .commit()
     }
 
@@ -51,6 +55,26 @@ class PromotionProductsFragmentActionBar : BaseActionBarFragment() {
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
         }
+
+        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(PromotionProductsFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as PromotionProductsFragment
+                shareFragment.openFilterFragment()
+            }
+        }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+
+        filterViewModel.getDataFilter.observe(this, Observer { c ->
+            c?.let {
+                val count = (it.filter?.size ?: 0) + 1
+                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
+            }
+        })
+    }
 }

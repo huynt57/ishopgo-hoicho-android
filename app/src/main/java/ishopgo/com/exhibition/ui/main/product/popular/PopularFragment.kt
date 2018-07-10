@@ -10,13 +10,11 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterProduct
-import ishopgo.com.exhibition.ui.FilterProduct.FilterProductViewModel
-import ishopgo.com.exhibition.ui.base.BackpressConsumable
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -72,9 +70,9 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
         val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
-        loadMore.sort_by = filterProduct.sort_by
-        loadMore.sort_type = filterProduct.sort_type
-        loadMore.type_filter = filterProduct.filter
+        loadMore.sort_by = filterProduct.sort_by ?: "name"
+        loadMore.sort_type = filterProduct.sort_type ?: "asc"
+        loadMore.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadData(loadMore)
     }
 
@@ -83,9 +81,9 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
         val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-        loadMore.sort_by = filterProduct.sort_by
-        loadMore.sort_type = filterProduct.sort_type
-        loadMore.type_filter = filterProduct.filter
+        loadMore.sort_by = filterProduct.sort_by ?: "name"
+        loadMore.sort_type = filterProduct.sort_type ?: "asc"
+        loadMore.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadData(loadMore)
     }
 
@@ -122,7 +120,7 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
     }
 
     fun openFilterFragment() {
-        filterViewModel.showFragmentFilter()
+        filterViewModel.showFragmentFilter(filterProduct)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {

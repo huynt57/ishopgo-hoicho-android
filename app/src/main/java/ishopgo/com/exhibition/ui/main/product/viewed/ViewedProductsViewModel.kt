@@ -5,6 +5,7 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.ViewedProductsRequest
+import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
@@ -17,6 +18,34 @@ class ViewedProductsViewModel : BaseListViewModel<List<Product>>(), AppComponent
             fields["offset"] = params.offset
             if (params.productId != -1L)
                 fields["product_id"] = params.productId
+
+            addDisposable(noAuthService.getViewedProducts(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<List<Product>>() {
+                        override fun success(data: List<Product>?) {
+                            dataReturned.postValue(data ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+
+
+                    })
+            )
+        } else if (params is FilterProductRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            fields["sort_by"] = params.sort_by
+            fields["sort_type"] = params.sort_type
+
+            if (params.type_filter.isNotEmpty()) {
+                val listType = params.type_filter
+                for (i in listType.indices)
+                    fields["type_filter[$i]"] = listType[i]
+
+            }
 
             addDisposable(noAuthService.getViewedProducts(fields)
                     .subscribeOn(Schedulers.single())

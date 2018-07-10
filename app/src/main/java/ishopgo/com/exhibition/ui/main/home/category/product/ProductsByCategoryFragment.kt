@@ -16,9 +16,11 @@ import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -52,7 +54,8 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     private lateinit var category: Category
     private lateinit var mainViewModel: MainViewModel
-    private lateinit var scrollToEndScroller: RecyclerView.SmoothScroller
+    private lateinit var filterViewModel: FilterProductViewModel
+    private var filterProduct = FilterProduct()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -169,13 +172,28 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
         titleView.setOnClickListener { mainViewModel.searchInCategory(category) }
         titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
+
+        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.setRightButtonClickListener {
+            filterViewModel.showFragmentFilter(filterProduct)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        filterViewModel.getDataFilter.observe(this, Observer { p ->
+            p?.let {
+                val count = (it.filter?.size ?: 0) + 1
+                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
 
+                filterProduct = it
+                firstLoad()
+            }
+        })
         viewModel = obtainViewModel(ProductsByCategoryViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.childCategories.observe(this, Observer { c ->
@@ -215,6 +233,9 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
         request.categoryId = category.id
+        request.sort_by = filterProduct.sort_by ?: "name"
+        request.sort_type = filterProduct.sort_type ?: "asc"
+        request.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadProductsByCategory(request)
     }
 
@@ -226,6 +247,9 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
         request.categoryId = category.id
+        request.sort_by = filterProduct.sort_by ?: "name"
+        request.sort_type = filterProduct.sort_type ?: "asc"
+        request.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadProductsByCategory(request)
     }
 
