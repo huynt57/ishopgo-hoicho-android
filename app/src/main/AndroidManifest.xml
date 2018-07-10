@@ -404,11 +404,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="hangviet360.com"
-                    android:scheme="http" />
-                <data
-                    android:host="hangviet360.com"
-                    android:scheme="https" />
+                    android:host="@string/app_host"
+                    android:scheme="@string/app_protocol" />
             </intent-filter>
         </activity>
         <activity

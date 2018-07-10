@@ -1,4 +1,7 @@
 <resources>
+    <string name="app_host">hangviet360.com</string>
+    <string name="app_protocol">http</string>
+
     <string name="facebook_app_id">224784164969506</string>
     <string name="fb_login_protocol_scheme">fb224784164969506</string>
     <string name="app_name">Hàng Việt 360</string>
