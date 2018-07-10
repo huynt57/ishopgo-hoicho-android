@@ -81,7 +81,7 @@ open class BaseActivity : AppCompatActivity() {
 
         val checkingViewModel = obtainViewModel(VersionCheckingViewModel::class.java)
         checkingViewModel
-                .versionChecking(FirebaseDatabase.getInstance().getReference("expo/app_version/android"))
+                .versionChecking(FirebaseDatabase.getInstance().getReference(getString(R.string.firebase_app_version_ref)))
                 .observe(this, Observer { v ->
                     v?.let {
                         val message = it.child("message")?.getValue(String::class.java) ?: ""
@@ -124,14 +124,15 @@ open class BaseActivity : AppCompatActivity() {
                     .content(message)
                     .positiveText("Cập nhật")
                     .onPositive { dialog, _ ->
-                        var intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=hàng%20việt%20360%20ishopgo"))
+                        val keyword = getString(R.string.keyword_store_search)
+                        var intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://search?q=$keyword"))
                         if (intent.resolveActivity(packageManager) != null) {
                             dialog.dismiss()
                             startActivity(intent)
                             finish()
                         } else {
                             dialog.dismiss()
-                            intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=hàng%20việt%20360%20ishopgo&c=apps"))
+                            intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/search?q=$keyword&c=apps"))
                             startActivity(intent)
                             finish()
                         }

@@ -140,6 +140,58 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288608153817:android:49d64b51bea13e5c",
+        "android_client_info": {
+          "package_name": "ishopgo.com.vietbuild"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "288608153817-euv85m9u4u804o9ec7di08ngdgs6fe2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ishopgo.com.vietbuild",
+            "certificate_hash": "0ac2d33415a5e2d6b25ac43911c66285bd53bc82"
+          }
+        },
+        {
+          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "288608153817-ouq657cc4llrt6khk5ho3p2h5v1tdcb3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ishopgo.vietbuildexpo",
+                "app_store_id": "1409570738"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
