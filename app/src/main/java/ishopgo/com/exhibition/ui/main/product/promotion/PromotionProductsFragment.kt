@@ -9,6 +9,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.FilterProductRequest
@@ -119,10 +120,6 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
                 firstLoad()
             }
         })
-    }
-
-    fun openFilterFragment() {
-        filterViewModel.showFragmentFilter(filterProduct)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {

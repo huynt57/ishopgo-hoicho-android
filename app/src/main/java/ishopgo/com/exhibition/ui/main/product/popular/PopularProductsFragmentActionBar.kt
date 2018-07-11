@@ -56,11 +56,7 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         }
         toolbar.rightButton(R.drawable.ic_filter_24dp)
         toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(PopularFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as PopularFragment
-                shareFragment.openFilterFragment()
-            }
+            Navigation.findNavController(it).navigate(R.id.action_promotionProductsFragmentActionBar_to_filterFragment)
         }
     }
 

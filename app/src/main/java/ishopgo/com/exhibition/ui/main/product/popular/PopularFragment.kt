@@ -119,10 +119,6 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
         })
     }
 
-    fun openFilterFragment() {
-        filterViewModel.showFragmentFilter(filterProduct)
-    }
-
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {
         return obtainViewModel(PopularProductsViewModel::class.java, false)
     }

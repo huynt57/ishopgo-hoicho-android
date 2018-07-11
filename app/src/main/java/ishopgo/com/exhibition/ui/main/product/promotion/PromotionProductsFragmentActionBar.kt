@@ -58,11 +58,7 @@ class PromotionProductsFragmentActionBar : BaseActionBarFragment() {
 
         toolbar.rightButton(R.drawable.ic_filter_24dp)
         toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(PromotionProductsFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as PromotionProductsFragment
-                shareFragment.openFilterFragment()
-            }
+            Navigation.findNavController(it).navigate(R.id.action_promotionProductsFragmentActionBar_to_filterFragment)
         }
     }
 
