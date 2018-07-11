@@ -70,7 +70,7 @@ class ProductDetail : IdentityData() {
     var wholesalePriceTo: Long = 0
     @SerializedName("wholesale_count_product")
     @Expose
-    var wholesaleCountProduct: Int = 0
+    var wholesaleCountProduct: String? = null
     @SerializedName("view_wholesale")
     @Expose
     var viewWholesale: Int? = null
