@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.ui.base.BaseActivity
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.detail.QuestionMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailActivity
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 
 /**
@@ -22,6 +23,7 @@ class DeeplinkHandlerActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate: intent = [$intent]")
 
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(intent)
@@ -61,7 +63,7 @@ class DeeplinkHandlerActivity : BaseActivity() {
                             }
                             productId != null && productId.isNotBlank() -> {
                                 Log.d("hong", "nhan dc productId= $productId")
-                                val intent = Intent(this, ExpoDetailActivity::class.java)
+                                val intent = Intent(this, ProductDetailActivity::class.java)
                                 intent.putExtra(Const.TransferKey.EXTRA_ID, productId.toLong())
                                 startActivity(intent)
                                 finish()

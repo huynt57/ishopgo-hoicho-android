@@ -204,12 +204,6 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 //            toast("Không hợp lệ")
     }
 
-    private fun openShopDetail(shopId: Long) {
-        val intent = Intent(context, ShopDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
-        startActivity(intent)
-    }
-
     override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {
 //        Log.d(TAG, "    possibleResultPoints: resultPoints = [${resultPoints}]")
     }
