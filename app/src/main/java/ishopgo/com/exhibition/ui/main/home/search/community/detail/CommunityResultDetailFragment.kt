@@ -285,7 +285,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
 
             if (data.product == null && data.images == null) {
                 val shareContent = ShareLinkContent.Builder()
-                        .setContentUrl(Uri.parse("http://hangviet360.com/cong-dong"))
+                        .setContentUrl(Uri.parse(String.format("%s://%s/cong-dong", getString(R.string.app_protocol), getString(R.string.app_host))))
                         .setQuote(data.content)
                         .build()
 

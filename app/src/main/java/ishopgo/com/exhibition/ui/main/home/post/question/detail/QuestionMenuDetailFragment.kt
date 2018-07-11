@@ -114,7 +114,7 @@ class QuestionMenuDetailFragment : BaseFragment() {
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
 //            val urlToShare = postContent.linkAffiliate.toString()
-            val urlToShare = "http://hangviet360.com/hoi-dap"
+            val urlToShare = String.format("%s://%s/hoi-dap", getString(R.string.app_protocol), getString(R.string.app_host))
             val shareContent = ShareLinkContent.Builder()
                     .setContentUrl(Uri.parse(urlToShare))
                     .build()
@@ -124,7 +124,7 @@ class QuestionMenuDetailFragment : BaseFragment() {
     }
 
     private fun shareApp(questionDetail: QuestionDetail) {
-        val urlToShare = "http://hangviet360.com/hoi-dap"
+        val urlToShare = String.format("%s://%s/hoi-dap", getString(R.string.app_protocol), getString(R.string.app_host))
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"

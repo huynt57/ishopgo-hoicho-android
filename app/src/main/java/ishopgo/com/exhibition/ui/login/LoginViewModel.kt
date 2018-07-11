@@ -31,7 +31,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun loginAccount(phone: String, password: String) {
-        addDisposable(noAuthService.login(phone, password, Const.ID_APP, FirebaseInstanceId.getInstance().token
+        addDisposable(noAuthService.login(phone, password, UserDataManager.appId, FirebaseInstanceId.getInstance().token
                 ?: "")
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<User>() {

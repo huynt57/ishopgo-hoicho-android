@@ -2,5 +2,5 @@
 <paths>
     <external-path
         name="my_images"
-        path="Android/data/ishopgo.com.exhibition/files/Pictures"/>
+        path="@string/external_file_path" />
 </paths>

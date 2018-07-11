@@ -21,19 +21,20 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="54dp"/>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        app:tint="@color/colorPureWhite"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.7"
-        app:srcCompat="@drawable/logo_expo_horizontal_white"
+        app:srcCompat="@drawable/logo_expo_horizontal"
         tools:ignore="ContentDescription,MissingConstraints"/>
 
     <EditText
