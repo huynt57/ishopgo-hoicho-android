@@ -84,6 +84,7 @@ android {
             resValue "string", "file_provider_authority", "ishopgo.com.exhibition.fileprovider"
             resValue "string", "external_file_path", "Android/data/ishopgo.com.exhibition/files/Pictures"
             resValue "string", "firebase_app_version_ref", "expo/app_version/android"
+            resValue "string", "keyword_store_search", "hang%20viet%20360%20ishopgo"
 
             resValue "string", "facebook_app_id", "224784164969506"
             resValue "string", "fb_login_protocol_scheme", "fb224784164969506"
