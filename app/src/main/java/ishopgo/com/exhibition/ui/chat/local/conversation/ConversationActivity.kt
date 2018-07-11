@@ -442,7 +442,7 @@ class ConversationActivity : BaseActivity() {
                 return
             }
             photoFile.let {
-                val photoURI = FileProvider.getUriForFile(context, "ishopgo.com.exhibition.fileprovider", it)
+                val photoURI = FileProvider.getUriForFile(context, getString(R.string.file_provider_authority), it)
                 sendingPhotoUri = photoURI
                 Log.d(TAG, "create file temp: $photoURI")
 

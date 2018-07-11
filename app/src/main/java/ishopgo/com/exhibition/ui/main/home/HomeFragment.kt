@@ -174,40 +174,15 @@ class HomeFragment : BaseFragment() {
             }
         })
 
-        viewModel.exposFairGoing.observe(this, Observer { b ->
-            b?.let {
-                if (it) {
-                    viewModel.exposFair.observe(this, Observer { p ->
-                        p?.let {
-                            if (it.isNotEmpty()) {
-                                val listExpoConfig = mutableListOf<ExpoConfig>()
-                                listExpoConfig.add(it[0])
-                                expoConfigAdapter.replaceAll(listExpoConfig)
-                                container_expo.visibility = View.VISIBLE
-                            } else {
-                                firtsLoadExpoFair(TYPE_CURRENT)
-                            }
-                        }
-                    })
-                }
-            }
-        })
-
-        viewModel.exposFairCurrent.observe(this, Observer { b ->
-            b?.let {
-                if (it) {
-                    viewModel.exposFair.observe(this, Observer { p ->
-                        p?.let {
-                            if (it.isNotEmpty()) {
-                                val listExpoConfig = mutableListOf<ExpoConfig>()
-                                listExpoConfig.add(it[0])
-                                expoConfigAdapter.replaceAll(listExpoConfig)
-                                container_expo.visibility = View.VISIBLE
-                            } else {
-                                container_expo.visibility = View.GONE
-                            }
-                        }
-                    })
+        viewModel.exposFair.observe(this, Observer { p ->
+            p?.let {
+                if (it.isNotEmpty()) {
+                    val listExpoConfig = mutableListOf<ExpoConfig>()
+                    listExpoConfig.add(it[0])
+                    expoConfigAdapter.replaceAll(listExpoConfig)
+                    container_expo.visibility = View.VISIBLE
+                } else {
+                    container_expo.visibility = View.GONE
                 }
             }
         })
@@ -268,23 +243,7 @@ class HomeFragment : BaseFragment() {
         setupExpoFair(context)
         setupListeners()
 
-        val builder = StringBuilder()
-
-        builder.append("<b><font color=\"#0000CD\">HỘI CHỢ TRIỂN LÃM ONLINE</font></b>")
-        builder.append("<br>")
-        builder.append("<b><font color=\"#0000CD\">HÀNG VIỆT NAM CHẤT LƯỢNG CAO</font></b>")
-        builder.append("<br>")
-        builder.append("<b>HỘI DOANH NGHIỆP HÀNG VIỆT NAM</b>")
-        builder.append("<br>")
-        builder.append("<b>CHẤT LƯỢNG CAO TP HỒ CHÍ MINH</b>")
-        builder.append("<br>")
-        builder.append("Địa chỉ: 163 Pasteur, Phường 6, Q.3,TPHCM")
-        builder.append("<br>")
-        builder.append("Tel : 08-38202797 | Fax : 08-38207978 | Email : info@bsa.org.vn")
-        builder.append("<br>")
-        builder.append("© Bản quyền 2018| iShopGo® Nền tảng ERP cho doanh nghiệp vừa và nhỏ")
-        builder.append("<br>")
-        view_company_info.text = builder.toString().asHtml()
+        view_company_info.text = getString(R.string.footer).asHtml()
 
         view_info_version.text = "Phiên bản ${BuildConfig.VERSION_NAME}"
     }
@@ -614,9 +573,11 @@ class HomeFragment : BaseFragment() {
 
         expoConfigAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoConfig> {
             override fun click(position: Int, data: ExpoConfig, code: Int) {
-                val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                startActivity(intent)
+                if (data.id != -1L) {
+                    val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                    startActivity(intent)
+                }
             }
         }
 

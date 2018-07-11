@@ -6,7 +6,6 @@ package ishopgo.com.exhibition.model
 object Const {
 
     const val PAGE_LIMIT = 20
-    const val ID_APP = "hoichone"
 
     object TransferKey {
         const val EXTRA_STRING_LIST = "string_list"

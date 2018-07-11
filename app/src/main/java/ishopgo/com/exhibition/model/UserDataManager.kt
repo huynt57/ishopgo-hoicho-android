@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.model
 
 import android.content.Context
 import android.content.SharedPreferences
+import ishopgo.com.exhibition.R
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
@@ -72,7 +73,7 @@ object UserDataManager {
         // TODO this field will be config by server in the future
         currentSurveyIsMandatory = false
 
-        appId = Const.ID_APP
+        appId = context.getString(R.string.app_id)
     }
 
     fun deleteUserInfo() {
