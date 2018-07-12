@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,6 +56,7 @@ import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_detail.*
@@ -70,6 +72,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     override fun requireInput(): List<String> {
         return listOf(Const.TransferKey.EXTRA_ID)
     }
+
     companion object {
         fun newInstance(params: Bundle): ProductDetailFragment {
             val fragment = ProductDetailFragment()
@@ -84,6 +87,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
         const val COMMUNITY_SHOW_CHILD = 2
+        const val COMMUNITY_IMAGE_CLICK = 3
     }
 
     private lateinit var viewModel: ProductDetailViewModel
@@ -261,13 +265,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
-
+            view_rating.rating = convert.provideRate()
             view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
-            view_product_comment_count.text = "${convert.provideProductCommentCount()} bình luận"
+            view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
             tv_shop_phone.text = convert.provideShopPhone()
             tv_shop_address.text = convert.provideShopAddress()
@@ -360,6 +364,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideWholesaleLimit(): CharSequence
 
         fun provideProductProcess(): List<CharSequence>
+        fun provideRate(): Float
 
     }
 
@@ -367,6 +372,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideRate(): Float {
+                    return from.rate?.toFloat() ?: 0.0f
+                }
+
                 override fun provideProductProcess(): List<CharSequence> {
                     val titles = mutableListOf<String>()
                     from.process?.map {
@@ -756,6 +765,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                     COMMUNITY_SHOW_CHILD -> {
 
+                    }
+
+                    COMMUNITY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        startActivity(intent)
                     }
 
                     else -> {

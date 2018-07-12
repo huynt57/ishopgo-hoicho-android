@@ -15,7 +15,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductAdapter
+import ishopgo.com.exhibition.ui.main.product.SearchProductNavAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -65,7 +65,7 @@ class SearchProductsOfBrandFragment : BaseSearchActionBarFragment(), SwipeRefres
     private lateinit var viewModel: ProductsOfBrandViewModel
     private lateinit var brand: Brand
     private var keyword = ""
-    private lateinit var adapter: SearchProductAdapter
+    private lateinit var adapter: SearchProductNavAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +98,7 @@ class SearchProductsOfBrandFragment : BaseSearchActionBarFragment(), SwipeRefres
         getSearchField().hint = "Tìm sản phẩm của  ${brand.name}"
         search_total.visibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
 
-        adapter = SearchProductAdapter()
+        adapter = SearchProductNavAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
                 context?.let {

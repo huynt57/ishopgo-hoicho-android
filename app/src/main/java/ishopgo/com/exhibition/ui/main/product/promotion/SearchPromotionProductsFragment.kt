@@ -13,7 +13,7 @@ import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductAdapter
+import ishopgo.com.exhibition.ui.main.product.SearchProductNavAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
@@ -26,7 +26,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
     }
 
     private var keyword = ""
-    private lateinit var adapter: SearchProductAdapter
+    private lateinit var adapter: SearchProductNavAdapter
     private lateinit var viewModel: PromotionProductsViewModel
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
@@ -52,7 +52,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
 
         getSearchField().hint = "Tìm trong sản phẩm khuyến mại"
 
-        adapter = SearchProductAdapter()
+        adapter = SearchProductNavAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
                 context?.let {

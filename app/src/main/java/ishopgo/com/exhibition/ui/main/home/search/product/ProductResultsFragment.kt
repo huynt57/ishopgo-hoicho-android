@@ -30,6 +30,7 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
         private val TAG = "ProductResultsFragment"
     }
 
+    private var total: Int = 0
     private lateinit var sharedViewModel: SearchViewModel
     private var keyword = ""
 
@@ -61,7 +62,7 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
 
         (viewModel as SearchProductViewModel).total.observe(this, Observer { p ->
             p.let {
-                search_total.text = "${it ?: 0} kết quả"
+                total = it ?: 0
             }
         })
     }
@@ -69,6 +70,9 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
     override fun populateData(data: List<Product>) {
         if (reloadData) {
             adapter.replaceAll(data)
+            val product = Product()
+            product.id = total.toLong()
+            adapter.addData(0, product)
             view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)

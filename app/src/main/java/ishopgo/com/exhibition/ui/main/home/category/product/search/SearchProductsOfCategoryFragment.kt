@@ -15,8 +15,8 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductAdapter
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
+import ishopgo.com.exhibition.ui.main.product.SearchProductNavAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
@@ -38,7 +38,7 @@ class SearchProductsOfCategoryFragment : BaseSearchActionBarFragment(), SwipeRef
     }
 
     private var searchKey = ""
-    private lateinit var adapter: SearchProductAdapter
+    private lateinit var adapter: SearchProductNavAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewModel: SearchProductViewModel
     private lateinit var currentCategory: Category
@@ -72,7 +72,7 @@ class SearchProductsOfCategoryFragment : BaseSearchActionBarFragment(), SwipeRef
         getSearchField().hint = "Tìm kiếm trong ${currentCategory.name}"
         search_total.visibility = if (searchKey.isEmpty()) View.GONE else View.VISIBLE
 
-        adapter = SearchProductAdapter()
+        adapter = SearchProductNavAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
                 context?.let {
