@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.promotion
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -8,14 +9,20 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -26,7 +33,18 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
+    private lateinit var filterViewModel: FilterProductViewModel
+    private var filterProduct = FilterProduct()
 
+    companion object {
+        const val TAG = "PromotionProductsFragment"
+        fun newInstance(params: Bundle): PromotionProductsFragment {
+            val fragment = PromotionProductsFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
+    }
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
     }
@@ -52,17 +70,23 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
 
     override fun firstLoad() {
         super.firstLoad()
-        val loadMore = LoadMoreRequest()
+        val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
+        loadMore.sort_by = filterProduct.sort_by ?: "name"
+        loadMore.sort_type = filterProduct.sort_type ?: "asc"
+        loadMore.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadData(loadMore)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequest()
+        val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
+        loadMore.sort_by = filterProduct.sort_by ?: "name"
+        loadMore.sort_type = filterProduct.sort_type ?: "asc"
+        loadMore.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadData(loadMore)
     }
 
@@ -83,6 +107,19 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
         }
 
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        filterViewModel.getDataFilter.observe(this, Observer { p ->
+            p?.let {
+                filterProduct = it
+                firstLoad()
+            }
+        })
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {

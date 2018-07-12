@@ -49,6 +49,15 @@ class ProductsByCategoryViewModel : BaseApiViewModel(), AppComponent.Injectable 
             fields["limit"] = request.limit
             fields["offset"] = request.offset
             fields["category_id"] = request.categoryId
+            fields["sort_by"] = request.sort_by
+            fields["sort_type"] = request.sort_type
+
+            if (request.type_filter.isNotEmpty()) {
+                val listType = request.type_filter
+                for (i in listType.indices)
+                    fields["type_filter[$i]"] = listType[i]
+
+            }
 
             addDisposable(noAuthService.getCategoriedProducts(fields)
                     .subscribeOn(Schedulers.single())

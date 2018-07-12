@@ -1,17 +1,20 @@
 package ishopgo.com.exhibition.ui.main.product.popular
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PopularProductsFragmentActionBar : BaseActionBarFragment() {
+    private lateinit var filterViewModel: FilterProductViewModel
 
     companion object {
 
@@ -33,7 +36,7 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, PopularFragment())
+                .replace(R.id.view_main_content, PopularFragment.newInstance(Bundle()), "PopularFragment")
                 .commit()
     }
 
@@ -51,6 +54,21 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
         }
+        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.setRightButtonClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_promotionProductsFragmentActionBar_to_filterFragment)
+        }
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+
+        filterViewModel.getDataFilter.observe(this, Observer { c ->
+            c?.let {
+                val count = (it.filter?.size ?: 0) + 1
+                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
+            }
+        })
+    }
 }

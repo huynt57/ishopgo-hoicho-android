@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.Component
 import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.domain.db.MessageRepository
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.chat.local.ChatViewModel
 import ishopgo.com.exhibition.ui.chat.local.contact.ContactViewModel
 import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactViewModel
@@ -164,4 +165,5 @@ interface AppComponent {
     fun inject(fragmentAdministratorViewModel: FragmentAdministratorViewModel)
     fun inject(promotionProductsViewModel: PromotionProductsViewModel)
     fun inject(newestProductsViewModel: NewestProductsViewModel)
+    fun inject(filterProductViewModel: FilterProductViewModel)
 }

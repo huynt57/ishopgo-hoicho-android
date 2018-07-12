@@ -22,4 +22,9 @@
         android:id="@+id/searchPopularProductsFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.popular.SearchPopularProductsFragment"
         android:label="SearchPopularProductsFragment" />
+
+    <fragment
+        android:id="@+id/action_promotionProductsFragmentActionBar_to_filterFragment"
+        android:name="ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment"
+        android:label="FilterProductsFragment" />
 </navigation>
