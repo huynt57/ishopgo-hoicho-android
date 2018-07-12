@@ -7,6 +7,7 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.ProductFollow
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -26,21 +27,23 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var shopImage = MutableLiveData<String>()
     var shopFollow = MutableLiveData<Boolean>()
     var shopId = MutableLiveData<Long>()
+    var qrCode = MutableLiveData<ShopDetail>()
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
     }
 
-    fun updateShopImage(shop_id: Long, follow: Boolean, url: String) {
+    fun updateShopImage(shop_id: Long, follow: Boolean, url: String, qrCode: ShopDetail) {
         shopId.postValue(shop_id)
         shopImage.postValue(url)
         shopFollow.postValue(follow)
+        this.qrCode.postValue(qrCode)
     }
 
     var editSusscess = MutableLiveData<Boolean>()
 
 
-    fun editConfigBooth(name: String, description:String, image: String) {
+    fun editConfigBooth(name: String, description: String, image: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
 
@@ -111,5 +114,11 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    var showShopDetailQRCode = MutableLiveData<ShopDetail>()
+
+    fun showShopDetailQRCode(data: ShopDetail) {
+        showShopDetailQRCode.postValue(data)
     }
 }

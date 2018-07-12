@@ -16,6 +16,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -36,6 +37,7 @@ class ShopDetailFragment : BaseFragment() {
     private lateinit var viewModel: ShopDetailViewModel
     private lateinit var adapter: PagerAdapter
     private var boothId = -1L
+    private var dataShopDetail = ShopDetail()
 
     companion object {
         val TAG = "ShopDetailFragment"
@@ -97,6 +99,12 @@ class ShopDetailFragment : BaseFragment() {
                                 .placeholder(R.drawable.image_placeholder)
                                 .error(R.drawable.image_placeholder))
                         .into(view_image)
+            }
+        })
+
+        viewModel.qrCode.observe(this, Observer { i ->
+            i?.let {
+                dataShopDetail = it
             }
         })
 
@@ -189,6 +197,10 @@ class ShopDetailFragment : BaseFragment() {
                     .onNegative { dialog, _ -> dialog.dismiss() }
                     .show()
         }
+    }
+
+    fun openQRCodeBooth() {
+        viewModel.showShopDetailQRCode(dataShopDetail)
     }
 
     private fun openLoginActivity() {
