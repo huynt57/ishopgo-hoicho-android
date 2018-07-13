@@ -14,11 +14,11 @@ import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterProduct
-import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -111,7 +111,7 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
         super.onActivityCreated(savedInstanceState)
         filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
         filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-        filterViewModel.getDataFilter.observe(this, Observer { p ->
+        filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { p ->
             p?.let {
                 filterProduct = it
                 firstLoad()

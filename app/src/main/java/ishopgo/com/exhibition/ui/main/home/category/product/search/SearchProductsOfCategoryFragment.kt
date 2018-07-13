@@ -61,7 +61,7 @@ class SearchProductsOfCategoryFragment : BaseSearchActionBarFragment(), SwipeRef
         activity?.onBackPressed()
     }
 
-    override fun cancelSearch() {
+    override fun searchReset() {
         searchKey = ""
         firstLoad()
     }

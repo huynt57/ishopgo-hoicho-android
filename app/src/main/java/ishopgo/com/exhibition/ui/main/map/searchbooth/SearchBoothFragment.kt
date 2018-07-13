@@ -14,8 +14,8 @@ import ishopgo.com.exhibition.domain.response.Kiosk
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
+import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
@@ -60,7 +60,7 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         activity?.onBackPressed()
     }
 
-    override fun cancelSearch() {
+    override fun searchReset() {
         searchKey = ""
         firstLoad()
     }

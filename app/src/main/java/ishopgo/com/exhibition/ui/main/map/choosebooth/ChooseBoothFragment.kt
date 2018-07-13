@@ -57,7 +57,7 @@ class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         activity?.onBackPressed()
     }
 
-    override fun cancelSearch() {
+    override fun searchReset() {
         searchKey = ""
         firstLoad()
     }

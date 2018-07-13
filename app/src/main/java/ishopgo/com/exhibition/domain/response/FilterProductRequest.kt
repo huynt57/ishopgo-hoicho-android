@@ -1,8 +1,8 @@
 package ishopgo.com.exhibition.domain.response
 
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.SearchByNameRequest
 
-open class FilterProductRequest : LoadMoreRequest() {
+open class FilterProductRequest : SearchByNameRequest() {
     var sort_by: String = SORT_BY_NAME
 
     var sort_type: String = SORT_TYPE_ASC

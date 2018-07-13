@@ -9,6 +9,6 @@ import ishopgo.com.exhibition.ui.base.BaseNavigationActivity
 class PopularProductsActivity : BaseNavigationActivity() {
 
     override fun navigationRes(): Int {
-        return R.navigation.nav__popular_products
+        return R.navigation.nav_popular_products
     }
 }

@@ -52,7 +52,7 @@ class SearchProductsOfBrandFragment : BaseSearchActionBarFragment(), SwipeRefres
         firstLoad()
     }
 
-    override fun cancelSearch() {
+    override fun searchReset() {
         keyword = ""
         firstLoad()
     }

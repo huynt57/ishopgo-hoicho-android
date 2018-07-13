@@ -16,7 +16,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
-import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class SearchPopularProductsFragment: BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -83,7 +82,7 @@ class SearchPopularProductsFragment: BaseSearchActionBarFragment(), SwipeRefresh
         adapter.clear()
         scrollListener.resetState()
 
-        val firstLoad = SearchByNameRequest ()
+        val firstLoad = SearchByNameRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
         firstLoad.name = keyword
@@ -109,7 +108,7 @@ class SearchPopularProductsFragment: BaseSearchActionBarFragment(), SwipeRefresh
         firstLoad()
     }
 
-    override fun cancelSearch() {
+    override fun searchReset() {
         keyword = ""
         firstLoad()
     }

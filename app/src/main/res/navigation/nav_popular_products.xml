@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
             xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/nav_popular_products.xml"
             app:startDestination="@id/popularProductsFragmentActionBar">
 
     <fragment
         android:id="@+id/popularProductsFragmentActionBar"
         android:name="ishopgo.com.exhibition.ui.main.product.popular.PopularProductsFragmentActionBar"
-        android:label="PopularProductsFragmentActionBar" >
+        android:label="PopularProductsFragmentActionBar">
         <action
             android:id="@+id/action_popularProductsFragmentActionBar_to_searchPopularProductsFragment"
             app:destination="@id/searchPopularProductsFragment"
@@ -16,14 +17,22 @@
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             />
+        <action
+            android:id="@+id/action_popularProductsFragmentActionBar_to_filterProductFragment2"
+            app:destination="@id/filterProductFragment2"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
     <fragment
         android:id="@+id/searchPopularProductsFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.popular.SearchPopularProductsFragment"
-        android:label="SearchPopularProductsFragment" />
-
+        android:label="SearchPopularProductsFragment"/>
     <fragment
-        android:id="@+id/action_popularProductsFragmentActionBar_to_filterFragment"
+        android:id="@+id/filterProductFragment2"
         android:name="ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment"
-        android:label="FilterProductsFragment" />
+        android:label="FilterProductFragment"
+        tools:layout="@layout/content_filter_product"/>
+
 </navigation>

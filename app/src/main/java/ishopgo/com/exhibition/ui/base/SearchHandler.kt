@@ -5,6 +5,6 @@ package ishopgo.com.exhibition.ui.base
  */
 interface SearchHandler {
     fun triggerSearch(key: String)
-    fun cancelSearch()
+    fun searchReset()
     fun dismissSearch()
 }

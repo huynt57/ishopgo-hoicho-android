@@ -1,8 +1,7 @@
 package ishopgo.com.exhibition.ui.base
 
 import android.app.ProgressDialog
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProviders
+import android.arch.lifecycle.*
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -63,6 +62,9 @@ open class BaseFragment : Fragment() {
 
 //        // prevent click through fragment
 //        view.setOnTouchListener { _, _ -> true }
+
+        viewLifeCycleOwner = ViewLifeCyclerOwner()
+        viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
 
     protected fun hideProgressDialog() {
@@ -134,7 +136,48 @@ open class BaseFragment : Fragment() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_START)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_STOP)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    }
+
     fun <T : ViewModel> obtainViewModel(viewModelClass: Class<T>, activityObserver: Boolean = true) =
             if (activityObserver && activity != null) ViewModelProviders.of(activity!!, AppFactory(activity!!.application as MyApp)).get(viewModelClass)
             else ViewModelProviders.of(this, AppFactory(activity?.application as MyApp)).get(viewModelClass)
+
+    class ViewLifeCyclerOwner: LifecycleOwner {
+        private val lifeCycleRegistry = LifecycleRegistry(this)
+        override fun getLifecycle(): LifecycleRegistry {
+            return lifeCycleRegistry
+        }
+
+    }
+
+    var viewLifeCycleOwner: ViewLifeCyclerOwner? = null
+
 }

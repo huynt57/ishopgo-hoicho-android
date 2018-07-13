@@ -57,7 +57,7 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
                 resolveError(it)
             }
         })
-        viewModel.dataReturned.observe(this, Observer { data ->
+        viewModel.dataReturned.observe(viewLifeCycleOwner!!, Observer { data ->
             data?.let {
                 populateData(it)
 

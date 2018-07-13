@@ -30,7 +30,7 @@ class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
         searchViewModel.search(searchKey)
     }
 
-    override fun cancelSearch() {
+    override fun searchReset() {
         searchKey = ""
         searchViewModel.search(searchKey)
     }

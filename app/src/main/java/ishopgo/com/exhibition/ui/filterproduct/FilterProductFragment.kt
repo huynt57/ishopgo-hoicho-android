@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.filterproduct
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.Navigation
@@ -11,9 +10,8 @@ import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsViewModel
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-import kotlinx.android.synthetic.main.content_fillter_product.*
+import kotlinx.android.synthetic.main.content_filter_product.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
@@ -21,7 +19,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         return childFragmentManager.popBackStackImmediate()
     }
 
-    private lateinit var viewModel: PromotionProductsViewModel
+    private lateinit var viewModel: FilterProductViewModel
     private val listTypeFilter = mutableListOf<Int>()
     private var type_filter = 0
     private var sort_by = SORT_BY_NAME
@@ -49,7 +47,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     }
 
     override fun contentLayoutRes(): Int {
-        return R.layout.content_fillter_product
+        return R.layout.content_filter_product
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -224,8 +222,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = obtainViewModel(PromotionProductsViewModel::class.java, true)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel = obtainViewModel(FilterProductViewModel::class.java, true)
     }
 
     private fun setupToolbars() {

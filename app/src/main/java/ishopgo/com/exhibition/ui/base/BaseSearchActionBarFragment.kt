@@ -39,6 +39,7 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
 
         disposables.add(view_search_field.observable()
                 .debounce(600, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
                 .distinctUntilChanged()
                 .subscribeOn(Schedulers.single())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -56,7 +57,7 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
                 dismissSearch()
             else {
                 view_search_field.setText("")
-                cancelSearch()
+                searchReset()
             }
         }
 

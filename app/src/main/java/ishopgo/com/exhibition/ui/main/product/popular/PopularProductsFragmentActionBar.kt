@@ -54,9 +54,9 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
         }
-        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRightButtonClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_popularProductsFragmentActionBar_to_filterFragment)
+            Navigation.findNavController(it).navigate(R.id.action_popularProductsFragmentActionBar_to_filterProductFragment2)
         }
     }
 
@@ -64,10 +64,10 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         super.onActivityCreated(savedInstanceState)
         filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
 
-        filterViewModel.getDataFilter.observe(this, Observer { c ->
+        filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { c ->
             c?.let {
                 val count = (it.filter?.size ?: 0) + 1
-                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
+                toolbar.rightButton(R.drawable.ic_filter_highlight_24dp, count)
             }
         })
     }
