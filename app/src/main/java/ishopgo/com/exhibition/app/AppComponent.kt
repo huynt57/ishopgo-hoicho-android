@@ -157,7 +157,6 @@ interface AppComponent {
     fun inject(visitorsViewModel: VisitorsViewModel)
     fun inject(expoDetailViewModel: ExpoDetailViewModel)
     fun inject(expoConfigViewModel: ExpoConfigViewModel)
-    fun inject(ratingProductViewModel: RatingProductViewModel)
     fun inject(introductionViewModel: IntroductionViewModel)
     fun inject(commentViewModel: CommentViewModel)
     fun inject(newsViewModel: NewsViewModel)

@@ -77,4 +77,10 @@ class ProductDetail : IdentityData() {
     @SerializedName("desc")
     @Expose
     var process: List<ProductProcess>? = null
+    @SerializedName("rate")
+    @Expose
+    var rate: Int? = null
+    @SerializedName("qrcode")
+    @Expose
+    var qrcode: String? = null
 }

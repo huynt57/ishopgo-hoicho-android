@@ -90,6 +90,4 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
         }
 
     }
-
-
 }

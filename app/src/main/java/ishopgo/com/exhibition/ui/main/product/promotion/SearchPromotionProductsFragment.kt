@@ -16,7 +16,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
-import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -37,7 +36,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.dataReturned.observe(this, Observer { d ->
             d?.let {
-                val products = it ?: listOf()
+                val products = it
                 if (reloadData) {
                     adapter.replaceAll(products)
                 }

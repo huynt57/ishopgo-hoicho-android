@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.search.product
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -30,6 +31,7 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
         private val TAG = "ProductResultsFragment"
     }
 
+    private var total: Int = 0
     private lateinit var sharedViewModel: SearchViewModel
     private var keyword = ""
 
@@ -48,6 +50,7 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
         return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -61,7 +64,9 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
 
         (viewModel as SearchProductViewModel).total.observe(this, Observer { p ->
             p.let {
-                search_total.text = "${it ?: 0} kết quả"
+                total = it ?: 0
+                search_total.visibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
+                search_total.text = "$total kết quả được tìm thấy"
             }
         })
     }

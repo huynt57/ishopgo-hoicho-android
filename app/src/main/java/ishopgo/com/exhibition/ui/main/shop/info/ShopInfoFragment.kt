@@ -118,7 +118,7 @@ class ShopInfoFragment : BaseFragment() {
 
         shopProcessAdapter.replaceAll(info.process ?: listOf())
 
-        sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage())
+        sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage(), info)
         if (UserDataManager.currentUserId == info.id) {
             view_info.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
             view_info.setOnClickListener { showDialogChangeName(info.name ?: "") }
@@ -146,6 +146,7 @@ class ShopInfoFragment : BaseFragment() {
         fun provideFollowCount(): Int
         fun provideVisitCount(): Int
         fun provideDescription(): String
+        fun provideQrCode(): String
         fun provideSalePoints(): List<SearchSalePoint>
     }
 
@@ -153,6 +154,10 @@ class ShopInfoFragment : BaseFragment() {
 
         override fun convert(from: ShopDetail): ShopInfoProvider {
             return object : ShopInfoProvider {
+                override fun provideQrCode(): String {
+                    return from.qrcode ?: ""
+                }
+
                 override fun provideVisitCount(): Int {
                     return from.visitCount ?: 0
                 }

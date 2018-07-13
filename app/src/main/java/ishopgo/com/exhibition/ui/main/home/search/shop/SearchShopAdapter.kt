@@ -15,26 +15,16 @@ import kotlinx.android.synthetic.main.item_search_total.view.*
  * Created by xuanhong on 4/20/18. HappyCoding!
  */
 class SearchShopAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<SearchShopResultProvider>() {
-    companion object {
-        const val SHOP_TOTAL = 0
-        const val SHOP_LIST = 1
-    }
 
     var screenWidth: Int = UserDataManager.displayWidth
     var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return if (viewType == SHOP_TOTAL) R.layout.item_search_total else R.layout.item_search_shop_has_product
+        return R.layout.item_search_shop_has_product
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return if (position == SHOP_TOTAL) SHOP_TOTAL else SHOP_LIST
-    }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<SearchShopResultProvider> {
-        return if (viewType == SHOP_TOTAL) {
-            TotalHodel(v)
-        } else {
             val productHolder = ProductHolder(v)
             val layoutParams = productHolder.itemView.layoutParams
 
@@ -43,32 +33,15 @@ class SearchShopAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Fl
             if (itemHeightRatio > 0)
                 layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
-            productHolder
-        }
+        return productHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder<SearchShopResultProvider>, position: Int) {
         super.onBindViewHolder(holder, position)
-        if (holder is TotalHodel) {
-            holder.apply {
-
-            }
-        } else if (holder is ProductHolder) {
+        if (holder is ProductHolder) {
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
                 listener?.click(adapterPosition, getItem(adapterPosition))
-            }
-        }
-    }
-
-    inner class TotalHodel(v: View) : BaseRecyclerViewAdapter.ViewHolder<SearchShopResultProvider>(v) {
-
-        @SuppressLint("SetTextI18n")
-        override fun populate(data: SearchShopResultProvider) {
-            super.populate(data)
-            itemView.apply {
-                if (data is Shop)
-                    tv_total.text = "${data.id} kết quả được tìm thấy"
             }
         }
     }

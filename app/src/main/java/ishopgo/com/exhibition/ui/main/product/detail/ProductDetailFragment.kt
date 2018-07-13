@@ -55,6 +55,7 @@ import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_detail.*
@@ -70,6 +71,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     override fun requireInput(): List<String> {
         return listOf(Const.TransferKey.EXTRA_ID)
     }
+
     companion object {
         fun newInstance(params: Bundle): ProductDetailFragment {
             val fragment = ProductDetailFragment()
@@ -84,6 +86,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
         const val COMMUNITY_SHOW_CHILD = 2
+        const val COMMUNITY_IMAGE_CLICK = 3
     }
 
     private lateinit var viewModel: ProductDetailViewModel
@@ -261,13 +264,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
-
+            view_rating.rating = convert.provideRate()
+            tv_rating_result.text = "(${convert.provideRate()}/5.0)"
             view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
-            view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
+            view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRatePoint()}</font></b><br>${convert.provideShopRateCount()} Đánh giá".asHtml()
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
-            view_product_comment_count.text = "${convert.provideProductCommentCount()} bình luận"
+            view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
             tv_shop_phone.text = convert.provideShopPhone()
             tv_shop_address.text = convert.provideShopAddress()
@@ -325,6 +329,17 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         }
         openProductSalePoint(product)
+
+        floatQrCode.setOnClickListener {
+            showQrCodeProduct(product)
+        }
+    }
+
+    private fun showQrCodeProduct(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_qrCodeProductFragment, extra)
     }
 
     private fun showMoreProductProcess(product: ProductDetail) {
@@ -345,6 +360,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideShopRegion(): CharSequence
         fun provideShopProductCount(): Int
         fun provideShopRateCount(): Int
+        fun provideShopRatePoint(): String
         fun provideShopPhone(): CharSequence
         fun provideLiked(): Boolean
         fun provideShopAddress(): CharSequence
@@ -360,6 +376,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideWholesaleLimit(): CharSequence
 
         fun provideProductProcess(): List<CharSequence>
+        fun provideRate(): Float
 
     }
 
@@ -367,6 +384,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideShopRatePoint(): String {
+                    return "${from.booth?.rate?.toFloat() ?: 0.0f}/5.0"
+                }
+
+                override fun provideRate(): Float {
+                    return from.rate?.toFloat() ?: 0.0f
+                }
+
                 override fun provideProductProcess(): List<CharSequence> {
                     val titles = mutableListOf<String>()
                     from.process?.map {
@@ -444,7 +469,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopRateCount(): Int {
-                    return from.booth?.rate ?: 0
+                    return from.booth?.rateCount ?: 0
                 }
 
                 override fun provideShopPhone(): CharSequence {
@@ -756,6 +781,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                     COMMUNITY_SHOW_CHILD -> {
 
+                    }
+
+                    COMMUNITY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        startActivity(intent)
                     }
 
                     else -> {

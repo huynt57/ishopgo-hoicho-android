@@ -22,6 +22,7 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
         const val COMMUNITY_SHOW_CHILD = 2
+        const val COMMUNITY_IMAGE_CLICK = 3
     }
 
 
@@ -41,6 +42,7 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
             itemView.view_reply.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_REPLY) }
             itemView.view_reply_child.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_REPLY_CHILD) }
             itemView.tv_show_child_all.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_SHOW_CHILD) }
+            itemView.img_comment.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK) }
         }
     }
 
@@ -73,7 +75,7 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
                     tv_comment_name_child.text = child.accountName
                     tv_comment_time_child.text = child.updatedAt
 
-                    if (child.images != null && child.images!!.isNotEmpty()) {
+                    if (child.images?.isNotEmpty() == true) {
                         if (child.images!!.size > 1) {
                             img_comment_child.visibility = View.GONE
                             rv_comment_image_child.visibility = View.VISIBLE
@@ -82,6 +84,11 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
                             adapter.replaceAll(child.images!!)
                             rv_comment_image_child.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                             rv_comment_image_child.adapter = adapter
+                            adapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
+                                override fun click(position: Int, data: String, code: Int) {
+                                    listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK)
+                                }
+                            }
                         } else {
                             img_comment_child.visibility = View.VISIBLE
                             rv_comment_image_child.visibility = View.GONE
@@ -105,6 +112,11 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
                         adapter.replaceAll(convert.providerImages())
                         rv_comment_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_comment_image.adapter = adapter
+                        adapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
+                            override fun click(position: Int, data: String, code: Int) {
+                                listener?.click(adapterPosition, getItem(adapterPosition), COMMUNITY_IMAGE_CLICK)
+                            }
+                        }
                     } else {
                         img_comment.visibility = View.VISIBLE
                         rv_comment_image.visibility = View.GONE

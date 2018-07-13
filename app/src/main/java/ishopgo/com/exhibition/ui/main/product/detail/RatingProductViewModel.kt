@@ -7,10 +7,7 @@ import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.ProductDetailComment
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
-class RatingProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
-    override fun inject(appComponent: AppComponent) {
-        appComponent.inject(this)
-    }
+class RatingProductViewModel : BaseApiViewModel() {
 
     var isCommentEnable = MutableLiveData<ProductDetailComment>()
 

@@ -30,4 +30,7 @@ class SearchSalePoint : IdentityData() {
     @SerializedName("chat_id")
     @Expose
     var chatId: Long? = 0
+    @SerializedName("qrcode")
+    @Expose
+    var qrcode: String? = null
 }

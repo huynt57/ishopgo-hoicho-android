@@ -200,6 +200,12 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
             startActivity(intent)
         }
 
+        view_fair_qrcode.setOnClickListener {
+            val extra = Bundle()
+            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
+            Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_qrCodeExpo, extra)
+        }
+
         Glide.with(requireContext())
                 .load(expoInfo.map ?: "")
                 .apply(RequestOptions().centerCrop()

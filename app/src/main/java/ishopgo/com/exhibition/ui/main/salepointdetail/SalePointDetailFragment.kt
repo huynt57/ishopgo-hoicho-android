@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
@@ -32,6 +33,7 @@ import kotlinx.android.synthetic.main.fragment_sale_point_detail.*
 class SalePointDetailFragment : BaseFragment() {
 
     companion object {
+        const val TAG = "SalePointDetailFragment"
         fun newInstance(params: Bundle): SalePointDetailFragment {
             val fragment = SalePointDetailFragment()
             fragment.arguments = params
@@ -40,11 +42,13 @@ class SalePointDetailFragment : BaseFragment() {
         }
     }
 
+    private lateinit var salePointViewModel: SalePointShareViewModel
     private lateinit var viewModel: SalePointDetailViewModel
     private val productsAdapter = ProductAdapter(0.4f)
     private var phone: String = ""
     private var productId: Long = 0
     private var dataProduct: ProductDetail? = null
+    private var salePoint: SearchSalePoint? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sale_point_detail, container, false)
@@ -75,7 +79,7 @@ class SalePointDetailFragment : BaseFragment() {
 
     private fun showDetail(data: ManagerSalePointDetail) {
         if (data.salePoint != null) {
-            val salePoint = data.salePoint
+            salePoint = data.salePoint
             tv_sale_point_name.text = salePoint?.name ?: ""
             tv_sale_point_phone.text = salePoint?.phone ?: ""
             tv_sale_point_address.text = salePoint?.address ?: ""
@@ -166,6 +170,8 @@ class SalePointDetailFragment : BaseFragment() {
     override
     fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        salePointViewModel = obtainViewModel(SalePointShareViewModel::class.java, true)
+
         viewModel = obtainViewModel(SalePointDetailViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer {
             it?.let {
@@ -199,5 +205,9 @@ class SalePointDetailFragment : BaseFragment() {
         }
 
         viewModel.loadData(phone, productId)
+    }
+
+    fun openQRCode() {
+        salePoint?.let { salePointViewModel.showSalePointQRCode(it) }
     }
 }

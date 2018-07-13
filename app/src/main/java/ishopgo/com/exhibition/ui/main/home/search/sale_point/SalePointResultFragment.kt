@@ -1,10 +1,13 @@
 package ishopgo.com.exhibition.ui.main.home.search.sale_point
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchSalePointRequest
@@ -17,6 +20,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSalePoint>() {
@@ -39,6 +43,11 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -52,8 +61,9 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
 
         (viewModel as SearchSalePointViewModel).total.observe(this, Observer { p ->
             p.let {
-                if (it != null)
-                    total = it
+                total = it ?: 0
+                search_total.visibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
+                search_total.text = "$total kết quả được tìm thấy"
             }
         })
     }
@@ -61,9 +71,6 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
     override fun populateData(data: List<SearchSalePoint>) {
         if (reloadData) {
             adapter.replaceAll(data)
-            val salePoint = SearchSalePoint()
-            salePoint.id = total.toLong()
-            adapter.addData(0, salePoint)
             view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)
