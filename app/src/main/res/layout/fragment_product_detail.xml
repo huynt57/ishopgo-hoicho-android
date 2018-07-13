@@ -164,7 +164,7 @@
                     app:drawableStartSquareSize="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_product_wholesale"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_wholesale_limit"
                     tools:text="Mã số lô:"
                     tools:visibility="visible" />
 
@@ -242,6 +242,7 @@
                     android:visibility="gone"
                     app:drawableStartCompat="@drawable/ic_grade_black_24dp"
                     app:drawableStartSquareSize="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_product_scale"
@@ -262,10 +263,9 @@
                     android:visibility="gone"
                     app:drawableStartCompat="@drawable/ic_shopping_cart_default_24dp"
                     app:drawableStartSquareSize="24dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_product_number_expected"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_wholesale"
                     tools:text="Mua tối thiểu 0 sản phẩm"
                     tools:visibility="visible" />
 
