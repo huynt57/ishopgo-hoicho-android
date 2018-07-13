@@ -1,10 +1,13 @@
 package ishopgo.com.exhibition.ui.main.home.search.shop
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
@@ -18,6 +21,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 /**
@@ -43,6 +47,11 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
+    }
+
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -56,8 +65,9 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
 
         (viewModel as SearchShopsViewModel).total.observe(this, Observer { p ->
             p.let {
-                if (it != null)
-                    total = it
+                total = it ?: 0
+                search_total.visibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
+                search_total.text = "$total kết quả được tìm thấy"
             }
         })
     }
@@ -65,9 +75,6 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
     override fun populateData(data: List<SearchShopResultProvider>) {
         if (reloadData) {
             adapter.replaceAll(data)
-            val shop = Shop()
-            shop.id = total.toLong()
-            adapter.addData(0, shop)
             view_recyclerview.scheduleLayoutAnimation()
         }
         else

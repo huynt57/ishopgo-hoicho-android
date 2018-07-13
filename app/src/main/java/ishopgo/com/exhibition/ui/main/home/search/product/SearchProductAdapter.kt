@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.home.search.product
 
-import android.annotation.SuppressLint
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,42 +10,29 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import kotlinx.android.synthetic.main.item_search_product.view.*
-import kotlinx.android.synthetic.main.item_search_total.view.*
 
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
  */
 class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<Product>() {
-    companion object {
-        const val PRODUCT_TOTAL = 0
-        const val PRODUCT_LIST = 1
-    }
 
     private var screenWidth: Int = UserDataManager.displayWidth
     private var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return if (viewType == PRODUCT_TOTAL) R.layout.item_search_total else R.layout.item_search_product
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == PRODUCT_TOTAL) PRODUCT_TOTAL else PRODUCT_LIST
+        return R.layout.item_search_product
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<Product> {
-        return if (viewType == PRODUCT_TOTAL) {
-            TotalHodel(v)
-        } else {
-            val productHolder = ProductHolder(v, ConverterSearchProduct())
-            val layoutParams = productHolder.itemView.layoutParams
+        val productHolder = ProductHolder(v, ConverterSearchProduct())
+        val layoutParams = productHolder.itemView.layoutParams
 
-            if (itemWidthRatio > 0)
-                layoutParams.width = (screenWidth * itemWidthRatio).toInt()
-            if (itemHeightRatio > 0)
-                layoutParams.height = (screenHeight * itemHeightRatio).toInt()
+        if (itemWidthRatio > 0)
+            layoutParams.width = (screenWidth * itemWidthRatio).toInt()
+        if (itemHeightRatio > 0)
+            layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
-            productHolder
-        }
+        return productHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder<Product>, position: Int) {
@@ -55,17 +41,6 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
                 listener?.click(adapterPosition, getItem(adapterPosition))
-            }
-        }
-    }
-
-    inner class TotalHodel(v: View) : BaseRecyclerViewAdapter.ViewHolder<Product>(v) {
-
-        @SuppressLint("SetTextI18n")
-        override fun populate(data: Product) {
-            super.populate(data)
-            itemView.apply {
-                tv_total.text = "${data.id} kết quả được tìm thấy"
             }
         }
     }
@@ -113,5 +88,6 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
 
             }
         }
+
     }
 }

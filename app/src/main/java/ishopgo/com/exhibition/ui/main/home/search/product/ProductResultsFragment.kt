@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.search.product
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -49,6 +50,7 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
         return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -63,6 +65,8 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
         (viewModel as SearchProductViewModel).total.observe(this, Observer { p ->
             p.let {
                 total = it ?: 0
+                search_total.visibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
+                search_total.text = "$total kết quả được tìm thấy"
             }
         })
     }
@@ -70,9 +74,6 @@ class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
     override fun populateData(data: List<Product>) {
         if (reloadData) {
             adapter.replaceAll(data)
-            val product = Product()
-            product.id = total.toLong()
-            adapter.addData(0, product)
             view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)

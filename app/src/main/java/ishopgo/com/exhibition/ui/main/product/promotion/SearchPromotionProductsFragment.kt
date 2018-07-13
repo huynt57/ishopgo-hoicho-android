@@ -13,10 +13,9 @@ import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.main.product.SearchProductNavAdapter
+import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
-import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
@@ -26,7 +25,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
     }
 
     private var keyword = ""
-    private lateinit var adapter: SearchProductNavAdapter
+    private lateinit var adapter: SearchProductAdapter
     private lateinit var viewModel: PromotionProductsViewModel
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
 
@@ -37,7 +36,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.dataReturned.observe(this, Observer { d ->
             d?.let {
-                val products = it ?: listOf()
+                val products = it
                 if (reloadData) {
                     adapter.replaceAll(products)
                 }
@@ -52,7 +51,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
 
         getSearchField().hint = "Tìm trong sản phẩm khuyến mại"
 
-        adapter = SearchProductNavAdapter()
+        adapter = SearchProductAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
             override fun click(position: Int, data: Product, code: Int) {
                 context?.let {
