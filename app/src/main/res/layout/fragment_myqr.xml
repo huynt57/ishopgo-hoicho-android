@@ -2,16 +2,18 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/md_white_1000"
     tools:layout_editor_absoluteY="25dp">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/view_qr_container"
         android:layout_width="352dp"
-        android:layout_height="352dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/bg_booth_qr"
         app:layout_constraintBottom_toTopOf="@+id/view_download"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,9 +24,9 @@
             android:id="@+id/view_qr_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
             android:gravity="center"
             android:text="Mã truy cập gian hàng"
             android:textColor="@color/colorPrimary"
@@ -49,22 +51,44 @@
             app:layout_constraintVertical_chainStyle="packed"
             tools:src="@drawable/image_placeholder" />
 
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_booth_name"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_qrcode"
-            tools:text="Ten gian hang" />
+            app:layout_constraintTop_toBottomOf="@+id/view_qrcode">
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/view_booth_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:gravity="center"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                tools:text="Ten gian hang" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/view_booth_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:autoLink="phone"
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:text="Ten gian hang" />
+        </LinearLayout>
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline"
@@ -86,8 +110,8 @@
         android:id="@+id/view_download"
         android:layout_width="352dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:text="Tải về"
         android:textColor="@color/colorPureWhite"
         app:backgroundTint="@color/colorPrimary"

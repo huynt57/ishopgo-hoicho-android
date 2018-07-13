@@ -80,4 +80,7 @@ class ProductDetail : IdentityData() {
     @SerializedName("rate")
     @Expose
     var rate: Int? = null
+    @SerializedName("qrcode")
+    @Expose
+    var qrcode: String? = null
 }

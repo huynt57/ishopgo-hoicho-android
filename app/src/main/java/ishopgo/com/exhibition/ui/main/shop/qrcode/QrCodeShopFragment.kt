@@ -21,12 +21,12 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
 import java.io.*
@@ -37,7 +37,6 @@ class QrCodeShopFragment : BaseActionBarFragment(), BackpressConsumable {
     }
 
     private var data = ShopDetail()
-    private lateinit var currentConfig: ExpoConfig
 
     companion object {
         const val TAG = "QrCodeShopFragment"
@@ -105,7 +104,7 @@ class QrCodeShopFragment : BaseActionBarFragment(), BackpressConsumable {
                 .into(view_qrcode)
 
         view_booth_name.text = data.name
-        view_booth_code.text = data.hotline
+        view_booth_code.text = data.hotline?.asPhone()
 
 
     }
@@ -155,7 +154,7 @@ class QrCodeShopFragment : BaseActionBarFragment(), BackpressConsumable {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             Const.RequestCode.STORAGE_PERMISSION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                storeImage(currentConfig.name ?: "unknown")
+                storeImage(data.name ?: "unknown")
             } else {
                 // permission was not granted
                 if (activity == null) {
@@ -185,6 +184,6 @@ class QrCodeShopFragment : BaseActionBarFragment(), BackpressConsumable {
             activity?.onBackPressed()
         }
 
-        toolbar.setCustomTitle("Mã QR của hội chợ")
+        toolbar.setCustomTitle("Mã QR Code của hội chợ")
     }
 }

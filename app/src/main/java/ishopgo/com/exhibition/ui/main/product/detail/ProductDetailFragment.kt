@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -329,6 +328,17 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         }
         openProductSalePoint(product)
+
+        floatQrCode.setOnClickListener {
+            showQrCodeProduct(product)
+        }
+    }
+
+    private fun showQrCodeProduct(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_qrCodeProductFragment, extra)
     }
 
     private fun showMoreProductProcess(product: ProductDetail) {

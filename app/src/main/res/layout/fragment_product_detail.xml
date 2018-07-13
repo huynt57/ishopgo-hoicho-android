@@ -34,8 +34,7 @@
                     android:layout_height="0dp"
                     app:layout_constraintDimensionRatio="h,1:1"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_height="30dp" />
+                    app:layout_constraintStart_toStartOf="parent" />
 
                 <me.relex.circleindicator.CircleIndicator
                     android:id="@+id/view_banner_indicator"
@@ -149,6 +148,17 @@
                     app:layout_constraintTop_toBottomOf="@+id/view_product_wholesale"
                     tools:text="Mua tối thiểu 0 sản phẩm"
                     tools:visibility="visible" />
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/floatQrCode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/ic_qr_code"
+                    app:backgroundTint="@color/colorPrimary"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_product_image"
+                    app:layout_constraintEnd_toStartOf="@+id/view_share"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_image" />
 
             </android.support.constraint.ConstraintLayout>
 

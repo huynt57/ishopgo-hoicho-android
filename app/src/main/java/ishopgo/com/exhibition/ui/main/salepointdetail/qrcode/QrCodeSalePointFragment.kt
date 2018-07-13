@@ -1,7 +1,6 @@
-package ishopgo.com.exhibition.ui.main.map.qrcode
+package ishopgo.com.exhibition.ui.main.salepointdetail.qrcode
 
 import android.Manifest
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -19,21 +18,36 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
-import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asPhone
+import ishopgo.com.exhibition.ui.main.shop.qrcode.QrCodeShopFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
-import com.bumptech.glide.request.target.Target
-
 import java.io.*
 
-class ExpoQrCodeFragment : BaseActionBarFragment() {
-    private lateinit var viewModel: ExpoDetailViewModel
-    private var fairId = -1L
-    private lateinit var currentConfig: ExpoConfig
+class QrCodeSalePointFragment : BaseActionBarFragment(), BackpressConsumable {
+    override fun onBackPressConsumed(): Boolean {
+        return childFragmentManager.popBackStackImmediate()
+    }
+
+    private var data = SearchSalePoint()
+
+    companion object {
+        const val TAG = "QrCodeShopFragment"
+
+        fun newInstance(params: Bundle): QrCodeSalePointFragment {
+            val fragment = QrCodeSalePointFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
+    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_myqr
@@ -44,62 +58,55 @@ class ExpoQrCodeFragment : BaseActionBarFragment() {
 
         setupToolbars()
 
-        view_qr_label.text = "Mã truy cập hội chợ"
+        view_qr_label.text = "Mã truy cập cửa hàng"
+        view_booth_code.visibility = View.VISIBLE
+        constraintLayout.setOnClickListener(null)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fairId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
-        if (fairId == -1L)
-            throw RuntimeException("Sai dinh dang")
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        data = Toolbox.gson.fromJson(json, SearchSalePoint::class.java)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = obtainViewModel(ExpoDetailViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-
-        viewModel.expoDetail.observe(this, Observer { url ->
-            url?.let { config ->
-                currentConfig = config
-                Glide.with(view_qrcode.context)
-                        .asBitmap()
-                        .load(config.qrcodePNG)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
-                        .listener(object : RequestListener<Bitmap> {
-                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                                if (isVisible)
-                                    view_download.setOnClickListener {
-                                        toast("Lỗi khi tải ảnh.")
-                                    }
-
-                                return false
+        Glide.with(view_qrcode.context)
+                .asBitmap()
+                .load(data.qrcode)
+                .apply(RequestOptions()
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder))
+                .listener(object : RequestListener<Bitmap> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                        if (isVisible)
+                            view_download.setOnClickListener {
+                                toast("Lỗi khi tải ảnh.")
                             }
 
-                            override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                if (isVisible)
-                                    view_download.setOnClickListener {
-                                        if (!hasCameraPermission(it.context))
-                                            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                        else
-                                            storeImage(config.name ?: "unknown")
+                        return false
+                    }
 
-                                    }
+                    override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        if (isVisible)
+                            view_download.setOnClickListener {
+                                if (!hasCameraPermission(it.context))
+                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                else
+                                    storeImage(data.name ?: "unknown")
 
-                                return false
                             }
-                        })
-                        .into(view_qrcode)
 
-                view_booth_name.text = config.name
-            }
-        })
+                        return false
+                    }
+                })
+                .into(view_qrcode)
+
+        view_booth_name.text = data.name
+        view_booth_code.text = data.phone?.asPhone()
 
 
-        viewModel.loadExpoDetail(fairId)
     }
 
     private fun hasCameraPermission(context: Context): Boolean {
@@ -147,7 +154,7 @@ class ExpoQrCodeFragment : BaseActionBarFragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             Const.RequestCode.STORAGE_PERMISSION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                storeImage(currentConfig.name ?: "unknown")
+                storeImage(data.name ?: "unknown")
             } else {
                 // permission was not granted
                 if (activity == null) {
@@ -177,6 +184,6 @@ class ExpoQrCodeFragment : BaseActionBarFragment() {
             activity?.onBackPressed()
         }
 
-        toolbar.setCustomTitle("Mã QR Code của hội chợ")
+        toolbar.setCustomTitle("Mã QR Code của cửa hàng")
     }
 }

@@ -39,6 +39,14 @@
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/expoDetailFragment" />
+        <action
+            android:id="@+id/action_expoDetailFragment_to_qrCodeExpo"
+            app:destination="@id/qrCodeExpo"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchBoothFragment"
@@ -72,4 +80,9 @@
         android:id="@+id/ticketDetailFragmentActionBar2"
         android:name="ishopgo.com.exhibition.ui.main.ticket.detail.TicketDetailFragmentActionBar"
         android:label="TicketDetailFragmentActionBar" />
+
+    <fragment
+        android:id="@+id/qrCodeExpo"
+        android:name="ishopgo.com.exhibition.ui.main.map.qrcode.ExpoQrCodeFragment"
+        android:label="ExpoQRCodeFragment" />
 </navigation>
