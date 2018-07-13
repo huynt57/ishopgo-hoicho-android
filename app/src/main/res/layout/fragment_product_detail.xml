@@ -19,6 +19,7 @@
         android:background="@drawable/bg_white_black">
 
         <LinearLayout
+            android:id="@+id/view_content_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

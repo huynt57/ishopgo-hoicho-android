@@ -92,6 +92,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private lateinit var viewModel: ProductDetailViewModel
     private lateinit var ratingViewModel: RatingProductViewModel
 
+    private val handleOverwrite: ProductDetailOverwrite = CustomProductDetail()
+
     private val sameShopProductsAdapter = ProductAdapter(0.4f)
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
@@ -225,6 +227,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private fun showProductDetail(product: ProductDetail) {
         context?.let {
             productDetail = product
+
+            view?.let {
+                handleOverwrite.handleInOtherFlavor(it, productDetail)
+            }
 
             val processes = product.process ?: listOf()
             container_product_process.visibility = if (processes.isEmpty()) View.GONE else View.VISIBLE
