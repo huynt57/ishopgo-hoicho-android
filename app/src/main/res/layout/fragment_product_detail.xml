@@ -91,11 +91,31 @@
                     tools:text="Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/view_product_price"
+                    android:id="@+id/view_product_madeIn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:drawableStartCompat="@drawable/ic_grade_black_24dp"
+                    app:drawableStartSquareSize="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_name"
+                    tools:text="Xuất xứ: "
+                    tools:visibility="visible" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_price"
+                    android:layout_width="0dp"
+                    android:layout_height="27dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
                     android:drawablePadding="8dp"
                     android:gravity="center_vertical"
                     android:textSize="16sp"
@@ -104,7 +124,7 @@
                     app:drawableStartSquareSize="24dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_product_name"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_madeIn"
                     tools:text="Giá bán lẻ: 280.000 đ" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -129,6 +149,107 @@
                     tools:visibility="visible" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_no_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:drawableStartCompat="@drawable/ic_grade_black_24dp"
+                    app:drawableStartSquareSize="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_wholesale_limit"
+                    tools:text="Mã số lô:"
+                    tools:visibility="visible" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_date_produce"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:drawableStartCompat="@drawable/ic_grade_black_24dp"
+                    app:drawableStartSquareSize="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_no_code"
+                    tools:text="Ngày bắt đầu sản xuất:"
+                    tools:visibility="visible" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_date_expected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:drawableStartCompat="@drawable/ic_grade_black_24dp"
+                    app:drawableStartSquareSize="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_date_produce"
+                    tools:text="Ngày thu hoạch dự kiến:"
+                    tools:visibility="visible" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_scale"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:drawableStartCompat="@drawable/ic_grade_black_24dp"
+                    app:drawableStartSquareSize="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_date_expected"
+                    tools:text="Quy mô:"
+                    tools:visibility="visible" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_number_expected"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    app:drawableStartCompat="@drawable/ic_grade_black_24dp"
+                    app:drawableStartSquareSize="24dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_scale"
+                    tools:text="Sản lượng dự kiến:"
+                    tools:visibility="visible" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/view_product_wholesale_limit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -142,7 +263,6 @@
                     android:visibility="gone"
                     app:drawableStartCompat="@drawable/ic_shopping_cart_default_24dp"
                     app:drawableStartSquareSize="24dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_product_wholesale"

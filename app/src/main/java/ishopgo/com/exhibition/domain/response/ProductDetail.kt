@@ -83,4 +83,31 @@ class ProductDetail : IdentityData() {
     @SerializedName("qrcode")
     @Expose
     var qrcode: String? = null
+    @SerializedName("madeIn")
+    @Expose
+    var madeIn: String? = null
+    @SerializedName("is_nhatky_sx")
+    @Expose
+    var isNhatkySx: Int? = null
+    @SerializedName("is_show_date")
+    @Expose
+    var isShowDate: Int? = null
+    @SerializedName("ngay_sx")
+    @Expose
+    var ngaySx: String? = null
+    @SerializedName("dk_thuhoach")
+    @Expose
+    var dkThuhoach: String? = null
+    @SerializedName("ms_lohang")
+    @Expose
+    var msLohang: String? = null
+    @SerializedName("is_ms_lohang")
+    @Expose
+    var isMsLohang: Int? = null
+    @SerializedName("quy_mo")
+    @Expose
+    var quyMo: String? = null
+    @SerializedName("san_luong")
+    @Expose
+    var sanLuong: String? = null
 }
