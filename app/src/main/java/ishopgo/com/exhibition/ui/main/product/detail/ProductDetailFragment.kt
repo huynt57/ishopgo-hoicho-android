@@ -269,7 +269,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
-            view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRateCount()}</font></b><br>Đánh giá".asHtml()
+            view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRatePoint()}</font></b><br>${convert.provideShopRateCount()} lượt đánh giá".asHtml()
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
@@ -360,6 +360,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideShopRegion(): CharSequence
         fun provideShopProductCount(): Int
         fun provideShopRateCount(): Int
+        fun provideShopRatePoint(): String
         fun provideShopPhone(): CharSequence
         fun provideLiked(): Boolean
         fun provideShopAddress(): CharSequence
@@ -383,6 +384,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideShopRatePoint(): String {
+                    return "(${from.booth?.rate?.toFloat() ?: 0.0f}/5.0)"
+                }
+
                 override fun provideRate(): Float {
                     return from.rate?.toFloat() ?: 0.0f
                 }
@@ -464,7 +469,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopRateCount(): Int {
-                    return from.booth?.rate ?: 0
+                    return from.booth?.rateCount ?: 0
                 }
 
                 override fun provideShopPhone(): CharSequence {
