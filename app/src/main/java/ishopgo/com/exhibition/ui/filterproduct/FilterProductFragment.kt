@@ -3,14 +3,15 @@ package ishopgo.com.exhibition.ui.filterproduct
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsViewModel
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_fillter_product.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -20,7 +21,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         return childFragmentManager.popBackStackImmediate()
     }
 
-    private lateinit var viewModel: FilterProductViewModel
+    private lateinit var viewModel: PromotionProductsViewModel
     private val listTypeFilter = mutableListOf<Int>()
     private var type_filter = 0
     private var sort_by = SORT_BY_NAME
@@ -180,7 +181,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
 
             viewModel.getDataFilter(data)
 
-            activity?.onBackPressed()
+            Navigation.findNavController(it).popBackStack()
+
         }
 
         constraintLayout.setOnClickListener(null)
@@ -222,7 +224,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+        viewModel = obtainViewModel(PromotionProductsViewModel::class.java, true)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
     }
 

@@ -9,7 +9,7 @@ import ishopgo.com.exhibition.R
  */
 abstract class BaseSingleFragmentActivity : BaseActivity() {
 
-    protected lateinit var currentFragment: Fragment
+    protected var currentFragment: Fragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,7 +17,7 @@ abstract class BaseSingleFragmentActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             currentFragment = createFragment(startupOptions())
-            replaceFragmentInActivity(currentFragment, R.id.fragment_container)
+            replaceFragmentInActivity(currentFragment!!, R.id.fragment_container)
         }
     }
 

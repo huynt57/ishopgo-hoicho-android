@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.promotion
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,9 +8,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
-import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
@@ -20,8 +17,6 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -37,7 +32,7 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
     private var filterProduct = FilterProduct()
 
     companion object {
-        const val TAG = "PromotionProductsFragment"
+        const val TAG = "PromotionFragment"
         fun newInstance(params: Bundle): PromotionProductsFragment {
             val fragment = PromotionProductsFragment()
             fragment.arguments = params
@@ -45,6 +40,7 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
             return fragment
         }
     }
+
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
     }
@@ -93,6 +89,7 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         if (adapter is ClickableAdapter<Product>) {
             (adapter as ClickableAdapter<Product>).listener = object : ClickableAdapter.BaseAdapterAction<Product> {
@@ -112,18 +109,19 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
-        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-        filterViewModel.getDataFilter.observe(this, Observer { p ->
-            p?.let {
-                filterProduct = it
-                firstLoad()
-            }
-        })
+
+//        if (viewModel is PromotionProductsViewModel) {
+//            (viewModel as PromotionProductsViewModel).getDataFilter.observe(this, Observer { p ->
+//                p?.let {
+//                    filterProduct = it
+//                    firstLoad()
+//                }
+//            })
+//        }
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {
-        return obtainViewModel(PromotionProductsViewModel::class.java, false)
+        return obtainViewModel(PromotionProductsViewModel::class.java, true)
     }
 
 }

@@ -4,15 +4,29 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchByNameRequest
 import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
-import ishopgo.com.exhibition.domain.response.SearchProducts
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
 class PromotionProductsViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
+
+    var getDataFilter = MutableLiveData<FilterProduct>()
+
+    fun getDataFilter(data: FilterProduct) {
+        getDataFilter.value = data
+
+        val loadMore = FilterProductRequest()
+        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.offset = 0
+        loadMore.sort_by = data.sort_by ?: "name"
+        loadMore.sort_type = data.sort_type ?: "asc"
+        loadMore.type_filter = data.filter ?: mutableListOf()
+        loadData(loadMore)
+    }
 
     override fun loadData(params: Request) {
         if (params is FilterProductRequest) {

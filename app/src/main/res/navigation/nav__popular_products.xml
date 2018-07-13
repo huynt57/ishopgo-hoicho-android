@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_popular_products.xml"
-    app:startDestination="@id/popularProductsFragmentActionBar">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/nav_popular_products.xml"
+            app:startDestination="@id/popularProductsFragmentActionBar">
 
     <fragment
         android:id="@+id/popularProductsFragmentActionBar"
@@ -24,7 +23,7 @@
         android:label="SearchPopularProductsFragment" />
 
     <fragment
-        android:id="@+id/action_promotionProductsFragmentActionBar_to_filterFragment"
+        android:id="@+id/action_popularProductsFragmentActionBar_to_filterFragment"
         android:name="ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment"
         android:label="FilterProductsFragment" />
 </navigation>

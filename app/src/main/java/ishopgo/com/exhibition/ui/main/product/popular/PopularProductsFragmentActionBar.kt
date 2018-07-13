@@ -56,7 +56,7 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         }
         toolbar.rightButton(R.drawable.ic_filter_24dp)
         toolbar.setRightButtonClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_promotionProductsFragmentActionBar_to_filterFragment)
+            Navigation.findNavController(it).navigate(R.id.action_popularProductsFragmentActionBar_to_filterFragment)
         }
     }
 
