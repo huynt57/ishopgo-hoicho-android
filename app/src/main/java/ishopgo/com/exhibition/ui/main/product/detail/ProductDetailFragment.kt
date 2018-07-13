@@ -265,6 +265,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
             view_rating.rating = convert.provideRate()
+            tv_rating_result.text = "(${convert.provideRate()}/5.0)"
             view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()

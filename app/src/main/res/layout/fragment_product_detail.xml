@@ -539,6 +539,21 @@
                     app:layout_constraintTop_toTopOf="@+id/textView9" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/tv_rating_result"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/view_rating"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_comment" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/view_product_like_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
