@@ -167,6 +167,6 @@ class QrCodeProductFragment : BaseActionBarFragment() {
             activity?.onBackPressed()
         }
 
-        toolbar.setCustomTitle("Mã QR Code của sản phẩm")
+        toolbar.setCustomTitle("Mã QR Code truy xuất nguồn gốc")
     }
 }

@@ -101,7 +101,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
                     }
         }
 
-        toolbar.rightButton2(R.drawable.ic_qr_code)
+        toolbar.rightButton2(R.drawable.ic_qr_code_highlight_24dp)
         toolbar.setRight2ButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
             if (fragment != null) {

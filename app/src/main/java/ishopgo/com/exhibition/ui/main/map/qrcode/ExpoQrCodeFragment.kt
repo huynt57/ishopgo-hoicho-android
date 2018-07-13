@@ -27,13 +27,12 @@ import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
 import com.bumptech.glide.request.target.Target
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 
 import java.io.*
 
 class ExpoQrCodeFragment : BaseActionBarFragment() {
-    private lateinit var viewModel: ExpoDetailViewModel
-    private var fairId = -1L
-    private lateinit var currentConfig: ExpoConfig
+    private lateinit var data: ExpoConfig
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_myqr
@@ -49,57 +48,46 @@ class ExpoQrCodeFragment : BaseActionBarFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fairId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
-        if (fairId == -1L)
-            throw RuntimeException("Sai dinh dang")
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        data = Toolbox.gson.fromJson(json, ExpoConfig::class.java)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = obtainViewModel(ExpoDetailViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
 
-        viewModel.expoDetail.observe(this, Observer { url ->
-            url?.let { config ->
-                currentConfig = config
-                Glide.with(view_qrcode.context)
-                        .asBitmap()
-                        .load(config.qrcodePNG)
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.image_placeholder)
-                                .error(R.drawable.image_placeholder))
-                        .listener(object : RequestListener<Bitmap> {
-                            override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                                if (isVisible)
-                                    view_download.setOnClickListener {
-                                        toast("Lỗi khi tải ảnh.")
-                                    }
-
-                                return false
+        Glide.with(view_qrcode.context)
+                .asBitmap()
+                .load(data.qrcodePNG)
+                .apply(RequestOptions()
+                        .placeholder(R.drawable.image_placeholder)
+                        .error(R.drawable.image_placeholder))
+                .listener(object : RequestListener<Bitmap> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
+                        if (isVisible)
+                            view_download.setOnClickListener {
+                                toast("Lỗi khi tải ảnh.")
                             }
 
-                            override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                                if (isVisible)
-                                    view_download.setOnClickListener {
-                                        if (!hasCameraPermission(it.context))
-                                            requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                        else
-                                            storeImage(config.name ?: "unknown")
+                        return false
+                    }
 
-                                    }
+                    override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        if (isVisible)
+                            view_download.setOnClickListener {
+                                if (!hasCameraPermission(it.context))
+                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+                                else
+                                    storeImage(data.name ?: "unknown")
 
-                                return false
                             }
-                        })
-                        .into(view_qrcode)
 
-                view_booth_name.text = config.name
-            }
-        })
+                        return false
+                    }
+                })
+                .into(view_qrcode)
 
-
-        viewModel.loadExpoDetail(fairId)
+        view_booth_name.text = data.name
     }
 
     private fun hasCameraPermission(context: Context): Boolean {
@@ -147,7 +135,7 @@ class ExpoQrCodeFragment : BaseActionBarFragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
             Const.RequestCode.STORAGE_PERMISSION -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                storeImage(currentConfig.name ?: "unknown")
+                storeImage(data.name ?: "unknown")
             } else {
                 // permission was not granted
                 if (activity == null) {

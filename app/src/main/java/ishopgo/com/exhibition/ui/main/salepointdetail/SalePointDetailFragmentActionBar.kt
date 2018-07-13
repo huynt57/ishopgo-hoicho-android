@@ -41,7 +41,7 @@ class SalePointDetailFragmentActionBar : BaseActionBarFragment() {
             activity?.finish()
         }
 
-        toolbar.rightButton(R.drawable.ic_qr_code)
+        toolbar.rightButton(R.drawable.ic_qr_code_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(SalePointDetailFragment.TAG)
             if (fragment != null) {

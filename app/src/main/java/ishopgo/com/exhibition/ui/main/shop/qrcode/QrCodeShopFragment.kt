@@ -184,6 +184,6 @@ class QrCodeShopFragment : BaseActionBarFragment(), BackpressConsumable {
             activity?.onBackPressed()
         }
 
-        toolbar.setCustomTitle("Mã QR Code của hội chợ")
+        toolbar.setCustomTitle("Mã QR Code của gian hàng")
     }
 }
