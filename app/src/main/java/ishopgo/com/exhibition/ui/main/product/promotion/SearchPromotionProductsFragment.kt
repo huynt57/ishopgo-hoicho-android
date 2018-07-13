@@ -36,7 +36,7 @@ class SearchPromotionProductsFragment: BaseSearchActionBarFragment(), SwipeRefre
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.dataReturned.observe(this, Observer { d ->
             d?.let {
-                val products = it ?: listOf()
+                val products = it
                 if (reloadData) {
                     adapter.replaceAll(products)
                 }

@@ -42,6 +42,9 @@ class Booth : IdentityData() {
     @SerializedName("rate")
     @Expose
     var rate: Int? = null
+    @SerializedName("rate_count")
+    @Expose
+    var rateCount: Int? = null
 
     companion object {
         val FOllWED = 1

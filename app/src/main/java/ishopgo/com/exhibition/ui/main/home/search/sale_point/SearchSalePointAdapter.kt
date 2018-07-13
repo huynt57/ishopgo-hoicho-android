@@ -16,26 +16,14 @@ import kotlinx.android.synthetic.main.item_search_total.view.*
 
 class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<SearchSalePoint>() {
 
-    companion object {
-        const val SALE_POINT_TOTAL = 0
-        const val SALE_POINT_LIST = 1
-    }
-
     var screenWidth: Int = UserDataManager.displayWidth
     var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return if (viewType == SALE_POINT_TOTAL) R.layout.item_search_total else R.layout.item_product_sale_point
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == SALE_POINT_TOTAL) SALE_POINT_TOTAL else SALE_POINT_LIST
+        return R.layout.item_product_sale_point
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<SearchSalePoint> {
-        return if (viewType == SALE_POINT_TOTAL) {
-            TotalHodel(v)
-        } else {
             val salePointHolder = SalePointHolder(v, SearchSalePointConverter())
             val layoutParams = salePointHolder.itemView.layoutParams
 
@@ -45,31 +33,15 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
             return salePointHolder
-        }
     }
 
     override fun onBindViewHolder(holder: ViewHolder<SearchSalePoint>, position: Int) {
         super.onBindViewHolder(holder, position)
-        if (holder is TotalHodel) {
-            holder.apply {
-
-            }
-        } else if (holder is SalePointHolder) {
+        if (holder is SalePointHolder) {
             holder.apply {
                 holder.itemView.setOnClickListener {
                     listener?.click(adapterPosition, getItem(adapterPosition))
                 }
-            }
-        }
-    }
-
-    inner class TotalHodel(v: View) : BaseRecyclerViewAdapter.ViewHolder<SearchSalePoint>(v) {
-
-        @SuppressLint("SetTextI18n")
-        override fun populate(data: SearchSalePoint) {
-            super.populate(data)
-            itemView.apply {
-                    tv_total.text = "${data.id} kết quả được tìm thấy"
             }
         }
     }

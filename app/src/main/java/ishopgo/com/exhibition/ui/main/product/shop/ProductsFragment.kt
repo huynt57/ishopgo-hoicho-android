@@ -50,6 +50,9 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
         const val SORT_VALUE_PRICE = "price"
         const val SORT_BY_ASC = "asc"
         const val SORT_BY_DESC = "desc"
+
+        const val TYPE_PARENT = 1
+        const val TYPE_CHILD = 2
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -163,19 +166,22 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
             val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
             edt_search.visibility = View.GONE
 
-            rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            layoutManager.isAutoMeasureEnabled = true
+            rv_search.layoutManager = layoutManager
             rv_search.adapter = adapterCategory
+
             adapterCategory.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
+
                 override fun click(position: Int, data: Category, code: Int) {
-                    context?.let {
-                        categoryId = data.id
-                        view.text = data.name ?: ""
-                        dialog.dismiss()
-                        firstLoad()
-                    }
+                    categoryId = data.id
+                    view.text = data.name ?: ""
+                    dialog.dismiss()
+                    firstLoad()
                 }
+
             }
+
             val window = dialog.window
             if (window != null) {
                 window.attributes.windowAnimations = R.style.BottomDialog

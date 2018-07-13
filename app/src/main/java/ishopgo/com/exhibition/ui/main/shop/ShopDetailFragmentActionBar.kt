@@ -100,6 +100,15 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
                         break
                     }
         }
+
+        toolbar.rightButton2(R.drawable.ic_qr_code_highlight_24dp)
+        toolbar.setRight2ButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as ShopDetailFragment
+                shareFragment.openQRCodeBooth()
+            }
+        }
     }
 
 }
