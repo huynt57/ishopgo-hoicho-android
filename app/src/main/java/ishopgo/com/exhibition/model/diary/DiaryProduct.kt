@@ -24,4 +24,7 @@ class DiaryProduct : IdentityData() {
     @SerializedName("can_delete")
     @Expose
     var canDelete: Int? = null
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Long? = null
 }

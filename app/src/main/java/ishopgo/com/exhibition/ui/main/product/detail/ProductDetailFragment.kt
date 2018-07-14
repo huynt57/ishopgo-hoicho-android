@@ -961,10 +961,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     }
 
                     DIARY_USER_CLICK -> {
-                        toast("Đang phát triển")
-//                        val intent = Intent(context, MemberProfileActivity::class.java)
-//                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-//                        startActivity(intent)
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
                     }
                 }
             }
