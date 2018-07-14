@@ -110,4 +110,7 @@ class ProductDetail : IdentityData() {
     @SerializedName("san_luong")
     @Expose
     var sanLuong: String? = null
+    @SerializedName("info")
+    @Expose
+    var info: List<InfoProduct>? = null
 }
