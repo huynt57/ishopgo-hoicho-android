@@ -5,11 +5,11 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.diary.DiaryImages
 import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.community.CommunityImageAdapter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.item_product_diary.view.*
 
@@ -66,12 +66,12 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                         img_diary.visibility = View.GONE
                         rv_diary_image.visibility = View.VISIBLE
 
-                        val adapter = CommunityImageAdapter()
+                        val adapter = ProductDiaryImageAdapter()
                         adapter.replaceAll(converted.provideImages())
                         rv_diary_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_diary_image.adapter = adapter
-                        adapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
-                            override fun click(position: Int, data: String, code: Int) {
+                        adapter.listener = object : ClickableAdapter.BaseAdapterAction<DiaryImages> {
+                            override fun click(position: Int, data: DiaryImages, code: Int) {
                                 listener?.click(adapterPosition, getItem(adapterPosition), DIARY_IMAGE_CLICK)
                             }
                         }
@@ -95,7 +95,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
         fun provideAccountName(): String
         fun provideTitle(): String
         fun provideContent(): String
-        fun provideImages(): List<String>
+        fun provideImages(): List<DiaryImages>
         fun provideDateTime(): String
     }
 
@@ -118,7 +118,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                     return from.content ?: ""
                 }
 
-                override fun provideImages(): List<String> {
+                override fun provideImages(): List<DiaryImages> {
                     return from.images ?: mutableListOf()
                 }
 

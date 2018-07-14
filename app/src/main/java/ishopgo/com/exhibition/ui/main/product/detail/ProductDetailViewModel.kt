@@ -8,10 +8,12 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -342,6 +344,30 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     .subscribeWith(object : BaseSingleObserver<NewConversation>() {
                         override fun success(data: NewConversation?) {
                             conversation.postValue(data)
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    }))
+
+        }
+    }
+
+    var productDiary = MutableLiveData<MutableList<DiaryProduct>>()
+
+    fun getProductDiary(params: Request) {
+        if (params is ProductDiaryRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["product_id"] = params.productId
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+
+            addDisposable(noAuthService.getProductDiary(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<MutableList<DiaryProduct>>() {
+                        override fun success(data: MutableList<DiaryProduct>?) {
+                            productDiary.postValue(data)
                         }
 
                         override fun failure(status: Int, message: String) {

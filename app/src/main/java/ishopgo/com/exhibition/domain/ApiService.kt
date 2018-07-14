@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.model.administrator.AdministratorPermissions
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.ManagerCommunity
+import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.post.BoothPostManager
 import ishopgo.com.exhibition.model.post.PostCategory
@@ -166,6 +167,9 @@ class ApiService {
 
         @GET("expo/general-info/get-booth-posts")
         fun getBoothPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<BoothPostManager>>
+
+        @GET("agri/get-product-diary")
+        fun getProductDiary(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<DiaryProduct>>>
     }
 
     interface Auth {

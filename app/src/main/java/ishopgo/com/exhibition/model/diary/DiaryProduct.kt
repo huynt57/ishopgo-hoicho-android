@@ -20,7 +20,7 @@ class DiaryProduct : IdentityData() {
     var account: DiaryAccount? = null
     @SerializedName("images")
     @Expose
-    var images: List<String>? = null
+    var images: List<DiaryImages>? = null
     @SerializedName("can_delete")
     @Expose
     var canDelete: Int? = null

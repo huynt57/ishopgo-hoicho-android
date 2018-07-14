@@ -53,7 +53,7 @@ class CustomProductDetail : ProductDetailOverwrite() {
                             }
                         }
 
-                        linearLayout.addView(productInfo, 10 + count)
+                        linearLayout.addView(productInfo, 11 + count)
                         count += 1
                     }
                 }

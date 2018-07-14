@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
+import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.model.post.BoothPostManager
 import ishopgo.com.exhibition.model.post.PostCategory
 import ishopgo.com.exhibition.model.post.PostContent
@@ -28,6 +29,13 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getProductDiary(fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<DiaryProduct>>> {
+        val response = BaseResponse<MutableList<DiaryProduct>>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getProductDiary(fields)
+    }
+
     override fun getNewestProducts(params: MutableMap<String, Any>): Single<BaseResponse<NewestProducts>> {
         val ps = mutableListOf<Product>()
         for (i in 0..5)
