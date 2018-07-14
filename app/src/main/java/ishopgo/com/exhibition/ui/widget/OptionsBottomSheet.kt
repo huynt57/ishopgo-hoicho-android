@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.widget
 import android.os.Bundle
 import android.support.design.widget.BottomSheetDialogFragment
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -88,6 +89,8 @@ class OptionsBottomSheet : BottomSheetDialogFragment() {
 
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 listener?.click(adapterPosition, getItem(adapterPosition))
             }
         }

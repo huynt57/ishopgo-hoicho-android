@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.group.addmember
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -38,6 +39,8 @@ class MemberAdapter : BaseRecyclerViewAdapter<IMemberView>() {
 
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             val currentState = checkedItems[adapterPosition]
             if (!currentState)
                 checkedItems.put(adapterPosition, !currentState)

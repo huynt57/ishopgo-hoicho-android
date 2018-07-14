@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.map.choosebooth
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.BoothManager
@@ -26,6 +27,8 @@ class ExpoBoothAdapter : ClickableAdapter<BoothManager>() {
 
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition))
         }
     }

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.category
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -70,6 +71,8 @@ class CategoryAdapter : ClickableAdapter<Category>() {
         if (holder is ParentHolder) {
             holder.itemView.view_parent_expand.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 val item = getItem(adapterPosition)
 
                 if (mExpanding.any { it == item }) {
@@ -98,6 +101,8 @@ class CategoryAdapter : ClickableAdapter<Category>() {
 
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 val item = getItem(adapterPosition)
 
                 listener?.click(adapterPosition, item, CODE_CLICK_PARENT)
@@ -108,6 +113,8 @@ class CategoryAdapter : ClickableAdapter<Category>() {
         if (holder is ChildHolder) {
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 val item = getItem(adapterPosition)
 
                 listener?.click(adapterPosition, item, CODE_CLICK_CHILD)
