@@ -23,6 +23,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 
 
 class VisitorsFragment : BaseListFragment<List<Visitor>, Visitor>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

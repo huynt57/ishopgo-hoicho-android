@@ -26,6 +26,9 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
 class ProductResultsFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         private val TAG = "ProductResultsFragment"

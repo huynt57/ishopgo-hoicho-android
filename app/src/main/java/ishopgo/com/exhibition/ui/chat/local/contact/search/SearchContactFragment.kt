@@ -38,6 +38,9 @@ import kotlinx.android.synthetic.main.fragment_home_search_contact.*
  * Created by xuanhong on 5/24/18. HappyCoding!
  */
 class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>(), BackpressConsumable {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     private lateinit var mainViewModel: MainViewModel
 

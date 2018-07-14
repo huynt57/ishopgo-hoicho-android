@@ -31,6 +31,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class PostManagerFragment : BaseListFragment<List<PostObject>, PostObject>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private var typeManager = 0
     private val adapterCategory = PostManagerCategoryAdapter()
     private var reloadCategory = false

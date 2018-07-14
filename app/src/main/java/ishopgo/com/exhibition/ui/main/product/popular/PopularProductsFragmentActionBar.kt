@@ -6,7 +6,9 @@ import android.util.TypedValue
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -56,7 +58,12 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         }
         toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRightButtonClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_popularProductsFragmentActionBar_to_filterProductFragment2)
+            val currentFilter = filterViewModel.getDataFilter.value
+            val chosen = Bundle()
+            currentFilter?.let {
+                chosen.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+            }
+            Navigation.findNavController(it).navigate(R.id.action_popularProductsFragmentActionBar_to_filterProductFragment2, chosen)
         }
     }
 

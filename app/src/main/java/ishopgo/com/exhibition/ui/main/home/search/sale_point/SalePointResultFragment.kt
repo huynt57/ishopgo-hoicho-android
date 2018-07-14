@@ -24,6 +24,10 @@ import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSalePoint>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     companion object {
         private val TAG = "SalePointResultFragment"
     }

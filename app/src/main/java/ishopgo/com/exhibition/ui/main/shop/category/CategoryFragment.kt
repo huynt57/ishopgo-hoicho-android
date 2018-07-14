@@ -23,6 +23,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
 class CategoryFragment : BaseListFragment<List<Category>, Category>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         fun newInstance(params: Bundle): CategoryFragment {
@@ -46,8 +49,8 @@ class CategoryFragment : BaseListFragment<List<Category>, Category>() {
 
         sharedViewModel = obtainViewModel(ShopDetailShareViewModel::class.java, true)
         sharedViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-
     }
+
 
     @SuppressLint("SetTextI18n")
     override fun populateData(data: List<Category>) {

@@ -31,6 +31,10 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class NewestProductsFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private lateinit var filterViewModel: FilterProductViewModel
     private var filterProduct = FilterProduct()
 

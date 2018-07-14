@@ -29,6 +29,9 @@ import kotlinx.android.synthetic.main.fragment_chat_contact.*
  * Created by xuanhong on 5/23/18. HappyCoding!
  */
 class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     private lateinit var mainViewModel: MainViewModel
 
@@ -104,6 +107,7 @@ class ContactFragment : BaseListFragment<List<ContactProvider>, ContactProvider>
 
         mainViewModel = obtainViewModel(MainViewModel::class.java, true)
         mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<ContactProvider>> {

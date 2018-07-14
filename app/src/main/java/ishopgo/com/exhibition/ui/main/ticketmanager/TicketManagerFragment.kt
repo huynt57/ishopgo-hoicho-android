@@ -7,13 +7,11 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Environment.DIRECTORY_PICTURES
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -38,6 +36,9 @@ import java.io.File.separator
 
 
 class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

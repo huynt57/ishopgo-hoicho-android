@@ -27,6 +27,9 @@ import kotlinx.android.synthetic.main.fragment_inbox.*
  * Created by xuanhong on 5/23/18. HappyCoding!
  */
 class InboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     private lateinit var mainViewModel: MainViewModel
 

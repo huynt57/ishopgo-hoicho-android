@@ -21,6 +21,10 @@ import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityResu
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class CommunityResultFragment : BaseListFragment<List<Community>, Community>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     companion object {
         private val TAG = "CommunityResultFragment"
         const val COMMUNITY_CLICK = 1

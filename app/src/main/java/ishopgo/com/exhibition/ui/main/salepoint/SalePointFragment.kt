@@ -20,6 +20,9 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class SalePointFragment : BaseListFragment<List<SalePoint>, SalePoint>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     override fun firstLoad() {
         super.firstLoad()

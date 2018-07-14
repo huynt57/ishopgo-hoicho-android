@@ -300,6 +300,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_rating.rating = convert.provideRate()
             tv_rating_result.text = "(${convert.provideRate()}/5.0)"
             view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
+            view_label_shop_name.text = convert.provideShopLabel()
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRatePoint()}</font></b><br>${convert.provideShopRateCount()} Đánh giá".asHtml()
@@ -390,6 +391,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideProductBrand(): CharSequence
         fun provideProductShortDescription(): CharSequence
         fun provideShopName(): CharSequence
+        fun provideShopLabel(): CharSequence
         fun provideShopRegion(): CharSequence
         fun provideShopProductCount(): Int
         fun provideShopRateCount(): Int
@@ -423,6 +425,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideShopLabel(): CharSequence {
+                    return from.booth?.type ?: "Gian hàng trưng bày"
+                }
+
                 override fun provideMadeIn(): String {
                     return from.madeIn ?: ""
                 }

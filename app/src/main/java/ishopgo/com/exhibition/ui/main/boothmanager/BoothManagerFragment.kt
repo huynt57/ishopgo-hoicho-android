@@ -6,10 +6,19 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.Settings
+import android.support.v4.app.ActivityCompat
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.BoothManager
@@ -23,19 +32,14 @@ import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
-import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Environment
-import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import android.util.Log
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
 import java.io.*
 
 
 class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     @SuppressLint("SetTextI18n")
     override fun populateData(data: List<BoothManager>) {
         if (reloadData) {

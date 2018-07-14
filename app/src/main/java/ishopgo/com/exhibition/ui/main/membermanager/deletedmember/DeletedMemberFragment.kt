@@ -28,6 +28,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class DeletedMemberFragment : BaseListFragment<List<MemberManager>, MemberManager>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private var phone = ""
     private var name = ""
     private var region = ""

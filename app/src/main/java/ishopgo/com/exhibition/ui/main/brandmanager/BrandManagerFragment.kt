@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
-import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Brand
@@ -24,6 +23,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     @SuppressLint("SetTextI18n")
     override fun populateData(data: List<Brand>) {
         if (reloadData) {

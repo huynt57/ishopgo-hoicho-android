@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.promotion
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -28,6 +29,10 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        // do nothing
+    }
+
     private lateinit var filterViewModel: FilterProductViewModel
     private var filterProduct = FilterProduct()
 
@@ -110,18 +115,21 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-//        if (viewModel is PromotionProductsViewModel) {
-//            (viewModel as PromotionProductsViewModel).getDataFilter.observe(this, Observer { p ->
-//                p?.let {
-//                    filterProduct = it
-//                    firstLoad()
-//                }
-//            })
-//        }
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+        filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { p ->
+            p?.let {
+                filterProduct = it
+                firstLoad()
+            }
+        })
+
+        if (filterViewModel.getDataFilter.value == null) {
+            filterViewModel.getDataFilter(FilterProduct())
+        }
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {
-        return obtainViewModel(PromotionProductsViewModel::class.java, true)
+        return obtainViewModel(PromotionProductsViewModel::class.java, false)
     }
 
 }

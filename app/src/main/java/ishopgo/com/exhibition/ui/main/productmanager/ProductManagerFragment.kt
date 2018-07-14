@@ -2,7 +2,6 @@ package ishopgo.com.exhibition.ui.main.productmanager
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -30,6 +29,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductManager>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private var name: String = ""
     private var code: String = ""
 
