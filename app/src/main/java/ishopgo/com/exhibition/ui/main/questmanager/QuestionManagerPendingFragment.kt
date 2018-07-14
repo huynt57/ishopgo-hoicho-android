@@ -29,6 +29,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class QuestionManagerPendingFragment : BaseListFragment<List<QuestionObject>, QuestionObject>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private val adapterCategory = QuestionManagerCategoryAdapter()
     private var reloadCategory = false
     private var key_search = ""

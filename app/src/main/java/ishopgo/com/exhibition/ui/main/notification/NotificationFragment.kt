@@ -28,6 +28,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by hoangnh on 5/7/2018.
  */
 class NotificationFragment : BaseListFragment<List<Notification>, Notification>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         const val TAG = "NotificationAddFragment"

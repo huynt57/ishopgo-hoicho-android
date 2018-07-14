@@ -6,14 +6,17 @@ import android.util.TypedValue
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PromotionProductsFragmentActionBar : BaseActionBarFragment() {
-    private lateinit var filterViewModel: PromotionProductsViewModel
+    private lateinit var filterViewModel: FilterProductViewModel
 
     companion object {
 
@@ -54,20 +57,25 @@ class PromotionProductsFragmentActionBar : BaseActionBarFragment() {
             activity?.onBackPressed()
         }
 
-        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRightButtonClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_promotionProductsFragmentActionBar_to_filterProductFragment)
+            val currentFilter = filterViewModel.getDataFilter.value
+            val chosen = Bundle()
+            currentFilter?.let {
+                chosen.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+            }
+            Navigation.findNavController(it).navigate(R.id.action_promotionProductsFragmentActionBar_to_filterProductFragment, chosen)
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        filterViewModel = obtainViewModel(PromotionProductsViewModel::class.java, true)
+        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
 
         filterViewModel.getDataFilter.observe(this, Observer { c ->
             c?.let {
                 val count = (it.filter?.size ?: 0) + 1
-                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
+                toolbar.rightButton(R.drawable.ic_filter_highlight_24dp, count)
             }
         })
     }

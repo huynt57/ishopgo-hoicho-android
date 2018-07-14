@@ -13,7 +13,6 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.request.SearchShopRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.domain.response.Shop
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -28,6 +27,9 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
 class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, SearchShopResultProvider>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         private val TAG = "ShopResultsFragment"

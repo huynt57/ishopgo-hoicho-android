@@ -25,6 +25,9 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class ProductFollowFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)

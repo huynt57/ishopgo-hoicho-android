@@ -27,6 +27,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class ProductsOfBrandFragment : BaseListFragment<SearchProducts, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     private var brandId: Long = -1L
 

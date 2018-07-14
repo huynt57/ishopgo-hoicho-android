@@ -2,7 +2,6 @@ package ishopgo.com.exhibition.ui.main.productmanager
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -30,6 +29,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductManager>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private var name: String = ""
     private var code: String = ""
 
@@ -158,7 +161,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
                 //                tv_number_item.setText(it ?: 0)
             })
             managerViewModel.pushTopSuccess.observe(this, Observer {
-                toast("Chức năng đang được hoàn thiện")
+                toast("Đẩy top thành công")
             })
             managerViewModel.updateVisibilityOk.observe(this, Observer {
                 toast("Thành công")

@@ -24,6 +24,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class CommunityNotificationFragment : BaseListFragment<List<Notification>, Notification>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }

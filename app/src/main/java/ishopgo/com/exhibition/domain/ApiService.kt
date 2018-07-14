@@ -34,65 +34,65 @@ class ApiService {
 
     interface NoAuth {
 
-        @GET("categories")
+        @GET("expo/categories")
         fun getCategories(): Single<BaseResponse<List<Category>>>
 
-        @GET("sub-categories")
+        @GET("expo/sub-categories")
         fun getSubCategories(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Category>>>
 
-        @GET("booth/get-category/{id}")
+        @GET("expo/booth/get-category/{id}")
         fun getBoothCategories(@Path("id") boothId: Long): Single<BaseResponse<List<Category>>>
 
-        @GET("get-banners")
+        @GET("expo/get-banners")
         fun getBanners(): Single<BaseResponse<List<Banner>>>
 
-        @GET("highlight-brands")
+        @GET("expo/highlight-brands")
         fun getHighlightBrands(): Single<BaseResponse<List<Brand>>>
 
-        @GET("highlight-products")
+        @GET("expo/highlight-products")
         fun getHighlightProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("suggested-products")
+        @GET("expo/suggested-products")
         fun getSuggestedProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("get-product-category")
+        @GET("expo/get-product-category")
         fun getCategoriedProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("viewed-products")
+        @GET("expo/viewed-products")
         fun getViewedProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("brand-products/{brand-id}")
+        @GET("expo/brand-products/{brand-id}")
         fun getBrandProducts(@Path("brand-id") brandId: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<SearchProducts>>
 
-        @GET("search-product")
+        @GET("expo/search-product")
         fun searchProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<ManagerProduct>>
 
-        @GET("search-booth")
+        @GET("expo/search-booth")
         fun searchShops(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<ManagerShop>>
 
-        @GET("product/{id}")
+        @GET("expo/product/{id}")
         fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
 
-        @GET("relate-products")
+        @GET("expo/relate-products")
         fun getRelateProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("newest-products")
+        @GET("expo/newest-products")
         fun getNewestProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<NewestProducts>>
 
-        @GET("promotion-products")
+        @GET("expo/promotion-products")
         fun getPromotionProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("get-product-booth/{id}")
+        @GET("expo/get-product-booth/{id}")
         fun getBoothProducts(@Path("id") boothId: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("comment-product/{id}")
+        @GET("expo/comment-product/{id}")
         fun getProductComments(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ProductComment>>>
 
-        @GET("shop/{id}/rates")
+        @GET("expo/shop/{id}/rates")
         fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ShopRate>>>
 
         @FormUrlEncoded
-        @POST("login")
+        @POST("expo/login")
         fun login(
                 @Field("phone") phone: String,
                 @Field("password") password: String,
@@ -100,269 +100,273 @@ class ApiService {
                 @Field("device_token_android") token: String
         ): Single<BaseResponse<User>>
 
-        @POST("register")
+        @POST("expo/register")
         fun register(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @GET("community")
+        @GET("expo/community")
         fun getCommunity(
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<ManagerCommunity>>
 
 
-        @GET("community/list-comment/{id}")
+        @GET("expo/community/list-comment/{id}")
         fun getCommentCommunity(
                 @Path("id") post_id: Long,
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<MutableList<CommunityComment>>>
 
-        @GET("get-otp")
+        @GET("expo/get-otp")
         fun getOTP(
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<Any>>
 
-        @GET("shop/{id}")
+        @GET("expo/shop/{id}")
         fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
-        @GET("search-sale-point")
+        @GET("expo/search-sale-point")
         fun searchSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSearchSalePoint>>
 
-        @GET("booth/detail-sale-point")
+        @GET("expo/booth/detail-sale-point")
         fun getSalePointDetail(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerSalePointDetail>>
 
-//        @GET("booth/list-sale-point/{id}")
+//        @GET("boothexpo//list-sale-point/{id}")
 //        fun getBoothSalePoints(@Path("id") boothId: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>>
 
-        @GET("general-info/get-posts")
+        @GET("expo/general-info/get-posts")
         fun getPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<PostMenuManager>>
 
-        @GET("general-info/get-posts/{id}")
+        @GET("expo/general-info/get-posts/{id}")
         fun getPostDetail(@Path("id") post_id: Long): Single<BaseResponse<PostContent>>
 
-        @GET("general-info/get-categories")
+        @GET("expo/general-info/get-categories")
         fun getPostCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<PostCategory>>>
 
-        @GET("question/get-posts")
+        @GET("expo/question/get-posts")
         fun getQuestion(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<QuestionManager>>
 
-        @GET("question/get-posts/{id}")
+        @GET("expo/question/get-posts/{id}")
         fun getQuestionDetail(@Path("id") question_id: Long): Single<BaseResponse<QuestionDetail>>
 
-        @GET("question/get-categories")
+        @GET("expo/question/get-categories")
         fun getQuestionCategory(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<QuestionCategory>>>
 
-        @GET("fair")
+        @GET("expo/fair")
         fun getExpos(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ExpoConfig>>>
 
-        @GET("fair/detail/{id}")
+        @GET("expo/fair/detail/{id}")
         fun getExpoDetail(@Path("id") fairId: Long): Single<BaseResponse<ExpoConfig>>
 
-        @GET("map/list/{id}")
+        @GET("expo/map/list/{id}")
         fun getExpoShopLocations(@Path("id") expoId: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Kiosk>>>
 
-        @GET("introduction")
+        @GET("expo/introduction")
         fun getIntroduction(): Single<BaseResponse<Introduction>>
 
-        @GET("general-info/get-booth-posts")
+        @GET("expo/general-info/get-booth-posts")
         fun getBoothPost(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<BoothPostManager>>
     }
 
     interface Auth {
 
-        @GET("community")
+        @GET("expo/community")
         fun getCommunity(
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<ManagerCommunity>>
 
-        @GET("shop/{id}")
+        @GET("expo/shop/{id}")
         fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
-        @GET("product/{id}")
+        @GET("expo/product/{id}")
         fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
 
-        @GET("members/{id}")
+        @GET("expo/members/{id}")
         fun getMemberDetail(
                 @Path("id") memberId: Long
         ): Single<BaseResponse<Member>>
 
-        @GET("favorite-products")
+        @GET("expo/favorite-products")
         fun getFavoriteProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @POST("change-password")
+        @POST("expo/change-password")
         fun changePassword(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @POST("refresh-token")
+        @FormUrlEncoded
+        @POST("expo/products/push-top")
+        fun pushTop(@FieldMap params: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("expo/refresh-token")
         fun refreshToken(): Single<BaseResponse<RefreshTokenResponse>>
 
-        @GET("logout")
+        @GET("expo/logout")
         fun logout(
                 @Query("type") osType: String
         ): Single<BaseResponse<Any>>
 
-        @GET("members")
+        @GET("expo/members")
         fun getMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
 
-        @GET("members")
+        @GET("expo/members")
         fun getDeletedMember(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
 
-        @GET("profile")
+        @GET("expo/profile")
         fun getProfile(
                 @Query("account_id") account_id: Long
         ): Single<BaseResponse<Profile>>
 
-        @POST("profile")
+        @POST("expo/profile")
         fun updateProfile(
                 @Body body: RequestBody
         ): Single<BaseResponse<Profile>>
 
-        @POST("community/create-post")
+        @POST("expo/community/create-post")
         fun sentPostCommunity(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @POST("like/product/{id}")
+        @POST("expo/like/product/{id}")
         fun postProductLike(
                 @Path("id") product_id: Long
         ): Single<BaseResponse<Any>>
 
-        @GET("like/product/{id}")
+        @GET("expo/like/product/{id}")
         fun getProductLike(
                 @Path("id") product_id: Long
         ): Single<BaseResponse<ProductLike>>
 
-        @POST("community/like-post/{post-id}")
+        @POST("expo/community/like-post/{post-id}")
         fun postCommunityLike(
                 @Path("post-id") post_id: Long
         ): Single<BaseResponse<Any>>
 
-        @POST("community/comment-post/{id}")
+        @POST("expo/community/comment-post/{id}")
         fun postCommentCommunity(
                 @Path("id") post_id: Long,
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @POST("share-product/{id}")
+        @POST("expo/share-product/{id}")
         fun postProductShare(
                 @Path("id") id: Long
         ): Single<BaseResponse<Any>>
 
-        @POST("comment-product/{id}")
+        @POST("expo/comment-product/{id}")
         fun postCommentProduct(
                 @Path("id") product_id: Long,
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @GET("config")
+        @GET("expo/config")
         fun getConfigBooth(): Single<BaseResponse<Booth>>
 
-        @POST("config/update")
+        @POST("expo/config/update")
         fun editConfigBooth(
                 @Body body: RequestBody
         ): Single<BaseResponse<Any>>
 
-        @GET("booth/get-sale-point")
+        @GET("expo/booth/get-sale-point")
         fun getSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<SalePoint>>>
 
-        @POST("booth/add-sale-point")
+        @POST("expo/booth/add-sale-point")
         fun createSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-        @POST("sale-point/change-status/{id}")
+        @POST("expo/sale-point/change-status/{id}")
         fun changeStatusSalePoint(@Path("id") salePoint_id: Long): Single<BaseResponse<Any>>
 
-        @GET("booths")
+        @GET("expo/booths")
         fun getBooth(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>>
 
-        @POST("booth/add")
+        @POST("expo/booth/add")
         fun createBooth(@Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @DELETE("booth/{id}")
+        @DELETE("expo/booth/{id}")
         fun deleteBooth(@Path("id") booth_id: Long): Single<BaseResponse<Any>>
 
-        @POST("booth/add-from-member/{id}")
+        @POST("expo/booth/add-from-member/{id}")
         fun registerBooth(@Path("id") account_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @POST("follow")
+        @POST("expo/follow")
         fun postProductPollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ProductFollow>>
 
-        @GET("get-sale-point/{id}")
+        @GET("expo/get-sale-point/{id}")
         fun getProductSalePoint(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ProductSalePoint>>>
 
-        @POST("add-sale-point")
+        @POST("expo/add-sale-point")
         fun createProductSalePoint(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-        @POST("shop/{id}/rate")
+        @POST("expo/shop/{id}/rate")
         fun createRatingShop(@Path("id") product_id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-        @GET("survey/check-survey")
+        @GET("expo/survey/check-survey")
         fun checkSurvey(): Single<BaseResponse<CheckSurvey>>
 
-        @GET("survey")
+        @GET("expo/survey")
         fun getSurvey(): Single<BaseResponse<Survey>>
 
-        @POST("survey/add-survey-account/{id}")
+        @POST("expo/survey/add-survey-account/{id}")
         fun postSurvey(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-        @POST("ticket/add")
         @FormUrlEncoded
+        @POST("expo/ticket/add")
         fun createTicket(@FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Ticket>>
 
-        @GET("ticket/account")
+        @GET("expo/ticket/account")
         fun getMyTicket(): Single<BaseResponse<List<Ticket>>>
 
-        @GET("detail-sale-point")
+        @GET("expo/detail-sale-point")
         fun getInfoMemberSalePoint(@Query("phone") phone: String
         ): Single<BaseResponse<SearchSalePoint>>
 
-        @GET("follow-product")
+        @GET("expo/follow-product")
         fun getProductFollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
 
-        @GET("list-follow-booth")
+        @GET("expo/list-follow-booth")
         fun getBoothFollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothFollow>>>
 
-        @GET("ticket")
+        @GET("expo/ticket")
         fun getListTicket(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>>
 
-        @GET("customer-visit")
+        @GET("expo/customer-visit")
         fun getVisitors(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageVisitor>>
 
-        @POST("fair/add")
+        @POST("expo/fair/add")
         fun addExpo(@Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @POST("fair/update/{id}")
+        @POST("expo/fair/update/{id}")
         fun editExpo(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @POST("fair/setup-map/{id}")
+        @POST("expo/fair/setup-map/{id}")
         fun settingExpo(@Path("id") expoId: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @DELETE("fair/delete/{id}")
+        @DELETE("expo/fair/delete/{id}")
         fun deleteExpo(@Path("id") expoId: Long): Single<BaseResponse<Any>>
 
-        @POST("map/choose-booth/{id}")
         @FormUrlEncoded
+        @POST("expo/map/choose-booth/{id}")
         fun assignBooth(@Path("id") position: Long, @FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
-        @GET("product/{id}")
+        @GET("expo/product/{id}")
         fun getProductManagerDetail(@Path("id") id: Long): Single<BaseResponse<ProductManagerDetail>>
 
-        @GET("list-administrators")
+        @GET("expo/list-administrators")
         fun getAdministrator(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Administrator>>>
 
-        @DELETE("delete-administrators/{id}")
+        @DELETE("expo/delete-administrators/{id}")
         fun deleteAdministrator(@Path("id") id: Long): Single<BaseResponse<Any>>
 
-        @GET("account-permissions")
+        @GET("expo/account-permissions")
         fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdministratorPermissions>>>
 
-        @POST("add-administrators")
+        @POST("expo/add-administrators")
         fun addAdministrator(@Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @POST("edit-administrators/{id}")
+        @POST("expo/edit-administrators/{id}")
         fun editAdministrator(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @GET("get-permissions")
+        @GET("expo/get-permissions")
         fun getAccountPermissions(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<String>>>
     }
 
@@ -482,8 +486,8 @@ class ApiService {
                 @QueryMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<List<ImageInventory>>>
 
-        @POST("chat/update-info-group")
         @FormUrlEncoded
+        @POST("chat/update-info-group")
         fun chat_updateInfoGroup(
                 @FieldMap fields: MutableMap<String, Any>
         ): Single<BaseResponse<ConversationInfo>>
@@ -514,5 +518,4 @@ class ApiService {
         @POST("edit-product/{id}")
         fun editProduct(@Path("id") brand_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
     }
-
 }

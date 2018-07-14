@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.MemberRequest
@@ -25,12 +25,15 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.membermanager.deletedmember.DeletedMemberActivity
-import ishopgo.com.exhibition.ui.widget.DateInputEditText
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class MemberManagerFragment : BaseListFragment<List<MemberManager>, MemberManager>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private var phone = ""
     private var name = ""
     private var region = ""

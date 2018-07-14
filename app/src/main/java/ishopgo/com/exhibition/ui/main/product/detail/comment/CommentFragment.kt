@@ -6,7 +6,6 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductCommentsRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
@@ -20,6 +19,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
 class CommentFragment : BaseListFragment<List<ProductComment>, ProductComment>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         fun newInstance(params: Bundle): CommentFragment {

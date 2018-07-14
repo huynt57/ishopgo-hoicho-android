@@ -21,7 +21,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.post.post.SpCategoryAdapter
-import ishopgo.com.exhibition.ui.main.postmanager.PostManagerAdapter
 import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -29,6 +28,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
 class NewsFragment : BaseListFragment<List<PostObject>, PostObject>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         fun newInstance(params: Bundle): NewsFragment {

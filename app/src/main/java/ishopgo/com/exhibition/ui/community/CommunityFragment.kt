@@ -32,7 +32,6 @@ import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_JSON
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.community.Community
@@ -61,6 +60,9 @@ import java.net.URL
  * Created by hoangnh on 4/23/2018.
  */
 class CommunityFragment : BaseListFragment<List<Community>, Community>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)

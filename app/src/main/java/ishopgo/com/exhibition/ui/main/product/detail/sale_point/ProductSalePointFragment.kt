@@ -30,6 +30,10 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_product_sale_point_detail.*
 
 class ProductSalePointFragment : BaseListFragment<List<ProductSalePoint>, ProductSalePoint>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private lateinit var data: ProductDetail
 
     override fun firstLoad() {

@@ -19,6 +19,6 @@ class FilterProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var getDataFilter = MutableLiveData<FilterProduct>()
 
     fun getDataFilter(data: FilterProduct) {
-        getDataFilter.postValue(data)
+        getDataFilter.value = data
     }
 }

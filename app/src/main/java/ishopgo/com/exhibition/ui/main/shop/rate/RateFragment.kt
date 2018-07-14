@@ -32,6 +32,9 @@ import kotlinx.android.synthetic.main.fragment_shop_rating.*
  * Created by xuanhong on 4/22/18. HappyCoding!
  */
 class RateFragment : BaseListFragment<List<ShopRate>, ShopRate>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     companion object {
         fun newInstance(params: Bundle): RateFragment {

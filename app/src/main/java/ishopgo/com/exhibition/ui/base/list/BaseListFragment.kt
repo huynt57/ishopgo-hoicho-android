@@ -51,7 +51,7 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
         super.onActivityCreated(savedInstanceState)
 
         viewModel = obtainViewModel()
-        viewModel.errorSignal.observe(this, Observer { error ->
+        viewModel.errorSignal.observe(viewLifeCycleOwner!!, Observer { error ->
             error?.let {
                 hideProgressDialog()
                 resolveError(it)
@@ -65,9 +65,10 @@ abstract class BaseListFragment<DATA, ITEM> : BaseFragment(), SwipeRefreshLayout
             }
         })
 
-
-        firstLoad()
+        initLoading()
     }
+
+    abstract fun initLoading()
 
     override fun onRefresh() {
         firstLoad()

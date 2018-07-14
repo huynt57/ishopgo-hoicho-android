@@ -300,6 +300,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_rating.rating = convert.provideRate()
             tv_rating_result.text = "(${convert.provideRate()}/5.0)"
             view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
+            view_label_shop_name.text = convert.provideShopLabel()
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
             view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRatePoint()}</font></b><br>${convert.provideShopRateCount()} Đánh giá".asHtml()
@@ -360,6 +361,21 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 edt_comment.isFocusableInTouchMode = false
                 edt_comment.setOnClickListener { openActivtyLogin() }
             }
+
+            if (convert.provideIsDiary()) {
+                container_diary.visibility = View.VISIBLE
+
+                if (UserDataManager.currentType == "Quản trị viên") {
+                    view_add_diary.visibility = View.VISIBLE
+                } else view_add_diary.visibility = View.GONE
+
+
+                if (UserDataManager.currentUserId == product.booth?.id)
+                    view_add_diary.visibility = View.VISIBLE
+                else view_add_diary.visibility = View.GONE
+
+            } else container_diary.visibility = View.GONE
+
         }
         openProductSalePoint(product)
 
@@ -390,6 +406,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideProductBrand(): CharSequence
         fun provideProductShortDescription(): CharSequence
         fun provideShopName(): CharSequence
+        fun provideShopLabel(): CharSequence
         fun provideShopRegion(): CharSequence
         fun provideShopProductCount(): Int
         fun provideShopRateCount(): Int
@@ -417,12 +434,21 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideDateExpected(): String
         fun provideScale(): String
         fun provideNumberExpected(): String
+        fun provideIsDiary(): Boolean
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideIsDiary(): Boolean {
+                    return from.isNhatkySx == 1
+
+                }
+                override fun provideShopLabel(): CharSequence {
+                    return from.booth?.type ?: "Gian hàng trưng bày"
+                }
+
                 override fun provideMadeIn(): String {
                     return from.madeIn ?: ""
                 }

@@ -36,8 +36,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
             return fragment
         }
 
-        const val TYPE_FILTER_PROMOTION = 1
-        const val TYPE_FILTER_CARE = 2
+        const val TYPE_FILTER_PROMOTION = 2
+        const val TYPE_FILTER_CARE = 1
         const val SORT_BY_NAME = "name"
         const val SORT_BY_FOLLOW = "follow"
         const val SORT_BY_RATE = "rate"

@@ -37,6 +37,10 @@ import kotlinx.android.synthetic.main.fragment_products.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class ProductsFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private val adapterCategory = ProductBoothCategoryAdapter()
 
     companion object {

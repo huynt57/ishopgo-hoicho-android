@@ -29,6 +29,10 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class PopularFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private lateinit var filterViewModel: FilterProductViewModel
     private var filterProduct = FilterProduct()
 
@@ -106,17 +110,24 @@ class PopularFragment : BaseListFragment<List<Product>, Product>() {
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
-        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { p ->
             p?.let {
                 filterProduct = it
                 firstLoad()
             }
         })
+
+        // default loading
+        if (filterViewModel.getDataFilter.value == null) {
+            filterViewModel.getDataFilter(FilterProduct())
+        }
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Product>> {

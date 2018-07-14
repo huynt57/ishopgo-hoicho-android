@@ -33,7 +33,7 @@ class ISGAuthenticator(app: Application) : Authenticator {
 
         var obtained = false
 
-        isgService.refreshToken()
+        val subscribeWith: BaseSingleObserver<RefreshTokenResponse> = isgService.refreshToken()
                 .subscribeWith(object : BaseSingleObserver<RefreshTokenResponse>() {
                     override fun success(data: RefreshTokenResponse?) {
                         Log.d(TAG, "onNext() called with dat: $data")
@@ -49,6 +49,8 @@ class ISGAuthenticator(app: Application) : Authenticator {
                     }
 
                 })
+
+        subscribeWith.dispose()
 
         return if (obtained) {
             response?.request()?.newBuilder()?.header("Authorization", "Bearer " + UserDataManager.accessToken)?.build()

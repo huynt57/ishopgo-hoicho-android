@@ -10,8 +10,8 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
-import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -23,6 +23,10 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class AdministratorFragment : BaseListFragment<List<Administrator>, Administrator>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     @SuppressLint("SetTextI18n")
     override fun populateData(data: List<Administrator>) {
         if (reloadData) {

@@ -26,6 +26,9 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
 class SuggestedFragment : BaseListFragment<List<Product>, Product>() {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     override fun layoutManager(context: Context): RecyclerView.LayoutManager {
         return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)

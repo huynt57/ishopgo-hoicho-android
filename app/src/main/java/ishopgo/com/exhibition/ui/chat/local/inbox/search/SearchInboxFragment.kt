@@ -33,6 +33,9 @@ import kotlinx.android.synthetic.main.fragment_home_search_inbox.*
  * Created by xuanhong on 5/24/18. HappyCoding!
  */
 class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>(), BackpressConsumable {
+    override fun initLoading() {
+        firstLoad()
+    }
 
     @SuppressLint("SetTextI18n")
     override fun populateData(data: List<InboxProvider>) {

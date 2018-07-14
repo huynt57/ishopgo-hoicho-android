@@ -51,6 +51,10 @@ class MyTicketFragmentActionBar : BaseActionBarFragment() {
     }
 
     class MyTicketsFragment : BaseListFragment<List<Ticket>, Ticket>() {
+        override fun initLoading() {
+            firstLoad()
+        }
+
         override fun populateData(data: List<Ticket>) {
             if (reloadData)
                 adapter.replaceAll(data)

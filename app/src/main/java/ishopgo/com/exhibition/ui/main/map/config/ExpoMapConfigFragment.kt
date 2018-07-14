@@ -11,14 +11,12 @@ import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
-import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExposRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
-import ishopgo.com.exhibition.ui.base.list.BaseListActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -108,6 +106,9 @@ class ExpoMapConfigFragment : BaseActionBarFragment() {
     }
 
     class ExposFragment : BaseListFragment<List<ExpoConfig>, ExpoConfig>() {
+        override fun initLoading() {
+            firstLoad()
+        }
 
         companion object {
             fun newInstance(type: Int): ExposFragment {

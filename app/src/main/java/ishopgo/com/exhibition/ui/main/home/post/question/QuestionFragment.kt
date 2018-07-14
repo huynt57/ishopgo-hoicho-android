@@ -35,6 +35,10 @@ import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
 class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>() {
+    override fun initLoading() {
+        firstLoad()
+    }
+
     private val adapterCategory = QuestionManagerCategoryAdapter()
     private var reloadCategory = false
     private var key_search = ""
