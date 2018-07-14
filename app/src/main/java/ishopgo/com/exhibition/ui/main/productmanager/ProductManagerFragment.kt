@@ -161,7 +161,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
                 //                tv_number_item.setText(it ?: 0)
             })
             managerViewModel.pushTopSuccess.observe(this, Observer {
-                toast("Chức năng đang được hoàn thiện")
+                toast("Đẩy top thành công")
             })
             managerViewModel.updateVisibilityOk.observe(this, Observer {
                 toast("Thành công")

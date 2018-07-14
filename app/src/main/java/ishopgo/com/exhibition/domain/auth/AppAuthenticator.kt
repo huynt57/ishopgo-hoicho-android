@@ -33,7 +33,7 @@ class AppAuthenticator(app: Application) : Authenticator {
 
         var obtained = false
 
-        authService.refreshToken()
+        val subscribeWith: BaseSingleObserver<RefreshTokenResponse> = authService.refreshToken()
                 .subscribeWith(object : BaseSingleObserver<RefreshTokenResponse>() {
                     override fun success(data: RefreshTokenResponse?) {
                         data?.let {
@@ -48,6 +48,8 @@ class AppAuthenticator(app: Application) : Authenticator {
                     }
 
                 })
+
+        subscribeWith.dispose()
 
         return if (obtained) {
             response?.request()?.newBuilder()?.header("Authorization", "Bearer " + UserDataManager.accessToken)?.build()

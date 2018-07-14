@@ -343,20 +343,21 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
     var pushTopSuccess = MutableLiveData<Boolean>()
 
     fun pushToTop(productId: Long) {
-        pushTopSuccess.postValue(true)
-//        addDisposable(noAuthService.getCategories()
-//                .subscribeOn(Schedulers.single())
-//                .subscribeWith(object : BaseSingleObserver<List<Category>>() {
-//                    override fun success(data: List<Category>?) {
-//                        val filtered = data?.filter { it.id != 0L }
-//                        categories.postValue(filtered ?: mutableListOf())
-//                    }
-//
-//                    override fun failure(status: Int, message: String) {
-//                        resolveError(status, message)
-//                    }
-//                })
-//        )
+        val params = mutableMapOf<String, Any>()
+        params["product_id"] = productId
+
+        addDisposable(authService.pushTop(params)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        pushTopSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     var categories = MutableLiveData<List<Category>>()

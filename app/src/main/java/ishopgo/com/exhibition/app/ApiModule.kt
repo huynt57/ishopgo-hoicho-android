@@ -192,7 +192,7 @@ class ApiModule {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL_ISG)
                 .client(okHttpClient)
                 .build()
     }
@@ -204,7 +204,7 @@ class ApiModule {
         return Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL_ISG)
                 .client(okHttpClient)
                 .build()
     }
@@ -277,7 +277,6 @@ class ApiModule {
 
     companion object {
         const val TIME_OUT: Long = 30
-        const val BASE_URL = "http://ishopgo.expo360.vn/api/v1/expo/"
         const val BASE_URL_ISG = "http://ishopgo.expo360.vn/api/v1/"
     }
 }
