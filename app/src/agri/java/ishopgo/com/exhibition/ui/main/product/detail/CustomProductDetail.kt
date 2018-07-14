@@ -31,6 +31,8 @@ class CustomProductDetail : ProductDetailOverwrite() {
                     label_products_same_shop.text = listInfo[i].name
                     val adapter = ProductAdapter(0.4f)
                     if (listInfo[i].products?.data?.isNotEmpty() == true) {
+                        var count = 0
+
                         listInfo[i].products?.data?.let { adapter.replaceAll(it) }
 
                         view_list_products_same_shop.adapter = adapter
@@ -51,7 +53,8 @@ class CustomProductDetail : ProductDetailOverwrite() {
                             }
                         }
 
-                        linearLayout.addView(productInfo)
+                        linearLayout.addView(productInfo, 10 + count)
+                        count += 1
                     }
                 }
             }
