@@ -25,6 +25,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getFriends(fields: MutableMap<String, Any>): Single<BaseResponse<List<ContactItem>>> {
+        val response = BaseResponse<MutableList<String>>()
+        response.status = 1
+        return delegate.returningResponse(response).getFriends(fields)
+    }
+
     override fun pushTop(params: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<MutableList<String>>()
         response.status = 1
