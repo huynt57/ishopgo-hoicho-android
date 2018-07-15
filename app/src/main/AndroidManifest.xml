@@ -399,12 +399,19 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                 <data
-                    android:host="@string/app_host"
-                    android:scheme="@string/app_protocol" />
                 <data
-                    android:host="@string/app_host"
-                    android:scheme="https" />
+                    android:scheme="@string/app_protocol"
+                    android:host="@string/app_host" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="https"
+                    android:host="@string/app_host" />
             </intent-filter>
         </activity>
         <activity
