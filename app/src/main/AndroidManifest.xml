@@ -400,7 +400,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="@string/app_protocol"
+                    android:scheme="http"
                     android:host="@string/app_host" />
             </intent-filter>
             <intent-filter>
