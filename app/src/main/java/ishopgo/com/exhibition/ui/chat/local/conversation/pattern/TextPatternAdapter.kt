@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.conversation.pattern
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.TextPattern
@@ -29,16 +30,22 @@ class TextPatternAdapter : ClickableAdapter<TextPattern>() {
         holder.itemView.apply {
             setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_CLICK)
             }
 
             view_pattern_edit.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_EDIT)
             }
 
             view_pattern_remove.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_REMOVE)
             }
         }

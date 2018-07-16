@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.category
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -38,8 +39,9 @@ class CategoryStage1Adapter(private var itemWidthRatio: Float = -1f) : Clickable
         if (holder is CategoryHolder) {
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
-                val item = getItem(adapterPosition)
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 
+                val item = getItem(adapterPosition)
                 listener?.click(adapterPosition, item)
             }
         }

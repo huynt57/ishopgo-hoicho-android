@@ -170,6 +170,11 @@ class ApiService {
 
     interface Auth {
 
+        @GET("expo/friend/list")
+        fun getFriends(
+                @QueryMap fields: MutableMap<String, Any>
+        ): Single<BaseResponse<List<ContactItem>>>
+
         @GET("expo/community")
         fun getCommunity(
                 @QueryMap fields: MutableMap<String, Any>

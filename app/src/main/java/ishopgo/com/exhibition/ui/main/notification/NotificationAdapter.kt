@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.notification
 
 import android.graphics.Typeface
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -26,6 +27,8 @@ class NotificationAdapter : ClickableAdapter<Notification>() {
         super.onBindViewHolder(holder, position)
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition))
         }
     }

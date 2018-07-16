@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ProductProcess
@@ -22,6 +23,8 @@ class ProductProcessAdapter : ClickableAdapter<ProductProcess>() {
 
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition))
         }
     }

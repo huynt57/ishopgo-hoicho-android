@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product
 
 import android.graphics.Paint
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -43,6 +44,8 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
 
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition))
         }
     }

@@ -30,7 +30,7 @@ class MemberViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (searchKeyword.isNotBlank())
             fields.put("name", searchKeyword)
 
-        addDisposable(isgService.inbox_getContact(fields)
+        addDisposable(authService.getFriends(fields)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<List<ContactItem>>() {
                     override fun success(data: List<ContactItem>?) {

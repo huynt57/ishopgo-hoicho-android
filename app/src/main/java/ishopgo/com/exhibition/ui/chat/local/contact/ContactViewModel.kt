@@ -28,7 +28,7 @@ class ContactViewModel : BaseListViewModel<List<ContactProvider>>(), AppComponen
             fields["offset"] = params.offset
             fields["limit"] = params.limit
 
-            addDisposable(isgService.inbox_getContact(fields)
+            addDisposable(authService.getFriends(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<ContactItem>>() {
                         override fun success(data: List<ContactItem>?) {
