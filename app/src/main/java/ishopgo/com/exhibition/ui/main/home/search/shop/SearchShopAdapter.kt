@@ -1,15 +1,13 @@
 package ishopgo.com.exhibition.ui.main.home.search.shop
 
-import android.annotation.SuppressLint
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.Shop
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import kotlinx.android.synthetic.main.item_search_shop_has_product.view.*
-import kotlinx.android.synthetic.main.item_search_total.view.*
 
 /**
  * Created by xuanhong on 4/20/18. HappyCoding!
@@ -41,6 +39,7 @@ class SearchShopAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Fl
         if (holder is ProductHolder) {
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
                 listener?.click(adapterPosition, getItem(adapterPosition))
             }
         }

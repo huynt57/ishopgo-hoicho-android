@@ -31,7 +31,7 @@ class SearchContactViewModel : BaseListViewModel<List<ContactProvider>>(), AppCo
             fields["limit"] = params.limit
             fields["name"] = params.keyword
 
-            addDisposable(isgService.inbox_getContact(fields)
+            addDisposable(authService.getFriends(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<ContactItem>>() {
                         override fun success(data: List<ContactItem>?) {

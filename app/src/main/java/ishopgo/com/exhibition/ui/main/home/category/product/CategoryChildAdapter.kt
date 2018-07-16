@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.home.category.product
 import android.graphics.Color
 import android.support.v4.graphics.drawable.DrawableCompat
 import android.support.v7.content.res.AppCompatResources
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
@@ -30,6 +31,8 @@ class CategoryChildAdapter : ClickableAdapter<Category>() {
 
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition))
         }
     }

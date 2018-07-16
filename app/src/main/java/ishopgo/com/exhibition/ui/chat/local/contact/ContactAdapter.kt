@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.contact
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -25,6 +26,8 @@ class ContactAdapter : ClickableAdapter<ContactProvider>() {
 
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition))
         }
     }

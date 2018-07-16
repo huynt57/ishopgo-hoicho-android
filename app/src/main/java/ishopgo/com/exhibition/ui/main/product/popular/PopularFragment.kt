@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  */
 class PopularFragment : BaseListFragment<List<Product>, Product>() {
     override fun initLoading() {
-        firstLoad()
+        // do nothing, we start with default filter
     }
 
     private lateinit var filterViewModel: FilterProductViewModel

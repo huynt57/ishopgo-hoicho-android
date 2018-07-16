@@ -2,11 +2,14 @@ package ishopgo.com.exhibition.ui.main.product.newest
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
-import ishopgo.com.exhibition.ui.main.product.viewed.ViewedFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -40,19 +43,27 @@ class NewestProductsFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Sản phẩm mới nhất")
+        toolbar.setCustomTitle("Tìm trong sản phẩm mới nhất")
+        val titleView = toolbar.getTitleView()
+        titleView.setBackgroundResource(R.drawable.bg_search_box)
+        titleView.setTextColor(resources.getColor(R.color.md_grey_700))
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+        titleView.setOnClickListener {
+            Navigation.findNavController(it).navigate(R.id.action_newestProductsFragmentActionBar_to_searchNewestProductsFragment)
+        }
+        titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
-            activity?.finish()
+            activity?.onBackPressed()
         }
-
-        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(NewestProductsFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as NewestProductsFragment
-                shareFragment.openFilterFragment()
+            val currentFilter = filterViewModel.getDataFilter.value
+            val chosen = Bundle()
+            currentFilter?.let {
+                chosen.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
             }
+            Navigation.findNavController(it).navigate(R.id.action_newestProductsFragmentActionBar_to_filterProductFragment3, chosen)
         }
     }
 
@@ -63,7 +74,7 @@ class NewestProductsFragmentActionBar : BaseActionBarFragment() {
         filterViewModel.getDataFilter.observe(this, Observer { c ->
             c?.let {
                 val count = (it.filter?.size ?: 0) + 1
-                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
+                toolbar.rightButton(R.drawable.ic_filter_highlight_24dp, count)
             }
         })
     }

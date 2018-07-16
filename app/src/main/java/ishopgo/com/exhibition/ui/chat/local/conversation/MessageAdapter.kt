@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.chat.local.conversation
 
 import android.content.Intent
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -104,6 +105,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
         holder.apply {
             itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_NORMAL)
             }
         }
@@ -112,6 +115,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
         if (holder is LeftProductMessageHolder) {
             holder.itemView.apply {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@apply
+
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_PRODUCT)
             }
         }
@@ -119,6 +124,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
         if (holder is RightProductMessageHolder) {
             holder.itemView.apply {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@apply
+
                 listener?.click(adapterPosition, getItem(adapterPosition), CODE_PRODUCT)
             }
         }
@@ -135,6 +142,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                 }
                 right_imageContent.setOnClickListener {
                     val adapterPosition = holder.adapterPosition
+                    if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                     val item = getItem(adapterPosition)
                     if (item is ChatImageMessage) {
                         val imageUrls = item.getImageUrls()
@@ -147,6 +156,7 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                 }
                 right_view_container_error.setOnClickListener {
                     val adapterPosition = holder.adapterPosition
+                    if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
                     listener?.click(adapterPosition, getItem(adapterPosition), CODE_FAIL)
                 }
             }
@@ -165,6 +175,8 @@ class MessageAdapter : ClickableAdapter<IChatMessage>() {
                 }
                 left_imageContent.setOnClickListener {
                     val adapterPosition = holder.adapterPosition
+                    if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                     val item = getItem(adapterPosition)
                     if (item is ChatImageMessage) {
                         val imageUrls = item.getImageUrls()

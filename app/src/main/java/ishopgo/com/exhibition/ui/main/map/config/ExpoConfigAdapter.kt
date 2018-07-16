@@ -1,9 +1,9 @@
 package ishopgo.com.exhibition.ui.main.map.config
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.model.Const
@@ -11,7 +11,6 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.item_expo_config.view.*
 
@@ -39,12 +38,16 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
         super.onBindViewHolder(holder, position)
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
             listener?.click(adapterPosition, getItem(adapterPosition), CLICK_DETAIL)
         }
 
         holder.itemView.view_setting.setOnClickListener {
-            val adapter = holder.adapterPosition
-            listener?.click(adapter, getItem(adapter), CLICK_SETTING)
+            val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            listener?.click(adapterPosition, getItem(adapterPosition), CLICK_SETTING)
         }
     }
 

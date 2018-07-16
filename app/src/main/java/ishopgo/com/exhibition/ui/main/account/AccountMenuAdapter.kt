@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.account
 
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -70,6 +71,8 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuItem>() {
         if (holder is ParentHolder) {
             holder.itemView.view_parent_expand.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
                 val item = getItem(adapterPosition)
 
                 if (mExpanding.any { it == item }) {
@@ -97,8 +100,9 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuItem>() {
 
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
-                val item = getItem(adapterPosition)
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 
+                val item = getItem(adapterPosition)
                 listener?.click(adapterPosition, item, CODE_CLICK_PARENT)
             }
 
@@ -107,8 +111,9 @@ class AccountMenuAdapter : ClickableAdapter<AccountMenuItem>() {
         if (holder is ChildHolder) {
             holder.itemView.setOnClickListener {
                 val adapterPosition = holder.adapterPosition
-                val item = getItem(adapterPosition)
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 
+                val item = getItem(adapterPosition)
                 listener?.click(adapterPosition, item, CODE_CLICK_CHILD)
             }
         }
