@@ -126,7 +126,7 @@ class SignupFragment : BaseFragment() {
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                     tv_signup_company.text.toString(), tv_signup_city.text.toString(), tv_signup_district.text.toString(),
-                    tv_signup_address.text.toString(), tv_signup_password.text.toString())
+                    tv_signup_address.text.toString(), tv_reference.text.toString(), tv_signup_password.text.toString())
         }
     }
 

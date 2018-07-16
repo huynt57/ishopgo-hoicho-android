@@ -203,6 +203,25 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_signup_district"/>
 
             <EditText
+                android:id="@+id/tv_reference"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/bg_semi_transparent"
+                android:hint="SĐT Người giới thiệu"
+                android:inputType="textMultiLine"
+                android:singleLine="true"
+                android:padding="16dp"
+                android:textColor="@color/colorPureWhite"
+                android:textColorHint="@color/colorPureWhite"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_signup_address"/>
+
+            <EditText
                 android:id="@+id/tv_signup_password"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -218,7 +237,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_signup_address"/>
+                app:layout_constraintTop_toBottomOf="@+id/tv_reference"/>
 
             <EditText
                 android:id="@+id/tv_signup_retry_password"

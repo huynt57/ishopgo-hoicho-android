@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.login
 
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
@@ -9,9 +8,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
-import java.util.*
 
 /**
  * Created by hoangnh on 4/23/2018.
@@ -54,7 +51,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String,
-                        region: String, district: String, address: String, password: String) {
+                        region: String, district: String, address: String, referenceTel: String, password: String) {
 
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -66,6 +63,8 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("district", district)
                 .addFormDataPart("address", address)
                 .addFormDataPart("password", password)
+
+        if (referenceTel.isNotBlank()) builder.addFormDataPart("refer_phone", address)
 
         addDisposable(noAuthService.register(builder.build())
                 .subscribeOn(Schedulers.single())
