@@ -8,8 +8,6 @@ import android.os.Handler
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +16,9 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
@@ -28,30 +29,20 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.observable
 import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_product_add_sale_point.*
+import java.util.concurrent.TimeUnit
 
 class ProductSalePointAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductDetailViewModel
     private val adapterRegion = RegionAdapter()
     private val adapterDistrict = DistrictAdapter()
     private lateinit var data: ProductDetail
-    private var searchPhone = ""
     private val handler = Handler()
-    private val searchRunnable = object : Runnable {
-        override fun run() {
-            handler.removeCallbacks(this)
-
-            reloadData = true
-            if (!searchPhone.isEmpty()) {
-                viewModel.getInfoMemberSalePoint(searchPhone)
-            } else {
-                showInfo(null)
-            }
-        }
-    }
+    private val disposables = CompositeDisposable()
 
     companion object {
         fun newInstance(params: Bundle): ProductSalePointAddFragment {
@@ -60,6 +51,12 @@ class ProductSalePointAddFragment : BaseFragment() {
 
             return fragment
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        disposables.dispose()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -86,18 +83,20 @@ class ProductSalePointAddFragment : BaseFragment() {
         edit_shop_city.setOnClickListener { getRegion(edit_shop_city) }
         edit_shop_district.setOnClickListener { getDistrict(edit_shop_district) }
 
-        edit_shop_phone.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                searchPhone = s.toString()
-                edit_shop_phone.handler.removeCallbacks(searchRunnable)
-                edit_shop_phone.handler.postDelayed(searchRunnable, 500)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
+        disposables.add(edit_shop_phone.observable()
+                .debounce(600, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    reloadData = true
+                    if (!it.isEmpty()) {
+                        viewModel.getInfoMemberSalePoint(it)
+                    } else {
+                        showInfo(null)
+                    }
+                })
 
         btn_sale_point_add.setOnClickListener {
             if (checkRequireFields(edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))

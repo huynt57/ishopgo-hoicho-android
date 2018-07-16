@@ -5,14 +5,14 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.SearchContactRequest
@@ -29,10 +29,12 @@ import ishopgo.com.exhibition.ui.chat.local.contact.ContactAdapter
 import ishopgo.com.exhibition.ui.chat.local.contact.ContactProvider
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
+import ishopgo.com.exhibition.ui.extensions.observable
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_home_search_contact.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by xuanhong on 5/24/18. HappyCoding!
@@ -43,6 +45,7 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
     }
 
     private lateinit var mainViewModel: MainViewModel
+    private val disposables = CompositeDisposable()
 
     @SuppressLint("SetTextI18n")
     override fun populateData(data: List<ContactProvider>) {
@@ -116,11 +119,6 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
     }
 
     private var searchKey: String = ""
-    private val searchRunnable = Runnable {
-        Log.d(TAG, "start searching: $searchKey")
-
-        firstLoad()
-    }
 
     override fun firstLoad() {
         super.firstLoad()
@@ -152,6 +150,8 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
     override fun onDestroyView() {
         hideKeyboard()
         super.onDestroyView()
+
+        disposables.dispose()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -169,18 +169,17 @@ class SearchContactFragment : BaseListFragment<List<ContactProvider>, ContactPro
             activity?.onBackPressed()
         }
 
-        view_search_field.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                searchKey = s.toString()
-                view_search_field.handler.removeCallbacks(searchRunnable)
-                view_search_field.handler.postDelayed(searchRunnable, 500)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
+        disposables.add(view_search_field.observable()
+                .debounce(600, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    reloadData = true
+                    searchKey = it
+                    firstLoad()
+                })
         view_search_field.post {
             val inputMethodManager = view_search_field.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             inputMethodManager?.showSoftInput(view_search_field, InputMethodManager.SHOW_IMPLICIT)
