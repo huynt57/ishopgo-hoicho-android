@@ -12,10 +12,7 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseErrorSignal
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.domain.request.CreateConversationRequest
-import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
-import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
-import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.request.*
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.diary.DiaryProduct
@@ -466,4 +463,58 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
     }
 
+
+    var createProductDiary = MutableLiveData<Boolean>()
+
+    fun createProductDiary(productId: Long, title: String, content: String, postMedias: ArrayList<PostMedia> = ArrayList()) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("content", content)
+                .addFormDataPart("title", title)
+                .addFormDataPart("product_id", productId.toString())
+
+        if (postMedias.isNotEmpty()) {
+            for (i in postMedias.indices) {
+                val uri = postMedias[i].uri
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                }
+            }
+        }
+
+        addDisposable(authService.createProductDiary(builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createProductDiary.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    var deleteProductDiary = MutableLiveData<Boolean>()
+
+    fun deleteProductDiary(nksxId: Long, productId: Long) {
+        val fields = mutableMapOf<String, Any>()
+        fields["product_id"] = productId
+
+        addDisposable(authService.deleteProductDiary(nksxId, fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        deleteProductDiary.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
 }

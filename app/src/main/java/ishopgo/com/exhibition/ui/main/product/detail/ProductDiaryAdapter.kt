@@ -5,6 +5,8 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.diary.DiaryImages
 import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -18,6 +20,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
     companion object {
         const val DIARY_IMAGE_CLICK = 0
         const val DIARY_USER_CLICK = 1
+        const val DIARY_DELETE_CLICK = 2
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
@@ -38,6 +41,10 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
 
             itemView.tv_account_name.setOnClickListener {
                 listener?.click(adapterPosition, getItem(adapterPosition), DIARY_USER_CLICK)
+            }
+
+            itemView.tv_diary_delete.setOnClickListener {
+                listener?.click(adapterPosition, getItem(adapterPosition), DIARY_DELETE_CLICK)
             }
         }
     }
@@ -61,6 +68,18 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(img_account_avatar)
 
+                if (UserDataManager.currentType == "Nhân viên gian hàng") {
+                    val listPermission = Const.listPermission
+                    if (listPermission.isNotEmpty())
+                        for (i in listPermission.indices)
+                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+                                tv_diary_delete.visibility = View.VISIBLE
+                                break
+                            }
+                } else if (UserDataManager.currentUserId == data.productId)
+                    tv_diary_delete.visibility = View.VISIBLE
+                else tv_diary_delete.visibility = View.GONE
+
                 if (converted.provideImages().isNotEmpty()) {
                     if (converted.provideImages().size > 1) {
                         img_diary.visibility = View.GONE
@@ -69,6 +88,8 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                         val adapter = ProductDiaryImageAdapter()
                         adapter.replaceAll(converted.provideImages())
                         rv_diary_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+                        rv_diary_image.isNestedScrollingEnabled = false
+                        rv_diary_image.setHasFixedSize(false)
                         rv_diary_image.adapter = adapter
                         adapter.listener = object : ClickableAdapter.BaseAdapterAction<DiaryImages> {
                             override fun click(position: Int, data: DiaryImages, code: Int) {
@@ -79,8 +100,12 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                         img_diary.visibility = View.VISIBLE
                         rv_diary_image.visibility = View.GONE
 
-                        Glide.with(this).load(converted.provideImages()[0])
+                        Glide.with(this).load(converted.provideImages()[0].image)
                                 .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_diary)
+
+                        img_diary.setOnClickListener {
+                            listener?.click(adapterPosition, getItem(adapterPosition), DIARY_IMAGE_CLICK)
+                        }
                     }
                 } else {
                     img_diary.visibility = View.GONE

@@ -27,4 +27,7 @@ class DiaryProduct : IdentityData() {
     @SerializedName("account_id")
     @Expose
     var accountId: Long? = null
+    @SerializedName("product_id")
+    @Expose
+    var productId: Long? = null
 }

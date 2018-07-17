@@ -377,6 +377,12 @@ class ApiService {
 
         @GET("expo/get-permissions")
         fun getAccountPermissions(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<String>>>
+
+        @POST("agri/add-product-diary")
+        fun createProductDiary(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @DELETE("agri/delete-product-diary/{id}")
+        fun deleteProductDiary(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

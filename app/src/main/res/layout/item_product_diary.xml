@@ -75,16 +75,30 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_account_name" />
 
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_diary_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginStart="4dp"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_title" />
+
             <ImageView
                 android:id="@+id/img_diary"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
+                android:layout_marginBottom="4dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_diary_title" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_content" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_diary_image"
@@ -93,25 +107,13 @@
                 android:layout_marginEnd="4dp"
                 android:layout_marginStart="4dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/img_diary" />
 
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/tv_diary_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rv_diary_image" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
@@ -125,8 +127,26 @@
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@color/colorSecondaryText"
-        android:textSize="11sp"
+        android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@+id/img_account_avatar"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2"
+        tools:layout_width="40dp" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/tv_diary_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="4dp"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:text="Xoá"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/tv_comment_time"
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
         tools:layout_width="40dp" />
 

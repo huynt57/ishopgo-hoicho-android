@@ -321,6 +321,40 @@
 
                 </LinearLayout>
 
+                <View
+                    android:id="@+id/view_divider_product_brand"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="match_parent" />
+
+                <FrameLayout
+                    android:id="@+id/container_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="16dp">
+
+                    <WebView
+                        android:id="@+id/view_product_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        tools:visibility="visible" />
+
+                </FrameLayout>
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_show_more_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    android:padding="8dp"
+                    android:text="+ Xem chi tiết"
+                    android:textColor="@color/colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
+
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/container_diary"
                     android:layout_width="match_parent"
@@ -380,7 +414,7 @@
                         android:gravity="center"
                         android:paddingBottom="8dp"
                         android:paddingTop="8dp"
-                        android:text="Xem toàn bộ nhật ký sản xuất"
+                        android:text="Xem thêm nhật ký sản xuất"
                         android:textColor="@color/colorPrimary"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -389,40 +423,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/rv_product_diary" />
 
                 </android.support.constraint.ConstraintLayout>
-
-                <View
-                    android:id="@+id/view_divider_product_brand"
-                    style="@style/AppTheme.DividerLine"
-                    android:layout_width="match_parent" />
-
-                <FrameLayout
-                    android:id="@+id/container_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:paddingEnd="16dp"
-                    android:paddingStart="16dp"
-                    android:paddingTop="16dp">
-
-                    <WebView
-                        android:id="@+id/view_product_description"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        tools:visibility="visible" />
-
-                </FrameLayout>
-
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/view_product_show_more_description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="+ Xem chi tiết"
-                    android:textColor="@color/colorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
 
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/container_product_process"

@@ -93,6 +93,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private lateinit var viewModel: ProductDetailViewModel
     private lateinit var ratingViewModel: RatingProductViewModel
+    private lateinit var viewModelDiary: DiaryProductViewModel
 
     private val handleOverwrite: ProductDetailOverwrite = CustomProductDetail()
 
@@ -154,6 +155,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModelDiary = obtainViewModel(DiaryProductViewModel::class.java, true)
+        viewModelDiary.isSusscess.observe(this, Observer {
+            firstLoadDiary()
+        })
         ratingViewModel = obtainViewModel(RatingProductViewModel::class.java, true)
         ratingViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         ratingViewModel.isSusscess.observe(this, Observer {
@@ -161,7 +166,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         })
 
         viewModel = obtainViewModel(ProductDetailViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                resolveError(it)
+                hideProgressDialog()
+            }
+        })
         viewModel.conversation.observe(this, Observer { c ->
             c?.let {
                 val conv = LocalConversationItem()
@@ -234,6 +244,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
+        handleOverwrite.handleActivityCreated(viewModel, this)
+
         loadData(productId)
         firstLoadSalePoint()
     }
@@ -246,7 +258,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             productDetail = product
 
             view?.let {
-                handleOverwrite.handleInOtherFlavor(it, productDetail)
+                handleOverwrite.handleInOtherFlavor(it, productDetail, this)
             }
 
             val processes = product.process ?: listOf()
@@ -410,8 +422,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 firstLoadDiary()
 
-                view_add_diary.setOnClickListener { toast("Đang phát triển") }
-                view_product_show_more_diary.setOnClickListener { toast("Đang phát triển") }
+//                view_add_diary.setOnClickListener { toast("Đang phát triển") }
+//                view_product_show_more_diary.setOnClickListener { toast("Đang phát triển") }
             } else container_diary.visibility = View.GONE
 
         }
@@ -751,6 +763,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupDiaryProducts(view.context)
         setupSalePointRecycleview()
         setupListeners()
+
+        handleOverwrite.handleViewCreated(view, view.context, this)
 
         swipe.setOnRefreshListener {
             swipe.isRefreshing = false
