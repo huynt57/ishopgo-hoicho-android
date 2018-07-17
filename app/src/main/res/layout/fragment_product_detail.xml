@@ -1046,6 +1046,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:orientation="horizontal"
+        android:background="@color/colorPureWhite"
         android:weightSum="3">
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
