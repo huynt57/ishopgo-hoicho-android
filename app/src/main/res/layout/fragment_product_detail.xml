@@ -31,7 +31,6 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
                     tools:visibility="visible">
 
                     <android.support.v4.view.ViewPager
@@ -40,13 +39,17 @@
                         android:layout_height="0dp"
                         app:layout_constraintDimensionRatio="h,1:1"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintVertical_bias="0"
+                        android:layout_marginBottom="24dp"
                         app:layout_constraintStart_toStartOf="parent" />
 
                     <me.relex.circleindicator.CircleIndicator
                         android:id="@+id/view_banner_indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
-                        android:layout_gravity="center_horizontal|bottom"
+                        app:layout_constraintHorizontal_bias="0.2"
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
@@ -817,7 +820,6 @@
                         app:layout_constraintTop_toBottomOf="@+id/label_viewed" />
 
                 </android.support.constraint.ConstraintLayout>
-
 
             </LinearLayout>
 
