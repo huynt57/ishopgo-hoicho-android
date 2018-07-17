@@ -4,14 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchInboxRequest
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
@@ -25,9 +25,11 @@ import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxAdapter
 import ishopgo.com.exhibition.ui.chat.local.inbox.InboxProvider
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
+import ishopgo.com.exhibition.ui.extensions.observable
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_home_search_inbox.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by xuanhong on 5/24/18. HappyCoding!
@@ -82,10 +84,11 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
     }
 
     private var searchKey: String = ""
-    private val searchRunnable = Runnable {
-        Log.d(TAG, "start searching: $searchKey");
+    private var disposables = CompositeDisposable()
 
-        firstLoad()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        disposables.dispose()
     }
 
     override fun firstLoad() {
@@ -130,18 +133,18 @@ class SearchInboxFragment : BaseListFragment<List<InboxProvider>, InboxProvider>
             activity?.onBackPressed()
         }
 
-        view_search_field.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                searchKey = s.toString()
-                view_search_field.handler.removeCallbacks(searchRunnable)
-                view_search_field.handler.postDelayed(searchRunnable, 500)
-            }
+        disposables.add(view_search_field.observable()
+                .debounce(600, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    reloadData = true
+                    searchKey = it
+                    firstLoad()
+                })
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
         view_search_field.post {
             val inputMethodManager = view_search_field.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
             inputMethodManager?.showSoftInput(view_search_field, InputMethodManager.SHOW_IMPLICIT)

@@ -124,11 +124,9 @@ class ApiModule {
     @Singleton
     @Named("okhttp_noauth_authenticator")
     fun provideNoAuthOkHttpClient(@Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache,
-                            @Named("log") logger: Interceptor,
-                            @Named("expo_header") header: Interceptor): okhttp3.OkHttpClient {
+                                  @Named("log") logger: Interceptor,
+                                  @Named("expo_header") header: Interceptor): okhttp3.OkHttpClient {
         val builder = okhttp3.OkHttpClient.Builder()
-        val dispatcher = Dispatcher()
-        dispatcher.maxRequests = 1
         builder
                 .cache(cache)
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
@@ -136,7 +134,6 @@ class ApiModule {
                 .authenticator(auth)
                 .addInterceptor(header)
                 .addInterceptor(logger)
-                .dispatcher(dispatcher)
 
         return builder.build()
     }
@@ -145,9 +142,9 @@ class ApiModule {
     @Singleton
     @Named("okhttp_auth_authenticator")
     fun provideAuthOkHttpClient(@Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache,
-                            @Named("log") logger: Interceptor,
-                            @Named("expo_header") header: Interceptor,
-                            @Named("expo_auth_header") authHeader: Interceptor): okhttp3.OkHttpClient {
+                                @Named("log") logger: Interceptor,
+                                @Named("expo_header") header: Interceptor,
+                                @Named("expo_auth_header") authHeader: Interceptor): okhttp3.OkHttpClient {
         val builder = okhttp3.OkHttpClient.Builder()
         val dispatcher = Dispatcher()
         dispatcher.maxRequests = 1
@@ -266,7 +263,7 @@ class ApiModule {
     @Provides
     @Singleton
     fun provideISGService(@Named("retrofit_isg") retrofit: Retrofit,
-                      @Named("isg_auth") auth: Authenticator): ApiService.ISGApi {
+                          @Named("isg_auth") auth: Authenticator): ApiService.ISGApi {
 
         val isgService = retrofit.create(ApiService.ISGApi::class.java)
         if (auth is ISGAuthenticator) {

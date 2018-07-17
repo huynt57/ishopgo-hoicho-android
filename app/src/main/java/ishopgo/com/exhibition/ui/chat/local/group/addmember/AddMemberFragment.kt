@@ -4,22 +4,24 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ConversationInfo
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.observable
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_local_chat_add_member.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by xuanhong on 4/9/18. HappyCoding!
@@ -31,19 +33,17 @@ class AddMemberFragment : BaseActionBarFragment() {
     private var selectedAdapter = SelectedMemberAdapter()
     private var searchName = ""
     private lateinit var info: ConversationInfo
-    private val handler = Handler()
-    private val searchRunnable = object : Runnable {
-        override fun run() {
-            handler.removeCallbacks(this)
-
-            reloadData = true
-            viewModel.loadContacts(0, searchName)
-        }
-
-    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.content_local_chat_add_member
+    }
+
+    private val disposables = CompositeDisposable()
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        disposables.dispose()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,20 +52,21 @@ class AddMemberFragment : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        view_member_name.editText?.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                val query = s.toString().trim()
+        view_member_name.editText?.let {
+            disposables.add(it.observable()
+                    .debounce(600, TimeUnit.MILLISECONDS)
+                    .filter { it.isNotEmpty() }
+                    .distinctUntilChanged()
+                    .subscribeOn(Schedulers.single())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        reloadData = true
+                        searchName = it
+                        reloadData = true
+                        viewModel.loadContacts(0, searchName)
+                    })
 
-                searchName = query
-                handler.removeCallbacks(searchRunnable)
-                handler.postDelayed(searchRunnable, 300)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
+        }
 
         view_recyclerview.adapter = adapter
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)

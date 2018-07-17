@@ -319,7 +319,16 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_brand.text = convert.provideProductBrand()
             view_rating.rating = convert.provideRate()
             tv_rating_result.text = "(${convert.provideRate()}/5.0)"
-            view_product_description.loadData(convert.provideProductShortDescription().toString(), "text/html", null)
+            val productDesc = convert.provideProductShortDescription().toString()
+            if (productDesc.isBlank()) {
+                container_description.visibility = View.GONE
+                view_product_show_more_description.visibility = View.GONE
+            }
+            else {
+                container_description.visibility = View.VISIBLE
+                view_product_show_more_description.visibility = View.VISIBLE
+            }
+            view_product_description.loadData(productDesc, "text/html", null)
             view_label_shop_name.text = convert.provideShopLabel()
             view_shop_name.text = convert.provideShopName()
             view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
@@ -332,7 +341,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
-            view_product_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
             view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }
@@ -570,10 +578,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductShortDescription(): CharSequence {
-                    val fullHtml = String.format(
-                            "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
-                            Const.webViewCSS, from.description)
-                    return fullHtml
+                    return if (from.description.isNullOrBlank()) ""
+                    else {
+                        String.format(
+                                "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
+                                Const.webViewCSS, from.description)
+                    }
                 }
 
                 override fun provideShopName(): CharSequence {
@@ -741,6 +751,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupDiaryProducts(view.context)
         setupSalePointRecycleview()
         setupListeners()
+
+        swipe.setOnRefreshListener {
+            swipe.isRefreshing = false
+            if (productId != -1L) loadData(productId)
+        }
     }
 
     private fun setupSalePointRecycleview() {
@@ -825,16 +840,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun loadData(productId: Long) {
-        viewModel.loadSameShopProducts(productId)
-        viewModel.loadProductDetail(productId)
-        viewModel.loadProductComments(productId)
+        viewModel.loadData(productId)
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
-        if (isUserLoggedIn) {
-            viewModel.loadViewedProducts(productId)
-            viewModel.loadFavoriteProducts(productId)
-        }
-
         container_viewed.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
         container_favorite.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
     }

@@ -9,10 +9,10 @@ import android.text.TextWatcher
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
 import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.NumberFormat
@@ -131,8 +131,7 @@ fun View.hideKeyboard() {
     imm.hideSoftInputFromWindow(windowToken, 0)
 }
 
-
-fun VectorSupportEditText.observable(): Observable<String> {
+fun EditText.observable(): Observable<String> {
 
     val subject = PublishSubject.create<String>()
 

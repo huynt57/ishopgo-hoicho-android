@@ -7,12 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +19,9 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.District
@@ -30,8 +30,10 @@ import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.observable
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_signup.*
+import java.util.concurrent.TimeUnit
 
 
 /**
@@ -47,27 +49,19 @@ class SignupFragment : BaseFragment() {
         }
     }
 
+    private val disposables = CompositeDisposable()
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
     private val adapterDistrict = DistrictAdapter()
     private var image: String = ""
-    private var searchKeyword = ""
-    private val handler = Handler()
-    private val searchRunnable = object : Runnable {
-        override fun run() {
-            handler.removeCallbacks(this)
-
-            reloadData = true
-            if (!searchKeyword.isEmpty()) {
-                viewModel.loadUserByPhone(searchKeyword)
-            } else {
-                fillInfo(null)
-            }
-        }
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_signup, container, false)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        disposables.dispose()
     }
 
     @SuppressLint("SetTextI18n")
@@ -95,18 +89,20 @@ class SignupFragment : BaseFragment() {
             launchPickPhotoIntent()
         }
 
-        tv_signup_phone.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
-                searchKeyword = s.toString()
-                tv_signup_phone.handler.removeCallbacks(searchRunnable)
-                tv_signup_phone.handler.postDelayed(searchRunnable, 500)
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-        })
+        disposables.add(tv_signup_phone.observable()
+                .debounce(600, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    reloadData = true
+                    if (!it.isEmpty()) {
+                        viewModel.loadUserByPhone(it)
+                    } else {
+                        fillInfo(null)
+                    }
+                })
 
         tv_signup_retry_password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_NULL) {
@@ -130,7 +126,7 @@ class SignupFragment : BaseFragment() {
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                     tv_signup_company.text.toString(), tv_signup_city.text.toString(), tv_signup_district.text.toString(),
-                    tv_signup_address.text.toString(), tv_signup_password.text.toString())
+                    tv_signup_address.text.toString(), tv_reference.text.toString(), tv_signup_password.text.toString())
         }
     }
 

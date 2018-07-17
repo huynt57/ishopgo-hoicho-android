@@ -4,8 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
+import io.reactivex.Single
+import io.reactivex.functions.Function3
+import io.reactivex.functions.Function5
+import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseErrorSignal
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
@@ -17,6 +22,7 @@ import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.showStackTrace
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
@@ -96,6 +102,88 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
                 })
         )
+    }
+
+    fun loadData(productId: Long) {
+        val d = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId) else noAuthService.getProductDetail(productId)
+
+        val fields = mutableMapOf<String, Any>()
+        fields["limit"] = 10
+        fields["offset"] = 0
+        fields["product_id"] = productId
+        val relateProducts = noAuthService.getRelateProducts(fields)
+
+        val fields1 = mutableMapOf<String, Any>()
+        fields1["limit"] = 5
+        val productComment = noAuthService.getProductComments(productId, fields1)
+
+        val isUserLoggedIn = UserDataManager.currentUserId > 0
+        if (isUserLoggedIn) {
+            val fields2 = mutableMapOf<String, Any>()
+            fields2["limit"] = 10
+            fields2["offset"] = 0
+            fields2["product_id"] = productId
+
+            val vp = noAuthService.getViewedProducts(fields2)
+
+            val fields3 = mutableMapOf<String, Any>()
+            fields3["limit"] = 10
+            fields3["offset"] = 0
+            fields3["product_id"] = productId
+
+            val fp = authService.getFavoriteProducts(fields3)
+
+            addDisposable(Single.zip(
+                    d,
+                    relateProducts,
+                    productComment,
+                    vp,
+                    fp,
+                    Function5<BaseResponse<ProductDetail>, BaseResponse<List<Product>>, BaseResponse<List<ProductComment>>, BaseResponse<List<Product>>, BaseResponse<List<Product>>, Unit> { t1: BaseResponse<ProductDetail>, t2: BaseResponse<List<Product>>, t3: BaseResponse<List<ProductComment>>, t4: BaseResponse<List<Product>>, t5: BaseResponse<List<Product>> ->
+                        t1.data?.let {
+                            detail.postValue(it)
+                        }
+
+                        sameShopProducts.postValue(t2.data ?: listOf())
+                        productComments.postValue(t3.data ?: listOf())
+                        viewedProducts.postValue(t4.data ?: listOf())
+                        favoriteProducts.postValue(t5.data ?: listOf())
+                    }
+
+            )
+                    .subscribeOn(Schedulers.io())
+                    .subscribeWith(object : DisposableSingleObserver<Unit>() {
+                        override fun onSuccess(t: Unit?) {
+                            loadingStatus.postValue(false)
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            resolveError(BaseErrorSignal.ERROR_UNKNOWN, e?.showStackTrace() ?: "")
+                        }
+
+                    }))
+        } else {
+            addDisposable(Single.zip(d, relateProducts, productComment, Function3<BaseResponse<ProductDetail>, BaseResponse<List<Product>>, BaseResponse<List<ProductComment>>, Unit> { t1, t2, t3 ->
+                t1.data?.let {
+                    detail.postValue(it)
+                }
+
+                sameShopProducts.postValue(t2.data ?: listOf())
+                productComments.postValue(t3.data ?: listOf())
+            })
+                    .subscribeOn(Schedulers.io())
+                    .subscribeWith(object : DisposableSingleObserver<Unit>() {
+                        override fun onSuccess(t: Unit?) {
+                            loadingStatus.postValue(false)
+                        }
+
+                        override fun onError(e: Throwable?) {
+                            resolveError(BaseErrorSignal.ERROR_UNKNOWN, e?.showStackTrace() ?: "")
+                        }
+
+                    }))
+        }
+
     }
 
     var detail = MutableLiveData<ProductDetail>()
