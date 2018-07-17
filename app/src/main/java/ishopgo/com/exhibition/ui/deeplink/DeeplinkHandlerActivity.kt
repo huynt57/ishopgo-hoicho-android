@@ -1,8 +1,8 @@
 package ishopgo.com.exhibition.ui.deeplink
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import ishopgo.com.exhibition.model.Const
@@ -33,69 +33,73 @@ class DeeplinkHandlerActivity : BaseActivity() {
                         val link = it.link
                         Log.d(TAG, "processData: qrCode = [$link]")
 
-                        // booth detail: http://hangviet360.com/gian-hang/gian-hang-19657?booth=19657
-                        val boothId = link.getQueryParameter("booth")
-
-                        // fair: http://hangviet360.com?fairId=30
-                        val fairId = link.getQueryParameter("fairId")
-
-                        // product: http://hangviet360.com?productId=30
-                        val productId = link.getQueryParameter("productId")
-
-                        // general_info + news: http://hangviet360.com?postId=30
-                        val postId = link.getQueryParameter("postId")
-
-                        // question: http://hangviet360.com?questionId=30
-                        val questionId = link.getQueryParameter("questionId")
-
-                        when {
-                            boothId != null && boothId.isNotBlank() -> {
-                                val intent = Intent(this, ShopDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, boothId.toLong())
-                                startActivity(intent)
-                                finish()
-                            }
-                            fairId != null && fairId.isNotBlank() -> {
-                                Log.d("hong", "nhan dc fairId= $fairId")
-                                val intent = Intent(this, ExpoDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, fairId.toLong())
-                                startActivity(intent)
-                                finish()
-                            }
-                            productId != null && productId.isNotBlank() -> {
-                                Log.d("hong", "nhan dc productId= $productId")
-                                val intent = Intent(this, ProductDetailActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_ID, productId.toLong())
-                                startActivity(intent)
-                                finish()
-                            }
-                            postId != null && postId.isNotBlank() -> {
-                                Log.d("hong", "nhan dc postId= $postId")
-//                                val i = Intent(this, PostMenuDetailActivity::class.java)
-////                                i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-//                                startActivity(i)
-//                                finish()
-                            }
-                            questionId != null && questionId.isNotBlank() -> {
-                                Log.d("hong", "nhan dc questionId= $questionId")
-                                val i = Intent(this, QuestionMenuDetailActivity::class.java)
-                                i.putExtra(Const.TransferKey.EXTRA_ID, questionId.toLong())
-                                startActivity(i)
-                                finish()
-                            }
-                            else -> {
-                                Log.d(TAG, "Không hợp lệ")
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
-                                startActivity(intent)
-                                finish()
-                            }
-                        }
+                        resolveLink(link)
 
                     }
                 }
                 .addOnFailureListener {
                     Log.e(TAG, "getDynamicLink error: ", it)
                 }
+    }
+
+    private fun resolveLink(link: Uri): Any {
+        // booth detail: http://hangviet360.com/gian-hang/gian-hang-19657?booth=19657
+        val boothId = link.getQueryParameter("booth")
+
+        // fair: http://hangviet360.com?fairId=30
+        val fairId = link.getQueryParameter("fairId")
+
+        // product: http://hangviet360.com?productId=30
+        val productId = link.getQueryParameter("productId")
+
+        // general_info + news: http://hangviet360.com?postId=30
+        val postId = link.getQueryParameter("postId")
+
+        // question: http://hangviet360.com?questionId=30
+        val questionId = link.getQueryParameter("questionId")
+
+        return when {
+            boothId != null && boothId.isNotBlank() -> {
+                val intent = Intent(this, ShopDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, boothId.toLong())
+                startActivity(intent)
+                finish()
+            }
+            fairId != null && fairId.isNotBlank() -> {
+                Log.d("hong", "nhan dc fairId= $fairId")
+                val intent = Intent(this, ExpoDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, fairId.toLong())
+                startActivity(intent)
+                finish()
+            }
+            productId != null && productId.isNotBlank() -> {
+                Log.d("hong", "nhan dc productId= $productId")
+                val intent = Intent(this, ProductDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, productId.toLong())
+                startActivity(intent)
+                finish()
+            }
+            postId != null && postId.isNotBlank() -> {
+                Log.d("hong", "nhan dc postId= $postId")
+                //                                val i = Intent(this, PostMenuDetailActivity::class.java)
+                ////                                i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                //                                startActivity(i)
+                //                                finish()
+            }
+            questionId != null && questionId.isNotBlank() -> {
+                Log.d("hong", "nhan dc questionId= $questionId")
+                val i = Intent(this, QuestionMenuDetailActivity::class.java)
+                i.putExtra(Const.TransferKey.EXTRA_ID, questionId.toLong())
+                startActivity(i)
+                finish()
+            }
+            else -> {
+                Log.d(TAG, "Không hợp lệ")
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 }

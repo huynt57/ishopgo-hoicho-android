@@ -35,6 +35,12 @@ class ProductDetail : IdentityData() {
     @SerializedName("code")
     @Expose
     var code: String? = null
+    @SerializedName("mua_vu")
+    @Expose
+    var muaVu: String? = null
+    @SerializedName("dong_goi")
+    @Expose
+    var dongGoi: String? = null
     @SerializedName("shares")
     @Expose
     var shares: Int = 0

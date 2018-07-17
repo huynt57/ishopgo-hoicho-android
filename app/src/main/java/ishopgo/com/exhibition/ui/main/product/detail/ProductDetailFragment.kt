@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +56,7 @@ import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+import kotlinx.android.synthetic.main.content_product_info.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
 
 /**
@@ -299,32 +299,44 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             if (convert.provideMadeIn().isNotEmpty()) {
                 view_product_madeIn.visibility = View.VISIBLE
-                view_product_madeIn.text = "<b>Xuất xứ: <font color=\"red\">${convert.provideMadeIn()}</font></b>".asHtml()
+                view_product_madeIn.text = convert.provideMadeIn()
             }
 
             if (convert.provideNoCode().isNotEmpty()) {
                 view_product_no_code.visibility = View.VISIBLE
-                view_product_no_code.text = "<b>Mã số lô: <font color=\"red\">${convert.provideNoCode()}</font></b>".asHtml()
+                view_product_no_code.text = convert.provideNoCode()
             }
 
             if (convert.provideDateProduce().isNotEmpty()) {
                 view_product_date_produce.visibility = View.VISIBLE
-                view_product_date_produce.text = "<b>Ngày bắt đầu sản xuất: <font color=\"red\">${convert.provideDateProduce()}</font></b>".asHtml()
+                view_product_date_produce.text = convert.provideDateProduce()
             }
 
             if (convert.provideDateExpected().isNotEmpty()) {
                 view_product_date_expected.visibility = View.VISIBLE
-                view_product_date_expected.text = "<b>Ngày thu hoạch dự kiến: <font color=\"red\">${convert.provideDateExpected()}</font></b>".asHtml()
+                view_product_date_expected.text = convert.provideDateExpected()
             }
 
             if (convert.provideScale().isNotEmpty()) {
                 view_product_scale.visibility = View.VISIBLE
-                view_product_scale.text = "<b>Quy mô: <font color=\"red\">${convert.provideScale()}</font></b>".asHtml()
+                view_product_scale.text = convert.provideScale()
+            }
+            if (convert.provideProductCode().isNotEmpty()) {
+                view_product_msp.visibility = View.VISIBLE
+                view_product_msp.text = convert.provideProductCode()
+            }
+            if (convert.providePackaging().isNotEmpty()) {
+                view_product_packaging.visibility = View.VISIBLE
+                view_product_packaging.text = convert.providePackaging()
+            }
+            if (convert.provideSeason().isNotEmpty()) {
+                view_product_season.visibility = View.VISIBLE
+                view_product_season.text = convert.provideSeason()
             }
 
             if (convert.provideNumberExpected().isNotEmpty()) {
                 view_product_number_expected.visibility = View.VISIBLE
-                view_product_number_expected.text = "<b>Sản lượng dự kiến: <font color=\"red\">${convert.provideNumberExpected()}</font></b>".asHtml()
+                view_product_number_expected.text = convert.provideNumberExpected()
             }
 
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
@@ -335,16 +347,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             if (productDesc.isBlank()) {
                 container_description.visibility = View.GONE
                 view_product_show_more_description.visibility = View.GONE
-            }
-            else {
+            } else {
                 container_description.visibility = View.VISIBLE
                 view_product_show_more_description.visibility = View.VISIBLE
             }
             view_product_description.loadData(productDesc, "text/html", null)
             view_label_shop_name.text = convert.provideShopLabel()
             view_shop_name.text = convert.provideShopName()
-            view_shop_product_count.text = "<b><font color=\"#00c853\">${convert.provideShopProductCount()}</font></b><br>Sản phẩm".asHtml()
-            view_shop_rating.text = "<b><font color=\"red\">${convert.provideShopRatePoint()}</font></b><br>${convert.provideShopRateCount()} Đánh giá".asHtml()
+            view_shop_product_count.text = convert.provideShopProductCount()
+            view_shop_rating.text = convert.provideShopRatePoint()
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
@@ -356,7 +367,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
             view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }
-            view_shop_more_product_process.setOnClickListener { showMoreProductProcess(product) }
             more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, product) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
@@ -441,12 +451,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_qrCodeProductFragment, extra)
     }
 
-    private fun showMoreProductProcess(product: ProductDetail) {
-        val extra = Bundle()
-        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-
-        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productProcessFragment, extra)
-    }
+//    private fun showMoreProductProcess(product: ProductDetail) {
+//        val extra = Bundle()
+//        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+//
+//        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productProcessFragment, extra)
+//    }
 
     interface ProductDetailProvider {
 
@@ -458,9 +468,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideShopName(): CharSequence
         fun provideShopLabel(): CharSequence
         fun provideShopRegion(): CharSequence
-        fun provideShopProductCount(): Int
+        fun provideShopProductCount(): CharSequence
         fun provideShopRateCount(): Int
-        fun provideShopRatePoint(): String
+        fun provideShopRatePoint(): CharSequence
         fun provideShopPhone(): CharSequence
         fun provideLiked(): Boolean
         fun provideShopAddress(): CharSequence
@@ -478,12 +488,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideProductProcess(): List<CharSequence>
         fun provideRate(): Float
 
-        fun provideMadeIn(): String
-        fun provideNoCode(): String
-        fun provideDateProduce(): String
-        fun provideDateExpected(): String
-        fun provideScale(): String
-        fun provideNumberExpected(): String
+        fun provideProductCode(): CharSequence
+        fun providePackaging(): CharSequence
+        fun provideMadeIn(): CharSequence
+        fun provideNoCode(): CharSequence
+        fun provideDateProduce(): CharSequence
+        fun provideDateExpected(): CharSequence
+        fun provideScale(): CharSequence
+        fun provideNumberExpected(): CharSequence
+        fun provideSeason(): CharSequence
         fun provideIsDiary(): Boolean
     }
 
@@ -491,6 +504,21 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providePackaging(): CharSequence {
+                    return if (from.dongGoi.isNullOrBlank()) ""
+                    else "<b>Đóng gói: <font color=\"red\">${from.dongGoi}</font></b>".asHtml()
+                }
+
+                override fun provideSeason(): CharSequence {
+                    return if (from.muaVu.isNullOrBlank()) ""
+                    else "<b>Mùa vụ sản xuất: <font color=\"red\">${from.muaVu}</font></b>".asHtml()
+                }
+
+                override fun provideProductCode(): CharSequence {
+                    return if (from.code.isNullOrBlank()) ""
+                    else "<b>Mã sản phẩm: <font color=\"red\">${from.code}</font></b>".asHtml()
+                }
+
                 override fun provideIsDiary(): Boolean {
                     return from.isNhatkySx == 1
 
@@ -500,32 +528,38 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     return from.booth?.type ?: "Gian hàng trưng bày"
                 }
 
-                override fun provideMadeIn(): String {
-                    return from.madeIn ?: ""
+                override fun provideMadeIn(): CharSequence {
+                    return if (from.madeIn.isNullOrBlank()) ""
+                    else "<b>Xuất xứ: <font color=\"red\">${from.madeIn}</font></b>".asHtml()
                 }
 
-                override fun provideNoCode(): String {
-                    return from.msLohang ?: ""
+                override fun provideNoCode(): CharSequence {
+                    return if (from.msLohang.isNullOrBlank()) ""
+                    else "<b>Mã số lô: <font color=\"red\">${from.msLohang}</font></b>".asHtml()
                 }
 
-                override fun provideDateProduce(): String {
-                    return from.ngaySx?.asDate() ?: ""
+                override fun provideDateProduce(): CharSequence {
+                    return if (from.ngaySx.isNullOrBlank()) ""
+                    else "<b>Ngày bắt đầu sản xuất: <font color=\"red\">${from.ngaySx?.asDate()}</font></b>".asHtml()
                 }
 
-                override fun provideDateExpected(): String {
-                    return from.dkThuhoach?.asDate() ?: ""
+                override fun provideDateExpected(): CharSequence {
+                    return if (from.dkThuhoach.isNullOrBlank()) ""
+                    else "<b>Ngày thu hoạch dự kiến: <font color=\"red\">${from.dkThuhoach?.asDate()}</font></b>".asHtml()
                 }
 
-                override fun provideScale(): String {
-                    return from.quyMo ?: ""
+                override fun provideScale(): CharSequence {
+                    return if (from.quyMo.isNullOrBlank()) ""
+                    else "<b>Quy mô: <font color=\"red\">${from.quyMo}</font></b>".asHtml()
                 }
 
-                override fun provideNumberExpected(): String {
-                    return from.sanLuong ?: ""
+                override fun provideNumberExpected(): CharSequence {
+                    return if (from.sanLuong.isNullOrBlank()) ""
+                    else "<b>Khả năng cung ứng: <font color=\"red\">${from.sanLuong}</font></b>".asHtml()
                 }
 
-                override fun provideShopRatePoint(): String {
-                    return "${from.booth?.rate?.toFloat() ?: 0.0f}/5.0"
+                override fun provideShopRatePoint(): CharSequence {
+                    return "<b><font color=\"red\">${from.booth?.rate?.toFloat() ?: 0.0f}/5.0</font></b><br>${from.booth?.rateCount ?: 0} Đánh giá".asHtml()
                 }
 
                 override fun provideRate(): Float {
@@ -606,8 +640,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     return from.booth?.address?.trim() ?: ""
                 }
 
-                override fun provideShopProductCount(): Int {
-                    return from.booth?.count ?: 0
+                override fun provideShopProductCount(): CharSequence {
+                    return "<b><font color=\"#00c853\">${from.booth?.count ?: 0}</font></b><br>Sản phẩm".asHtml()
                 }
 
                 override fun provideShopRateCount(): Int {
@@ -872,9 +906,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         layoutManager.isAutoMeasureEnabled = true
         view_product_product_process.layoutManager = layoutManager
         view_product_product_process.isNestedScrollingEnabled = false
-
-        val dividerDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        view_product_product_process.addItemDecoration(dividerDecorator)
     }
 
     private fun openProcessDetail(data: ProductProcess) {
