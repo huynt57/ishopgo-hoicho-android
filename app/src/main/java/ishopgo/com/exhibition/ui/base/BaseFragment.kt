@@ -67,11 +67,11 @@ open class BaseFragment : Fragment() {
         viewLifeCycleOwner?.lifecycle?.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
     }
 
-    protected fun hideProgressDialog() {
+    fun hideProgressDialog() {
         progressDialog?.dismiss()
     }
 
-    protected fun showProgressDialog(): ProgressDialog? {
+    fun showProgressDialog(): ProgressDialog? {
         if (progressDialog == null) {
             progressDialog = ProgressDialog.show(activity, null, getString(R.string.waiting), true)
         } else {
@@ -80,7 +80,7 @@ open class BaseFragment : Fragment() {
         return progressDialog
     }
 
-    protected fun toast(msg: String) {
+    fun toast(msg: String) {
         context?.let {
             if (toast == null) {
                 toast = Toast.makeText(it, msg, Toast.LENGTH_SHORT)

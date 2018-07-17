@@ -83,6 +83,57 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             if (listPermission.isNotEmpty()) {
                 for (i in listPermission.indices) {
+                    if (Const.Permission.CARE_CUSTOMER == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng quan tâm"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.LIST_PRODUCT == listPermission[i]) {
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_PRODUCT_MANAGER, R.drawable.ic_shopping_white, "Quản lý sản phẩm"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.MANAGER_BRAND == listPermission[i]) {
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
+                        break
+                    }
+                }
+
+                for (i in listPermission.indices) {
+                    if (Const.Permission.EXPO_BOOTH_CUSTOMER == listPermission[i]) {
+                        items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_store_white, "Quản lý điểm bán"))
+                        break
+                    }
+                }
+
+//                for (i in listPermission.indices) {
+//                    if (Const.Permission.EXPO_FAIR_LIST == listPermission[i]) {
+//                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
+//                        break
+//                    }
+//                }
+
+                menuAdministrator.postValue(itemsAdmninistrator)
+            }
+        }
+
+        if (UserDataManager.currentType == "Nhân viên gian hàng") {
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_SURVEY, R.drawable.ic_question, "Bảng khảo sát"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Xem điểm bán của tôi"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_REGISTER_BOOTH, R.drawable.ic_register, "Đăng ký gian hàng"))
+
+            val itemsAdmninistrator = mutableListOf<AccountMenuItem>()
+
+            val listPermission = Const.listPermission
+
+            if (listPermission.isNotEmpty()) {
+                for (i in listPermission.indices) {
                     if (Const.Permission.MANAGER_MEMBER == listPermission[i]) {
                         itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_MEMBER_MANAGER, R.drawable.ic_customer_white, "Quản lý thành viên"))
                         break

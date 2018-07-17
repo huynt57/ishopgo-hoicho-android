@@ -26,12 +26,14 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.ProductDetailComment
 import ishopgo.com.exhibition.model.ProductSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -84,10 +86,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         const val COMMUNITY_REPLY_CHILD = 1
         const val COMMUNITY_SHOW_CHILD = 2
         const val COMMUNITY_IMAGE_CLICK = 3
+
+        const val DIARY_IMAGE_CLICK = 0
+        const val DIARY_USER_CLICK = 1
     }
 
     private lateinit var viewModel: ProductDetailViewModel
     private lateinit var ratingViewModel: RatingProductViewModel
+    private lateinit var viewModelDiary: DiaryProductViewModel
 
     private val handleOverwrite: ProductDetailOverwrite = CustomProductDetail()
 
@@ -97,6 +103,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val productCommentAdapter = ProductCommentAdapter()
     private val productProcessAdapter = ProductProcessAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
+    private var adapterDiary = ProductDiaryAdapter()
     private var productId: Long = -1L
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
@@ -108,7 +115,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun doChangeBanner() {
-        if (mPagerAdapter?.count ?: 1 > 1) {
+        if (mPagerAdapter?.count ?: 1 > 1 && view_product_image != null) {
             view_product_image.handler?.let {
                 it.removeCallbacks(changePage)
                 it.postDelayed(changePage, 2500)
@@ -137,9 +144,21 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         viewModel.getProductSalePoint(firstLoad)
     }
 
+    private fun firstLoadDiary() {
+        val firstLoad = ProductDiaryRequest()
+        firstLoad.limit = 2
+        firstLoad.offset = 0
+        firstLoad.productId = productId
+        viewModel.getProductDiary(firstLoad)
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        viewModelDiary = obtainViewModel(DiaryProductViewModel::class.java, true)
+        viewModelDiary.isSusscess.observe(this, Observer {
+            firstLoadDiary()
+        })
         ratingViewModel = obtainViewModel(RatingProductViewModel::class.java, true)
         ratingViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         ratingViewModel.isSusscess.observe(this, Observer {
@@ -147,7 +166,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         })
 
         viewModel = obtainViewModel(ProductDetailViewModel::class.java, false)
-        viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+        viewModel.errorSignal.observe(this, Observer { error ->
+            error?.let {
+                resolveError(it)
+                hideProgressDialog()
+            }
+        })
         viewModel.conversation.observe(this, Observer { c ->
             c?.let {
                 val conv = LocalConversationItem()
@@ -214,6 +238,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
+        viewModel.productDiary.observe(this, Observer { p ->
+            p.let {
+                it?.let { it1 -> adapterDiary.replaceAll(it1) }
+            }
+        })
+
+        handleOverwrite.handleActivityCreated(viewModel, this)
+
         loadData(productId)
         firstLoadSalePoint()
     }
@@ -226,7 +258,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             productDetail = product
 
             view?.let {
-                handleOverwrite.handleInOtherFlavor(it, productDetail)
+                handleOverwrite.handleInOtherFlavor(it, productDetail, this)
             }
 
             val processes = product.process ?: listOf()
@@ -369,6 +401,31 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 edt_comment.isFocusableInTouchMode = false
                 edt_comment.setOnClickListener { openActivtyLogin() }
             }
+
+            if (convert.provideIsDiary()) {
+                container_diary.visibility = View.VISIBLE
+
+                if (UserDataManager.currentType == "Quản trị viên") {
+                    val listPermission = Const.listPermission
+                    if (listPermission.isNotEmpty())
+                        for (i in listPermission.indices)
+                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+                                view_add_diary.visibility = View.VISIBLE
+                                break
+                            }
+                } else view_add_diary.visibility = View.GONE
+
+
+                if (UserDataManager.currentUserId == product.booth?.id)
+                    view_add_diary.visibility = View.VISIBLE
+                else view_add_diary.visibility = View.GONE
+
+                firstLoadDiary()
+
+//                view_add_diary.setOnClickListener { toast("Đang phát triển") }
+//                view_product_show_more_diary.setOnClickListener { toast("Đang phát triển") }
+            } else container_diary.visibility = View.GONE
+
         }
         openProductSalePoint(product)
 
@@ -427,12 +484,18 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideDateExpected(): String
         fun provideScale(): String
         fun provideNumberExpected(): String
+        fun provideIsDiary(): Boolean
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideIsDiary(): Boolean {
+                    return from.isNhatkySx == 1
+
+                }
+
                 override fun provideShopLabel(): CharSequence {
                     return from.booth?.type ?: "Gian hàng trưng bày"
                 }
@@ -697,8 +760,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupFavoriteProducts(view.context)
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
+        setupDiaryProducts(view.context)
         setupSalePointRecycleview()
         setupListeners()
+
+        handleOverwrite.handleViewCreated(view, view.context, this)
 
         swipe.setOnRefreshListener {
             swipe.isRefreshing = false
@@ -898,6 +964,32 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         view_list_viewed.layoutManager = layoutManager
         view_list_viewed.isNestedScrollingEnabled = false
         view_list_viewed.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    private fun setupDiaryProducts(context: Context) {
+        rv_product_diary.adapter = adapterDiary
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_product_diary.layoutManager = layoutManager
+        rv_product_diary.isNestedScrollingEnabled = false
+        rv_product_diary.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+
+        adapterDiary.listener = object : ClickableAdapter.BaseAdapterAction<DiaryProduct> {
+            override fun click(position: Int, data: DiaryProduct, code: Int) {
+                when (code) {
+                    DIARY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        startActivity(intent)
+                    }
+
+                    DIARY_USER_CLICK -> {
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

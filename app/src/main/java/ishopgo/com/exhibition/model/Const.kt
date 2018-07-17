@@ -299,6 +299,11 @@ object Const {
         const val UPDATE_SUPERVISOR_STAFF_DISTRIBUTION = "update-supervisor-staff-distribution"
         const val VIEW_MONEYMANAGER = "view-moneyManager"
         const val VIEW_NOTIFICATION = "view-notification"
+        const val EXPO_BOOTH_PRODUCTION_DIARY_ADD = "expo-booth-production-diary-add"
+        const val EXPO_BOOTH_PRODUCTION_DIARY_DELETE = "expo-booth-production-diary-delete"
+        const val EXPO_BOOTH_SALE_POINT = "expo-booth-sale-point"
+        const val EXPO_BOOTH_SALE_POINT_ADD = "expo-booth-sale-point-add"
+        const val EXPO_BOOTH_CUSTOMER = "expo-booth-customer"
 
     }
 

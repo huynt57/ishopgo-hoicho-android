@@ -42,6 +42,24 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/expoDetailFragment" />
 
+        <action
+            android:id="@+id/action_productDetailFragmentActionBar_to_productDiaryFragment"
+            app:destination="@id/productDiaryFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment" />
+
+        <action
+            android:id="@+id/action_productDetailFragmentActionBar_to_productDiaryAddFragment"
+            app:destination="@id/productDiaryAddFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment" />
+
     </fragment>
 
     <fragment
@@ -56,4 +74,12 @@
         android:id="@+id/qrCodeProductFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.detail.qrcode.QrCodeProductFragment"
         android:label="QrCodeProductFragment" />
+    <fragment
+        android:id="@+id/productDiaryFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.diary_product.ProductDiaryFragment"
+        android:label="ProductDiaryFragment" />
+    <fragment
+        android:id="@+id/productDiaryAddFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.diary_product.ProductDiaryAddFragment"
+        android:label="ProductDiaryAddFragment" />
 </navigation>
