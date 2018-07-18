@@ -49,7 +49,7 @@ class SearchNewestProductsFragment: BaseSearchActionBarFragment(), SwipeRefreshL
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getSearchField().hint = "Tìm trong sản phẩm mới nhất"
+        getSearchField().hint = "Tên sản phẩm"
 
         adapter = SearchProductAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {

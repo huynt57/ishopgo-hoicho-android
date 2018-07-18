@@ -49,7 +49,7 @@ class SearchPopularProductsFragment: BaseSearchActionBarFragment(), SwipeRefresh
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getSearchField().hint = "Tìm trong sản phẩm nổi bật"
+        getSearchField().hint = "Tên sản phẩm"
 
         adapter = SearchProductAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {

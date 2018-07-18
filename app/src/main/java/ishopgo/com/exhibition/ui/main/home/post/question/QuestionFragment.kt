@@ -148,8 +148,9 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
         (viewModel as QuestionMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
                 val category = QuestionCategory()
-                category.id = 0
+                category.id = -1L
                 category.name = "Tất cả danh mục"
+
                 val listCategory = mutableListOf<QuestionCategory>()
                 listCategory.add(0, category)
                 it?.let { it1 -> listCategory.addAll(it1) }
@@ -158,11 +159,8 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
                 sp_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                         if (it != null && it.isNotEmpty()) {
-                            categoryId = if (position == 0) {
-                                0
-                            } else
-                                it[position - 1].id
-                            firstLoad()
+                            categoryId = if (position == 0) { -1L } else it[position - 1].id
+                            if (categoryId != -1L) firstLoad()
                         }
                     }
 
