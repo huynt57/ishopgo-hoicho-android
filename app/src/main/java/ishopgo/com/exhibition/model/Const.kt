@@ -78,6 +78,7 @@ object Const {
         const val ACTION_VISITORS = 23
         const val ACTION_CONFIG_EXPO = 24
         const val ACTION_ADMINISTRATOR = 25
+        const val ACTION_REFERENCES = 26 // nguoi gioi thieu
     }
 
     object Chat {
