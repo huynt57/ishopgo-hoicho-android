@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="@layout/fragment_shop_info"
+    >
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/ten_gian_hang"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_shop_name"
+        app:drawableStartSquareSize="18dp"
+        tools:text="ten gian hàng: "/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/hotline"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autoLink="phone"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_phone"
+        app:drawableStartSquareSize="18dp"
+        tools:text="hotline"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/so_san_pham"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_cart"
+        app:drawableStartSquareSize="18dp"
+        tools:text="so san pham"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/tham_gia"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_calendar"
+        app:drawableStartSquareSize="18dp"
+        tools:text="ngay tham gia"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/dia_chi"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_place"
+        app:drawableStartSquareSize="18dp"
+        tools:text="dia chi"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/danh_gia"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_rate"
+        app:drawableStartSquareSize="18dp"
+        tools:text="danh gia shop"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/luot_quan_tam"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_click"
+        app:drawableStartSquareSize="18dp"
+        tools:text="so nguoi quan tam"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/luot_tham_quan"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_share_count"
+        app:drawableStartSquareSize="18dp"
+        tools:text="so luot tham quan "/>
+
+
+</merge>

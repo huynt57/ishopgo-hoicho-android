@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.ui.main.shop
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
-import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
@@ -101,7 +100,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
                     }
         }
 
-        toolbar.rightButton2(R.drawable.ic_qr_code_highlight_24dp)
+        toolbar.rightButton2(R.drawable.icon_qr_code_highlight_24dp)
         toolbar.setRight2ButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
             if (fragment != null) {

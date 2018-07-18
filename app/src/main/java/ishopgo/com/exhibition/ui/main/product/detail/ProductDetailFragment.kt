@@ -525,7 +525,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopLabel(): CharSequence {
-                    return from.booth?.type ?: "Gian hàng trưng bày"
+                    return from.booth?.title ?: "Gian hàng trưng bày"
                 }
 
                 override fun provideMadeIn(): CharSequence {
@@ -612,7 +612,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     if (from.price == 0L) {
                         return "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
                     } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
-                        return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> -> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
+                        return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
                     } else {
                         return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                     }
@@ -1002,7 +1002,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_product_diary.layoutManager = layoutManager
         rv_product_diary.isNestedScrollingEnabled = false
-        rv_product_diary.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
 
         adapterDiary.listener = object : ClickableAdapter.BaseAdapterAction<DiaryProduct> {
             override fun click(position: Int, data: DiaryProduct, code: Int) {

@@ -21,6 +21,13 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
         initAttrs(context, attrs)
     }
 
+    private var drawableStartSquareSize: Int = -1
+    private var drawableEndSquareSize: Int = -1
+    private var drawableBottomSquareSize: Int = -1
+    private var drawableTopSquareSize: Int = -1
+    private var drawableTintColor: Int = -1
+
+
     private fun initAttrs(context: Context, attrs: AttributeSet?) {
         if (attrs != null) {
             val attributeArray = context.obtainStyledAttributes(
@@ -28,13 +35,9 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
                     R.styleable.VectorSupportTextView)
 
             var dStart: Drawable? = null
-            val drawableStartSquareSize: Int
             var dEnd: Drawable? = null
-            val drawableEndSquareSize: Int
             var dBottom: Drawable? = null
-            val drawableBottomSquareSize: Int
             var dTop: Drawable? = null
-            val drawableTopSquareSize: Int
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 dStart = attributeArray.getDrawable(R.styleable.VectorSupportTextView_drawableStartCompat)
                 dEnd = attributeArray.getDrawable(R.styleable.VectorSupportTextView_drawableEndCompat)
@@ -88,9 +91,9 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
             else
                 setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
 
-            val color = attributeArray.getColor(R.styleable.VectorSupportTextView_drawableTintCompat, 0)
-            if (color != 0)
-                tintDrawable(color)
+            drawableTintColor = attributeArray.getColor(R.styleable.VectorSupportTextView_drawableTintCompat, -1)
+            if (drawableTintColor != -1)
+                tintDrawable(drawableTintColor)
 
 
             attributeArray.recycle()
@@ -112,7 +115,31 @@ open class VectorSupportTextView @JvmOverloads constructor(context: Context, att
         if (topResId != 0)
             dTop = AppCompatResources.getDrawable(context, topResId)
 
-        setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
+        if (drawableStartSquareSize != -1) {
+            dStart?.setBounds(0, 0, drawableStartSquareSize, drawableStartSquareSize)
+        }
+        if (drawableEndSquareSize != -1) {
+            dEnd?.setBounds(0, 0, drawableEndSquareSize, drawableEndSquareSize)
+        }
+        if (drawableBottomSquareSize != -1) {
+            dBottom?.setBounds(0, 0, drawableBottomSquareSize, drawableBottomSquareSize)
+        }
+        if (drawableTopSquareSize != -1) {
+            dTop?.setBounds(0, 0, drawableTopSquareSize, drawableTopSquareSize)
+        }
+
+        val hasCustomSize = drawableStartSquareSize != -1
+                || drawableEndSquareSize != -1
+                || drawableBottomSquareSize != -1
+                || drawableTopSquareSize != -1
+
+        if (hasCustomSize)
+            setCompoundDrawablesRelative(dStart, dTop, dEnd, dBottom)
+        else
+            setCompoundDrawablesRelativeWithIntrinsicBounds(dStart, dTop, dEnd, dBottom)
+
+        if (drawableTintColor != -1)
+            tintDrawable(drawableTintColor)
     }
 
     fun tintDrawable(@ColorInt color: Int) {

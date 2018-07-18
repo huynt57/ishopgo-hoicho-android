@@ -55,7 +55,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/bg_add_image_white"
+                app:srcCompat="@drawable/ic_add_image_white_24dp"
                 tools:ignore="ContentDescription"/>
 
             <EditText

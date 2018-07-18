@@ -11,14 +11,7 @@
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_info"
-            style="@style/AppTheme.ShopInfo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:autoLink="phone"
-            android:lineSpacingMultiplier="1.3"
-            tools:text="Thông tin gian hàng: " />
+        <include layout="@layout/content_booth_info"/>
 
         <View
             android:id="@+id/textView10"

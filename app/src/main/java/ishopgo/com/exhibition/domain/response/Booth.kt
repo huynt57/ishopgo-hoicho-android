@@ -12,9 +12,9 @@ class Booth : IdentityData() {
     @SerializedName("name")
     @Expose
     var name: String? = null
-    @SerializedName("type")
+    @SerializedName("title")
     @Expose
-    var type: String? = null
+    var title: String? = null
     @SerializedName("intro")
     @Expose
     var intro: String? = null

@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivi
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
+import kotlinx.android.synthetic.main.content_booth_info.*
 import kotlinx.android.synthetic.main.fragment_shop_info.*
 
 /**
@@ -89,26 +90,14 @@ class ShopInfoFragment : BaseFragment() {
     private fun showInfo(info: ShopDetail) {
         val convert = ShopInfoConverter().convert(info)
 
-        val builder = StringBuilder()
-        builder.append("Chủ gian hàng: <b>${convert.provideName()}</b>")
-        builder.append("<br>")
-        builder.append("SĐT: <b>${convert.provideHotline()}</b>")
-        builder.append("<br>")
-        builder.append("Số sản phẩm: <b>${convert.provideProductCount()}</b>")
-        builder.append("<br>")
-        builder.append("Ngày tham gia: <b>${convert.provideJoinedDate()}</b>")
-        builder.append("<br>")
-        builder.append("Địa chỉ: <b>${convert.provideRegion()}</b>")
-        builder.append("<br>")
-        builder.append("Đánh giá shop: <b>${convert.provideRating()}/5 điểm</b>")
-        builder.append("<br>")
-        builder.append("Số lượt share: <b>${convert.provideShareCount()}</b>")
-        builder.append("<br>")
-        builder.append("Số lượt quan tâm: <b>${convert.provideFollowCount()}</b>")
-        builder.append("<br>")
-        builder.append("Số lượt tham quan: <b>${convert.provideVisitCount()}</b>")
-        builder.append("<br>")
-        view_info.text = builder.toString().asHtml()
+        ten_gian_hang.text = "Chủ gian hàng: <b>${convert.provideName()}</b>".asHtml()
+        hotline.text = "SĐT: <b>${convert.provideHotline()}</b>".asHtml()
+        so_san_pham.text = "Số sản phẩm: <b>${convert.provideProductCount()}</b>".asHtml()
+        tham_gia.text = "Ngày tham gia: <b>${convert.provideJoinedDate()}</b>".asHtml()
+        dia_chi.text = "Địa chỉ: <b>${convert.provideRegion()}</b>".asHtml()
+        danh_gia.text = "Đánh giá shop: <b>${convert.provideRating()}/5 điểm</b>".asHtml()
+        luot_quan_tam.text = "Số lượt quan tâm: <b>${convert.provideFollowCount()}</b>".asHtml()
+        luot_tham_quan.text = "Số lượt tham quan: <b>${convert.provideVisitCount()}</b>".asHtml()
 
         view_description.text = convert.provideDescription().asHtml()
         view_description_more.setOnClickListener {
@@ -120,8 +109,8 @@ class ShopInfoFragment : BaseFragment() {
 
         sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage(), info)
         if (UserDataManager.currentUserId == info.id) {
-            view_info.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
-            view_info.setOnClickListener { showDialogChangeName(info.name ?: "") }
+            ten_gian_hang.drawableCompat(R.drawable.icon_shop_name, 0, R.drawable.ic_edit_default_24dp, 0)
+            ten_gian_hang.setOnClickListener { showDialogChangeName(info.name ?: "") }
             textView11.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
             textView11.setOnClickListener {
                 showDialogChangeDescription(info.introduction ?: "")
