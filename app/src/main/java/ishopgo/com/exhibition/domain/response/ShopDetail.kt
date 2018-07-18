@@ -50,7 +50,7 @@ class ShopDetail : IdentityData() {
     @SerializedName("visit")
     @Expose
     var visitCount: Int? = null
-    @SerializedName("desc")
+    @SerializedName("descs")
     @Expose
     var process: List<ShopProcess>? = null
 }

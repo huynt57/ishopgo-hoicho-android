@@ -151,6 +151,12 @@
                     android:layout_height="wrap_content"
                     android:text="Đánh giá"/>
 
+                <android.support.design.widget.TabItem
+                    android:id="@+id/tab_shop_relate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đơn vị liên quan"/>
+
             </android.support.design.widget.TabLayout>
 
             <View

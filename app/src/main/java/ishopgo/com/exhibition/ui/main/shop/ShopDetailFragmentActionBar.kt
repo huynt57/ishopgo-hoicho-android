@@ -70,7 +70,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
         toolbar.setCustomTitle("Chi tiết gian hàng")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
-            activity?.finish()
+            activity?.onBackPressed()
         }
 
         if (UserDataManager.currentType == "Chủ hội chợ") {

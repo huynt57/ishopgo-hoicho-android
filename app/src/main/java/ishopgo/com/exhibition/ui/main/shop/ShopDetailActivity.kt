@@ -1,49 +1,31 @@
 package ishopgo.com.exhibition.ui.main.shop
 
-import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.ui.base.BackpressConsumable
-import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.shop.qrcode.QrCodeShopFragment
+import ishopgo.com.exhibition.ui.base.BaseNavigationActivity
 
 /**
  * Created by xuanhong on 4/21/18. HappyCoding!
  */
-class ShopDetailActivity : BaseSingleFragmentActivity() {
-
-    override fun createFragment(startupOption: Bundle): Fragment {
-        return ShopDetailFragmentActionBar.newInstance(startupOption)
+class ShopDetailActivity : BaseNavigationActivity() {
+    override fun navigationRes(): Int {
+        return R.navigation.nav_booth_detail
     }
 
-    private lateinit var viewModel: ShopDetailViewModel
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = obtainViewModel(ShopDetailViewModel::class.java)
-        viewModel.showShopDetailQRCode.observe(this, Observer {
-            val extra = Bundle()
-            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
-            supportFragmentManager.beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                    .add(R.id.fragment_container, QrCodeShopFragment.newInstance(extra))
-                    .addToBackStack(QrCodeShopFragment.TAG)
-                    .commit()
-        })
+    override fun startArguments(): Bundle {
+        val shopId = intent?.getLongExtra(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+        val bundle = Bundle()
+        bundle.putLong(Const.TransferKey.EXTRA_ID, shopId)
+        return bundle
     }
 
-    override fun onBackPressed() {
-        if (currentFragment is BackpressConsumable && (currentFragment as BackpressConsumable).onBackPressConsumed())
-            return
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
 
-        super.onBackPressed()
-    }
-
-    override fun startupOptions(): Bundle {
-        return intent?.extras ?: Bundle()
+        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_shopDetailFragmentActionBar_self, intent?.extras ?: Bundle())
     }
 
 }
