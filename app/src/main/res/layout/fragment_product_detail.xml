@@ -664,7 +664,7 @@
                             android:layout_weight="1.5"
                             android:background="@drawable/bg_white_black_bottom"
                             android:gravity="center_vertical"
-                            android:hint="Viết bình luận"
+                            android:hint="Viết đánh giá"
                             android:lines="1" />
 
                         <ImageView

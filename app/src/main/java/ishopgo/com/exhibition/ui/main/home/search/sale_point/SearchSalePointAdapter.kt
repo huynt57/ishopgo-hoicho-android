@@ -1,18 +1,17 @@
 package ishopgo.com.exhibition.ui.main.home.search.sale_point
 
-import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.text.Spanned
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
-import kotlinx.android.synthetic.main.item_search_total.view.*
 
 class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<SearchSalePoint>() {
 
@@ -57,6 +56,11 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_price.text = convert.provideCountProduct()
                 tv_product_sale_point_phone.text = convert.providePhone()
+                tv_product_sale_point_phone.setOnClickListener {
+                    val uri = Uri.parse("tel:${convert.providePhone()}")
+                    val i = Intent(Intent.ACTION_DIAL, uri)
+                    it.context.startActivity(i)
+                }
             }
         }
     }
@@ -82,7 +86,7 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 }
 
                 override fun providePhone(): String {
-                    return from.phone?.asPhone() ?: ""
+                    return from.phone ?: ""
                 }
 
                 override fun provideCountProduct(): String {

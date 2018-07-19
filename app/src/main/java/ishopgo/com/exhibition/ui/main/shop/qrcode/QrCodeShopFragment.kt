@@ -25,7 +25,6 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
 import java.io.*
@@ -103,7 +102,12 @@ class QrCodeShopFragment : BaseActionBarFragment(), BackpressConsumable {
                 .into(view_qrcode)
 
         view_booth_name.text = data.name
-        view_booth_code.text = data.hotline?.asPhone()
+        view_booth_code.text = data.hotline
+        view_booth_code.setOnClickListener {
+            val uri = Uri.parse("tel:${data.hotline}")
+            val i = Intent(Intent.ACTION_DIAL, uri)
+            it.context.startActivity(i)
+        }
 
 
     }

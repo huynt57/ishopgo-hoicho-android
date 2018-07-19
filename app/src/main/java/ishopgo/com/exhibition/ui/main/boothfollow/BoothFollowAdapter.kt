@@ -1,5 +1,7 @@
 package ishopgo.com.exhibition.ui.main.boothfollow
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -8,7 +10,6 @@ import ishopgo.com.exhibition.model.BoothFollow
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.item_booth_follow.view.*
 
 class BoothFollowAdapter : ClickableAdapter<BoothFollow>() {
@@ -44,6 +45,11 @@ class BoothFollowAdapter : ClickableAdapter<BoothFollow>() {
                 tv_booth_name.text = convert.provideName()
                 tv_booth_address.text = convert.provideAddress()
                 tv_booth_phone.text = convert.providePhone()
+                tv_booth_phone.setOnClickListener {
+                    val uri = Uri.parse("tel:${convert.providePhone()}")
+                    val i = Intent(Intent.ACTION_DIAL, uri)
+                    it.context.startActivity(i)
+                }
                 tv_booth_number_product.text = convert.provideNumberProduct()
                 tv_booth_member_cnt.text = convert.provideMemberCNT()
             }
@@ -82,7 +88,7 @@ class BoothFollowAdapter : ClickableAdapter<BoothFollow>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone?.asPhone() ?: ""
+                    return from.phone ?: ""
                 }
 
                 override fun provideNumberProduct(): String {

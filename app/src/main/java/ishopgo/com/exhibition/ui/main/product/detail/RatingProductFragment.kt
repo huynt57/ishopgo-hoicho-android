@@ -6,16 +6,17 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
+import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ProductComment
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.ProductDetailComment
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -26,10 +27,6 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_rating_product.*
-import android.support.v7.widget.GridLayoutManager
-import android.view.inputmethod.InputMethodManager
-import ishopgo.com.exhibition.domain.response.ProductComment
-import ishopgo.com.exhibition.model.ProductDetailComment
 
 
 class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
@@ -129,7 +126,7 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
         if (dataComment != null) {
             parentId = dataComment!!.id
             tv_member_reply.visibility = View.VISIBLE
-            tv_member_reply.text = "Trả lời bình luận của ${dataComment?.accountName ?: ""}"
+            tv_member_reply.text = "Trả lời đánh giá của ${dataComment?.accountName ?: ""}"
         }
 
         if (dataProduct != null) {
@@ -191,7 +188,7 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
     }
 
     private fun setupToolbar() {
-        toolbar.setCustomTitle("Bình luận sản phẩm")
+        toolbar.setCustomTitle("Đánh giá sản phẩm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
