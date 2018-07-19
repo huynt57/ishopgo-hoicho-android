@@ -18,6 +18,7 @@ class SearchBrandsViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
+            fields["id_app"] = "hoichone"
 
             params.name?.let {
                 fields["name"] = it
