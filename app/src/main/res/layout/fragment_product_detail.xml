@@ -49,7 +49,7 @@
                         android:id="@+id/view_banner_indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         android:minWidth="20dp"
@@ -69,7 +69,7 @@
                         android:paddingEnd="16dp"
                         android:paddingStart="8dp"
                         app:layout_constraintBottom_toBottomOf="@id/view_product_image"
-                        app:layout_constraintEnd_toEndOf="@id/view_product_image"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/view_product_image">
 
                         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -89,10 +89,11 @@
                         android:id="@+id/floatQrCode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
                         android:layout_marginEnd="16dp"
                         android:background="@drawable/bg_rounded_rectangle_orange"
-                        android:paddingEnd="16dp"
                         android:paddingStart="8dp"
+                        android:paddingEnd="16dp"
                         app:layout_constraintBottom_toBottomOf="@+id/view_product_image"
                         app:layout_constraintEnd_toStartOf="@+id/view_share"
                         app:layout_constraintTop_toBottomOf="@+id/view_product_image">
@@ -156,7 +157,7 @@
                 <FrameLayout
                     android:id="@+id/container_description"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="150dp"
                     android:paddingEnd="16dp"
                     android:paddingStart="16dp"
                     android:paddingTop="16dp">
@@ -679,7 +680,7 @@
                             android:layout_weight="1.5"
                             android:background="@drawable/bg_white_black_bottom"
                             android:gravity="center_vertical"
-                            android:hint="Viết bình luận"
+                            android:hint="Viết đánh giá"
                             android:lines="1" />
 
                         <ImageView

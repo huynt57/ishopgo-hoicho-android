@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
-import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class SalePointDetailFragmentActionBar : BaseActionBarFragment() {
@@ -35,13 +34,13 @@ class SalePointDetailFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Điểm bán")
+        toolbar.setCustomTitle("Điểm bán lẻ")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()
         }
 
-        toolbar.rightButton(R.drawable.ic_qr_code_highlight_24dp)
+        toolbar.rightButton(R.drawable.icon_qr_code_highlight_24dp)
         toolbar.setRightButtonClickListener {
             val fragment = childFragmentManager.findFragmentByTag(SalePointDetailFragment.TAG)
             if (fragment != null) {

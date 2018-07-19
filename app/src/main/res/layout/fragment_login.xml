@@ -5,7 +5,7 @@
                                              android:layout_width="match_parent"
                                              android:layout_height="match_parent"
                                              android:background="@drawable/bg_login"
-    >
+                                             tools:layout_editor_absoluteY="25dp">
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline9"
@@ -22,28 +22,27 @@
         app:layout_constraintGuide_end="54dp"/>
 
     <android.support.v7.widget.AppCompatImageView
-        android:layout_width="0dp"
+        android:layout_width="196dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        app:tint="@color/colorPureWhite"
         app:layout_constraintBottom_toTopOf="@+id/guideline11"
         app:layout_constraintEnd_toStartOf="@+id/guideline10"
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"
         app:srcCompat="@drawable/logo_expo_horizontal"
+        app:tint="@color/colorPureWhite"
         tools:ignore="ContentDescription,MissingConstraints"/>
 
     <EditText
         android:id="@+id/tv_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/bg_semi_transparent"
         android:hint="Số điện thoại"
         android:inputType="phone"
@@ -54,16 +53,15 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline11"
-        />
+        app:layout_constraintTop_toTopOf="@+id/guideline11"/>
 
     <EditText
         android:id="@+id/tv_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/bg_semi_transparent"
         android:hint="Mật khẩu"
         android:imeOptions="actionDone"
@@ -75,28 +73,26 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_account"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/tv_account"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/btn_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:background="@drawable/bg_border"
-        android:fontFamily="@font/ff_roboto_light"
         android:gravity="center"
         android:paddingStart="16dp"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="16dp"
+        android:paddingBottom="8dp"
         android:text="Đăng nhập"
         android:textColor="@color/colorPureWhite"
         android:textSize="15sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tv_forget_password"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_password"
@@ -107,54 +103,52 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ff_roboto"
         android:gravity="end"
         android:padding="8dp"
-        tools:text="Quên mật khẩu ? Tìm lại mật khẩu"
         android:textAlignment="center"
         android:textColor="@color/colorPureWhite"
         android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText"
+        tools:text="Quên mật khẩu ? Tìm lại mật khẩu"/>
 
     <View
         android:id="@+id/line1"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="#aaffffff"
-        app:layout_constraintBottom_toBottomOf="@id/textView16"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView16"
         app:layout_constraintEnd_toStartOf="@+id/textView16"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/textView16"/>
+        app:layout_constraintTop_toTopOf="@+id/textView16"/>
 
     <View
         android:id="@+id/line2"
         android:layout_width="0dp"
         android:layout_height="1dp"
+        android:layout_marginStart="8dp"
         android:background="#aaffffff"
-        app:layout_constraintBottom_toBottomOf="@id/textView16"
+        app:layout_constraintBottom_toBottomOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toTopOf="@id/textView16"/>
+        app:layout_constraintTop_toTopOf="@+id/textView16"/>
 
     <TextView
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ff_roboto"
         android:text="Hoặc"
         android:textAllCaps="true"
         android:textColor="@color/colorPureWhite"
         android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_skip_login"
         app:layout_constraintEnd_toStartOf="@+id/line2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/line1"
@@ -164,15 +158,16 @@
         android:id="@+id/tv_skip_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/ff_roboto"
+
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:padding="8dp"
         android:text="Để sau"
         android:textColor="@color/colorPureWhite"
         android:textSize="20sp"
         android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/btn_signup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"/>
 
@@ -188,18 +183,18 @@
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
         android:paddingBottom="16dp"
-        tools:text="Chưa có tài khoản ? Đăng ký ngay"
         android:textColor="@color/colorPureWhite"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText"
+        tools:text="Chưa có tài khoản ? Đăng ký ngay"/>
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.3"/>
+        app:layout_constraintGuide_percent="0.29982364"/>
 </android.support.constraint.ConstraintLayout>

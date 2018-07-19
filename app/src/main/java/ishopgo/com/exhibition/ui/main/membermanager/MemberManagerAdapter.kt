@@ -1,5 +1,7 @@
 package ishopgo.com.exhibition.ui.main.membermanager
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -8,8 +10,6 @@ import ishopgo.com.exhibition.model.member.MemberManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.item_member_manager.view.*
 
 class MemberManagerAdapter : ClickableAdapter<MemberManager>() {
@@ -45,6 +45,11 @@ class MemberManagerAdapter : ClickableAdapter<MemberManager>() {
                         .into(img_member_avatar)
                 tv_member_manager_name.text = convert.provideName()
                 tv_member_manager_phone.text = convert.providePhone()
+                tv_member_manager_phone.setOnClickListener {
+                    val uri = Uri.parse("tel:${convert.providePhone()}")
+                    val i = Intent(Intent.ACTION_DIAL, uri)
+                    it.context.startActivity(i)
+                }
                 tv_member_manager_region.text = convert.provideRegion()
             }
         }
@@ -73,7 +78,7 @@ class MemberManagerAdapter : ClickableAdapter<MemberManager>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone?.asPhone() ?: ""
+                    return from.phone ?: ""
                 }
 
                 override fun provideEmail(): String {

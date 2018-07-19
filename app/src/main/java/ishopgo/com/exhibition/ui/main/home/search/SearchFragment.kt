@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.ProductResultsFragment
+import ishopgo.com.exhibition.ui.main.home.search.brands.BrandsResultFragment
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SalePointResultFragment
 import ishopgo.com.exhibition.ui.main.home.search.shop.ShopResultsFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
@@ -61,7 +62,7 @@ class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
 
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
-        view_pager.offscreenPageLimit = 3
+        view_pager.offscreenPageLimit = 4
         view_pager.adapter = ResultAdapter(childFragmentManager)
     }
 
@@ -75,7 +76,7 @@ class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
         searchViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
     }
 
-    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 3) {
+    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 4) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -87,9 +88,9 @@ class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
                 2 -> {
                     SalePointResultFragment()
                 }
-//                3 -> {
-//                    CommunityResultFragment()
-//                }
+                3 -> {
+                    BrandsResultFragment()
+                }
                 else -> {
                     Fragment()
                 }

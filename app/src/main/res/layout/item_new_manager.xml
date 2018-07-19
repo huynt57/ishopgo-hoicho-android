@@ -35,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:focusable="true"
-        android:fontFamily="@font/ff_roboto"
+
         android:maxLines="3"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ff_roboto"
+
         android:textColor="@color/colorSecondaryText"
         android:textSize="12sp"
         android:textStyle="normal"
@@ -65,7 +65,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/bg_rounded_rectangle"
-        android:fontFamily="@font/ff_roboto"
+
         android:gravity="center"
         android:paddingStart="4dp"
         android:paddingEnd="4dp"

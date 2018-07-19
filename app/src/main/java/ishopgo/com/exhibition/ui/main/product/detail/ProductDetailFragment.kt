@@ -39,7 +39,10 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.extensions.*
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDate
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -362,6 +365,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
             tv_shop_phone.text = convert.provideShopPhone()
+            tv_shop_phone.setOnClickListener {
+                val uri = Uri.parse("tel:${convert.provideShopPhone()}")
+                val i = Intent(Intent.ACTION_DIAL, uri)
+                it.context.startActivity(i)
+            }
             tv_shop_address.text = convert.provideShopAddress()
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
@@ -434,8 +442,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 firstLoadDiary()
 
-//                view_add_diary.setOnClickListener { toast("Đang phát triển") }
-//                view_product_show_more_diary.setOnClickListener { toast("Đang phát triển") }
             } else container_diary.visibility = View.GONE
 
         }
@@ -601,7 +607,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductLinkAffiliate(): CharSequence {
-                    return from.linkAffiliate ?: ""
+                    return from.linkShare ?: ""
                 }
 
                 override fun provideProductImage(): CharSequence {
@@ -654,7 +660,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopPhone(): CharSequence {
-                    return from.booth?.hotline?.asPhone() ?: ""
+                    return from.booth?.hotline ?: ""
                 }
 
                 override fun provideProductLikeCount(): Int {
@@ -723,7 +729,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         })
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
-            val urlToShare = product.linkAffiliate.toString()
+            val urlToShare = product.linkShare.toString()
             val shareContent = ShareLinkContent.Builder()
                     .setContentUrl(Uri.parse(urlToShare))
                     .build()
@@ -733,7 +739,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun shareApp(product: ProductDetail) {
-        val urlToShare = product.linkAffiliate
+        val urlToShare = product.linkShare
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"

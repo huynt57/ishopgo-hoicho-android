@@ -25,6 +25,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.detail.RatingProductViewModel
+import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -61,6 +62,7 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
         const val COMMUNITY_REPLY = 0
         const val COMMUNITY_REPLY_CHILD = 1
         const val COMMUNITY_SHOW_CHILD = 2
+        const val COMMUNITY_IMAGE_CLICK = 3
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,6 +100,8 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         view_recyclerview.layoutManager = layoutManager
+        view_recyclerview.isNestedScrollingEnabled = true
+        view_recyclerview.setHasFixedSize(true)
         view_recyclerview.adapter = adapter
         view_recyclerview.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -136,6 +140,12 @@ class CommentProductFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshListe
 
                     COMMUNITY_SHOW_CHILD -> {
 
+                    }
+
+                    COMMUNITY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        startActivity(intent)
                     }
 
                     else -> {

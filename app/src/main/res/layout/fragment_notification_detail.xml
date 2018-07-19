@@ -29,7 +29,6 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
-        android:fontFamily="@font/ff_roboto"
         android:maxLines="3"
         android:textColor="@color/md_grey_800"
         android:textSize="16sp"

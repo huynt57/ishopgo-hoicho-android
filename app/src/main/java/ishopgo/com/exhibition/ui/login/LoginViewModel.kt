@@ -65,7 +65,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("address", address)
                 .addFormDataPart("password", password)
 
-        if (referenceTel.isNotBlank()) builder.addFormDataPart("refer_phone", address)
+        if (referenceTel.isNotBlank()) builder.addFormDataPart("refer_phone", referenceTel)
 
         addDisposable(noAuthService.register(builder.build())
                 .subscribeOn(Schedulers.single())

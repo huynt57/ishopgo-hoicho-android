@@ -1,5 +1,7 @@
 package ishopgo.com.exhibition.ui.main.salepoint
 
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.SalePoint
@@ -7,7 +9,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asMoney
-import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.item_list_sale_point.view.*
 
 class SalePointAdapter : ClickableAdapter<SalePoint>() {
@@ -37,6 +38,11 @@ class SalePointAdapter : ClickableAdapter<SalePoint>() {
             itemView.apply {
                 tv_sale_point_product_name.text = convert.provideProductName()
                 tv_sale_point_product_phone.text = convert.providePhone()
+                tv_sale_point_product_phone.setOnClickListener {
+                    val uri = Uri.parse("tel:${convert.providePhone()}")
+                    val i = Intent(Intent.ACTION_DIAL, uri)
+                    it.context.startActivity(i)
+                }
                 tv_sale_point_name.text = convert.provideName()
                 tv_sale_point_address.text = convert.provideAddress()
                 tv_sale_point_district.text = convert.provideDistrict()
@@ -94,7 +100,7 @@ class SalePointAdapter : ClickableAdapter<SalePoint>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone?.asPhone() ?: ""
+                    return from.phone ?: ""
                 }
 
                 override fun provideAddress(): String {

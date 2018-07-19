@@ -4,8 +4,6 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -159,14 +157,13 @@ class CustomProductDetail : ProductDetailOverwrite() {
                 }
             } else container_diary.visibility = View.GONE
 
+            var count = 1
             for (i in listInfo.indices) {
                 val productInfo = ProductInfo(rootView.context)
                 productInfo.apply {
                     label_products_same_shop.text = listInfo[i].name
                     val adapter = ProductAdapter(0.4f)
                     if (listInfo[i].products?.data?.isNotEmpty() == true) {
-                        var count = 0
-
                         listInfo[i].products?.data?.let { adapter.replaceAll(it) }
 
                         view_list_products_same_shop.adapter = adapter
@@ -187,7 +184,9 @@ class CustomProductDetail : ProductDetailOverwrite() {
                             }
                         }
 
-                        linearLayout.addView(productInfo, 11 + count)
+                        val shopSalePoint = linearLayout.findViewById<View>(R.id.container_shop_sale_point)
+                        val indexOfChild = linearLayout.indexOfChild(shopSalePoint)
+                        linearLayout.addView(productInfo, indexOfChild + count)
                         count += 1
                     }
                 }

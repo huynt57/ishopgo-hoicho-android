@@ -31,7 +31,7 @@ class VisitorsFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Khách hàng tham quan")
+        toolbar.setCustomTitle("Khách hàng quan tâm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
     }
