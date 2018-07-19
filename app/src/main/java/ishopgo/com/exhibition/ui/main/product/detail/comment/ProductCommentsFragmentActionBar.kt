@@ -35,7 +35,7 @@ class ProductCommentsFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Bình luận sản phẩm")
+        toolbar.setCustomTitle("Đánh giá sản phẩm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.finish()

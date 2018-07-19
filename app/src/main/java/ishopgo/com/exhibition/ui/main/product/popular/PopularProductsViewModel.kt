@@ -26,8 +26,8 @@ class PopularProductsViewModel : BaseListViewModel<List<Product>>(), AppComponen
             }
 
             if (params is FilterProductRequest) {
-                fields["sort_by"] = params.sort_by
-                fields["sort_type"] = params.sort_type
+                params.sort_by?.let { fields["sort_by"] = it }
+                params.sort_type?.let { fields["sort_type"] = it }
 
                 if (params.type_filter.isNotEmpty()) {
                     val listType = params.type_filter

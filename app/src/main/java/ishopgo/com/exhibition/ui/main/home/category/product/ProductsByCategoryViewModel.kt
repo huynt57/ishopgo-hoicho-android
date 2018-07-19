@@ -49,8 +49,8 @@ class ProductsByCategoryViewModel : BaseApiViewModel(), AppComponent.Injectable 
             fields["limit"] = request.limit
             fields["offset"] = request.offset
             fields["category_id"] = request.categoryId
-            fields["sort_by"] = request.sort_by
-            fields["sort_type"] = request.sort_type
+            request.sort_by?.let { fields["sort_by"] = it }
+            request.sort_type?.let { fields["sort_type"] = it }
 
             if (request.type_filter.isNotEmpty()) {
                 val listType = request.type_filter

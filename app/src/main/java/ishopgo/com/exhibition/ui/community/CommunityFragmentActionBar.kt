@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.community
 
 import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
@@ -31,15 +32,21 @@ class CommunityFragmentActionBar : BaseActionBarFragment(), BackpressConsumable 
     private lateinit var mainViewModel : MainViewModel
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Cộng đồng")
-        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as CommunityFragment
-                shareFragment.openDialogSearch()
-            }
-        }
+        toolbar.setCustomTitle("Tìm trong cộng đồng")
+        val titleView = toolbar.getTitleView()
+        titleView.setBackgroundResource(R.drawable.bg_search_box)
+        titleView.setTextColor(resources.getColor(R.color.md_grey_700))
+        titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+        titleView.setOnClickListener { mainViewModel.enableSearchCommunity() }
+        titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
+//        toolbar.rightButton(R.drawable.ic_search_highlight_24dp)
+//        toolbar.setRightButtonClickListener {
+//            val fragment = childFragmentManager.findFragmentByTag(CommunityFragment.TAG)
+//            if (fragment != null) {
+//                val shareFragment = fragment as CommunityFragment
+//                shareFragment.openDialogSearch()
+//            }
+//        }
 
         toolbar.leftButton(R.drawable.ic_notifications_highlight_24dp)
         toolbar.setLeftButtonClickListener {

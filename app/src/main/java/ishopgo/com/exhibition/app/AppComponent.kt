@@ -36,6 +36,7 @@ import ishopgo.com.exhibition.ui.main.home.post.question.QuestionMenuViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
+import ishopgo.com.exhibition.ui.main.home.search.brands.SearchBrandsViewModel
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
@@ -60,6 +61,7 @@ import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.profile.ProfileViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionSearchViewModel
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionViewModel
+import ishopgo.com.exhibition.ui.main.references.ReferencesViewModel
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothViewModel
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointViewModel
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailViewModel
@@ -166,4 +168,6 @@ interface AppComponent {
     fun inject(newestProductsViewModel: NewestProductsViewModel)
     fun inject(filterProductViewModel: FilterProductViewModel)
     fun inject(relateShopViewModel: RelateShopViewModel)
+    fun inject(searchBrandsViewModel: SearchBrandsViewModel)
+    fun inject(referencesViewModel: ReferencesViewModel)
 }

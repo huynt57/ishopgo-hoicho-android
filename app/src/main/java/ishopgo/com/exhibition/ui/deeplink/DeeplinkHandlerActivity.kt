@@ -8,6 +8,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActivity
 import ishopgo.com.exhibition.ui.main.MainActivity
+import ishopgo.com.exhibition.ui.main.home.post.post.detail.PostMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.home.post.question.detail.QuestionMenuDetailActivity
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -81,10 +82,10 @@ class DeeplinkHandlerActivity : BaseActivity() {
             }
             postId != null && postId.isNotBlank() -> {
                 Log.d("hong", "nhan dc postId= $postId")
-                //                                val i = Intent(this, PostMenuDetailActivity::class.java)
-                ////                                i.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                //                                startActivity(i)
-                //                                finish()
+                val i = Intent(this, PostMenuDetailActivity::class.java)
+                i.putExtra(Const.TransferKey.EXTRA_ID, postId.toLong())
+                startActivity(i)
+                finish()
             }
             questionId != null && questionId.isNotBlank() -> {
                 Log.d("hong", "nhan dc questionId= $questionId")

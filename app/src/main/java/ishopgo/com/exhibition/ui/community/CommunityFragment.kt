@@ -9,7 +9,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -130,15 +129,6 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
 
     companion object {
         const val TAG = "CommunityFragment"
-
-        const val COMMUNITY_SHARE_CLICK = 1
-        const val COMMUNITY_LIKE_CLICK = 2
-        const val COMMUNITY_COMMENT_CLICK = 3
-        const val COMMUNITY_SHARE_NUMBER_CLICK = 4
-        const val COMMUNITY_SHARE_PRODUCT_CLICK = 5
-        const val COMMUNITY_PRODUCT_CLICK = 6
-        const val COMMUNITY_IMAGE_CLICK = 7
-        const val COMMUNITY_PROFILE_CLICK = 8
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -149,7 +139,7 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
             (adapter as ClickableAdapter<Community>).listener = object : ClickableAdapter.BaseAdapterAction<Community> {
                 override fun click(position: Int, data: Community, code: Int) {
                     when (code) {
-                        COMMUNITY_SHARE_CLICK -> {
+                        CommunityAdapter.COMMUNITY_SHARE_CLICK -> {
                             if (UserDataManager.currentUserId > 0) {
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
@@ -160,11 +150,11 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                             }
                         }
 
-                        COMMUNITY_LIKE_CLICK -> {
+                        CommunityAdapter.COMMUNITY_LIKE_CLICK -> {
                             if (viewModel is CommunityViewModel) (viewModel as CommunityViewModel).postCommunityLike(data.id)
                         }
 
-                        COMMUNITY_COMMENT_CLICK -> {
+                        CommunityAdapter.COMMUNITY_COMMENT_CLICK -> {
                             if (UserDataManager.currentUserId > 0) {
 
                                 val intent = Intent(context, CommunityCommentActivity::class.java)
@@ -173,11 +163,11 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                             } else openLoginActivity()
                         }
 
-                        COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
+                        CommunityAdapter.COMMUNITY_SHARE_NUMBER_CLICK -> openDialogShare(data)
 
-                        COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
+                        CommunityAdapter.COMMUNITY_SHARE_PRODUCT_CLICK -> openDialogShare(data)
 
-                        COMMUNITY_PRODUCT_CLICK -> {
+                        CommunityAdapter.COMMUNITY_PRODUCT_CLICK -> {
                             val productId = data.product?.id ?: -1L
                             if (productId != -1L) {
                                 context?.let {
@@ -187,13 +177,13 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                                 }
                             }
                         }
-                        COMMUNITY_IMAGE_CLICK -> {
+                        CommunityAdapter.COMMUNITY_IMAGE_CLICK -> {
                             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
                             startActivity(intent)
                         }
 
-                        COMMUNITY_PROFILE_CLICK -> {
+                        CommunityAdapter.COMMUNITY_PROFILE_CLICK -> {
                             val intent = Intent(view.context, MemberProfileActivity::class.java)
                             intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
                             startActivity(intent)
@@ -214,36 +204,6 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
         val intent = Intent(context, LoginActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
         startActivity(intent)
-    }
-
-    fun openDialogSearch() {
-        context?.let {
-            val dialog = MaterialDialog.Builder(it)
-                    .title("Tìm kiếm")
-                    .customView(R.layout.dialog_search_community, false)
-                    .positiveText("Lọc")
-                    .onPositive { dialog, _ ->
-                        val edit_keyword = dialog.findViewById(R.id.edit_keyword) as TextInputEditText
-
-                        keyword = edit_keyword.text.toString().trim { it <= ' ' }
-
-                        dialog.dismiss()
-
-                        showProgressDialog()
-                        firstLoad()
-                    }
-                    .negativeText("Huỷ")
-                    .onNegative { dialog, _ -> dialog.dismiss() }
-                    .autoDismiss(false)
-                    .canceledOnTouchOutside(false)
-                    .build()
-
-            val edit_keyword = dialog.findViewById(R.id.edit_keyword) as TextInputEditText
-            edit_keyword.setText(keyword)
-
-
-            dialog.show()
-        }
     }
 
     fun openNotificationActivity() {

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -25,8 +26,6 @@ import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asPhone
-import ishopgo.com.exhibition.ui.main.shop.qrcode.QrCodeShopFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
 import java.io.*
@@ -104,7 +103,12 @@ class QrCodeSalePointFragment : BaseActionBarFragment(), BackpressConsumable {
                 .into(view_qrcode)
 
         view_booth_name.text = data.name
-        view_booth_code.text = data.phone?.asPhone()
+        view_booth_code.text = data.phone
+        view_booth_code.setOnClickListener {
+            val uri = Uri.parse("tel:${data.phone}")
+            val i = Intent(Intent.ACTION_DIAL, uri)
+            it.context.startActivity(i)
+        }
 
 
     }
@@ -136,7 +140,7 @@ class QrCodeSalePointFragment : BaseActionBarFragment(), BackpressConsumable {
             bos.flush()
             bos.close()
             toast("Lưu thành công\n$filePath")
-
+            MediaScannerConnection.scanFile(requireContext(), arrayOf(filePath), null, null)
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
             Log.w("TAG", "Error saving image file: " + e.message)

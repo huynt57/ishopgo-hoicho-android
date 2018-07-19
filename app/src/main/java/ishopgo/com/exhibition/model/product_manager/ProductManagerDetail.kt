@@ -83,9 +83,9 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("link")
     @Expose
     var link: String? = null
-    @SerializedName("link_affiliate")
+    @SerializedName("link_share")
     @Expose
-    var linkAffiliate: String? = null
+    var linkShare: String? = null
     @SerializedName("is_featured")
     @Expose
     var is_featured: Int = 0

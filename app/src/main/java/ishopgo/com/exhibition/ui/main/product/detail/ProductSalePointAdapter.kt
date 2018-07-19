@@ -1,5 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.text.Spanned
 import android.view.View
 import ishopgo.com.exhibition.R
@@ -9,7 +11,6 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
-import ishopgo.com.exhibition.ui.extensions.asPhone
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
@@ -39,6 +40,11 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_name.text = convert.provideName()
                 tv_product_sale_point_phone.text = convert.providePhone()
+                tv_product_sale_point_phone.setOnClickListener {
+                    val uri = Uri.parse("tel:${convert.providePhone()}")
+                    val i = Intent(Intent.ACTION_DIAL, uri)
+                    it.context.startActivity(i)
+                }
                 tv_product_sale_point_price.text = convert.providePrice()
             }
         }
@@ -66,7 +72,7 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone?.asPhone() ?: ""
+                    return from.phone ?: ""
                 }
 
                 override fun provideName(): Spanned {

@@ -33,6 +33,7 @@ import ishopgo.com.exhibition.ui.main.productfollow.ProductFollowActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerActivity
 import ishopgo.com.exhibition.ui.main.profile.ProfileActivity
 import ishopgo.com.exhibition.ui.main.questmanager.QuestionManagerActivity
+import ishopgo.com.exhibition.ui.main.references.ReferencesActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
@@ -186,6 +187,9 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_REGISTER_BOOTH -> {
                 openRegisterBooth()
             }
+            Const.AccountAction.ACTION_REFERENCES -> {
+                openReferences()
+            }
             Const.AccountAction.ACTION_SURVEY -> {
                 openSurvey()
             }
@@ -265,6 +269,13 @@ class AccountFragment : BaseFragment() {
     private fun openRegisterBooth() {
         context?.let {
             val intent = Intent(it, RegisterBoothActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openReferences() {
+        context?.let {
+            val intent = Intent(it, ReferencesActivity::class.java)
             startActivity(intent)
         }
     }

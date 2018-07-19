@@ -35,7 +35,7 @@
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:focusable="true"
-        android:fontFamily="@font/ff_roboto"
+
         android:singleLine="true"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ff_roboto"
+
         android:textColor="@color/colorSecondaryText"
         android:textSize="10sp"
         android:textStyle="normal"

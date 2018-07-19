@@ -66,7 +66,7 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
         (viewModel as SearchSalePointViewModel).total.observe(this, Observer { p ->
             p.let {
                 total = it ?: 0
-                search_total.visibility = if (keyword.isEmpty()) View.GONE else View.VISIBLE
+                search_total.visibility = View.VISIBLE
                 search_total.text = "$total kết quả được tìm thấy"
             }
         })

@@ -1,7 +1,6 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.MutableLiveData
-import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -9,8 +8,6 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
-import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.ui.extensions.Toolbox
 
 
 /**
@@ -19,6 +16,7 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var isSearchEnable = MutableLiveData<Boolean>()
+    var isSearchCommunityEnable = MutableLiveData<Boolean>()
     var enableSearchInbox = MutableLiveData<Boolean>()
     var enableSearchContact = MutableLiveData<Boolean>()
     var newMessage = MutableLiveData<PusherChatMessage>()
@@ -29,6 +27,10 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     fun enableSearch() {
         isSearchEnable.postValue(true)
+    }
+
+    fun enableSearchCommunity() {
+        isSearchCommunityEnable.postValue(true)
     }
 
     var showCategoriedProducts = MutableLiveData<Category>()

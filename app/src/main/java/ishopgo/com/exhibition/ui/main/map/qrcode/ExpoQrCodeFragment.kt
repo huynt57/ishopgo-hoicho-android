@@ -1,11 +1,11 @@
 package ishopgo.com.exhibition.ui.main.map.qrcode
 
 import android.Manifest
-import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -19,16 +19,14 @@ import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
-import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
-import com.bumptech.glide.request.target.Target
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-
 import java.io.*
 
 class ExpoQrCodeFragment : BaseActionBarFragment() {
@@ -117,7 +115,7 @@ class ExpoQrCodeFragment : BaseActionBarFragment() {
             bos.flush()
             bos.close()
             toast("Lưu thành công\n$filePath")
-
+            MediaScannerConnection.scanFile(requireContext(), arrayOf(filePath), null, null)
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
             Log.w("TAG", "Error saving image file: " + e.message)

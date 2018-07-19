@@ -278,7 +278,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         booth.address = null
         booth.count = 4
         detail.booth = booth
-        detail.linkAffiliate = "http://hoicho.ishopgo.com/san-pham/balo-nu-thoi-trang-naza-16110"
+        detail.linkShare = "http://hoicho.ishopgo.com/san-pham/balo-nu-thoi-trang-naza-16110"
 
         val response = BaseResponse<ProductDetail>()
         response.status = 1

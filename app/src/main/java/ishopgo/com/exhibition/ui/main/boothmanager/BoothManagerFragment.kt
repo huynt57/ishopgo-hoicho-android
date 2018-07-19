@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -149,8 +150,8 @@ class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>(
             imageData.compress(Bitmap.CompressFormat.PNG, 100, bos)
             bos.flush()
             bos.close()
-            toast("Lưu thành công\n$filePath")
-
+            toast("lưuLưu thành công\n$filePath")
+            MediaScannerConnection.scanFile(requireContext(), arrayOf(filePath), null, null)
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
             Log.w("TAG", "Error saving image file: " + e.message)

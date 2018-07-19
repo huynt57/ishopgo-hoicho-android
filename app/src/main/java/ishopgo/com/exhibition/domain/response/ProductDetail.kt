@@ -62,9 +62,9 @@ class ProductDetail : IdentityData() {
     @SerializedName("booth")
     @Expose
     var booth: Booth? = null
-    @SerializedName("link_affiliate")
+    @SerializedName("link_share")
     @Expose
-    var linkAffiliate: String? = null
+    var linkShare: String? = null
     @SerializedName("images")
     @Expose
     var images: MutableList<String>? = null
