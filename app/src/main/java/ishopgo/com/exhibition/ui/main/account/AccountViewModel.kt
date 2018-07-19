@@ -39,6 +39,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET, R.drawable.ic_ticket, "Vé thăm quan của tôi"))
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Quản lý điểm bán"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Quản trị viên gian hàng"))
         }
 
         if (UserDataManager.currentType == "Thành viên") {

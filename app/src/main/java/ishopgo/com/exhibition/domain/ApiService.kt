@@ -372,6 +372,12 @@ class ApiService {
         @GET("expo/account-permissions")
         fun getAdministratorPermissions(): Single<BaseResponse<MutableList<AdministratorPermissions>>>
 
+        @GET("expo/booth-permissions")
+        fun getBoothPermissions(): Single<BaseResponse<MutableList<AdministratorPermissions>>>
+
+        @GET("expo/search-members")
+        fun getMemberPermissions(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>>
+
         @POST("expo/add-administrators")
         fun addAdministrator(@Body body: RequestBody): Single<BaseResponse<Any>>
 

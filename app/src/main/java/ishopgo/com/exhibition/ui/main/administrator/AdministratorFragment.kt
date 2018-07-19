@@ -9,8 +9,10 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.AdministratorRequest
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -23,6 +25,8 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class AdministratorFragment : BaseListFragment<List<Administrator>, Administrator>() {
+    private var boothId: Long = -1L
+
     override fun initLoading() {
         firstLoad()
     }
@@ -69,22 +73,26 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
 
     override fun firstLoad() {
         super.firstLoad()
-        val firstLoad = LoadMoreRequest()
+        val firstLoad = AdministratorRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
+        firstLoad.boothId = boothId
         viewModel.loadData(firstLoad)
     }
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequest()
+        val loadMore = AdministratorRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
+        loadMore.boothId = boothId
         viewModel.loadData(loadMore)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (UserDataManager.currentType == "Chủ gian hàng")
+            boothId = UserDataManager.currentUserId
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view_recyclerview.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
     }

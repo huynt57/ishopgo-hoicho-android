@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.administrator
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -32,7 +33,11 @@ class AdministratorFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Phân quyền quản trị")
+        if (UserDataManager.currentType == "Chủ gian hàng")
+            toolbar.setCustomTitle("Quản trị viên gian hàng")
+        if (UserDataManager.currentType == "Chủ hội chợ")
+            toolbar.setCustomTitle("Phân quyền quản trị")
+
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 

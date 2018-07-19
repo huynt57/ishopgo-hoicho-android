@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
+import ishopgo.com.exhibition.model.member.MemberManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
@@ -25,6 +26,18 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getMemberPermissions(fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>> {
+        val response = BaseResponse<List<MemberManager>>()
+        response.status = 1
+        return delegate.returningResponse(response).getMemberPermissions(fields)
+    }
+
+    override fun getBoothPermissions(): Single<BaseResponse<MutableList<AdministratorPermissions>>> {
+        val response = BaseResponse<List<AdministratorPermissions>>()
+        response.status = 1
+        return delegate.returningResponse(response).getBoothPermissions()
+    }
+
     override fun deleteProductDiary(id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1
