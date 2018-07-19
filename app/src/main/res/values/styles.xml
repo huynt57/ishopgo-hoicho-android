@@ -129,4 +129,20 @@
         <item name="android:windowExitAnimation">@anim/slide_out_bottom</item>
     </style>
 
+    <style name="AppTheme.SinglelineTab" parent="Base.Widget.Design.TabLayout">
+        <item name="tabMaxWidth">300dp</item>
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabMode">scrollable</item>
+        <item name="tabBackground">?attr/selectableItemBackground</item>
+        <item name="tabTextAppearance">@style/AppTheme.SinglelineTab.Text</item>
+        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.SinglelineTab.Text" parent="TextAppearance.AppCompat.Button">
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/md_black_1000</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

@@ -13,9 +13,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tabIndicatorColor="@color/colorPrimaryDark"
         app:tabMode="scrollable"
-        app:tabSelectedTextColor="@color/colorPrimaryDark">
+        style="@style/AppTheme.SinglelineTab"
+        >
 
         <android.support.design.widget.TabItem
             android:id="@+id/tab_products"
