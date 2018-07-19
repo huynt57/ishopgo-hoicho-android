@@ -110,6 +110,8 @@ class ProductCommentAdapter : ClickableAdapter<ProductComment>() {
 
                         val adapter = CommunityImageAdapter()
                         adapter.replaceAll(convert.providerImages())
+                        rv_comment_image.isNestedScrollingEnabled = false
+                        rv_comment_image.setHasFixedSize(true)
                         rv_comment_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
                         rv_comment_image.adapter = adapter
                         adapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {

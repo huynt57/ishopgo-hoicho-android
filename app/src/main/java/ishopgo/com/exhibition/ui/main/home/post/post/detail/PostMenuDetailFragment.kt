@@ -24,6 +24,8 @@ import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDate
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.home.post.post.PostMenuViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailConverter
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -31,9 +33,10 @@ import kotlinx.android.synthetic.main.fragment_post_detail.*
 import kotlinx.android.synthetic.main.fragment_product_full_detail.*
 
 class PostMenuDetailFragment : BaseFragment() {
-    private lateinit var data: PostObject
+    private var data: PostObject? = null
     private lateinit var viewModel: PostMenuViewModel
     private var postContent: PostContent? = null
+    private var postId: Long = -1L
 
     companion object {
         const val TAG = "PostMenuDetailFragment"
@@ -51,19 +54,19 @@ class PostMenuDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
-        data = Toolbox.gson.fromJson(json, PostObject::class.java)
+        if (arguments?.getString(Const.TransferKey.EXTRA_JSON) != null) {
+            val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
+            data = Toolbox.gson.fromJson(json, PostObject::class.java)
+
+            data?.let {
+                postId = it.id
+                showViewPost(it)
+            }
+
+        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val convert = PostManagerDetailConverter().convert(data)
-        tv_post_title.text = convert.provideTitle()
-        tv_post_time.text = convert.provideInfo()
-        tv_category.text = convert.provideCategory()
-    }
-
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint("SetJavaScriptEnabled", "SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(PostMenuViewModel::class.java, false)
@@ -75,13 +78,23 @@ class PostMenuDetailFragment : BaseFragment() {
         })
 
         viewModel.getContentSusscess.observe(this, Observer { p ->
-            p.let {
+            p?.let {
+                if (data == null) {
+                    val data = PostObject()
+                    data.categoryName = it.categoryName
+                    data.name = it.name
+                    data.createdAt = it.createdAt
+                    data.accountName = it.accountName
+                    data.createdAt = it.createdAt
+
+                    showViewPost(data)
+                }
                 postContent = it
-                if (!TextUtils.isEmpty(it?.content)) {
+                if (!TextUtils.isEmpty(it.content)) {
                     val fullHtml = String.format(
                             "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
                             Const.webViewCSS,
-                            it?.content
+                            it.content
                     )
                     view_webview.loadData(fullHtml, "text/html; charset=UTF-8", null)
                 }
@@ -102,7 +115,14 @@ class PostMenuDetailFragment : BaseFragment() {
             }
         })
 
-        data.id.let { viewModel.getPostContent(it) }
+        viewModel.getPostContent(postId)
+    }
+
+    private fun showViewPost(data: PostObject) {
+        val convert = PostManagerDetailConverter().convert(data)
+        tv_post_title.text = convert.provideTitle()
+        tv_post_time.text = convert.provideInfo()
+        tv_category.text = convert.provideCategory()
     }
 
     fun sharePost() {
