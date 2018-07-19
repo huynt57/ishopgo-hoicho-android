@@ -9,32 +9,32 @@ class PostObject : IdentityData() {
 
     @SerializedName("name")
     @Expose
-    val name: String? = null
+    var name: String? = null
     @SerializedName("short_content")
     @Expose
-    val shortContent: String? = null
+    var shortContent: String? = null
     @SerializedName("image")
     @Expose
-    val image: String? = null
+    var image: String? = null
     @SerializedName("created_at")
     @Expose
-    val createdAt: String? = null
+    var createdAt: String? = null
     @SerializedName("updated_at")
     @Expose
-    val updatedAt: String? = null
+    var updatedAt: String? = null
     @SerializedName("status")
     @Expose
-    val status: Int? = null
+    var status: Int? = null
     @SerializedName("status_text")
     @Expose
-    val statusText: String? = null
+    var statusText: String? = null
     @SerializedName("account_name")
     @Expose
-    val accountName: String? = null
+    var accountName: String? = null
     @SerializedName("category_id")
     @Expose
-    val categoryId: Int? = null
+    var categoryId: Int? = null
     @SerializedName("category_name")
     @Expose
-    val categoryName: String? = null
+    var categoryName: String? = null
 }

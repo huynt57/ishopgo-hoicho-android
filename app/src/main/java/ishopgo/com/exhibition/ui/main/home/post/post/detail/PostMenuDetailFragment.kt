@@ -57,18 +57,13 @@ class PostMenuDetailFragment : BaseFragment() {
         if (arguments?.getString(Const.TransferKey.EXTRA_JSON) != null) {
             val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
             data = Toolbox.gson.fromJson(json, PostObject::class.java)
-        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        if (data != null) {
-            val convert = PostManagerDetailConverter().convert(data!!)
-            postId = data!!.id
-            tv_post_title.text = convert.provideTitle()
-            tv_post_time.text = convert.provideInfo()
-            tv_category.text = convert.provideCategory()
-        }
+            data?.let {
+                postId = it.id
+                showViewPost(it)
+            }
+
+        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
     @SuppressLint("SetJavaScriptEnabled", "SetTextI18n")
@@ -83,19 +78,23 @@ class PostMenuDetailFragment : BaseFragment() {
         })
 
         viewModel.getContentSusscess.observe(this, Observer { p ->
-            p.let {
+            p?.let {
                 if (data == null) {
-                    tv_post_title.text = it?.name ?: ""
-                    tv_post_time.text = "${it?.createdAt?.asDate()
-                            ?: ""} | Đăng bởi <b>${it?.accountName ?: ""}</b>".asHtml()
-                    tv_category.text = it?.categoryName ?: ""
+                    val data = PostObject()
+                    data.categoryName = it.categoryName
+                    data.name = it.name
+                    data.createdAt = it.createdAt
+                    data.accountName = it.accountName
+                    data.createdAt = it.createdAt
+
+                    showViewPost(data)
                 }
                 postContent = it
-                if (!TextUtils.isEmpty(it?.content)) {
+                if (!TextUtils.isEmpty(it.content)) {
                     val fullHtml = String.format(
                             "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
                             Const.webViewCSS,
-                            it?.content
+                            it.content
                     )
                     view_webview.loadData(fullHtml, "text/html; charset=UTF-8", null)
                 }
@@ -117,6 +116,13 @@ class PostMenuDetailFragment : BaseFragment() {
         })
 
         viewModel.getPostContent(postId)
+    }
+
+    private fun showViewPost(data: PostObject) {
+        val convert = PostManagerDetailConverter().convert(data)
+        tv_post_title.text = convert.provideTitle()
+        tv_post_time.text = convert.provideInfo()
+        tv_category.text = convert.provideCategory()
     }
 
     fun sharePost() {
