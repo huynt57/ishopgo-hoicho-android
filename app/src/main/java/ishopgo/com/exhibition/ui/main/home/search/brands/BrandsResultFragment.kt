@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.home.search.provider
+package ishopgo.com.exhibition.ui.main.home.search.brands
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer

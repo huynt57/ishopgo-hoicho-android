@@ -12,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.ProductResultsFragment
-import ishopgo.com.exhibition.ui.main.home.search.provider.BrandsResultFragment
+import ishopgo.com.exhibition.ui.main.home.search.brands.BrandsResultFragment
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SalePointResultFragment
 import ishopgo.com.exhibition.ui.main.home.search.shop.ShopResultsFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager

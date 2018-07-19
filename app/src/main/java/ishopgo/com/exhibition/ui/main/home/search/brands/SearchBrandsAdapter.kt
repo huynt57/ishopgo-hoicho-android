@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.home.search.provider
+package ishopgo.com.exhibition.ui.main.home.search.brands
 
 import android.support.v7.widget.RecyclerView
 import android.view.View

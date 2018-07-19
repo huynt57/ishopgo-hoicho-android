@@ -36,7 +36,7 @@ import ishopgo.com.exhibition.ui.main.home.post.question.QuestionMenuViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
-import ishopgo.com.exhibition.ui.main.home.search.provider.SearchBrandsViewModel
+import ishopgo.com.exhibition.ui.main.home.search.brands.SearchBrandsViewModel
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
