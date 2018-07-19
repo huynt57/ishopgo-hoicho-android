@@ -233,8 +233,8 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
         request.categoryId = category.id
-        request.sort_by = filterProduct.sort_by ?: "name"
-        request.sort_type = filterProduct.sort_type ?: "asc"
+        request.sort_by = filterProduct.sort_by
+        request.sort_type = filterProduct.sort_type
         request.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadProductsByCategory(request)
     }
@@ -247,8 +247,8 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
         request.categoryId = category.id
-        request.sort_by = filterProduct.sort_by ?: "name"
-        request.sort_type = filterProduct.sort_type ?: "asc"
+        request.sort_by = filterProduct.sort_by
+        request.sort_type = filterProduct.sort_type
         request.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadProductsByCategory(request)
     }

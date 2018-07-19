@@ -74,8 +74,8 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
         val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = 0
-        loadMore.sort_by = filterProduct.sort_by ?: "name"
-        loadMore.sort_type = filterProduct.sort_type ?: "asc"
+        loadMore.sort_by = filterProduct.sort_by
+        loadMore.sort_type = filterProduct.sort_type
         loadMore.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadData(loadMore)
     }
@@ -85,8 +85,8 @@ class PromotionProductsFragment : BaseListFragment<List<Product>, Product>() {
         val loadMore = FilterProductRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
-        loadMore.sort_by = filterProduct.sort_by ?: "name"
-        loadMore.sort_type = filterProduct.sort_type ?: "asc"
+        loadMore.sort_by = filterProduct.sort_by
+        loadMore.sort_type = filterProduct.sort_type
         loadMore.type_filter = filterProduct.filter ?: mutableListOf()
         viewModel.loadData(loadMore)
     }

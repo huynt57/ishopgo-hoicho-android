@@ -28,7 +28,7 @@
         android:layout_weight="1"
         android:drawablePadding="4dp"
         android:ellipsize="end"
-        android:fontFamily="@font/ff_roboto"
+
         android:gravity="end"
         android:textColor="@color/md_white_1000"
         android:textStyle="bold"

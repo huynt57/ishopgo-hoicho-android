@@ -149,8 +149,8 @@ class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>(
             imageData.compress(Bitmap.CompressFormat.PNG, 100, bos)
             bos.flush()
             bos.close()
-            toast("Lưu thành công\n$filePath")
-
+            toast("lưuLưu thành công\n$filePath")
+            requireContext().sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(filePath)))
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
             Log.w("TAG", "Error saving image file: " + e.message)
