@@ -21,4 +21,7 @@ class User : IdentityData() {
     @SerializedName("type")
     @Expose
     var type: String = ""
+    @SerializedName("id_booth")
+    @Expose
+    var idBooth: Long = -1L
 }

@@ -133,7 +133,7 @@ class CustomProductDetail : ProductDetailOverwrite() {
             if (detail.isNhatkySx == 1) {
                 container_diary.visibility = View.VISIBLE
 
-                if (UserDataManager.currentType == "Nhân viên gian hàng") {
+                if (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == detail.booth?.id) {
                     val listPermission = Const.listPermission
                     if (listPermission.isNotEmpty())
                         for (i in listPermission.indices)
