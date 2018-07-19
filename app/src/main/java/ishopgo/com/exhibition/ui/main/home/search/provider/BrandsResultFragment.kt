@@ -1,40 +1,44 @@
-package ishopgo.com.exhibition.ui.main.home.search.sale_point
+package ishopgo.com.exhibition.ui.main.home.search.provider
 
 import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.SearchSalePointRequest
+import ishopgo.com.exhibition.domain.request.SearchBrandsRequest
+import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
-import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
+import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
-class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSalePoint>() {
+class BrandsResultFragment : BaseListFragment<List<Brand>, Brand>() {
     override fun initLoading() {
         firstLoad()
     }
 
     companion object {
-        private val TAG = "SalePointResultFragment"
+        private val TAG = "BrandsResultFragment"
     }
 
+    private var total: Int = 0
     private lateinit var sharedViewModel: SearchViewModel
     private var keyword = ""
-    private var total: Int = 0
 
     private fun search(key: String) {
         Log.d(TAG, "search: key = [${key}]")
@@ -51,6 +55,10 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
         return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
     }
 
+    override fun layoutManager(context: Context): RecyclerView.LayoutManager {
+        return GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+    }
+
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -63,7 +71,7 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
             }
         })
 
-        (viewModel as SearchSalePointViewModel).total.observe(this, Observer { p ->
+        (viewModel as SearchBrandsViewModel).total.observe(this, Observer { p ->
             p.let {
                 total = it ?: 0
                 search_total.visibility = View.VISIBLE
@@ -72,7 +80,7 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
         })
     }
 
-    override fun populateData(data: List<SearchSalePoint>) {
+    override fun populateData(data: List<Brand>) {
         if (reloadData) {
             adapter.replaceAll(data)
             view_recyclerview.scheduleLayoutAnimation()
@@ -80,18 +88,29 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<SearchSalePoint> {
-        return SearchSalePointAdapter()
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Brand> {
+        val adapter = SearchBrandsAdapter()
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<Brand> {
+            override fun click(position: Int, data: Brand, code: Int) {
+                context?.let {
+                    showProductsOfBrand(data)
+                }
+            }
+
+        }
+        return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<SearchSalePoint>> {
-        return obtainViewModel(SearchSalePointViewModel::class.java, false)
+    private fun showProductsOfBrand(brand: Brand) {
+        val intent = Intent(context, ProductsOfBrandActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(brand))
+        startActivity(intent)
     }
 
     override fun firstLoad() {
         super.firstLoad()
-        val request = SearchSalePointRequest()
-        request.keyword = keyword
+        val request = SearchBrandsRequest()
+        request.name = keyword
         request.offset = 0
         request.limit = Const.PAGE_LIMIT
         viewModel.loadData(request)
@@ -99,8 +118,8 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val request = SearchSalePointRequest()
-        request.keyword = keyword
+        val request = SearchBrandsRequest()
+        request.name = keyword
         request.offset = currentCount
         request.limit = Const.PAGE_LIMIT
         viewModel.loadData(request)
@@ -108,21 +127,13 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
         view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-
-        if (adapter is ClickableAdapter<SearchSalePoint>) {
-            (adapter as ClickableAdapter<SearchSalePoint>).listener = object : ClickableAdapter.BaseAdapterAction<SearchSalePoint> {
-                override fun click(position: Int, data: SearchSalePoint, code: Int) {
-                    context?.let {
-                        val intent = Intent(it, SalePointDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
-                        startActivity(intent)
-                    }
-
-                }
-            }
-        }
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
     }
+
+    override fun obtainViewModel(): BaseListViewModel<List<Brand>> {
+        return obtainViewModel(SearchBrandsViewModel::class.java, false)
+    }
+
+
 }

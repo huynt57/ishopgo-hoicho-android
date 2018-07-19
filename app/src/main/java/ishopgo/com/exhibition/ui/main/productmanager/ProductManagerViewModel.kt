@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
+import ishopgo.com.exhibition.domain.response.ManagerBrand
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
@@ -273,19 +274,19 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                 }))
     }
 
-    var dataBrands = MutableLiveData<MutableList<Brand>>()
+    var dataBrands = MutableLiveData<List<Brand>>()
 
     fun getBrand(params: Request) {
         if (params is LoadMoreRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
-            fields["limit"] = params.offset
+            fields["offset"] = params.offset
             addDisposable(isgService.getBrands(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<MutableList<Brand>>() {
-                        override fun success(data: MutableList<Brand>?) {
+                    .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
+                        override fun success(data: ManagerBrand?) {
                             data?.let {
-                                dataBrands.postValue(it)
+                                dataBrands.postValue(it.brand ?: mutableListOf())
                             }
                         }
 
