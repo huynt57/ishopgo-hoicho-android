@@ -11,7 +11,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 abstract class ProductDetailOverwrite {
 
     abstract fun handleInOtherFlavor(rootView: View, detail: ProductDetail, fragment: BaseFragment)
-    abstract fun handleActivityCreated(viewModel: ProductDetailViewModel, fragment: BaseFragment)
+    abstract fun handleActivityCreated(rootView: View, viewModel: ProductDetailViewModel, fragment: BaseFragment)
     abstract fun handleViewCreated(rootView: View, context: Context, fragment: BaseFragment)
 
 }
