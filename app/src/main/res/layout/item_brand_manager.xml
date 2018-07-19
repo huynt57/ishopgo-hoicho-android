@@ -39,7 +39,7 @@
         android:layout_marginTop="16dp"
         android:layout_toStartOf="@+id/brand_item_highlight"
         android:ellipsize="end"
-        android:fontFamily="@font/ff_roboto"
+
         android:gravity="center_vertical"
         android:singleLine="true"
         android:text="White Doctor"

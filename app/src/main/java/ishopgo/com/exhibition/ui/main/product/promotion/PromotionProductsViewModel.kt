@@ -1,51 +1,39 @@
 package ishopgo.com.exhibition.ui.main.product.promotion
 
-import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchByNameRequest
 import ishopgo.com.exhibition.domain.response.FilterProductRequest
 import ishopgo.com.exhibition.domain.response.Product
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
 class PromotionProductsViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
 
-    var getDataFilter = MutableLiveData<FilterProduct>()
-
-    fun getDataFilter(data: FilterProduct) {
-        getDataFilter.value = data
-
-        val loadMore = FilterProductRequest()
-        loadMore.limit = Const.PAGE_LIMIT
-        loadMore.offset = 0
-        loadMore.sort_by = data.sort_by ?: "name"
-        loadMore.sort_type = data.sort_type ?: "asc"
-        loadMore.type_filter = data.filter ?: mutableListOf()
-        loadData(loadMore)
-    }
-
     override fun loadData(params: Request) {
-        if (params is FilterProductRequest) {
+        if (params is LoadMoreRequest) {
             val fields = mutableMapOf<String, Any>()
+
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            fields["sort_by"] = params.sort_by
-            fields["sort_type"] = params.sort_type
-
-            if (params.type_filter.isNotEmpty()) {
-                val listType = params.type_filter
-                for (i in listType.indices)
-                    fields["type_filter[$i]"] = listType[i]
-
-            }
 
             if (params is SearchByNameRequest) {
-                params.name?.let {
-                    fields["name"] = it
+                if (!params.name.isNullOrEmpty()) {
+                    fields["name"] = params.name!!
+                }
+            }
+
+            if (params is FilterProductRequest) {
+                params.sort_by?.let { fields["sort_by"] = it }
+                params.sort_type?.let { fields["sort_type"] = it }
+
+                if (params.type_filter.isNotEmpty()) {
+                    val listType = params.type_filter
+                    for (i in listType.indices)
+                        fields["type_filter[$i]"] = listType[i]
+
                 }
             }
 

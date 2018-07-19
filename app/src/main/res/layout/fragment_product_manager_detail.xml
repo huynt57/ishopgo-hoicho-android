@@ -427,7 +427,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:background="?attr/selectableItemBackground"
-                    android:fontFamily="@font/ff_roboto"
+
                     android:gravity="center"
                     android:text="[+] Xem thêm..."
                     android:textColor="@color/colorAccent"
