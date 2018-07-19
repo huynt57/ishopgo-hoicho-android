@@ -24,7 +24,6 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/ff_roboto_light"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/view_phone"
@@ -33,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/view_avatar"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="name"/>
+        tools:text="Vương Xuân Hồng"/>
 
     <TextView
         android:id="@+id/view_phone"

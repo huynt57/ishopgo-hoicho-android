@@ -26,7 +26,6 @@ import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asPhone
-import ishopgo.com.exhibition.ui.main.shop.qrcode.QrCodeShopFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
 import java.io.*
@@ -136,7 +135,7 @@ class QrCodeSalePointFragment : BaseActionBarFragment(), BackpressConsumable {
             bos.flush()
             bos.close()
             toast("Lưu thành công\n$filePath")
-
+            requireContext().sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(filePath)))
         } catch (e: FileNotFoundException) {
             toast("Không thành công")
             Log.w("TAG", "Error saving image file: " + e.message)

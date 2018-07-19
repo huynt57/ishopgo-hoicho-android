@@ -597,7 +597,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductLinkAffiliate(): CharSequence {
-                    return from.linkAffiliate ?: ""
+                    return from.linkShare ?: ""
                 }
 
                 override fun provideProductImage(): CharSequence {
@@ -718,7 +718,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         })
 
         if (ShareDialog.canShow(ShareLinkContent::class.java)) {
-            val urlToShare = product.linkAffiliate.toString()
+            val urlToShare = product.linkShare.toString()
             val shareContent = ShareLinkContent.Builder()
                     .setContentUrl(Uri.parse(urlToShare))
                     .build()
@@ -728,7 +728,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun shareApp(product: ProductDetail) {
-        val urlToShare = product.linkAffiliate
+        val urlToShare = product.linkShare
         val shareIntent = Intent(Intent.ACTION_SEND)
         shareIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         shareIntent.type = "text/plain"

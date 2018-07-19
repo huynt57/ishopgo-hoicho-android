@@ -95,7 +95,6 @@
                         android:paddingEnd="16dp"
                         app:layout_constraintBottom_toBottomOf="@+id/view_product_image"
                         app:layout_constraintEnd_toStartOf="@+id/view_share"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/view_product_image">
 
                         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -104,7 +103,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginStart="8dp"
                             android:drawablePadding="4dp"
-                            android:text="Mã truy xuất nguồn gốc"
+                            android:text="Mã truy xuất"
                             android:textColor="@color/colorPureWhite"
                             android:textSize="13sp"
                             app:drawableStartCompat="@drawable/icon_qr_code_white_24dp"

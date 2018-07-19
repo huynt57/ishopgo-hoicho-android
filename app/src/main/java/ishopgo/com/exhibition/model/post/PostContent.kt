@@ -7,4 +7,7 @@ class PostContent {
     @SerializedName("content")
     @Expose
     val content: String? = null
+    @SerializedName("link_share")
+    @Expose
+    val linkShare: String? = null
 }

@@ -34,7 +34,7 @@
         android:background="?attr/selectableItemBackground"
         android:ellipsize="end"
         android:focusable="true"
-        android:fontFamily="@font/ff_roboto"
+
         android:maxLines="3"
         android:text="Xe tay ga Honda Air Blade New 2016 Phiên bản cao cấp (Xanh bạc )"
         android:textColor="@color/md_blue_600"
@@ -48,7 +48,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/ff_roboto"
+
         android:text="30.999.000VND"
         android:textColor="@color/colorPrimary"
         android:textSize="16sp"

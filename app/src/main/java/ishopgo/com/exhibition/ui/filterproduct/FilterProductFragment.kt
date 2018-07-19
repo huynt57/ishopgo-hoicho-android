@@ -22,8 +22,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     private lateinit var viewModel: FilterProductViewModel
     private val listTypeFilter = mutableListOf<Int>()
     private var type_filter = 0
-    private var sort_by = SORT_BY_NAME
-    private var sort_type = SORT_TYPE_ASC
+    private var sort_by: String? = null
+    private var sort_type: String? = null
     private var data: FilterProduct? = null
 
     companion object {

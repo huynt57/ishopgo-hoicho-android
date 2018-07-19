@@ -26,5 +26,8 @@ class QuestionDetail {
     @SerializedName("category_name")
     @Expose
     var categoryName: String? = null
+    @SerializedName("link_share")
+    @Expose
+    var linkShare: String? = null
 
 }
