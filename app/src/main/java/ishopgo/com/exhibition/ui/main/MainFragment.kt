@@ -1,14 +1,12 @@
 package ishopgo.com.exhibition.ui.main
 
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.content.res.AppCompatResources
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +22,7 @@ import ishopgo.com.exhibition.ui.chat.local.ChatFragment
 import ishopgo.com.exhibition.ui.chat.local.contact.search.SearchContactFragment
 import ishopgo.com.exhibition.ui.chat.local.inbox.search.SearchInboxFragment
 import ishopgo.com.exhibition.ui.community.CommunityFragmentActionBar
+import ishopgo.com.exhibition.ui.community.SearchCommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
@@ -93,6 +92,11 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         viewModel.isSearchEnable.observe(this, Observer {
             if (it == true) {
                 showSearch()
+            }
+        })
+        viewModel.isSearchCommunityEnable.observe(this, Observer {
+            if (it == true) {
+                showSearchCommunity()
             }
         })
         viewModel.openSearchInCategory.observe(this, Observer {
@@ -176,6 +180,17 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                     .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
                     .add(R.id.content_main_container, SearchFragment(), SearchFragment.TAG)
                     .addToBackStack(SearchFragment.TAG)
+                    .commit()
+        }
+    }
+
+    private fun showSearchCommunity() {
+        val fragment = childFragmentManager.findFragmentByTag(SearchFragment.TAG)
+        if (fragment == null) {
+            childFragmentManager.beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_bottom, 0, 0, R.anim.exit_to_bottom)
+                    .add(R.id.content_main_container, SearchCommunityFragmentActionBar(), SearchCommunityFragmentActionBar.TAG)
+                    .addToBackStack(SearchCommunityFragmentActionBar.TAG)
                     .commit()
         }
     }

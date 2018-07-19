@@ -432,8 +432,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 firstLoadDiary()
 
-//                view_add_diary.setOnClickListener { toast("Đang phát triển") }
-//                view_product_show_more_diary.setOnClickListener { toast("Đang phát triển") }
             } else container_diary.visibility = View.GONE
 
         }

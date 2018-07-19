@@ -156,7 +156,7 @@
                 <FrameLayout
                     android:id="@+id/container_description"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
+                    android:layout_height="150dp"
                     android:paddingEnd="16dp"
                     android:paddingStart="16dp"
                     android:paddingTop="16dp">
