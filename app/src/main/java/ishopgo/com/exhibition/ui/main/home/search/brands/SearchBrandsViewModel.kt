@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchBrandsRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.ManagerBrand
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
 class SearchBrandsViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Injectable {
@@ -18,7 +19,7 @@ class SearchBrandsViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            fields["id_app"] = "hoichone"
+            fields["id_app"] = UserDataManager.appId
 
             params.name?.let {
                 fields["name"] = it
