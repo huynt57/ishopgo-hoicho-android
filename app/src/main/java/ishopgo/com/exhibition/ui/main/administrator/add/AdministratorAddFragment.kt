@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.model.administrator.AdministratorRole
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -36,6 +37,7 @@ class AdministratorAddFragment : BaseFragment() {
     }
 
     private var data: Administrator? = null
+    private var boothId: Long = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +66,9 @@ class AdministratorAddFragment : BaseFragment() {
         view_recyclerview.layoutManager = layoutManager
         layoutManager.isAutoMeasureEnabled = true
 
+        if (UserDataManager.currentType == "Chủ gian hàng")
+            boothId = UserDataManager.currentUserId
+
         adapter.onClickListener = object : ClickableAdapter.BaseAdapterAction<Administrator>, AdministratorPermissionsAdapter.onClick {
             override fun clickRole(item: AdministratorRole) {
                 if (listRole.isEmpty())
@@ -89,7 +94,7 @@ class AdministratorAddFragment : BaseFragment() {
             edit_member_phone.setOnClickListener { memberViewModel.showFragmentMember() }
             btn_add_administrator.setOnClickListener {
                 if (checkRequireFields(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
-                    viewModel.addAdministrator(listRole, edit_member_phone.text.toString())
+                    viewModel.addAdministrator(listRole, edit_member_phone.text.toString(), boothId)
                 }
             }
         } else {
@@ -239,7 +244,10 @@ class AdministratorAddFragment : BaseFragment() {
         if (data != null)
             data?.id?.let { viewModel.getPermisions(it) }
 
-        viewModel.getAdministratorPermissions()
+        if (UserDataManager.currentType == "Chủ gian hàng")
+            viewModel.getBoothPermissions()
+        if (UserDataManager.currentType == "Chủ hội chợ")
+            viewModel.getAdministratorPermissions()
 
     }
 }

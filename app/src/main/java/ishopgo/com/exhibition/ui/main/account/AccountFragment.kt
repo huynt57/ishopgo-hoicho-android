@@ -115,9 +115,12 @@ class AccountFragment : BaseFragment() {
             }
         }
 
-        if (UserDataManager.currentType == "Quản trị viên") {
+        if (UserDataManager.currentType == "Quản trị viên" || UserDataManager.currentType == "Nhân viên gian hàng") {
             view_menu_administrator.visibility = View.VISIBLE
-            view_menu_administrator.setLabel("Quản trị viên")
+            if (UserDataManager.currentType == "Quản trị viên")
+                view_menu_administrator.setLabel("Quản trị viên")
+            else view_menu_administrator.setLabel("Quản trị viên gian hàng")
+
 
             val listAdministrator = view_menu_administrator.getList()
             val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)

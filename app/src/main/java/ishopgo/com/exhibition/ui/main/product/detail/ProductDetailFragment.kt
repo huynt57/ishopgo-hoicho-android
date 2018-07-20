@@ -247,7 +247,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
-        handleOverwrite.handleActivityCreated(viewModel, this)
+        view?.let {
+            handleOverwrite.handleActivityCreated(it, viewModel, this)
+        }
 
         loadData(productId)
         firstLoadSalePoint()
@@ -565,7 +567,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopRatePoint(): CharSequence {
-                    return "<b><font color=\"red\">${from.booth?.rate?.toFloat() ?: 0.0f}/5.0</font></b><br>${from.booth?.rateCount ?: 0} Đánh giá".asHtml()
+                    return "<b><font color=\"red\">${from.booth?.rate?.toFloat()
+                            ?: 0.0f}/5.0</font></b><br>${from.booth?.rateCount
+                            ?: 0} Đánh giá".asHtml()
                 }
 
                 override fun provideRate(): Float {
@@ -647,7 +651,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopProductCount(): CharSequence {
-                    return "<b><font color=\"#00c853\">${from.booth?.count ?: 0}</font></b><br>Sản phẩm".asHtml()
+                    return "<b><font color=\"#00c853\">${from.booth?.count
+                            ?: 0}</font></b><br>Sản phẩm".asHtml()
                 }
 
                 override fun provideShopRateCount(): Int {

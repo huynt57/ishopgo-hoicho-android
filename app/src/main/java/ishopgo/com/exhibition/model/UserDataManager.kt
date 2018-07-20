@@ -21,6 +21,7 @@ object UserDataManager {
     private const val KEY_USER_TYPE = "type"
     private const val KEY_USER_SURVEY = "survey"
     private const val KEY_USER_SURVEY_IS_MANDATORY = "survey_mandatory"
+    private const val KEY_BOOTH_ID = "id_booth"
 
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")
@@ -52,6 +53,9 @@ object UserDataManager {
     var passLoginScreen: Long
         get() = pref.getLong(KEY_PASS_LOGIN_SCREEN, -1L)
         set(value) = pref.edit().putLong(KEY_PASS_LOGIN_SCREEN, value).apply()
+    var currentBoothId: Long
+        get() = pref.getLong(KEY_BOOTH_ID, -1L)
+        set(value) = pref.edit().putLong(KEY_BOOTH_ID, value).apply()
     var skipUpdate: Boolean
         get() = pref.getBoolean(KEY_SKIP_UPDATE, false)
         set(value) = pref.edit().putBoolean(KEY_SKIP_UPDATE, value).apply()

@@ -39,6 +39,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         UserDataManager.currentUserPhone = phone
                         UserDataManager.currentUserName = data?.name ?: ""
                         UserDataManager.currentUserAvatar = data?.image ?: ""
+                        UserDataManager.currentBoothId = data?.idBooth ?: -1L
                         UserDataManager.currentType = data?.type ?: ""
 
                         loginSuccess.postValue(data)

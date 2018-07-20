@@ -96,12 +96,19 @@ class CustomProductDetail : ProductDetailOverwrite() {
         }
     }
 
-    override fun handleActivityCreated(viewModel: ProductDetailViewModel, fragment: BaseFragment) {
+    override fun handleActivityCreated(rootView: View, viewModel: ProductDetailViewModel, fragment: BaseFragment) {
         viewModelProductDetail = viewModel
 
         viewModelProductDetail.productDiary.observe(fragment, Observer { p ->
-            p.let {
-                it?.let { it1 -> adapterDiary.replaceAll(it1) }
+            p?.let {
+                if (it.isNotEmpty()) {
+                    rootView.view_product_empty.visibility = View.GONE
+                    rootView.view_product_show_more_diary.visibility = View.VISIBLE
+                } else {
+                    rootView.view_product_empty.visibility = View.VISIBLE
+                    rootView.view_product_show_more_diary.visibility = View.GONE
+                }
+                adapterDiary.replaceAll(it)
             }
         })
 
@@ -124,7 +131,7 @@ class CustomProductDetail : ProductDetailOverwrite() {
             if (detail.isNhatkySx == 1) {
                 container_diary.visibility = View.VISIBLE
 
-                if (UserDataManager.currentType == "Nhân viên gian hàng") {
+                if (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == detail.booth?.id) {
                     val listPermission = Const.listPermission
                     if (listPermission.isNotEmpty())
                         for (i in listPermission.indices)

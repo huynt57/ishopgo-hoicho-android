@@ -38,6 +38,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_REFERENCES, R.drawable.ic_notification, "Thành viên đã giới thiệu"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Quản lý điểm bán"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Quản trị viên gian hàng"))
         }
 
         if (UserDataManager.currentType == "Thành viên") {
@@ -163,15 +164,15 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }
 
                 for (i in listPermission.indices) {
-                    if (Const.Permission.EXPO_LIST_TICKET == listPermission[i]) {
-                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET_MANAGER, R.drawable.ic_sight_seeing, "Quản lý vé tham quan"))
+                    if (Const.Permission.EXPO_FAIR_LIST == listPermission[i]) {
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
                         break
                     }
                 }
 
                 for (i in listPermission.indices) {
-                    if (Const.Permission.EXPO_FAIR_LIST == listPermission[i]) {
-                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_CONFIG_EXPO, R.drawable.ic_sight_seeing, "Quản lý hội chợ"))
+                    if (Const.Permission.EXPO_BOOTH_CUSTOMER == listPermission[i]) {
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_store_white, "Quản lý điểm bán"))
                         break
                     }
                 }

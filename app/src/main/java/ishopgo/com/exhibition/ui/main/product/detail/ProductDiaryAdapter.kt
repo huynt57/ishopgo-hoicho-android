@@ -68,7 +68,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(img_account_avatar)
 
-                if (UserDataManager.currentType == "Nhân viên gian hàng") {
+                if (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == data.boothId) {
                     val listPermission = Const.listPermission
                     if (listPermission.isNotEmpty())
                         for (i in listPermission.indices)
