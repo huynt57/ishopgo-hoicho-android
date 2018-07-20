@@ -39,7 +39,7 @@ class BrandManagerUpdateFragmentActionBar : BaseActionBarFragment() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 
-        if (UserDataManager.currentType == "Quản trị viên") {
+        if (UserDataManager.currentType == "Quản trị viên" || UserDataManager.currentType == "Nhân viên gian hàng") {
             val listPermission = Const.listPermission
 
             if (listPermission.isNotEmpty())

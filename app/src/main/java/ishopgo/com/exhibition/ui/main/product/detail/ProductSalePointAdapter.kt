@@ -11,6 +11,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
@@ -39,7 +40,7 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
             itemView.apply {
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_name.text = convert.provideName()
-                tv_product_sale_point_phone.text = convert.providePhone()
+                tv_product_sale_point_phone.text = convert.providePhone().asHtml()
                 tv_product_sale_point_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.providePhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -62,7 +63,8 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
         override fun convert(from: ProductSalePoint): ProductSalePointProvider {
             return object : ProductSalePointProvider {
                 override fun provideAddress(): String {
-                    return "${from.address ?: ""}, ${from.district ?: ""}, ${from.city ?: ""}"
+                    return "${from.address?.trim() ?: ""}, ${from.district?.trim()
+                            ?: ""}, ${from.city?.trim() ?: ""}"
                 }
 
                 override fun providePrice(): String {
@@ -72,7 +74,7 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideName(): Spanned {

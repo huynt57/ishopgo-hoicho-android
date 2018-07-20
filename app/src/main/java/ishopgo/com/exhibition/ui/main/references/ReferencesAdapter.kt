@@ -10,6 +10,8 @@ import ishopgo.com.exhibition.model.member.MemberManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_visitor.view.*
 
 class ReferencesAdapter : ClickableAdapter<MemberManager>() {
@@ -79,7 +81,7 @@ class ReferencesAdapter : ClickableAdapter<MemberManager>() {
                 }
 
                 override fun providePhone(): CharSequence {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber()?.asHtml() ?: ""
                 }
 
                 override fun provideEmail(): CharSequence {

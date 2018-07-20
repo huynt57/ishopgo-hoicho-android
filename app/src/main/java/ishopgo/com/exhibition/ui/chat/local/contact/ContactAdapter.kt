@@ -7,6 +7,8 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_contact.view.*
 
 /**
@@ -46,7 +48,7 @@ class ContactAdapter : ClickableAdapter<ContactProvider>() {
                         )
                         .into(view_avatar)
                 view_name.text = data.provideName()
-                view_phone.text = "${data.provideJob()} - ${data.providePhone()}"
+                view_phone.text = "${data.provideJob()} - ${data.providePhone().asStylePhoneNumber().asHtml()}"
             }
         }
     }

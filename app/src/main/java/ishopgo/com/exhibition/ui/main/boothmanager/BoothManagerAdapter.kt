@@ -10,6 +10,8 @@ import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_booth_manager.view.*
 
 class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
@@ -44,7 +46,7 @@ class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
                                 .error(R.drawable.image_placeholder)
                         ).into(img_code)
                 tv_booth_manager_name.text = convert.provideName()
-                tv_booth_manager_phone.text = convert.providePhone()
+                tv_booth_manager_phone.text = convert.providePhone().asHtml()
                 tv_booth_manager_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.providePhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -79,7 +81,7 @@ class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideRegion(): String {

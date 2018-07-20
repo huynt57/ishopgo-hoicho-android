@@ -39,10 +39,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.*
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -660,7 +657,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopPhone(): CharSequence {
-                    return from.booth?.hotline ?: ""
+                    return from.booth?.hotline?.asStylePhoneNumber()?.asHtml() ?: ""
                 }
 
                 override fun provideProductLikeCount(): Int {

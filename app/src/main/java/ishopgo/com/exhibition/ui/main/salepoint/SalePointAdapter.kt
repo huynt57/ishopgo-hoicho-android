@@ -8,7 +8,9 @@ import ishopgo.com.exhibition.model.SalePoint
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_list_sale_point.view.*
 
 class SalePointAdapter : ClickableAdapter<SalePoint>() {
@@ -37,7 +39,7 @@ class SalePointAdapter : ClickableAdapter<SalePoint>() {
             val convert = converter.convert(data)
             itemView.apply {
                 tv_sale_point_product_name.text = convert.provideProductName()
-                tv_sale_point_product_phone.text = convert.providePhone()
+                tv_sale_point_product_phone.text = convert.providePhone().asHtml()
                 tv_sale_point_product_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.providePhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -100,7 +102,7 @@ class SalePointAdapter : ClickableAdapter<SalePoint>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideAddress(): String {

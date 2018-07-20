@@ -10,10 +10,17 @@ import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_member_administrator.view.*
 
 
 class AdministratorAdapter : ClickableAdapter<Administrator>() {
+
+    companion object {
+        const val CLICK_MORE = 0
+        const val CLICK_USER_INFOR = 1
+    }
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_member_administrator
@@ -26,7 +33,8 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
     override fun onBindViewHolder(holder: ViewHolder<Administrator>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.img_more.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.img_more.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_MORE) }
+            itemView.view_name.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_USER_INFOR) }
         }
     }
 
@@ -45,7 +53,7 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
                                 .error(R.drawable.avatar_placeholder)
                         ).into(view_avatar)
                 view_name.text = convert.provideName()
-                view_phone.text = convert.providePhone()
+                view_phone.text = convert.providePhone().asHtml()
                 view_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.providePhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -66,7 +74,7 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
         override fun convert(from: Administrator): AdministratorProvider {
             return object : AdministratorProvider {
                 override fun providePhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideAvatar(): String {

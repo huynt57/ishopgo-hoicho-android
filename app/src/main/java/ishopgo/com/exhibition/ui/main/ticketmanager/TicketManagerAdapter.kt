@@ -9,6 +9,8 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_ticket_manager.view.*
 import net.glxn.qrgen.android.QRCode
 
@@ -42,7 +44,7 @@ class TicketManagerAdapter : ClickableAdapter<Ticket>() {
                 tv_ticket_name.text = convert.provideBoothName()
                 tv_ticket_address.text = convert.provideTicketAddress()
                 tv_ticket_datescan.text = convert.provideDateScan()
-                tv_ticket_phone.text = convert.provideBoothPhone()
+                tv_ticket_phone.text = convert.provideBoothPhone().asHtml()
                 tv_ticket_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.provideBoothPhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -82,7 +84,7 @@ class TicketManagerAdapter : ClickableAdapter<Ticket>() {
                 }
 
                 override fun provideBoothPhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideDateScan(): String {

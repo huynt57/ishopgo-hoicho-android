@@ -24,6 +24,7 @@ import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import ishopgo.com.exhibition.ui.main.profile.edit.ProfileEditActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -148,7 +149,7 @@ class ProfileFragment : BaseFragment() {
                 }
 
                 override fun providePhone(): CharSequence {
-                    return "Số điện thoại: <b>${from.phone ?: ""}</b>"
+                    return "Số điện thoại: <b>${from.phone?.asStylePhoneNumber() ?: ""}</b>"
                 }
 
                 override fun provideAvatar(): String {

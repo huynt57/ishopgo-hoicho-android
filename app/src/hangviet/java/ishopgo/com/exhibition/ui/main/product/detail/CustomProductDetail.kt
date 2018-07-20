@@ -13,12 +13,13 @@ class CustomProductDetail : ProductDetailOverwrite() {
 
     }
 
-    override fun handleActivityCreated(viewModel: ProductDetailViewModel, fragment: BaseFragment) {
+    override fun handleActivityCreated(rootView: View, viewModel: ProductDetailViewModel, fragment: BaseFragment) {
 
     }
 
     override fun handleViewCreated(rootView: View, context: Context, fragment: BaseFragment) {
 
     }
+
 
 }

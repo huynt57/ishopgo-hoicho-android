@@ -8,6 +8,8 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asColor
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_shop_location.view.*
 
 /**
@@ -75,7 +77,8 @@ class ExpoBoothAdapter : ClickableAdapter<BoothManager>() {
                 }
 
                 override fun provideRegion(): CharSequence {
-                    return "${from.phone ?: 0} - ${from.region ?: ""}"
+                    return "${from.phone?.asStylePhoneNumber()?.asHtml() ?: 0} - ${from.region
+                            ?: ""}"
                 }
 
             }

@@ -10,6 +10,8 @@ import ishopgo.com.exhibition.model.member.MemberManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_member_manager.view.*
 
 class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
@@ -46,7 +48,7 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(img_member_avatar)
                 tv_member_manager_name.text = convert.provideName()
-                tv_member_manager_phone.text = convert.providePhone()
+                tv_member_manager_phone.text = convert.providePhone().asHtml()
                 tv_member_manager_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.providePhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -81,7 +83,7 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideEmail(): String {

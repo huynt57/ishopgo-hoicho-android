@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.model.Provider
 
 class ProductManagerDetail : IdentityData() {
     @SerializedName("title")
@@ -13,7 +12,7 @@ class ProductManagerDetail : IdentityData() {
     var title: String? = null
     @SerializedName("provider_price")
     @Expose
-    var providerPrice: Long? = null
+    var providerPrice: Any? = null
     @SerializedName("dvt")
     @Expose
     var dvt: String? = null
@@ -23,89 +22,91 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("tags")
     @Expose
     var tags: String? = null
+    @SerializedName("is_featured")
+    @Expose
+    var isFeatured: Int? = null
     @SerializedName("status")
     @Expose
     var status: Int? = null
-    @SerializedName("ck_mh")
-    @Expose
-    var ckMh: String? = null
-    @SerializedName("ck_bl")
-    @Expose
-    var ckBl: String? = null
     @SerializedName("local_image")
     @Expose
-    var localImage: String? = null
+    var localImage: Any? = null
+    @SerializedName("department_id")
+    @Expose
+    var departmentId: Int? = null
     @SerializedName("name")
     @Expose
     var name: String? = null
     @SerializedName("price")
     @Expose
-    var price: Long? = null
-    @SerializedName("tt_price")
+    var price: Int? = null
+    @SerializedName("promotion_price")
     @Expose
-    var ttPrice: Long? = null
+    var promotionPrice: Int? = null
     @SerializedName("description")
     @Expose
     var description: String? = null
+    @SerializedName("meta")
+    @Expose
+    var meta: List<Any>? = null
     @SerializedName("meta_detail")
     @Expose
     var metaDetail: Any? = null
-    @SerializedName("meta_description")
-    @Expose
-    var metaDescription: String? = null
     @SerializedName("code")
     @Expose
     var code: String? = null
     @SerializedName("parent_id")
     @Expose
-    var parentId: Long? = null
+    var parentId: Int? = null
     @SerializedName("collection_id")
     @Expose
     var collectionId: Int? = null
-    @SerializedName("collection_products")
+    @SerializedName("provider_id")
     @Expose
-    var collectionProducts: ProductRelated? = null
-    @SerializedName("provider_account")
+    var providerId: Long? = null
+    @SerializedName("meta_description")
     @Expose
-    var providerAccount: Provider? = null
-    @SerializedName("images")
-    @Expose
-    var images: List<String>? = null
-    @SerializedName("department")
-    @Expose
-    var departments: Brand? = null
-    @SerializedName("categories")
-    @Expose
-    var categories: MutableList<Category>? = null
-    @SerializedName("relate")
-    @Expose
-    var relate: List<Any>? = null
-    @SerializedName("link")
-    @Expose
-    var link: String? = null
-    @SerializedName("link_share")
-    @Expose
-    var linkShare: String? = null
-    @SerializedName("is_featured")
-    @Expose
-    var is_featured: Int = 0
+    var metaDescription: String? = null
     @SerializedName("wholesale_price_from")
     @Expose
-    var wholesalePriceFrom: Long = 0
+    var wholesalePriceFrom: Any? = null
     @SerializedName("wholesale_price_to")
     @Expose
-    var wholesalePriceTo: Long = 0
+    var wholesalePriceTo: Any? = null
     @SerializedName("wholesale_count_product")
     @Expose
-    var wholesaleCountProduct: Int = 0
+    var wholesaleCountProduct: String? = null
     @SerializedName("view_wholesale")
     @Expose
     var viewWholesale: Int? = null
+    @SerializedName("collection_products")
+    @Expose
+    var collectionProducts: ProductRelated? = null
+    @SerializedName("images")
+    @Expose
+    var images: List<String>? = null
+    @SerializedName("relate")
+    @Expose
+    var relate: List<Any>? = null
+    @SerializedName("department")
+    @Expose
+    var department: Brand? = null
+    @SerializedName("link")
+    @Expose
+    var link: String? = null
     @SerializedName("provider_name")
     @Expose
     var providerName: String? = null
-    @SerializedName("provider_id")
+    @SerializedName("provider_phone")
     @Expose
-    var providerId: Long = 0L
-
+    var providerPhone: String? = null
+    @SerializedName("categories")
+    @Expose
+    var categories: MutableList<Category>? = null
+    @SerializedName("link_affiliate")
+    @Expose
+    var linkAffiliate: String? = null
+    @SerializedName("shop_id")
+    @Expose
+    var shopId: Int? = null
 }

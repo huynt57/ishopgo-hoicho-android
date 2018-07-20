@@ -85,6 +85,11 @@ fun Long.asMoney(): String {
     return formatted + " đ"
 }
 
+fun String.asStylePhoneNumber(): String {
+    val phoneNumber = "<u><font color=\"#ff3d00\">$this<font></u>"
+    return phoneNumber
+}
+
 fun Long.asNumber(): String? {
     var i = 3
     var sec = this

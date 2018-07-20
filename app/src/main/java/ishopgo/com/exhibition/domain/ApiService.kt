@@ -435,9 +435,6 @@ class ApiService {
         @DELETE("delete-members/{id}")
         fun deleteMember(@Path("id") member_id: Long): Single<BaseResponse<Any>>
 
-        @GET("brands")
-        fun getBrand(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Brand>>>
-
         @POST("update-brands/{id}")
         fun updateBrand(@Path("id") brand_id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 

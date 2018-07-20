@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.fragment_ticket_account.*
 import net.glxn.qrgen.android.QRCode
 
@@ -101,7 +102,8 @@ class TicketFragment : BaseFragment() {
                 }
 
                 override fun providePhone(): Spanned {
-                    return "Số điện thoại: <b>${from.phone ?: ""}</b>".asHtml()
+                    return "Số điện thoại: <b>${from.phone?.asStylePhoneNumber()
+                            ?: ""}</b>".asHtml()
                 }
 
                 override fun provideAddress(): Spanned {

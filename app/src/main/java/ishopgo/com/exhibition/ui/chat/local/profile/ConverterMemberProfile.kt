@@ -4,6 +4,7 @@ import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 
 /**
  * Created by xuanhong on 6/15/18. HappyCoding!
@@ -25,7 +26,7 @@ class ConverterMemberProfile : Converter<Profile, UserInfoProvider> {
 
             override fun info(): CharSequence {
                 val builder = StringBuilder()
-                builder.append("Số điện thoại: <b>${from.phone ?: ""}</b>")
+                builder.append("Số điện thoại: <b>${from.phone?.asStylePhoneNumber() ?: ""}</b>")
                 builder.append("<br>")
                 builder.append("Email: <b>${from.email ?: ""}</b>")
                 builder.append("<br>")

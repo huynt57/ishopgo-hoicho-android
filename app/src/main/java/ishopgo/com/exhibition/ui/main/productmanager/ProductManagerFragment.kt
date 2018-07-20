@@ -15,6 +15,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
@@ -88,7 +89,17 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
                 when (code) {
                     ProductManagerAdapter.CLICK_OPTION -> {
                         val options = mutableListOf<OptionsBottomSheet.Option>()
-                        options.add(OptionsBottomSheet.Option("Sửa", R.drawable.ic_edit_default_24dp))
+
+                        if (UserDataManager.currentType == "Quản trị viên" || UserDataManager.currentType == "Nhân viên gian hàng") {
+                            val listPermission = Const.listPermission
+
+                            if (listPermission.isNotEmpty()) {
+                                for (i in listPermission.indices)
+                                    if (Const.Permission.EDIT_PRODUCT == listPermission[i]) {
+                                        options.add(OptionsBottomSheet.Option("Sửa", R.drawable.ic_edit_default_24dp))
+                                    }
+                            }
+                        }
                         if (data.status == 0) // do not display
                             options.add(OptionsBottomSheet.Option("Hiện", R.drawable.ic_visibility_default_24dp))
                         else

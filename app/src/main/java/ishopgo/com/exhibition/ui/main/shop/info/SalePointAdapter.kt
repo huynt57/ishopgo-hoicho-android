@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 /**
@@ -44,7 +45,7 @@ class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
                 tv_product_sale_point_name.text = convert.provideName()
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_price.text = convert.provideCountProduct()
-                tv_product_sale_point_phone.text = convert.providePhone()
+                tv_product_sale_point_phone.text = convert.providePhone().asHtml()
                 tv_product_sale_point_phone.setOnClickListener {
                     val uri = Uri.parse("tel:${convert.providePhone()}")
                     val i = Intent(Intent.ACTION_DIAL, uri)
@@ -67,8 +68,8 @@ class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
         override fun convert(from: SearchSalePoint): SearchSalePointProvider {
             return object : SearchSalePointProvider {
                 override fun provideAddress(): Spanned {
-                    return "${from.address ?: ""}, ${from.district ?: ""}, ${from.city
-                            ?: ""}".asHtml()
+                    return "${from.address?.trim() ?: ""}, ${from.district?.trim()
+                            ?: ""}, ${from.city?.trim() ?: ""}.".asHtml()
                 }
 
                 override fun provideName(): Spanned {
@@ -76,7 +77,7 @@ class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
                 }
 
                 override fun providePhone(): String {
-                    return from.phone ?: ""
+                    return from.phone?.asStylePhoneNumber() ?: ""
                 }
 
                 override fun provideCountProduct(): String {
