@@ -9,11 +9,10 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
  * Created by xuanhong on 7/13/18. HappyCoding!
  */
 class CustomProductDetail : ProductDetailOverwrite() {
-    override fun handleInOtherFlavor(rootView: View, detail: ProductDetail, fragment: BaseFragment) {
-
+    override fun handleActivityCreated(rootView: View, viewModel: ProductDetailViewModel, fragment: BaseFragment) {
     }
 
-    override fun handleActivityCreated(viewModel: ProductDetailViewModel, fragment: BaseFragment) {
+    override fun handleInOtherFlavor(rootView: View, detail: ProductDetail, fragment: BaseFragment) {
 
     }
 
