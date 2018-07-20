@@ -105,9 +105,9 @@ android {
             resValue "string", "firebase_app_version_ref", "app_variations/android/agri"
             resValue "string", "keyword_store_search", "agri%20360%20ishopgo"
 
-            resValue "string", "facebook_app_id", "1717430191705121"
-            resValue "string", "fb_login_protocol_scheme", "fb1717430191705121"
-            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1717430191705121"
+            resValue "string", "facebook_app_id", "1070981049725521"
+            resValue "string", "fb_login_protocol_scheme", "fb1070981049725521"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1070981049725521"
         }
         vietbuild {
             applicationId "ishopgo.com.vietbuild"
@@ -123,9 +123,9 @@ android {
             resValue "string", "firebase_app_version_ref", "app_variations/android/vietbuild"
             resValue "string", "keyword_store_search", "vietbuild%20ishopgo"
 
-            resValue "string", "facebook_app_id", "222297551727419"
-            resValue "string", "fb_login_protocol_scheme", "fb222297551727419"
-            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider222297551727419"
+            resValue "string", "facebook_app_id", "1859174104148228"
+            resValue "string", "fb_login_protocol_scheme", "fb1859174104148228"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1859174104148228"
         }
 
     }
