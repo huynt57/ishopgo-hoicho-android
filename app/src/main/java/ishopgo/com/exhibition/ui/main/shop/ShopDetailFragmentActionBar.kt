@@ -6,7 +6,6 @@ import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -73,32 +72,33 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
             activity?.onBackPressed()
         }
 
-        if (UserDataManager.currentType == "Chủ hội chợ") {
-            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
-            toolbar.setRightButtonClickListener {
-                val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
-                if (fragment != null) {
-                    val shareFragment = fragment as ShopDetailFragment
-                    shareFragment.deleleBooth()
-                }
-            }
-        } else if (UserDataManager.currentType == "Quản trị viên") {
-            val listPermission = Const.listPermission
-
-            if (listPermission.isNotEmpty())
-                for (i in listPermission.indices)
-                    if (Const.Permission.DELETE_PROVIDER == listPermission[i]) {
-                        toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
-                        toolbar.setRightButtonClickListener {
-                            val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
-                            if (fragment != null) {
-                                val shareFragment = fragment as ShopDetailFragment
-                                shareFragment.deleleBooth()
-                            }
-                        }
-                        break
-                    }
-        }
+        // tam thoi bo xoa gian hang theo yeu cau cua Sep
+//        if (UserDataManager.currentType == "Chủ hội chợ") {
+//            toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
+//            toolbar.setRightButtonClickListener {
+//                val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
+//                if (fragment != null) {
+//                    val shareFragment = fragment as ShopDetailFragment
+//                    shareFragment.deleleBooth()
+//                }
+//            }
+//        } else if (UserDataManager.currentType == "Quản trị viên") {
+//            val listPermission = Const.listPermission
+//
+//            if (listPermission.isNotEmpty())
+//                for (i in listPermission.indices)
+//                    if (Const.Permission.DELETE_PROVIDER == listPermission[i]) {
+//                        toolbar.rightButton(R.drawable.ic_delete_highlight_24dp)
+//                        toolbar.setRightButtonClickListener {
+//                            val fragment = childFragmentManager.findFragmentByTag(ShopDetailFragment.TAG)
+//                            if (fragment != null) {
+//                                val shareFragment = fragment as ShopDetailFragment
+//                                shareFragment.deleleBooth()
+//                            }
+//                        }
+//                        break
+//                    }
+//        }
 
         toolbar.rightButton2(R.drawable.icon_qr_code_highlight_24dp)
         toolbar.setRight2ButtonClickListener {

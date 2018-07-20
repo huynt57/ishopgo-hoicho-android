@@ -46,6 +46,23 @@
             android:text="Xem thêm"
             android:textColor="@color/colorPrimary" />
 
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/label_source_description"
+            style="@style/AppTheme.ShopInfo.Section"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_300"
+            android:text="Mô tả"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recyclerview_source_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="@dimen/item_spacing"
+            tools:listitem="@layout/item_sale_point" />
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -73,23 +90,6 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:padding="@dimen/item_spacing"
-            tools:listitem="@layout/item_sale_point" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/label_source_description"
-            style="@style/AppTheme.ShopInfo.Section"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/md_grey_300"
-            android:text="Mô tả"
-            android:textStyle="bold" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/view_recyclerview_source_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
