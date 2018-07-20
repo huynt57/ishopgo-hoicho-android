@@ -558,7 +558,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 override fun provideScale(): CharSequence {
                     return if (from.quyMo.isNullOrBlank()) ""
-                    else "<b>Quy mô: <font color=\"red\">${from.quyMo}</font></b>".asHtml()
+                    else "<b>Quy mô sản xuất: <font color=\"red\">${from.quyMo}</font></b>".asHtml()
                 }
 
                 override fun provideNumberExpected(): CharSequence {
