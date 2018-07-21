@@ -163,8 +163,8 @@ dependencies {
     implementation "com.android.support:support-emoji:$project.ext.supportLibrary"
     implementation "com.android.support:customtabs:$project.ext.supportLibrary"
     implementation "com.android.support.constraint:constraint-layout:1.1.2"
-    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha02'
-    implementation 'android.arch.navigation:navigation-ui:1.0.0-alpha02'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0-alpha03'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0-alpha03'
 
     implementation "com.google.firebase:firebase-messaging:17.0.0"
     implementation "com.google.firebase:firebase-database:16.0.1"
