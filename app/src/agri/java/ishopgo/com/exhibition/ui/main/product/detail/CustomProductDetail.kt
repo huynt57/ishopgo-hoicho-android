@@ -128,34 +128,32 @@ class CustomProductDetail : ProductDetailOverwrite() {
 
             productId = detail.id
 
-            if (detail.isNhatkySx == 1) {
-                container_diary.visibility = View.VISIBLE
+            container_diary.visibility = View.VISIBLE
 
-                if (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == detail.booth?.id) {
-                    val listPermission = Const.listPermission
-                    if (listPermission.isNotEmpty())
-                        for (i in listPermission.indices)
-                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
-                                view_add_diary.visibility = View.VISIBLE
-                                break
-                            }
-                } else if (UserDataManager.currentUserId == detail.booth?.id)
-                    view_add_diary.visibility = View.VISIBLE
-                else view_add_diary.visibility = View.GONE
+            if (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == detail.booth?.id) {
+                val listPermission = Const.listPermission
+                if (listPermission.isNotEmpty())
+                    for (i in listPermission.indices)
+                        if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+                            view_add_diary.visibility = View.VISIBLE
+                            break
+                        }
+            } else if (UserDataManager.currentUserId == detail.booth?.id)
+                view_add_diary.visibility = View.VISIBLE
+            else view_add_diary.visibility = View.GONE
 
-                firstLoadDiary()
+            firstLoadDiary()
 
-                view_add_diary.setOnClickListener {
-                    val extra = Bundle()
-                    extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(detail))
-                    Navigation.findNavController(fragment.requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragment, extra)
-                }
-                view_product_show_more_diary.setOnClickListener {
-                    val extra = Bundle()
-                    extra.putLong(Const.TransferKey.EXTRA_ID, detail.id)
-                    Navigation.findNavController(fragment.requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryFragment, extra)
-                }
-            } else container_diary.visibility = View.GONE
+            view_add_diary.setOnClickListener {
+                val extra = Bundle()
+                extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(detail))
+                Navigation.findNavController(fragment.requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragment, extra)
+            }
+            view_product_show_more_diary.setOnClickListener {
+                val extra = Bundle()
+                extra.putLong(Const.TransferKey.EXTRA_ID, detail.id)
+                Navigation.findNavController(fragment.requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryFragment, extra)
+            }
 
             var count = 1
             for (i in listInfo.indices) {

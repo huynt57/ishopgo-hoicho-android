@@ -187,7 +187,8 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         filterViewModel.getDataFilter.observe(this, Observer { p ->
             p?.let {
-                val count = (it.filter?.size ?: 0) + 1
+                val count = (it.filter?.size
+                        ?: 0) + if (it.sort_by?.isNotEmpty() == true && it.sort_type?.isNotEmpty() == true) 1 else 0
                 toolbar.rightButton(R.drawable.ic_filter_24dp, count)
 
                 filterProduct = it
