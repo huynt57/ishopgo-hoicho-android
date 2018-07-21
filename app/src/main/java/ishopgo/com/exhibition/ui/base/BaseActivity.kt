@@ -145,7 +145,8 @@ open class BaseActivity : AppCompatActivity() {
                 builder.cancelable(false)
             }
 
-            builder.show()
+            if (hasWindowFocus())
+                builder.show()
         }, 1500)
     }
 
