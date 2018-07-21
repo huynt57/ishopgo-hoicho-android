@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.shop.relate
+package ishopgo.com.exhibition.ui.main.shop.info
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -9,8 +9,6 @@ import ishopgo.com.exhibition.domain.response.BoothRelate
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_shop_relate.view.*
 
 /**
@@ -44,7 +42,7 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
             itemView.apply {
                 Glide.with(context)
                         .load(convert.provideAvatar())
-                        .apply(RequestOptions.circleCropTransform()
+                        .apply(RequestOptions()
                                 .placeholder(R.drawable.avatar_placeholder)
                                 .error(R.drawable.avatar_placeholder))
                         .into(view_avatar)

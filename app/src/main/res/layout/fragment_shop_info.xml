@@ -53,6 +53,8 @@
             android:layout_height="match_parent"
             android:background="@color/md_grey_300"
             android:text="Mô tả"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:textStyle="bold" />
 
         <android.support.v7.widget.RecyclerView
@@ -60,11 +62,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:padding="@dimen/item_spacing"
             tools:listitem="@layout/item_sale_point" />
 
-        <RelativeLayout
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/label_relates_booth"
+            style="@style/AppTheme.ShopInfo.Section"
             android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_300"
+            android:text="Đơn vị liên quan"
+            tools:visibility="visible"
+            android:visibility="gone"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/view_recyclerview_relates_booth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:padding="@dimen/item_spacing"
+            tools:visibility="visible"
+            android:visibility="gone"
+            tools:listitem="@layout/item_sale_point" />
+
+        <RelativeLayout
+            android:id="@+id/label_sale_point"
+            android:layout_width="match_parent"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:layout_height="wrap_content">
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -73,7 +101,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/md_grey_300"
-                android:text="Điểm bán"
+                android:text="Điểm bán lẻ"
                 android:textStyle="bold" />
 
             <ImageView
@@ -93,6 +121,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
+            tools:visibility="visible"
+            android:visibility="gone"
             android:padding="@dimen/item_spacing"
             tools:listitem="@layout/item_sale_point" />
 

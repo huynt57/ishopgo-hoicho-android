@@ -528,7 +528,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideShopLabel(): CharSequence {
-                    return from.booth?.title ?: "Gian hàng trưng bày"
+                    return if (from.booth?.title.isNullOrEmpty())
+                        "Gian hàng trưng bày"
+                    else from.booth?.title!!
                 }
 
                 override fun provideMadeIn(): CharSequence {

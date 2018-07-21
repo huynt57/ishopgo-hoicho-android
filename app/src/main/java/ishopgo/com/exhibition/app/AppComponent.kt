@@ -34,9 +34,9 @@ import ishopgo.com.exhibition.ui.main.home.introduction.IntroductionViewModel
 import ishopgo.com.exhibition.ui.main.home.post.post.PostMenuViewModel
 import ishopgo.com.exhibition.ui.main.home.post.question.QuestionMenuViewModel
 import ishopgo.com.exhibition.ui.main.home.search.SearchViewModel
+import ishopgo.com.exhibition.ui.main.home.search.brands.SearchBrandsViewModel
 import ishopgo.com.exhibition.ui.main.home.search.community.SearchCommunityViewModel
 import ishopgo.com.exhibition.ui.main.home.search.product.SearchProductViewModel
-import ishopgo.com.exhibition.ui.main.home.search.brands.SearchBrandsViewModel
 import ishopgo.com.exhibition.ui.main.home.search.sale_point.SearchSalePointViewModel
 import ishopgo.com.exhibition.ui.main.home.search.shop.SearchShopsViewModel
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
@@ -71,7 +71,6 @@ import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
 import ishopgo.com.exhibition.ui.main.shop.news.NewsViewModel
 import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
-import ishopgo.com.exhibition.ui.main.shop.relate.RelateShopViewModel
 import ishopgo.com.exhibition.ui.main.ticket.TicketViewModel
 import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerViewModel
 import ishopgo.com.exhibition.ui.main.visitors.VisitorsViewModel
@@ -167,7 +166,6 @@ interface AppComponent {
     fun inject(promotionProductsViewModel: PromotionProductsViewModel)
     fun inject(newestProductsViewModel: NewestProductsViewModel)
     fun inject(filterProductViewModel: FilterProductViewModel)
-    fun inject(relateShopViewModel: RelateShopViewModel)
     fun inject(searchBrandsViewModel: SearchBrandsViewModel)
     fun inject(referencesViewModel: ReferencesViewModel)
 }

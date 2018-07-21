@@ -9,12 +9,13 @@ import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
 import android.text.method.LinkMovementMethod
-import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.ShopRelateRequest
+import ishopgo.com.exhibition.domain.response.BoothRelate
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.domain.response.ShopProcess
 import ishopgo.com.exhibition.model.Const
@@ -28,6 +29,7 @@ import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import kotlinx.android.synthetic.main.content_booth_info.*
 import kotlinx.android.synthetic.main.fragment_shop_info.*
@@ -40,6 +42,7 @@ class ShopInfoFragment : BaseFragment() {
     private lateinit var viewModel: ShopInfoViewModel
     private lateinit var sharedViewModel: ShopDetailViewModel
     private val salePointAdapter = SalePointAdapter()
+    private val relateBoothAdapter = RelateShopAdapter()
     private val shopProcessAdapter = ShopProcessAdapter()
     private var shopId = -1L
 
@@ -82,11 +85,26 @@ class ShopInfoFragment : BaseFragment() {
 
         viewModel.listSalePoint.observe(this, Observer { i ->
             i?.let {
+                label_sale_point.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                view_recyclerview.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 salePointAdapter.replaceAll(it)
             }
         })
 
+        viewModel.shopRelates.observe(viewLifeCycleOwner!!, Observer { r ->
+            r?.let {
+                label_relates_booth.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+                view_recyclerview_relates_booth.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
+
+                relateBoothAdapter.replaceAll(it)
+            }
+        })
+
         viewModel.loadInfo(shopId)
+
+        val relateRequest = ShopRelateRequest()
+        relateRequest.shopId = shopId
+        viewModel.loadShopRelates(relateRequest)
     }
 
     @SuppressLint("SetTextI18n")
@@ -113,10 +131,14 @@ class ShopInfoFragment : BaseFragment() {
 
         view_description.text = convert.provideDescription().asHtml()
         view_description_more.setOnClickListener {
-            view_description.maxLines = Integer.MAX_VALUE
-            view_description_more.visibility = View.GONE
+            val intent = Intent(context, FullDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, convert.provideDescription())
+            startActivity(intent)
         }
 
+        val hasProcess = info.process?.isNotEmpty() ?: false
+        view_recyclerview_source_description.visibility = if (!hasProcess) View.GONE else View.VISIBLE
+        label_source_description.visibility = if (!hasProcess) View.GONE else View.VISIBLE
         shopProcessAdapter.replaceAll(info.process ?: listOf())
 
         sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage(), info)
@@ -283,6 +305,20 @@ class ShopInfoFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        view_recyclerview_relates_booth.adapter = relateBoothAdapter
+        val lm2 = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
+        lm2.isAutoMeasureEnabled = true
+        view_recyclerview_relates_booth.layoutManager = lm2
+        view_recyclerview_relates_booth.isNestedScrollingEnabled = false
+        relateBoothAdapter.listener = object : ClickableAdapter.BaseAdapterAction<BoothRelate> {
+            override fun click(position: Int, data: BoothRelate, code: Int) {
+                val intent = Intent(view.context, ShopDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                startActivity(intent)
+            }
+
+        }
 
         view_recyclerview.adapter = salePointAdapter
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)

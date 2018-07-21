@@ -26,7 +26,6 @@ import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
 import ishopgo.com.exhibition.ui.main.shop.news.NewsFragment
 import ishopgo.com.exhibition.ui.main.shop.rate.RateFragment
-import ishopgo.com.exhibition.ui.main.shop.relate.RelateShopFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_shop_detail.*
 
@@ -58,7 +57,7 @@ class ShopDetailFragment : BaseFragment() {
 
         adapter = DetailAdapter(childFragmentManager)
         view_pager.adapter = adapter
-        view_pager.offscreenPageLimit = 5
+        view_pager.offscreenPageLimit = 4
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
     }
@@ -210,7 +209,7 @@ class ShopDetailFragment : BaseFragment() {
         startActivity(intent)
     }
 
-    inner class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 5) {
+    inner class DetailAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -224,9 +223,6 @@ class ShopDetailFragment : BaseFragment() {
                 }
                 3 -> {
                     RateFragment.newInstance(arguments ?: Bundle())
-                }
-                4 -> {
-                    RelateShopFragment.newInstance(arguments ?: Bundle())
                 }
                 else -> {
                     Fragment()
