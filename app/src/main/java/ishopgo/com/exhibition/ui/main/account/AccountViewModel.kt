@@ -85,8 +85,8 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             if (listPermission.isNotEmpty()) {
                 for (i in listPermission.indices) {
-                    if (Const.Permission.CARE_CUSTOMER == listPermission[i]) {
-                        items.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng quan tâm"))
+                    if (Const.Permission.EXPO_BOOTH_CUSTOMER == listPermission[i]) {
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng quan tâm"))
                         break
                     }
                 }
@@ -106,7 +106,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }
 
                 for (i in listPermission.indices) {
-                    if (Const.Permission.EXPO_BOOTH_CUSTOMER == listPermission[i]) {
+                    if (Const.Permission.EXPO_BOOTH_SALE_POINT == listPermission[i]) {
                         items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_store_white, "Quản lý điểm bán"))
                         break
                     }
@@ -135,6 +135,13 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             val listPermission = Const.listPermission
 
             if (listPermission.isNotEmpty()) {
+                for (i in listPermission.indices) {
+                    if (Const.Permission.EXPO_BOOTH_CUSTOMER == listPermission[i]) {
+                        itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_VISITORS, R.drawable.ic_shop_customer_white, "Khách hàng quan tâm"))
+                        break
+                    }
+                }
+
                 for (i in listPermission.indices) {
                     if (Const.Permission.MANAGER_MEMBER == listPermission[i]) {
                         itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_MEMBER_MANAGER, R.drawable.ic_customer_white, "Quản lý thành viên"))
@@ -171,7 +178,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }
 
                 for (i in listPermission.indices) {
-                    if (Const.Permission.EXPO_BOOTH_CUSTOMER == listPermission[i]) {
+                    if (Const.Permission.EXPO_BOOTH_SALE_POINT == listPermission[i]) {
                         itemsAdmninistrator.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_store_white, "Quản lý điểm bán"))
                         break
                     }

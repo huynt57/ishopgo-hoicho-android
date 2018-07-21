@@ -122,8 +122,7 @@
                 android:id="@+id/view_tab_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                style="@style/AppTheme.SinglelineTab"
-                >
+                style="@style/AppTheme.SinglelineTab">
 
                 <android.support.design.widget.TabItem
                     android:id="@+id/tab_shop_info"

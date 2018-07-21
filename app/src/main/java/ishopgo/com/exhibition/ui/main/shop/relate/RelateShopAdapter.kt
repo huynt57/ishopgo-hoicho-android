@@ -9,6 +9,8 @@ import ishopgo.com.exhibition.domain.response.BoothRelate
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_shop_relate.view.*
 
 /**

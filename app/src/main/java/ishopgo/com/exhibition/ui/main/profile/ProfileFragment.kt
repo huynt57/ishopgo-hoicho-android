@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
+import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.main.profile.edit.ProfileEditActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -108,7 +110,8 @@ class ProfileFragment : BaseFragment() {
             builder.append("<br>")
             builder.append("${convert.provideIntroduction()}")
 
-            tv_profile_info.text = builder.toString().asHtml()
+            tv_profile_info.text = builder.toString().asHtml().setPhone(profile.phone ?: "")
+            tv_profile_info.movementMethod = LinkMovementMethod.getInstance()
 
         }
 

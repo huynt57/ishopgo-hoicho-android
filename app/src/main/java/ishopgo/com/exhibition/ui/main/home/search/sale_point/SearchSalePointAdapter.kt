@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.home.search.sale_point
 import android.content.Intent
 import android.net.Uri
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
@@ -11,6 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRatio: Float = -1F) : ClickableAdapter<SearchSalePoint>() {
@@ -23,15 +25,15 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<SearchSalePoint> {
-            val salePointHolder = SalePointHolder(v, SearchSalePointConverter())
-            val layoutParams = salePointHolder.itemView.layoutParams
+        val salePointHolder = SalePointHolder(v, SearchSalePointConverter())
+        val layoutParams = salePointHolder.itemView.layoutParams
 
-            if (itemWidthRatio > 0)
-                layoutParams.width = (screenWidth * itemWidthRatio).toInt()
-            if (itemHeightRatio > 0)
-                layoutParams.height = (screenHeight * itemHeightRatio).toInt()
+        if (itemWidthRatio > 0)
+            layoutParams.width = (screenWidth * itemWidthRatio).toInt()
+        if (itemHeightRatio > 0)
+            layoutParams.height = (screenHeight * itemHeightRatio).toInt()
 
-            return salePointHolder
+        return salePointHolder
     }
 
     override fun onBindViewHolder(holder: ViewHolder<SearchSalePoint>, position: Int) {
@@ -55,12 +57,8 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 tv_product_sale_point_name.text = convert.provideName()
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_price.text = convert.provideCountProduct()
-                tv_product_sale_point_phone.text = convert.providePhone()
-                tv_product_sale_point_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.providePhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                tv_product_sale_point_phone.text = convert.providePhone().setPhone(data.phone ?: "")
+                tv_product_sale_point_phone.movementMethod = LinkMovementMethod.getInstance()
             }
         }
     }
@@ -77,8 +75,8 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
         override fun convert(from: SearchSalePoint): SearchSalePointProvider {
             return object : SearchSalePointProvider {
                 override fun provideAddress(): Spanned {
-                    return "${from.address ?: ""}, ${from.district ?: ""}, ${from.city
-                            ?: ""}".asHtml()
+                    return "${from.address?.trim() ?: ""}, ${from.district?.trim()
+                            ?: ""}, ${from.city?.trim() ?: ""}.".asHtml()
                 }
 
                 override fun provideName(): Spanned {

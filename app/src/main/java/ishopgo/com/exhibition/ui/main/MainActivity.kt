@@ -12,6 +12,7 @@ import android.util.Log
 import android.widget.Toast
 import ishopgo.com.exhibition.domain.response.PusherChatMessage
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 
@@ -70,6 +71,9 @@ class MainActivity : BaseSingleFragmentActivity() {
 
         mainViewModel = obtainViewModel(MainViewModel::class.java)
 
+        if (UserDataManager.currentType == "Quản trị viên" || UserDataManager.currentType == "Nhân viên gian hàng") {
+            mainViewModel.loadPermission()
+        }
     }
 
     override fun createFragment(startupOption: Bundle): Fragment {

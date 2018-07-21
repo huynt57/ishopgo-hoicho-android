@@ -1,15 +1,20 @@
 package ishopgo.com.exhibition.ui.extensions
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface.BOLD
+import android.net.Uri
 import android.os.Build
-import android.text.Editable
-import android.text.Html
-import android.text.Spanned
-import android.text.TextWatcher
+import android.text.*
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
+import android.text.style.UnderlineSpan
 import android.util.TypedValue
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
@@ -17,6 +22,11 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.NumberFormat
 import java.util.*
+import android.widget.Toast
+import com.facebook.FacebookSdk.getApplicationContext
+import android.text.style.ClickableSpan
+
+
 
 
 /**
@@ -83,6 +93,33 @@ fun Long.asMoney(): String {
     val numberFormat = NumberFormat.getIntegerInstance(Locale("vi"))
     val formatted = numberFormat.format(this)
     return formatted + " đ"
+}
+
+fun CharSequence.setPhone(phoneNumber: String): CharSequence {
+    val spannable = SpannableString(this)
+    if (this.isNotEmpty()) {
+        val positionStart = this.indexOf(phoneNumber.substring(0))
+        val positionEnd = this.indexOf(phoneNumber.substring(0)) + (phoneNumber.length)
+        spannable.setSpan(
+                ForegroundColorSpan(Color.RED),
+                positionStart, positionEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(
+                UnderlineSpan(),
+                positionStart, positionEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(view: View) {
+                //what happens whe i click
+                val uri = Uri.parse("tel:$phoneNumber")
+                val i = Intent(Intent.ACTION_DIAL, uri)
+                view.context.startActivity(i)
+            }
+        }
+        spannable.setSpan(clickableSpan,
+                positionStart, positionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+    return spannable
 }
 
 fun Long.asNumber(): String? {

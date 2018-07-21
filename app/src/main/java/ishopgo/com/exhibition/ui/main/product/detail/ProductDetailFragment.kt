@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,10 +40,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.extensions.*
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
@@ -364,12 +362,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
-            tv_shop_phone.text = convert.provideShopPhone()
-            tv_shop_phone.setOnClickListener {
-                val uri = Uri.parse("tel:${convert.provideShopPhone()}")
-                val i = Intent(Intent.ACTION_DIAL, uri)
-                it.context.startActivity(i)
-            }
+            tv_shop_phone.text = convert.provideShopPhone().setPhone(product.booth?.hotline ?: "")
+            tv_shop_phone.movementMethod = LinkMovementMethod.getInstance()
+
             tv_shop_address.text = convert.provideShopAddress()
             view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
             view_shop_call.setOnClickListener { callShop(it.context, product) }

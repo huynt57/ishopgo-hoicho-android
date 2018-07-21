@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.AdministratorRequest
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.administrator.Administrator
@@ -18,6 +17,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.administrator.add.AdministratorAddActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -51,7 +51,14 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Administrator> {
             @SuppressLint("ObsoleteSdkInt")
             override fun click(position: Int, data: Administrator, code: Int) {
-                showSettings(data)
+                when (code) {
+                    CLICK_MORE -> showSettings(data)
+                    CLICK_USER_INFOR -> {
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                        startActivity(intent)
+                    }
+                }
             }
         }
         return adapter
@@ -149,5 +156,8 @@ class AdministratorFragment : BaseListFragment<List<Administrator>, Administrato
 
             return fragment
         }
+
+        const val CLICK_MORE = 0
+        const val CLICK_USER_INFOR = 1
     }
 }

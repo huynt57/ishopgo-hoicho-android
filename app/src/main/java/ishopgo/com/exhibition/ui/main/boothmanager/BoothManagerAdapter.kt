@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.boothmanager
 
 import android.content.Intent
 import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -10,6 +11,8 @@ import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_booth_manager.view.*
 
 class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
@@ -44,12 +47,8 @@ class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
                                 .error(R.drawable.image_placeholder)
                         ).into(img_code)
                 tv_booth_manager_name.text = convert.provideName()
-                tv_booth_manager_phone.text = convert.providePhone()
-                tv_booth_manager_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.providePhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                tv_booth_manager_phone.text = convert.providePhone().setPhone(data.phone ?: "")
+                tv_booth_manager_phone.movementMethod = LinkMovementMethod.getInstance()
                 tv_booth_manager_region.text = convert.provideRegion()
                 tv_booth_manager_number_product.text = convert.provideNumberProduct()
                 tv_booth_manager_member_cnt.text = convert.provideMemberCNT()
@@ -59,7 +58,7 @@ class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
 
     interface BoothManagerProvider {
         fun provideName(): String
-        fun providePhone(): String
+        fun providePhone(): CharSequence
         fun provideRegion(): String
         fun provideNumberProduct(): String
         fun provideMemberCNT(): String
@@ -78,7 +77,7 @@ class BoothManagerAdapter : ClickableAdapter<BoothManager>() {
                     return from.boothName ?: ""
                 }
 
-                override fun providePhone(): String {
+                override fun providePhone(): CharSequence {
                     return from.phone ?: ""
                 }
 

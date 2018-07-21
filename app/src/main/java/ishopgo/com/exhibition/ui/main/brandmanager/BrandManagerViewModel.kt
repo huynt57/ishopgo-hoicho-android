@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.ManagerBrand
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
@@ -32,18 +33,19 @@ class BrandManagerViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
-            addDisposable(isgService.getBrand(fields)
+            addDisposable(isgService.getBrands(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<Brand>>() {
-                        override fun success(data: List<Brand>?) {
-                            dataReturned.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
+                        override fun success(data: ManagerBrand?) {
+                            data?.let {
+                                dataReturned.postValue(it.brand ?: mutableListOf())
+                            }
                         }
 
                         override fun failure(status: Int, message: String) {
                             resolveError(status, message)
                         }
-                    })
-            )
+                    }))
         }
     }
 

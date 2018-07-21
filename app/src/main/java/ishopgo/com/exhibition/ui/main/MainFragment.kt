@@ -144,10 +144,6 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 }
             }
         })
-
-        if (UserDataManager.currentType == "Quản trị viên" || UserDataManager.currentType == "Nhân viên gian hàng") {
-            viewModel.loadPermission()
-        }
     }
 
     override fun onResume() {

@@ -434,7 +434,7 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         if (UserDataManager.currentType == "Chủ hội chợ") {
             til_product_booth.visibility = View.VISIBLE
-            booth_id = info.providerId
+            booth_id = info.providerId ?: -1L
 
         } else {
             booth_id = UserDataManager.currentUserId
@@ -590,7 +590,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun provideTitle(): String
         fun provideDVT(): String
         fun provideCode(): String
-        fun provideTTPrice(): String
         fun provideProviderPrice(): String
         fun providePrice(): String
         fun provideStatus(): Boolean
@@ -599,7 +598,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun provideDescription(): String
         fun provideMetaDescription(): String
         fun provideCollectionProducts(): ProductRelated?
-        fun provideProviderAccount(): Provider?
         fun provideImages(): List<String>
         fun provideDepartments(): Brand?
         fun provideCategory(): List<Category>?
@@ -657,10 +655,6 @@ class ProductManagerDetailFragment : BaseFragment() {
                     return from.code ?: ""
                 }
 
-                override fun provideTTPrice(): String {
-                    return from.ttPrice.toString()
-                }
-
                 override fun provideProviderPrice(): String {
                     return from.providerPrice.toString()
                 }
@@ -693,16 +687,12 @@ class ProductManagerDetailFragment : BaseFragment() {
                     return from.collectionProducts
                 }
 
-                override fun provideProviderAccount(): Provider? {
-                    return from.providerAccount
-                }
-
                 override fun provideImages(): List<String> {
                     return from.images ?: mutableListOf()
                 }
 
                 override fun provideDepartments(): Brand? {
-                    return from.departments
+                    return from.department
                 }
 
                 override fun provideLink(): String {
@@ -714,7 +704,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                     return wasIsFeatured()
                 }
 
-                fun wasIsFeatured() = from.is_featured == IS_FEATURED
+                fun wasIsFeatured() = from.isFeatured == IS_FEATURED
 
             }
         }
