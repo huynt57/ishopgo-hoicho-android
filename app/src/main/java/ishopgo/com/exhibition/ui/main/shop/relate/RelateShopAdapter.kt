@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_shop_relate.view.*
 
 /**
@@ -49,7 +49,7 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(view_avatar)
                 view_name.text = convert.provideName()
-                view_phone.text = convert.providePhone().asStylePhoneNumber().asHtml()
+                view_phone.text = convert.providePhone()
                 view_place.text = convert.providePlace()
             }
         }

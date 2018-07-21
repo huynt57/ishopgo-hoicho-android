@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.shop.info
 import android.content.Intent
 import android.net.Uri
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
@@ -10,7 +11,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 /**
@@ -45,12 +46,8 @@ class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
                 tv_product_sale_point_name.text = convert.provideName()
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_price.text = convert.provideCountProduct()
-                tv_product_sale_point_phone.text = convert.providePhone().asHtml()
-                tv_product_sale_point_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.providePhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                tv_product_sale_point_phone.text = convert.providePhone().setPhone(data.phone ?: "")
+                tv_product_sale_point_phone.movementMethod = LinkMovementMethod.getInstance()
             }
 
         }
@@ -59,7 +56,7 @@ class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
     interface SearchSalePointProvider {
         fun provideAddress(): Spanned
         fun provideName(): Spanned
-        fun providePhone(): String
+        fun providePhone(): CharSequence
         fun provideCountProduct(): String
     }
 
@@ -76,8 +73,8 @@ class SalePointAdapter : ClickableAdapter<SearchSalePoint>() {
                     return "<b>${from.name ?: ""}</b>".asHtml()
                 }
 
-                override fun providePhone(): String {
-                    return from.phone?.asStylePhoneNumber() ?: ""
+                override fun providePhone(): CharSequence {
+                    return from.phone ?: ""
                 }
 
                 override fun provideCountProduct(): String {

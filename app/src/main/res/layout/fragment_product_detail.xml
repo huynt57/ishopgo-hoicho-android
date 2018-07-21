@@ -400,7 +400,7 @@
                             android:id="@+id/tv_shop_phone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:autoLink="phone"
+
                             android:drawablePadding="8dp"
                             android:gravity="center_vertical"
                             android:paddingBottom="4dp"

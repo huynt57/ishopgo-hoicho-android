@@ -1,14 +1,15 @@
 package ishopgo.com.exhibition.ui.chat.local.contact
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_contact.view.*
 
 /**
@@ -35,6 +36,7 @@ class ContactAdapter : ClickableAdapter<ContactProvider>() {
     }
 
     inner class InboxHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<ContactProvider>(v) {
+        @SuppressLint("SetTextI18n")
         override fun populate(data: ContactProvider) {
             super.populate(data)
 
@@ -48,7 +50,9 @@ class ContactAdapter : ClickableAdapter<ContactProvider>() {
                         )
                         .into(view_avatar)
                 view_name.text = data.provideName()
-                view_phone.text = "${data.provideJob()} - ${data.providePhone().asStylePhoneNumber().asHtml()}"
+                view_phone.text = "${data.provideJob()} - ${data.providePhone().setPhone(data.providePhone())}"
+                view_phone.movementMethod = LinkMovementMethod.getInstance()
+
             }
         }
     }

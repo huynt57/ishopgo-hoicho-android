@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.membermanager.deletedmember
 
 import android.content.Intent
 import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_member_manager.view.*
 
 class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
@@ -48,12 +49,8 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(img_member_avatar)
                 tv_member_manager_name.text = convert.provideName()
-                tv_member_manager_phone.text = convert.providePhone().asHtml()
-                tv_member_manager_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.providePhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                tv_member_manager_phone.text = convert.providePhone().setPhone(data.phone ?: "")
+                tv_member_manager_phone.movementMethod = LinkMovementMethod.getInstance()
                 tv_member_manager_region.text = convert.provideRegion()
                 btn_restore.visibility = View.VISIBLE
             }
@@ -63,7 +60,7 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
 
     interface MemberManagerProvider {
         fun provideName(): String
-        fun providePhone(): String
+        fun providePhone(): CharSequence
         fun provideEmail(): String
         fun provideRegion(): String
         fun provideBooth(): String
@@ -82,8 +79,8 @@ class DeletedMemberAdapter : ClickableAdapter<MemberManager>() {
                     return from.name ?: ""
                 }
 
-                override fun providePhone(): String {
-                    return from.phone?.asStylePhoneNumber() ?: ""
+                override fun providePhone(): CharSequence {
+                    return from.phone ?: ""
                 }
 
                 override fun provideEmail(): String {

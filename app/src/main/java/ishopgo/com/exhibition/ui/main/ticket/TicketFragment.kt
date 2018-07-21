@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,7 @@ import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.fragment_ticket_account.*
 import net.glxn.qrgen.android.QRCode
 
@@ -59,12 +60,9 @@ class TicketFragment : BaseFragment() {
         tv_fair.text = converted.provideTicketName()
         tv_user_name.text = converted.provideName()
         tv_user_email.text = converted.provideEmail()
-        tv_user_phone.text = converted.providePhone()
-        tv_user_phone.setOnClickListener {
-            val uri = Uri.parse("tel:${converted.providePhone()}")
-            val i = Intent(Intent.ACTION_DIAL, uri)
-            it.context.startActivity(i)
-        }
+        tv_user_phone.text = converted.providePhone().setPhone(ticket.phone ?: "")
+        tv_user_phone.movementMethod = LinkMovementMethod.getInstance()
+
         tv_ticket_time.text = converted.provideCreateAt()
         tv_ticket_address.text = converted.provideAddress()
         tv_ticket_code.text = converted.provideCode()
@@ -102,7 +100,7 @@ class TicketFragment : BaseFragment() {
                 }
 
                 override fun providePhone(): Spanned {
-                    return "Số điện thoại: <b>${from.phone?.asStylePhoneNumber()
+                    return "Số điện thoại: <b>${from.phone
                             ?: ""}</b>".asHtml()
                 }
 

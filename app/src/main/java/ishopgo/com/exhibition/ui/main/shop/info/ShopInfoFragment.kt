@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
+import android.text.method.LinkMovementMethod
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +24,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
@@ -94,7 +95,10 @@ class ShopInfoFragment : BaseFragment() {
 
         ten_gian_hang.text = "Chủ gian hàng: <b>${convert.provideName()}</b>".asHtml()
 
-        hotline.text = "SĐT: <b>${convert.provideHotline().asStylePhoneNumber()}</b>".asHtml()
+        val phone = "SĐT: <b>${convert.provideHotline()}</b>".asHtml()
+        hotline.text = phone.setPhone(convert.provideHotline())
+        hotline.movementMethod = LinkMovementMethod.getInstance()
+
         hotline.setOnClickListener {
             val uri = Uri.parse("tel:${convert.provideHotline()}")
             val i = Intent(Intent.ACTION_DIAL, uri)

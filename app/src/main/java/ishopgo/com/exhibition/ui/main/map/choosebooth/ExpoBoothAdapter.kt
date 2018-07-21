@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.map.choosebooth
 
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.BoothManager
@@ -9,7 +10,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asColor
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_shop_location.view.*
 
 /**
@@ -46,7 +47,8 @@ class ExpoBoothAdapter : ClickableAdapter<BoothManager>() {
 
                 view_number.text = converted.provideNumber()
                 view_name.text = converted.provideName()
-                view_region.text = converted.provideRegion()
+                view_region.text = converted.provideRegion().setPhone(data.phone ?: "")
+                view_region.movementMethod = LinkMovementMethod.getInstance()
                 view_region.visibility = View.VISIBLE
             }
         }
@@ -77,7 +79,7 @@ class ExpoBoothAdapter : ClickableAdapter<BoothManager>() {
                 }
 
                 override fun provideRegion(): CharSequence {
-                    return "${from.phone?.asStylePhoneNumber()?.asHtml() ?: 0} - ${from.region
+                    return "${from.phone} - ${from.region
                             ?: ""}"
                 }
 

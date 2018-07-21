@@ -12,6 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -209,6 +210,8 @@ class MemberProfileFragment : BaseActionBarFragment() {
 
         view_name.text = info.provideName()
         view_info.text = info.info()
+        view_info.movementMethod = LinkMovementMethod.getInstance()
+
     }
 
     private fun callShop(phoneNumber: String) {

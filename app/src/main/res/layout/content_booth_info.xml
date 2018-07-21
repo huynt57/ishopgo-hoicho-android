@@ -21,7 +21,7 @@
         style="@style/AppTheme.ShopInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="phone"
+
         android:drawablePadding="8dp"
         app:drawableStartCompat="@drawable/icon_phone"
         app:drawableStartSquareSize="18dp"

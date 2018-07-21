@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.product.detail
 import android.content.Intent
 import android.net.Uri
 import android.text.Spanned
+import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.ProductSalePoint
@@ -11,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_product_sale_point.view.*
 
 class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
@@ -40,12 +41,10 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
             itemView.apply {
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_name.text = convert.provideName()
-                tv_product_sale_point_phone.text = convert.providePhone().asHtml()
-                tv_product_sale_point_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.providePhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                tv_product_sale_point_phone.text = convert.providePhone().setPhone(data.phone
+                        ?: "")
+                tv_product_sale_point_phone.movementMethod = LinkMovementMethod.getInstance()
+
                 tv_product_sale_point_price.text = convert.providePrice()
             }
         }
@@ -55,7 +54,7 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
         fun provideName(): Spanned
         fun provideAddress(): String
         fun providePrice(): String
-        fun providePhone(): String
+        fun providePhone(): CharSequence
     }
 
     class ProductSalePointConverter : Converter<ProductSalePoint, ProductSalePointProvider> {
@@ -73,8 +72,8 @@ class ProductSalePointAdapter : ClickableAdapter<ProductSalePoint>() {
                         return from.price?.asMoney() ?: "0 đ"
                 }
 
-                override fun providePhone(): String {
-                    return from.phone?.asStylePhoneNumber() ?: ""
+                override fun providePhone(): CharSequence {
+                    return from.phone ?: ""
                 }
 
                 override fun provideName(): Spanned {

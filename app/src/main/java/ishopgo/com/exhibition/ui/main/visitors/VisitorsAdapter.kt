@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.visitors
 
 import android.content.Intent
 import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,7 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_visitor.view.*
 
 class VisitorsAdapter : ClickableAdapter<Visitor>() {
@@ -46,12 +47,8 @@ class VisitorsAdapter : ClickableAdapter<Visitor>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(view_avatar)
                 view_name.text = convert.provideName()
-                view_phone.text = convert.providePhone()
-                view_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.providePhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                view_phone.text = convert.providePhone().setPhone(data.phone ?: "")
+                view_phone.movementMethod = LinkMovementMethod.getInstance()
                 view_region.text = convert.provideRegion()
             }
         }
@@ -81,7 +78,7 @@ class VisitorsAdapter : ClickableAdapter<Visitor>() {
                 }
 
                 override fun providePhone(): CharSequence {
-                    return from.phone?.asStylePhoneNumber()?.asHtml() ?: ""
+                    return from.phone ?: ""
                 }
 
                 override fun provideEmail(): CharSequence {

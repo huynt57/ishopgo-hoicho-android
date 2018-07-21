@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.ticketmanager
 
 import android.content.Intent
 import android.net.Uri
+import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Ticket
@@ -10,7 +11,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.asStylePhoneNumber
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_ticket_manager.view.*
 import net.glxn.qrgen.android.QRCode
 
@@ -44,12 +45,8 @@ class TicketManagerAdapter : ClickableAdapter<Ticket>() {
                 tv_ticket_name.text = convert.provideBoothName()
                 tv_ticket_address.text = convert.provideTicketAddress()
                 tv_ticket_datescan.text = convert.provideDateScan()
-                tv_ticket_phone.text = convert.provideBoothPhone().asHtml()
-                tv_ticket_phone.setOnClickListener {
-                    val uri = Uri.parse("tel:${convert.provideBoothPhone()}")
-                    val i = Intent(Intent.ACTION_DIAL, uri)
-                    it.context.startActivity(i)
-                }
+                tv_ticket_phone.text = convert.provideBoothPhone().setPhone(data.phone ?: "")
+                tv_ticket_phone.movementMethod = LinkMovementMethod.getInstance()
             }
         }
     }
@@ -63,7 +60,7 @@ class TicketManagerAdapter : ClickableAdapter<Ticket>() {
         fun provideBoothName(): String
         fun provideTicketAddress(): String
         fun provideTicketCode(): String
-        fun provideBoothPhone(): String
+        fun provideBoothPhone(): CharSequence
         fun provideDateScan(): String
     }
 
@@ -83,8 +80,8 @@ class TicketManagerAdapter : ClickableAdapter<Ticket>() {
                     return from.code ?: ""
                 }
 
-                override fun provideBoothPhone(): String {
-                    return from.phone?.asStylePhoneNumber() ?: ""
+                override fun provideBoothPhone(): CharSequence {
+                    return from.phone ?: ""
                 }
 
                 override fun provideDateScan(): String {
