@@ -619,7 +619,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     if (from.price == 0L) {
                         return "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
                     } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
-                        return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
+                        if (from.promotionPrice == 0L) // gia khuyen mai = 0 thi coi nhu ko khuyen mai
+                            return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                        else
+                            return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
                     } else {
                         return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                     }
