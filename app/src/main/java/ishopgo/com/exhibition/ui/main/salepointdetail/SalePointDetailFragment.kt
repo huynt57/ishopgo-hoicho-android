@@ -210,4 +210,8 @@ class SalePointDetailFragment : BaseFragment() {
     fun openQRCode() {
         salePoint?.let { salePointViewModel.showSalePointQRCode(it) }
     }
+
+    fun deleteProduct() {
+
+    }
 }

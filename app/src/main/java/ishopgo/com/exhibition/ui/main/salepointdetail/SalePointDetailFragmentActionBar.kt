@@ -3,10 +3,15 @@ package ishopgo.com.exhibition.ui.main.salepointdetail
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ProductDetail
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class SalePointDetailFragmentActionBar : BaseActionBarFragment() {
+    private var dataProduct: ProductDetail? = null
 
     companion object {
 
@@ -48,6 +53,36 @@ class SalePointDetailFragmentActionBar : BaseActionBarFragment() {
                 shareFragment.openQRCode()
             }
         }
+        if (UserDataManager.currentType == "Nhân viên gian hàng" && (dataProduct != null && UserDataManager.currentBoothId == dataProduct!!.booth?.id)) {
+//            val listPermission = Const.listPermission
+//            if (listPermission.isNotEmpty())
+//                for (i in listPermission.indices)
+//                    if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+//                        toolbar.rightButton2(R.drawable.ic_delete_highlight_24dp)
+//                        toolbar.setRight2ButtonClickListener {
+//                            val fragment = childFragmentManager.findFragmentByTag(SalePointDetailFragment.TAG)
+//                            if (fragment != null) {
+//                                val shareFragment = fragment as SalePointDetailFragment
+//                                shareFragment.deleteProduct()
+//                            }
+//                        }
+//                        break
+//                    }
+        } else if (dataProduct != null && UserDataManager.currentUserId == dataProduct!!.booth?.id) {
+            toolbar.rightButton2(R.drawable.ic_delete_highlight_24dp)
+            toolbar.setRight2ButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(SalePointDetailFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as SalePointDetailFragment
+                    shareFragment.deleteProduct()
+                }
+            }
+        }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        dataProduct = Toolbox.gson.fromJson(json, ProductDetail::class.java)
+    }
 }
