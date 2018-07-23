@@ -1,9 +1,6 @@
 package ishopgo.com.exhibition.ui.main.home.search.sale_point
 
-import android.content.Intent
-import android.net.Uri
 import android.text.Spanned
-import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
@@ -57,8 +54,7 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 tv_product_sale_point_name.text = convert.provideName()
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_price.text = convert.provideCountProduct()
-                tv_product_sale_point_phone.text = convert.providePhone().setPhone(data.phone ?: "")
-                tv_product_sale_point_phone.movementMethod = LinkMovementMethod.getInstance()
+                tv_product_sale_point_price.setPhone(convert.providePhone(), data.phone ?: "")
             }
         }
     }

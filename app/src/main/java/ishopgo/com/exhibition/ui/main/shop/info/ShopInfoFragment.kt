@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v7.widget.LinearLayoutManager
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -114,8 +113,7 @@ class ShopInfoFragment : BaseFragment() {
         ten_gian_hang.text = "Chủ gian hàng: <b>${convert.provideName()}</b>".asHtml()
 
         val phone = "SĐT: <b>${convert.provideHotline()}</b>".asHtml()
-        hotline.text = phone.setPhone(convert.provideHotline())
-        hotline.movementMethod = LinkMovementMethod.getInstance()
+        hotline.setPhone(phone, convert.provideHotline())
 
         hotline.setOnClickListener {
             val uri = Uri.parse("tel:${convert.provideHotline()}")

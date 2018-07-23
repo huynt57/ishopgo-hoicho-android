@@ -1,8 +1,5 @@
 package ishopgo.com.exhibition.ui.main.ticketmanager
 
-import android.content.Intent
-import android.net.Uri
-import android.text.method.LinkMovementMethod
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Ticket
@@ -10,7 +7,6 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
-import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_ticket_manager.view.*
 import net.glxn.qrgen.android.QRCode
@@ -45,8 +41,7 @@ class TicketManagerAdapter : ClickableAdapter<Ticket>() {
                 tv_ticket_name.text = convert.provideBoothName()
                 tv_ticket_address.text = convert.provideTicketAddress()
                 tv_ticket_datescan.text = convert.provideDateScan()
-                tv_ticket_phone.text = convert.provideBoothPhone().setPhone(data.phone ?: "")
-                tv_ticket_phone.movementMethod = LinkMovementMethod.getInstance()
+                tv_ticket_phone.setPhone(convert.provideBoothPhone(), data.phone ?: "")
             }
         }
     }

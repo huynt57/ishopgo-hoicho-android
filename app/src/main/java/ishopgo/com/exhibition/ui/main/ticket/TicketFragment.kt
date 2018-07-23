@@ -1,10 +1,7 @@
 package ishopgo.com.exhibition.ui.main.ticket
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.text.Spanned
-import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,8 +57,7 @@ class TicketFragment : BaseFragment() {
         tv_fair.text = converted.provideTicketName()
         tv_user_name.text = converted.provideName()
         tv_user_email.text = converted.provideEmail()
-        tv_user_phone.text = converted.providePhone().setPhone(ticket.phone ?: "")
-        tv_user_phone.movementMethod = LinkMovementMethod.getInstance()
+        tv_user_phone.setPhone(converted.providePhone(), ticket.phone ?: "")
 
         tv_ticket_time.text = converted.provideCreateAt()
         tv_ticket_address.text = converted.provideAddress()

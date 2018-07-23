@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.administrator
 
-import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -51,8 +50,7 @@ class AdministratorAdapter : ClickableAdapter<Administrator>() {
                                 .error(R.drawable.avatar_placeholder)
                         ).into(view_avatar)
                 view_name.text = convert.provideName()
-                view_phone.text = convert.providePhone().setPhone(data.phone ?: "")
-                view_phone.movementMethod = LinkMovementMethod.getInstance()
+                view_phone.setPhone(convert.providePhone(), data.phone ?: "")
             }
         }
     }

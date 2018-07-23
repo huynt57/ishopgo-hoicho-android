@@ -12,7 +12,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.method.LinkMovementMethod
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
@@ -34,7 +33,6 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareDialog
-import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.SearchCommunityRequest
@@ -48,7 +46,7 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
-import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -209,8 +207,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
                 .into(view_avatar)
 
         view_name.text = info.provideName()
-        view_info.text = info.info()
-        view_info.movementMethod = LinkMovementMethod.getInstance()
+        view_info.setPhone(info.info(), currentProfile.phone ?: "")
 
     }
 

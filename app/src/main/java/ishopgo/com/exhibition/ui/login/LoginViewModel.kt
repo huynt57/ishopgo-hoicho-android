@@ -33,6 +33,9 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<User>() {
                     override fun success(data: User?) {
+                        if (data?.type ?: "" == "Quản trị viên" || data?.type ?: "" == "Nhân viên gian hàng") {
+                            loadPermission()
+                        }
 
                         UserDataManager.accessToken = data?.token ?: ""
                         UserDataManager.currentUserId = data?.id ?: 0
@@ -49,6 +52,23 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    private fun loadPermission() {
+        val fields = mutableMapOf<String, Any>()
+
+        addDisposable(authService.getAccountPermissions(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<String>>() {
+                    override fun success(data: MutableList<String>?) {
+                        Const.listPermission = data ?: mutableListOf()
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String,

@@ -4,7 +4,6 @@ import ishopgo.com.exhibition.model.Profile
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.setPhone
 
 /**
  * Created by xuanhong on 6/15/18. HappyCoding!
@@ -43,7 +42,7 @@ class ConverterMemberProfile : Converter<Profile, UserInfoProvider> {
                 builder.append("Ngày tham gia: <b>${from.createdAt?.asDate() ?: ""}</b>")
                 builder.append("<br>")
                 builder.append("Giới thiệu: <b>${from.introduction ?: ""}</b>")
-                return builder.toString().asHtml().setPhone(from.phone ?: "")
+                return builder.toString().asHtml()
             }
 
         }
