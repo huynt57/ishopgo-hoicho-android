@@ -116,7 +116,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                 }
 
                 override fun hasDiscount(): Boolean {
-                    return from.promotionPrice != null && from.promotionPrice!! < from.price
+                    return from.promotionPrice != null && from.promotionPrice != 0L && from.promotionPrice!! < from.price
                 }
 
                 override fun provideImage(): String {
