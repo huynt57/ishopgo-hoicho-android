@@ -73,7 +73,8 @@ class ViewedProductsFragmentActionBar : BaseActionBarFragment() {
 
         filterViewModel.getDataFilter.observe(this, Observer { c ->
             c?.let {
-                val count = (it.filter?.size ?: 0) + 1
+                val count = (it.filter?.size
+                        ?: 0) + if (it.sort_by?.isNotEmpty() == true && it.sort_type?.isNotEmpty() == true) 1 else 0
                 toolbar.rightButton(R.drawable.ic_filter_highlight_24dp, count)
             }
         })

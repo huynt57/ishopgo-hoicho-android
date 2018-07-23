@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.filterproduct
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
@@ -38,6 +39,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
 
         const val TYPE_FILTER_PROMOTION = 2
         const val TYPE_FILTER_CARE = 1
+        const val TYPE_FILTER_SUPPLY = 3
+        const val TYPE_FILTER_WHOLESALE = 4
         const val SORT_BY_NAME = "name"
         const val SORT_BY_FOLLOW = "follow"
         const val SORT_BY_RATE = "rate"
@@ -60,7 +63,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         super.onViewCreated(view, savedInstanceState)
         setupToolbars()
 
-        if (data != null && data!!.sort_by != null) {
+        if (data != null) {
             val data_sort_type = data!!.sort_type
             val data_sort_by = data!!.sort_by
             val data_filter = data!!.filter
@@ -73,6 +76,12 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
                     }
                     if (data_filter[i] == TYPE_FILTER_CARE) {
                         tv_care.setTextColor(resources.getColor(R.color.colorPrimary))
+                    }
+                    if (data_filter[i] == TYPE_FILTER_SUPPLY) {
+                        tv_supply.setTextColor(resources.getColor(R.color.colorPrimary))
+                    }
+                    if (data_filter[i] == TYPE_FILTER_WHOLESALE) {
+                        tv_wholesale.setTextColor(resources.getColor(R.color.colorPrimary))
                     }
                 }
             }
@@ -102,24 +111,13 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
                 sort_by = SORT_BY_FOLLOW
                 tv_care_high_to_low.setTextColor(resources.getColor(R.color.colorPrimary))
             }
-            if (data_sort_type == SORT_TYPE_ASC && data_sort_by == SORT_BY_FOLLOW) {
-                sort_type = SORT_TYPE_ASC
-                sort_by = SORT_BY_FOLLOW
-                tv_care_low_to_high.setTextColor(resources.getColor(R.color.colorPrimary))
-            }
             if (data_sort_type == SORT_TYPE_DESC && data_sort_by == SORT_BY_RATE) {
                 sort_type = SORT_TYPE_DESC
                 sort_by = SORT_BY_RATE
                 tv_evaluation_high_to_low.setTextColor(resources.getColor(R.color.colorPrimary))
             }
-            if (data_sort_type == SORT_TYPE_ASC && data_sort_by == SORT_BY_RATE) {
-                sort_type = SORT_TYPE_ASC
-                sort_by = SORT_BY_RATE
-                tv_evaluation_low_to_high.setTextColor(resources.getColor(R.color.colorPrimary))
-            }
 
-        } else
-            tv_a_z.setTextColor(resources.getColor(R.color.colorPrimary))
+        }
 
         tv_price_high_to_low.setOnClickListener {
             sort_type = SORT_TYPE_DESC
@@ -146,20 +144,11 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
             sort_by = SORT_BY_FOLLOW
             selectSortType(tv_care_high_to_low)
         }
-        tv_care_low_to_high.setOnClickListener {
-            sort_type = SORT_TYPE_ASC
-            sort_by = SORT_BY_FOLLOW
-            selectSortType(tv_care_low_to_high)
-        }
+
         tv_evaluation_high_to_low.setOnClickListener {
             sort_type = SORT_TYPE_DESC
             sort_by = SORT_BY_RATE
             selectSortType(tv_evaluation_high_to_low)
-        }
-        tv_evaluation_low_to_high.setOnClickListener {
-            sort_type = SORT_TYPE_ASC
-            sort_by = SORT_BY_RATE
-            selectSortType(tv_evaluation_low_to_high)
         }
 
         tv_promotion.setOnClickListener {
@@ -169,6 +158,14 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         tv_care.setOnClickListener {
             type_filter = TYPE_FILTER_CARE
             selectFilterType(tv_care)
+        }
+        tv_supply.setOnClickListener {
+            type_filter = TYPE_FILTER_SUPPLY
+            selectFilterType(tv_supply)
+        }
+        tv_wholesale.setOnClickListener {
+            type_filter = TYPE_FILTER_WHOLESALE
+            selectFilterType(tv_wholesale)
         }
 
         btn_filter.setOnClickListener {
@@ -192,9 +189,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         tv_a_z.setTextColor(resources.getColor(R.color.md_grey_800))
         tv_z_a.setTextColor(resources.getColor(R.color.md_grey_800))
         tv_care_high_to_low.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_care_low_to_high.setTextColor(resources.getColor(R.color.md_grey_800))
         tv_evaluation_high_to_low.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_evaluation_low_to_high.setTextColor(resources.getColor(R.color.md_grey_800))
 
         view.setTextColor(resources.getColor(R.color.colorPrimary))
     }
@@ -204,18 +199,18 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
             listTypeFilter.add(type_filter)
             view.setTextColor(resources.getColor(R.color.colorPrimary))
         } else {
+            var forEnd = false
             for (i in listTypeFilter.indices)
                 if (listTypeFilter[i] == type_filter) {
                     listTypeFilter.remove(type_filter)
                     view.setTextColor(resources.getColor(R.color.md_grey_800))
                     break
-                } else {
-                    if (listTypeFilter.size < 2) {
-                        listTypeFilter.add(type_filter)
-                        view.setTextColor(resources.getColor(R.color.colorPrimary))
-                        break
-                    }
-                }
+                } else if (i == listTypeFilter.size - 1) forEnd = true
+
+            if (forEnd) {
+                listTypeFilter.add(type_filter)
+                view.setTextColor(resources.getColor(R.color.colorPrimary))
+            }
         }
     }
 
