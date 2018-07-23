@@ -7,6 +7,7 @@ import android.graphics.Typeface.BOLD
 import android.net.Uri
 import android.os.Build
 import android.text.*
+import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
@@ -92,7 +93,12 @@ fun String.asDateTime(): String? {
 fun Long.asMoney(): String {
     val numberFormat = NumberFormat.getIntegerInstance(Locale("vi"))
     val formatted = numberFormat.format(this)
-    return formatted + " đ"
+    return "$formatted đ"
+}
+
+fun TextView.setPhone(phone: CharSequence, phoneNumber: String) {
+    this.text = phone.setPhone(phoneNumber)
+    this.movementMethod = LinkMovementMethod.getInstance()
 }
 
 fun CharSequence.setPhone(phoneNumber: String): CharSequence {

@@ -1,8 +1,5 @@
 package ishopgo.com.exhibition.ui.main.membermanager
 
-import android.content.Intent
-import android.net.Uri
-import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,7 +8,6 @@ import ishopgo.com.exhibition.model.member.MemberManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_member_manager.view.*
 
@@ -47,9 +43,7 @@ class MemberManagerAdapter : ClickableAdapter<MemberManager>() {
                                 .error(R.drawable.avatar_placeholder))
                         .into(img_member_avatar)
                 tv_member_manager_name.text = convert.provideName()
-                tv_member_manager_phone.text = convert.providePhone().setPhone(data.phone
-                        ?: "")
-
+                tv_member_manager_phone.setPhone(convert.providePhone(), data.phone ?: "")
                 tv_member_manager_region.text = convert.provideRegion()
             }
         }

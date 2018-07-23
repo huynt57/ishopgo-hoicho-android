@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
-import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
@@ -110,9 +109,7 @@ class ProfileFragment : BaseFragment() {
             builder.append("<br>")
             builder.append("${convert.provideIntroduction()}")
 
-            tv_profile_info.text = builder.toString().asHtml().setPhone(profile.phone ?: "")
-            tv_profile_info.movementMethod = LinkMovementMethod.getInstance()
-
+            tv_profile_info.setPhone(builder.toString().asHtml(), profile.phone ?: "")
         }
 
         chooseProfileOption()

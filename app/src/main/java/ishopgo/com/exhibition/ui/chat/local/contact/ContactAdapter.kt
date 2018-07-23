@@ -2,7 +2,6 @@ package ishopgo.com.exhibition.ui.chat.local.contact
 
 import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
-import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -50,9 +49,7 @@ class ContactAdapter : ClickableAdapter<ContactProvider>() {
                         )
                         .into(view_avatar)
                 view_name.text = data.provideName()
-                view_phone.text = "${data.provideJob()} - ${data.providePhone().setPhone(data.providePhone())}"
-                view_phone.movementMethod = LinkMovementMethod.getInstance()
-
+                view_phone.setPhone("${data.provideJob()} - ${data.providePhone()}", data.providePhone())
             }
         }
     }

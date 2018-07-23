@@ -1,8 +1,5 @@
 package ishopgo.com.exhibition.ui.main.boothfollow
 
-import android.content.Intent
-import android.net.Uri
-import android.text.method.LinkMovementMethod
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -11,7 +8,6 @@ import ishopgo.com.exhibition.model.BoothFollow
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_booth_follow.view.*
 
@@ -47,9 +43,7 @@ class BoothFollowAdapter : ClickableAdapter<BoothFollow>() {
                         ).into(img_code)
                 tv_booth_name.text = convert.provideName()
                 tv_booth_address.text = convert.provideAddress()
-                tv_booth_phone.text = convert.providePhone().setPhone(data.phone ?: "")
-                tv_booth_phone.movementMethod = LinkMovementMethod.getInstance()
-
+                tv_booth_phone.setPhone(convert.providePhone(), data.phone ?: "")
                 tv_booth_number_product.text = convert.provideNumberProduct()
                 tv_booth_member_cnt.text = convert.provideMemberCNT()
             }

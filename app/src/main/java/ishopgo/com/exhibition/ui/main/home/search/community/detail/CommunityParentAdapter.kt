@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.home.search.community.detail
 
 import android.annotation.SuppressLint
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
 import com.bumptech.glide.Glide
@@ -104,6 +105,8 @@ class CommunityParentAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
 
             val convert = converter.convert(data)
             itemView.apply {
+                toggle_community_like.buttonDrawable = AppCompatResources.getDrawable(itemView.context, R.drawable.selector_ic_favorite)
+
                 tv_community_username.text = convert.providerUserName()
                 tv_community_time.text = convert.provideTime()
                 tv_community_content.text = convert.provideContent()
