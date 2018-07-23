@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import android.support.v4.view.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -35,12 +35,12 @@ import kotlinx.android.synthetic.main.fragment_shop_detail.*
 class ShopDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: ShopDetailViewModel
-    private lateinit var adapter: PagerAdapter
+    private lateinit var adapter: DetailAdapter
     private var boothId = -1L
-    private var dataShopDetail = ShopDetail()
+    private var dataShopDetail: ShopDetail? = null
 
     companion object {
-        val TAG = "ShopDetailFragment"
+        const val TAG = "ShopDetailFragment"
         fun newInstance(params: Bundle): ShopDetailFragment {
             val fragment = ShopDetailFragment()
             fragment.arguments = params
@@ -200,7 +200,11 @@ class ShopDetailFragment : BaseFragment() {
     }
 
     fun openQRCodeBooth() {
-        viewModel.showShopDetailQRCode(dataShopDetail)
+        dataShopDetail?.let {
+            val extra = Bundle()
+            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+            Navigation.findNavController(view_pager).navigate(R.id.action_shopDetailFragmentActionBar_to_qrCodeShopFragment, extra)
+        }
     }
 
     private fun openLoginActivity() {

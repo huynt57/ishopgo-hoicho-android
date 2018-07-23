@@ -25,7 +25,7 @@ class SearchBrandsViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
                 fields["name"] = it
             }
 
-            addDisposable(isgService.getBrands(fields)
+            addDisposable(isgService.getAllBrands(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
                         override fun success(data: ManagerBrand?) {

@@ -1,14 +1,17 @@
 package ishopgo.com.exhibition.ui.main.shop
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothActivity
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -41,7 +44,7 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
 
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, ShopDetailFragment.newInstance(arguments
-                        ?: Bundle()), "ShopDetailFragment")
+                        ?: Bundle()), ShopDetailFragment.TAG)
                 .commit()
     }
 
@@ -99,6 +102,14 @@ class ShopDetailFragmentActionBar : BaseActionBarFragment(), BackpressConsumable
 //                        break
 //                    }
 //        }
+
+        val boothId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+        if (UserDataManager.currentType == "Chủ gian hàng" && UserDataManager.currentUserId == boothId)
+        toolbar.rightButton(R.drawable.ic_setting_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val intent = Intent(it.context, ConfigBoothActivity::class.java)
+            it.context.startActivity(intent)
+        }
 
         toolbar.rightButton2(R.drawable.icon_qr_code_highlight_24dp)
         toolbar.setRight2ButtonClickListener {

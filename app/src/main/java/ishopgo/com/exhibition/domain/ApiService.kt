@@ -423,6 +423,9 @@ class ApiService {
         @GET("brands")
         fun getBrands(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerBrand>>
 
+        @GET("expo/all-brands")
+        fun getAllBrands(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerBrand>>
+
         @POST("add-product")
         fun createProductManager(@Body body: RequestBody): Single<BaseResponse<Any>>
 

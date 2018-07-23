@@ -116,9 +116,4 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    var showShopDetailQRCode = MutableLiveData<ShopDetail>()
-
-    fun showShopDetailQRCode(data: ShopDetail) {
-        showShopDetailQRCode.postValue(data)
-    }
 }

@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.configbooth
 
-import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
@@ -24,7 +23,6 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
 
