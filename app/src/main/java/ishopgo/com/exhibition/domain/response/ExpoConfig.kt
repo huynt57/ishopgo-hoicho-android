@@ -42,4 +42,7 @@ class ExpoConfig {
     @SerializedName("count")
     @Expose
     var count: Int? = null
+    @SerializedName("price")
+    @Expose
+    var price: Long? = null
 }

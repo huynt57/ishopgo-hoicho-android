@@ -23,11 +23,9 @@ import java.io.PrintWriter
 import java.io.StringWriter
 import java.text.NumberFormat
 import java.util.*
-import android.widget.Toast
-import com.facebook.FacebookSdk.getApplicationContext
 import android.text.style.ClickableSpan
-
-
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 
 
 /**
@@ -120,6 +118,33 @@ fun CharSequence.setPhone(phoneNumber: String): CharSequence {
                 val uri = Uri.parse("tel:$phoneNumber")
                 val i = Intent(Intent.ACTION_DIAL, uri)
                 view.context.startActivity(i)
+            }
+        }
+        spannable.setSpan(clickableSpan,
+                positionStart, positionEnd, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+    }
+    return spannable
+}
+
+fun CharSequence.setBoothName(text: String, boothId: Long): CharSequence {
+    val spannable = SpannableString(this)
+    if (this.isNotEmpty()) {
+        val positionStart = this.indexOf(text.substring(0))
+        val positionEnd = this.indexOf(text.substring(0)) + (text.length)
+        spannable.setSpan(
+                ForegroundColorSpan(Color.RED),
+                positionStart, positionEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(
+                BOLD,
+                positionStart, positionEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val clickableSpan = object : ClickableSpan() {
+            override fun onClick(view: View) {
+                //what happens whe i click
+                val intent = Intent(view.context, ShopDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
+                view.context.startActivity(intent)
             }
         }
         spannable.setSpan(clickableSpan,

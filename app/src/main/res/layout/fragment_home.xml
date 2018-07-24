@@ -587,7 +587,7 @@
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                android:text="Lịch hội chợ"
+                android:text="Lịch sự kiện"
                 app:drawableStartCompat="@drawable/ic_expo_map_24dp"
                 app:drawableStartSquareSize="24dp"
                 />

@@ -11,6 +11,10 @@ import ishopgo.com.exhibition.ui.extensions.asHtml
 class ConverterMemberProfile : Converter<Profile, UserInfoProvider> {
     override fun convert(from: Profile): UserInfoProvider {
         return object : UserInfoProvider {
+            override fun provideBoothName(): String {
+                return from.boothName ?: ""
+            }
+
             override fun provideAvatar(): CharSequence {
                 return from.image ?: ""
             }
@@ -38,6 +42,10 @@ class ConverterMemberProfile : Converter<Profile, UserInfoProvider> {
                 builder.append("Địa chỉ: <b>${from.address ?: ""}</b>")
                 builder.append("<br>")
                 builder.append("Loại tài khoản: <b>${from.typeTextExpo ?: ""}</b>")
+                if (from.typeTextExpo == "Chủ gian hàng") {
+                    builder.append("<br>")
+                    builder.append("Gian hàng: <b>${from.boothName ?: ""}</b>")
+                }
                 builder.append("<br>")
                 builder.append("Ngày tham gia: <b>${from.createdAt?.asDate() ?: ""}</b>")
                 builder.append("<br>")

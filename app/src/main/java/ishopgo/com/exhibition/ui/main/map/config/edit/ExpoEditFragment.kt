@@ -58,6 +58,7 @@ class ExpoEditFragment : BaseFragment() {
         view_end.editText?.setText(displayDateFormat.format(Toolbox.apiDateFormat.parse(expoConfig.endTime)))
         view_address.editText?.setText(expoConfig.address)
         view_description.editText?.setText(expoConfig.description?.asHtml())
+        tv_price.setText(expoConfig.price.toString())
 
         view_avatar.setOnClickListener {
             launchPickPhotoIntent()
@@ -71,6 +72,7 @@ class ExpoEditFragment : BaseFragment() {
             val endTime = view_end.editText?.text.toString()
             val address = view_address.editText?.text.toString()
             val description = view_description.editText?.text.toString()
+            val price = tv_price.money ?: 0L
 
             if (name.isBlank() || address.isBlank() || description.isBlank()) {
                 toast("Chưa điền hết thông tin")
@@ -87,7 +89,7 @@ class ExpoEditFragment : BaseFragment() {
                 return@setOnClickListener
             }
 
-            viewModel.editExpo(expoConfig.id!!, selectedUri, name, startTime, endTime, address, description)
+            viewModel.editExpo(expoConfig.id!!, selectedUri, name, startTime, endTime, address, description, price)
 
         }
     }
@@ -133,7 +135,11 @@ class ExpoEditFragment : BaseFragment() {
     private fun isTimeValid(time: String?): Boolean {
         if (time.isNullOrBlank()) return false
 
-        return try { displayDateFormat.parse(time); true } catch (e: Exception) { false }
+        return try {
+            displayDateFormat.parse(time); true
+        } catch (e: Exception) {
+            false
+        }
     }
 
 }

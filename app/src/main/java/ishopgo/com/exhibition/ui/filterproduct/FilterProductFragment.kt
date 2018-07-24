@@ -20,6 +20,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         return childFragmentManager.popBackStackImmediate()
     }
 
+    private val handleOverwrite: FilterProductOverwrite = CustomFilterProduct()
+
     private lateinit var viewModel: FilterProductViewModel
     private val listTypeFilter = mutableListOf<Int>()
     private var type_filter = 0
@@ -41,6 +43,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         const val TYPE_FILTER_CARE = 1
         const val TYPE_FILTER_SUPPLY = 3
         const val TYPE_FILTER_WHOLESALE = 4
+        const val TYPE_FILTER_NKSX = 5
         const val SORT_BY_NAME = "name"
         const val SORT_BY_FOLLOW = "follow"
         const val SORT_BY_RATE = "rate"
@@ -63,6 +66,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         super.onViewCreated(view, savedInstanceState)
         setupToolbars()
 
+        handleOverwrite.handleInOtherFlavor(view)
+
         if (data != null) {
             val data_sort_type = data!!.sort_type
             val data_sort_by = data!!.sort_by
@@ -82,6 +87,9 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
                     }
                     if (data_filter[i] == TYPE_FILTER_WHOLESALE) {
                         tv_wholesale.setTextColor(resources.getColor(R.color.colorPrimary))
+                    }
+                    if (data_filter[i] == TYPE_FILTER_NKSX) {
+                        tv_nksx.setTextColor(resources.getColor(R.color.colorPrimary))
                     }
                 }
             }
@@ -166,6 +174,10 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         tv_wholesale.setOnClickListener {
             type_filter = TYPE_FILTER_WHOLESALE
             selectFilterType(tv_wholesale)
+        }
+        tv_nksx.setOnClickListener {
+            type_filter = TYPE_FILTER_NKSX
+            selectFilterType(tv_nksx)
         }
 
         btn_filter.setOnClickListener {

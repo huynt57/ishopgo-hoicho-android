@@ -335,7 +335,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         c.city = "Hà Nội"
         c.createdAt = "2018/04/27 15:35:25"
         c.address = "Dương Đình Nghệ"
-        c.banner = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
+        c.avatar = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
 
 
         val response = BaseResponse<Ticket>()
@@ -354,7 +354,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         c.city = "Hà Nội"
         c.createdAt = "2018/04/27 15:35:25"
         c.address = "Dương Đình Nghệ"
-        c.banner = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
+        c.avatar = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
 
 
         val response = BaseResponse<List<Ticket>>()

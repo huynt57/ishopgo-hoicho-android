@@ -46,6 +46,7 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.extensions.setBoothName
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
@@ -207,8 +208,8 @@ class MemberProfileFragment : BaseActionBarFragment() {
                 .into(view_avatar)
 
         view_name.text = info.provideName()
-        view_info.setPhone(info.info(), currentProfile.phone ?: "")
-
+        view_info.setPhone(info.info().setBoothName(info.provideBoothName(), memberId), currentProfile.phone
+                ?: "")
     }
 
     private fun callShop(phoneNumber: String) {

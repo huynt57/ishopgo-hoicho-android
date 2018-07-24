@@ -81,4 +81,7 @@ class Profile : IdentityData() {
     @SerializedName("district")
     @Expose
     var district: String? = null
+    @SerializedName("booth_name")
+    @Expose
+    var boothName: String? = null
 }

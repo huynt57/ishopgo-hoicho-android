@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class MyTicketFragmentActionBar : BaseActionBarFragment() {
@@ -56,9 +57,13 @@ class MyTicketFragmentActionBar : BaseActionBarFragment() {
         }
 
         override fun populateData(data: List<Ticket>) {
-            if (reloadData)
+            if (reloadData) {
+                if (data.isEmpty()) {
+                    view_empty_result_notice.visibility = View.VISIBLE
+                    view_empty_result_notice.text = "Nội dung trống"
+                } else view_empty_result_notice.visibility = View.GONE
                 adapter.replaceAll(data)
-            else
+            } else
                 adapter.addAll(data)
         }
 

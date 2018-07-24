@@ -44,7 +44,7 @@ class ExpoMapConfigFragment : BaseActionBarFragment() {
     }
 
     private fun setupToolbar() {
-        toolbar.setCustomTitle("Lịch hội chợ")
+        toolbar.setCustomTitle("Lịch sự kiện")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
@@ -89,10 +89,10 @@ class ExpoMapConfigFragment : BaseActionBarFragment() {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
-                    ExposFragment.newInstance(ExposRequest.TYPE_CURRENT)
+                    ExposFragment.newInstance(ExposRequest.TYPE_COMPLETED)
                 }
                 1 -> {
-                    ExposFragment.newInstance(ExposRequest.TYPE_COMPLETED)
+                    ExposFragment.newInstance(ExposRequest.TYPE_CURRENT)
                 }
                 2 -> {
                     ExposFragment.newInstance(ExposRequest.TYPE_GOING)
