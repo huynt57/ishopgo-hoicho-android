@@ -394,6 +394,9 @@ class ApiService {
 
         @DELETE("agri/delete-product-diary/{id}")
         fun deleteProductDiary(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
+
+        @POST("expo/remove-sale-point")
+        fun deleteProductInSalePoint(@Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
     interface ISGApi {

@@ -25,6 +25,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun deleteProductInSalePoint(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).deleteProductInSalePoint(body)
+    }
+
     override fun getMemberPermissions(fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>> {
         val response = BaseResponse<List<MemberManager>>()
         response.status = 1
