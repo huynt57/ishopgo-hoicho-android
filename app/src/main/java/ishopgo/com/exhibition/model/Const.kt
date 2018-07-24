@@ -48,7 +48,7 @@ object Const {
         const val STORAGE_PERMISSION = 27
         const val DELETED_MEMBER = 28
         const val ADMINISTRATOR_ADD = 29
-        const val ADMINISTRATOR_EDIT = 30
+        const val UPDATE_PRODUCT_SALE_POINT = 30
     }
 
     object AccountAction {

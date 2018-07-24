@@ -99,6 +99,8 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
                                         options.add(OptionsBottomSheet.Option("Sửa", R.drawable.ic_edit_default_24dp))
                                     }
                             }
+                        } else if (UserDataManager.currentType == "Chủ hội chợ" || UserDataManager.currentType == "Chủ gian hàng") {
+                            options.add(OptionsBottomSheet.Option("Sửa", R.drawable.ic_edit_default_24dp))
                         }
                         if (data.status == 0) // do not display
                             options.add(OptionsBottomSheet.Option("Hiện", R.drawable.ic_visibility_default_24dp))

@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.salepointdetail
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -40,11 +42,15 @@ class SalePointDetailFragment : BaseFragment() {
 
             return fragment
         }
+
+        val PRODUCT_CURRENT = true
+        val PRODUCT_NOT_CURRENT = false
+        const val DELETE_PRODUCT = 1
     }
 
     private lateinit var salePointViewModel: SalePointShareViewModel
     private lateinit var viewModel: SalePointDetailViewModel
-    private val productsAdapter = ProductAdapter(0.4f)
+    private lateinit var productsAdapter: ClickableAdapter<Product>
     private var phone: String = ""
     private var productId: Long = 0
     private var dataProduct: ProductDetail? = null
@@ -68,6 +74,9 @@ class SalePointDetailFragment : BaseFragment() {
         val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
         dataProduct = Toolbox.gson.fromJson(json, ProductDetail::class.java)
         phone = arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, "") ?: ""
+
+        productsAdapter = if (UserDataManager.currentUserPhone == phone) SalePointProductAdapter(0.4f) else
+            ProductAdapter(0.4f)
     }
 
     private fun openActivtyLogin() {
@@ -117,10 +126,6 @@ class SalePointDetailFragment : BaseFragment() {
                     request.member = members
                     viewModel.createConversation(request)
                 }
-//                val call = Uri.parse("tel:${salePoint?.providePhone()}")
-//                val intent = Intent(Intent.ACTION_DIAL, call)
-//                if (intent.resolveActivity(it.context.packageManager) != null)
-//                    startActivity(intent)
             }
         }
 
@@ -131,16 +136,21 @@ class SalePointDetailFragment : BaseFragment() {
                 rv_product_sale_point.adapter = productsAdapter
                 productsAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
                     override fun click(position: Int, data: Product, code: Int) {
-                        context?.let {
-                            productId = data.id
+                        when (code) {
+                            DELETE_PRODUCT -> {
+                                dialogDeleteProduct(data.id, PRODUCT_NOT_CURRENT)
+                            }
+                            else -> context?.let {
+                                productId = data.id
 
-                            val productDetail = ProductDetail()
-                            productDetail.image = data.image
-                            productDetail.name = data.name
-                            productDetail.price = data.price
-                            productDetail.code = data.code
-                            dataProduct = productDetail
-                            viewModel.loadData(phone, productId)
+                                val productDetail = ProductDetail()
+                                productDetail.image = data.image
+                                productDetail.name = data.name
+                                productDetail.price = data.price
+                                productDetail.code = data.code
+                                dataProduct = productDetail
+                                viewModel.loadData(phone, productId)
+                            }
                         }
                     }
                 }
@@ -194,8 +204,25 @@ class SalePointDetailFragment : BaseFragment() {
             }
         })
 
+        viewModel.deleteSuccess.observe(this, Observer { p ->
+            p?.let {
+                viewModel.loadData(phone, productId)
+                toast("Xoá sản phẩm thành công")
+            }
+        })
+
+        viewModel.deleteSuccessCurrent.observe(this, Observer { p ->
+            p?.let {
+                hideProgressDialog()
+                toast("Xoá sản phẩm thành công")
+                activity?.setResult(RESULT_OK)
+                activity?.finish()
+            }
+        })
+
         viewModel.getData.observe(this, Observer { p ->
             p.let {
+                hideProgressDialog()
                 it?.let { it1 -> showDetail(it1) }
             }
         })
@@ -209,5 +236,24 @@ class SalePointDetailFragment : BaseFragment() {
 
     fun openQRCode() {
         salePoint?.let { salePointViewModel.showSalePointQRCode(it) }
+    }
+
+    fun deleteProduct() {
+        dialogDeleteProduct(productId, PRODUCT_CURRENT)
+    }
+
+    private fun dialogDeleteProduct(productId: Long, isProductCurrent: Boolean) {
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .content("Bạn có muốn xoá sản phẩm này không?")
+                    .positiveText("Có")
+                    .onPositive { _, _ ->
+                        viewModel.deleteProductInSalePoint(phone, productId, isProductCurrent)
+                        showProgressDialog()
+                    }
+                    .negativeText("Không")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
+        }
     }
 }
