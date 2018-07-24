@@ -331,9 +331,8 @@ class ShopInfoFragment : BaseFragment() {
                 context?.let {
                     val intent = Intent(it, SalePointDetailActivity::class.java)
                     intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
-                    startActivity(intent)
+                    startActivityForResult(intent, Const.RequestCode.UPDATE_PRODUCT_SALE_POINT)
                 }
-
             }
         }
 
@@ -358,7 +357,7 @@ class ShopInfoFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Const.RequestCode.SALE_POINT_ADD && resultCode == RESULT_OK)
+        if ((requestCode == Const.RequestCode.SALE_POINT_ADD || requestCode == Const.RequestCode.UPDATE_PRODUCT_SALE_POINT) && resultCode == RESULT_OK)
             viewModel.loadInfo(shopId)
     }
 }

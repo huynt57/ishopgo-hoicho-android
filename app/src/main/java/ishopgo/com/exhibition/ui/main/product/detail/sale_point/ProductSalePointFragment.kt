@@ -94,7 +94,7 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePoint>, Produc
                 val intent = Intent(context, SalePointDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, dataSalePoint.phone)
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                startActivity(intent)
+                startActivityForResult(intent, Const.RequestCode.UPDATE_PRODUCT_SALE_POINT)
             }
         }
         Glide.with(context).load(data.image)
@@ -114,7 +114,7 @@ class ProductSalePointFragment : BaseListFragment<List<ProductSalePoint>, Produc
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == Const.RequestCode.SALE_POINT_ADD && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == Const.RequestCode.SALE_POINT_ADD || requestCode == Const.RequestCode.UPDATE_PRODUCT_SALE_POINT) && resultCode == Activity.RESULT_OK) {
             firstLoad()
             activity?.setResult(Activity.RESULT_OK)
         }

@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.home.search.sale_point
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -118,11 +119,16 @@ class SalePointResultFragment : BaseListFragment<List<SearchSalePoint>, SearchSa
                     context?.let {
                         val intent = Intent(it, SalePointDetailActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
-                        startActivity(intent)
+                        startActivityForResult(intent, Const.RequestCode.UPDATE_PRODUCT_SALE_POINT)
                     }
-
                 }
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.UPDATE_PRODUCT_SALE_POINT && resultCode == RESULT_OK)
+            firstLoad()
     }
 }
