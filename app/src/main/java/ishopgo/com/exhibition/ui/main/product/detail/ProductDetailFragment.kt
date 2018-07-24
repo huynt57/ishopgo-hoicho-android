@@ -873,7 +873,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 val intent = Intent(context, SalePointDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, data.phone)
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-                startActivity(intent)
+                startActivityForResult(intent, Const.RequestCode.UPDATE_PRODUCT_SALE_POINT)
             }
         }
     }
@@ -1040,6 +1040,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             firstLoadSalePoint()
 
         if (requestCode == Const.RequestCode.SALE_POINT_ADD && resultCode == Activity.RESULT_OK)
+            firstLoadSalePoint()
+
+        if (requestCode == Const.RequestCode.UPDATE_PRODUCT_SALE_POINT && resultCode == Activity.RESULT_OK)
             firstLoadSalePoint()
     }
 

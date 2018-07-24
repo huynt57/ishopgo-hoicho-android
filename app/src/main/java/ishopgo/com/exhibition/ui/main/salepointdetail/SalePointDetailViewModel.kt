@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.NewConversation
 import ishopgo.com.exhibition.model.search_sale_point.ManagerSalePointDetail
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import okhttp3.MultipartBody
 
 class SalePointDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     override fun inject(appComponent: AppComponent) {
@@ -59,5 +60,28 @@ class SalePointDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     }))
 
         }
+    }
+
+    var deleteSuccess = MutableLiveData<Boolean>()
+    var deleteSuccessCurrent = MutableLiveData<Boolean>()
+
+    fun deleteProductInSalePoint(phone: String, productId: Long, productCurrent: Boolean) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("phone", phone)
+                .addFormDataPart("product_id", productId.toString())
+
+        addDisposable(authService.deleteProductInSalePoint(builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        if (productCurrent) deleteSuccessCurrent.postValue(true) else deleteSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+
     }
 }
