@@ -41,6 +41,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         const val TYPE_FILTER_CARE = 1
         const val TYPE_FILTER_SUPPLY = 3
         const val TYPE_FILTER_WHOLESALE = 4
+        const val TYPE_FILTER_NKSX = 5
         const val SORT_BY_NAME = "name"
         const val SORT_BY_FOLLOW = "follow"
         const val SORT_BY_RATE = "rate"
@@ -82,6 +83,9 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
                     }
                     if (data_filter[i] == TYPE_FILTER_WHOLESALE) {
                         tv_wholesale.setTextColor(resources.getColor(R.color.colorPrimary))
+                    }
+                    if (data_filter[i] == TYPE_FILTER_NKSX) {
+                        tv_nksx.setTextColor(resources.getColor(R.color.colorPrimary))
                     }
                 }
             }
@@ -166,6 +170,10 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         tv_wholesale.setOnClickListener {
             type_filter = TYPE_FILTER_WHOLESALE
             selectFilterType(tv_wholesale)
+        }
+        tv_nksx.setOnClickListener {
+            type_filter = TYPE_FILTER_NKSX
+            selectFilterType(tv_nksx)
         }
 
         btn_filter.setOnClickListener {
