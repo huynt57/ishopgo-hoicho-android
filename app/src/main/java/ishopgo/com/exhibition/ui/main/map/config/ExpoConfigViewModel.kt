@@ -44,7 +44,7 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
     }
 
     var addSuccess = MutableLiveData<Boolean>()
-    fun addExpo(avatar: Uri, name: String, startTime: String, endTime: String, address: String, description: String) {
+    fun addExpo(avatar: Uri, name: String, startTime: String, endTime: String, address: String, description: String, price: Long) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -52,6 +52,9 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
                 .addFormDataPart("end_time", endTime)
                 .addFormDataPart("address", address)
                 .addFormDataPart("description", description)
+
+        if (price != 0L)
+            builder.addFormDataPart("price", price.toString())
 
         avatar.let {
             val imageFile = File(appContext.cacheDir, "postImage13213.jpg")
@@ -76,7 +79,7 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
     }
 
     var editSuccess = MutableLiveData<Boolean>()
-    fun editExpo(expoId: Long, avatar: Uri?, name: String?, startTime: String?, endTime: String?, address: String?, description: String?) {
+    fun editExpo(expoId: Long, avatar: Uri?, name: String?, startTime: String?, endTime: String?, address: String?, description: String?, price: Long) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
         name?.let { builder.addFormDataPart("name", name) }
@@ -84,6 +87,9 @@ class ExpoConfigViewModel : BaseListViewModel<List<ExpoConfig>>(), AppComponent.
         endTime?.let { builder.addFormDataPart("end_time", endTime) }
         address?.let { builder.addFormDataPart("address", address) }
         description?.let { builder.addFormDataPart("description", description) }
+
+        if (price != 0L)
+            builder.addFormDataPart("price", price.toString())
 
         avatar?.let {
             val imageFile = File(appContext.cacheDir, "postImage13213.jpg")

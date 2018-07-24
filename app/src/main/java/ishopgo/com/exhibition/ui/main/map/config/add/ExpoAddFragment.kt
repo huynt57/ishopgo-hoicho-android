@@ -44,6 +44,7 @@ class ExpoAddFragment : BaseFragment() {
             val endTime = view_end.editText?.text.toString()
             val address = view_address.editText?.text.toString()
             val description = view_description.editText?.text.toString()
+            val price = tv_price.money ?: 0L
 
             if (name.isBlank() || address.isBlank() || description.isBlank()) {
                 toast("Chưa điền hết thông tin")
@@ -65,7 +66,7 @@ class ExpoAddFragment : BaseFragment() {
                 return@setOnClickListener
             }
 
-            viewModel.addExpo(selectedUri!!, name, startTime, endTime, address, description)
+            viewModel.addExpo(selectedUri!!, name, startTime, endTime, address, description, price)
         }
     }
 

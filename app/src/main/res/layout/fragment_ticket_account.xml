@@ -13,8 +13,8 @@
         <ImageView
             android:id="@+id/view_image"
             android:layout_width="0dp"
-            android:scaleType="centerCrop"
             android:layout_height="182dp"
+            android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="2:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,17 +25,17 @@
             android:id="@+id/tv_fair"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:drawablePadding="8dp"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:textColor="#fff"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimaryText"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/view_image"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view_image"
             tools:text="Tên vé" />
 
         <TextView
@@ -54,15 +54,27 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_fair"
             tools:ignore="HardcodedText" />
 
+        <ImageView
+            android:id="@+id/image_avatar_user"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_user_phone"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
         <TextView
             android:id="@+id/tv_user_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_avatar_user"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             tools:text="Họ và tên" />
 
@@ -71,10 +83,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_avatar_user"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
             tools:text="Email" />
 
@@ -83,11 +95,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/image_avatar_user"
             app:layout_constraintTop_toBottomOf="@+id/tv_user_email"
             tools:text="Số điện thoại" />
 
@@ -129,6 +141,45 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_ticket_time"
             tools:text="Địa điểm" />
 
+        <TextView
+            android:id="@+id/tv_date_get_ticket"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ticket_address"
+            tools:text="Ngày lấy vé" />
+
+        <TextView
+            android:id="@+id/tv_ticket_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_get_ticket"
+            tools:text="Giá vé" />
+
+        <TextView
+            android:id="@+id/tv_ticket_payment_status"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_ticket_price"
+            tools:text="Trạng thái" />
+
         <View
             android:id="@+id/view4"
             android:layout_width="wrap_content"
@@ -139,7 +190,7 @@
             android:background="@drawable/bg_white_black_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_ticket_address" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_ticket_payment_status" />
 
         <ImageView
             android:id="@+id/img_qr_code"

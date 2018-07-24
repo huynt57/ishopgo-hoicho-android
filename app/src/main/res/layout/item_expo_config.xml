@@ -75,10 +75,22 @@
             android:layout_gravity="center_vertical"
             android:layout_marginBottom="8dp"
             android:textColor="@color/colorPureWhite"
-            app:layout_constraintBottom_toBottomOf="@+id/view_avatar"
+            app:layout_constraintBottom_toTopOf="@+id/view_price"
             app:layout_constraintEnd_toEndOf="@id/view_name"
             app:layout_constraintStart_toStartOf="@+id/view_name"
             tools:text="dia chi" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:textColor="@color/colorPureWhite"
+            app:layout_constraintBottom_toBottomOf="@+id/view_avatar"
+            app:layout_constraintEnd_toEndOf="@id/view_name"
+            app:layout_constraintStart_toStartOf="@+id/view_name"
+            tools:text="giá" />
 
         <ImageView
             android:id="@+id/view_setting"

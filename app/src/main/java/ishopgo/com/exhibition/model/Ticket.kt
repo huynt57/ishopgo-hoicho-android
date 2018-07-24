@@ -22,9 +22,6 @@ class Ticket : IdentityData() {
     @SerializedName("phone")
     @Expose
     var phone: String? = null
-    @SerializedName("banner")
-    @Expose
-    var banner: String? = null
     @SerializedName("address")
     @Expose
     var address: String? = null
@@ -40,4 +37,13 @@ class Ticket : IdentityData() {
     @SerializedName("fair")
     @Expose
     var fair: ExpoConfig? = null
+    @SerializedName("avatar")
+    @Expose
+    var avatar: String? = null
+    @SerializedName("payment_status")
+    @Expose
+    var paymentStatus: Int? = null
+    @SerializedName("payment_status_text")
+    @Expose
+    var paymentStatusText: String? = null
 }

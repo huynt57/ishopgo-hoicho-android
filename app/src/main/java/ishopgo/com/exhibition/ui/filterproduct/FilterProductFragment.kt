@@ -20,6 +20,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         return childFragmentManager.popBackStackImmediate()
     }
 
+    private val handleOverwrite: FilterProductOverwrite = CustomFilterProduct()
+
     private lateinit var viewModel: FilterProductViewModel
     private val listTypeFilter = mutableListOf<Int>()
     private var type_filter = 0
@@ -63,6 +65,8 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbars()
+
+        handleOverwrite.handleInOtherFlavor(view)
 
         if (data != null) {
             val data_sort_type = data!!.sort_type

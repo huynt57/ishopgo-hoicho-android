@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_expo_config.view.*
 
 /**
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.item_expo_config.view.*
  */
 class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
 
-     companion object {
+    companion object {
         const val CLICK_SETTING = 1
         const val CLICK_DETAIL = 2
     }
@@ -79,11 +80,11 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
                 view_name.text = converted.name()
                 view_time.text = converted.time()
                 view_address.text = converted.address()
+                view_price.text = converted.price()
 
                 if (canConfigExpo) {
                     view_setting.visibility = View.VISIBLE
-                }
-                else
+                } else
                     view_setting.visibility = View.GONE
 
                 if (UserDataManager.currentType == "Quản trị viên") {
@@ -105,6 +106,10 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
 
         override fun convert(from: ExpoConfig): ExpoMapConfigProvider {
             return object : ExpoMapConfigProvider {
+                override fun price(): CharSequence {
+                    return "Giá vé: ${from.price?.asMoney() ?: "0 đ"}"
+                }
+
                 override fun qrcode(): CharSequence {
                     return from.qrcodePNG ?: ""
                 }
@@ -118,7 +123,8 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
                 }
 
                 override fun time(): CharSequence {
-                    return "Thời gian: ${from.startTime?.asDateTime() ?: ""} - ${from.endTime?.asDateTime() ?: ""}"
+                    return "Thời gian: ${from.startTime?.asDateTime()
+                            ?: ""} - ${from.endTime?.asDateTime() ?: ""}"
                 }
 
                 override fun address(): CharSequence {
@@ -137,6 +143,6 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
         fun name(): CharSequence
         fun time(): CharSequence
         fun address(): CharSequence
-
+        fun price(): CharSequence
     }
 }
