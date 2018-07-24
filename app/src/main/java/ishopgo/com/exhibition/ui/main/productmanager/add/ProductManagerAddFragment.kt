@@ -28,7 +28,10 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.BoothManager
+import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -153,7 +156,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
         btn_product_add.setOnClickListener {
             if (UserDataManager.currentType == "Chủ hội chợ") {
-                if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                if (isRequiredFieldsValid(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                 edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                     showProgressDialog()
                     viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
@@ -165,7 +168,7 @@ class ProductManagerAddFragment : BaseFragment() {
                             ?: 0, edit_produt_wholesale_count.text.toString())
                 }
             } else
-                if (checkRequireFields(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                if (isRequiredFieldsValid(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                 edt_product_categories.text.toString(), booth_id.toString(), edit_product_brand.text.toString())) {
                     showProgressDialog()
                     viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
@@ -697,7 +700,7 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
-    private fun checkRequireFields(image: String, name: String, price: String, code: String, category: String, provider: String, brand: String): Boolean {
+    private fun isRequiredFieldsValid(image: String, name: String, price: String, code: String, category: String, provider: String, brand: String): Boolean {
         if (image.trim().isEmpty()) {
             toast("Ảnh sản phẩm không được để trống")
             return false

@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.domain
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
-import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.model.administrator.AdministratorPermissions
 import ishopgo.com.exhibition.model.community.CommunityComment
@@ -37,6 +36,9 @@ class ApiService {
 
         @GET("expo/categories")
         fun getCategories(): Single<BaseResponse<List<Category>>>
+
+        @GET("expo/booth/get-type-booth")
+        fun getBoothTypes(): Single<BaseResponse<List<String>>>
 
         @GET("expo/sub-categories")
         fun getSubCategories(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Category>>>
@@ -272,7 +274,7 @@ class ApiService {
         ): Single<BaseResponse<Any>>
 
         @GET("expo/config")
-        fun getConfigBooth(): Single<BaseResponse<Booth>>
+        fun getConfigBooth(): Single<BaseResponse<BoothConfig>>
 
         @POST("expo/config/update")
         fun editConfigBooth(

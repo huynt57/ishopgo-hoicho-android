@@ -91,8 +91,6 @@
         <RelativeLayout
             android:id="@+id/label_sale_point"
             android:layout_width="match_parent"
-            tools:visibility="visible"
-            android:visibility="gone"
             android:layout_height="wrap_content">
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -113,6 +111,7 @@
                 android:background="@color/md_grey_300"
                 android:padding="5dp"
                 android:visibility="gone"
+                tools:visibility="visible"
                 app:srcCompat="@drawable/ic_add_highlight_24dp" />
         </RelativeLayout>
 

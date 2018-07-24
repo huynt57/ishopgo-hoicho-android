@@ -54,7 +54,7 @@ class RegisterBoothFragment : BaseFragment() {
         tv_setting_booth_district.setOnClickListener { getDistrict(tv_setting_booth_district) }
 
         btn_create_booth.setOnClickListener {
-            if (checkRequireFields(tv_setting_booth_name.text.toString())) {
+            if (isRequiredFieldsValid(tv_setting_booth_name.text.toString())) {
                 showProgressDialog()
                 viewModel.registerBooth(tv_setting_booth_name.text.toString(), tv_setting_booth_hotline.text.toString(),
                         tv_setting_booth_introduction.text.toString(), tv_setting_booth_infor.text.toString(),
@@ -179,7 +179,7 @@ class RegisterBoothFragment : BaseFragment() {
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
-    private fun checkRequireFields(name: String): Boolean {
+    private fun isRequiredFieldsValid(name: String): Boolean {
         if (name.trim().isEmpty()) {
             toast("Tên gian hàng không được để trống")
             tv_setting_booth_name.error = "Trường này còn trống"

@@ -38,7 +38,7 @@ class ForgetFragment : BaseFragment() {
 
                 tv_forget_phone.hideKeyboard()
 
-                if (checkRequireFields(tv_forget_phone.text.toString())) {
+                if (isRequiredFieldsValid(tv_forget_phone.text.toString())) {
                     showProgressDialog()
                     viewModel.getOTP(tv_forget_phone.text.toString())
                 }
@@ -50,7 +50,7 @@ class ForgetFragment : BaseFragment() {
 
 
         btn_forget_sent.setOnClickListener {
-            if (checkRequireFields(tv_forget_phone.text.toString())) {
+            if (isRequiredFieldsValid(tv_forget_phone.text.toString())) {
                 showProgressDialog()
                 viewModel.getOTP(tv_forget_phone.text.toString())
             }
@@ -84,7 +84,7 @@ class ForgetFragment : BaseFragment() {
         })
     }
 
-    private fun checkRequireFields(phone: String): Boolean {
+    private fun isRequiredFieldsValid(phone: String): Boolean {
         if (phone.trim().isEmpty()) {
             toast("Số điện thoại không được để trống")
             tv_forget_phone.error = "Trường này còn trống"

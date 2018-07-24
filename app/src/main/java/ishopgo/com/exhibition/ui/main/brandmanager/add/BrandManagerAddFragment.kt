@@ -37,7 +37,7 @@ class BrandManagerAddFragment : BaseFragment() {
         }
 
         btn_brand_add.setOnClickListener {
-            if (checkRequireFields(image, edit_brand_name.text.toString())) {
+            if (isRequiredFieldsValid(image, edit_brand_name.text.toString())) {
                 showProgressDialog()
                 isFeatured = if (sw_featured.isChecked) BRAND_FEATURED else BRAND_NOT_FEATURED
                 viewModel.createBrand(edit_brand_name.text.toString(), image, isFeatured.toString())
@@ -62,7 +62,7 @@ class BrandManagerAddFragment : BaseFragment() {
         })
     }
 
-    private fun checkRequireFields(image: String, name: String): Boolean {
+    private fun isRequiredFieldsValid(image: String, name: String): Boolean {
         if (image.trim().isEmpty()) {
             toast("Logo thương hiệu không được để trống")
             return false

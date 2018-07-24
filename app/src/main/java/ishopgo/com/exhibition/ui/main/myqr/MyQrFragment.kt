@@ -24,7 +24,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.BoothConfig
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_myqr.*
@@ -36,7 +36,7 @@ import java.io.*
 class MyQrFragment : BaseFragment() {
 
     private lateinit var viewModel: MyQrViewModel
-    private lateinit var currentBooth: Booth
+    private lateinit var currentBooth: BoothConfig
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_myqr, container, false)

@@ -111,19 +111,6 @@ class ShopDetailFragment : BaseFragment() {
         viewModel.shopId.observe(this, Observer { i ->
             i?.let {
                 boothId = it
-                if (UserDataManager.currentUserId == boothId) {
-                    tv_edit_image.visibility = View.VISIBLE
-                    constraintLayout.visibility = View.GONE
-                    view_image.setOnClickListener {
-                        val intent = Intent()
-                        intent.type = "image/*"
-                        intent.action = Intent.ACTION_GET_CONTENT
-                        startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
-                    }
-                } else {
-                    tv_edit_image.visibility = View.GONE
-                    constraintLayout.visibility = View.VISIBLE
-                }
                 view_shop_follow.setOnClickListener {
                     if (UserDataManager.currentUserId > 0) {
                         if (boothId != -1L)

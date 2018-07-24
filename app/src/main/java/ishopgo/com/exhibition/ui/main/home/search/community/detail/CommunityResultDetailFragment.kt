@@ -87,7 +87,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
 
         img_comment_sent.setOnClickListener {
             if (UserDataManager.currentUserId > 0)
-                if (checkRequireFields(edt_comment.text.toString())) {
+                if (isRequiredFieldsValid(edt_comment.text.toString())) {
                     showProgressDialog()
                     viewModel.postCommentCommunity(data.id, edt_comment.text.toString(), postMedias, -1L)
                 } else showDiglogLogin()
@@ -114,7 +114,7 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
         viewModel.loadCommentCommunity(loadMore)
     }
 
-    private fun checkRequireFields(content: String): Boolean {
+    private fun isRequiredFieldsValid(content: String): Boolean {
         if (content.trim().isEmpty()) {
             toast("Nội dung quá ngắn hoặc chưa đầy đủ")
             return false

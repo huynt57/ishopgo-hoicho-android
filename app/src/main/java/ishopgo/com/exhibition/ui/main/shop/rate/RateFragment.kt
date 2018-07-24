@@ -142,7 +142,7 @@ class RateFragment : BaseListFragment<List<ShopRate>, ShopRate>() {
                     .onPositive { dialog, _ ->
                         val edit_shop_rating = dialog.findViewById(R.id.edit_shop_rating) as TextInputEditText
                         val ratingBar_dialog = dialog.findViewById(R.id.ratingBar) as RatingBar
-                        if (checkRequireFields(edit_shop_rating)) {
+                        if (isRequiredFieldsValid(edit_shop_rating)) {
                             (viewModel as RateViewModel).createProductSalePoint(shopId, edit_shop_rating.text.toString(), ratingBar_dialog.numStars)
                             dialog.dismiss()
                         }
@@ -166,7 +166,7 @@ class RateFragment : BaseListFragment<List<ShopRate>, ShopRate>() {
         }
     }
 
-    private fun checkRequireFields(view_content: TextInputEditText): Boolean {
+    private fun isRequiredFieldsValid(view_content: TextInputEditText): Boolean {
         if (view_content.text.trim().isEmpty()) {
             toast("Nội dung không được để trống")
             view_content.error = getString(R.string.error_field_required)

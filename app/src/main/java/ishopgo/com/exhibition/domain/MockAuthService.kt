@@ -3,7 +3,6 @@ package ishopgo.com.exhibition.domain
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
-import ishopgo.com.exhibition.model.Booth
 import ishopgo.com.exhibition.model.administrator.Administrator
 import ishopgo.com.exhibition.model.administrator.AdministratorPermissions
 import ishopgo.com.exhibition.model.community.Community
@@ -521,8 +520,8 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).getFavoriteProducts(params)
     }
 
-    override fun getConfigBooth(): Single<BaseResponse<Booth>> {
-        val c = Booth()
+    override fun getConfigBooth(): Single<BaseResponse<BoothConfig>> {
+        val c = BoothConfig()
         c.name = "Nguyễn Huy Hoàng"
         c.hotline = "0989013403"
         c.introduction = "Chào các bạn"
@@ -531,7 +530,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         c.banner = "https://static.ishopgo.com/17288/1e07cc8716cbe857c3cea1cb3cf772e8avatar-1525273657277jpg.jpg"
 
 
-        val response = BaseResponse<Booth>()
+        val response = BaseResponse<BoothConfig>()
         response.status = 1
         response.data = c
 

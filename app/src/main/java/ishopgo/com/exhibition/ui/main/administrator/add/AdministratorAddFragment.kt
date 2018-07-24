@@ -6,7 +6,6 @@ import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,7 +92,7 @@ class AdministratorAddFragment : BaseFragment() {
             edit_member_name.setOnClickListener { memberViewModel.showFragmentMember() }
             edit_member_phone.setOnClickListener { memberViewModel.showFragmentMember() }
             btn_add_administrator.setOnClickListener {
-                if (checkRequireFields(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
+                if (isRequiredFieldsValid(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
                     viewModel.addAdministrator(listRole, edit_member_phone.text.toString(), boothId)
                 }
             }
@@ -102,7 +101,7 @@ class AdministratorAddFragment : BaseFragment() {
             edit_member_phone.setText(data?.phone)
             btn_add_administrator.text = "Cập nhật quản trị viên"
             btn_add_administrator.setOnClickListener {
-                if (checkRequireFields(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
+                if (isRequiredFieldsValid(edit_member_name.text.toString(), edit_member_phone.text.toString())) {
                     data?.id?.let { it1 -> viewModel.editAdministrator(listRole, it1) }
                 }
             }
@@ -126,7 +125,7 @@ class AdministratorAddFragment : BaseFragment() {
         }
     }
 
-    private fun checkRequireFields(name: String, phone: String): Boolean {
+    private fun isRequiredFieldsValid(name: String, phone: String): Boolean {
         if (name.trim().isEmpty()) {
             toast("Tên không được để trống")
             edit_member_name.error = getString(R.string.error_field_required)

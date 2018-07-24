@@ -117,7 +117,7 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
         tv_add_image.setOnClickListener { launchPickPhotoIntent() }
 
         btn_comment.setOnClickListener {
-            if (checkRequireFields(edit_comment.text.toString())) {
+            if (isRequiredFieldsValid(edit_comment.text.toString())) {
                 showProgressDialog()
                 dataProduct?.id?.let { it1 -> viewModel.postCommentProduct(it1, edit_comment.text.toString(), parentId, postMedias, ratingNumber) }
             }
@@ -139,7 +139,7 @@ class RatingProductFragment : BaseActionBarFragment(), BackpressConsumable {
         }
     }
 
-    private fun checkRequireFields(content: String): Boolean {
+    private fun isRequiredFieldsValid(content: String): Boolean {
         if (ratingNumber == 0.0f) {
             toast("Bạn vui lòng đánh giá sản phẩm")
             return false

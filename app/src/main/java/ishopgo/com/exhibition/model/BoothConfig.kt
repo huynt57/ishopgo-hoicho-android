@@ -3,36 +3,12 @@ package ishopgo.com.exhibition.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.ui.main.configbooth.BoothProvide
 
 
 /**
  * Created by hoangnh on 5/7/2018.
  */
-class Booth : IdentityData(), BoothProvide {
-    override fun provideName(): String {
-        return name ?: ""
-    }
-
-    override fun provideIntroduction(): String {
-        return introduction ?: ""
-    }
-
-    override fun provideHotline(): String {
-        return hotline ?: ""
-    }
-
-    override fun provideInfo(): String {
-        return info ?: ""
-    }
-
-    override fun provideBanner(): String {
-        return banner ?: ""
-    }
-
-    override fun provideAddress(): String {
-        return address ?: ""
-    }
+class BoothConfig : IdentityData() {
 
     @SerializedName("name")
     @Expose
@@ -49,10 +25,22 @@ class Booth : IdentityData(), BoothProvide {
     @SerializedName("banner")
     @Expose
     var banner: String? = null
+    @SerializedName("logo")
+    @Expose
+    var logo: String? = null
+    @SerializedName("city")
+    @Expose
+    var city: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
     @SerializedName("address")
     @Expose
     var address: String? = null
     @SerializedName("qrcode")
     @Expose
     var qrcode: String? = null
+    @SerializedName("title")
+    @Expose
+    var title: String? = null
 }

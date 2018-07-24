@@ -57,7 +57,7 @@ class BoothManagerAddFragment : BaseFragment() {
         }
 
         btn_product_add.setOnClickListener {
-            if (checkRequireFields(image, edit_booth_name.text.toString(), edit_booth_phone.text.toString(), edit_booth_email.text.toString(), edit_booth_address.text.toString(), edit_booth_region.text.toString(), edit_booth_birthday.text.toString())) {
+            if (isRequiredFieldsValid(image, edit_booth_name.text.toString(), edit_booth_phone.text.toString(), edit_booth_email.text.toString(), edit_booth_address.text.toString(), edit_booth_region.text.toString(), edit_booth_birthday.text.toString())) {
                 showProgressDialog()
                 viewModel.createBoothManager(edit_booth_phone.text.toString(), edit_booth_email.text.toString(), edit_booth_name.text.toString(),
                         edit_booth_birthday.text.toString(), edit_booth_address.text.toString(), edit_booth_region.text.toString(), image)
@@ -90,7 +90,7 @@ class BoothManagerAddFragment : BaseFragment() {
         viewModel.loadRegion()
     }
 
-    private fun checkRequireFields(image: String, phone: String, name: String, email: String, address: String, region: String, birthday: String): Boolean {
+    private fun isRequiredFieldsValid(image: String, phone: String, name: String, email: String, address: String, region: String, birthday: String): Boolean {
         if (image.trim().isEmpty()) {
             toast("Ảnh sản phẩm không được để trống")
             return false

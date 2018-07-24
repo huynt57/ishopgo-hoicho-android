@@ -119,7 +119,7 @@ class SignupFragment : BaseFragment() {
     }
 
     private fun signupAccount() {
-        if (checkRequireFields(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
+        if (isRequiredFieldsValid(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                         tv_signup_city.text.toString(), tv_signup_district.text.toString(), tv_signup_address.text.toString(), tv_signup_password.text.toString(),
                         tv_signup_retry_password.text.toString())) {
             showProgressDialog()
@@ -170,7 +170,7 @@ class SignupFragment : BaseFragment() {
         viewModel.loadRegion()
     }
 
-    private fun checkRequireFields(phone: String, email: String, fullname: String, region: String, district: String, address: String,
+    private fun isRequiredFieldsValid(phone: String, email: String, fullname: String, region: String, district: String, address: String,
                                    password: String, retry_password: String): Boolean {
 
         if (phone.trim().isEmpty()) {

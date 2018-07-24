@@ -49,6 +49,8 @@ object Const {
         const val DELETED_MEMBER = 28
         const val ADMINISTRATOR_ADD = 29
         const val ADMINISTRATOR_EDIT = 30
+        const val PICK_BANNER = 31
+        const val PICK_LOGO = 32
     }
 
     object AccountAction {

@@ -49,12 +49,12 @@ class SalePointAddFragment : BaseFragment() {
         edit_sale_point_district.setOnClickListener { getDistrict(edit_sale_point_district) }
 
         btn_sale_point_add.setOnClickListener {
-            if (checkRequireFields(edit_product_name.text.toString(), edit_sale_point_city.text.toString(), edit_sale_point_district.text.toString()))
+            if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_sale_point_city.text.toString(), edit_sale_point_district.text.toString()))
                 viewModel.createSalePoint(edit_product_name.text.toString(), UserDataManager.currentUserPhone, edit_sale_point_city.text.toString(), edit_sale_point_district.text.toString(), edit_sale_point_address.text.toString())
         }
     }
 
-    private fun checkRequireFields(name: String, city: String, district: String): Boolean {
+    private fun isRequiredFieldsValid(name: String, city: String, district: String): Boolean {
 
         if (name.trim().isEmpty()) {
             toast("Tên điểm bán không được để trống")

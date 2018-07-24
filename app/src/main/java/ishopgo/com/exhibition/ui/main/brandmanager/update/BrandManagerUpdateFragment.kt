@@ -53,7 +53,7 @@ class BrandManagerUpdateFragment : BaseFragment() {
                 .into(view_image_brands_update)
 
         btn_brand_update.setOnClickListener {
-            if (checkRequireFields(edit_brand_name.text.toString())) {
+            if (isRequiredFieldsValid(edit_brand_name.text.toString())) {
                 showProgressDialog()
                 isFeatured = data?.isFeatured ?: BRAND_NOT_FEATURED
                 viewModel.updateBrand(data?.id
@@ -103,7 +103,7 @@ class BrandManagerUpdateFragment : BaseFragment() {
         })
     }
 
-    private fun checkRequireFields( name: String): Boolean {
+    private fun isRequiredFieldsValid( name: String): Boolean {
         if (name.trim().isEmpty()) {
             toast("Tên thương hiệu không được để trống")
             edit_brand_name.error = getString(R.string.error_field_required)

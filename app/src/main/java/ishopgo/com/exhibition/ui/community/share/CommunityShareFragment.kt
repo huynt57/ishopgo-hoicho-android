@@ -212,13 +212,13 @@ class CommunityShareFragment : BaseFragment() {
     }
 
     fun sentShareCommunity() {
-        if (checkRequireFields(edit_share.text.toString())) {
+        if (isRequiredFieldsValid(edit_share.text.toString())) {
             showProgressDialog()
             viewModel.sentShareCommunity(edit_share.text.toString(), postMedias)
         }
     }
 
-    private fun checkRequireFields(share: String): Boolean {
+    private fun isRequiredFieldsValid(share: String): Boolean {
         if (share.trim().isEmpty()) {
             toast("Nội dung quá ngắn hoặc chưa đầy đủ")
             return false

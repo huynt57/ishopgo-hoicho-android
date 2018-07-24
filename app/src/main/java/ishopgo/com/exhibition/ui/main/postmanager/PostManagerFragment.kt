@@ -262,7 +262,7 @@ class PostManagerFragment : BaseListFragment<List<PostObject>, PostObject>() {
                         val edit_post_name = dialog.findViewById(R.id.edit_post_name) as TextInputEditText
                         val typeCategory = if (typeManager == Const.AccountAction.ACTION_NEWS_MANAGER) NEWS_MANAGER else GENERAL_MANAGER
 
-                        if (checkRequireFields(edit_post_name.text.toString(), edit_post_name)) {
+                        if (isRequiredFieldsValid(edit_post_name.text.toString(), edit_post_name)) {
                             (viewModel as PostViewModel).createPostCategory(edit_post_name.text.toString(), typeCategory)
                             showProgressDialog()
                             dialog.dismiss()
@@ -281,7 +281,7 @@ class PostManagerFragment : BaseListFragment<List<PostObject>, PostObject>() {
         }
     }
 
-    private fun checkRequireFields(name: String, view: TextInputEditText): Boolean {
+    private fun isRequiredFieldsValid(name: String, view: TextInputEditText): Boolean {
 
         if (name.trim().isEmpty()) {
             toast("Tên danh mục không được để trống")

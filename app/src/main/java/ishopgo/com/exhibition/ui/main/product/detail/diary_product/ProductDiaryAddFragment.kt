@@ -2,12 +2,10 @@ package ishopgo.com.exhibition.ui.main.product.detail.diary_product
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -51,7 +49,7 @@ class ProductDiaryAddFragment : BaseActionBarFragment() {
         tv_add_image.setOnClickListener { launchPickPhotoIntent() }
 
         btn_add_diary.setOnClickListener {
-            if (checkRequireFields(edit_title.text.toString(), edit_content.text.toString())) {
+            if (isRequiredFieldsValid(edit_title.text.toString(), edit_content.text.toString())) {
                 showProgressDialog()
                 viewModel.createProductDiary(data.id, edit_title.text.toString(), edit_content.text.toString(), postMedias)
             }
@@ -89,7 +87,7 @@ class ProductDiaryAddFragment : BaseActionBarFragment() {
         })
     }
 
-    private fun checkRequireFields(title: String, content: String): Boolean {
+    private fun isRequiredFieldsValid(title: String, content: String): Boolean {
         if (title.trim().isEmpty()) {
             toast("Tiêu đề không được để trống")
             return false

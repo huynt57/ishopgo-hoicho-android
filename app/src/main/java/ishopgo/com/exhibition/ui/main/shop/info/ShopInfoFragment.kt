@@ -84,7 +84,6 @@ class ShopInfoFragment : BaseFragment() {
 
         viewModel.listSalePoint.observe(this, Observer { i ->
             i?.let {
-                label_sale_point.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 view_recyclerview.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
                 salePointAdapter.replaceAll(it)
             }
@@ -141,12 +140,6 @@ class ShopInfoFragment : BaseFragment() {
 
         sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage(), info)
         if (UserDataManager.currentUserId == info.id) {
-            ten_gian_hang.drawableCompat(R.drawable.icon_shop_name, 0, R.drawable.ic_edit_default_24dp, 0)
-            ten_gian_hang.setOnClickListener { showDialogChangeName(info.name ?: "") }
-            textView11.drawableCompat(0, 0, R.drawable.ic_edit_default_24dp, 0)
-            textView11.setOnClickListener {
-                showDialogChangeDescription(info.introduction ?: "")
-            }
             img_add_sale_point.visibility = View.VISIBLE
             img_add_sale_point.setOnClickListener {
                 val intent = Intent(context, SalePointAddActivity::class.java)

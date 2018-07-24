@@ -99,13 +99,13 @@ class ProductSalePointAddFragment : BaseFragment() {
                 })
 
         btn_sale_point_add.setOnClickListener {
-            if (checkRequireFields(edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
+            if (isRequiredFieldsValid(edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.trim().toString(), edit_shop_city.text.toString(), edit_shop_district.text.toString()))
                 viewModel.createProductSalePoint(data.id, edit_product_price.text.toString(), edit_shop_phone.text.toString(), edit_shop_name.text.toString(), edit_shop_city.text.toString(),
                         edit_shop_district.text.toString(), edit_shop_address.text.toString())
         }
     }
 
-    private fun checkRequireFields(price: String, phone: String, name: String, city: String, district: String): Boolean {
+    private fun isRequiredFieldsValid(price: String, phone: String, name: String, city: String, district: String): Boolean {
 
         if (price.trim().isEmpty()) {
             toast("Giá sản phẩm không được để trống")

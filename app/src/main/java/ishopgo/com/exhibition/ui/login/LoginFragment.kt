@@ -61,7 +61,7 @@ class LoginFragment : BaseFragment() {
         }
 
         btn_login.setOnClickListener {
-            if (checkRequireFields(tv_account.text.toString(), tv_password.text.toString())) {
+            if (isRequiredFieldsValid(tv_account.text.toString(), tv_password.text.toString())) {
                 showProgressDialog()
                 viewModel.loginAccount(tv_account.text.toString(), tv_password.text.toString())
             }
@@ -71,7 +71,7 @@ class LoginFragment : BaseFragment() {
             if (id == EditorInfo.IME_ACTION_DONE) {
                 tv_password.hideKeyboard()
 
-                if (checkRequireFields(tv_account.text.toString(), tv_password.text.toString())) {
+                if (isRequiredFieldsValid(tv_account.text.toString(), tv_password.text.toString())) {
                     showProgressDialog()
                     viewModel.loginAccount(tv_account.text.toString(), tv_password.text.toString())
                 }
@@ -140,7 +140,7 @@ class LoginFragment : BaseFragment() {
         })
     }
 
-    private fun checkRequireFields(name: String, title: String): Boolean {
+    private fun isRequiredFieldsValid(name: String, title: String): Boolean {
         if (name.trim().isEmpty()) {
             toast("Tài khoản không được để trống")
             tv_account.error = "Trường này còn trống"

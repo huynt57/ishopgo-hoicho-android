@@ -33,7 +33,7 @@ class ChangePasswordFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btn_change_password.setOnClickListener {
-            if (checkRequireFields(edt_password.text.toString(), edt_retry_password.text.toString())) {
+            if (isRequiredFieldsValid(edt_password.text.toString(), edt_retry_password.text.toString())) {
                 showProgressDialog()
                 viewModel.getOTP(UserDataManager.currentUserPhone)
             }
@@ -67,7 +67,7 @@ class ChangePasswordFragment : BaseFragment() {
         })
     }
 
-    private fun checkRequireFields(password: String, retry_password: String): Boolean {
+    private fun isRequiredFieldsValid(password: String, retry_password: String): Boolean {
         if (password.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
             edt_password.error = "Trường này còn trống"

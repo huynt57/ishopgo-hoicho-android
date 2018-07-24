@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:windowSoftInputMode="adjustResize"
-    android:orientation="vertical"
-    android:id="@+id/view_scrollview">
+                                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                                            android:id="@+id/view_scrollview"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical"
+                                            android:windowSoftInputMode="adjustResize">
 
 
     <LinearLayout
@@ -13,118 +14,241 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/default_margin">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:text="Chọn banner (*)"
+            android:textSize="13sp"
+            />
+
         <ImageView
             android:id="@+id/img_setting_booth"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="@dimen/default_margin"
-            android:src="@drawable/image_placeholder" />
+            android:layout_marginEnd="32dp"
+            android:padding="1dp"
+            android:background="@drawable/bg_stroked_rounded_rectangle"
+            android:src="@drawable/image_placeholder"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            android:gravity="center"
+            android:text="Chọn logo (*)"
+            android:textSize="13sp"
+            />
+
+        <ImageView
+            android:id="@+id/img_setting_logo"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_marginEnd="32dp"
+            android:padding="1dp"
+            android:background="@drawable/bg_stroked_rounded_rectangle"
+            android:src="@drawable/image_placeholder"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_name"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Tên gian hàng*"
                 android:inputType="text"
-                android:singleLine="true" />
+                android:singleLine="true"/>
 
         </android.support.design.widget.TextInputLayout>
 
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/tv_setting_booth_type"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Loại gian hàng*"
+                    android:inputType="text"
+                    android:singleLine="true"/>
+
+            </android.support.design.widget.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/view_choose_type"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end|bottom"
+                app:srcCompat="@drawable/ic_arrow_drop_down_default_24dp"/>
+
+        </FrameLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_hotline"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Số hotline"
                 android:inputType="phone"
-                android:singleLine="true" />
+                android:singleLine="true"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/tv_setting_booth_infor"
+                android:id="@+id/tv_setting_booth_city"
                 style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Thông tin gian hàng"
-                android:inputType="textMultiLine"
-                android:lines="3" />
+                android:gravity="top|start"
+                android:hint="Thành phố (*)"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/tv_setting_booth_introduction"
+                android:id="@+id/tv_setting_booth_district"
                 style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Giới thiệu gian hàng"
-                android:inputType="textMultiLine"
-                android:lines="3"
-                android:singleLine="false" />
+                android:gravity="top|start"
+                android:hint="Quận huyện (*)"
+                />
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_setting_booth_address"
-                style="@style/AppTheme.EnableInputField.DisableInput"
+                style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="top|start"
                 android:hint="Địa chỉ"
                 android:inputType="textMultiLine"
                 android:lines="3"
-                android:singleLine="false" />
+                android:singleLine="false"/>
 
         </android.support.design.widget.TextInputLayout>
 
-        <android.support.v7.widget.AppCompatButton
-            android:id="@+id/btn_create_booth"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/default_margin"
             android:layout_marginStart="@dimen/default_margin"
             android:layout_marginTop="16dp"
-            android:text="Cập nhật"
+            android:layout_marginEnd="@dimen/default_margin">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/tv_setting_booth_introduction"
+                style="@style/AppTheme.EnableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:hint="Giới thiệu gian hàng"
+                android:inputType="textMultiLine"
+                android:lines="3"
+                android:singleLine="false"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_margin"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/md_grey_200"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="Đơn vị liên quan trong chuỗi cung ứng"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="13sp"
+                />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/add_relate_booth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:background="@color/colorPrimary"
+                android:padding="8dp"
+                android:text="Thêm"
+                app:drawableStartCompat="@drawable/ic_add_white_24dp"
+                app:drawableStartSquareSize="16dp"
+                android:textColor="@color/colorPureWhite"
+                android:textSize="13sp"
+                />
+
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/related_booth"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_create_booth"
             style="@style/AppTheme.ActionButton"
-            android:textColor="@color/md_white_1000" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:text="Cập nhật"
+            android:textColor="@color/md_white_1000"/>
 
     </LinearLayout>
 

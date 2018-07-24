@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
-import ishopgo.com.exhibition.model.Booth
+import ishopgo.com.exhibition.model.BoothConfig
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
 /**
@@ -16,13 +16,13 @@ class MyQrViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    var booth = MutableLiveData<Booth>()
+    var booth = MutableLiveData<BoothConfig>()
 
     fun loadQrCode() {
         addDisposable(authService.getConfigBooth()
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<Booth>() {
-                    override fun success(data: Booth?) {
+                .subscribeWith(object : BaseSingleObserver<BoothConfig>() {
+                    override fun success(data: BoothConfig?) {
                         data?.let { booth.postValue(it) }
                     }
 

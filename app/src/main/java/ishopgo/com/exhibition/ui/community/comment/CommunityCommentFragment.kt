@@ -11,13 +11,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.LinearSmoothScroller
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
@@ -137,7 +135,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
         img_comment_sent.setOnClickListener {
-            if (checkRequireFields(edt_comment.text.toString())) {
+            if (isRequiredFieldsValid(edt_comment.text.toString())) {
                 showProgressDialog()
                 viewModel.postCommentCommunity(post_id, edt_comment.text.toString(), postMedias, parentId)
             }
@@ -447,7 +445,7 @@ class CommunityCommentFragment : BaseFragment(), SwipeRefreshLayout.OnRefreshLis
         viewModel.loadCommentCommunity(loadMore)
     }
 
-    private fun checkRequireFields(content: String): Boolean {
+    private fun isRequiredFieldsValid(content: String): Boolean {
         if (content.trim().isEmpty()) {
             toast("Nội dung quá ngắn hoặc chưa đầy đủ")
             return false

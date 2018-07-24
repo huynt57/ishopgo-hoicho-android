@@ -37,7 +37,7 @@ class NotificationAddFragment : BaseFragment() {
         view_image.setOnClickListener { launchPickPhotoIntent() }
 
         view_create.setOnClickListener {
-            //            if (checkRequireFields(image, tv_setting_booth_name.text.toString())) {
+            //            if (isRequiredFieldsValid(image, tv_setting_booth_name.text.toString())) {
 //                showProgressDialog()
 //                viewModel.editConfigBooth(tv_setting_booth_name.text.toString(), tv_setting_booth_hotline.text.toString(),
 //                        tv_setting_booth_infor.text.toString(), tv_setting_booth_introduction.text.toString(), tv_setting_booth_address.text.toString(), image)

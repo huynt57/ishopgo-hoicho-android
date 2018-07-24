@@ -117,7 +117,7 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
         img_comment_gallery.setOnClickListener { launchPickPhotoIntent() }
 
         img_comment_sent.setOnClickListener {
-            if (checkRequireFields(edt_comment.text.toString())) {
+            if (isRequiredFieldsValid(edt_comment.text.toString())) {
                 showProgressDialog()
                 viewModel.postCommentCommunity(postId, edt_comment.text.toString(), postMedias, parentId)
             }
@@ -227,7 +227,7 @@ class CommunityCommentChildFragment : BaseActionBarFragment(), SwipeRefreshLayou
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
-    private fun checkRequireFields(content: String): Boolean {
+    private fun isRequiredFieldsValid(content: String): Boolean {
         if (content.trim().isEmpty()) {
             toast("Nội dung quá ngắn hoặc chưa đầy đủ")
             return false

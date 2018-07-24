@@ -21,15 +21,17 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.BoothManager
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
+import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
@@ -121,7 +123,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                     isEditMode = true
                 } else {
                     if (UserDataManager.currentType == "Chủ hội chợ") {
-                        if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                        if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                         edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                             showProgressDialog()
                             viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
@@ -133,7 +135,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                                     ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
                         }
                     } else
-                        if (checkRequireFields(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                        if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                         edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                             showProgressDialog()
                             viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
@@ -1138,7 +1140,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
-    private fun checkRequireFields(name: String, price: String, code: String, category: String, provider: String, brand: String): Boolean {
+    private fun isRequiredFieldsValid(name: String, price: String, code: String, category: String, provider: String, brand: String): Boolean {
         if (name.trim().isEmpty()) {
             toast("Tên không được để trống")
             edit_product_name.error = getString(R.string.error_field_required)
