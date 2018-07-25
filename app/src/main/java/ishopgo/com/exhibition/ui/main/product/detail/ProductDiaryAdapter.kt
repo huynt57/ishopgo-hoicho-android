@@ -76,7 +76,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                                 tv_diary_delete.visibility = View.VISIBLE
                                 break
                             }
-                } else if (UserDataManager.currentUserId == data.productId)
+                } else if (UserDataManager.currentUserId == data.accountId)
                     tv_diary_delete.visibility = View.VISIBLE
                 else tv_diary_delete.visibility = View.GONE
 

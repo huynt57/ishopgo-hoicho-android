@@ -1,6 +1,8 @@
 package ishopgo.com.exhibition.ui.community
 
 import android.annotation.SuppressLint
+import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatDelegate
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
@@ -102,7 +104,12 @@ class CommunityAdapter : ClickableAdapter<Community>() {
 
             val convert = converter.convert(data)
             itemView.apply {
-                toggle_community_like.buttonDrawable = AppCompatResources.getDrawable(itemView.context, R.drawable.selector_ic_favorite)
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    toggle_community_like.buttonDrawable = AppCompatResources.getDrawable(itemView.context, R.drawable.selector_ic_favorite)
+                } else {
+                    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+                    toggle_community_like.buttonDrawable = ContextCompat.getDrawable(itemView.context, R.drawable.selector_ic_favorite)
+                }
 
                 tv_community_username.text = convert.providerUserName()
                 tv_community_time.text = convert.provideTime()

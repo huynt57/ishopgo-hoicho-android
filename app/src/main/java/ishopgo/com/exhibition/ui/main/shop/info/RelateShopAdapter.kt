@@ -2,13 +2,12 @@ package ishopgo.com.exhibition.ui.main.shop.info
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.BoothRelate
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_shop_relate.view.*
 
 /**
@@ -40,14 +39,8 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
 
             val convert = converter.convert(data)
             itemView.apply {
-                Glide.with(context)
-                        .load(convert.provideAvatar())
-                        .apply(RequestOptions()
-                                .placeholder(R.drawable.avatar_placeholder)
-                                .error(R.drawable.avatar_placeholder))
-                        .into(view_avatar)
                 view_name.text = convert.provideName()
-                view_phone.text = convert.providePhone()
+                view_phone.setPhone(convert.providePhone(), data.hotline ?: "")
                 view_place.text = convert.providePlace()
             }
         }
