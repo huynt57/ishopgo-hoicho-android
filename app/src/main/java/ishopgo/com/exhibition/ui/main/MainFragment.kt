@@ -15,6 +15,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -118,6 +119,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         viewModel.showCategoriedProducts.observe(this, Observer { s ->
             s?.let {
                 val params = Bundle()
+                filterViewModel.getDataFilter(FilterProduct())
                 params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
                 childFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)

@@ -36,7 +36,7 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var showCategoriedProducts = MutableLiveData<Category>()
 
     fun showCategoriedProducts(category: Category) {
-        showCategoriedProducts.postValue(category)
+        showCategoriedProducts.value = category
     }
 
     fun enableSearchInbox() {

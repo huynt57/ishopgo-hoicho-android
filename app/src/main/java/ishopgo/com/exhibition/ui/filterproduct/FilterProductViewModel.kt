@@ -13,7 +13,7 @@ class FilterProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var showFragmentFilter = MutableLiveData<FilterProduct>()
 
     fun showFragmentFilter(filterProduct: FilterProduct) {
-        showFragmentFilter.postValue(filterProduct)
+        showFragmentFilter.value = filterProduct
     }
 
     var getDataFilter = MutableLiveData<FilterProduct>()

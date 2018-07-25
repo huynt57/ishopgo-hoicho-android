@@ -173,7 +173,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         titleView.setOnClickListener { mainViewModel.searchInCategory(category) }
         titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
 
-        toolbar.rightButton(R.drawable.ic_filter_24dp)
+        toolbar.rightButton(R.drawable.ic_filter_highlight_24dp)
         toolbar.setRightButtonClickListener {
             filterViewModel.showFragmentFilter(filterProduct)
         }
@@ -183,18 +183,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         super.onActivityCreated(savedInstanceState)
 
         mainViewModel = obtainViewModel(MainViewModel::class.java, true)
-//        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
-//        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-//        filterViewModel.getDataFilter.observe(this, Observer { p ->
-//            p?.let {
-//                val count = (it.filter?.size
-//                        ?: 0) + if (it.sort_by?.isNotEmpty() == true && it.sort_type?.isNotEmpty() == true) 1 else 0
-//                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
-//
-//                filterProduct = it
-//                firstLoad()
-//            }
-//        })
+
         filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
         filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { c ->
             c?.let {
@@ -205,6 +194,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
                 firstLoad()
             }
         })
+
         viewModel = obtainViewModel(ProductsByCategoryViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.childCategories.observe(this, Observer { c ->
@@ -230,8 +220,6 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         })
 
         viewModel.loadChildCategory(category)
-
-        firstLoad()
     }
 
     private fun firstLoad() {
