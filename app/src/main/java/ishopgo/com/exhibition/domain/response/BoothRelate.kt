@@ -24,5 +24,7 @@ class BoothRelate {
     @SerializedName("address")
     @Expose
     var address: String? = null
-
+    @SerializedName("content")
+    @Expose
+    var content: String? = null
 }
