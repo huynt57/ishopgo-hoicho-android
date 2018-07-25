@@ -57,13 +57,16 @@ class PostMenuDetailFragment : BaseFragment() {
         if (arguments?.getString(Const.TransferKey.EXTRA_JSON) != null) {
             val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
             data = Toolbox.gson.fromJson(json, PostObject::class.java)
+        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (data != null)
             data?.let {
                 postId = it.id
                 showViewPost(it)
             }
-
-        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
     @SuppressLint("SetJavaScriptEnabled", "SetTextI18n")
