@@ -2,9 +2,7 @@ package ishopgo.com.exhibition.ui.filterproduct
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterProduct
@@ -188,8 +186,7 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
 
             viewModel.getDataFilter(data)
 
-            Navigation.findNavController(it).popBackStack()
-
+            activity?.onBackPressed()
         }
 
         constraintLayout.setOnClickListener(null)
