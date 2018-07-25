@@ -183,14 +183,24 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         super.onActivityCreated(savedInstanceState)
 
         mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+//        filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
+//        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
+//        filterViewModel.getDataFilter.observe(this, Observer { p ->
+//            p?.let {
+//                val count = (it.filter?.size
+//                        ?: 0) + if (it.sort_by?.isNotEmpty() == true && it.sort_type?.isNotEmpty() == true) 1 else 0
+//                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
+//
+//                filterProduct = it
+//                firstLoad()
+//            }
+//        })
         filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
-        filterViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
-        filterViewModel.getDataFilter.observe(this, Observer { p ->
-            p?.let {
+        filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { c ->
+            c?.let {
                 val count = (it.filter?.size
                         ?: 0) + if (it.sort_by?.isNotEmpty() == true && it.sort_type?.isNotEmpty() == true) 1 else 0
-                toolbar.rightButton(R.drawable.ic_filter_24dp, count)
-
+                toolbar.rightButton(R.drawable.ic_filter_highlight_24dp, count)
                 filterProduct = it
                 firstLoad()
             }
