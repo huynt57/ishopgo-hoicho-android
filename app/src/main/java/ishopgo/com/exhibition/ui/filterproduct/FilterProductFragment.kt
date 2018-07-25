@@ -9,7 +9,6 @@ import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.main.filterproduct.CustomFilterProduct
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_filter_product.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*

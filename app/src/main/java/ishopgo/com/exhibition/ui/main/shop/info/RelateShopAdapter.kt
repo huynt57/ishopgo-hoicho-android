@@ -39,6 +39,7 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
 
             val convert = converter.convert(data)
             itemView.apply {
+                view_function.text = convert.provideFunction()
                 view_name.text = convert.provideName()
                 view_phone.setPhone(convert.providePhone(), data.hotline ?: "")
                 view_place.text = convert.providePlace()
@@ -51,11 +52,16 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
         fun provideAvatar(): String
         fun providePlace(): String
         fun providePhone(): String
+        fun provideFunction(): String
     }
 
     class BoothRelateConverter : Converter<BoothRelate, ShopRelateProvider> {
         override fun convert(from: BoothRelate): ShopRelateProvider {
             return object : ShopRelateProvider {
+                override fun provideFunction(): String {
+                    return from.content ?: ""
+                }
+
                 override fun providePlace(): String {
                     return from.address ?: ""
                 }

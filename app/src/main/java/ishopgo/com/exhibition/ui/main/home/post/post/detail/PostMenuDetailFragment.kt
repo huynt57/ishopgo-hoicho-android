@@ -24,8 +24,6 @@ import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostObject
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asDate
-import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.main.home.post.post.PostMenuViewModel
 import ishopgo.com.exhibition.ui.main.postmanager.detail.PostManagerDetailConverter
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -57,13 +55,16 @@ class PostMenuDetailFragment : BaseFragment() {
         if (arguments?.getString(Const.TransferKey.EXTRA_JSON) != null) {
             val json: String = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
             data = Toolbox.gson.fromJson(json, PostObject::class.java)
+        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (data != null)
             data?.let {
                 postId = it.id
                 showViewPost(it)
             }
-
-        } else postId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
     }
 
     @SuppressLint("SetJavaScriptEnabled", "SetTextI18n")
