@@ -177,7 +177,7 @@ class ProductManagerAddFragment : BaseFragment() {
         sw_show_nksx.setOnCheckedChangeListener { _, _ ->
             if (sw_show_nksx.isChecked) {
                 nkxs = NKSX_DISPLAY_SHOW
-                sw_show_nksx.text = "Nhật ký sản xuất: Bắt"
+                sw_show_nksx.text = "Nhật ký sản xuất: Bật"
             } else {
                 nkxs = NKSX_DISPLAY_HIDDEN
                 sw_show_nksx.text = "Nhật ký sản xuất: Tắt"
@@ -199,7 +199,7 @@ class ProductManagerAddFragment : BaseFragment() {
             val maSp = edit_product_code.text.toString()
             val tieuDe = edit_product_title.text.toString()
             val giaBan = edit_product_price?.money ?: 0
-            val giaBanKm = edit_product_price_promtion?.money ?: 0
+            val giaBanKm = edit_product_price_promotion?.money ?: 0
             val dvt = edit_product_dvt.text.toString()
             val xuatSu = edt_product_madeIn.text.toString()
             val moTa = edit_product_description.text.toString()

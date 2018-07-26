@@ -366,7 +366,6 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                             }
                         }
 
-
                         override fun failure(status: Int, message: String) {
                             resolveError(status, message)
                         }
@@ -378,7 +377,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
 
     fun getProductDetail(product_Id: Long) {
 
-        addDisposable(isgService.getProductManagerDetail(product_Id)
+        addDisposable(authService.getProductManagerDetail(product_Id)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductManagerDetail>() {
                     override fun success(data: ProductManagerDetail?) {

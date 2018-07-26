@@ -90,9 +90,6 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
                     ProductManagerAdapter.CLICK_OPTION -> {
                         val options = mutableListOf<OptionsBottomSheet.Option>()
 
-                        if (UserDataManager.currentType == "Chủ hội chợ") {
-                            options.add(OptionsBottomSheet.Option("Sửa", R.drawable.ic_edit_default_24dp))
-                        }
                         if (UserDataManager.currentType == "Quản trị viên" || UserDataManager.currentType == "Nhân viên gian hàng") {
                             val listPermission = Const.listPermission
 

@@ -1,0 +1,16 @@
+package ishopgo.com.exhibition.ui.main.productmanager.detail
+
+import android.content.Context
+import android.view.View
+import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
+import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
+
+abstract class ProductManagerDetailOverwrite {
+    abstract fun handleInOtherFlavor(rootView: View, detail: ProductManagerDetail, fragment: BaseFragment)
+    abstract fun handleViewCreated(rootView: View, context: Context)
+    abstract fun handleStartEdit(rootView: View)
+    abstract fun handleEndEdit(rootView: View)
+    abstract fun handleOnCreate(productId: Long)
+    abstract fun handleActivityCreated(viewModel: ProductManagerViewModel, fragment: BaseFragment)
+}

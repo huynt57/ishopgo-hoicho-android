@@ -434,9 +434,6 @@ class ApiService {
         @POST("add-product")
         fun createProductManager(@Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @GET("product")
-        fun getProductManagerDetail(@Query("product_id") productID: Long): Single<BaseResponse<ProductManagerDetail>>
-
         @POST("restore-members/{id}")
         fun restoreMembers(@Path("id") member_id: Long): Single<BaseResponse<Any>>
 

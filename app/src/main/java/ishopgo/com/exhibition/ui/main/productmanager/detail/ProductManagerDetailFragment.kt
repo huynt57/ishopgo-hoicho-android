@@ -74,9 +74,8 @@ class ProductManagerDetailFragment : BaseFragment() {
     private val adapterCategory_3 = CategoryAdapter()
     private val adapterCategory_4 = CategoryAdapter()
     private var listCategory = mutableListOf<Category>()
-    private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
-    private var adapterDialogProduct = ProductManagerRelatedAdapter()
-    private var listProductRelated = ArrayList<ProductManager>()
+
+    private val handleOverwrite: ProductManagerDetailOverwrite = CustomProductManagerDetail()
 
     private var brand_id: Long = 0L
 
@@ -87,15 +86,16 @@ class ProductManagerDetailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         product_Id = arguments?.getLong(EXTRA_ID, -1L) ?: -1L
-
+        handleOverwrite.handleOnCreate(product_Id)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showProgressDialog()
+
         context?.let {
+            handleOverwrite.handleViewCreated(view, it)
             rv_product_images.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
-            rv_product_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
         }
 
 
@@ -104,9 +104,6 @@ class ProductManagerDetailFragment : BaseFragment() {
             launchPickPhotoIntent()
         }
 
-        img_add_related_product.setOnClickListener {
-            performSearchingProduct()
-        }
         if (UserDataManager.currentType == "Quản trị viên") {
             val listPermission = Const.listPermission
 
@@ -126,25 +123,25 @@ class ProductManagerDetailFragment : BaseFragment() {
                         if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                         edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                             showProgressDialog()
-                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-                                    edit_product_price?.money
-                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
-                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-                                    ?: 0, edit_produt_wholesale_to.money
-                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
+//                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
+//                                    edit_product_price?.money
+//                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
+//                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
+//                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
+//                                    ?: 0, edit_produt_wholesale_to.money
+//                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
                         }
                     } else
                         if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
                                         edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
                             showProgressDialog()
-                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-                                    edit_product_price?.money
-                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
-                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-                                    ?: 0, edit_produt_wholesale_to.money
-                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
+//                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
+//                                    edit_product_price?.money
+//                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
+//                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
+//                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
+//                                    ?: 0, edit_produt_wholesale_to.money
+//                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
                         }
                 }
             }
@@ -178,7 +175,6 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
         viewModel = obtainViewModel(ProductManagerViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
@@ -186,6 +182,8 @@ class ProductManagerDetailFragment : BaseFragment() {
                 resolveError(it)
             }
         })
+
+        handleOverwrite.handleActivityCreated(viewModel, this)
 
         viewModel.dataProductDetail.observe(this, Observer { p ->
             p.let {
@@ -213,17 +211,6 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         })
 
-        viewModel.dataReturned.observe(this, Observer { p ->
-            p?.let {
-                if (reloadData) {
-                    adapterDialogProduct.replaceAll(it)
-                    hideProgressDialog()
-                } else {
-                    adapterDialogProduct.addAll(it)
-                }
-            }
-        })
-
         viewModel.editProductSusscess.observe(this, Observer { p ->
             hideProgressDialog()
             stopEditing()
@@ -231,7 +218,7 @@ class ProductManagerDetailFragment : BaseFragment() {
             toast("Cập nhật thành công")
             viewModel.getProductDetail(product_Id)
             postMedias.clear()
-            listProductRelated.clear()
+//            listProductRelated.clear()
             activity?.setResult(RESULT_OK)
         })
 
@@ -329,106 +316,12 @@ class ProductManagerDetailFragment : BaseFragment() {
         viewModel.getBooth(loadMore)
     }
 
-    private fun firstLoadProductRelated() {
-        reloadData = true
-        val firstLoad = ProductManagerRequest()
-        firstLoad.limit = Const.PAGE_LIMIT
-        firstLoad.offset = 0
-        firstLoad.name = keyWord
-        firstLoad.code = code
-        firstLoad.productId = product_Id
-        viewModel.loadData(firstLoad)
-    }
-
-    private fun loadMoreProductRelated(currentCount: Int) {
-        reloadData = false
-        val loadMore = ProductManagerRequest()
-        loadMore.limit = Const.PAGE_LIMIT
-        loadMore.offset = currentCount
-        loadMore.name = keyWord
-        loadMore.code = code
-        loadMore.productId = product_Id
-        viewModel.loadData(loadMore)
-    }
-
-    private var keyWord: String = ""
-    private var code: String = ""
-
-    private fun performSearchingProduct() {
-        reloadData = true
-        context?.let {
-            val dialog = MaterialDialog.Builder(it)
-                    .title("Tìm kiếm")
-                    .customView(R.layout.dialog_search_product_related, false)
-                    .positiveText("Tìm")
-                    .onPositive({ dialog, _ ->
-                        val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
-                        val edt_search_name = dialog.findViewById(R.id.edt_search_name) as TextInputEditText
-                        val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
-                        keyWord = edt_search_name.text.toString().trim { it <= ' ' }
-                        code = edt_search_code.text.toString().trim { it <= ' ' }
-                        firstLoadProductRelated()
-
-                        val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                        rv_search.adapter = adapterDialogProduct
-                        rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager2) {
-                            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                                loadMoreProductRelated(totalItemsCount)
-                            }
-                        })
-                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                            override fun click(position: Int, data: ProductManager, code: Int) {
-                                if (listProductRelated.size == 0) {
-                                    listProductRelated.add(data)
-                                    adapterProductRelatedImage.replaceAll(listProductRelated)
-                                } else {
-                                    val isContained = listProductRelated.any {
-                                        if (it is IdentityData && data is IdentityData)
-                                            return@any it.id == data.id
-                                        return@any false
-                                    }
-
-                                    if (isContained) {
-                                        toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
-                                        return
-                                    } else {
-                                        listProductRelated.add(data)
-                                        adapterProductRelatedImage.replaceAll(listProductRelated)
-                                    }
-                                }
-                                dialog.dismiss()
-                            }
-                        }
-                        reloadData = true
-                    })
-                    .negativeText("Huỷ")
-                    .onNegative { dialog, _ -> dialog.dismiss() }
-                    .autoDismiss(false)
-                    .canceledOnTouchOutside(false)
-                    .build()
-
-            dialog.show()
-        }
-    }
-
-    private fun loadSanPhamLienQuan() {
-        context?.let {
-            rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_product_related_products.adapter = adapterProductRelatedImage
-            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                override fun click(position: Int, data: ProductManager, code: Int) {
-                    listProductRelated.remove(data)
-                    adapterProductRelatedImage.replaceAll(listProductRelated)
-                }
-            }
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     private fun showDetail(info: ProductManagerDetail) {
         val convert = ProductManagerConverter().convert(info)
-
+        view?.let {
+            handleOverwrite.handleInOtherFlavor(it, info, this)
+        }
         hideProgressDialog()
         sw_show_wholesale.isChecked = convert.provideViewWholesale()
         sw_show_wholesale.text = if (convert.provideViewWholesale()) "Hiển thị giá bán sỉ: Hiển thị"
@@ -535,6 +428,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_meta_description.setText(convert.provideMetaDescription())
         edit_product_tags.setText(convert.provideTags())
         edit_product_booth.setText(convert.providerBoothName())
+        edit_product_price_promotion.setText(convert.providerPricePromotion())
 
         if (convert.provideDepartments() != null) {
             brand_id = convert.provideDepartments()!!.id
@@ -566,25 +460,25 @@ class ProductManagerDetailFragment : BaseFragment() {
                 })
 
 
-        val productsRelatedAdapter = ProductManagerDetailRelatedAdapter()
-        info.collectionProducts?.products?.let { productsRelatedAdapter.replaceAll(it) }
-        rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        rv_product_related_products.adapter = productsRelatedAdapter
+//        val productsRelatedAdapter = ProductManagerDetailRelatedAdapter()
+//        info.collectionProducts?.products?.let { productsRelatedAdapter.replaceAll(it) }
+//        rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        rv_product_related_products.adapter = productsRelatedAdapter
 
-        if (info.collectionProducts != null && info.collectionProducts!!.products != null && info.collectionProducts!!.products!!.isNotEmpty()) {
-            for (i in info.collectionProducts!!.products!!.indices) {
-                val productCollection = info.collectionProducts!!.products!![i]
-                val productManager = ProductManager()
-                productManager.code = productCollection.code
-                productManager.name = productCollection.name
-                productManager.promotionPrice = productCollection.promotionPrice
-                productManager.price = productCollection.price
-                productManager.image = productCollection.image
-                productManager.id = productCollection.id
-                listProductRelated.add(productManager)
-                adapterProductRelatedImage.replaceAll(listProductRelated)
-            }
-        }
+//        if (info.collectionProducts != null && info.collectionProducts!!.products != null && info.collectionProducts!!.products!!.isNotEmpty()) {
+//            for (i in info.collectionProducts!!.products!!.indices) {
+//                val productCollection = info.collectionProducts!!.products!![i]
+//                val productManager = ProductManager()
+//                productManager.code = productCollection.code
+//                productManager.name = productCollection.name
+//                productManager.promotionPrice = productCollection.promotionPrice
+//                productManager.price = productCollection.price
+//                productManager.image = productCollection.image
+//                productManager.id = productCollection.id
+//                listProductRelated.add(productManager)
+//                adapterProductRelatedImage.replaceAll(listProductRelated)
+//            }
+//        }
     }
 
     interface ProductManagerDetailProvider {
@@ -610,13 +504,18 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun provideWholesaleTo(): String
         fun provideWholesaleCountProduct(): String
         fun providerBoothName(): String
-
+        fun providerPricePromotion(): String
     }
 
     class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
 
         override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
+
+                override fun providerPricePromotion(): String {
+                    return from.promotionPrice.toString()
+                }
+
                 override fun providerBoothName(): String {
                     return from.providerName ?: ""
                 }
@@ -760,13 +659,21 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_produt_wholesale_to.isFocusableInTouchMode = false
         edit_produt_wholesale_count.isFocusable = false
         edit_produt_wholesale_count.isFocusableInTouchMode = false
+        edit_product_price_promotion.isFocusable = false
+        edit_product_price_promotion.isFocusableInTouchMode = false
+        edit_product_scale.isFocusable = false
+        edit_product_scale.isFocusableInTouchMode = false
+        edit_product_quantity.isFocusable = false
+        edit_product_quantity.isFocusableInTouchMode = false
         edit_product_price.setOnClickListener(null)
         edit_product_booth.setOnClickListener(null)
         edit_product_brand.setOnClickListener(null)
         sw_featured.isClickable = false
         sw_status.isClickable = false
         sw_show_wholesale.isClickable = false
-
+        view?.let {
+            handleOverwrite.handleEndEdit(it)
+        }
         edt_product_categories.setOnClickListener(null)
         edt_product_categories_1.setOnClickListener(null)
         edt_product_categories_2.setOnClickListener(null)
@@ -811,8 +718,17 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_produt_wholesale_to.isFocusableInTouchMode = true
         edit_produt_wholesale_count.isFocusable = true
         edit_produt_wholesale_count.isFocusableInTouchMode = true
+        edit_product_price_promotion.isFocusable = true
+        edit_product_price_promotion.isFocusableInTouchMode = true
+        edit_product_scale.isFocusable = true
+        edit_product_scale.isFocusableInTouchMode = true
+        edit_product_quantity.isFocusable = true
+        edit_product_quantity.isFocusableInTouchMode = true
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
         edit_product_booth.setOnClickListener { getBooth(edit_product_booth) }
+        view?.let {
+            handleOverwrite.handleStartEdit(it)
+        }
         sw_featured.isClickable = true
         sw_status.isClickable = true
         sw_show_wholesale.isClickable = true
@@ -862,7 +778,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         view_scrollview.smoothScrollTo(0, 0)
 
         setupImageRecycleview()
-        loadSanPhamLienQuan()
+//        loadSanPhamLienQuan()
 
         btn_product_update.text = "Xong"
     }
@@ -878,7 +794,6 @@ class ProductManagerDetailFragment : BaseFragment() {
                 val postMedia = PostMedia()
                 postMedia.uri = data.data
                 postMedias.add(postMedia)
-                Log.d("1231231", data.data.toString())
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {

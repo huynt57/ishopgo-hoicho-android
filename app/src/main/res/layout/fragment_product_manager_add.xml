@@ -304,7 +304,7 @@
             android:layout_marginTop="16dp">
 
             <ishopgo.com.exhibition.ui.widget.MoneyEditText
-                android:id="@+id/edit_product_price_promtion"
+                android:id="@+id/edit_product_price_promotion"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

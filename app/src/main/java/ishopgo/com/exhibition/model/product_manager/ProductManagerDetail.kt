@@ -5,6 +5,7 @@ import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.InfoProduct
 
 class ProductManagerDetail : IdentityData() {
     @SerializedName("title")
@@ -12,7 +13,7 @@ class ProductManagerDetail : IdentityData() {
     var title: String? = null
     @SerializedName("provider_price")
     @Expose
-    var providerPrice: Any? = null
+    var providerPrice: String? = null
     @SerializedName("dvt")
     @Expose
     var dvt: String? = null
@@ -85,9 +86,6 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("images")
     @Expose
     var images: List<String>? = null
-    @SerializedName("relate")
-    @Expose
-    var relate: List<Any>? = null
     @SerializedName("department")
     @Expose
     var department: Brand? = null
@@ -109,4 +107,61 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("shop_id")
     @Expose
     var shopId: Int? = null
+    @SerializedName("dm_cap_0_shop")
+    @Expose
+    var dmCap0Shop: Long? = null
+    @SerializedName("dm_cap_1_shop")
+    @Expose
+    var dmCap1Shop: Long? = null
+    @SerializedName("dm_cap_2_shop")
+    @Expose
+    var dmCap2Shop: Long? = null
+    @SerializedName("dm_cap_3_shop")
+    @Expose
+    var dmCap3Shop: Long? = null
+    @SerializedName("dm_cap_4_shop")
+    @Expose
+    var dmCap4Shop: Long? = null
+    @SerializedName("is_nhatky_sx")
+    @Expose
+    var isNhatkySx: Int? = null
+    @SerializedName("is_baotieu")
+    @Expose
+    var isBaoTieu: Int? = null
+    @SerializedName("is_show_date")
+    @Expose
+    var isShowDate: Int? = null
+    @SerializedName("ngay_sx")
+    @Expose
+    var ngaySx: String? = null
+    @SerializedName("dk_thuhoach")
+    @Expose
+    var dkThuhoach: String? = null
+    @SerializedName("ms_lohang")
+    @Expose
+    var msLohang: String? = null
+    @SerializedName("is_ms_lohang")
+    @Expose
+    var isMsLohang: Int? = null
+    @SerializedName("quy_mo")
+    @Expose
+    var quyMo: String? = null
+    @SerializedName("san_luong")
+    @Expose
+    var sanLuong: String? = null
+    @SerializedName("mua_vu")
+    @Expose
+    var muaVu: String? = null
+    @SerializedName("dong_goi")
+    @Expose
+    var dongGoi: String? = null
+    @SerializedName("hsd")
+    @Expose
+    var hsd: String? = null
+    @SerializedName("xuat_xuong")
+    @Expose
+    var xuatXuong: String? = null
+    @SerializedName("info")
+    @Expose
+    var info: List<InfoProduct>? = null
 }
