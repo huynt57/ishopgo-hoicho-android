@@ -66,10 +66,13 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
 
     var createProductSusscess = MutableLiveData<Boolean>()
 
-    fun createProductManager(name: String, code: String, title: String, price: Long, dvt: String,
+    fun createProductManager(name: String, code: String, title: String, price: Long, pricePromtion: Long, dvt: String,
                              provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                              description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String) {
+                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int,
+                             wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, scale: String, quantity: String,
+                             pack: String, season: String, expiryDate: String, shipmentCode: String, manufacturingDate: String, harvestDate: String, shippedDate: String,
+                             isNksx: Int, isAccreditation: Int) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -92,6 +95,44 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         builder.addFormDataPart("wholesale_price_from", wholesale_price_from.toString())
         builder.addFormDataPart("wholesale_price_to", wholesale_price_to.toString())
         builder.addFormDataPart("wholesale_count_product", wholesale_count_product)
+        builder.addFormDataPart("promotion_price", pricePromtion.toString())
+
+        if (scale.isNotEmpty()) {
+            builder.addFormDataPart("quy_mo", scale)
+        }
+        if (quantity.isNotEmpty()) {
+            builder.addFormDataPart("san_luong", quantity)
+        }
+
+        //Agi
+
+        if (pack.isNotEmpty()) {
+            builder.addFormDataPart("dong_goi", pack)
+        }
+
+        if (expiryDate.isNotEmpty()) {
+            builder.addFormDataPart("hsd", expiryDate)
+        }
+
+        if (season.isNotEmpty()) {
+            builder.addFormDataPart("mua_vu", season)
+        }
+
+        if (shipmentCode.isNotEmpty()) {
+            builder.addFormDataPart("ms_lohang", shipmentCode)
+        }
+        if (manufacturingDate.isNotEmpty()) {
+            builder.addFormDataPart("ngay_sx", manufacturingDate)
+        }
+        if (harvestDate.isNotEmpty()) {
+            builder.addFormDataPart("dk_thuhoach", harvestDate)
+        }
+        if (shippedDate.isNotEmpty()) {
+            builder.addFormDataPart("xuat_xuong", shippedDate)
+        }
+
+        builder.addFormDataPart("is_nhatky_sx", isNksx.toString())
+        builder.addFormDataPart("is_baotieu", isAccreditation.toString())
 
         val listTags: ArrayList<String>? = ArrayList()
         listTags?.add(tag)

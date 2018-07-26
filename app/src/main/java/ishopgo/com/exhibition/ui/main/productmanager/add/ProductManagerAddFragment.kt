@@ -63,12 +63,16 @@ class ProductManagerAddFragment : BaseFragment() {
     private val handler = Handler(Looper.getMainLooper())
     private var status: Int = STATUS_DISPLAY_SHOW
     private var feautured: Int = STATUS_NOT_FEAUTURED
+    private var nkxs: Int = NKSX_DISPLAY_HIDDEN
+    private var baoTieu: Int = ACCREDITATINON_DISPLAY_HIDDEN
     private var image: String = ""
     private var brand_id: Long = 0L
     private var booth_id: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
     private var listProductRelated: ArrayList<ProductManager> = ArrayList()
+
+    private val handleOverwrite: ProductManagerAddOverwrite = CustomProductManagerAdd()
 
     companion object {
         const val TAG = "ProductManagerFragment"
@@ -78,6 +82,12 @@ class ProductManagerAddFragment : BaseFragment() {
         const val STATUS_FEAUTURED: Int = 1 //Sp nổi bật
         const val STATUS_NOT_FEAUTURED: Int = 0 //Sp bình thường
         var CASE_PICK_IMAGE: Boolean = true // true = Ảnh sản phẩm, false = Nhiều ảnh
+
+        const val NKSX_DISPLAY_SHOW: Int = 1 //Hiển thị NKSX
+        const val NKSX_DISPLAY_HIDDEN: Int = 0 //Không hiển thị NKSX
+
+        const val ACCREDITATINON_DISPLAY_SHOW: Int = 1 //Hiển thị bao tiêu
+        const val ACCREDITATINON_DISPLAY_HIDDEN: Int = 0 //Không hiển thị bao tiêu
 
         const val CATEGORY_LEVEL_PARENT: Int = 0
         const val CATEGORY_LEVEL_1: Int = 1
@@ -100,8 +110,12 @@ class ProductManagerAddFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        handleOverwrite.handleInOtherFlavor(view)
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
         edit_product_booth.setOnClickListener { getBooth(edit_product_booth) }
+
+        img_add_solution_product.setOnClickListener { toast("Đang phát triển") }
+        img_add_supplies_product.setOnClickListener { toast("Đang phát triển") }
 
         if (UserDataManager.currentType == "Chủ hội chợ")
             til_product_booth.visibility = View.VISIBLE else {
@@ -128,9 +142,9 @@ class ProductManagerAddFragment : BaseFragment() {
             } else {
                 sw_show_wholesale.text = "Hiển thị giá bán sỉ: Không hiển thị"
                 linear_wholesale.visibility = View.GONE
-                edit_produt_wholesale_from.setText("")
-                edit_produt_wholesale_to.setText("")
-                edit_produt_wholesale_count.setText("")
+                edit_product_wholesale_from.setText("")
+                edit_product_wholesale_to.setText("")
+                edit_product_wholesale_count.setText("")
             }
         }
 
@@ -154,30 +168,70 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         }
 
+        sw_show_nksx.setOnCheckedChangeListener { _, _ ->
+            if (sw_show_nksx.isChecked) {
+                nkxs = NKSX_DISPLAY_SHOW
+                sw_show_nksx.text = "Nhật ký sản xuất: Bắt"
+            } else {
+                nkxs = NKSX_DISPLAY_HIDDEN
+                sw_show_nksx.text = "Nhật ký sản xuất: Tắt"
+            }
+        }
+
+        sw_show_accreditation.setOnCheckedChangeListener { _, _ ->
+            if (sw_show_accreditation.isChecked) {
+                baoTieu = ACCREDITATINON_DISPLAY_SHOW
+                sw_show_accreditation.text = "Đã được bao tiêu: Đã được bao tiêu"
+            } else {
+                baoTieu = ACCREDITATINON_DISPLAY_HIDDEN
+                sw_show_accreditation.text = "Đã được bao tiêu: Chưa được bao tiêu"
+            }
+        }
+
         btn_product_add.setOnClickListener {
+            val tenSp = edit_product_name.text.toString()
+            val maSp = edit_product_code.text.toString()
+            val tieuDe = edit_product_title.text.toString()
+            val giaBan = edit_product_price?.money ?: 0
+            val giaBanKm = edit_product_price_promtion?.money ?: 0
+            val dvt = edit_product_dvt.text.toString()
+            val xuatSu = edt_product_madeIn.text.toString()
+            val moTa = edit_product_description.text.toString()
+            val metaMota = edit_product_meta_description.text.toString()
+            val metaKeyword = edit_product_meta_keyword.text.toString()
+            val tag = edit_product_tag.text.toString()
+            val giaBanSiTu = edit_product_wholesale_from?.money ?: 0
+            val giaBanSiDen = edit_product_wholesale_to?.money ?: 0
+            val soLuongBanSi = edit_product_wholesale_count.text.toString()
+            val quyMo = if (linear_scale.visibility == View.VISIBLE) edit_product_scale.text.toString() else edit_product_agri_scale.text.toString()
+            val sanLuong = if (linear_scale.visibility == View.VISIBLE) edit_product_quantity.text.toString() else edit_product_agri_quantity.text.toString()
+            val dongGoi = edit_product_agri_pack.text.toString()
+            val muaVu = edit_product_agri_season.text.toString()
+            val hsd = edit_product_agri_expiryDate.text.toString()
+            val msLoHang = edit_product_agri_shipmentCode.text.toString()
+            val ngaySX = edit_product_agri_manufacturingDate.text.toString()
+            val ngayThuHoachDK = edit_product_agri_harvestDate.text.toString()
+            val ngayXuatXuong = edit_product_agri_shippedDate.text.toString()
+
             if (UserDataManager.currentType == "Chủ hội chợ") {
-                if (isRequiredFieldsValid(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                if (isRequiredFieldsValid(image, tenSp, edit_product_price.text.toString(), maSp,
                                 edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
+
                     showProgressDialog()
-                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-                            edit_product_price?.money
-                                    ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edt_product_madeIn.text.toString(),
-                            image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-                            ?: 0, edit_produt_wholesale_to.money
-                            ?: 0, edit_produt_wholesale_count.text.toString())
+
+                    viewModel.createProductManager(tenSp, maSp, tieuDe, giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu, image, postMedias, moTa, status,
+                            metaMota, metaKeyword, tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, quyMo, sanLuong,
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu)
                 }
             } else
-                if (isRequiredFieldsValid(image, edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
+                if (isRequiredFieldsValid(image, tenSp, edit_product_price.text.toString(), maSp,
                                 edt_product_categories.text.toString(), booth_id.toString(), edit_product_brand.text.toString())) {
+
                     showProgressDialog()
-                    viewModel.createProductManager(edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-                            edit_product_price?.money
-                                    ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edt_product_madeIn.text.toString(),
-                            image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-                            edit_product_tag.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-                            ?: 0, edit_produt_wholesale_to.money
-                            ?: 0, edit_produt_wholesale_count.text.toString())
+
+                    viewModel.createProductManager(tenSp, maSp, tieuDe, giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu, image, postMedias, moTa, status,
+                            metaMota, metaKeyword, tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, quyMo, sanLuong,
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu)
                 }
 
         }
@@ -294,7 +348,7 @@ class ProductManagerAddFragment : BaseFragment() {
     }
 
     private fun firstLoadBrand() {
-        reloadBrands = false
+        reloadBrands = true
         val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
@@ -302,7 +356,7 @@ class ProductManagerAddFragment : BaseFragment() {
     }
 
     private fun loadMoreBrands(currentCount: Int) {
-        reloadBrands = true
+        reloadBrands = false
         val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
@@ -310,7 +364,7 @@ class ProductManagerAddFragment : BaseFragment() {
     }
 
     private fun firstLoadProvider() {
-        reloadProvider = false
+        reloadProvider = true
         val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
@@ -318,7 +372,7 @@ class ProductManagerAddFragment : BaseFragment() {
     }
 
     private fun loadMoreProvider(currentCount: Int) {
-        reloadProvider = true
+        reloadProvider = false
         val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
