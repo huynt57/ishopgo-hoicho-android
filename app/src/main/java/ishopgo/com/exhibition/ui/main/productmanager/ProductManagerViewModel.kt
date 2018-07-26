@@ -72,7 +72,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                              listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int,
                              wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, scale: String, quantity: String,
                              pack: String, season: String, expiryDate: String, shipmentCode: String, manufacturingDate: String, harvestDate: String, shippedDate: String,
-                             isNksx: Int, isAccreditation: Int) {
+                             isNksx: Int, isAccreditation: Int, listSuppliesProduct: ArrayList<ProductManager>, listSolutionProduct: ArrayList<ProductManager>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -147,6 +147,18 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         if (!listProducts_bsp.isEmpty()) {
             for (i in listProducts_bsp.indices) {
                 builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].id.toString())
+            }
+        }
+
+        if (!listSuppliesProduct.isEmpty()) {
+            for (i in listSuppliesProduct.indices) {
+                builder.addFormDataPart("vat_tu_products_bsp[]", listSuppliesProduct[i].id.toString())
+            }
+        }
+
+        if (!listSolutionProduct.isEmpty()) {
+            for (i in listSolutionProduct.indices) {
+                builder.addFormDataPart("giai_phap_products_bsp[]", listSolutionProduct[i].id.toString())
             }
         }
 
@@ -478,6 +490,58 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                     }
                 })
         )
+    }
+
+    var dataVatTu = MutableLiveData<List<ProductManager>>()
+
+    fun loadDataVatTu(params: Request) {
+        if (params is ProductManagerRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            fields["name"] = params.name
+            fields["code"] = params.code
+            fields["product_id"] = params.productId
+
+            addDisposable(isgService.getProductManager(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManageProduct>() {
+                        override fun success(data: ManageProduct?) {
+                            dataVatTu.postValue(data?.product ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
+    }
+
+    var dataGiaiPhap = MutableLiveData<List<ProductManager>>()
+
+    fun loadDataGiaiPhap(params: Request) {
+        if (params is ProductManagerRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            fields["name"] = params.name
+            fields["code"] = params.code
+            fields["product_id"] = params.productId
+
+            addDisposable(isgService.getProductManager(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManageProduct>() {
+                        override fun success(data: ManageProduct?) {
+                            dataGiaiPhap.postValue(data?.product ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
     }
 
     companion object {

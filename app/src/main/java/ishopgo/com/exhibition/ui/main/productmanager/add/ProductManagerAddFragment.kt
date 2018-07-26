@@ -53,7 +53,11 @@ class ProductManagerAddFragment : BaseFragment() {
     private val adapterCategory_3 = CategoryAdapter()
     private val adapterCategory_4 = CategoryAdapter()
     private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
+    private var adapterVatTu = ProductManagerRelatedCollapseAdapters()
+    private var adapterGiaiPhap = ProductManagerRelatedCollapseAdapters()
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
+    private var adapterDialogVatTu = ProductManagerRelatedAdapter()
+    private var adapterDialogGiaiPhap = ProductManagerRelatedAdapter()
     private var listCategory = ArrayList<Category>()
 
     private var reloadBrands = false
@@ -71,6 +75,8 @@ class ProductManagerAddFragment : BaseFragment() {
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
     private var listProductRelated: ArrayList<ProductManager> = ArrayList()
+    private var listVatTu: ArrayList<ProductManager> = ArrayList()
+    private var listGiaiPhap: ArrayList<ProductManager> = ArrayList()
 
     private val handleOverwrite: ProductManagerAddOverwrite = CustomProductManagerAdd()
 
@@ -114,8 +120,8 @@ class ProductManagerAddFragment : BaseFragment() {
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
         edit_product_booth.setOnClickListener { getBooth(edit_product_booth) }
 
-        img_add_solution_product.setOnClickListener { toast("Đang phát triển") }
-        img_add_supplies_product.setOnClickListener { toast("Đang phát triển") }
+        img_add_solution_product.setOnClickListener { performSearchingGiaiPhap() }
+        img_add_supplies_product.setOnClickListener { performSearchingVatTu() }
 
         if (UserDataManager.currentType == "Chủ hội chợ")
             til_product_booth.visibility = View.VISIBLE else {
@@ -221,7 +227,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
                     viewModel.createProductManager(tenSp, maSp, tieuDe, giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu, image, postMedias, moTa, status,
                             metaMota, metaKeyword, tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, quyMo, sanLuong,
-                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu)
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu, listVatTu, listGiaiPhap)
                 }
             } else
                 if (isRequiredFieldsValid(image, tenSp, edit_product_price.text.toString(), maSp,
@@ -231,7 +237,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
                     viewModel.createProductManager(tenSp, maSp, tieuDe, giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu, image, postMedias, moTa, status,
                             metaMota, metaKeyword, tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, quyMo, sanLuong,
-                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu)
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu, listVatTu, listGiaiPhap)
                 }
 
         }
@@ -244,6 +250,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
         setupImageRecycleview()
         loadSanPhamLienQuan()
+        loadVatTu()
+        loadGiaiPhap()
     }
 
     private fun setupImageRecycleview() {
@@ -305,6 +313,28 @@ class ProductManagerAddFragment : BaseFragment() {
                     hideProgressDialog()
                 } else {
                     adapterDialogProduct.addAll(it)
+                }
+            }
+        })
+
+        viewModel.dataVatTu.observe(this, Observer { p ->
+            p?.let {
+                if (reloadDataVatTu) {
+                    adapterDialogVatTu.replaceAll(it)
+                    hideProgressDialog()
+                } else {
+                    adapterDialogVatTu.addAll(it)
+                }
+            }
+        })
+
+        viewModel.dataGiaiPhap.observe(this, Observer { p ->
+            p?.let {
+                if (reloadDataGiaiPhap) {
+                    adapterDialogGiaiPhap.replaceAll(it)
+                    hideProgressDialog()
+                } else {
+                    adapterDialogGiaiPhap.addAll(it)
                 }
             }
         })
@@ -397,6 +427,46 @@ class ProductManagerAddFragment : BaseFragment() {
         loadMore.name = keyWord
         loadMore.code = code
         viewModel.loadData(loadMore)
+    }
+
+    private fun firstLoadProductVatTu() {
+        reloadDataVatTu = true
+        val firstLoad = ProductManagerRequest()
+        firstLoad.limit = Const.PAGE_LIMIT
+        firstLoad.offset = 0
+        firstLoad.name = keyWordVatTu
+        firstLoad.code = codeVatTu
+        viewModel.loadDataVatTu(firstLoad)
+    }
+
+    private fun loadMoreProductVatTu(currentCount: Int) {
+        reloadDataVatTu = false
+        val loadMore = ProductManagerRequest()
+        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.offset = currentCount
+        loadMore.name = keyWordVatTu
+        loadMore.code = codeVatTu
+        viewModel.loadDataVatTu(loadMore)
+    }
+
+    private fun firstLoadProductGiaiPhap() {
+        reloadDataGiaiPhap = true
+        val firstLoad = ProductManagerRequest()
+        firstLoad.limit = Const.PAGE_LIMIT
+        firstLoad.offset = 0
+        firstLoad.name = keyWordGiaiPhap
+        firstLoad.code = codeGiaiPhap
+        viewModel.loadDataGiaiPhap(firstLoad)
+    }
+
+    private fun loadMoreProductGiaiPhap(currentCount: Int) {
+        reloadDataGiaiPhap = false
+        val loadMore = ProductManagerRequest()
+        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.offset = currentCount
+        loadMore.name = keyWordGiaiPhap
+        loadMore.code = codeGiaiPhap
+        viewModel.loadDataGiaiPhap(loadMore)
     }
 
     private fun firstLoadCategory() {
@@ -695,6 +765,128 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
+    private var keyWordVatTu: String = ""
+    private var codeVatTu: String = ""
+    private var reloadDataVatTu = false
+
+    private fun performSearchingVatTu() {
+        reloadDataVatTu = true
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Tìm kiếm")
+                    .customView(R.layout.dialog_search_product_related, false)
+                    .positiveText("Tìm")
+                    .onPositive({ dialog, _ ->
+                        val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+                        val edt_search_name = dialog.findViewById(R.id.edt_search_name) as TextInputEditText
+                        val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
+                        keyWordVatTu = edt_search_name.text.toString().trim { it <= ' ' }
+                        codeVatTu = edt_search_code.text.toString().trim { it <= ' ' }
+                        firstLoadProductVatTu()
+                        val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.adapter = adapterDialogVatTu
+                        rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager2) {
+                            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                                loadMoreProductVatTu(totalItemsCount)
+                            }
+                        })
+                        adapterDialogVatTu.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                            override fun click(position: Int, data: ProductManager, code: Int) {
+                                if (listVatTu.size == 0) {
+                                    listVatTu.add(data)
+                                    adapterVatTu.replaceAll(listVatTu)
+                                } else {
+                                    val isContained = listVatTu.any {
+                                        if (it is IdentityData && data is IdentityData)
+                                            return@any it.id == data.id
+                                        return@any false
+                                    }
+
+                                    if (isContained) {
+                                        toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                                        return
+                                    } else {
+                                        listVatTu.add(data)
+                                        adapterVatTu.replaceAll(listVatTu)
+                                    }
+                                }
+                                dialog.dismiss()
+                            }
+                        }
+                        reloadDataVatTu = true
+                    })
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            dialog.show()
+        }
+    }
+
+    private var keyWordGiaiPhap: String = ""
+    private var codeGiaiPhap: String = ""
+    private var reloadDataGiaiPhap = false
+
+    private fun performSearchingGiaiPhap() {
+        reloadDataGiaiPhap = true
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Tìm kiếm")
+                    .customView(R.layout.dialog_search_product_related, false)
+                    .positiveText("Tìm")
+                    .onPositive({ dialog, _ ->
+                        val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+                        val edt_search_name = dialog.findViewById(R.id.edt_search_name) as TextInputEditText
+                        val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
+                        keyWordGiaiPhap = edt_search_name.text.toString().trim { it <= ' ' }
+                        codeGiaiPhap = edt_search_code.text.toString().trim { it <= ' ' }
+                        firstLoadProductGiaiPhap()
+                        val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.adapter = adapterDialogGiaiPhap
+                        rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager2) {
+                            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                                loadMoreProductGiaiPhap(totalItemsCount)
+                            }
+                        })
+                        adapterDialogGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                            override fun click(position: Int, data: ProductManager, code: Int) {
+                                if (listGiaiPhap.size == 0) {
+                                    listGiaiPhap.add(data)
+                                    adapterGiaiPhap.replaceAll(listGiaiPhap)
+                                } else {
+                                    val isContained = listGiaiPhap.any {
+                                        if (it is IdentityData && data is IdentityData)
+                                            return@any it.id == data.id
+                                        return@any false
+                                    }
+
+                                    if (isContained) {
+                                        toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                                        return
+                                    } else {
+                                        listGiaiPhap.add(data)
+                                        adapterGiaiPhap.replaceAll(listGiaiPhap)
+                                    }
+                                }
+                                dialog.dismiss()
+                            }
+                        }
+                        reloadDataGiaiPhap = true
+                    })
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            dialog.show()
+        }
+    }
+
     private fun loadSanPhamLienQuan() {
         context?.let {
             adapterProductRelatedImage.replaceAll(listProductRelated)
@@ -705,6 +897,36 @@ class ProductManagerAddFragment : BaseFragment() {
                 override fun click(position: Int, data: ProductManager, code: Int) {
                     listProductRelated.remove(data)
                     adapterProductRelatedImage.replaceAll(listProductRelated)
+                }
+            }
+        }
+    }
+
+    private fun loadVatTu() {
+        context?.let {
+            adapterVatTu.replaceAll(listVatTu)
+            rv_supplies_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_supplies_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_supplies_products.adapter = adapterVatTu
+            adapterVatTu.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                override fun click(position: Int, data: ProductManager, code: Int) {
+                    listVatTu.remove(data)
+                    adapterVatTu.replaceAll(listVatTu)
+                }
+            }
+        }
+    }
+
+    private fun loadGiaiPhap() {
+        context?.let {
+            adapterGiaiPhap.replaceAll(listGiaiPhap)
+            rv_solution_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_solution_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_solution_products.adapter = adapterGiaiPhap
+            adapterGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
+                override fun click(position: Int, data: ProductManager, code: Int) {
+                    listGiaiPhap.remove(data)
+                    adapterGiaiPhap.replaceAll(listGiaiPhap)
                 }
             }
         }
