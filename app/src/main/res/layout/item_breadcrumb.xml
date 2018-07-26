@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ishopgo.com.exhibition.ui.widget.VectorSupportTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/view_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:drawableEnd="@drawable/ic_chevron_right_neutral_24dp"
     android:foreground="?attr/selectableItemBackground"
     android:gravity="center_vertical"
     android:paddingBottom="8dp"
     android:paddingEnd="0dp"
     android:paddingStart="8dp"
     android:paddingTop="8dp"
-    tools:text="asdasdasd"
-    />
+    app:drawableEndCompat="@drawable/ic_chevron_right_neutral_24dp"
+    tools:text="asdasdasd" />
