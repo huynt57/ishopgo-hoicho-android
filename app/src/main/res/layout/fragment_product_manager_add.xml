@@ -96,6 +96,189 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <LinearLayout
+            android:id="@+id/linear_agri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_agri_scale"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quy mô sản xuất"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_agri_quantity"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Khả năng cung ứng"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_agri_pack"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quy cách đóng gói"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_agri_season"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mùa vụ sản xuất"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                    android:id="@+id/edit_product_agri_expiryDate"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Hạn sử dụng"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_agri_shipmentCode"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mã số lô hàng"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                    android:id="@+id/edit_product_agri_manufacturingDate"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày sản xuất"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                    android:id="@+id/edit_product_agri_harvestDate"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày thu hoạch dự kiến"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                    android:id="@+id/edit_product_agri_shippedDate"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ngày xuất xưởng"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <Switch
+                android:id="@+id/sw_show_nksx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp"
+                android:checked="false"
+                android:text="Nhật ký sản xuất: Tắt"
+                tools:ignore="HardcodedText" />
+
+            <Switch
+                android:id="@+id/sw_show_accreditation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp"
+                android:checked="false"
+                android:text="Đã được bao tiêu: Chưa được bao tiêu"
+                tools:ignore="HardcodedText" />
+
+        </LinearLayout>
+
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -109,6 +292,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="(*) Giá bán lẻ"
+                android:inputType="number" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/default_margin"
+            android:layout_marginStart="@dimen/default_margin"
+            android:layout_marginTop="16dp">
+
+            <ishopgo.com.exhibition.ui.widget.MoneyEditText
+                android:id="@+id/edit_product_price_promtion"
+                style="@style/AppTheme.EnableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giá khuyến mãi"
                 android:inputType="number" />
 
         </android.support.design.widget.TextInputLayout>
@@ -139,7 +339,7 @@
                 android:layout_marginTop="16dp">
 
                 <ishopgo.com.exhibition.ui.widget.MoneyEditText
-                    android:id="@+id/edit_produt_wholesale_from"
+                    android:id="@+id/edit_product_wholesale_from"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -156,7 +356,7 @@
                 android:layout_marginTop="16dp">
 
                 <ishopgo.com.exhibition.ui.widget.MoneyEditText
-                    android:id="@+id/edit_produt_wholesale_to"
+                    android:id="@+id/edit_product_wholesale_to"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,12 +373,54 @@
                 android:layout_marginTop="16dp">
 
                 <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_produt_wholesale_count"
+                    android:id="@+id/edit_product_wholesale_count"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Số lượng sản phẩm tối thiểu"
                     android:inputType="text" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_scale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_scale"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Quy mô"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_quantity"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Sản lượng"
+                    android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -492,6 +734,86 @@
             android:scrollbars="horizontal">
 
         </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:id="@+id/linear_agri_product"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:text="Vật tư được sử dụng"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/img_add_supplies_product"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic_add_default_24dp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_supplies_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_margin">
+
+            </android.support.v7.widget.RecyclerView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingBottom="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:text="Giải pháp được sử dụng"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/img_add_solution_product"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic_add_default_24dp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_solution_products"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_margin">
+
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
