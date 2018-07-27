@@ -22,5 +22,7 @@ class Product : IdentityData() {
     @SerializedName("code")
     @Expose
     var code: String? = null
-
+    @SerializedName("status")
+    @Expose
+    var status: Int? = null
 }

@@ -69,6 +69,9 @@ object UserDataManager {
 
     fun init(context: Context) {
         pref = getPrefs(context)
+        val edit = pref.edit()
+        edit.remove(KEY_SKIP_UPDATE)
+        edit.apply()
 
         val displayMetrics = context.resources.displayMetrics
         displayWidth = displayMetrics.widthPixels
@@ -92,6 +95,7 @@ object UserDataManager {
         edit.remove(KEY_USER_PHONE)
         edit.remove(KEY_USER_NAME)
         edit.remove(KEY_USER_TYPE)
+        edit.remove(KEY_USER_SURVEY)
         edit.remove(KEY_USER_SURVEY)
         edit.apply()
     }

@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -37,7 +38,10 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.ProductAdapter
+import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerAdapter
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_add.*
@@ -52,15 +56,18 @@ class ProductManagerAddFragment : BaseFragment() {
     private val adapterCategory_2 = CategoryAdapter()
     private val adapterCategory_3 = CategoryAdapter()
     private val adapterCategory_4 = CategoryAdapter()
-    private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
+    private var adapterProductRelatedImage = SalePointProductAdapter(0.4f)
+    private var adapterVatTu = SalePointProductAdapter(0.4f)
+    private var adapterGiaiPhap = SalePointProductAdapter(0.4f)
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
+    private var adapterDialogVatTu = ProductManagerRelatedAdapter()
+    private var adapterDialogGiaiPhap = ProductManagerRelatedAdapter()
     private var listCategory = ArrayList<Category>()
 
     private var reloadBrands = false
     private var reloadProvider = false
     private var requestBrands = ""
     private var requestProvider = ""
-    private val handler = Handler(Looper.getMainLooper())
     private var status: Int = STATUS_DISPLAY_SHOW
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var nkxs: Int = NKSX_DISPLAY_HIDDEN
@@ -70,7 +77,9 @@ class ProductManagerAddFragment : BaseFragment() {
     private var booth_id: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
-    private var listProductRelated: ArrayList<ProductManager> = ArrayList()
+    private var listProductRelated: ArrayList<Product> = ArrayList()
+    private var listVatTu: ArrayList<Product> = ArrayList()
+    private var listGiaiPhap: ArrayList<Product> = ArrayList()
 
     private val handleOverwrite: ProductManagerAddOverwrite = CustomProductManagerAdd()
 
@@ -114,8 +123,8 @@ class ProductManagerAddFragment : BaseFragment() {
         edit_product_brand.setOnClickListener { getBrands(edit_product_brand) }
         edit_product_booth.setOnClickListener { getBooth(edit_product_booth) }
 
-        img_add_solution_product.setOnClickListener { toast("Đang phát triển") }
-        img_add_supplies_product.setOnClickListener { toast("Đang phát triển") }
+        img_add_solution_product.setOnClickListener { performSearchingGiaiPhap() }
+        img_add_supplies_product.setOnClickListener { performSearchingVatTu() }
 
         if (UserDataManager.currentType == "Chủ hội chợ")
             til_product_booth.visibility = View.VISIBLE else {
@@ -171,7 +180,7 @@ class ProductManagerAddFragment : BaseFragment() {
         sw_show_nksx.setOnCheckedChangeListener { _, _ ->
             if (sw_show_nksx.isChecked) {
                 nkxs = NKSX_DISPLAY_SHOW
-                sw_show_nksx.text = "Nhật ký sản xuất: Bắt"
+                sw_show_nksx.text = "Nhật ký sản xuất: Bật"
             } else {
                 nkxs = NKSX_DISPLAY_HIDDEN
                 sw_show_nksx.text = "Nhật ký sản xuất: Tắt"
@@ -193,7 +202,7 @@ class ProductManagerAddFragment : BaseFragment() {
             val maSp = edit_product_code.text.toString()
             val tieuDe = edit_product_title.text.toString()
             val giaBan = edit_product_price?.money ?: 0
-            val giaBanKm = edit_product_price_promtion?.money ?: 0
+            val giaBanKm = edit_product_price_promotion?.money ?: 0
             val dvt = edit_product_dvt.text.toString()
             val xuatSu = edt_product_madeIn.text.toString()
             val moTa = edit_product_description.text.toString()
@@ -221,7 +230,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
                     viewModel.createProductManager(tenSp, maSp, tieuDe, giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu, image, postMedias, moTa, status,
                             metaMota, metaKeyword, tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, quyMo, sanLuong,
-                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu)
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu, listVatTu, listGiaiPhap)
                 }
             } else
                 if (isRequiredFieldsValid(image, tenSp, edit_product_price.text.toString(), maSp,
@@ -231,7 +240,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
                     viewModel.createProductManager(tenSp, maSp, tieuDe, giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu, image, postMedias, moTa, status,
                             metaMota, metaKeyword, tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, quyMo, sanLuong,
-                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu)
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu, listVatTu, listGiaiPhap)
                 }
 
         }
@@ -244,6 +253,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
         setupImageRecycleview()
         loadSanPhamLienQuan()
+        loadVatTu()
+        loadGiaiPhap()
     }
 
     private fun setupImageRecycleview() {
@@ -305,6 +316,28 @@ class ProductManagerAddFragment : BaseFragment() {
                     hideProgressDialog()
                 } else {
                     adapterDialogProduct.addAll(it)
+                }
+            }
+        })
+
+        viewModel.dataVatTu.observe(this, Observer { p ->
+            p?.let {
+                if (reloadDataVatTu) {
+                    adapterDialogVatTu.replaceAll(it)
+                    hideProgressDialog()
+                } else {
+                    adapterDialogVatTu.addAll(it)
+                }
+            }
+        })
+
+        viewModel.dataGiaiPhap.observe(this, Observer { p ->
+            p?.let {
+                if (reloadDataGiaiPhap) {
+                    adapterDialogGiaiPhap.replaceAll(it)
+                    hideProgressDialog()
+                } else {
+                    adapterDialogGiaiPhap.addAll(it)
                 }
             }
         })
@@ -397,6 +430,46 @@ class ProductManagerAddFragment : BaseFragment() {
         loadMore.name = keyWord
         loadMore.code = code
         viewModel.loadData(loadMore)
+    }
+
+    private fun firstLoadProductVatTu() {
+        reloadDataVatTu = true
+        val firstLoad = ProductManagerRequest()
+        firstLoad.limit = Const.PAGE_LIMIT
+        firstLoad.offset = 0
+        firstLoad.name = keyWordVatTu
+        firstLoad.code = codeVatTu
+        viewModel.loadDataVatTu(firstLoad)
+    }
+
+    private fun loadMoreProductVatTu(currentCount: Int) {
+        reloadDataVatTu = false
+        val loadMore = ProductManagerRequest()
+        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.offset = currentCount
+        loadMore.name = keyWordVatTu
+        loadMore.code = codeVatTu
+        viewModel.loadDataVatTu(loadMore)
+    }
+
+    private fun firstLoadProductGiaiPhap() {
+        reloadDataGiaiPhap = true
+        val firstLoad = ProductManagerRequest()
+        firstLoad.limit = Const.PAGE_LIMIT
+        firstLoad.offset = 0
+        firstLoad.name = keyWordGiaiPhap
+        firstLoad.code = codeGiaiPhap
+        viewModel.loadDataGiaiPhap(firstLoad)
+    }
+
+    private fun loadMoreProductGiaiPhap(currentCount: Int) {
+        reloadDataGiaiPhap = false
+        val loadMore = ProductManagerRequest()
+        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.offset = currentCount
+        loadMore.name = keyWordGiaiPhap
+        loadMore.code = codeGiaiPhap
+        viewModel.loadDataGiaiPhap(loadMore)
     }
 
     private fun firstLoadCategory() {
@@ -660,8 +733,8 @@ class ProductManagerAddFragment : BaseFragment() {
                                 loadMoreProductRelated(totalItemsCount)
                             }
                         })
-                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                            override fun click(position: Int, data: ProductManager, code: Int) {
+                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                            override fun click(position: Int, data: Product, code: Int) {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
                                     adapterProductRelatedImage.replaceAll(listProductRelated)
@@ -695,16 +768,168 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
+    private var keyWordVatTu: String = ""
+    private var codeVatTu: String = ""
+    private var reloadDataVatTu = false
+
+    private fun performSearchingVatTu() {
+        reloadDataVatTu = true
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Tìm kiếm")
+                    .customView(R.layout.dialog_search_product_related, false)
+                    .positiveText("Tìm")
+                    .onPositive({ dialog, _ ->
+                        val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+                        val edt_search_name = dialog.findViewById(R.id.edt_search_name) as TextInputEditText
+                        val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
+                        keyWordVatTu = edt_search_name.text.toString().trim { it <= ' ' }
+                        codeVatTu = edt_search_code.text.toString().trim { it <= ' ' }
+                        firstLoadProductVatTu()
+                        val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.adapter = adapterDialogVatTu
+                        rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager2) {
+                            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                                loadMoreProductVatTu(totalItemsCount)
+                            }
+                        })
+                        adapterDialogVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                            override fun click(position: Int, data: Product, code: Int) {
+                                if (listVatTu.size == 0) {
+                                    listVatTu.add(data)
+                                    adapterVatTu.replaceAll(listVatTu)
+                                } else {
+                                    val isContained = listVatTu.any {
+                                        if (it is IdentityData && data is IdentityData)
+                                            return@any it.id == data.id
+                                        return@any false
+                                    }
+
+                                    if (isContained) {
+                                        toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                                        return
+                                    } else {
+                                        listVatTu.add(data)
+                                        adapterVatTu.replaceAll(listVatTu)
+                                    }
+                                }
+                                dialog.dismiss()
+                            }
+                        }
+                        reloadDataVatTu = true
+                    })
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            dialog.show()
+        }
+    }
+
+    private var keyWordGiaiPhap: String = ""
+    private var codeGiaiPhap: String = ""
+    private var reloadDataGiaiPhap = false
+
+    private fun performSearchingGiaiPhap() {
+        reloadDataGiaiPhap = true
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Tìm kiếm")
+                    .customView(R.layout.dialog_search_product_related, false)
+                    .positiveText("Tìm")
+                    .onPositive({ dialog, _ ->
+                        val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+                        val edt_search_name = dialog.findViewById(R.id.edt_search_name) as TextInputEditText
+                        val edt_search_code = dialog.findViewById(R.id.edt_search_code) as TextInputEditText
+                        keyWordGiaiPhap = edt_search_name.text.toString().trim { it <= ' ' }
+                        codeGiaiPhap = edt_search_code.text.toString().trim { it <= ' ' }
+                        firstLoadProductGiaiPhap()
+                        val layoutManager2 = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                        rv_search.adapter = adapterDialogGiaiPhap
+                        rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager2) {
+                            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                                loadMoreProductGiaiPhap(totalItemsCount)
+                            }
+                        })
+                        adapterDialogGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                            override fun click(position: Int, data: Product, code: Int) {
+                                if (listGiaiPhap.size == 0) {
+                                    listGiaiPhap.add(data)
+                                    adapterGiaiPhap.replaceAll(listGiaiPhap)
+                                } else {
+                                    val isContained = listGiaiPhap.any {
+                                        if (it is IdentityData && data is IdentityData)
+                                            return@any it.id == data.id
+                                        return@any false
+                                    }
+
+                                    if (isContained) {
+                                        toast("Sản phẩm liên quan đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                                        return
+                                    } else {
+                                        listGiaiPhap.add(data)
+                                        adapterGiaiPhap.replaceAll(listGiaiPhap)
+                                    }
+                                }
+                                dialog.dismiss()
+                            }
+                        }
+                        reloadDataGiaiPhap = true
+                    })
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            dialog.show()
+        }
+    }
+
     private fun loadSanPhamLienQuan() {
         context?.let {
             adapterProductRelatedImage.replaceAll(listProductRelated)
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_related_products.adapter = adapterProductRelatedImage
-            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                override fun click(position: Int, data: ProductManager, code: Int) {
+            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
                     listProductRelated.remove(data)
                     adapterProductRelatedImage.replaceAll(listProductRelated)
+                }
+            }
+        }
+    }
+
+    private fun loadVatTu() {
+        context?.let {
+            adapterVatTu.replaceAll(listVatTu)
+            rv_supplies_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_supplies_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_supplies_products.adapter = adapterVatTu
+            adapterVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
+                    listVatTu.remove(data)
+                    adapterVatTu.replaceAll(listVatTu)
+                }
+            }
+        }
+    }
+
+    private fun loadGiaiPhap() {
+        context?.let {
+            adapterGiaiPhap.replaceAll(listGiaiPhap)
+            rv_solution_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_solution_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_solution_products.adapter = adapterGiaiPhap
+            adapterGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
+                    listGiaiPhap.remove(data)
+                    adapterGiaiPhap.replaceAll(listGiaiPhap)
                 }
             }
         }

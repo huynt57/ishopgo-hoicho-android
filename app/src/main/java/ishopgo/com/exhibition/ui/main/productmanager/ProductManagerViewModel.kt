@@ -15,6 +15,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.ManagerBrand
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
@@ -27,7 +28,7 @@ import okhttp3.RequestBody
 import java.io.File
 import javax.inject.Inject
 
-class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppComponent.Injectable {
+class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent.Injectable {
 
     override fun inject(appComponent: AppComponent) {
         appComponent.inject(this)
@@ -69,10 +70,10 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
     fun createProductManager(name: String, code: String, title: String, price: Long, pricePromtion: Long, dvt: String,
                              provider_id: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                              description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int,
+                             listCategory: ArrayList<Category>, listProducts_bsp: ArrayList<Product>, is_featured: Int,
                              wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, scale: String, quantity: String,
                              pack: String, season: String, expiryDate: String, shipmentCode: String, manufacturingDate: String, harvestDate: String, shippedDate: String,
-                             isNksx: Int, isAccreditation: Int) {
+                             isNksx: Int, isAccreditation: Int, listSuppliesProduct: ArrayList<Product>, listSolutionProduct: ArrayList<Product>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -150,6 +151,18 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
             }
         }
 
+        if (!listSuppliesProduct.isEmpty()) {
+            for (i in listSuppliesProduct.indices) {
+                builder.addFormDataPart("vat_tu_products_bsp[]", listSuppliesProduct[i].id.toString())
+            }
+        }
+
+        if (!listSolutionProduct.isEmpty()) {
+            for (i in listSolutionProduct.indices) {
+                builder.addFormDataPart("giai_phap_products_bsp[]", listSolutionProduct[i].id.toString())
+            }
+        }
+
         if (listCategory.isNotEmpty()) {
             for (i in listCategory.indices) {
                 builder.addFormDataPart("categories[]", listCategory[i].id.toString())
@@ -221,10 +234,13 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
 
     var editProductSusscess = MutableLiveData<Boolean>()
 
-    fun editProductManager(productId: Long, name: String, code: String, title: String, price: Long, dvt: String,
+    fun editProductManager(productId: Long, name: String, code: String, title: String, price: Long, pricePromotion: Long, dvt: String,
                            boothId: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
                            description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                           listCategory: List<Category>, listProducts_bsp: ArrayList<ProductManager>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long, wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>) {
+                           listCategory: List<Category>, listProducts_bsp: ArrayList<Product>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long,
+                           wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>, scale: String, quantity: String,
+                           pack: String, season: String, expiryDate: String, shipmentCode: String, manufacturingDate: String, harvestDate: String, shippedDate: String,
+                           isNksx: Int, isAccreditation: Int, listSuppliesProduct: ArrayList<Product>, listSolutionProduct: ArrayList<Product>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -244,6 +260,45 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         builder.addFormDataPart("wholesale_price_from", wholesale_price_from.toString())
         builder.addFormDataPart("wholesale_price_to", wholesale_price_to.toString())
         builder.addFormDataPart("wholesale_count_product", wholesale_count_product)
+        builder.addFormDataPart("promotion_price", pricePromotion.toString())
+
+        if (scale.isNotEmpty()) {
+            builder.addFormDataPart("quy_mo", scale)
+        }
+        if (quantity.isNotEmpty()) {
+            builder.addFormDataPart("san_luong", quantity)
+        }
+
+        //Agi
+
+        if (pack.isNotEmpty()) {
+            builder.addFormDataPart("dong_goi", pack)
+        }
+
+        if (expiryDate.isNotEmpty()) {
+            builder.addFormDataPart("hsd", expiryDate)
+        }
+
+        if (season.isNotEmpty()) {
+            builder.addFormDataPart("mua_vu", season)
+        }
+
+        if (shipmentCode.isNotEmpty()) {
+            builder.addFormDataPart("ms_lohang", shipmentCode)
+        }
+        if (manufacturingDate.isNotEmpty()) {
+            builder.addFormDataPart("ngay_sx", manufacturingDate)
+        }
+        if (harvestDate.isNotEmpty()) {
+            builder.addFormDataPart("dk_thuhoach", harvestDate)
+        }
+        if (shippedDate.isNotEmpty()) {
+            builder.addFormDataPart("xuat_xuong", shippedDate)
+        }
+
+        builder.addFormDataPart("is_nhatky_sx", isNksx.toString())
+        builder.addFormDataPart("is_baotieu", isAccreditation.toString())
+
 
         val listTags: ArrayList<String>? = ArrayList()
         listTags?.add(tag)
@@ -270,6 +325,18 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
         if (listImageDelete.isNotEmpty()) {
             for (i in listImageDelete.indices) {
                 builder.addFormDataPart("deleted_images[]", listImageDelete[i].uri.toString())
+            }
+        }
+
+        if (!listSuppliesProduct.isEmpty()) {
+            for (i in listSuppliesProduct.indices) {
+                builder.addFormDataPart("vat_tu_products_bsp[]", listSuppliesProduct[i].id.toString())
+            }
+        }
+
+        if (!listSolutionProduct.isEmpty()) {
+            for (i in listSolutionProduct.indices) {
+                builder.addFormDataPart("giai_phap_products_bsp[]", listSolutionProduct[i].id.toString())
             }
         }
 
@@ -354,7 +421,6 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                             }
                         }
 
-
                         override fun failure(status: Int, message: String) {
                             resolveError(status, message)
                         }
@@ -366,7 +432,7 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
 
     fun getProductDetail(product_Id: Long) {
 
-        addDisposable(isgService.getProductManagerDetail(product_Id)
+        addDisposable(authService.getProductManagerDetail(product_Id)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<ProductManagerDetail>() {
                     override fun success(data: ProductManagerDetail?) {
@@ -478,6 +544,58 @@ class ProductManagerViewModel : BaseListViewModel<List<ProductManager>>(), AppCo
                     }
                 })
         )
+    }
+
+    var dataVatTu = MutableLiveData<List<Product>>()
+
+    fun loadDataVatTu(params: Request) {
+        if (params is ProductManagerRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            fields["name"] = params.name
+            fields["code"] = params.code
+            fields["product_id"] = params.productId
+
+            addDisposable(isgService.getProductManager(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManageProduct>() {
+                        override fun success(data: ManageProduct?) {
+                            dataVatTu.postValue(data?.product ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
+    }
+
+    var dataGiaiPhap = MutableLiveData<List<Product>>()
+
+    fun loadDataGiaiPhap(params: Request) {
+        if (params is ProductManagerRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            fields["name"] = params.name
+            fields["code"] = params.code
+            fields["product_id"] = params.productId
+
+            addDisposable(isgService.getProductManager(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManageProduct>() {
+                        override fun success(data: ManageProduct?) {
+                            dataGiaiPhap.postValue(data?.product ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
     }
 
     companion object {

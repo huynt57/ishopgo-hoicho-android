@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -63,7 +64,9 @@ class SalePointDetailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         context?.let {
-            rv_product_sale_point.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_sale_point.setHasFixedSize(true)
+            val layoutManager = GridLayoutManager(view.context, 2, GridLayoutManager.VERTICAL, false)
+            rv_product_sale_point.layoutManager = layoutManager
             rv_product_sale_point.isNestedScrollingEnabled = false
             rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
         }
@@ -75,8 +78,8 @@ class SalePointDetailFragment : BaseFragment() {
         dataProduct = Toolbox.gson.fromJson(json, ProductDetail::class.java)
         phone = arguments?.getString(Const.TransferKey.EXTRA_REQUIRE, "") ?: ""
 
-        productsAdapter = if (UserDataManager.currentUserPhone == phone) SalePointProductAdapter(0.4f) else
-            ProductAdapter(0.4f)
+        productsAdapter = if (UserDataManager.currentUserPhone == phone) SalePointProductAdapter() else
+            ProductAdapter()
     }
 
     private fun openActivtyLogin() {

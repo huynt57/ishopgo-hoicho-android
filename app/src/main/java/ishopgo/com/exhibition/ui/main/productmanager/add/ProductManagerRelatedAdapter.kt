@@ -1,83 +1,81 @@
 package ishopgo.com.exhibition.ui.main.productmanager.add
 
-import android.annotation.SuppressLint
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.product_manager.ProductManager
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asMoney
-import kotlinx.android.synthetic.main.item_product_manager_related.view.*
+import kotlinx.android.synthetic.main.item_product_manager.view.*
 
 
-class ProductManagerRelatedAdapter : ClickableAdapter<ProductManager>() {
+class ProductManagerRelatedAdapter : ClickableAdapter<Product>() {
+
     override fun getChildLayoutResource(viewType: Int): Int {
-        return R.layout.item_product_manager_related
+        return R.layout.item_product_manager
     }
 
-    override fun createHolder(v: View, viewType: Int): BaseRecyclerViewAdapter.ViewHolder<ProductManager> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Product> {
         return Holder(v, ProductManagerConverter())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<ProductManager>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Product>, position: Int) {
         super.onBindViewHolder(holder, position)
-
-        holder.apply {
-            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+        if (holder is Holder) {
+            holder.apply {
+                itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            }
         }
     }
 
-    internal inner class Holder(v: View, private val converter: Converter<ProductManager, ProductManagerProvider>) : BaseRecyclerViewAdapter.ViewHolder<ProductManager>(v) {
+    inner class Holder(v: View, private val converter: Converter<Product, ProductManagerProvider>) : BaseRecyclerViewAdapter.ViewHolder<Product>(v) {
 
-        @SuppressLint("SetTextI18n")
-        override fun populate(data: ProductManager) {
+        override fun populate(data: Product) {
             super.populate(data)
 
             val convert = converter.convert(data)
             itemView.apply {
+                if (convert.provideStatus() != STATUS_DISPLAY_SHOW && convert.provideStatus() != STATUS_DISPLAY_LANDING_PAGE)
+                    iv_display.visibility = View.VISIBLE
+                else iv_display.visibility = View.GONE
+
+                iv_push_top.visibility = View.GONE
+                iv_options.visibility = View.GONE
+
                 Glide.with(context)
                         .load(convert.provideImage())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                         .into(iv_thumb)
 
-                tv_item_name.text = convert.provideName()
+                view_name.text = convert.provideName()
                 tv_price.text = convert.providePrice()
-                tv_item_code.text = convert.provideCode()
-                tv_department.text = convert.provideDepartment()
-                tv_status.text = convert.provideStatus()
+                view_code.text = convert.provideCode()
             }
         }
+
+    }
+
+    companion object {
+        const val STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
+        const val STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
     }
 
     interface ProductManagerProvider {
         fun provideName(): String
         fun provideImage(): String
         fun provideCode(): String
-        fun provideTTPrice(): String
         fun providePrice(): String
-        fun provideStatus(): String
-        fun provideDepartment(): String
+        fun provideStatus(): Int
     }
 
-    class ProductManagerConverter : Converter<ProductManager, ProductManagerProvider> {
-        override fun convert(from: ProductManager): ProductManagerProvider {
+    class ProductManagerConverter : Converter<Product, ProductManagerProvider> {
+        override fun convert(from: Product): ProductManagerProvider {
             return object : ProductManagerProvider {
-                override fun provideStatus(): String {
-                    var provideStatus = "Không hiển thị"
-                    if (from.status == STATUS_DISPLAY_SHOW) {
-                        provideStatus = "Hiển thị dạng chuẩn "
-                    }
-                    if (from.status == STATUS_DISPLAY_LANDING_PAGE)
-                        provideStatus = "Hiển thị dạng landing page"
-
-                    return provideStatus
-                }
-
-                override fun provideDepartment(): String {
-                    return from.department ?: ""
+                override fun provideStatus(): Int {
+                    return from.status ?: 0
                 }
 
                 override fun provideName(): String {
@@ -92,19 +90,13 @@ class ProductManagerRelatedAdapter : ClickableAdapter<ProductManager>() {
                     return "MSP: ${from.code}"
                 }
 
-                override fun provideTTPrice(): String {
-                    return from.ttPrice?.asMoney() ?: "0 đ"
-                }
-
                 override fun providePrice(): String {
-                    return from.price?.asMoney() ?: "0 đ"
+                    return if (from.price == 0L) "Liên hệ"
+                    else
+                        return from.price?.asMoney()
                 }
             }
         }
     }
 
-    companion object {
-        var STATUS_DISPLAY_SHOW: Int = 2 //Hiển thị dạng chuẩn
-        var STATUS_DISPLAY_LANDING_PAGE: Int = 3 //Hiển thị dạng landing page
-    }
 }

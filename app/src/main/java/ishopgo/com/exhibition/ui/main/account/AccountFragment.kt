@@ -328,6 +328,7 @@ class AccountFragment : BaseFragment() {
 
     private fun logout() {
         viewModel.logout()
+        showProgressDialog()
     }
 
     private fun openChangePassword() {
@@ -422,6 +423,7 @@ class AccountFragment : BaseFragment() {
         })
         viewModel.loggedOut.observe(this, Observer { m ->
             m?.let {
+                hideProgressDialog()
                 UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
                 val intent = Intent(context, LoginActivity::class.java)

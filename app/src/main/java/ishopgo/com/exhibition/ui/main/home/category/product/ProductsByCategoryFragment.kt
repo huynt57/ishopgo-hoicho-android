@@ -26,6 +26,7 @@ import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -87,7 +88,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
     private fun addCategoryBreadCrumb(category: Category) {
         context?.let {
             val item = LayoutInflater.from(it)
-                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, false) as TextView
+                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, false) as VectorSupportTextView
             item.id = category.id.toInt()
             item.text = category.name
             item.setOnClickListener {
