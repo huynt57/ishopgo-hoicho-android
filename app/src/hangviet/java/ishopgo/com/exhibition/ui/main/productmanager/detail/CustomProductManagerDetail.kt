@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.productmanager.detail
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.support.design.widget.TextInputEditText
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -10,22 +11,32 @@ import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.InfoProduct
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.ProductManagerRelatedAdapter
-import ishopgo.com.exhibition.ui.main.productmanager.add.ProductManagerRelatedCollapseAdapters
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_detail.view.*
 
 class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
+
     private var viewModel: ProductManagerViewModel? = null
     private var product_Id: Long = 0L
+    private var adapterProductRelatedImage = SalePointProductAdapter(0.4f)
+    private var listProductRelated = ArrayList<Product>()
+    private var adapterDialogProduct = ProductManagerRelatedAdapter()
+
+    companion object {
+        const val DELETE_PRODUCT = 1
+    }
 
     override fun handleActivityCreated(viewModel: ProductManagerViewModel, fragment: BaseFragment) {
         this.viewModel = viewModel
@@ -46,10 +57,11 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
         product_Id = productId
     }
 
-    override fun handleViewCreated(rootView: View, context: Context) {
+    override fun handleViewCreated(rootView: View, context: Context, listProductRelated: ArrayList<Product>, listVatTu: ArrayList<Product>, listGiaiPhap: ArrayList<Product>) {
         rootView.apply {
             rv_product_related_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
         }
+        this.listProductRelated = listProductRelated
     }
 
     override fun handleStartEdit(rootView: View) {
@@ -58,6 +70,7 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
             edit_product_scale.isFocusableInTouchMode = true
             edit_product_quantity.isFocusable = true
             edit_product_quantity.isFocusableInTouchMode = true
+            img_add_related_product.visibility = View.VISIBLE
 
             loadSanPhamLienQuan(this)
         }
@@ -69,6 +82,7 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
             edit_product_scale.isFocusableInTouchMode = false
             edit_product_quantity.isFocusable = false
             edit_product_quantity.isFocusableInTouchMode = false
+            img_add_related_product.visibility = View.GONE
         }
     }
 
@@ -82,12 +96,37 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
             img_add_related_product.setOnClickListener {
                 performSearchingProduct(rootView, fragment)
             }
+
+            if (convert.providerInfo().isNotEmpty()) {
+                val listInfo = convert.providerInfo()
+                for (i in listInfo.indices) {
+                    if (listInfo[i].name == "Sản phẩm liên quan") {
+                        val productsRelatedAdapter = ProductAdapter(0.4f)
+                        if (listInfo[i].products?.data?.isNotEmpty() == true) {
+                            listInfo[i].products?.data?.let {
+                                productsRelatedAdapter.replaceAll(it)
+                                listProductRelated.addAll(it)
+                                adapterProductRelatedImage.replaceAll(listProductRelated)
+                            }
+
+                            rv_product_related_products.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
+                            rv_product_related_products.adapter = productsRelatedAdapter
+                            rv_product_related_products.isNestedScrollingEnabled = false
+                            rv_product_related_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+
+
+                        }
+                        break
+                    }
+                }
+            }
         }
     }
 
     interface ProductManagerDetailProvider {
         fun providerScale(): String
         fun providerQuantity(): String
+        fun providerInfo(): List<InfoProduct>
     }
 
     class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
@@ -101,23 +140,27 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
                 override fun providerQuantity(): String {
                     return from.sanLuong ?: ""
                 }
+
+                override fun providerInfo(): List<InfoProduct> {
+                    return from.info ?: mutableListOf()
+                }
             }
         }
     }
 
-    private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
-    private var listProductRelated = ArrayList<ProductManager>()
-    private var adapterDialogProduct = ProductManagerRelatedAdapter()
-
     private fun loadSanPhamLienQuan(rootView: View) {
         rootView.apply {
             context?.let {
-                rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                rv_product_related_products.layoutManager = GridLayoutManager(context, 1, GridLayoutManager.HORIZONTAL, false)
                 rv_product_related_products.adapter = adapterProductRelatedImage
-                adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                    override fun click(position: Int, data: ProductManager, code: Int) {
-                        listProductRelated.remove(data)
-                        adapterProductRelatedImage.replaceAll(listProductRelated)
+                adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                    override fun click(position: Int, data: Product, code: Int) {
+                        when (code) {
+                            DELETE_PRODUCT -> {
+                                listProductRelated.remove(data)
+                                adapterProductRelatedImage.replaceAll(listProductRelated)
+                            }
+                        }
                     }
                 }
             }
@@ -178,10 +221,11 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
                                     loadMoreProductRelated(totalItemsCount)
                                 }
                             })
-                            adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                                override fun click(position: Int, data: ProductManager, code: Int) {
+                            adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                                override fun click(position: Int, data: Product, code: Int) {
                                     if (listProductRelated.size == 0) {
                                         listProductRelated.add(data)
+
                                         adapterProductRelatedImage.replaceAll(listProductRelated)
                                     } else {
                                         val isContained = listProductRelated.any {

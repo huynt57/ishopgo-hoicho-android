@@ -2,10 +2,7 @@ package ishopgo.com.exhibition.model.product_manager
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.IdentityData
-import ishopgo.com.exhibition.domain.response.InfoProduct
+import ishopgo.com.exhibition.domain.response.*
 
 class ProductManagerDetail : IdentityData() {
     @SerializedName("title")
@@ -164,4 +161,7 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("info")
     @Expose
     var info: List<InfoProduct>? = null
+    @SerializedName("booth")
+    @Expose
+    var booth: Booth? = null
 }

@@ -4,6 +4,7 @@ import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.product_manager.ProductManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
@@ -14,17 +15,17 @@ import kotlinx.android.synthetic.main.item_product_manager.view.*
 /**
  * Created by xuanhong on 2/2/18. HappyCoding!
  */
-class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
+class ProductManagerAdapter : ClickableAdapter<Product>() {
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_product_manager
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<ProductManager> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<Product> {
         return Holder(v, ProductManagerConverter())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<ProductManager>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<Product>, position: Int) {
         super.onBindViewHolder(holder, position)
         if (holder is Holder) {
             holder.apply {
@@ -36,9 +37,9 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
 
     }
 
-    inner class Holder(v: View, private val converter: Converter<ProductManager, ProductManagerProvider>) : BaseRecyclerViewAdapter.ViewHolder<ProductManager>(v) {
+    inner class Holder(v: View, private val converter: Converter<Product, ProductManagerProvider>) : BaseRecyclerViewAdapter.ViewHolder<Product>(v) {
 
-        override fun populate(data: ProductManager) {
+        override fun populate(data: Product) {
             super.populate(data)
 
             val convert = converter.convert(data)
@@ -77,8 +78,8 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
         fun provideStatus(): Int
     }
 
-    class ProductManagerConverter : Converter<ProductManager, ProductManagerProvider> {
-        override fun convert(from: ProductManager): ProductManagerProvider {
+    class ProductManagerConverter : Converter<Product, ProductManagerProvider> {
+        override fun convert(from: Product): ProductManagerProvider {
             return object : ProductManagerProvider {
                 override fun provideStatus(): Int {
                     return from.status ?: 0
@@ -99,7 +100,7 @@ class ProductManagerAdapter : ClickableAdapter<ProductManager>() {
                 override fun providePrice(): String {
                     return if (from.price == 0L) "Liên hệ"
                     else
-                        return from.price?.asMoney() ?: "Liên hệ"
+                        return from.price?.asMoney()
                 }
             }
         }

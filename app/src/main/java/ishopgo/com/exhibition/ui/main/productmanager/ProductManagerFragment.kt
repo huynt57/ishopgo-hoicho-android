@@ -14,6 +14,7 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.product_manager.ProductManager
@@ -29,7 +30,7 @@ import ishopgo.com.exhibition.ui.widget.OptionsBottomSheet
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductManager>() {
+class ProductManagerFragment : BaseListFragment<List<Product>, Product>() {
     override fun initLoading() {
         firstLoad()
     }
@@ -66,7 +67,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
     }
 
     @SuppressLint("SetTextI18n")
-    override fun populateData(data: List<ProductManager>) {
+    override fun populateData(data: List<Product>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -81,11 +82,11 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
         hideProgressDialog()
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<ProductManager> {
+    override fun itemAdapter(): BaseRecyclerViewAdapter<Product> {
         val adapter = ProductManagerAdapter()
-        adapter.addData(ProductManager())
-        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-            override fun click(position: Int, data: ProductManager, code: Int) {
+        adapter.addData(Product())
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
                 when (code) {
                     ProductManagerAdapter.CLICK_OPTION -> {
                         val options = mutableListOf<OptionsBottomSheet.Option>()
@@ -140,7 +141,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
         return adapter
     }
 
-    private fun displayProduct(data: ProductManager) {
+    private fun displayProduct(data: Product) {
         if (viewModel is ProductManagerViewModel) {
             val managerViewModel = viewModel as ProductManagerViewModel
             managerViewModel.updateVisibility(data.id, if (data.status == 0) 2 else 0)
@@ -161,7 +162,7 @@ class ProductManagerFragment : BaseListFragment<List<ProductManager>, ProductMan
                 .show()
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<ProductManager>> {
+    override fun obtainViewModel(): BaseListViewModel<List<Product>> {
         return obtainViewModel(ProductManagerViewModel::class.java, false)
     }
 

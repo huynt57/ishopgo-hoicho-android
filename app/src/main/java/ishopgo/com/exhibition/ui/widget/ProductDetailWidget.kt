@@ -9,7 +9,7 @@ import ishopgo.com.exhibition.R
 class ProductDetailWidget @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.fragment_product_manager_detail, this)
+        LayoutInflater.from(context).inflate(R.layout.layout_product_detail_info, this)
     }
 
 

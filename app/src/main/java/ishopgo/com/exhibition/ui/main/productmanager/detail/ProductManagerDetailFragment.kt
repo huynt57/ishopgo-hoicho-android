@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
@@ -74,6 +75,11 @@ class ProductManagerDetailFragment : BaseFragment() {
     private val adapterCategory_3 = CategoryAdapter()
     private val adapterCategory_4 = CategoryAdapter()
     private var listCategory = mutableListOf<Category>()
+    private var listProductRelated = ArrayList<Product>()
+    private var listProductVatTu = ArrayList<Product>()
+    private var listProductGiaiPhap = ArrayList<Product>()
+    private var nkxs: Int = NKSX_DISPLAY_HIDDEN
+    private var baoTieu: Int = ACCREDITATINON_DISPLAY_HIDDEN
 
     private val handleOverwrite: ProductManagerDetailOverwrite = CustomProductManagerDetail()
 
@@ -94,55 +100,86 @@ class ProductManagerDetailFragment : BaseFragment() {
         showProgressDialog()
 
         context?.let {
-            handleOverwrite.handleViewCreated(view, it)
+            handleOverwrite.handleViewCreated(view, it, listProductRelated, listProductVatTu, listProductGiaiPhap)
             rv_product_images.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
         }
 
+        sw_show_nksx.setOnCheckedChangeListener { _, _ ->
+            if (sw_show_nksx.isChecked) {
+                nkxs = NKSX_DISPLAY_SHOW
+                sw_show_nksx.text = "Nhật ký sản xuất: Bật"
+            } else {
+                nkxs = NKSX_DISPLAY_HIDDEN
+                sw_show_nksx.text = "Nhật ký sản xuất: Tắt"
+            }
+        }
+
+        sw_show_accreditation.setOnCheckedChangeListener { _, _ ->
+            if (sw_show_accreditation.isChecked) {
+                baoTieu = ACCREDITATINON_DISPLAY_SHOW
+                sw_show_accreditation.text = "Đã được bao tiêu: Đã được bao tiêu"
+            } else {
+                baoTieu = ACCREDITATINON_DISPLAY_HIDDEN
+                sw_show_accreditation.text = "Đã được bao tiêu: Chưa được bao tiêu"
+            }
+        }
 
         view_add_images.setOnClickListener {
             CASE_PICK_IMAGE = false
             launchPickPhotoIntent()
         }
 
-        if (UserDataManager.currentType == "Quản trị viên") {
+        if (UserDataManager.currentType == "Chủ hội chợ" || UserDataManager.currentType == "Chủ gian hàng")
+            btn_product_update.visibility = View.VISIBLE
+        else if (UserDataManager.currentType == "Quản trị viên") {
             val listPermission = Const.listPermission
 
             if (listPermission.isNotEmpty())
                 for (i in listPermission.indices)
                     if (Const.Permission.EDIT_PRODUCT == listPermission[i]) {
-                        btn_product_update.visibility = View.GONE
+                        btn_product_update.visibility = View.VISIBLE
                         break
                     }
-        } else {
-            btn_product_update.setOnClickListener {
-                if (!isEditMode) {
-                    startEditing()
-                    isEditMode = true
-                } else {
-                    if (UserDataManager.currentType == "Chủ hội chợ") {
-                        if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                        edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
-                            showProgressDialog()
-//                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-//                                    edit_product_price?.money
-//                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
-//                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-//                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-//                                    ?: 0, edit_produt_wholesale_to.money
-//                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
-                        }
-                    } else
-                        if (isRequiredFieldsValid(edit_product_name.text.toString(), edit_product_price.text.toString(), edit_product_code.text.toString(),
-                                        edt_product_categories.text.toString(), edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
-                            showProgressDialog()
-//                            viewModel.editProductManager(product_Id, edit_product_name.text.toString(), edit_product_code.text.toString(), edit_product_title.text.toString(),
-//                                    edit_product_price?.money
-//                                            ?: 0, edit_product_dvt.text.toString(), booth_id, brand_id, edit_product_madeIn.text.toString(),
-//                                    image, postMedias, edit_product_description.text.toString(), status, edit_product_meta_description.text.toString(), edit_product_meta_keyword.text.toString(),
-//                                    edit_product_tags.text.toString(), listCategory, listProductRelated, feautured, edit_produt_wholesale_from.money
-//                                    ?: 0, edit_produt_wholesale_to.money
-//                                    ?: 0, edit_produt_wholesale_count.text.toString(), listImageDelete)
-                        }
+
+        } else btn_product_update.visibility = View.GONE
+
+        btn_product_update.setOnClickListener {
+            if (!isEditMode) {
+                startEditing()
+                isEditMode = true
+            } else {
+                val tenSp = edit_product_name.text.toString()
+                val maSp = edit_product_code.text.toString()
+                val tieuDe = edit_product_title.text.toString()
+                val giaBan = edit_product_price?.money ?: 0
+                val giaBanKm = edit_product_price_promotion?.money ?: 0
+                val dvt = edit_product_dvt.text.toString()
+                val xuatSu = edit_product_madeIn.text.toString()
+                val moTa = edit_product_description.text.toString()
+                val metaMota = edit_product_meta_description.text.toString()
+                val metaKeyword = edit_product_meta_keyword.text.toString()
+                val tag = edit_product_tags.text.toString()
+                val giaBanSiTu = edit_produt_wholesale_from?.money ?: 0
+                val giaBanSiDen = edit_produt_wholesale_to?.money ?: 0
+                val soLuongBanSi = edit_produt_wholesale_count.text.toString()
+                val quyMo = if (linear_scale.visibility == View.VISIBLE) edit_product_scale.text.toString() else edit_product_agri_scale.text.toString()
+                val sanLuong = if (linear_scale.visibility == View.VISIBLE) edit_product_quantity.text.toString() else edit_product_agri_quantity.text.toString()
+                val dongGoi = edit_product_agri_pack.text.toString()
+                val muaVu = edit_product_agri_season.text.toString()
+                val hsd = edit_product_agri_expiryDate.text.toString()
+                val msLoHang = edit_product_agri_shipmentCode.text.toString()
+                val ngaySX = edit_product_agri_manufacturingDate.text.toString()
+                val ngayThuHoachDK = edit_product_agri_harvestDate.text.toString()
+                val ngayXuatXuong = edit_product_agri_shippedDate.text.toString()
+
+                if (isRequiredFieldsValid(tenSp, edit_product_price.text.toString(), maSp, edt_product_categories.text.toString(),
+                                edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
+                    showProgressDialog()
+                    viewModel.editProductManager(product_Id, tenSp, maSp, tieuDe,
+                            giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu,
+                            image, postMedias, moTa, status, metaMota, metaKeyword,
+                            tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, listImageDelete, quyMo, sanLuong,
+                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu, listProductVatTu, listProductGiaiPhap)
                 }
             }
         }
@@ -218,7 +255,9 @@ class ProductManagerDetailFragment : BaseFragment() {
             toast("Cập nhật thành công")
             viewModel.getProductDetail(product_Id)
             postMedias.clear()
-//            listProductRelated.clear()
+            listProductRelated.clear()
+            listProductVatTu.clear()
+            listProductGiaiPhap.clear()
             activity?.setResult(RESULT_OK)
         })
 
@@ -459,26 +498,6 @@ class ProductManagerDetailFragment : BaseFragment() {
                     startActivity(i)
                 })
 
-
-//        val productsRelatedAdapter = ProductManagerDetailRelatedAdapter()
-//        info.collectionProducts?.products?.let { productsRelatedAdapter.replaceAll(it) }
-//        rv_product_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-//        rv_product_related_products.adapter = productsRelatedAdapter
-
-//        if (info.collectionProducts != null && info.collectionProducts!!.products != null && info.collectionProducts!!.products!!.isNotEmpty()) {
-//            for (i in info.collectionProducts!!.products!!.indices) {
-//                val productCollection = info.collectionProducts!!.products!![i]
-//                val productManager = ProductManager()
-//                productManager.code = productCollection.code
-//                productManager.name = productCollection.name
-//                productManager.promotionPrice = productCollection.promotionPrice
-//                productManager.price = productCollection.price
-//                productManager.image = productCollection.image
-//                productManager.id = productCollection.id
-//                listProductRelated.add(productManager)
-//                adapterProductRelatedImage.replaceAll(listProductRelated)
-//            }
-//        }
     }
 
     interface ProductManagerDetailProvider {
@@ -517,7 +536,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun providerBoothName(): String {
-                    return from.providerName ?: ""
+                    return from.booth?.name ?: ""
                 }
 
                 override fun provideWholesaleFrom(): String {
@@ -778,8 +797,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         view_scrollview.smoothScrollTo(0, 0)
 
         setupImageRecycleview()
-//        loadSanPhamLienQuan()
-
         btn_product_update.text = "Xong"
     }
 
@@ -1125,6 +1142,12 @@ class ProductManagerDetailFragment : BaseFragment() {
         const val IS_FEATURED: Int = 1  //Sản phẩm nổi bật
 
         const val VIEW_WHOLESALE = 1
+
+        const val NKSX_DISPLAY_SHOW: Int = 1 //Hiển thị NKSX
+        const val NKSX_DISPLAY_HIDDEN: Int = 0 //Không hiển thị NKSX
+
+        const val ACCREDITATINON_DISPLAY_SHOW: Int = 1 //Hiển thị bao tiêu
+        const val ACCREDITATINON_DISPLAY_HIDDEN: Int = 0 //Không hiển thị bao tiêu
 
         fun newInstance(params: Bundle): ProductManagerDetailFragment {
             val fragment = ProductManagerDetailFragment()

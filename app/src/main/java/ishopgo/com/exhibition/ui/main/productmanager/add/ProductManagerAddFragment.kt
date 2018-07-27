@@ -28,6 +28,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -37,7 +38,10 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.ProductAdapter
+import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerAdapter
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_add.*
@@ -52,9 +56,9 @@ class ProductManagerAddFragment : BaseFragment() {
     private val adapterCategory_2 = CategoryAdapter()
     private val adapterCategory_3 = CategoryAdapter()
     private val adapterCategory_4 = CategoryAdapter()
-    private var adapterProductRelatedImage = ProductManagerRelatedCollapseAdapters()
-    private var adapterVatTu = ProductManagerRelatedCollapseAdapters()
-    private var adapterGiaiPhap = ProductManagerRelatedCollapseAdapters()
+    private var adapterProductRelatedImage = SalePointProductAdapter(0.4f)
+    private var adapterVatTu = SalePointProductAdapter(0.4f)
+    private var adapterGiaiPhap = SalePointProductAdapter(0.4f)
     private var adapterDialogProduct = ProductManagerRelatedAdapter()
     private var adapterDialogVatTu = ProductManagerRelatedAdapter()
     private var adapterDialogGiaiPhap = ProductManagerRelatedAdapter()
@@ -64,7 +68,6 @@ class ProductManagerAddFragment : BaseFragment() {
     private var reloadProvider = false
     private var requestBrands = ""
     private var requestProvider = ""
-    private val handler = Handler(Looper.getMainLooper())
     private var status: Int = STATUS_DISPLAY_SHOW
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var nkxs: Int = NKSX_DISPLAY_HIDDEN
@@ -74,9 +77,9 @@ class ProductManagerAddFragment : BaseFragment() {
     private var booth_id: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
-    private var listProductRelated: ArrayList<ProductManager> = ArrayList()
-    private var listVatTu: ArrayList<ProductManager> = ArrayList()
-    private var listGiaiPhap: ArrayList<ProductManager> = ArrayList()
+    private var listProductRelated: ArrayList<Product> = ArrayList()
+    private var listVatTu: ArrayList<Product> = ArrayList()
+    private var listGiaiPhap: ArrayList<Product> = ArrayList()
 
     private val handleOverwrite: ProductManagerAddOverwrite = CustomProductManagerAdd()
 
@@ -730,8 +733,8 @@ class ProductManagerAddFragment : BaseFragment() {
                                 loadMoreProductRelated(totalItemsCount)
                             }
                         })
-                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                            override fun click(position: Int, data: ProductManager, code: Int) {
+                        adapterDialogProduct.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                            override fun click(position: Int, data: Product, code: Int) {
                                 if (listProductRelated.size == 0) {
                                     listProductRelated.add(data)
                                     adapterProductRelatedImage.replaceAll(listProductRelated)
@@ -791,8 +794,8 @@ class ProductManagerAddFragment : BaseFragment() {
                                 loadMoreProductVatTu(totalItemsCount)
                             }
                         })
-                        adapterDialogVatTu.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                            override fun click(position: Int, data: ProductManager, code: Int) {
+                        adapterDialogVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                            override fun click(position: Int, data: Product, code: Int) {
                                 if (listVatTu.size == 0) {
                                     listVatTu.add(data)
                                     adapterVatTu.replaceAll(listVatTu)
@@ -852,8 +855,8 @@ class ProductManagerAddFragment : BaseFragment() {
                                 loadMoreProductGiaiPhap(totalItemsCount)
                             }
                         })
-                        adapterDialogGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                            override fun click(position: Int, data: ProductManager, code: Int) {
+                        adapterDialogGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                            override fun click(position: Int, data: Product, code: Int) {
                                 if (listGiaiPhap.size == 0) {
                                     listGiaiPhap.add(data)
                                     adapterGiaiPhap.replaceAll(listGiaiPhap)
@@ -893,8 +896,8 @@ class ProductManagerAddFragment : BaseFragment() {
             rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_related_products.adapter = adapterProductRelatedImage
-            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                override fun click(position: Int, data: ProductManager, code: Int) {
+            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
                     listProductRelated.remove(data)
                     adapterProductRelatedImage.replaceAll(listProductRelated)
                 }
@@ -908,8 +911,8 @@ class ProductManagerAddFragment : BaseFragment() {
             rv_supplies_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_supplies_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_supplies_products.adapter = adapterVatTu
-            adapterVatTu.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                override fun click(position: Int, data: ProductManager, code: Int) {
+            adapterVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
                     listVatTu.remove(data)
                     adapterVatTu.replaceAll(listVatTu)
                 }
@@ -923,8 +926,8 @@ class ProductManagerAddFragment : BaseFragment() {
             rv_solution_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             rv_solution_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             rv_solution_products.adapter = adapterGiaiPhap
-            adapterGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<ProductManager> {
-                override fun click(position: Int, data: ProductManager, code: Int) {
+            adapterGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
                     listGiaiPhap.remove(data)
                     adapterGiaiPhap.replaceAll(listGiaiPhap)
                 }
