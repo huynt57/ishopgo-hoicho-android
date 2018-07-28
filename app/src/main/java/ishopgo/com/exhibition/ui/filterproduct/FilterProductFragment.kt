@@ -159,22 +159,27 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
 
         tv_promotion.setOnClickListener {
             type_filter = TYPE_FILTER_PROMOTION
+            listTypeFilter.clear()
             selectFilterType(tv_promotion)
         }
         tv_care.setOnClickListener {
             type_filter = TYPE_FILTER_CARE
+            listTypeFilter.clear()
             selectFilterType(tv_care)
         }
         tv_supply.setOnClickListener {
             type_filter = TYPE_FILTER_SUPPLY
+            listTypeFilter.clear()
             selectFilterType(tv_supply)
         }
         tv_wholesale.setOnClickListener {
             type_filter = TYPE_FILTER_WHOLESALE
+            listTypeFilter.clear()
             selectFilterType(tv_wholesale)
         }
         tv_nksx.setOnClickListener {
             type_filter = TYPE_FILTER_NKSX
+            listTypeFilter.clear()
             selectFilterType(tv_nksx)
         }
 
@@ -206,20 +211,14 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     private fun selectFilterType(view: VectorSupportTextView) {
         if (listTypeFilter.isEmpty()) {
             listTypeFilter.add(type_filter)
-            view.setTextColor(resources.getColor(R.color.colorPrimary))
-        } else {
-            var forEnd = false
-            for (i in listTypeFilter.indices)
-                if (listTypeFilter[i] == type_filter) {
-                    listTypeFilter.remove(type_filter)
-                    view.setTextColor(resources.getColor(R.color.md_grey_800))
-                    break
-                } else if (i == listTypeFilter.size - 1) forEnd = true
 
-            if (forEnd) {
-                listTypeFilter.add(type_filter)
-                view.setTextColor(resources.getColor(R.color.colorPrimary))
-            }
+            tv_promotion.setTextColor(resources.getColor(R.color.md_grey_800))
+            tv_care.setTextColor(resources.getColor(R.color.md_grey_800))
+            tv_supply.setTextColor(resources.getColor(R.color.md_grey_800))
+            tv_wholesale.setTextColor(resources.getColor(R.color.md_grey_800))
+            tv_nksx.setTextColor(resources.getColor(R.color.md_grey_800))
+
+            view.setTextColor(resources.getColor(R.color.colorPrimary))
         }
     }
 

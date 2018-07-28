@@ -121,12 +121,12 @@ class SignupFragment : BaseFragment() {
     private fun signupAccount() {
         if (isRequiredFieldsValid(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                         tv_signup_city.text.toString(), tv_signup_district.text.toString(), tv_signup_address.text.toString(), tv_signup_password.text.toString(),
-                        tv_signup_retry_password.text.toString())) {
+                        tv_signup_retry_password.text.toString(), image)) {
             showProgressDialog()
 
             viewModel.registerAccount(tv_signup_phone.text.toString(), tv_signup_mail.text.toString(), tv_signup_name.text.toString(),
                     tv_signup_company.text.toString(), tv_signup_city.text.toString(), tv_signup_district.text.toString(),
-                    tv_signup_address.text.toString(), tv_reference.text.toString(), tv_signup_password.text.toString())
+                    tv_signup_address.text.toString(), tv_reference.text.toString(), tv_signup_password.text.toString(), image)
         }
     }
 
@@ -171,7 +171,11 @@ class SignupFragment : BaseFragment() {
     }
 
     private fun isRequiredFieldsValid(phone: String, email: String, fullname: String, region: String, district: String, address: String,
-                                   password: String, retry_password: String): Boolean {
+                                      password: String, retry_password: String, image: String): Boolean {
+        if (image.trim().isEmpty()) {
+            toast("Ảnh đại diện không được để trống")
+            return false
+        }
 
         if (phone.trim().isEmpty()) {
             toast("Số điện thoại không được để trống")

@@ -1,6 +1,9 @@
 package ishopgo.com.exhibition.ui.login
 
+import android.annotation.SuppressLint
+import android.app.Application
 import android.arch.lifecycle.MutableLiveData
+import android.net.Uri
 import com.google.firebase.iid.FirebaseInstanceId
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
@@ -8,12 +11,20 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by hoangnh on 4/23/2018.
  */
 class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
+    @SuppressLint("StaticFieldLeak")
+    @Inject
+    lateinit var appContext: Application
+
     var loginSuccess = MutableLiveData<User>()
     var registerSuccess = MutableLiveData<Boolean>()
     var getOTP = MutableLiveData<Boolean>()
@@ -72,7 +83,7 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     fun registerAccount(phone: String, email: String, fullname: String, company: String,
-                        region: String, district: String, address: String, referenceTel: String, password: String) {
+                        region: String, district: String, address: String, referenceTel: String, password: String, image: String) {
 
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -87,6 +98,19 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         if (referenceTel.isNotBlank()) builder.addFormDataPart("refer_phone", referenceTel)
 
+        var imagePart: MultipartBody.Part? = null
+
+        if (image.trim().isNotEmpty()) {
+            val imageFile = File(appContext.cacheDir, "avatar_" + System.currentTimeMillis() + ".jpg")
+            imageFile.deleteOnExit()
+            Toolbox.reEncodeBitmap(appContext, Uri.parse(image), 640, Uri.fromFile(imageFile))
+            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+            imagePart = MultipartBody.Part.createFormData("image", imageFile.name, imageBody)
+        }
+
+        if (imagePart != null) {
+            builder.addPart(imagePart)
+        }
         addDisposable(noAuthService.register(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {

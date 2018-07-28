@@ -436,6 +436,10 @@
             android:name=".ui.main.administrator.add.AdministratorAddActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.shop.info.list_sale_point_all.ListSalePointActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

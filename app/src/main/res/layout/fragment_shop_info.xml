@@ -11,7 +11,7 @@
         android:descendantFocusability="blocksDescendants"
         android:orientation="vertical">
 
-        <include layout="@layout/content_booth_info"/>
+        <include layout="@layout/content_booth_info" />
 
         <View
             android:id="@+id/textView10"
@@ -53,19 +53,19 @@
             android:layout_height="match_parent"
             android:background="@color/md_grey_300"
             android:text="Thông tin liên quan"
-            tools:visibility="visible"
+            android:textStyle="bold"
             android:visibility="gone"
-            android:textStyle="bold" />
+            tools:visibility="visible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_recyclerview_source_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            tools:visibility="visible"
-            android:visibility="gone"
             android:padding="@dimen/item_spacing"
-            tools:listitem="@layout/item_sale_point" />
+            android:visibility="gone"
+            tools:listitem="@layout/item_sale_point"
+            tools:visibility="visible" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/label_relates_booth"
@@ -74,9 +74,9 @@
             android:layout_height="match_parent"
             android:background="@color/md_grey_300"
             android:text="Đơn vị liên quan"
-            tools:visibility="visible"
+            android:textStyle="bold"
             android:visibility="gone"
-            android:textStyle="bold" />
+            tools:visibility="visible" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_recyclerview_relates_booth"
@@ -84,11 +84,11 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:padding="@dimen/item_spacing"
-            tools:visibility="visible"
             android:visibility="gone"
-            tools:listitem="@layout/item_sale_point" />
+            tools:listitem="@layout/item_sale_point"
+            tools:visibility="visible" />
 
-        <RelativeLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/label_sale_point"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -96,34 +96,60 @@
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/textView15"
                 style="@style/AppTheme.ShopInfo.Section"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
                 android:background="@color/md_grey_300"
                 android:text="Điểm bán lẻ"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_sale_point_more"
+                style="@style/AppTheme.ShopInfo.Section"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_toStartOf="@+id/img_add_sale_point"
+                android:layout_weight="0.3"
+                android:background="@color/md_grey_300"
+                android:text="Xem thêm"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="normal"
+                app:layout_constraintBottom_toBottomOf="@+id/textView15"
+                app:layout_constraintEnd_toStartOf="@+id/img_add_sale_point"
+                app:layout_constraintTop_toTopOf="parent" />
+
 
             <ImageView
                 android:id="@+id/img_add_sale_point"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.1"
                 android:background="@color/md_grey_300"
                 android:padding="5dp"
                 android:visibility="gone"
-                tools:visibility="visible"
-                app:srcCompat="@drawable/ic_add_highlight_24dp" />
-        </RelativeLayout>
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_add_highlight_24dp"
+                tools:visibility="visible" />
+        </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/view_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            tools:visibility="visible"
-            android:visibility="gone"
             android:padding="@dimen/item_spacing"
-            tools:listitem="@layout/item_sale_point" />
+            android:visibility="gone"
+            tools:listitem="@layout/item_sale_point"
+            tools:visibility="visible" />
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

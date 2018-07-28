@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ShopRelateRequest
@@ -30,6 +31,7 @@ import ishopgo.com.exhibition.ui.main.salepoint.add.SalePointAddActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
+import ishopgo.com.exhibition.ui.main.shop.info.list_sale_point_all.ListSalePointActivity
 import kotlinx.android.synthetic.main.content_booth_info.*
 import kotlinx.android.synthetic.main.fragment_shop_info.*
 
@@ -85,7 +87,16 @@ class ShopInfoFragment : BaseFragment() {
         viewModel.listSalePoint.observe(this, Observer { i ->
             i?.let {
                 view_recyclerview.visibility = if (it.isEmpty()) View.GONE else View.VISIBLE
-                salePointAdapter.replaceAll(it)
+                tv_sale_point_more.visibility = if (it.size > 3) View.VISIBLE else View.GONE
+                if (it.isNotEmpty() && it.size > 3) {
+                    val listSalePoint = mutableListOf<SearchSalePoint>()
+                    for (i in it.indices) {
+                        if (i < 3)
+                            listSalePoint.add(it[i])
+                        else break
+                    }
+                    salePointAdapter.replaceAll(listSalePoint)
+                } else salePointAdapter.replaceAll(it)
             }
         })
 
@@ -296,7 +307,11 @@ class ShopInfoFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        tv_sale_point_more.setOnClickListener {
+            val intent = Intent(view.context, ListSalePointActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
+            startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+        }
         view_recyclerview_relates_booth.adapter = relateBoothAdapter
         val lm2 = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         lm2.isAutoMeasureEnabled = true
