@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.fragment_contact_to_register_booth.*
 
 /**
@@ -21,6 +22,6 @@ class ContactToRegisterBoothFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view_caption.setText("Để đăng ký gian hàng hội chợ, vui lòng liên hệ hotline <font color=\"#009624\">0985771133</font>".asHtml())
+        view_caption.setPhone("Đăng ký tạo thông tin truy xuất nguồn gốc và tem truy xuất nguồn gốc vui lòng liên hệ hotline 0985771133".asHtml(), "0985771133")
     }
 }
