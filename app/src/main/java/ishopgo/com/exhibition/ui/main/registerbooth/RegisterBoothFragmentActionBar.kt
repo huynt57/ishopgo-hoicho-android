@@ -22,7 +22,7 @@ class RegisterBoothFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Đăng ký gian hàng")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
-            activity?.finish()
+            activity?.onBackPressed()
         }
     }
 

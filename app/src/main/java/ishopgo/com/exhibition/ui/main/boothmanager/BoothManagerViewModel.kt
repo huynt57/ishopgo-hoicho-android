@@ -10,6 +10,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.model.BoothManager
+import ishopgo.com.exhibition.model.BoothManagerWrapper
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -35,9 +36,9 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManager>>(), AppCompon
 
             addDisposable(authService.getBooth(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
-                            dataReturned.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<BoothManagerWrapper>() {
+                        override fun success(data: BoothManagerWrapper?) {
+                            dataReturned.postValue(data?.booths ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {

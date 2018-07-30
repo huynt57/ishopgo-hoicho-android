@@ -13,10 +13,7 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.BaseResponse
-import ishopgo.com.exhibition.model.BoothConfig
-import ishopgo.com.exhibition.model.BoothManager
-import ishopgo.com.exhibition.model.District
-import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.showStackTrace
@@ -47,9 +44,9 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             addDisposable(authService.getBooth(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
-                            relateBooths.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<BoothManagerWrapper>() {
+                        override fun success(data: BoothManagerWrapper?) {
+                            relateBooths.postValue(data?.booths ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {

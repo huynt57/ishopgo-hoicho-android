@@ -291,7 +291,7 @@ class ApiService {
         fun changeStatusSalePoint(@Path("id") salePoint_id: Long): Single<BaseResponse<Any>>
 
         @GET("expo/booths")
-        fun getBooth(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>>
+        fun getBooth(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<BoothManagerWrapper>>
 
         @POST("expo/booth/add")
         fun createBooth(@Body body: RequestBody): Single<BaseResponse<Any>>
