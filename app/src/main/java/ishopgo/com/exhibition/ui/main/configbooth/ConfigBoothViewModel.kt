@@ -12,11 +12,10 @@ import ishopgo.com.exhibition.domain.BaseErrorSignal
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.request.ShopRelateRequest
 import ishopgo.com.exhibition.domain.response.BaseResponse
-import ishopgo.com.exhibition.model.BoothConfig
-import ishopgo.com.exhibition.model.BoothManager
-import ishopgo.com.exhibition.model.District
-import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.domain.response.BoothRelate
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.showStackTrace
@@ -47,9 +46,9 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             addDisposable(authService.getBooth(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
-                            relateBooths.postValue(data ?: mutableListOf())
+                    .subscribeWith(object : BaseSingleObserver<ManagerBooth>() {
+                        override fun success(data: ManagerBooth?) {
+                            relateBooths.postValue(data?.booths ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {
@@ -63,7 +62,7 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var editSusscess = MutableLiveData<Boolean>()
 
 
-    fun editConfigBooth(name: String, hotline: String, introduction: String, image: Uri?, logo: Uri?, city: String?, district: String?, title: String?) {
+    fun editConfigBooth(name: String, hotline: String, introduction: String, image: Uri?, logo: Uri?, city: String?, district: String?, title: String?, listBoothRelate: List<BoothRelate>) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -99,6 +98,14 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
             val imagePart = MultipartBody.Part.createFormData("logo", imageFile.name, imageBody)
             builder.addPart(imagePart)
         }
+
+        if (!listBoothRelate.isEmpty()) {
+            for (i in listBoothRelate.indices) {
+                builder.addFormDataPart("ids[]", listBoothRelate[i].id.toString())
+                builder.addFormDataPart("contents[]", listBoothRelate[i].content.toString())
+            }
+        }
+
 
         addDisposable(authService.editConfigBooth(builder.build())
                 .subscribeOn(Schedulers.single())
@@ -172,5 +179,27 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    var shopRelates = MutableLiveData<List<BoothRelate>>()
+    fun loadShopRelates(params: Request) {
+        if (params is ShopRelateRequest) {
+            val fields = mutableMapOf<String, Any>()
+
+            addDisposable(noAuthService.getShopRelate(params.shopId, fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<List<BoothRelate>>() {
+                        override fun success(data: List<BoothRelate>?) {
+                            shopRelates.postValue(data ?: listOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+
+
+                    })
+            )
+        }
     }
 }

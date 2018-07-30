@@ -17,6 +17,7 @@ import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.ManagerBrand
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.BoothManager
+import ishopgo.com.exhibition.model.ManagerBooth
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.model.product_manager.ProductManager
@@ -414,11 +415,9 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
             fields["offset"] = params.offset
             addDisposable(authService.getBooth(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
-                            data?.let {
-                                dataBooth.postValue(it)
-                            }
+                    .subscribeWith(object : BaseSingleObserver<ManagerBooth>() {
+                        override fun success(data: ManagerBooth?) {
+                            dataBooth.postValue(data?.booths ?: mutableListOf())
                         }
 
                         override fun failure(status: Int, message: String) {

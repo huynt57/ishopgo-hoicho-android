@@ -446,7 +446,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).deleteBooth(booth_id)
     }
 
-    override fun getBooth(fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>> {
+    override fun getBooth(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerBooth>> {
         val ps = mutableListOf<BoothManager>()
         for (i in 0..5)
             ps.add(generateBoothManager())

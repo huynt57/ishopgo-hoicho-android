@@ -5,19 +5,20 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.View
 import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.BoothConfig
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.District
-import ishopgo.com.exhibition.model.Region
+import ishopgo.com.exhibition.domain.request.ShopRelateRequest
+import ishopgo.com.exhibition.domain.response.BoothRelate
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
@@ -25,6 +26,8 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_setting_booth.*
 
@@ -36,6 +39,14 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
     private val adapterRegion = RegionAdapter()
     private val adapterDistrict = DistrictAdapter()
     private lateinit var viewModel: ConfigBoothViewModel
+    private lateinit var shareViewModel: ShareBoothViewModel
+    private val relateBoothAdapter = BoothRelateDeleteAdapter()
+    private var listBoothRelate: MutableList<BoothRelate> = mutableListOf()
+
+    companion object {
+        const val CLICK_OPEN_OPTION = 1
+
+    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_setting_booth
@@ -45,6 +56,54 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbars()
+
+        related_booth.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        related_booth.layoutManager = layoutManager
+        related_booth.adapter = relateBoothAdapter
+        relateBoothAdapter.listener = object : ClickableAdapter.BaseAdapterAction<BoothRelate> {
+            override fun click(position: Int, data: BoothRelate, code: Int) {
+                when (code) {
+                    CLICK_OPEN_OPTION -> {
+                        context?.let {
+                            val dialog = MaterialDialog.Builder(it)
+                                    .customView(R.layout.dialog_option_booth_relate, false)
+                                    .negativeText("Huỷ")
+                                    .onNegative { dialog, _ -> dialog.dismiss() }
+                                    .autoDismiss(false)
+                                    .canceledOnTouchOutside(false)
+                                    .build()
+
+                            val tv_edit_booth_related = dialog.findViewById(R.id.tv_edit_booth_related) as VectorSupportTextView
+                            val tv_delete_booth_related = dialog.findViewById(R.id.tv_delete_booth_related) as VectorSupportTextView
+
+
+                            tv_edit_booth_related.setOnClickListener {
+                                dialog.dismiss()
+                                showDialogEditBoothRelate(data)
+                            }
+                            tv_delete_booth_related.setOnClickListener {
+                                for (i in listBoothRelate.indices)
+                                    if (data.id == listBoothRelate[i].id) {
+                                        listBoothRelate.removeAt(i)
+                                        relateBoothAdapter.replaceAll(listBoothRelate)
+                                        dialog.dismiss()
+                                        break
+                                    }
+                            }
+
+                            val window = dialog.window
+                            if (window != null) {
+                                window.attributes.windowAnimations = R.style.BottomDialog
+                                window.setGravity(Gravity.BOTTOM)
+                            }
+                            dialog.show()
+                        }
+                    }
+                }
+            }
+        }
 
         btn_create_booth.setOnClickListener {
             val required = listOf(
@@ -66,7 +125,8 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                     logo,
                     tv_setting_booth_city.text.toString(),
                     tv_setting_booth_district.text.toString(),
-                    tv_setting_booth_type.text.toString()
+                    tv_setting_booth_type.text.toString(),
+                    listBoothRelate
             )
         }
 
@@ -87,6 +147,37 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
         }
 
         add_relate_booth.setOnClickListener {
+            shareViewModel.openBoothRelateFragment()
+        }
+    }
+
+    private fun showDialogEditBoothRelate(data: BoothRelate) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_edit_function_booth_relate, false)
+                    .title("Sửa chức năng của đơn vị")
+                    .positiveText("Đồng ý")
+                    .onPositive { dialog, _ ->
+                        val edit_content_relate = dialog.findViewById(R.id.edit_content_relate) as TextInputEditText
+                        for (i in listBoothRelate.indices)
+                            if (data.id == listBoothRelate[i].id) {
+                                listBoothRelate[i].content = edit_content_relate.text.toString()
+                                relateBoothAdapter.replaceAll(listBoothRelate)
+                                dialog.dismiss()
+                                break
+                            }
+                    }
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
+
+            val edit_content_relate = dialog.findViewById(R.id.edit_content_relate) as TextInputEditText
+            for (i in listBoothRelate.indices)
+                if (data.id == listBoothRelate[i].id) {
+                    edit_content_relate.setText(listBoothRelate[i].content)
+                    break
+                }
+
         }
     }
 
@@ -169,6 +260,8 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        shareViewModel = obtainViewModel(ShareBoothViewModel::class.java, true)
+
         viewModel = obtainViewModel(ConfigBoothViewModel::class.java, false)
         viewModel.errorSignal.observe(viewLifeCycleOwner!!, Observer {
             it?.let {
@@ -180,6 +273,9 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
         viewModel.editSusscess.observe(viewLifeCycleOwner!!, Observer {
             it?.let {
                 hideProgressDialog()
+                val relateRequest = ShopRelateRequest()
+                relateRequest.shopId = UserDataManager.currentUserId
+                viewModel.loadShopRelates(relateRequest)
                 toast("Cập nhật thành công")
             }
         })
@@ -246,6 +342,24 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                         .into(img_setting_logo)
             }
         })
+
+        viewModel.shopRelates.observe(this, Observer { r ->
+            r?.let {
+                listBoothRelate = it as MutableList<BoothRelate>
+                relateBoothAdapter.replaceAll(it)
+            }
+        })
+
+        shareViewModel.getDataBoothRelate.observe(this, Observer { p ->
+            p?.let {
+                listBoothRelate.add(it)
+                relateBoothAdapter.replaceAll(listBoothRelate)
+            }
+        })
+
+        val relateRequest = ShopRelateRequest()
+        relateRequest.shopId = UserDataManager.currentUserId
+        viewModel.loadShopRelates(relateRequest)
 
         viewModel.getConfigBooth()
         viewModel.loadRegion()
