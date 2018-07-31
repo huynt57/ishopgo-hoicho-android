@@ -27,7 +27,7 @@ class TicketManagerFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, TicketManagerFragment.newInstance(Bundle())).commit()
+                .replace(R.id.view_main_content, TicketManagerTabFragment.newInstance(Bundle())).commit()
     }
 
     private fun setupToolbars() {

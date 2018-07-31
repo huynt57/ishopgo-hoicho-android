@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.boothmanager
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,7 +15,9 @@ import android.os.Environment
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
@@ -31,6 +34,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.boothmanager.add_booth.BoothManagerAddActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import java.io.*
@@ -39,6 +43,10 @@ import java.io.*
 class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>() {
     override fun initLoading() {
         firstLoad()
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
     }
 
     @SuppressLint("SetTextI18n")
@@ -64,6 +72,17 @@ class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>(
 
     override fun obtainViewModel(): BaseListViewModel<List<BoothManager>> {
         return obtainViewModel(BoothManagerViewModel::class.java, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        (viewModel as BoothManagerViewModel).total.observe(this, Observer { p ->
+            p?.let {
+                if (it > 0) search_total.visibility = View.VISIBLE else search_total.visibility = View.GONE
+                search_total.text = "Có $it gian hàng"
+            }
+        })
     }
 
     override fun firstLoad() {

@@ -107,7 +107,8 @@ class ExpoConfigAdapter : ClickableAdapter<ExpoConfig>() {
         override fun convert(from: ExpoConfig): ExpoMapConfigProvider {
             return object : ExpoMapConfigProvider {
                 override fun price(): CharSequence {
-                    return "Giá vé: ${from.price?.asMoney() ?: "0 đ"}"
+                    return "Giá vé: ${if (from.price != 0L) from.price?.asMoney()
+                            ?: "Miễn phí" else "Miễn phí"}"
                 }
 
                 override fun qrcode(): CharSequence {

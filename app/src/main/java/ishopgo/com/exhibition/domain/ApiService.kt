@@ -341,7 +341,7 @@ class ApiService {
         fun getBoothFollow(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<BoothFollow>>>
 
         @GET("expo/ticket")
-        fun getListTicket(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>>
+        fun getListTicket(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerTicket>>
 
         @GET("expo/customer-visit")
         fun getVisitors(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManageVisitor>>

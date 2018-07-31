@@ -80,6 +80,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var listProductGiaiPhap = ArrayList<Product>()
     private var nkxs: Int = NKSX_DISPLAY_HIDDEN
     private var baoTieu: Int = ACCREDITATINON_DISPLAY_HIDDEN
+    private var moTa: String = ""
 
     private val handleOverwrite: ProductManagerDetailOverwrite = CustomProductManagerDetail()
 
@@ -155,7 +156,6 @@ class ProductManagerDetailFragment : BaseFragment() {
                 val giaBanKm = edit_product_price_promotion?.money ?: 0
                 val dvt = edit_product_dvt.text.toString()
                 val xuatSu = edit_product_madeIn.text.toString()
-                val moTa = edit_product_description.text.toString()
                 val metaMota = edit_product_meta_description.text.toString()
                 val metaKeyword = edit_product_meta_keyword.text.toString()
                 val tag = edit_product_tags.text.toString()
@@ -451,6 +451,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
 
         sw_featured.isChecked = convert.provideIsFeatured()
+        sw_featured.visibility = if (UserDataManager.currentType == "Chủ hội chợ") View.VISIBLE else View.GONE
         sw_featured.text = if (convert.provideIsFeatured()) "Sản phẩm nổi bật: Nổi bật"
         else "Sản phẩm nổi bật: Không nổi bật"
 
@@ -468,7 +469,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_tags.setText(convert.provideTags())
         edit_product_booth.setText(convert.providerBoothName())
         edit_product_price_promotion.setText(convert.providerPricePromotion())
-
+        moTa = convert.provideDescription()
         if (convert.provideDepartments() != null) {
             brand_id = convert.provideDepartments()!!.id
             edit_product_brand.setText(convert.provideDepartments()!!.name ?: "")
@@ -655,7 +656,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         container_product_detail.visibility = View.VISIBLE
         img_add_related_product.visibility = View.GONE
         view_add_images.visibility = View.GONE
-        til_product_description.visibility = View.GONE
         edit_product_name.isFocusable = false
         edit_product_name.isFocusableInTouchMode = false
         edit_product_code.isFocusable = false
@@ -714,7 +714,6 @@ class ProductManagerDetailFragment : BaseFragment() {
         img_add_related_product.visibility = View.VISIBLE
         view_add_images.visibility = View.VISIBLE
 
-        til_product_description.visibility = View.VISIBLE
         edit_product_name.isFocusable = true
         edit_product_name.isFocusableInTouchMode = true
         edit_product_code.isFocusable = true

@@ -27,6 +27,7 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManager>>(), AppCompon
     @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
+    var total = MutableLiveData<Int>()
 
     override fun loadData(params: Request) {
         if (params is LoadMoreRequest) {
@@ -38,6 +39,7 @@ class BoothManagerViewModel : BaseListViewModel<List<BoothManager>>(), AppCompon
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerBooth>() {
                         override fun success(data: ManagerBooth?) {
+                            total.postValue(data?.total ?: 0)
                             dataReturned.postValue(data?.booths ?: mutableListOf())
                         }
 

@@ -222,7 +222,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).getDeletedMember(fields)
     }
 
-    override fun getListTicket(fields: MutableMap<String, Any>): Single<BaseResponse<List<Ticket>>> {
+    override fun getListTicket(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerTicket>> {
         val response = BaseResponse<Ticket>()
         response.status = 1
 
