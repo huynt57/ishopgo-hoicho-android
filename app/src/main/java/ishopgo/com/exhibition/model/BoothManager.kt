@@ -33,4 +33,13 @@ class BoothManager : IdentityData() {
     @SerializedName("qrcode")
     @Expose
     var qrcode: String? = null
+    @SerializedName("banner")
+    @Expose
+    var banner: String? = null
+    @SerializedName("address")
+    @Expose
+    var address: String? = null
+    @SerializedName("content")
+    @Expose
+    var content: String? = null
 }

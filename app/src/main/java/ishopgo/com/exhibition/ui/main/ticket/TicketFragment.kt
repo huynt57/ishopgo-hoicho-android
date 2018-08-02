@@ -27,7 +27,7 @@ class TicketFragment : BaseFragment() {
             return fragment
         }
 
-        val PAYMENT_STATUS_FREE = 0
+        const val PAYMENT_STATUS_FREE = 0L
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -66,6 +66,7 @@ class TicketFragment : BaseFragment() {
         tv_user_email.text = converted.provideEmail()
         tv_date_get_ticket.text = converted.providerDateGetTicket()
         tv_ticket_price.text = converted.providePrice()
+        tv_ticket_payment_status.visibility = if (ticket.fair?.price == PAYMENT_STATUS_FREE) View.GONE else View.VISIBLE
         tv_ticket_payment_status.text = converted.providePaymentStatusText()
         tv_user_phone.setPhone(converted.providePhone(), ticket.phone ?: "")
 
@@ -111,8 +112,8 @@ class TicketFragment : BaseFragment() {
 
                 override fun providePrice(): CharSequence {
 
-                    return "Giá vé: <b>${if (from.paymentStatus != PAYMENT_STATUS_FREE) from.fair?.price?.asMoney()
-                            ?: "0đ" else "Miễn phí"}</b>".asHtml()
+                    return "Giá vé: <b>${if (from.fair?.price != PAYMENT_STATUS_FREE) from.fair?.price?.asMoney()
+                            ?: "Miễn phí" else "Miễn phí"}</b>".asHtml()
                 }
 
                 override fun provideEmail(): CharSequence {

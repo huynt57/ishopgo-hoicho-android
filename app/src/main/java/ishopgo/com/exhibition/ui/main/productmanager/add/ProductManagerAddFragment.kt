@@ -167,6 +167,8 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         }
 
+        sw_featured.visibility = if (UserDataManager.currentType == "Chủ hội chợ") View.VISIBLE else View.GONE
+
         sw_featured.setOnCheckedChangeListener { _, _ ->
             if (sw_featured.isChecked) {
                 feautured = STATUS_FEAUTURED

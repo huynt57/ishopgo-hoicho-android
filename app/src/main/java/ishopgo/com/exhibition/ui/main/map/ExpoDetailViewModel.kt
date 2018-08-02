@@ -10,7 +10,7 @@ import ishopgo.com.exhibition.domain.request.SearchBoothRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.domain.response.Kiosk
 import ishopgo.com.exhibition.model.BoothManager
-import ishopgo.com.exhibition.model.BoothManagerWrapper
+import ishopgo.com.exhibition.model.ManagerBooth
 import ishopgo.com.exhibition.model.Ticket
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 
@@ -54,8 +54,8 @@ class ExpoDetailViewModel : BaseListViewModel<List<Kiosk>>(), AppComponent.Injec
 
             addDisposable(authService.getBooth(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<BoothManagerWrapper>() {
-                        override fun success(data: BoothManagerWrapper?) {
+                    .subscribeWith(object : BaseSingleObserver<ManagerBooth>() {
+                        override fun success(data: ManagerBooth?) {
                             availableBooths.postValue(data?.booths ?: mutableListOf())
                         }
 

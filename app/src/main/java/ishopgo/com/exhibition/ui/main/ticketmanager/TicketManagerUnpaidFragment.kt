@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.TicketRequest
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Ticket
@@ -41,17 +40,17 @@ import java.io.*
 import java.io.File.separator
 
 
-class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
+class TicketManagerUnpaidFragment : BaseListFragment<List<Ticket>, Ticket>() {
     override fun initLoading() {
         firstLoad()
     }
 
-    override fun layoutManager(context: Context): RecyclerView.LayoutManager {
-        return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.content_search_swipable_recyclerview, container, false)
+    }
+
+    override fun layoutManager(context: Context): RecyclerView.LayoutManager {
+        return LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
     override fun firstLoad() {
@@ -59,6 +58,7 @@ class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
         val firstLoad = TicketRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
+        firstLoad.payment_status = UN_PAID
         viewModel.loadData(firstLoad)
     }
 
@@ -67,6 +67,7 @@ class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
         val loadMore = TicketRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
+        loadMore.payment_status = UN_PAID
         viewModel.loadData(loadMore)
     }
 
@@ -146,8 +147,8 @@ class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
     }
 
     companion object {
-        fun newInstance(params: Bundle): TicketManagerFragment {
-            val fragment = TicketManagerFragment()
+        fun newInstance(params: Bundle): TicketManagerUnpaidFragment {
+            val fragment = TicketManagerUnpaidFragment()
             fragment.arguments = params
 
             return fragment
@@ -155,6 +156,7 @@ class TicketManagerFragment : BaseListFragment<List<Ticket>, Ticket>() {
 
         const val SAVE_QRCODE_TO_STORAGE = 0
         const val CLICK_ITEM_TO_PROFILE = 1
+        const val UN_PAID: Long = 1
     }
 
     private fun storeImage(imageData: Bitmap, filename: String): Boolean {
