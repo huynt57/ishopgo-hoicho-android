@@ -34,7 +34,7 @@ class BoothAdapter : ClickableAdapter<BoothManager>() {
             super.populate(data)
 
             val textView = itemView as TextView
-            textView.text = data.name ?: ""
+            textView.text = data.boothName ?: ""
         }
     }
 }
