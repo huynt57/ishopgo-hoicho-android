@@ -12,8 +12,10 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.Kiosk
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
 import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
@@ -84,7 +86,7 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
                     openShopDetail(data.boothId!!)
                 }
                 else {
-                    chooseShop(data)
+                    chooseKiosk(data)
                 }
             }
 
@@ -103,6 +105,22 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
         swipe.setOnRefreshListener(this)
 
+    }
+
+    private fun chooseKiosk(data: Kiosk) {
+        if (UserDataManager.currentUserId > 0) {
+            if (UserDataManager.currentType == "Chủ hội chợ") {
+                val extra = Bundle()
+                extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
+                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_chooseBoothFragment, extra)
+            } else {
+                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_registerBoothFragmentActionBar)
+            }
+        } else {
+            val intent = Intent(context, LoginActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            startActivity(intent)
+        }
     }
 
     private fun chooseShop(data: Kiosk) {

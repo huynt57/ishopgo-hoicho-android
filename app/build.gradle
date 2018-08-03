@@ -73,8 +73,8 @@ android {
     productFlavors {
         hangviet {
             applicationId "ishopgo.com.exhibition"
-            versionCode 20
-            versionName "1.5.13"
+            versionCode 21
+            versionName "1.6.0"
             signingConfig signingConfigs.hangviet
             resValue "string", "app_id", "hoichone"
             resValue "string", "app_name", "Hàng Việt 360"
@@ -93,8 +93,8 @@ android {
         }
         agri {
             applicationId "ishopgo.com.agri"
-            versionCode 11
-            versionName "1.0.10"
+            versionCode 12
+            versionName "1.1.0"
             resValue "string", "app_id", "1839d59174da18dde3d19118052f6fb0"
             resValue "string", "app_name", "Agri 360"
             resValue "string", "app_host", "agri360.vn"
@@ -111,8 +111,8 @@ android {
         }
         vietbuild {
             applicationId "ishopgo.com.vietbuild"
-            versionCode 11
-            versionName "1.0.10"
+            versionCode 12
+            versionName "1.1.0"
             resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
             resValue "string", "app_name", "Vietbuild Expo"
             resValue "string", "app_host", "vietbuildexpo.vn"
