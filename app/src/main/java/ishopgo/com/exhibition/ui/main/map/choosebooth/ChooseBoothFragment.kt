@@ -22,6 +22,13 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
  * Created by xuanhong on 6/19/18. HappyCoding!
  */
 class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun openFilter() {
+
+    }
+
+    override fun showFilter(): Boolean {
+        return false
+    }
 
     companion object {
         const val TAG = "ChooseBoothFragment"

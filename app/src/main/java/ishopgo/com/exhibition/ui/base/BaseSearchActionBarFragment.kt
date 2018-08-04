@@ -61,6 +61,19 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
             }
         }
 
+        view_filter.setOnClickListener {
+            view_search_field.hideKeyboard()
+            openFilter()
+        }
+
+        if (showFilter()) {
+            view_cancel.visibility = View.GONE
+            view_filter.visibility = View.VISIBLE
+        } else {
+            view_cancel.visibility = View.VISIBLE
+            view_filter.visibility = View.GONE
+        }
+
         view_search_field.showSoftKeyboard()
     }
 

@@ -7,8 +7,10 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.productmanager.search_product.FilterSearchFragment
+import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchProductFragmentActionBar
 import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchProductManagerViewModel
-import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchTabFragment
 
 class ProductManagerAddActivity : BaseSingleFragmentActivity() {
     override fun createFragment(startupOption: Bundle): Fragment {
@@ -27,8 +29,20 @@ class ProductManagerAddActivity : BaseSingleFragmentActivity() {
                 params.putInt(Const.TransferKey.EXTRA_REQUIRE, it)
                 supportFragmentManager.beginTransaction()
                         .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
-                        .add(R.id.fragment_container, SearchTabFragment.newInstance(params))
-                        .addToBackStack(SearchTabFragment.TAG)
+                        .add(R.id.fragment_container, SearchProductFragmentActionBar.newInstance(params))
+                        .addToBackStack(SearchProductFragmentActionBar.TAG)
+                        .commit()
+            }
+        })
+
+        viewModel.showFilterSp.observe(this, Observer { p ->
+            p?.let {
+                val params = Bundle()
+                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.fragment_container, FilterSearchFragment.newInstance(params))
+                        .addToBackStack(FilterSearchFragment.TAG)
                         .commit()
             }
         })

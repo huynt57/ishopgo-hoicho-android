@@ -736,6 +736,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_product_moTa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/default_margin"
@@ -752,6 +753,42 @@
                     android:lines="3" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/container_product_detail"
+                android:layout_width="match_parent"
+                android:layout_height="353.5dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <WebView
+                    android:id="@+id/webView_spk_detail_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:scrollbars="none" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/md_grey_400" />
+
+                <TextView
+                    android:id="@+id/tv_view_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:background="?attr/selectableItemBackground"
+
+                    android:gravity="center"
+                    android:text="[+] Xem thêm..."
+                    android:textColor="@color/colorAccent"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/sw_show_nksx"
@@ -858,9 +895,9 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/const_description_CSCB"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/const_description_CSCB">
+                android:layout_height="wrap_content">
 
                 <android.support.v7.widget.AppCompatButton
                     android:id="@+id/btn_add_description_coSo_cB"
@@ -899,9 +936,10 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_description_cscb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/rv_description_cscb" />
+                android:padding="@dimen/default_margin" />
 
             <Switch
                 android:id="@+id/sw_hienThi"
@@ -1018,8 +1056,8 @@
                 style="@style/AppTheme.ActionButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="0dp"
+                android:layout_marginStart="8dp"
                 android:text="THÊM MỚI MÔ TẢ"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -1050,9 +1088,10 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_description_vatTu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_description_vatTu" />
+            android:padding="@dimen/default_margin" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -1099,8 +1138,8 @@
                 style="@style/AppTheme.ActionButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
                 android:layout_marginEnd="0dp"
+                android:layout_marginStart="8dp"
                 android:text="THÊM MỚI MÔ TẢ"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -1131,9 +1170,10 @@
         </android.support.constraint.ConstraintLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_description_giaiPhap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rv_description_giaiPhap" />
+            android:padding="@dimen/default_margin" />
 
         <LinearLayout
             android:layout_width="match_parent"

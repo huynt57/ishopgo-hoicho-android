@@ -19,6 +19,12 @@ import kotlinx.android.synthetic.main.empty_list_result.*
  * Created by xuanhong on 7/19/18. HappyCoding!
  */
 class SearchCommunityFragmentActionBar : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun openFilter() {
+    }
+
+    override fun showFilter(): Boolean {
+        return false
+    }
 
     override fun onRefresh() {
         swipe.isRefreshing = false

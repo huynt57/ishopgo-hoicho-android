@@ -164,4 +164,34 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("booth")
     @Expose
     var booth: Booth? = null
+    @SerializedName("ngay_donggoi")
+    @Expose
+    var ngayDonggoi: String? = null
+    @SerializedName("ms_sanxuat")
+    @Expose
+    var msSanxuat: String? = null
+    @SerializedName("cang_xuat")
+    @Expose
+    var cangXuat: String? = null
+    @SerializedName("cang_nhap")
+    @Expose
+    var cangNhap: String? = null
+    @SerializedName("xuat_xuong_date")
+    @Expose
+    var xuatXuongdate: String? = null
+    @SerializedName("nhap_hang_date")
+    @Expose
+    var nhapHangdate: String? = null
+    @SerializedName("sl_nhap")
+    @Expose
+    var slNhap: String? = null
+    @SerializedName("hinhthuc_vc")
+    @Expose
+    var hinhThucVc: String? = null
+    @SerializedName("ngay_vc")
+    @Expose
+    var ngayVc: String? = null
+    @SerializedName("donvi_vc")
+    @Expose
+    var donviVc: String? = null
 }

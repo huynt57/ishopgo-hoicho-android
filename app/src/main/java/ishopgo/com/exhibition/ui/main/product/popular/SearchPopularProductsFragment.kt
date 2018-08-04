@@ -18,7 +18,15 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
-class SearchPopularProductsFragment: BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+class SearchPopularProductsFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun openFilter() {
+
+    }
+
+    override fun showFilter(): Boolean {
+        return false
+    }
+
     override fun onRefresh() {
         swipe.isRefreshing = false
         firstLoad()
@@ -39,13 +47,13 @@ class SearchPopularProductsFragment: BaseSearchActionBarFragment(), SwipeRefresh
                 val products = it ?: listOf()
                 if (reloadData) {
                     adapter.replaceAll(products)
-                }
-                else {
+                } else {
                     adapter.addAll(products)
                 }
             }
         })
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

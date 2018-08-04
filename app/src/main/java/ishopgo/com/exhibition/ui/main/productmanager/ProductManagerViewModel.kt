@@ -12,10 +12,8 @@ import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
-import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.ManagerBrand
-import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.request.SearchProductRequest
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.ManagerBooth
 import ishopgo.com.exhibition.model.PostMedia
@@ -545,6 +543,35 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                     }
                 })
         )
+    }
+
+    var total = MutableLiveData<Int>()
+    var filterProduct = MutableLiveData<List<Product>>()
+
+    fun loadSearchProduct(params: Request) {
+        if (params is SearchProductRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            fields["q"] = params.keyword
+            if (params.categoryId != 0L) fields["category_id"] = params.categoryId
+            if (params.brandId != 0L) fields["brand_id"] = params.brandId
+            if (params.boothId != 0L) fields["booth_id"] = params.boothId
+
+            addDisposable(noAuthService.searchProducts(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManagerProduct>() {
+                        override fun success(data: ManagerProduct?) {
+                            total.postValue(data?.total ?: 0)
+                            filterProduct.postValue(data?.product ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    })
+            )
+        }
     }
 
     companion object {

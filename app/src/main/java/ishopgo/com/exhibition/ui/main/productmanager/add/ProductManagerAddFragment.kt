@@ -308,6 +308,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
             val tv_choose_takePhoto = dialog.findViewById(R.id.tv_choose_takePhoto) as VectorSupportTextView
             val tv_choose_album = dialog.findViewById(R.id.tv_choose_album) as VectorSupportTextView
+            val tv_choose_viewImages = dialog.findViewById(R.id.tv_choose_viewImages) as VectorSupportTextView
+            tv_choose_viewImages.visibility = View.GONE
 
             tv_choose_takePhoto.setOnClickListener {
                 CASE_TAKE_PHOTO = true

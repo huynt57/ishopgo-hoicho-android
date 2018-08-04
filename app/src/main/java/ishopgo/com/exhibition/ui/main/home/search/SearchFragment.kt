@@ -22,6 +22,13 @@ import kotlinx.android.synthetic.main.fragment_home_search.*
  * Created by xuanhong on 4/25/18. HappyCoding!
  */
 class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
+    override fun openFilter() {
+    }
+
+    override fun showFilter(): Boolean {
+        return false
+    }
+
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_home_search
     }
