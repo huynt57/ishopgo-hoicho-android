@@ -25,7 +25,9 @@ public class DateFormattingTextWatcher implements TextWatcher {
         this.editText = editText;
 
         Calendar instance = Calendar.getInstance();
-        instance.clear();
+        instance.set(Calendar.DAY_OF_MONTH, 1);
+        instance.set(Calendar.MONTH, 0);
+        instance.set(Calendar.YEAR, 1900);
         ceilDate = instance.getTime();
 
         defaultFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
