@@ -72,7 +72,7 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                              cangXuat: String, cangNhap: String, ngayXuatHang: String, ngayNhapHang: String, soLuongNhap: String, hinhThucVC: String, ngayVC: String,
                              donViVC: String, moTa: String, thuongHieuID: Long, gianHangId: Long, isNKSX: Int, isBaoTieu: Int, trangThaiHT: Int, spNoiBat: Int,
                              listAnh: ArrayList<PostMedia>, listDanhMuc: ArrayList<Category>, listVatTu: ArrayList<Product>,
-                             listGiaiPhap: ArrayList<Product>, listSpLienQuan: ArrayList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String) {
+                             listGiaiPhap: ArrayList<Product>, listSpLienQuan: ArrayList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert : ArrayList<PostMedia>) {
 
 
         val builder = MultipartBody.Builder()
@@ -183,6 +183,20 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                     Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                     val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                     builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                }
+
+            }
+        }
+
+        if (listCert.isNotEmpty()) {
+            for (i in listCert.indices) {
+                val uri = listCert[i].uri
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
                 }
 
             }

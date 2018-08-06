@@ -80,7 +80,9 @@ class ProductManagerAddFragment : BaseFragment() {
     private var donViNKId: Long = 0L
     private var coSoCBId: Long = 0L
     private var postMedias: ArrayList<PostMedia> = ArrayList()
+    private var postMediasCert: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
+    private var adapterImagesCert = ComposingPostMediaAdapter()
     private var adapterDescriptionCSCB = DescriptionAdapter()
     private var adapterDescriptionVatTu = DescriptionAdapter()
     private var adapterDescriptionGiaiPhap = DescriptionAdapter()
@@ -90,8 +92,8 @@ class ProductManagerAddFragment : BaseFragment() {
     private var listDescriptionCSCB: ArrayList<Description> = ArrayList()
     private var listDescriptionVatTu: ArrayList<Description> = ArrayList()
     private var listDescriptionGiaiPhap: ArrayList<Description> = ArrayList()
-    private var typeCamera = ""
-    private var typeImages = ""
+    private var typeCamera = 0
+    private var typeImages = 0
 
     companion object {
         const val TAG = "ProductManagerFragment"
@@ -131,8 +133,8 @@ class ProductManagerAddFragment : BaseFragment() {
         const val TYPE_CAMERA_IMAGES = 0
         const val TYPE_CAMERA_CERT = 1
 
-        const val TYPE_SLECTED_IMAGES = 0
-        const val TYPE_SLECTED_CERT = 1
+        const val TYPE_SELECTED_IMAGES = 0
+        const val TYPE_SELECTED_CERT = 1
 
         const val PERMISSIONS_REQUEST_CAMERA = 100
 
@@ -172,6 +174,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
         view_camera.setOnClickListener {
             CASE_TAKE_PHOTO = false
+            typeCamera = TYPE_CAMERA_IMAGES
             takePhoto()
         }
 
@@ -179,6 +182,19 @@ class ProductManagerAddFragment : BaseFragment() {
 
         view_add_images.setOnClickListener {
             CASE_PICK_IMAGE = false
+            typeImages = TYPE_SELECTED_IMAGES
+            launchPickPhotoIntent()
+        }
+
+        view_camera_cert.setOnClickListener {
+            CASE_TAKE_PHOTO = false
+            typeCamera = TYPE_CAMERA_CERT
+            takePhoto()
+        }
+
+        view_add_images_cert.setOnClickListener {
+            CASE_PICK_IMAGE = false
+            typeImages = TYPE_SELECTED_CERT
             launchPickPhotoIntent()
         }
 
@@ -275,7 +291,7 @@ class ProductManagerAddFragment : BaseFragment() {
                     viewModel.createProductManager(image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
-                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan)
+                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert)
                 }
             } else
                 if (isRequiredFieldsValid(image, tenSp, edit_product_giaBan.text.toString(), maSp,
@@ -286,7 +302,7 @@ class ProductManagerAddFragment : BaseFragment() {
                     viewModel.createProductManager(image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
-                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan)
+                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert)
                 }
         }
 
@@ -305,6 +321,7 @@ class ProductManagerAddFragment : BaseFragment() {
         edt_product_danhMuc_cap4.setOnClickListener { getCategory(edt_product_danhMuc_cap4, CATEGORY_LEVEL_4) }
 
         setupImageRecycleview()
+        setupImageCertRecycleview()
         setupRecyclerviewDescriptionCSCB()
         setupRecyclerviewDescriptionVatTu()
         setupRecyclerviewDescriptionGiaiPhap()
@@ -426,6 +443,21 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
+
+    private fun setupImageCertRecycleview() {
+        context?.let {
+            rv_product_cert.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_cert.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_product_cert.adapter = adapterImagesCert
+            adapterImagesCert.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMediasCert.remove(data)
+                    if (postMediasCert.isEmpty()) rv_product_cert.visibility = View.GONE
+                    adapterImagesCert.replaceAll(postMediasCert)
+                }
+            }
+        }
+    }
     private fun setupRecyclerviewDescriptionCSCB() {
         context?.let {
             rv_description_cscb.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
@@ -1028,8 +1060,11 @@ class ProductManagerAddFragment : BaseFragment() {
                 }
                 val postMedia = PostMedia()
                 postMedia.uri = data.data
-                postMedias.add(postMedia)
 
+                if (typeImages == TYPE_SELECTED_IMAGES)
+                    postMedias.add(postMedia)
+                if (typeImages == TYPE_SELECTED_CERT)
+                    postMediasCert.add(postMedia)
 
             } else {
                 for (i in 0 until data.clipData.itemCount) {
@@ -1039,11 +1074,20 @@ class ProductManagerAddFragment : BaseFragment() {
                     }
                     val postMedia = PostMedia()
                     postMedia.uri = data.clipData.getItemAt(i).uri
-                    postMedias.add(postMedia)
+                    if (typeImages == TYPE_SELECTED_IMAGES)
+                        postMedias.add(postMedia)
+                    if (typeImages == TYPE_SELECTED_CERT)
+                        postMediasCert.add(postMedia)
                 }
             }
-            adapterImages.replaceAll(postMedias)
-            rv_product_images.visibility = View.VISIBLE
+            if (typeImages == TYPE_SELECTED_IMAGES){
+                adapterImages.replaceAll(postMedias)
+                rv_product_images.visibility = View.VISIBLE
+            }
+            if (typeImages == TYPE_SELECTED_CERT){
+                adapterImagesCert.replaceAll(postMediasCert)
+                rv_product_cert.visibility = View.VISIBLE
+            }
         }
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && CASE_PICK_IMAGE) {
@@ -1075,10 +1119,17 @@ class ProductManagerAddFragment : BaseFragment() {
                     val postMedia = PostMedia()
 
                     postMedia.uri = it
-                    postMedias.add(postMedia)
+                    if (typeCamera == TYPE_CAMERA_IMAGES){
+                        postMedias.add(postMedia)
+                        adapterImages.replaceAll(postMedias)
+                        rv_product_images.visibility = View.VISIBLE
+                    }
+                    if (typeCamera == TYPE_CAMERA_CERT){
+                        postMediasCert.add(postMedia)
+                        adapterImagesCert.replaceAll(postMediasCert)
+                        rv_product_cert.visibility = View.VISIBLE
+                    }
 
-                    adapterImages.replaceAll(postMedias)
-                    rv_product_images.visibility = View.VISIBLE
                 }
         }
     }
