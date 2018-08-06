@@ -135,7 +135,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:hint="Ngày đóng gói"
-                    android:inputType="text"
+                    android:inputType="date"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -1007,13 +1007,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/default_margin"
-            android:scrollbars="horizontal">
-
-        </android.support.v7.widget.RecyclerView>
+            android:scrollbars="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
@@ -1025,9 +1024,55 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
-                android:text="Nguyễn liệu, vật tư được sử dụng"
+                android:text="Giấy phép chứng nhận chất lượng và nguồn gốc"
                 android:textColor="@color/md_white_1000"
                 android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/view_camera_cert"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+            <ImageView
+                android:id="@+id/view_add_images_cert"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_add_default_24dp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_product_cert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
+            android:scrollbars="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_nguyenLieu_vatTu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingBottom="8dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:text="Nguyễn liệu, vật tư được sử dụng"
+                android:textColor="@color/md_white_1000"
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_edit_default_24dp" />
 
             <ImageView
                 android:id="@+id/img_add_supplies_product"
@@ -1099,7 +1144,8 @@
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
-            <TextView
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_giaiPhap"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -1109,7 +1155,9 @@
                 android:paddingTop="8dp"
                 android:text="Giải pháp được sử dụng"
                 android:textColor="@color/md_white_1000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_edit_default_24dp" />
+
 
             <ImageView
                 android:id="@+id/img_add_solution_product"
@@ -1181,7 +1229,8 @@
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
-            <TextView
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_lienQuan"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -1191,7 +1240,8 @@
                 android:paddingTop="8dp"
                 android:text="Sản phẩm liên quan"
                 android:textColor="@color/md_white_1000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                app:drawableEndCompat="@drawable/ic_edit_default_24dp" />
 
             <ImageView
                 android:id="@+id/img_add_related_product"

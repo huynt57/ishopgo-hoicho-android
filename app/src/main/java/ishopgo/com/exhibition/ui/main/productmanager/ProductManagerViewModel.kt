@@ -72,7 +72,7 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                              cangXuat: String, cangNhap: String, ngayXuatHang: String, ngayNhapHang: String, soLuongNhap: String, hinhThucVC: String, ngayVC: String,
                              donViVC: String, moTa: String, thuongHieuID: Long, gianHangId: Long, isNKSX: Int, isBaoTieu: Int, trangThaiHT: Int, spNoiBat: Int,
                              listAnh: ArrayList<PostMedia>, listDanhMuc: ArrayList<Category>, listVatTu: ArrayList<Product>,
-                             listGiaiPhap: ArrayList<Product>, listSpLienQuan: ArrayList<Product>) {
+                             listGiaiPhap: ArrayList<Product>, listSpLienQuan: ArrayList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String) {
 
 
         val builder = MultipartBody.Builder()
@@ -140,6 +140,10 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
             builder.addFormDataPart("donvi_vc", donViVC)
         if (moTa.isNotEmpty())
             builder.addFormDataPart("description", moTa)
+
+        builder.addFormDataPart("name_vattu", tenVatTu)
+        builder.addFormDataPart("name_giaiphap", tenGiaiPhap)
+        builder.addFormDataPart("name_lienquan", tenLienQuan)
 
         builder.addFormDataPart("is_nhatky_sx", isNKSX.toString())
         builder.addFormDataPart("is_baotieu", isBaoTieu.toString())

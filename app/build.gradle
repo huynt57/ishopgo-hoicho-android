@@ -90,6 +90,11 @@ android {
             resValue "string", "fb_login_protocol_scheme", "fb224784164969506"
             resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider224784164969506"
 
+            copy {
+                from 'src/hangviet/'
+                include '*.json'
+                into '.'
+            }
         }
         agri {
             applicationId "ishopgo.com.agri"
@@ -108,6 +113,12 @@ android {
             resValue "string", "facebook_app_id", "1070981049725521"
             resValue "string", "fb_login_protocol_scheme", "fb1070981049725521"
             resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1070981049725521"
+
+            copy {
+                from 'src/agri/'
+                include '*.json'
+                into '.'
+            }
         }
         vietbuild {
             applicationId "ishopgo.com.vietbuild"
@@ -126,8 +137,37 @@ android {
             resValue "string", "facebook_app_id", "1859174104148228"
             resValue "string", "fb_login_protocol_scheme", "fb1859174104148228"
             resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1859174104148228"
-        }
 
+            copy {
+                from 'src/vietbuild/'
+                include '*.json'
+                into '.'
+            }
+        }
+        farm {
+            applicationId "ishopgo.com.farm"
+            versionCode 12
+            versionName "1.1.0"
+            resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
+            resValue "string", "app_name", "Farm 360"
+            resValue "string", "app_host", "farm360.vn/"
+            resValue "string", "app_protocol", "http"
+            resValue "string", "host_deeplink", "vietbuildexpo.vn "
+            resValue "string", "file_provider_authority", "ishopgo.com.farm.fileprovider"
+            resValue "string", "external_file_path", "Android/data/ishopgo.com.farm/files/Pictures"
+            resValue "string", "firebase_app_version_ref", "app_variations/android/farm"
+            resValue "string", "keyword_store_search", "farm%20360%20ishopgo"
+
+            resValue "string", "facebook_app_id", "1098835020270538"
+            resValue "string", "fb_login_protocol_scheme", "fb1098835020270538"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider1098835020270538"
+
+            copy {
+                from 'src/farm/'
+                include '*.json'
+                into '.'
+            }
+        }
     }
 
     buildTypes {

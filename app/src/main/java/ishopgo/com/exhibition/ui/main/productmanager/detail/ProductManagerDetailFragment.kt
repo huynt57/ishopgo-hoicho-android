@@ -120,10 +120,10 @@ class ProductManagerDetailFragment : BaseFragment() {
             launchPickPhotoIntent()
         }
 
-//        view_add_images.setOnClickListener {
-//            CASE_PICK_IMAGE
-//            launchPickPhotoIntent()
-//        }
+        view_camera.setOnClickListener {
+            CASE_TAKE_PHOTO = false
+            takePhoto()
+        }
 
         if (UserDataManager.currentType == "Chủ hội chợ" || UserDataManager.currentType == "Chủ gian hàng")
             btn_product_add.visibility = View.VISIBLE
@@ -155,9 +155,13 @@ class ProductManagerDetailFragment : BaseFragment() {
         btn_vatTu.setOnClickListener { toast("Đang phát triển") }
         btn_giaiPhap.setOnClickListener { toast("Đang phát triển") }
 
-        btn_add_description_coSo_cB.setOnClickListener { dialogAddDescription(ADD_DESCRIPTION_COSOCB) }
-        btn_add_description_vatTu.setOnClickListener { dialogAddDescription(ADD_DESCRIPTION_VATTU) }
-        btn_add_description_giaiPhap.setOnClickListener { dialogAddDescription(ADD_DESCRIPTION_GIAIPHAP) }
+        btn_add_description_coSo_cB.setOnClickListener { dialogAddDescription(ADD_DESCRIPTION_COSOCB, null) }
+        btn_add_description_vatTu.setOnClickListener { dialogAddDescription(ADD_DESCRIPTION_VATTU, tv_nguyenLieu_vatTu) }
+        btn_add_description_giaiPhap.setOnClickListener { dialogAddDescription(ADD_DESCRIPTION_GIAIPHAP, tv_giaiPhap) }
+
+        tv_nguyenLieu_vatTu.setOnClickListener { dialogChangeName(tv_nguyenLieu_vatTu) }
+        tv_giaiPhap.setOnClickListener { dialogChangeName(tv_giaiPhap) }
+        tv_lienQuan.setOnClickListener { dialogChangeName(tv_lienQuan) }
 
         btn_product_add.setOnClickListener {
             val tenSp = edit_product_tenSp.text.toString()
@@ -193,6 +197,12 @@ class ProductManagerDetailFragment : BaseFragment() {
 
             val moTa = edit_product_moTa.text.toString()
 
+            val tenVatTu = tv_nguyenLieu_vatTu.text
+            val tenGiaiPhap = tv_giaiPhap.text
+            val tenLienQuan = tv_lienQuan.text
+
+
+            toast("Đang phát triển")
 //                if (isRequiredFieldsValid(tenSp, edit_product_price.text.toString(), maSp, edt_product_categories.text.toString(),
 //                                edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
 //                    showProgressDialog()
@@ -282,15 +292,9 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
     }
 
-    private fun dialogAddDescription(type: Int) {
+    private fun dialogAddDescription(type: Int, view: VectorSupportTextView?) {
         context?.let {
-            var title = ""
-            if (type == ADD_DESCRIPTION_COSOCB)
-                title = "Thêm mô tả cơ sở chế biến"
-            if (type == ADD_DESCRIPTION_VATTU)
-                title = "Thêm mô tả nguyên liệu, vật tư được sử dụng"
-            if (type == ADD_DESCRIPTION_GIAIPHAP)
-                title = "Thêm mô tả giải pháp được sử dụng"
+            val title: String = if (type == ADD_DESCRIPTION_COSOCB) "Thêm mô cơ sở chế biến" else "Thêm mô ${view?.text}"
 
             val dialog = MaterialDialog.Builder(it)
                     .title(title)
@@ -324,6 +328,28 @@ class ProductManagerDetailFragment : BaseFragment() {
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
                     .build()
+            dialog.show()
+        }
+    }
+
+    private fun dialogChangeName(view: VectorSupportTextView?) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Thay đổi tiêu đề")
+                    .customView(R.layout.dialog_edit_name_product, false)
+                    .positiveText("Thay đổi")
+                    .onPositive { dialog, _ ->
+                        val edit_product_tieuDe = dialog.findViewById(R.id.edit_product_name) as TextInputEditText
+                        view?.text = edit_product_tieuDe.text.toString()
+                        dialog.dismiss()
+                    }
+                    .negativeText("Huỷ bỏ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val edit_product_tieuDe = dialog.findViewById(R.id.edit_product_name) as TextInputEditText
+            edit_product_tieuDe.setText(view?.text ?: "")
             dialog.show()
         }
     }
@@ -635,8 +661,6 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         }
 
-
-
         edit_product_tenSp.setText(convert.provideName())
         edit_product_maSp.setText(convert.provideCode())
         edit_product_dvt.setText(convert.provideDVT())
@@ -646,6 +670,27 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_giaBanSi_tu.setText(convert.provideWholesaleFrom())
         edit_product_giaBanSi_den.setText(convert.provideWholesaleTo())
         edit_product_soLuongSi.setText(convert.provideWholesaleCountProduct())
+        edt_product_ngayDongGoi.setText(convert.providerNgayDongGoi())
+        edt_product_quyCach_dongGoi.setText(convert.providerQuyCachDongGoi())
+        edt_product_hsd.setText(convert.providerHSD())
+
+        edit_product_maSoLoSanXuat.setText(convert.providerMaSoLoSX())
+        edit_product_ngaySX.setText(convert.providerNgaySX())
+        edit_product_ngayThuHoach.setText(convert.providerNgayThuHoachDK())
+        edit_product_quyMoSX.setText(convert.providerQuyMo())
+        edit_product_khaNang_cungUng.setText(convert.providerKhaNangCungUng())
+        edit_product_muaVu_sanXuat.setText(convert.providerMuaVu())
+
+        edit_product_maSoLoHang.setText(convert.providerMsLoHang())
+        edit_product_cangXuat.setText(convert.providerCangXuat())
+        edit_product_cangNhap.setText(convert.providerCangNhap())
+        edit_product_ngayXuatHang.setText(convert.providerNgayXuatHang())
+        edit_product_ngayNhapHang.setText(convert.providerNgayNhapHang())
+        edit_product_soLuongNhap.setText(convert.providerSoLuongNhap())
+
+        edit_product_hinhThuc_vanChuyen.setText(convert.providerHinhThucVC())
+        edit_product_ngayVanChuyen.setText(convert.providerNgayVC())
+        edit_product_tenDonVi_vanChuyen.setText(convert.providerDonViVC())
 
         edit_product_gianHang.setText(convert.providerBoothName())
         moTa = convert.provideDescription()

@@ -90,6 +90,8 @@ class ProductManagerAddFragment : BaseFragment() {
     private var listDescriptionCSCB: ArrayList<Description> = ArrayList()
     private var listDescriptionVatTu: ArrayList<Description> = ArrayList()
     private var listDescriptionGiaiPhap: ArrayList<Description> = ArrayList()
+    private var typeCamera = ""
+    private var typeImages = ""
 
     companion object {
         const val TAG = "ProductManagerFragment"
@@ -125,6 +127,12 @@ class ProductManagerAddFragment : BaseFragment() {
         const val ADD_DESCRIPTION_COSOCB: Int = 0
         const val ADD_DESCRIPTION_VATTU: Int = 1
         const val ADD_DESCRIPTION_GIAIPHAP: Int = 2
+
+        const val TYPE_CAMERA_IMAGES = 0
+        const val TYPE_CAMERA_CERT = 1
+
+        const val TYPE_SLECTED_IMAGES = 0
+        const val TYPE_SLECTED_CERT = 1
 
         const val PERMISSIONS_REQUEST_CAMERA = 100
 
@@ -216,6 +224,10 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         }
 
+        tv_nguyenLieu_vatTu.setOnClickListener { dialogChangeName(tv_nguyenLieu_vatTu) }
+        tv_giaiPhap.setOnClickListener { dialogChangeName(tv_giaiPhap) }
+        tv_lienQuan.setOnClickListener { dialogChangeName(tv_lienQuan) }
+
         btn_product_add.setOnClickListener {
             val tenSp = edit_product_tenSp.text.toString()
             val maSp = edit_product_maSp.text.toString()
@@ -250,6 +262,10 @@ class ProductManagerAddFragment : BaseFragment() {
 
             val moTa = edit_product_moTa.text.toString()
 
+            val tenVatTu = tv_nguyenLieu_vatTu.text.toString()
+            val tenGiaiPhap = tv_giaiPhap.text.toString()
+            val tenLienQuan = tv_lienQuan.text.toString()
+
             if (UserDataManager.currentType == "Chủ hội chợ") {
                 if (isRequiredFieldsValid(image, tenSp, edit_product_giaBan.text.toString(), maSp,
                                 edt_product_danhMuc.text.toString(), edit_product_gianHang.text.toString(), edit_product_thuongHieu.text.toString())) {
@@ -259,7 +275,7 @@ class ProductManagerAddFragment : BaseFragment() {
                     viewModel.createProductManager(image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
-                            listCategory, listVatTu, listGiaiPhap, listProductRelated)
+                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan)
                 }
             } else
                 if (isRequiredFieldsValid(image, tenSp, edit_product_giaBan.text.toString(), maSp,
@@ -270,7 +286,7 @@ class ProductManagerAddFragment : BaseFragment() {
                     viewModel.createProductManager(image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
-                            listCategory, listVatTu, listGiaiPhap, listProductRelated)
+                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan)
                 }
         }
 
@@ -295,6 +311,28 @@ class ProductManagerAddFragment : BaseFragment() {
         loadSanPhamLienQuan()
         loadVatTu()
         loadGiaiPhap()
+    }
+
+    private fun dialogChangeName(view: VectorSupportTextView?) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Thay đổi tiêu đề")
+                    .customView(R.layout.dialog_edit_name_product, false)
+                    .positiveText("Thay đổi")
+                    .onPositive { dialog, _ ->
+                        val edit_product_tieuDe = dialog.findViewById(R.id.edit_product_name) as TextInputEditText
+                        view?.text = edit_product_tieuDe.text.toString()
+                        dialog.dismiss()
+                    }
+                    .negativeText("Huỷ bỏ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val edit_product_tieuDe = dialog.findViewById(R.id.edit_product_name) as TextInputEditText
+            edit_product_tieuDe.setText(view?.text ?: "")
+            dialog.show()
+        }
     }
 
     @SuppressLint("SetTextI18n")
