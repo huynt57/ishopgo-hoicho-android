@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.model.Description
 
 
 /**
@@ -48,6 +49,9 @@ class Booth : IdentityData() {
     @SerializedName("rate_count")
     @Expose
     var rateCount: Int? = null
+    @SerializedName("descriptions")
+    @Expose
+    var descriptions: MutableList<Description>? = null
 
     companion object {
         val FOllWED = 1

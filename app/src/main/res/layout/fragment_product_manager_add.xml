@@ -128,7 +128,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <android.support.design.widget.TextInputEditText
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
                     android:id="@+id/edt_product_ngayDongGoi"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
@@ -166,14 +166,13 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <android.support.design.widget.TextInputEditText
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
                     android:id="@+id/edt_product_hsd"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="start"
                     android:hint="Hạn sử dụng"
-                    android:inputType="text"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -454,7 +453,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_cangXuat"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
@@ -471,7 +470,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_cangNhap"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
@@ -522,7 +521,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_soLuongNhap"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
@@ -565,7 +564,7 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_hinhThuc_vanChuyen"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
@@ -599,13 +598,32 @@
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp">
 
-                <ishopgo.com.exhibition.ui.widget.DateInputEditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_tenDonVi_vanChuyen"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Tên đơn vị vận chuyển"
                     android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/default_margin"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_ghiChu_vanChuyen"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ghi chú vận chuyển"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:lines="3" />
 
             </android.support.design.widget.TextInputLayout>
 

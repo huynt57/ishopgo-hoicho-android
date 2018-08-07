@@ -15,6 +15,7 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.BoothManager
+import ishopgo.com.exhibition.model.Description
 import ishopgo.com.exhibition.model.ManagerBooth
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
@@ -71,8 +72,10 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                              maSoLoSX: String, ngaySX: String, ngayThuHoachDK: String, quyMo: String, khaNangCungUng: String, muaVu: String, msLoHang: String,
                              cangXuat: String, cangNhap: String, ngayXuatHang: String, ngayNhapHang: String, soLuongNhap: String, hinhThucVC: String, ngayVC: String,
                              donViVC: String, moTa: String, thuongHieuID: Long, gianHangId: Long, isNKSX: Int, isBaoTieu: Int, trangThaiHT: Int, spNoiBat: Int,
-                             listAnh: ArrayList<PostMedia>, listDanhMuc: ArrayList<Category>, listVatTu: ArrayList<Product>,
-                             listGiaiPhap: ArrayList<Product>, listSpLienQuan: ArrayList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert : ArrayList<PostMedia>) {
+                             listAnh: ArrayList<PostMedia>, listDanhMuc: ArrayList<Category>, listVatTu: ArrayList<Product>, listGiaiPhap: ArrayList<Product>,
+                             listSpLienQuan: ArrayList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert: ArrayList<PostMedia>,
+                             donViSXId: Long, donViNKId: Long, coSoCBId: Long, listDescriptionCSCB: ArrayList<Description>,
+                             listDescriptionVatTu: ArrayList<Description>, listDescriptionGiaiPhap: ArrayList<Description>, ghiChu_vc: String) {
 
 
         val builder = MultipartBody.Builder()
@@ -140,6 +143,14 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
             builder.addFormDataPart("donvi_vc", donViVC)
         if (moTa.isNotEmpty())
             builder.addFormDataPart("description", moTa)
+        if (donViSXId != 0L)
+            builder.addFormDataPart("nsx_id", donViSXId.toString())
+        if (donViNKId != 0L)
+            builder.addFormDataPart("nk_id", donViNKId.toString())
+        if (coSoCBId != 0L)
+            builder.addFormDataPart("cs_chebien_id", coSoCBId.toString())
+        if (ghiChu_vc.isNotEmpty())
+            builder.addFormDataPart("vc_note", ghiChu_vc)
 
         builder.addFormDataPart("name_vattu", tenVatTu)
         builder.addFormDataPart("name_giaiphap", tenGiaiPhap)
@@ -149,6 +160,27 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         builder.addFormDataPart("is_baotieu", isBaoTieu.toString())
         builder.addFormDataPart("status", trangThaiHT.toString())
         builder.addFormDataPart("is_featured", spNoiBat.toString())
+
+        if (!listDescriptionCSCB.isEmpty()) {
+            for (i in listDescriptionCSCB.indices) {
+                builder.addFormDataPart("list_content_title_array_cscb[]", listDescriptionCSCB[i].title.toString())
+                builder.addFormDataPart("list_content_desc_array_cscb[]", listDescriptionCSCB[i].description.toString())
+            }
+        }
+
+        if (!listDescriptionVatTu.isEmpty()) {
+            for (i in listDescriptionVatTu.indices) {
+                builder.addFormDataPart("list_content_title_array_vtdsd[]", listDescriptionVatTu[i].title.toString())
+                builder.addFormDataPart("list_content_desc_array_vtdsd[]", listDescriptionVatTu[i].description.toString())
+            }
+        }
+
+        if (!listDescriptionGiaiPhap.isEmpty()) {
+            for (i in listDescriptionGiaiPhap.indices) {
+                builder.addFormDataPart("list_content_title_array_gpdsd[]", listDescriptionGiaiPhap[i].title.toString())
+                builder.addFormDataPart("list_content_desc_array_gpdsd[]", listDescriptionGiaiPhap[i].description.toString())
+            }
+        }
 
         if (!listSpLienQuan.isEmpty()) {
             for (i in listSpLienQuan.indices) {

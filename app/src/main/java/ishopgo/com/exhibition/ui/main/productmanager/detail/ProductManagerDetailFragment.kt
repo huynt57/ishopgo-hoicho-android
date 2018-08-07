@@ -29,9 +29,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
-import ishopgo.com.exhibition.domain.response.Brand
-import ishopgo.com.exhibition.domain.response.Category
-import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
 import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
@@ -44,8 +42,10 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.*
+import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.fragment_product_manager_add.*
 import org.apache.commons.io.IOUtils
@@ -61,8 +61,10 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var feautured: Int = STATUS_NOT_FEAUTURED
     private var status: Int = STATUS_DISPLAY_SHOW
     private var postMedias = ArrayList<PostMedia>()
+    private var postMediasCert = ArrayList<PostMedia>()
     private var listImageDelete = ArrayList<PostMedia>()
     private var adapterImages = ComposingPostMediaAdapter()
+    private var adapterImagesCert = ComposingPostMediaAdapter()
     private var image: String = ""
     private var imageOld = ""
     private var requestBrands = ""
@@ -77,18 +79,18 @@ class ProductManagerDetailFragment : BaseFragment() {
     private val adapterCategory_3 = CategoryAdapter()
     private val adapterCategory_4 = CategoryAdapter()
     private var listCategory = mutableListOf<Category>()
-    private var listProductRelated = ArrayList<Product>()
-    private var listProductVatTu = ArrayList<Product>()
-    private var listProductGiaiPhap = ArrayList<Product>()
+    private var listProductRelated = mutableListOf<Product>()
+    private var listProductVatTu = mutableListOf<Product>()
+    private var listProductGiaiPhap = mutableListOf<Product>()
     private var nkxs: Int = NKSX_DISPLAY_HIDDEN
     private var baoTieu: Int = ACCREDITATINON_DISPLAY_HIDDEN
     private var moTa: String = ""
     private val adapterDonViSanXuat = BoothAdapter()
     private val adapterDonViNhapKhau = BoothAdapter()
     private val adapterCoSoCheBien = BoothAdapter()
-    private var listDescriptionCSCB: ArrayList<Description> = ArrayList()
-    private var listDescriptionVatTu: ArrayList<Description> = ArrayList()
-    private var listDescriptionGiaiPhap: ArrayList<Description> = ArrayList()
+    private var listDescriptionCSCB: MutableList<Description> = ArrayList()
+    private var listDescriptionVatTu: MutableList<Description> = ArrayList()
+    private var listDescriptionGiaiPhap: MutableList<Description> = ArrayList()
     private val handleOverwrite: ProductManagerDetailOverwrite = CustomProductManagerDetail()
     private var adapterDescriptionCSCB = DescriptionAdapter()
     private var adapterDescriptionVatTu = DescriptionAdapter()
@@ -98,6 +100,11 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var donViSXId: Long = 0L
     private var donViNKId: Long = 0L
     private var coSoCBId: Long = 0L
+    private var typeCamera = 0
+    private var typeImages = 0
+    private var adapterProductRelatedImage = SalePointProductAdapter(0.4f)
+    private var adapterVatTu = SalePointProductAdapter(0.4f)
+    private var adapterGiaiPhap = SalePointProductAdapter(0.4f)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_manager_add, container, false)
@@ -115,14 +122,28 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         btn_product_add.text = "Cập nhật"
 
+        view_camera.setOnClickListener {
+            CASE_TAKE_PHOTO = false
+            typeCamera = TYPE_CAMERA_IMAGES
+            takePhoto()
+        }
+
         view_add_images.setOnClickListener {
             CASE_PICK_IMAGE = false
+            typeImages = TYPE_SELECTED_IMAGES
             launchPickPhotoIntent()
         }
 
-        view_camera.setOnClickListener {
+        view_camera_cert.setOnClickListener {
             CASE_TAKE_PHOTO = false
+            typeCamera = TYPE_CAMERA_CERT
             takePhoto()
+        }
+
+        view_add_images_cert.setOnClickListener {
+            CASE_PICK_IMAGE = false
+            typeImages = TYPE_SELECTED_CERT
+            launchPickPhotoIntent()
         }
 
         if (UserDataManager.currentType == "Chủ hội chợ" || UserDataManager.currentType == "Chủ gian hàng")
@@ -362,6 +383,51 @@ class ProductManagerDetailFragment : BaseFragment() {
         viewModel.loadChildCategory(category, level)
     }
 
+    private fun setupSanPhamLienQuan() {
+        context?.let {
+            adapterProductRelatedImage.replaceAll(listProductRelated)
+            rv_related_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_related_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_related_products.adapter = adapterProductRelatedImage
+            adapterProductRelatedImage.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
+                    listProductRelated.remove(data)
+                    adapterProductRelatedImage.replaceAll(listProductRelated)
+                }
+            }
+        }
+    }
+
+    private fun setupVatTu() {
+        context?.let {
+            adapterVatTu.replaceAll(listProductVatTu)
+            rv_supplies_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_supplies_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_supplies_products.adapter = adapterVatTu
+            adapterVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
+                    listProductVatTu.remove(data)
+                    adapterVatTu.replaceAll(listProductVatTu)
+                }
+            }
+        }
+    }
+
+    private fun setupGiaiPhap() {
+        context?.let {
+            adapterGiaiPhap.replaceAll(listProductGiaiPhap)
+            rv_solution_products.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_solution_products.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_solution_products.adapter = adapterGiaiPhap
+            adapterGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+                override fun click(position: Int, data: Product, code: Int) {
+                    listProductGiaiPhap.remove(data)
+                    adapterGiaiPhap.replaceAll(listProductGiaiPhap)
+                }
+            }
+        }
+    }
+
     private fun setupImageRecycleview() {
         rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         rv_product_images.adapter = adapterImages
@@ -373,10 +439,65 @@ class ProductManagerDetailFragment : BaseFragment() {
 
                 if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
                 adapterImages.replaceAll(postMedias)
-
             }
         }
+    }
 
+    private fun setupImageCertRecycleview() {
+        context?.let {
+            rv_product_cert.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_cert.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_product_cert.adapter = adapterImagesCert
+            adapterImagesCert.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMediasCert.remove(data)
+                    if (postMediasCert.isEmpty()) rv_product_cert.visibility = View.GONE
+                    adapterImagesCert.replaceAll(postMediasCert)
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerviewDescriptionCSCB() {
+        context?.let {
+            rv_description_cscb.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_description_cscb.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_description_cscb.adapter = adapterDescriptionCSCB
+            adapterDescriptionCSCB.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
+                override fun click(position: Int, data: Description, code: Int) {
+                    listDescriptionCSCB.remove(data)
+                    adapterDescriptionCSCB.replaceAll(listDescriptionCSCB)
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerviewDescriptionVatTu() {
+        context?.let {
+            rv_description_vatTu.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_description_vatTu.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_description_vatTu.adapter = adapterDescriptionVatTu
+            adapterDescriptionVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
+                override fun click(position: Int, data: Description, code: Int) {
+                    listDescriptionVatTu.remove(data)
+                    adapterDescriptionVatTu.replaceAll(listDescriptionVatTu)
+                }
+            }
+        }
+    }
+
+    private fun setupRecyclerviewDescriptionGiaiPhap() {
+        context?.let {
+            rv_description_giaiPhap.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_description_giaiPhap.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_description_giaiPhap.adapter = adapterDescriptionGiaiPhap
+            adapterDescriptionGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
+                override fun click(position: Int, data: Description, code: Int) {
+                    listDescriptionGiaiPhap.remove(data)
+                    adapterDescriptionGiaiPhap.replaceAll(listDescriptionGiaiPhap)
+                }
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -692,7 +813,30 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_ngayVanChuyen.setText(convert.providerNgayVC())
         edit_product_tenDonVi_vanChuyen.setText(convert.providerDonViVC())
 
-        edit_product_gianHang.setText(convert.providerBoothName())
+        for (i in convert.providerInfo().indices) {
+            val data = convert.providerInfo()[i]
+            if (i == 0) {
+                tv_nguyenLieu_vatTu.text = data.name
+                if (data.descriptions?.isNotEmpty() == true)
+                    listDescriptionVatTu = data.descriptions ?: mutableListOf()
+
+                if (convert.providerInfo()[i].products?.data?.isNotEmpty() == true)
+                    listProductVatTu = data.products?.data ?: mutableListOf()
+            }
+            if (i == 1) {
+                tv_giaiPhap.text = convert.providerInfo()[i].name
+                if (convert.providerInfo()[i].descriptions?.isNotEmpty() == true)
+                    listDescriptionGiaiPhap = convert.providerInfo()[i].descriptions ?: mutableListOf()
+                if (convert.providerInfo()[i].products?.data?.isNotEmpty() == true)
+                    listProductGiaiPhap = data.products?.data ?: mutableListOf()
+            }
+            if (i == 2) {
+                tv_lienQuan.text = convert.providerInfo()[i].name
+                if (convert.providerInfo()[i].products?.data?.isNotEmpty() == true)
+                    listProductRelated = data.products?.data ?: mutableListOf()
+            }
+        }
+
         moTa = convert.provideDescription()
         if (moTa.isNotEmpty()) {
             container_product_detail.visibility = View.VISIBLE
@@ -728,7 +872,37 @@ class ProductManagerDetailFragment : BaseFragment() {
             edit_product_thuongHieu.setText(convert.provideDepartments()!!.name ?: "")
         }
 
+        if (convert.providerPP() != null) {
+            gianHangId = convert.providerPP()!!.id
+            edit_product_gianHang.setText(convert.providerPP()!!.name ?: "")
+        }
+
+        if (convert.providerNNK() != null) {
+            donViNKId = convert.providerNNK()!!.id
+            edit_product_thuongHieu.setText(convert.providerNNK()!!.name ?: "")
+        }
+
+        if (convert.providerCSCB() != null) {
+            coSoCBId = convert.providerCSCB()!!.id
+            edit_product_CosoCB.setText(convert.providerCSCB()!!.name ?: "")
+            val data = convert.providerCSCB()?.descriptions
+            if (data?.isNotEmpty() == true)
+                listDescriptionCSCB = data
+        }
+
+        if (convert.providerBooth() != null) {
+            donViSXId = convert.providerBooth()!!.id
+            edit_product_donViSX.setText(convert.providerBooth()!!.name ?: "")
+        }
+
         setupImageRecycleview()
+        setupImageCertRecycleview()
+        setupRecyclerviewDescriptionCSCB()
+        setupRecyclerviewDescriptionVatTu()
+        setupRecyclerviewDescriptionGiaiPhap()
+        setupSanPhamLienQuan()
+        setupVatTu()
+        setupGiaiPhap()
     }
 
     interface ProductManagerDetailProvider {
@@ -751,7 +925,7 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun provideWholesaleFrom(): String
         fun provideWholesaleTo(): String
         fun provideWholesaleCountProduct(): String
-        fun providerBoothName(): String
+        fun providerBooth(): Booth?
         fun providerPricePromotion(): String
         fun providerHSD(): String
         fun providerNgayDongGoi(): String
@@ -771,12 +945,33 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun providerHinhThucVC(): String
         fun providerNgayVC(): String
         fun providerDonViVC(): String
+        fun providerInfo(): List<InfoProduct>
+        fun providerPP(): Booth?
+        fun providerNNK(): Booth?
+        fun providerCSCB(): Booth?
+
     }
 
     class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
 
         override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
+                override fun providerPP(): Booth? {
+                    return from.pp
+                }
+
+                override fun providerNNK(): Booth? {
+                    return from.nnk
+                }
+
+                override fun providerCSCB(): Booth? {
+                    return from.cscb
+                }
+
+                override fun providerInfo(): List<InfoProduct> {
+                    return from.info ?: mutableListOf()
+                }
+
                 override fun providerHSD(): String {
                     return from.hsd ?: ""
                 }
@@ -853,8 +1048,8 @@ class ProductManagerDetailFragment : BaseFragment() {
                     return from.promotionPrice.toString()
                 }
 
-                override fun providerBoothName(): String {
-                    return from.booth?.name ?: ""
+                override fun providerBooth(): Booth? {
+                    return from.booth
                 }
 
                 override fun provideWholesaleFrom(): String {
@@ -981,8 +1176,10 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
                 val postMedia = PostMedia()
                 postMedia.uri = data.data
-                postMedias.add(postMedia)
-
+                if (typeImages == TYPE_SELECTED_IMAGES)
+                    postMedias.add(postMedia)
+                if (typeImages == TYPE_SELECTED_CERT)
+                    postMediasCert.add(postMedia)
             } else {
                 for (i in 0 until data.clipData.itemCount) {
                     if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
@@ -991,11 +1188,20 @@ class ProductManagerDetailFragment : BaseFragment() {
                     }
                     val postMedia = PostMedia()
                     postMedia.uri = data.clipData.getItemAt(i).uri
-                    postMedias.add(postMedia)
+                    if (typeImages == TYPE_SELECTED_IMAGES)
+                        postMedias.add(postMedia)
+                    if (typeImages == TYPE_SELECTED_CERT)
+                        postMediasCert.add(postMedia)
                 }
             }
-            adapterImages.replaceAll(postMedias)
-            rv_product_images.visibility = View.VISIBLE
+            if (typeImages == TYPE_SELECTED_IMAGES) {
+                adapterImages.replaceAll(postMedias)
+                rv_product_images.visibility = View.VISIBLE
+            }
+            if (typeImages == TYPE_SELECTED_CERT) {
+                adapterImagesCert.replaceAll(postMediasCert)
+                rv_product_cert.visibility = View.VISIBLE
+            }
         }
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data && CASE_PICK_IMAGE) {
@@ -1027,10 +1233,16 @@ class ProductManagerDetailFragment : BaseFragment() {
                     val postMedia = PostMedia()
 
                     postMedia.uri = it
-                    postMedias.add(postMedia)
-
-                    adapterImages.replaceAll(postMedias)
-                    rv_product_images.visibility = View.VISIBLE
+                    if (typeCamera == TYPE_CAMERA_IMAGES) {
+                        postMedias.add(postMedia)
+                        adapterImages.replaceAll(postMedias)
+                        rv_product_images.visibility = View.VISIBLE
+                    }
+                    if (typeCamera == TYPE_CAMERA_CERT) {
+                        postMediasCert.add(postMedia)
+                        adapterImagesCert.replaceAll(postMediasCert)
+                        rv_product_cert.visibility = View.VISIBLE
+                    }
                 }
         }
     }
@@ -1411,5 +1623,11 @@ class ProductManagerDetailFragment : BaseFragment() {
         const val CATEGORY_LEVEL_2: Int = 2
         const val CATEGORY_LEVEL_3: Int = 3
         const val CATEGORY_LEVEL_4: Int = 4
+
+        const val TYPE_CAMERA_IMAGES = 0
+        const val TYPE_CAMERA_CERT = 1
+
+        const val TYPE_SELECTED_IMAGES = 0
+        const val TYPE_SELECTED_CERT = 1
     }
 }

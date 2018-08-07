@@ -275,6 +275,7 @@ class ProductManagerAddFragment : BaseFragment() {
             val hinhThucVC = edit_product_hinhThuc_vanChuyen.text.toString()
             val ngayVC = edit_product_ngayVanChuyen.text.toString()
             val donViVC = edit_product_tenDonVi_vanChuyen.text.toString()
+            val ghiChuVC = edit_product_ghiChu_vanChuyen.text.toString()
 
             val moTa = edit_product_moTa.text.toString()
 
@@ -291,7 +292,8 @@ class ProductManagerAddFragment : BaseFragment() {
                     viewModel.createProductManager(image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
-                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert)
+                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert, donViSXId, donViNKId, coSoCBId, listDescriptionCSCB,
+                            listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC)
                 }
             } else
                 if (isRequiredFieldsValid(image, tenSp, edit_product_giaBan.text.toString(), maSp,
@@ -302,7 +304,8 @@ class ProductManagerAddFragment : BaseFragment() {
                     viewModel.createProductManager(image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
-                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert)
+                            listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert, donViSXId, donViNKId, coSoCBId, listDescriptionCSCB,
+                            listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC)
                 }
         }
 

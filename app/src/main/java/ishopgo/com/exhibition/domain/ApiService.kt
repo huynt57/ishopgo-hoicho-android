@@ -74,7 +74,7 @@ class ApiService {
         fun searchShops(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<ManagerShop>>
 
         @GET("expo/product/{id}")
-        fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
+        fun getProductDetail(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<ProductDetail>>
 
         @GET("expo/relate-products")
         fun getRelateProducts(@QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<Product>>>
@@ -193,7 +193,7 @@ class ApiService {
         fun getShopInfo(@Path("id") id: Long): Single<BaseResponse<ManagerShopDetail>>
 
         @GET("expo/product/{id}")
-        fun getProductDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
+        fun getProductDetail(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ProductDetail>>
 
         @GET("expo/members/{id}")
         fun getMemberDetail(

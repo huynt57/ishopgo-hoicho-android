@@ -101,8 +101,14 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    fun loadData(productId: Long) {
-        val d = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId) else noAuthService.getProductDetail(productId)
+    fun loadData(productId: Long, scanQrCode: Boolean) {
+        val fieldsLoadDetail = mutableMapOf<String, Any>()
+//        if (scanQrCode) {
+//            fieldsLoadDetail["stampCode"] = 10
+//            fieldsLoadDetail["stampCode"] = 0
+//        }
+        val d = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId, fieldsLoadDetail) else noAuthService.getProductDetail(productId, fieldsLoadDetail)
+
 
         val fields = mutableMapOf<String, Any>()
         fields["limit"] = 10
@@ -185,24 +191,24 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var detail = MutableLiveData<ProductDetail>()
 
-    fun loadProductDetail(productId: Long) {
-        val request = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId) else noAuthService.getProductDetail(productId)
-        addDisposable(request
-                .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
-                    override fun success(data: ProductDetail?) {
-                        data?.let {
-                            detail.postValue(it)
-                        }
-                    }
-
-                    override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
-                    }
-
-                })
-        )
-    }
+//    fun loadProductDetail(productId: Long) {
+//        val request = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId) else noAuthService.getProductDetail(productId)
+//        addDisposable(request
+//                .subscribeOn(Schedulers.single())
+//                .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
+//                    override fun success(data: ProductDetail?) {
+//                        data?.let {
+//                            detail.postValue(it)
+//                        }
+//                    }
+//
+//                    override fun failure(status: Int, message: String) {
+//                        resolveError(status, message)
+//                    }
+//
+//                })
+//        )
+//    }
 
     var productComments = MutableLiveData<List<ProductComment>>()
 

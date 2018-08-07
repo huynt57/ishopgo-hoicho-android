@@ -105,6 +105,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private var adapterSalePoint = ProductSalePointAdapter()
     private var adapterDiary = ProductDiaryAdapter()
     private var productId: Long = -1L
+    private var scanQrCode: Boolean = false
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
         val currentItem = view_product_image.currentItem
@@ -134,6 +135,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
         if (productId == -1L)
             throw RuntimeException("Sai dinh dang")
+
+        scanQrCode = arguments?.getBoolean(Const.TransferKey.EXTRA_REQUIRE, false) ?: false
     }
 
     private fun firstLoadSalePoint() {
@@ -897,7 +900,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun loadData(productId: Long) {
-        viewModel.loadData(productId)
+        viewModel.loadData(productId, scanQrCode)
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         container_viewed.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE

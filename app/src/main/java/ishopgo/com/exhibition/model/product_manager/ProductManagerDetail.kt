@@ -194,4 +194,13 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("donvi_vc")
     @Expose
     var donviVc: String? = null
+    @SerializedName("pp")
+    @Expose
+    var pp: Booth? = null
+    @SerializedName("nnk")
+    @Expose
+    var nnk: Booth? = null
+    @SerializedName("cscb")
+    @Expose
+    var cscb: Booth? = null
 }
