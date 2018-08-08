@@ -39,9 +39,11 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateProdcutDetail
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.*
+import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -58,8 +60,8 @@ class ProductManagerDetailFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private var product_Id: Long = 0L
     private var booth_id: Long = 0L
-    private var feautured: Int = STATUS_NOT_FEAUTURED
-    private var status: Int = STATUS_DISPLAY_SHOW
+    private var spNoiBat: Int = STATUS_NOT_FEAUTURED
+    private var trangThaiHT: Int = STATUS_DISPLAY_SHOW
     private var postMedias = ArrayList<PostMedia>()
     private var postMediasCert = ArrayList<PostMedia>()
     private var listImageDelete = ArrayList<PostMedia>()
@@ -105,6 +107,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var adapterProductRelatedImage = SalePointProductAdapter(0.4f)
     private var adapterVatTu = SalePointProductAdapter(0.4f)
     private var adapterGiaiPhap = SalePointProductAdapter(0.4f)
+    private lateinit var searchProductViewModel: SearchProductManagerViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_product_manager_add, container, false)
@@ -172,6 +175,10 @@ class ProductManagerDetailFragment : BaseFragment() {
         edt_product_danhMuc_cap3.setOnClickListener { getCategory(edt_product_danhMuc_cap3, CATEGORY_LEVEL_3) }
         edt_product_danhMuc_cap4.setOnClickListener { getCategory(edt_product_danhMuc_cap4, CATEGORY_LEVEL_4) }
 
+        img_add_solution_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_GIAIPHAP) }
+        img_add_supplies_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_VATTU) }
+        img_add_related_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_LIENQUAN) }
+
         btn_add_general_coSo_cB.setOnClickListener { toast("Đang phát triển") }
         btn_vatTu.setOnClickListener { toast("Đang phát triển") }
         btn_giaiPhap.setOnClickListener { toast("Đang phát triển") }
@@ -215,24 +222,24 @@ class ProductManagerDetailFragment : BaseFragment() {
             val hinhThucVC = edit_product_hinhThuc_vanChuyen.text.toString()
             val ngayVC = edit_product_ngayVanChuyen.text.toString()
             val donViVC = edit_product_tenDonVi_vanChuyen.text.toString()
+            val ghiChuVC = edit_product_ghiChu_vanChuyen.text.toString()
 
             val moTa = edit_product_moTa.text.toString()
 
-            val tenVatTu = tv_nguyenLieu_vatTu.text
-            val tenGiaiPhap = tv_giaiPhap.text
-            val tenLienQuan = tv_lienQuan.text
+            val tenVatTu = tv_nguyenLieu_vatTu.text.toString()
+            val tenGiaiPhap = tv_giaiPhap.text.toString()
+            val tenLienQuan = tv_lienQuan.text.toString()
 
 
-            toast("Đang phát triển")
-//                if (isRequiredFieldsValid(tenSp, edit_product_price.text.toString(), maSp, edt_product_categories.text.toString(),
-//                                edit_product_booth.text.toString(), edit_product_brand.text.toString())) {
-//                    showProgressDialog()
-//                    viewModel.editProductManager(product_Id, tenSp, maSp, tieuDe,
-//                            giaBan, giaBanKm, dvt, booth_id, brand_id, xuatSu,
-//                            image, postMedias, moTa, status, metaMota, metaKeyword,
-//                            tag, listCategory, listProductRelated, feautured, giaBanSiTu, giaBanSiDen, soLuongBanSi, listImageDelete, quyMo, sanLuong,
-//                            dongGoi, muaVu, hsd, msLoHang, ngaySX, ngayThuHoachDK, ngayXuatXuong, nkxs, baoTieu, listProductVatTu, listProductGiaiPhap)
-//                }
+            if (isRequiredFieldsValid(tenSp, edit_product_giaBan.text.toString(), maSp, edt_product_danhMuc.text.toString(),
+                            edit_product_giaBan.text.toString(), edit_product_thuongHieu.text.toString())) {
+                showProgressDialog()
+                viewModel.editProductManager(product_Id, image, tenSp, maSp, dvt, xuatSu, ngayDongGoi, quyCachDongGoi, hsd, giaBan, giaBanKm, giaBanSiTu, giaBanSiDen, soLuongBanSi, maSoLoSX,
+                        ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
+                        hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
+                        listCategory, listProductVatTu, listProductGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert, donViSXId, donViNKId, coSoCBId, listDescriptionCSCB,
+                        listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC, listImageDelete)
+            }
         }
     }
 
@@ -604,6 +611,73 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         })
 
+        searchProductViewModel = obtainViewModel(SearchProductManagerViewModel::class.java, true)
+        searchProductViewModel.getSpLienQuan.observe(this, Observer { p ->
+            p?.let {
+                val data = it
+                if (listProductRelated.size == 0) {
+                    listProductRelated.add(it)
+                    adapterProductRelatedImage.replaceAll(listProductRelated)
+                } else {
+                    val isContained = listProductRelated.any {
+                        return@any it.id == data.id
+                    }
+
+                    if (isContained) {
+                        toast("Sản phẩm này đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                        return@let
+                    } else {
+                        listProductRelated.add(data)
+                        adapterProductRelatedImage.replaceAll(listProductRelated)
+                    }
+                }
+            }
+        })
+
+        searchProductViewModel.getSpVatTu.observe(this, Observer { p ->
+            p?.let {
+                val data = it
+                if (listProductVatTu.size == 0) {
+                    listProductVatTu.add(data)
+                    adapterVatTu.replaceAll(listProductVatTu)
+                } else {
+                    val isContained = listProductVatTu.any {
+                        return@any it.id == data.id
+                    }
+
+                    if (isContained) {
+                        toast("Sản phẩm này đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                        return@let
+                    } else {
+                        listProductVatTu.add(data)
+                        adapterVatTu.replaceAll(listProductVatTu)
+                    }
+                }
+            }
+        })
+
+        searchProductViewModel.getSpGiaiPhap.observe(this, Observer { p ->
+            p?.let {
+                val data = it
+                if (listProductGiaiPhap.size == 0) {
+                    listProductGiaiPhap.add(data)
+                    adapterGiaiPhap.replaceAll(listProductGiaiPhap)
+                } else {
+                    val isContained = listProductGiaiPhap.any {
+                        return@any it.id == data.id
+                    }
+
+                    if (isContained) {
+                        toast("Sản phẩm này đã tồn tại, vui lòng chọn sản phẩm khác khác.")
+                        return@let
+                    } else {
+                        listProductGiaiPhap.add(data)
+                        adapterGiaiPhap.replaceAll(listProductGiaiPhap)
+                    }
+                }
+            }
+        })
+
         reloadBrands = true
         reloadProvider = true
         firstLoadBrand()
@@ -646,6 +720,9 @@ class ProductManagerDetailFragment : BaseFragment() {
 
     @SuppressLint("SetTextI18n")
     private fun showDetail(info: ProductManagerDetail) {
+        postMedias.clear()
+        postMediasCert.clear()
+
         val convert = ProductManagerConverter().convert(info)
         hideProgressDialog()
 
@@ -669,9 +746,9 @@ class ProductManagerDetailFragment : BaseFragment() {
         }
 
         if (convert.provideImages().isNotEmpty()) {
-            for (i in convert.provideImages()) {
+            for (i in convert.provideImages().indices) {
                 val postMedia = PostMedia()
-                postMedia.uri = Uri.parse(i)
+                postMedia.uri = Uri.parse(convert.provideImages()[i])
                 postMedias.add(postMedia)
             }
             adapterImages.replaceAll(postMedias)
@@ -692,17 +769,41 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
 
 
-            val imagesAdapter = ProductManagerDetailImagesAdapter()
-            info.images?.let { imagesAdapter.replaceAll(it) }
-            rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            rv_product_images.adapter = imagesAdapter
-            imagesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
-                override fun click(position: Int, data: String, code: Int) {
-                    val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, convert.provideImages().toTypedArray())
-                    startActivity(intent)
-                }
+//            val imagesAdapter = ProductManagerDetailImagesAdapter()
+//            info.images?.let { imagesAdapter.replaceAll(it) }
+//            rv_product_images.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//            rv_product_images.adapter = imagesAdapter
+//            imagesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
+//                override fun click(position: Int, data: String, code: Int) {
+//                    val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, convert.provideImages().toTypedArray())
+//                    startActivity(intent)
+//                }
+//            }
+        }
+
+        if (convert.providerCertImages().isNotEmpty()) {
+//            val listString = mutableListOf<String>()
+            for (i in convert.providerCertImages().indices) {
+                val postMedia = PostMedia()
+                postMedia.uri = Uri.parse(convert.providerCertImages()[i].image)
+//                listString.add(convert.providerCertImages()[i].image ?: "")
+                postMediasCert.add(postMedia)
             }
+            adapterImagesCert.replaceAll(postMediasCert)
+
+
+//            val imagesAdapter = ProductManagerDetailImagesAdapter()
+//            info.certImages?.let { imagesAdapter.replaceAll(listString) }
+//            rv_product_cert.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//            rv_product_cert.adapter = imagesAdapter
+//            imagesAdapter.listener = object : ClickableAdapter.BaseAdapterAction<String> {
+//                override fun click(position: Int, data: String, code: Int) {
+//                    val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, convert.provideImages().toTypedArray())
+//                    startActivity(intent)
+//                }
+//            }
         }
 
         if (info.categories != null && info.categories!!.isNotEmpty()) {
@@ -764,20 +865,20 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         sw_hienThi.setOnCheckedChangeListener { _, _ ->
             if (sw_hienThi.isChecked) {
-                status = STATUS_DISPLAY_SHOW
+                trangThaiHT = STATUS_DISPLAY_SHOW
                 sw_hienThi.text = "Tuỳ chọn hiển thị: Hiển thị dạng chuẩn"
             } else {
-                status = STATUS_DISPLAY_HIDDEN
+                trangThaiHT = STATUS_DISPLAY_HIDDEN
                 sw_hienThi.text = "Tuỳ chọn hiển thị: Không hiển thị"
             }
         }
 
         sw_spNoiBat.setOnCheckedChangeListener { _, _ ->
             if (sw_spNoiBat.isChecked) {
-                feautured = STATUS_FEAUTURED
+                spNoiBat = STATUS_FEAUTURED
                 sw_spNoiBat.text = "Sản phẩm nổi bật: Nổi bật"
             } else {
-                feautured = STATUS_NOT_FEAUTURED
+                spNoiBat = STATUS_NOT_FEAUTURED
                 sw_spNoiBat.text = "Sản phẩm nổi bật: Không nổi bật"
             }
         }
@@ -812,21 +913,25 @@ class ProductManagerDetailFragment : BaseFragment() {
         edit_product_hinhThuc_vanChuyen.setText(convert.providerHinhThucVC())
         edit_product_ngayVanChuyen.setText(convert.providerNgayVC())
         edit_product_tenDonVi_vanChuyen.setText(convert.providerDonViVC())
+        edit_product_ghiChu_vanChuyen.setText(convert.providerNoteVC())
 
         for (i in convert.providerInfo().indices) {
             val data = convert.providerInfo()[i]
             if (i == 0) {
                 tv_nguyenLieu_vatTu.text = data.name
-                if (data.descriptions?.isNotEmpty() == true)
+                if (data.descriptions?.isNotEmpty() == true) {
                     listDescriptionVatTu = data.descriptions ?: mutableListOf()
-
+                    adapterDescriptionVatTu.replaceAll(listDescriptionVatTu)
+                }
                 if (convert.providerInfo()[i].products?.data?.isNotEmpty() == true)
                     listProductVatTu = data.products?.data ?: mutableListOf()
             }
             if (i == 1) {
                 tv_giaiPhap.text = convert.providerInfo()[i].name
-                if (convert.providerInfo()[i].descriptions?.isNotEmpty() == true)
+                if (convert.providerInfo()[i].descriptions?.isNotEmpty() == true) {
                     listDescriptionGiaiPhap = convert.providerInfo()[i].descriptions ?: mutableListOf()
+                    adapterDescriptionGiaiPhap.replaceAll(listDescriptionGiaiPhap)
+                }
                 if (convert.providerInfo()[i].products?.data?.isNotEmpty() == true)
                     listProductGiaiPhap = data.products?.data ?: mutableListOf()
             }
@@ -879,15 +984,17 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         if (convert.providerNNK() != null) {
             donViNKId = convert.providerNNK()!!.id
-            edit_product_thuongHieu.setText(convert.providerNNK()!!.name ?: "")
+            edit_product_donViNK.setText(convert.providerNNK()!!.name ?: "")
         }
 
         if (convert.providerCSCB() != null) {
             coSoCBId = convert.providerCSCB()!!.id
             edit_product_CosoCB.setText(convert.providerCSCB()!!.name ?: "")
             val data = convert.providerCSCB()?.descriptions
-            if (data?.isNotEmpty() == true)
+            if (data?.isNotEmpty() == true) {
                 listDescriptionCSCB = data
+                adapterDescriptionCSCB.replaceAll(listDescriptionCSCB)
+            }
         }
 
         if (convert.providerBooth() != null) {
@@ -949,13 +1056,22 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun providerPP(): Booth?
         fun providerNNK(): Booth?
         fun providerCSCB(): Booth?
-
+        fun providerNoteVC(): String
+        fun providerCertImages(): List<ProductManagerDetail.ListCert>
     }
 
     class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
 
         override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
+                override fun providerCertImages(): List<ProductManagerDetail.ListCert> {
+                    return from.certImages ?: mutableListOf()
+                }
+
+                override fun providerNoteVC(): String {
+                    return from.vcNote ?: ""
+                }
+
                 override fun providerPP(): Booth? {
                     return from.pp
                 }
@@ -973,15 +1089,15 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun providerHSD(): String {
-                    return from.hsd ?: ""
+                    return from.hsd?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerNgayDongGoi(): String {
-                    return from.ngayDonggoi ?: ""
+                    return from.ngayDonggoi?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerQuyCachDongGoi(): String {
-                    return from.ngayDonggoi ?: ""
+                    return from.dongGoi ?: ""
                 }
 
                 override fun providerMaSoLoSX(): String {
@@ -989,11 +1105,11 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun providerNgaySX(): String {
-                    return from.ngaySx ?: ""
+                    return from.ngaySx?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerNgayThuHoachDK(): String {
-                    return from.dkThuhoach ?: ""
+                    return from.dkThuhoach?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerQuyMo(): String {
@@ -1001,7 +1117,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun providerKhaNangCungUng(): String {
-                    return from.providerName ?: ""
+                    return from.sanLuong ?: ""
                 }
 
                 override fun providerMuaVu(): String {
@@ -1021,11 +1137,11 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun providerNgayXuatHang(): String {
-                    return from.xuatXuongdate ?: ""
+                    return from.xuatXuongdate?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerNgayNhapHang(): String {
-                    return from.nhapHangdate ?: ""
+                    return from.nhapHangdate?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerSoLuongNhap(): String {
@@ -1037,7 +1153,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                 }
 
                 override fun providerNgayVC(): String {
-                    return from.ngayVc ?: ""
+                    return from.ngayVc?.asDateProdcutDetail() ?: ""
                 }
 
                 override fun providerDonViVC(): String {
@@ -1629,5 +1745,9 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         const val TYPE_SELECTED_IMAGES = 0
         const val TYPE_SELECTED_CERT = 1
+
+        const val TYPE_SP_LIENQUAN: Int = 0
+        const val TYPE_SP_VATTU: Int = 1
+        const val TYPE_SP_GIAIPHAP: Int = 2
     }
 }

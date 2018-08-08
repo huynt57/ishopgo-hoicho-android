@@ -1,66 +1,35 @@
 {
   "project_info": {
-    "project_number": "288608153817",
-    "firebase_url": "https://ishopgo-51f56.firebaseio.com",
-    "project_id": "ishopgo-51f56",
-    "storage_bucket": "ishopgo-51f56.appspot.com"
+    "project_number": "424833294520",
+    "firebase_url": "https://ishopgo2.firebaseio.com",
+    "project_id": "ishopgo2",
+    "storage_bucket": "ishopgo2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:288608153817:android:a28ff6ea5dba1551",
+        "mobilesdk_app_id": "1:424833294520:android:c63a15fb90211a7c",
         "android_client_info": {
-          "package_name": "com.ishopgo.android"
+          "package_name": "ishopgo.com.farm"
         }
       },
       "oauth_client": [
         {
-          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:288608153817:android:39311adc3c472517",
-        "android_client_info": {
-          "package_name": "ishopgo.com.agri"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "288608153817-h0bua80pvrsodtdrovrs19kkm5dra56u.apps.googleusercontent.com",
+          "client_id": "424833294520-9gsvaqds650dvfo1ku17mp8698lkmlse.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ishopgo.com.agri",
-            "certificate_hash": "0ac2d33415a5e2d6b25ac43911c66285bd53bc82"
+            "package_name": "ishopgo.com.farm",
+            "certificate_hash": "ff81f51de2bec3ea1294f9a4cedb645fe99b8956"
           }
         },
         {
-          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+          "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
+          "current_key": "AIzaSyCQ0iYMzanYaO_7QUrkYasjowZtu3jpHtc"
         }
       ],
       "services": {
@@ -71,15 +40,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+              "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "288608153817-ouq657cc4llrt6khk5ho3p2h5v1tdcb3.apps.googleusercontent.com",
+              "client_id": "424833294520-h2ttmupmu4tbis2mqptnktoi6blni573.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ishopgo.vietbuildexpo",
-                "app_store_id": "1409570738"
+                "bundle_id": "com.ishopgo.hoptacxa",
+                "app_store_id": "1423047008"
               }
             }
           ]
@@ -91,28 +60,28 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:288608153817:android:e2c7705dc4243da2",
+        "mobilesdk_app_id": "1:424833294520:android:785b0043ea89ae1a",
         "android_client_info": {
-          "package_name": "ishopgo.com.exhibition"
+          "package_name": "ishopgo.com.htx"
         }
       },
       "oauth_client": [
         {
-          "client_id": "288608153817-qv0pmvlfh2pr7k4qteg16hroo6bl1ovo.apps.googleusercontent.com",
+          "client_id": "424833294520-kckprh3fv5gssfn89fjceae85qc7da51.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "ishopgo.com.exhibition",
-            "certificate_hash": "c1796e59e4a2fabc2369e10a957fd3d89c484508"
+            "package_name": "ishopgo.com.htx",
+            "certificate_hash": "b48d15576f82fb618a08e1d2499b57bea8ba06a7"
           }
         },
         {
-          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+          "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
+          "current_key": "AIzaSyCQ0iYMzanYaO_7QUrkYasjowZtu3jpHtc"
         }
       ],
       "services": {
@@ -123,67 +92,15 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
+              "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "288608153817-ouq657cc4llrt6khk5ho3p2h5v1tdcb3.apps.googleusercontent.com",
+              "client_id": "424833294520-h2ttmupmu4tbis2mqptnktoi6blni573.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.ishopgo.vietbuildexpo",
-                "app_store_id": "1409570738"
-              }
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:288608153817:android:49d64b51bea13e5c",
-        "android_client_info": {
-          "package_name": "ishopgo.com.vietbuild"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "288608153817-euv85m9u4u804o9ec7di08ngdgs6fe2t.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "ishopgo.com.vietbuild",
-            "certificate_hash": "0ac2d33415a5e2d6b25ac43911c66285bd53bc82"
-          }
-        },
-        {
-          "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDewjVMfdZNpHqiJ04Jvc0sdTZkZQ_8Qog"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "288608153817-2v0sp2uem13mqabjd53bgol8r2d1d5ag.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "288608153817-ouq657cc4llrt6khk5ho3p2h5v1tdcb3.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.ishopgo.vietbuildexpo",
-                "app_store_id": "1409570738"
+                "bundle_id": "com.ishopgo.hoptacxa",
+                "app_store_id": "1423047008"
               }
             }
           ]

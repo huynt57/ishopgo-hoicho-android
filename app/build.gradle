@@ -146,9 +146,9 @@ android {
         }
         farm {
             applicationId "ishopgo.com.farm"
-            versionCode 12
-            versionName "1.1.0"
-            resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
+            versionCode 1
+            versionName "1.0.0"
+            resValue "string", "app_id", "746ebdd7905b4156b3dff5717d63d70c"
             resValue "string", "app_name", "Farm 360"
             resValue "string", "app_host", "farm360.vn/"
             resValue "string", "app_protocol", "http"
@@ -164,6 +164,31 @@ android {
 
             copy {
                 from 'src/farm/'
+                include '*.json'
+                into '.'
+            }
+        }
+
+        htx {
+            applicationId "ishopgo.com.htx"
+            versionCode 1
+            versionName "1.0.0"
+            resValue "string", "app_id", "efa5a395827ee60b75624bfc7e67060b"
+            resValue "string", "app_name", "Hợp Tác Xã"
+            resValue "string", "app_host", "hoptacxa.vn/"
+            resValue "string", "app_protocol", "http"
+            resValue "string", "host_deeplink", "hoptacxa.vn "
+            resValue "string", "file_provider_authority", "ishopgo.com.htx.fileprovider"
+            resValue "string", "external_file_path", "Android/data/ishopgo.com.htx/files/Pictures"
+            resValue "string", "firebase_app_version_ref", "app_variations/android/htx"
+            resValue "string", "keyword_store_search", "hop%20tac%20xa%20ishopgo"
+
+            resValue "string", "facebook_app_id", "307122123394030"
+            resValue "string", "fb_login_protocol_scheme", "fb307122123394030"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider307122123394030"
+
+            copy {
+                from 'src/htx/'
                 include '*.json'
                 into '.'
             }

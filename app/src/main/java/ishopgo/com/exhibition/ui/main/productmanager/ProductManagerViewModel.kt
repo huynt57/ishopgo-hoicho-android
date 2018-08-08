@@ -285,115 +285,146 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
 
     var editProductSusscess = MutableLiveData<Boolean>()
 
-    fun editProductManager(productId: Long, name: String, code: String, title: String, price: Long, pricePromotion: Long, dvt: String,
-                           boothId: Long, brand_id: Long, madeIn: String, image: String, postMedias: ArrayList<PostMedia>,
-                           description: String, status: Int, meta_description: String, meta_keyword: String, tag: String,
-                           listCategory: List<Category>, listProducts_bsp: ArrayList<Product>, is_featured: Int, wholesale_price_from: Long, wholesale_price_to: Long,
-                           wholesale_count_product: String, listImageDelete: ArrayList<PostMedia>, scale: String, quantity: String,
-                           pack: String, season: String, expiryDate: String, shipmentCode: String, manufacturingDate: String, harvestDate: String, shippedDate: String,
-                           isNksx: Int, isAccreditation: Int, listSuppliesProduct: ArrayList<Product>, listSolutionProduct: ArrayList<Product>) {
+    fun editProductManager(productId: Long, image: String, tenSp: String, maSp: String, dvt: String, xuatSu: String, ngayDongGoi: String,
+                           quyCachDongGoi: String, hsd: String, giaBan: Long, giaBanKm: Long, giaBanSiTu: Long, giaBanSiDen: Long, soLuongBanSi: String,
+                           maSoLoSX: String, ngaySX: String, ngayThuHoachDK: String, quyMo: String, khaNangCungUng: String, muaVu: String, msLoHang: String,
+                           cangXuat: String, cangNhap: String, ngayXuatHang: String, ngayNhapHang: String, soLuongNhap: String, hinhThucVC: String, ngayVC: String,
+                           donViVC: String, moTa: String, thuongHieuID: Long, gianHangId: Long, isNKSX: Int, isBaoTieu: Int, trangThaiHT: Int, spNoiBat: Int,
+                           listAnh: ArrayList<PostMedia>, listDanhMuc: MutableList<Category>, listVatTu: MutableList<Product>, listGiaiPhap: MutableList<Product>,
+                           listSpLienQuan: MutableList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert: ArrayList<PostMedia>,
+                           donViSXId: Long, donViNKId: Long, coSoCBId: Long, listDescriptionCSCB: MutableList<Description>,
+                           listDescriptionVatTu: MutableList<Description>, listDescriptionGiaiPhap: MutableList<Description>, ghiChu_vc: String, listImageDelete: ArrayList<PostMedia>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
-        builder.addFormDataPart("name", name)
-        builder.addFormDataPart("code", code)
-        builder.addFormDataPart("title", title)
-        builder.addFormDataPart("price", price.toString())
-        builder.addFormDataPart("dvt", dvt)
-        builder.addFormDataPart("provider_id", boothId.toString())
-        builder.addFormDataPart("department_id", brand_id.toString())
-        builder.addFormDataPart("madeIn", madeIn)
-        builder.addFormDataPart("description", description)
-        builder.addFormDataPart("status", status.toString())
-        builder.addFormDataPart("meta_description", meta_description)
-        builder.addFormDataPart("meta_keyword", meta_keyword)
-        builder.addFormDataPart("is_featured", is_featured.toString())
-        builder.addFormDataPart("wholesale_price_from", wholesale_price_from.toString())
-        builder.addFormDataPart("wholesale_price_to", wholesale_price_to.toString())
-        builder.addFormDataPart("wholesale_count_product", wholesale_count_product)
-        builder.addFormDataPart("promotion_price", pricePromotion.toString())
+        if (tenSp.isNotEmpty())
+            builder.addFormDataPart("name", tenSp)
+        if (maSp.isNotEmpty())
+            builder.addFormDataPart("code", maSp)
+        if (dvt.isNotEmpty())
+            builder.addFormDataPart("dvt", dvt)
+        if (xuatSu.isNotEmpty())
+            builder.addFormDataPart("madeIn", xuatSu)
+        if (ngayDongGoi.isNotEmpty())
+            builder.addFormDataPart("ngay_donggoi", ngayDongGoi)
 
-        if (scale.isNotEmpty()) {
-            builder.addFormDataPart("quy_mo", scale)
-        }
-        if (quantity.isNotEmpty()) {
-            builder.addFormDataPart("san_luong", quantity)
-        }
+        if (gianHangId != -1L)
+            builder.addFormDataPart("provider_id", gianHangId.toString())
+        if (thuongHieuID != -1L)
+            builder.addFormDataPart("department_id", thuongHieuID.toString())
 
-        //Agi
+        if (quyCachDongGoi.isNotEmpty())
+            builder.addFormDataPart("dong_goi", quyCachDongGoi)
+        if (hsd.isNotEmpty())
+            builder.addFormDataPart("hsd", hsd)
+        if (giaBan != 0L)
+            builder.addFormDataPart("price", giaBan.toString())
+        if (giaBanKm != 0L)
+            builder.addFormDataPart("promotion_price", giaBanKm.toString())
+        if (giaBanSiTu != 0L)
+            builder.addFormDataPart("wholesale_price_from", giaBanSiTu.toString())
+        if (giaBanSiDen != 0L)
+            builder.addFormDataPart("wholesale_price_to", giaBanSiDen.toString())
+        if (soLuongBanSi.isNotEmpty())
+            builder.addFormDataPart("wholesale_count_product", soLuongBanSi)
+        if (maSoLoSX.isNotEmpty())
+            builder.addFormDataPart("ms_sanxuat", maSoLoSX)
+        if (ngaySX.isNotEmpty())
+            builder.addFormDataPart("ngay_sx", ngaySX)
+        if (ngayThuHoachDK.isNotEmpty())
+            builder.addFormDataPart("dk_thuhoach", ngayThuHoachDK)
+        if (quyMo.isNotEmpty())
+            builder.addFormDataPart("quy_mo", quyMo)
+        if (khaNangCungUng.isNotEmpty())
+            builder.addFormDataPart("san_luong", khaNangCungUng)
+        if (muaVu.isNotEmpty())
+            builder.addFormDataPart("mua_vu", muaVu)
+        if (msLoHang.isNotEmpty())
+            builder.addFormDataPart("ms_lohang", msLoHang)
+        if (cangXuat.isNotEmpty())
+            builder.addFormDataPart("cang_xuat", cangXuat)
+        if (cangNhap.isNotEmpty())
+            builder.addFormDataPart("cang_nhap", cangNhap)
+        if (ngayXuatHang.isNotEmpty())
+            builder.addFormDataPart("xuat_xuong_date", ngayXuatHang)
+        if (ngayNhapHang.isNotEmpty())
+            builder.addFormDataPart("nhap_hang_date", ngayNhapHang)
+        if (soLuongNhap.isNotEmpty())
+            builder.addFormDataPart("sl_nhap", soLuongNhap)
+        if (hinhThucVC.isNotEmpty())
+            builder.addFormDataPart("hinhthuc_vc", hinhThucVC)
+        if (ngayVC.isNotEmpty())
+            builder.addFormDataPart("ngay_vc", ngayVC)
+        if (donViVC.isNotEmpty())
+            builder.addFormDataPart("donvi_vc", donViVC)
+        if (moTa.isNotEmpty())
+            builder.addFormDataPart("description", moTa)
+        if (donViSXId != 0L)
+            builder.addFormDataPart("nsx_id", donViSXId.toString())
+        if (donViNKId != 0L)
+            builder.addFormDataPart("nk_id", donViNKId.toString())
+        if (coSoCBId != 0L)
+            builder.addFormDataPart("cs_chebien_id", coSoCBId.toString())
+        if (ghiChu_vc.isNotEmpty())
+            builder.addFormDataPart("vc_note", ghiChu_vc)
 
-        if (pack.isNotEmpty()) {
-            builder.addFormDataPart("dong_goi", pack)
-        }
+        builder.addFormDataPart("name_vattu", tenVatTu)
+        builder.addFormDataPart("name_giaiphap", tenGiaiPhap)
+        builder.addFormDataPart("name_lienquan", tenLienQuan)
 
-        if (expiryDate.isNotEmpty()) {
-            builder.addFormDataPart("hsd", expiryDate)
-        }
+        builder.addFormDataPart("is_nhatky_sx", isNKSX.toString())
+        builder.addFormDataPart("is_baotieu", isBaoTieu.toString())
+        builder.addFormDataPart("status", trangThaiHT.toString())
+        builder.addFormDataPart("is_featured", spNoiBat.toString())
 
-        if (season.isNotEmpty()) {
-            builder.addFormDataPart("mua_vu", season)
-        }
-
-        if (shipmentCode.isNotEmpty()) {
-            builder.addFormDataPart("ms_lohang", shipmentCode)
-        }
-        if (manufacturingDate.isNotEmpty()) {
-            builder.addFormDataPart("ngay_sx", manufacturingDate)
-        }
-        if (harvestDate.isNotEmpty()) {
-            builder.addFormDataPart("dk_thuhoach", harvestDate)
-        }
-        if (shippedDate.isNotEmpty()) {
-            builder.addFormDataPart("xuat_xuong", shippedDate)
-        }
-
-        builder.addFormDataPart("is_nhatky_sx", isNksx.toString())
-        builder.addFormDataPart("is_baotieu", isAccreditation.toString())
-
-
-        val listTags: ArrayList<String>? = ArrayList()
-        listTags?.add(tag)
-
-        if (listTags != null) {
-            for (i in listTags.indices) {
-                builder.addFormDataPart("tags[]", listTags[i])
-                Log.d("tag[]", listTags[i])
+        if (!listDescriptionCSCB.isEmpty()) {
+            for (i in listDescriptionCSCB.indices) {
+                builder.addFormDataPart("list_content_title_array_cscb[]", listDescriptionCSCB[i].title.toString())
+                builder.addFormDataPart("list_content_desc_array_cscb[]", listDescriptionCSCB[i].description.toString())
             }
         }
 
-        if (!listProducts_bsp.isEmpty()) {
-            for (i in listProducts_bsp.indices) {
-                builder.addFormDataPart("products_bsp_array[]", listProducts_bsp[i].id.toString())
+        if (!listDescriptionVatTu.isEmpty()) {
+            for (i in listDescriptionVatTu.indices) {
+                builder.addFormDataPart("list_content_title_array_vtdsd[]", listDescriptionVatTu[i].title.toString())
+                builder.addFormDataPart("list_content_desc_array_vtdsd[]", listDescriptionVatTu[i].description.toString())
             }
         }
 
-        if (listCategory.isNotEmpty()) {
-            for (i in listCategory.indices) {
-                builder.addFormDataPart("categories[]", listCategory[i].id.toString())
+        if (!listDescriptionGiaiPhap.isEmpty()) {
+            for (i in listDescriptionGiaiPhap.indices) {
+                builder.addFormDataPart("list_content_title_array_gpdsd[]", listDescriptionGiaiPhap[i].title.toString())
+                builder.addFormDataPart("list_content_desc_array_gpdsd[]", listDescriptionGiaiPhap[i].description.toString())
             }
         }
 
-        if (listImageDelete.isNotEmpty()) {
-            for (i in listImageDelete.indices) {
-                builder.addFormDataPart("deleted_images[]", listImageDelete[i].uri.toString())
+        if (!listSpLienQuan.isEmpty()) {
+            for (i in listSpLienQuan.indices) {
+                builder.addFormDataPart("products_bsp_array[]", listSpLienQuan[i].id.toString())
             }
         }
 
-        if (!listSuppliesProduct.isEmpty()) {
-            for (i in listSuppliesProduct.indices) {
-                builder.addFormDataPart("vat_tu_products_bsp[]", listSuppliesProduct[i].id.toString())
+        if (!listVatTu.isEmpty()) {
+            for (i in listVatTu.indices) {
+                builder.addFormDataPart("vat_tu_products_bsp[]", listVatTu[i].id.toString())
             }
         }
 
-        if (!listSolutionProduct.isEmpty()) {
-            for (i in listSolutionProduct.indices) {
-                builder.addFormDataPart("giai_phap_products_bsp[]", listSolutionProduct[i].id.toString())
+        if (!listGiaiPhap.isEmpty()) {
+            for (i in listGiaiPhap.indices) {
+                builder.addFormDataPart("giai_phap_products_bsp[]", listGiaiPhap[i].id.toString())
             }
         }
 
-        if (postMedias.isNotEmpty()) {
-            for (i in postMedias.indices) {
-                val uri = postMedias[i].uri
+        if (listDanhMuc.isNotEmpty()) {
+            for (i in listDanhMuc.indices) {
+                builder.addFormDataPart("categories[]", listDanhMuc[i].id.toString())
+            }
+        }
+
+        if (listAnh.isNotEmpty()) {
+            for (i in listAnh.indices) {
+                val uri = listAnh[i].uri
                 if (!uri.toString().subSequence(0, 4).contains("http"))
                     uri?.let {
                         val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
@@ -401,6 +432,20 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                         Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
                         val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                         builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                    }
+            }
+        }
+
+        if (listCert.isNotEmpty()) {
+            for (i in listCert.indices) {
+                val uri = listCert[i].uri
+                if (!uri.toString().subSequence(0, 4).contains("http"))
+                    uri?.let {
+                        val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
+                        imageFile.deleteOnExit()
+                        Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                        val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                        builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
                     }
             }
         }
@@ -417,6 +462,12 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
 
         if (imagePart != null) {
             builder.addPart(imagePart)
+        }
+
+        if (listImageDelete.isNotEmpty()) {
+            for (i in listImageDelete.indices) {
+                builder.addFormDataPart("deleted_images[]", listImageDelete[i].uri.toString())
+            }
         }
 
         addDisposable(isgService.editProduct(productId, builder.build())

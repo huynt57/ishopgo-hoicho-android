@@ -203,4 +203,25 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("cscb")
     @Expose
     var cscb: Booth? = null
+    @SerializedName("vc_note")
+    @Expose
+    var vcNote: String? = null
+    @SerializedName("nsx_id")
+    @Expose
+    var nsxId: Long? = null
+    @SerializedName("nk_id")
+    @Expose
+    var nkId: Long? = null
+    @SerializedName("cs_chebien_id")
+    @Expose
+    var csChebienId: Long? = null
+    @SerializedName("cert_images")
+    @Expose
+    var certImages: List<ListCert>? = null
+
+    class ListCert {
+        @SerializedName("image")
+        @Expose
+        var image: String? = null
+    }
 }

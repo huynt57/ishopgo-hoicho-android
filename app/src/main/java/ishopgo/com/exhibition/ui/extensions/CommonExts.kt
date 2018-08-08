@@ -80,6 +80,14 @@ fun String.asDate(): String? {
     }
 }
 
+fun String.asDateProdcutDetail(): String? {
+    return try {
+        Toolbox.displayDateFormat.format(Toolbox.apiDateProductFormat.parse(this))
+    } catch (e: Exception) {
+        this
+    }
+}
+
 fun String.asDateTime(): String? {
     return try {
         Toolbox.displayDateTimeFormat.format(Toolbox.apiDateFormat.parse(this))
