@@ -1,0 +1,115 @@
+{
+  "project_info": {
+    "project_number": "424833294520",
+    "firebase_url": "https://ishopgo2.firebaseio.com",
+    "project_id": "ishopgo2",
+    "storage_bucket": "ishopgo2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424833294520:android:c63a15fb90211a7c",
+        "android_client_info": {
+          "package_name": "ishopgo.com.farm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424833294520-9gsvaqds650dvfo1ku17mp8698lkmlse.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ishopgo.com.farm",
+            "certificate_hash": "ff81f51de2bec3ea1294f9a4cedb645fe99b8956"
+          }
+        },
+        {
+          "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ0iYMzanYaO_7QUrkYasjowZtu3jpHtc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "424833294520-h2ttmupmu4tbis2mqptnktoi6blni573.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ishopgo.hoptacxa",
+                "app_store_id": "1423047008"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424833294520:android:785b0043ea89ae1a",
+        "android_client_info": {
+          "package_name": "ishopgo.com.htx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424833294520-kckprh3fv5gssfn89fjceae85qc7da51.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ishopgo.com.htx",
+            "certificate_hash": "b48d15576f82fb618a08e1d2499b57bea8ba06a7"
+          }
+        },
+        {
+          "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ0iYMzanYaO_7QUrkYasjowZtu3jpHtc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "424833294520-h2ttmupmu4tbis2mqptnktoi6blni573.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ishopgo.hoptacxa",
+                "app_store_id": "1423047008"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
