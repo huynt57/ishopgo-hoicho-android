@@ -26,9 +26,7 @@ import java.util.*
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
     override fun deleteProductInSalePoint(body: RequestBody): Single<BaseResponse<Any>> {
-        val response = BaseResponse<Any>()
-        response.status = 1
-        return delegate.returningResponse(response).deleteProductInSalePoint(body)
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun getMemberPermissions(fields: MutableMap<String, Any>): Single<BaseResponse<ManageMember>> {
@@ -261,7 +259,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).getInfoMemberSalePoint(phone)
     }
 
-    override fun getProductDetail(id: Long): Single<BaseResponse<ProductDetail>> {
+    override fun getProductDetail(id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<ProductDetail>> {
         val detail = ProductDetail()
         detail.id = 16110
         detail.name = "Balo Nữ Thời Trang Naza"
@@ -289,7 +287,7 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         response.status = 1
         response.data = detail
 
-        return delegate.returningResponse(response).getProductDetail(id)
+        return delegate.returningResponse(response).getProductDetail(id, fields)
     }
 
     override fun getShopInfo(id: Long): Single<BaseResponse<ManagerShopDetail>> {

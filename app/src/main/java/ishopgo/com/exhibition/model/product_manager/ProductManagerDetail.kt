@@ -164,4 +164,64 @@ class ProductManagerDetail : IdentityData() {
     @SerializedName("booth")
     @Expose
     var booth: Booth? = null
+    @SerializedName("ngay_donggoi")
+    @Expose
+    var ngayDonggoi: String? = null
+    @SerializedName("ms_sanxuat")
+    @Expose
+    var msSanxuat: String? = null
+    @SerializedName("cang_xuat")
+    @Expose
+    var cangXuat: String? = null
+    @SerializedName("cang_nhap")
+    @Expose
+    var cangNhap: String? = null
+    @SerializedName("xuat_xuong_date")
+    @Expose
+    var xuatXuongdate: String? = null
+    @SerializedName("nhap_hang_date")
+    @Expose
+    var nhapHangdate: String? = null
+    @SerializedName("sl_nhap")
+    @Expose
+    var slNhap: String? = null
+    @SerializedName("hinhthuc_vc")
+    @Expose
+    var hinhThucVc: String? = null
+    @SerializedName("ngay_vc")
+    @Expose
+    var ngayVc: String? = null
+    @SerializedName("donvi_vc")
+    @Expose
+    var donviVc: String? = null
+    @SerializedName("pp")
+    @Expose
+    var pp: Booth? = null
+    @SerializedName("nnk")
+    @Expose
+    var nnk: Booth? = null
+    @SerializedName("cscb")
+    @Expose
+    var cscb: Booth? = null
+    @SerializedName("vc_note")
+    @Expose
+    var vcNote: String? = null
+    @SerializedName("nsx_id")
+    @Expose
+    var nsxId: Long? = null
+    @SerializedName("nk_id")
+    @Expose
+    var nkId: Long? = null
+    @SerializedName("cs_chebien_id")
+    @Expose
+    var csChebienId: Long? = null
+    @SerializedName("cert_images")
+    @Expose
+    var certImages: List<ListCert>? = null
+
+    class ListCert {
+        @SerializedName("image")
+        @Expose
+        var image: String? = null
+    }
 }

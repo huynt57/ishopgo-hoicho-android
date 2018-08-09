@@ -32,7 +32,7 @@ class ProductManagerDetailFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Thông tin sản phẩm")
+        toolbar.setCustomTitle("Sửa sản phẩm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
     }

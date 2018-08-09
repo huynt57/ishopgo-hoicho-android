@@ -29,6 +29,7 @@ object Toolbox {
     val displayDateFormat = SimpleDateFormat("dd/MM/yyyy", LOCALE_VN)
     val displayDateTimeFormat = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", LOCALE_VN)
     val apiDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", LOCALE_VN)
+    val apiDateProductFormat = SimpleDateFormat("yyyy/MM/dd", LOCALE_VN)
 
     val gson = defaultGson
 

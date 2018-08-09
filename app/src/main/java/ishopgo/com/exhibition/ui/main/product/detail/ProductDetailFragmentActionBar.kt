@@ -35,8 +35,17 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
             requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
         }
 
+        val scanQrCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_REQUIRE) == true) {
+            // click another product in product detail screen
+            arguments!!.getBoolean(Const.TransferKey.EXTRA_REQUIRE)
+        } else {
+            requireActivity().intent.getBooleanExtra(Const.TransferKey.EXTRA_REQUIRE, false)
+                    ?: false
+        }
+
         val extra = Bundle()
         extra.putLong(Const.TransferKey.EXTRA_ID, productId)
+        extra.putBoolean(Const.TransferKey.EXTRA_REQUIRE, scanQrCode)
 
         val fragment = ProductDetailFragment.newInstance(extra)
         childFragmentManager.beginTransaction()

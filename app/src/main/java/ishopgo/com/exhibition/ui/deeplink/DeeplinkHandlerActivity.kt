@@ -77,6 +77,7 @@ class DeeplinkHandlerActivity : BaseActivity() {
                 Log.d("hong", "nhan dc productId= $productId")
                 val intent = Intent(this, ProductDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, productId.toLong())
+                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 finish()
             }

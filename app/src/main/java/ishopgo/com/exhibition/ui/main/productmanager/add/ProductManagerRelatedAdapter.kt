@@ -38,10 +38,8 @@ class ProductManagerRelatedAdapter : ClickableAdapter<Product>() {
 
             val convert = converter.convert(data)
             itemView.apply {
-                if (convert.provideStatus() != STATUS_DISPLAY_SHOW && convert.provideStatus() != STATUS_DISPLAY_LANDING_PAGE)
-                    iv_display.visibility = View.VISIBLE
-                else iv_display.visibility = View.GONE
 
+                iv_display.visibility = View.GONE
                 iv_push_top.visibility = View.GONE
                 iv_options.visibility = View.GONE
 
