@@ -59,6 +59,18 @@ android {
             storeFile file('../keystore/keystore_vietbuild.jks')
             storePassword '123456'
         }
+        farm {
+            keyAlias 'ishopgo_farm'
+            keyPassword '123456'
+            storeFile file('../keystore/keystore_farm.jks')
+            storePassword '123456'
+        }
+        htx {
+            keyAlias 'ishopgo_htx'
+            keyPassword '123456'
+            storeFile file('../keystore/keystore_htx.jks')
+            storePassword '123456'
+        }
     }
 
     lintOptions {
@@ -73,8 +85,8 @@ android {
     productFlavors {
         hangviet {
             applicationId "ishopgo.com.exhibition"
-            versionCode 21
-            versionName "1.6.0"
+            versionCode 22
+            versionName "1.6.1"
             signingConfig signingConfigs.hangviet
             resValue "string", "app_id", "hoichone"
             resValue "string", "app_name", "Hàng Việt 360"
@@ -98,8 +110,8 @@ android {
         }
         agri {
             applicationId "ishopgo.com.agri"
-            versionCode 12
-            versionName "1.1.0"
+            versionCode 13
+            versionName "1.1.1"
             resValue "string", "app_id", "1839d59174da18dde3d19118052f6fb0"
             resValue "string", "app_name", "Agri 360"
             resValue "string", "app_host", "agri360.vn"
@@ -122,8 +134,8 @@ android {
         }
         vietbuild {
             applicationId "ishopgo.com.vietbuild"
-            versionCode 12
-            versionName "1.1.0"
+            versionCode 13
+            versionName "1.1.1"
             resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
             resValue "string", "app_name", "Vietbuild Expo"
             resValue "string", "app_host", "vietbuildexpo.vn"
@@ -200,6 +212,8 @@ android {
             productFlavors.hangviet.signingConfig signingConfigs.hangviet
             productFlavors.agri.signingConfig signingConfigs.agri
             productFlavors.vietbuild.signingConfig signingConfigs.vietbuild
+            productFlavors.farm.signingConfig signingConfigs.farm
+            productFlavors.htx.signingConfig signingConfigs.htx
 
             minifyEnabled false
             debuggable false

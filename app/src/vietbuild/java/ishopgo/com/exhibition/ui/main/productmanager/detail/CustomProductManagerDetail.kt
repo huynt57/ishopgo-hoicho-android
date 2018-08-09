@@ -256,5 +256,5 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
 //                dialog.show()
 //            }
 //        }
-//    }
+    }
 }
