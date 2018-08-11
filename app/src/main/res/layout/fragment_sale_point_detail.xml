@@ -69,6 +69,19 @@
                 app:drawableStartCompat="@drawable/ic_home_highlight_24dp"
                 tools:text="Địa chỉ" />
 
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_sale_point_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_location_highlight_16dp"
+                tools:text="Khoảng cách" />
+
             <LinearLayout
                 android:id="@+id/linear_product_current"
                 android:layout_width="match_parent"
@@ -78,12 +91,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="1"
-                    android:background="@color/md_blue_grey_50">
+                    android:background="@color/md_blue_grey_50"
+                    android:weightSum="1">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
+                        android:layout_weight="0.7"
                         android:paddingBottom="8dp"
                         android:paddingEnd="16dp"
                         android:paddingStart="16dp"
@@ -91,7 +105,6 @@
                         android:text="Thông tin sản phẩm"
                         android:textSize="16sp"
                         android:textStyle="bold"
-                        android:layout_weight="0.7"
                         tools:ignore="HardcodedText" />
 
                     <TextView

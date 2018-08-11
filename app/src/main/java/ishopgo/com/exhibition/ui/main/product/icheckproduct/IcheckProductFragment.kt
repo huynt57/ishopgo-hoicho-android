@@ -26,6 +26,7 @@ import com.google.gson.JsonSyntaxException
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.IcheckProduct
+import ishopgo.com.exhibition.domain.response.IcheckSalePoint
 import ishopgo.com.exhibition.domain.response.IcheckVendor
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
@@ -42,6 +43,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.description.IcheckProductDescriptionActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint.IcheckSalePointActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint.IcheckSalePointAddActivity
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint.IcheckSalePointDetailActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_icheck_product_detail.*
@@ -145,6 +147,14 @@ class IcheckProductFragment : BaseFragment(), LocationListener {
             rv_product_sale_point.layoutManager = layoutManager2
             rv_product_sale_point.adapter = adapterSalePoint
             rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+            adapterSalePoint.listener = object : ClickableAdapter.BaseAdapterAction<IcheckSalePoint> {
+                override fun click(position: Int, data: IcheckSalePoint, code: Int) {
+                        val intent = Intent(it, IcheckSalePointDetailActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, Toolbox.gson.toJson(icheckProduct))
+                        startActivity(intent)
+                }
+            }
         }
 
         view_shop_add_sale_point.setOnClickListener {
