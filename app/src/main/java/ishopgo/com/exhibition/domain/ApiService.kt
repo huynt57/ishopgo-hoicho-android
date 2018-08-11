@@ -400,6 +400,25 @@ class ApiService {
     }
 
     interface ISGApi {
+        //    "http://sandbox.icheck.com.vn/scan/8934677020110"
+        @GET
+        fun getIcheckProduct(@Url url: String): Single<IcheckRep<IcheckProduct>>
+
+        //    "http://sandbox.icheck.com.vn//products/8934677020110/informations/25221"
+        @GET
+        fun getIcheckProductDetail(@Url url: String): Single<IcheckRep<IcheckProductDetail>>
+
+        // "http://geteway.icheck.com.vn/app/locations/4548623236315?geo=21.735235,121.850293&page=1"
+        @GET
+        fun getIcheckSalePoint(@Url url: String): Single<IcheckRep<IcheckSalePointManager>>
+
+        @GET("product/featured")
+        fun getFeaturedProducts(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerProduct>>
+
+        @GET("scan-barcode")
+        fun scanBarcode(
+                @Query("barcode") barcode: String
+        ): Single<BaseResponse<Product>>
 
         @POST("refresh-token")
         fun refreshToken(): Single<BaseResponse<RefreshTokenResponse>>

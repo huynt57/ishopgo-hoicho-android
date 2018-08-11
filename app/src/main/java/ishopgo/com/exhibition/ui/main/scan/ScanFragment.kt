@@ -24,8 +24,12 @@ import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import com.journeyapps.barcodescanner.CaptureManager
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import kotlinx.android.synthetic.main.fragment_scan.*
 
@@ -62,7 +66,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             context?.let {
                 if (hasCameraPermission(it)) {
                     view_request_camera_permission.visibility = View.GONE
-                    view_notice_permission.visibility = View.GONE
+                    view_notice_permission.visibility = View.VISIBLE
+                    view_notice_permission.text = "Quét mã vạch, mã Qr Code để kiểm tra nguồn gốc sản phẩm và phát hiện hàng giả"
                     resumeCamera()
                 } else {
                     requestCameraPermission()
@@ -85,7 +90,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             context?.let {
                 val hasCameraPermission = hasCameraPermission(it)
                 view_request_camera_permission.visibility = if (hasCameraPermission) View.GONE else View.VISIBLE
-                view_notice_permission.visibility = if (hasCameraPermission) View.GONE else View.VISIBLE
+                view_notice_permission.text = if (hasCameraPermission) "Quét mã vạch, mã Qr Code để kiểm tra nguồn gốc sản phẩm và phát hiện hàng giả"
+                else "Quét mã vạch cần quyền truy cập camera"
                 view_request_camera_permission.setOnClickListener {
                     requestPermissions(arrayOf(Manifest.permission.CAMERA), Const.RequestCode.CAMERA_PERMISSION)
                 }
@@ -121,7 +127,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
     private fun requestCameraPermission() {
         activity?.let {
             view_request_camera_permission.visibility = View.VISIBLE
-            view_notice_permission.visibility = View.VISIBLE
+            view_notice_permission.text = "Quét mã vạch, mã Qr Code để kiểm tra nguồn gốc sản phẩm và phát hiện hàng giả"
             view_request_camera_permission.setOnClickListener {
                 requestPermissions(arrayOf(Manifest.permission.CAMERA), Const.RequestCode.CAMERA_PERMISSION)
             }
@@ -135,7 +141,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             val hasCallPermission = grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED
             if (hasCallPermission) {
                 view_request_camera_permission.visibility = View.GONE
-                view_notice_permission.visibility = View.GONE
+                view_notice_permission.text = "Quét mã vạch, mã Qr Code để kiểm tra nguồn gốc sản phẩm và phát hiện hàng giả"
                 resumeCamera()
             } else {
                 context?.let {
@@ -162,12 +168,58 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         viewModel = obtainViewModel(ScanViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
 
+        viewModel.scanIcheckResult.observe(this, Observer { icheckProduct ->
+            icheckProduct?.let {
+                showProduct(it)
+            }
+        })
+        viewModel.totalNoResult.observe(this, Observer { a ->
+            a?.let {
+                showDialogNoResult(it)
+                zxing_barcode_scanner.decodeSingle(this@ScanFragment)
+            }
+        })
+
         activity?.let {
             beepManager = BeepManager(it)
             beepManager.isBeepEnabled = true
             beepManager.isVibrateEnabled = true
         }
 
+    }
+
+    private fun showDialogNoResult(code: String) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Thông báo")
+                    .content("Không tìm thấy thông tin sản phẩm, bạn có muốn đóng góp thông tin sản phẩm này không?")
+                    .positiveText("Đồng ý")
+                    .onPositive { dialog, _ ->
+                        val intent = Intent(context, IcheckUpdateProductActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, code)
+                        startActivity(intent)
+                        dialog.dismiss()
+                    }
+                    .negativeText("Huỷ bỏ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            dialog.show()
+        }
+    }
+
+    private fun requestIcheckProduct(qrCode: String?) {
+        qrCode?.let {
+            viewModel.loadIcheckProduct(it)
+        }
+    }
+
+    private fun showProduct(data: IcheckProduct?) {
+        val intent = Intent(context, IcheckProductActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+        startActivity(intent)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -191,11 +243,20 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     private fun processData(qrCode: String?) {
         Log.d(TAG, "processData: qrCode = [${qrCode}]")
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(qrCode))
-        if (context != null && intent.resolveActivity(context!!.packageManager) != null)
-            startActivity(intent)
 
-        zxing_barcode_scanner.decodeSingle(this)
+        if (TextUtils.isEmpty(qrCode)) return
+
+        if (qrCode!!.toLowerCase().startsWith("http")) {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(qrCode))
+            if (context != null && intent.resolveActivity(context!!.packageManager) != null)
+                startActivity(intent)
+
+            zxing_barcode_scanner.decodeSingle(this)
+            return
+        }
+
+        requestIcheckProduct(qrCode)
+
 //        val uri = Uri.parse(qrCode)
 //        val boothId = uri.getQueryParameter("booth")
 //        if (boothId != null && boothId.isNotBlank()) {

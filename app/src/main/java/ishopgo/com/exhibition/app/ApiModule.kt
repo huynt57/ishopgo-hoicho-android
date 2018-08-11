@@ -97,8 +97,12 @@ class ApiModule {
         return Interceptor { chain ->
             val original = chain.request()
 
+            val auth = if (original.url().host().contains("icheck")) {
+                Credentials.basic("ishopgo", "iShopgo@2017!@#")
+            } else "Bearer " + UserDataManager.accessToken
+
             val request = original.newBuilder()
-                    .header("Authorization", "Bearer " + UserDataManager.accessToken)
+                    .header("Authorization", auth)
                     .method(original.method(), original.body())
                     .build()
 

@@ -51,6 +51,7 @@ object Const {
         const val UPDATE_PRODUCT_SALE_POINT = 30
         const val PICK_BANNER = 31
         const val PICK_LOGO = 32
+        const val ICHECK_UPDATE_PRODUCT = 33
     }
 
     object AccountAction {
