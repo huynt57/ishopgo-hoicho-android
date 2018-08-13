@@ -2,7 +2,7 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.SerializedName
 
-class IcheckVendor {
+class IcheckVendor :IdentityData() {
     @SerializedName("name")
     var name: String? = null
     @SerializedName("address")

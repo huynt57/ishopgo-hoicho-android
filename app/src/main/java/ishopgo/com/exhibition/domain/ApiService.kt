@@ -412,8 +412,29 @@ class ApiService {
         @GET
         fun getIcheckSalePoint(@Url url: String): Single<IcheckRep<IcheckSalePointManager>>
 
-        @GET("product/featured")
-        fun getFeaturedProducts(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerProduct>>
+        @GET
+        fun getIcheckDetailSalePoint(@Url url: String): Single<IcheckRep<IcheckSalePointDetailManager>>
+
+        @GET
+        fun getIcheckProductSalePoint(@Url url: String): Single<IcheckRep<IcheckProductManager>>
+
+        @GET
+        fun getIcheckProductRelated(@Url url: String): Single<IcheckRep<List<IcheckProduct>>>
+
+        @GET
+        fun getIcheckReview(@Url url: String): Single<IcheckRep<List<IcheckReview>>>
+
+        @GET
+        fun getIcheckShopInfo(@Url url: String): Single<IcheckRep<IcheckShopDetail>>
+
+        @GET
+        fun loadIcheckShopProduct(@Url url: String): Single<IcheckRep<List<IcheckProduct>>>
+
+        @GET
+        fun loadIcheckShopCategory(@Url url: String): Single<IcheckRep<IcheckCategoryManager>>
+
+        @GET
+        fun loadIcheckShopCategoryProduct(@Url url: String): Single<IcheckRep<List<IcheckProduct>>>
 
         @GET("scan-barcode")
         fun scanBarcode(

@@ -96,6 +96,15 @@ fun String.asDateTime(): String? {
     }
 }
 
+fun String.asConvertUnixtime(): String? {
+    return try {
+        val date = Date(this.toLong() * 1000L)
+        Toolbox.displayDateTimeFormat.format(date)
+    } catch (e: Exception) {
+        this
+    }
+}
+
 fun Long.asMoney(): String {
     val numberFormat = NumberFormat.getIntegerInstance(Locale("vi"))
     val formatted = numberFormat.format(this)

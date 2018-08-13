@@ -2,7 +2,7 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.SerializedName
 
-class IcheckProduct {
+class IcheckProduct : IdentityData() {
     @SerializedName("gtin_code")
     var code: String? = null
     @SerializedName("product_name")
@@ -17,4 +17,10 @@ class IcheckProduct {
     var attributes: List<IcheckProductAttribute>? = null
     @SerializedName("isClone")
     var isClone: Boolean? = null
+    @SerializedName("like_count")
+    var likeCount: Int? = null
+    @SerializedName("seller_count")
+    var sellerCount: Int? = null
+    @SerializedName("star")
+    var star: Float? = null
 }

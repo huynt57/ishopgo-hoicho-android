@@ -51,6 +51,8 @@ import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentViewM
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointViewModel
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductViewModel
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.review.IcheckReviewViewModel
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.shop.IcheckShopProductViewModel
 import ishopgo.com.exhibition.ui.main.product.newest.NewestProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.popular.PopularProductsViewModel
 import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsViewModel
@@ -170,4 +172,6 @@ interface AppComponent {
     fun inject(searchBrandsViewModel: SearchBrandsViewModel)
     fun inject(referencesViewModel: ReferencesViewModel)
     fun inject(icheckProductViewModel: IcheckProductViewModel)
+    fun inject(icheckReviewViewModel: IcheckReviewViewModel)
+    fun inject(icheckShopDetailViewModel: IcheckShopProductViewModel)
 }

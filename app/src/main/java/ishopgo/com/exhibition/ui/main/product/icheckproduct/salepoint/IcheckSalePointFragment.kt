@@ -1,7 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint
 
-import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
@@ -9,11 +9,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.IcheckRequest
+import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.domain.response.IcheckSalePoint
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductViewModel
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckSalePointAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -46,6 +47,7 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
     private lateinit var adapter: IcheckSalePointAdapter
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewModel: IcheckProductViewModel
+    private var dataProduct: IcheckProduct? = null
 
     override fun onRefresh() {
         swipe.isRefreshing = false
@@ -70,13 +72,6 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
         firstLoad()
     }
 
-    private fun openSalePointDetail() {
-        toast("Đang phát triển")
-//        val intent = Intent(context, ShopDetailActivity::class.java)
-//        intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
-//        startActivity(intent)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -86,7 +81,11 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
         adapter = IcheckSalePointAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<IcheckSalePoint> {
             override fun click(position: Int, data: IcheckSalePoint, code: Int) {
-                openSalePointDetail()
+                val intent = Intent(context, IcheckSalePointDetailActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                if (dataProduct != null)
+                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, Toolbox.gson.toJson(dataProduct))
+                startActivity(intent)
             }
         }
 
@@ -149,6 +148,8 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         productCode = arguments?.getString(Const.TransferKey.EXTRA_ID) ?: ""
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
+        dataProduct = Toolbox.gson.fromJson(json, IcheckProduct::class.java)
     }
 
     private fun populateData(data: List<IcheckSalePoint>) {

@@ -99,7 +99,7 @@ class ApiModule {
 
             val auth = if (original.url().host().contains("icheck")) {
                 Credentials.basic("ishopgo", "iShopgo@2017!@#")
-            } else "Bearer " + UserDataManager.accessToken
+            } else "Bearer" + UserDataManager.accessToken
 
             val request = original.newBuilder()
                     .header("Authorization", auth)

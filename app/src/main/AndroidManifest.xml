@@ -9,6 +9,8 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
     <application
         android:name=".app.MyApp"
@@ -438,6 +440,41 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.main.shop.info.list_sale_point_all.ListSalePointActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.product.icheckproduct.IcheckProductActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.icheckproduct.description.IcheckProductDescriptionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.icheckproduct.update.IcheckUpdateProductActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.icheckproduct.salepoint.IcheckSalePointAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.icheckproduct.salepoint.IcheckSalePointActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.icheckproduct.salepoint.IcheckSalePointDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.product.icheckproduct.review.IcheckReviewActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.product.icheckproduct.shop.IcheckShopActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

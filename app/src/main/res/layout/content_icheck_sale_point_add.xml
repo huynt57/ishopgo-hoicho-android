@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_stroked_rounded_rectangle">
+
+            <ImageView
+                android:id="@+id/img_product"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_product"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_product"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_product_code"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_barcode"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_product"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_product_price"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/price_tag"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_product"
+                app:layout_constraintTop_toBottomOf="@+id/tv_product_code" />
+
+
+        </android.support.constraint.ConstraintLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Thông tin điểm bán"
+            android:textStyle="bold" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_sdt"
+                style="@style/AppTheme.EnableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Số điện thoại"
+                android:inputType="phone"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_diemBan"
+                style="@style/AppTheme.EnableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tên điểm bán"
+                android:inputType="text"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_thanhPho"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Thành phố"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_district"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Quận huyện"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_diaChi"
+                style="@style/AppTheme.EnableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Địa chỉ"
+                android:inputType="textMultiLine"
+                android:lines="3" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_viTri"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Ví trí"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_shop_nguoiGT"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="SĐT người giới thiệu"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Thông tin sản phẩm"
+            android:textStyle="bold" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/edt_product_danhMuc"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Danh mục"
+                tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <ishopgo.com.exhibition.ui.widget.MoneyEditText
+                android:id="@+id/edit_product_giaBan"
+                style="@style/AppTheme.EnableInputField"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Giá sản phẩm*"
+                android:singleLine="true" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_sale_point_add"
+            style="@style/AppTheme.ActionButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Thêm điểm bán"
+            android:textColor="@color/md_white_1000" />
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
