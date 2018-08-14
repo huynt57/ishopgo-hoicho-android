@@ -32,20 +32,27 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
             // click another product in product detail screen
             arguments!!.getLong(Const.TransferKey.EXTRA_ID)
         } else {
-            requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+            requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
         }
 
-        val scanQrCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_REQUIRE) == true) {
+        val stampCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_CODE) == true) {
             // click another product in product detail screen
-            arguments!!.getBoolean(Const.TransferKey.EXTRA_REQUIRE)
+            arguments!!.getString(Const.TransferKey.EXTRA_STAMP_CODE)
         } else {
-            requireActivity().intent.getBooleanExtra(Const.TransferKey.EXTRA_REQUIRE, false)
-                    ?: false
+            requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_CODE)
+        }
+
+        val stampId = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_ID) == true) {
+            // click another product in product detail screen
+            arguments!!.getString(Const.TransferKey.EXTRA_STAMP_ID)
+        } else {
+            requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_ID)
         }
 
         val extra = Bundle()
         extra.putLong(Const.TransferKey.EXTRA_ID, productId)
-        extra.putBoolean(Const.TransferKey.EXTRA_REQUIRE, scanQrCode)
+        extra.putString(Const.TransferKey.EXTRA_STAMP_ID, stampId)
+        extra.putString(Const.TransferKey.EXTRA_STAMP_CODE, stampCode)
 
         val fragment = ProductDetailFragment.newInstance(extra)
         childFragmentManager.beginTransaction()

@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.deeplink
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.util.Log
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks
 import ishopgo.com.exhibition.model.Const
@@ -51,6 +52,9 @@ class DeeplinkHandlerActivity : BaseActivity() {
         val fairId = link.getQueryParameter("fairId")
 
         // product: http://hangviet360.com?productId=30
+        val stamp = link.getQueryParameter("stamp")
+
+        // product: http://hangviet360.com?productId=30
         val productId = link.getQueryParameter("productId")
 
         // general_info + news: http://hangviet360.com?postId=30
@@ -77,8 +81,28 @@ class DeeplinkHandlerActivity : BaseActivity() {
                 Log.d("hong", "nhan dc productId= $productId")
                 val intent = Intent(this, ProductDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, productId.toLong())
-                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
+                finish()
+            }
+
+            stamp != null && stamp.isNotBlank() -> {
+                Log.d("hong", "nhan dc stamp= $stamp")
+                val decodeBase64 = Base64.decode(stamp, Base64.DEFAULT)
+                val convertUTF8 = String(decodeBase64, charset("UTF-8"))
+                val link = Uri.parse("https://ishopgo.com?$convertUTF8")
+
+                if (link.getQueryParameter("productId").isNotBlank()) {
+                    val intent = Intent(this, ProductDetailActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_ID, link.getQueryParameter("productId").toLong())
+                    intent.putExtra(Const.TransferKey.EXTRA_STAMP_CODE, link.getQueryParameter("stampCode"))
+                    intent.putExtra(Const.TransferKey.EXTRA_STAMP_ID, link.getQueryParameter("stampId"))
+                    startActivity(intent)
+                } else {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                }
+
                 finish()
             }
             postId != null && postId.isNotBlank() -> {

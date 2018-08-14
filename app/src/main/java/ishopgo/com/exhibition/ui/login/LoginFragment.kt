@@ -52,8 +52,6 @@ class LoginFragment : BaseFragment() {
 
         tv_skip_login.setOnClickListener {
             // we pass login screen after click skip
-            UserDataManager.passLoginScreen = 1
-
             val intent = Intent(context, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
             startActivity(intent)

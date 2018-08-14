@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.net.Uri
+import android.util.Log
 import io.reactivex.Single
 import io.reactivex.functions.Function3
 import io.reactivex.functions.Function5
@@ -101,12 +102,16 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    fun loadData(productId: Long, scanQrCode: Boolean) {
+    fun loadData(productId: Long, stampId: String, stampCode: String) {
+
         val fieldsLoadDetail = mutableMapOf<String, Any>()
-//        if (scanQrCode) {
-//            fieldsLoadDetail["stampCode"] = 10
-//            fieldsLoadDetail["stampCode"] = 0
-//        }
+        if (stampId.isNotBlank()) {
+            fieldsLoadDetail["stampId"] = stampId
+        }
+        if (stampCode.isNotBlank()) {
+            fieldsLoadDetail["stampCode"] = stampCode
+        }
+
         val d = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId, fieldsLoadDetail) else noAuthService.getProductDetail(productId, fieldsLoadDetail)
 
 

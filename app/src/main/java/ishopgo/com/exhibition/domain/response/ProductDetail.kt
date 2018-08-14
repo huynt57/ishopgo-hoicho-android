@@ -119,4 +119,19 @@ class ProductDetail : IdentityData() {
     @SerializedName("info")
     @Expose
     var info: List<InfoProduct>? = null
+    @SerializedName("ms_sanxuat")
+    @Expose
+    var msSanxuat: String? = null
+    @SerializedName("hinhthuc_vc")
+    @Expose
+    var hinhThucVc: String? = null
+    @SerializedName("ngay_vc")
+    @Expose
+    var ngayVc: String? = null
+    @SerializedName("donvi_vc")
+    @Expose
+    var donviVc: String? = null
+    @SerializedName("vc_note")
+    @Expose
+    var vcNote: String? = null
 }

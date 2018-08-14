@@ -21,15 +21,27 @@ class LoginActivity : BaseSingleFragmentActivity() {
         val require = intent?.getBooleanExtra(Const.TransferKey.EXTRA_REQUIRE, false) ?: false
         if (require) {
         } else
-            if (UserDataManager.currentUserId > 0 || UserDataManager.passLoginScreen > 0) {
-                if (UserDataManager.currentSurveyIsMandatory) {
-                    if (UserDataManager.currentType == "Thành viên") {
-                        if (UserDataManager.currentSurvey == 0) {
-                            val intent = Intent(this, SurveyActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, "")
-                            startActivity(intent)
-                            finishAffinity()
+            if (UserDataManager.currentSurvey <= 0) {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                startActivity(intent)
+                finishAffinity()
+            } else
+                if (UserDataManager.currentUserId > 0) {
+                    if (UserDataManager.currentSurveyIsMandatory) {
+                        if (UserDataManager.currentType == "Thành viên") {
+                            if (UserDataManager.currentSurvey == 0) {
+                                val intent = Intent(this, SurveyActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, "")
+                                startActivity(intent)
+                                finishAffinity()
+                            } else {
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
+                                startActivity(intent)
+                                finishAffinity()
+                            }
                         } else {
                             val intent = Intent(this, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
@@ -42,13 +54,7 @@ class LoginActivity : BaseSingleFragmentActivity() {
                         startActivity(intent)
                         finishAffinity()
                     }
-                } else {
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT
-                    startActivity(intent)
-                    finishAffinity()
                 }
-            }
 
     }
 

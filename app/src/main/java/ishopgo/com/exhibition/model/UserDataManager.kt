@@ -50,9 +50,6 @@ object UserDataManager {
     var currentSurveyIsMandatory: Boolean
         get() = pref.getBoolean(KEY_USER_SURVEY_IS_MANDATORY, false)
         set(value) = pref.edit().putBoolean(KEY_USER_SURVEY_IS_MANDATORY, value).apply()
-    var passLoginScreen: Long
-        get() = pref.getLong(KEY_PASS_LOGIN_SCREEN, -1L)
-        set(value) = pref.edit().putLong(KEY_PASS_LOGIN_SCREEN, value).apply()
     var currentBoothId: Long
         get() = pref.getLong(KEY_BOOTH_ID, -1L)
         set(value) = pref.edit().putLong(KEY_BOOTH_ID, value).apply()

@@ -80,14 +80,15 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
         android:background="@drawable/bg_border"
         android:gravity="center"
+        android:paddingBottom="8dp"
+        android:paddingEnd="16dp"
         android:paddingStart="16dp"
         android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
         android:text="Đăng nhập"
         android:textColor="@color/colorPureWhite"
         android:textSize="15sp"
@@ -96,25 +97,25 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_password"
-        tools:ignore="HardcodedText"/>
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/tv_forget_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:gravity="end"
         android:padding="8dp"
         android:textAlignment="center"
         android:textColor="@color/colorPureWhite"
         android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login"
         tools:ignore="HardcodedText"
-        tools:text="Quên mật khẩu ? Tìm lại mật khẩu"/>
+        tools:text="Quên mật khẩu ? Tìm lại mật khẩu" />
 
     <View
         android:id="@+id/line1"
@@ -122,11 +123,12 @@
         android:layout_height="1dp"
         android:layout_marginEnd="8dp"
         android:background="#aaffffff"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/textView16"
         app:layout_constraintEnd_toStartOf="@+id/textView16"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView16"/>
+        app:layout_constraintTop_toTopOf="@+id/textView16" />
 
     <View
         android:id="@+id/line2"
@@ -134,11 +136,12 @@
         android:layout_height="1dp"
         android:layout_marginStart="8dp"
         android:background="#aaffffff"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/textView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toTopOf="@+id/textView16"/>
+        app:layout_constraintTop_toTopOf="@+id/textView16" />
 
     <TextView
         android:id="@+id/textView16"
@@ -148,27 +151,29 @@
         android:textAllCaps="true"
         android:textColor="@color/colorPureWhite"
         android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/tv_skip_login"
         app:layout_constraintEnd_toStartOf="@+id/line2"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/line1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_forget_password"/>
+        app:layout_constraintTop_toBottomOf="@+id/tv_forget_password" />
 
     <TextView
         android:id="@+id/tv_skip_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:padding="8dp"
         android:text="Để sau"
         android:textColor="@color/colorPureWhite"
         android:textSize="20sp"
         android:textStyle="italic"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/btn_signup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16"/>
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
         android:id="@+id/btn_signup"

@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,7 +106,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private var adapterSalePoint = ProductSalePointAdapter()
     private var adapterDiary = ProductDiaryAdapter()
     private var productId: Long = -1L
-    private var scanQrCode: Boolean = false
+    private var stampId = ""
+    private var stampCode = ""
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
         val currentItem = view_product_image.currentItem
@@ -133,10 +135,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         super.onCreate(savedInstanceState)
 
         productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
+        stampId = arguments?.getString(Const.TransferKey.EXTRA_STAMP_ID, "") ?: ""
+        stampCode = arguments?.getString(Const.TransferKey.EXTRA_STAMP_CODE, "") ?: ""
+
         if (productId == -1L)
             throw RuntimeException("Sai dinh dang")
-
-        scanQrCode = arguments?.getBoolean(Const.TransferKey.EXTRA_REQUIRE, false) ?: false
     }
 
     private fun firstLoadSalePoint() {
@@ -307,25 +310,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_madeIn.text = convert.provideMadeIn()
             }
 
-            if (convert.provideNoCode().isNotEmpty()) {
-                view_product_no_code.visibility = View.VISIBLE
-                view_product_no_code.text = convert.provideNoCode()
-            }
-
-            if (convert.provideDateProduce().isNotEmpty()) {
-                view_product_date_produce.visibility = View.VISIBLE
-                view_product_date_produce.text = convert.provideDateProduce()
-            }
-
-            if (convert.provideDateExpected().isNotEmpty()) {
-                view_product_date_expected.visibility = View.VISIBLE
-                view_product_date_expected.text = convert.provideDateExpected()
-            }
-
-            if (convert.provideScale().isNotEmpty()) {
-                view_product_scale.visibility = View.VISIBLE
-                view_product_scale.text = convert.provideScale()
-            }
             if (convert.provideProductCode().isNotEmpty()) {
                 view_product_msp.visibility = View.VISIBLE
                 view_product_msp.text = convert.provideProductCode()
@@ -334,15 +318,68 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_packaging.visibility = View.VISIBLE
                 view_product_packaging.text = convert.providePackaging()
             }
-            if (convert.provideSeason().isNotEmpty()) {
-                view_product_season.visibility = View.VISIBLE
-                view_product_season.text = convert.provideSeason()
+
+            if (convert.provideNoCodeSX().isNotEmpty()) {
+                view_product_maSanXuat.visibility = View.VISIBLE
+                view_product_maSanXuat.text = convert.provideNoCodeSX()
+            }
+
+            if (convert.provideDateProduce().isNotEmpty()) {
+                view_product_ngaySanXuat.visibility = View.VISIBLE
+                view_product_ngaySanXuat.text = convert.provideDateProduce()
+            }
+
+            if (convert.provideDateExpected().isNotEmpty()) {
+                view_product_ngayThuHoachDK.visibility = View.VISIBLE
+                view_product_ngayThuHoachDK.text = convert.provideDateExpected()
+            }
+
+            if (convert.provideScale().isNotEmpty()) {
+                view_product_quyMoSanXuat.visibility = View.VISIBLE
+                view_product_quyMoSanXuat.text = convert.provideScale()
             }
 
             if (convert.provideNumberExpected().isNotEmpty()) {
-                view_product_number_expected.visibility = View.VISIBLE
-                view_product_number_expected.text = convert.provideNumberExpected()
+                view_product_date_khaNangCungUng.visibility = View.VISIBLE
+                view_product_date_khaNangCungUng.text = convert.provideNumberExpected()
             }
+
+            if (convert.provideSeason().isNotEmpty()) {
+                view_product_date_muaVu.visibility = View.VISIBLE
+                view_product_date_muaVu.text = convert.provideSeason()
+            }
+
+            if (view_product_maSanXuat.visibility == View.VISIBLE || view_product_ngaySanXuat.visibility == View.VISIBLE ||
+                    view_product_ngayThuHoachDK.visibility == View.VISIBLE || view_product_quyMoSanXuat.visibility == View.VISIBLE ||
+                    view_product_date_khaNangCungUng.visibility == View.VISIBLE || view_product_date_muaVu.visibility == View.VISIBLE)
+                linear_sanXuat.visibility = View.VISIBLE
+            else linear_sanXuat.visibility = View.GONE
+
+            if (convert.providerHinhThucVC().isNotEmpty()) {
+                view_product_hinhThucVC.visibility = View.VISIBLE
+                view_product_hinhThucVC.text = convert.providerHinhThucVC()
+            }
+
+            if (convert.providerNgayVC().isNotEmpty()) {
+                view_product_ngayVC.visibility = View.VISIBLE
+                view_product_ngayVC.text = convert.providerNgayVC()
+            }
+
+            if (convert.providerDonViVC().isNotEmpty()) {
+                view_product_tenDonViVC.visibility = View.VISIBLE
+                view_product_tenDonViVC.text = convert.providerDonViVC()
+            }
+
+            if (convert.providerNoteVC().isNotEmpty()) {
+                view_product_ghiChuVC.visibility = View.VISIBLE
+                view_product_ghiChuVC.text = convert.providerNoteVC()
+            }
+
+            if (view_product_hinhThucVC.visibility == View.VISIBLE || view_product_hinhThucVC.visibility == View.VISIBLE ||
+                    view_product_ngayVC.visibility == View.VISIBLE || view_product_tenDonViVC.visibility == View.VISIBLE ||
+                    view_product_ghiChuVC.visibility == View.VISIBLE)
+                linear_vanChuyen.visibility = View.VISIBLE
+            else linear_vanChuyen.visibility = View.GONE
 
             container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
@@ -495,19 +532,44 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideProductCode(): CharSequence
         fun providePackaging(): CharSequence
         fun provideMadeIn(): CharSequence
-        fun provideNoCode(): CharSequence
+        fun provideNoCodeSX(): CharSequence
         fun provideDateProduce(): CharSequence
         fun provideDateExpected(): CharSequence
         fun provideScale(): CharSequence
         fun provideNumberExpected(): CharSequence
         fun provideSeason(): CharSequence
         fun provideIsDiary(): Boolean
+
+        fun providerHinhThucVC(): CharSequence
+        fun providerNgayVC(): CharSequence
+        fun providerDonViVC(): CharSequence
+        fun providerNoteVC(): CharSequence
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerHinhThucVC(): CharSequence {
+                    return if (from.hinhThucVc.isNullOrBlank()) ""
+                    else "<b>Hình thức vận chuyển: <font color=\"red\">${from.hinhThucVc}</font></b>".asHtml()
+                }
+
+                override fun providerNgayVC(): CharSequence {
+                    return if (from.ngayVc.isNullOrBlank()) ""
+                    else "<b>Ngày vận chuyển: <font color=\"red\">${from.ngayVc}</font></b>".asHtml()
+                }
+
+                override fun providerDonViVC(): CharSequence {
+                    return if (from.donviVc.isNullOrBlank()) ""
+                    else "<b>Đơn vị vận chuyển: <font color=\"red\">${from.donviVc}</font></b>".asHtml()
+                }
+
+                override fun providerNoteVC(): CharSequence {
+                    return if (from.vcNote.isNullOrBlank()) ""
+                    else "<b>Ghi chú vận chuyển: <font color=\"red\">${from.vcNote}</font></b>".asHtml()
+                }
+
                 override fun providePackaging(): CharSequence {
                     return if (from.dongGoi.isNullOrBlank()) ""
                     else "<b>Đóng gói: <font color=\"red\">${from.dongGoi}</font></b>".asHtml()
@@ -539,19 +601,19 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     else "<b>Xuất xứ: <font color=\"red\">${from.madeIn}</font></b>".asHtml()
                 }
 
-                override fun provideNoCode(): CharSequence {
-                    return if (from.msLohang.isNullOrBlank()) ""
-                    else "<b>Mã số lô: <font color=\"red\">${from.msLohang}</font></b>".asHtml()
+                override fun provideNoCodeSX(): CharSequence {
+                    return if (from.msSanxuat.isNullOrBlank()) ""
+                    else "<b>Mã số lô sản xuất: <font color=\"red\">${from.msSanxuat}</font></b>".asHtml()
                 }
 
                 override fun provideDateProduce(): CharSequence {
                     return if (from.ngaySx.isNullOrBlank()) ""
-                    else "<b>Ngày bắt đầu sản xuất: <font color=\"red\">${from.ngaySx?.asDate()}</font></b>".asHtml()
+                    else "<b>Ngày bắt đầu sản xuất: <font color=\"red\">${from.ngaySx?.asDateProdcutDetail()}</font></b>".asHtml()
                 }
 
                 override fun provideDateExpected(): CharSequence {
                     return if (from.dkThuhoach.isNullOrBlank()) ""
-                    else "<b>Ngày thu hoạch dự kiến: <font color=\"red\">${from.dkThuhoach?.asDate()}</font></b>".asHtml()
+                    else "<b>Ngày thu hoạch dự kiến: <font color=\"red\">${from.dkThuhoach?.asDateProdcutDetail()}</font></b>".asHtml()
                 }
 
                 override fun provideScale(): CharSequence {
@@ -617,15 +679,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideProductPrice(): CharSequence {
-                    if (from.price == 0L) {
-                        return "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
+                    return if (from.price == 0L) {
+                        "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
                     } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
                         if (from.promotionPrice == 0L) // gia khuyen mai = 0 thi coi nhu ko khuyen mai
-                            return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                            "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                         else
-                            return "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
+                            "<b>Giá bán lẻ: <font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
                     } else {
-                        return "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                        "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                     }
                 }
 
@@ -900,7 +962,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun loadData(productId: Long) {
-        viewModel.loadData(productId, scanQrCode)
+        viewModel.loadData(productId, stampId, stampCode)
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         container_viewed.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE
