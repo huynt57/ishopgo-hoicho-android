@@ -1,30 +1,20 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Bundle
-import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.gson.JsonSyntaxException
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -34,9 +24,7 @@ import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.extensions.setPhone
-import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ImagesProductFragment
-import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.description.IcheckProductDescriptionActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.review.IcheckReviewActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint.IcheckSalePointActivity
@@ -47,18 +35,18 @@ import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateP
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_icheck_product_detail.*
 
-class IcheckProductFragment : BaseFragment(), LocationListener {
-    private var locationManager: LocationManager? = null
-    private var geoLocation = ""
-    override fun onLocationChanged(location: Location?) {
-        geoLocation = location.toString()
-    }
+class IcheckProductFragment : BaseFragment() {
+//    private var locationManager: LocationManager? = null
+//    private var geoLocation = ""
+//    override fun onLocationChanged(location: Location?) {
+//        geoLocation = location.toString()
+//    }
 
-    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
-
-    override fun onProviderEnabled(provider: String?) {}
-
-    override fun onProviderDisabled(provider: String?) {}
+//    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+//
+//    override fun onProviderEnabled(provider: String?) {}
+//
+//    override fun onProviderDisabled(provider: String?) {}
 
     private var icheckProduct: IcheckProduct? = null
     private val adapter = IcheckProductAdapter(0.4f)
@@ -93,7 +81,7 @@ class IcheckProductFragment : BaseFragment(), LocationListener {
             return fragment
         }
 
-        private val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
+//        private val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,19 +102,19 @@ class IcheckProductFragment : BaseFragment(), LocationListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         context?.let {
-            locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-            statusCheck()
-            if (ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {
-                activity?.let {
-                    ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_LOCATION)
-                    ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_LOCATION)
-                }
-            } else {
-                if (locationManager != null)
-                    locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
-            }
+//            locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//            statusCheck()
+//            if (ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION)
+//                    != PackageManager.PERMISSION_GRANTED) {
+//                activity?.let {
+//                    ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_LOCATION)
+//                    ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_LOCATION)
+//                }
+//            } else {
+//                if (locationManager != null)
+//                    locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+//            }
 
 
             view_list_products_same_shop.adapter = adapter
@@ -185,13 +173,13 @@ class IcheckProductFragment : BaseFragment(), LocationListener {
 
     }
 
-    private fun statusCheck() {
-        val manager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            buildAlertMessageNoGps()
-        }
-    }
+//    private fun statusCheck() {
+//        val manager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+//
+//        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+//            buildAlertMessageNoGps()
+//        }
+//    }
 
     private fun buildAlertMessageNoGps() {
         val builder = AlertDialog.Builder(context)
@@ -367,22 +355,22 @@ class IcheckProductFragment : BaseFragment(), LocationListener {
         intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(icheckProduct))
         startActivityForResult(intent, Const.RequestCode.ICHECK_UPDATE_PRODUCT)
     }
-
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            PERMISSIONS_REQUEST_ACCESS_LOCATION -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (locationManager != null) {
-                        locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
-                    }
-                }
-                return
-            }
-
-        }
-    }
+//
+//    @SuppressLint("MissingPermission")
+//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        when (requestCode) {
+//            PERMISSIONS_REQUEST_ACCESS_LOCATION -> {
+//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    if (locationManager != null) {
+//                        locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+//                    }
+//                }
+//                return
+//            }
+//
+//        }
+//    }
 
     interface ProductDetailProvider {
 
