@@ -3,7 +3,9 @@ package ishopgo.com.exhibition.ui.main.shop
 import android.app.Activity
 import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
@@ -16,10 +18,13 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
@@ -60,6 +65,32 @@ class ShopDetailFragment : BaseFragment() {
         view_pager.offscreenPageLimit = 4
         view_pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(view_tab_layout))
         view_tab_layout.addOnTabSelectedListener(TabLayout.ViewPagerOnTabSelectedListener(view_pager))
+
+        view_shop_message.setOnClickListener { messageShop() }
+    }
+
+    private fun messageShop() {
+        if (UserDataManager.currentUserId > 0) {
+            // gui tin nhan cho shop
+            boothId.let {
+                val request = CreateConversationRequest()
+                request.type = 1
+                val members = mutableListOf<Long>()
+                members.add(UserDataManager.currentUserId)
+                members.add(it)
+                request.member = members
+                viewModel.createConversation(request)
+            }
+        } else {
+            openLoginActivity()
+        }
+    }
+
+    private fun callShop(context: Context, sdt: String) {
+        val call = Uri.parse("tel:$sdt")
+        val intent = Intent(Intent.ACTION_DIAL, call)
+        if (intent.resolveActivity(context.packageManager) != null)
+            startActivity(intent)
     }
 
 
@@ -117,6 +148,28 @@ class ShopDetailFragment : BaseFragment() {
                             viewModel.postProductFollow(boothId)
                     } else openLoginActivity()
                 }
+            }
+        })
+
+        viewModel.conversation.observe(this, Observer { c ->
+            c?.let {
+                val conv = LocalConversationItem()
+                conv.idConversions = c.id ?: ""
+                conv.name = c.name ?: ""
+
+                context?.let {
+                    val intent = Intent(it, ConversationActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_CONVERSATION_ID, conv.idConversions)
+                    intent.putExtra(Const.TransferKey.EXTRA_TITLE, conv.name)
+                    startActivity(intent)
+                }
+            }
+        })
+
+        viewModel.shopSDT.observe(this, Observer { i ->
+            i?.let {
+                val sdt = it
+                view_shop_call.setOnClickListener { callShop(it.context, sdt) }
             }
         })
 

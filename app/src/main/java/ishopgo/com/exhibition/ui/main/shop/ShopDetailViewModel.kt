@@ -7,6 +7,9 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.request.Request
+import ishopgo.com.exhibition.domain.response.NewConversation
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.model.ProductFollow
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
@@ -24,6 +27,7 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     @Inject
     lateinit var appContext: Application
 
+    var shopSDT = MutableLiveData<String>()
     var shopImage = MutableLiveData<String>()
     var shopFollow = MutableLiveData<Boolean>()
     var shopId = MutableLiveData<Long>()
@@ -33,10 +37,11 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         appComponent.inject(this)
     }
 
-    fun updateShopImage(shop_id: Long, follow: Boolean, url: String, qrCode: ShopDetail) {
+    fun updateShopImage(shop_id: Long, follow: Boolean, url: String, qrCode: ShopDetail, sdt: String) {
         shopId.postValue(shop_id)
         shopImage.postValue(url)
         shopFollow.postValue(follow)
+        shopSDT.postValue(sdt)
         this.qrCode.postValue(qrCode)
     }
 
@@ -116,4 +121,28 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
+    var conversation = MutableLiveData<NewConversation>()
+
+    fun createConversation(params: Request) {
+        if (params is CreateConversationRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["type"] = params.type
+            params.member.mapIndexed { index, memId ->
+                fields["member[$index]"] = memId
+            }
+
+            addDisposable(isgService.inbox_createNewChat(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<NewConversation>() {
+                        override fun success(data: NewConversation?) {
+                            conversation.postValue(data)
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    }))
+
+        }
+    }
 }

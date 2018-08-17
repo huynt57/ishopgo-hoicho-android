@@ -37,6 +37,9 @@ import ishopgo.com.exhibition.ui.main.references.ReferencesActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampActivity
+import ishopgo.com.exhibition.ui.main.stamp.stampdistribution.StampDistributionActivity
+import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerActivity
 import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
 import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerActivity
 import ishopgo.com.exhibition.ui.main.visitors.VisitorsActivity
@@ -221,6 +224,21 @@ class AccountFragment : BaseFragment() {
             Const.AccountAction.ACTION_ADMINISTRATOR -> {
                 openAdminstrator()
             }
+
+            Const.AccountAction.ACTION_STAMP_MANAGER -> {
+                openStampManager()
+            }
+
+            Const.AccountAction.ACTION_NO_STAMP -> {
+                openNoStamp()
+            }
+
+            Const.AccountAction.ACTION_DISTRICBUTION_STAMP -> {
+                openStampDistribution()
+            }
+
+            Const.AccountAction.ACTION_CREATE_STAMP -> {
+            }
             else -> {
                 toast("Đang phát triển")
             }
@@ -394,6 +412,27 @@ class AccountFragment : BaseFragment() {
     private fun openAdminstrator() {
         context?.let {
             val intent = Intent(it, AdministratorActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openStampManager() {
+        context?.let {
+            val intent = Intent(it, StampManagerActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openNoStamp() {
+        context?.let {
+            val intent = Intent(it, NoStampActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openStampDistribution() {
+        context?.let {
+            val intent = Intent(it, StampDistributionActivity::class.java)
             startActivity(intent)
         }
     }

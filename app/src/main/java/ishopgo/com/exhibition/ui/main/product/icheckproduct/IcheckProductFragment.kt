@@ -50,6 +50,7 @@ class IcheckProductFragment : BaseFragment() {
 
     private var icheckProduct: IcheckProduct? = null
     private val adapter = IcheckProductAdapter(0.4f)
+    private val adapterOnShop = IcheckProductAdapter(0.4f)
     private val adapterSalePoint = IcheckSalePointAdapter()
     private val adapterReview = IcheckReviewAdapter()
     private lateinit var viewModel: IcheckProductViewModel
@@ -117,11 +118,25 @@ class IcheckProductFragment : BaseFragment() {
 //            }
 
 
-            view_list_products_same_shop.adapter = adapter
+            view_list_products_related.adapter = adapter
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
-            view_list_products_same_shop.layoutManager = layoutManager
-            view_list_products_same_shop.isNestedScrollingEnabled = false
-            view_list_products_same_shop.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            view_list_products_related.layoutManager = layoutManager
+            view_list_products_related.isNestedScrollingEnabled = false
+            view_list_products_related.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+
+//            adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+//                override fun click(position: Int, data: Product, code: Int) {
+//                    val intent = Intent(context, ProductDetailActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+//                    startActivity(intent)
+//                }
+//            }
+
+            view_list_products_shop.adapter = adapterOnShop
+            val layoutManager4 = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            view_list_products_shop.layoutManager = layoutManager4
+            view_list_products_shop.isNestedScrollingEnabled = false
+            view_list_products_shop.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
 
 //            adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
 //                override fun click(position: Int, data: Product, code: Int) {
@@ -233,9 +248,18 @@ class IcheckProductFragment : BaseFragment() {
         viewModel.dataProductRelated.observe(this, Observer { p ->
             p?.let {
                 if (it.isNotEmpty()) {
-                    container_products_same_shop.visibility = View.VISIBLE
+                    container_products_related.visibility = View.VISIBLE
                     adapter.replaceAll(it)
-                } else container_products_same_shop.visibility = View.GONE
+                } else container_products_related.visibility = View.GONE
+            }
+        })
+
+        viewModel.dataProductOnShop.observe(this, Observer { p ->
+            p?.let {
+                if (it.isNotEmpty()) {
+                    container_products_shop.visibility = View.VISIBLE
+                    adapterOnShop.replaceAll(it)
+                } else container_products_shop.visibility = View.GONE
             }
         })
 
@@ -317,6 +341,8 @@ class IcheckProductFragment : BaseFragment() {
                 startActivity(intent)
             }
 
+            val requestOnShop = String.format("https://core.icheck.com.vn/vendors/%s/products", vendor.id, 5)
+            viewModel.loadProductOnShop(requestOnShop)
         } else
             container_shop_info.visibility = View.GONE
     }

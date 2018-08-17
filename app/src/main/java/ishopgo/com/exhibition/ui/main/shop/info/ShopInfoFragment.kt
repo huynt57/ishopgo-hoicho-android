@@ -149,7 +149,8 @@ class ShopInfoFragment : BaseFragment() {
         label_source_description.visibility = if (!hasProcess) View.GONE else View.VISIBLE
         shopProcessAdapter.replaceAll(info.process ?: listOf())
 
-        sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage(), info)
+        sharedViewModel.updateShopImage(info.id, info.follow, convert.provideImage(), info, info.hotline
+                ?: "")
         if (UserDataManager.currentUserId == info.id) {
             img_add_sale_point.visibility = View.VISIBLE
             img_add_sale_point.setOnClickListener {

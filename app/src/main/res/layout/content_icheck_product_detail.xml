@@ -432,7 +432,7 @@
                     android:layout_width="match_parent" />
 
                 <android.support.constraint.ConstraintLayout
-                    android:id="@+id/container_products_same_shop"
+                    android:id="@+id/container_products_related"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -440,7 +440,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/container_banner">
 
                     <View
-                        android:id="@+id/view_divider_same_shop"
+                        android:id="@+id/view_divider_related"
                         style="@style/AppTheme.DividerFat"
                         android:layout_width="0dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -448,16 +448,16 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                        android:id="@+id/label_products_same_shop"
+                        android:id="@+id/label_products_related"
                         style="@style/AppTheme.SectionLabel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Sản phẩm liên quan"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view_divider_same_shop" />
+                        app:layout_constraintTop_toBottomOf="@+id/view_divider_related" />
 
                     <android.support.v7.widget.RecyclerView
-                        android:id="@+id/view_list_products_same_shop"
+                        android:id="@+id/view_list_products_related"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
@@ -466,7 +466,51 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/label_products_same_shop" />
+                        app:layout_constraintTop_toBottomOf="@+id/label_products_related" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:id="@+id/view_divider_product_shop"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="match_parent" />
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/container_products_shop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/container_banner">
+
+                    <View
+                        android:id="@+id/view_divider_shop"
+                        style="@style/AppTheme.DividerFat"
+                        android:layout_width="0dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/label_products_shop"
+                        style="@style/AppTheme.SectionLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sản phẩm cùng gian hàng"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view_divider_shop" />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/view_list_products_shop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:clipToPadding="false"
+                        android:padding="@dimen/item_spacing"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/label_products_shop" />
 
                 </android.support.constraint.ConstraintLayout>
 

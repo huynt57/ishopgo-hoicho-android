@@ -404,8 +404,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="http"
-                    android:host="@string/app_host" />
+                    android:host="@string/app_host"
+                    android:scheme="http" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -414,8 +414,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="https"
-                    android:host="@string/app_host" />
+                    android:host="@string/app_host"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -473,6 +473,51 @@
 
         <activity
             android:name=".ui.main.product.icheckproduct.shop.IcheckShopActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.stampmanager.StampManagerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.listscanstamp.ListScanStampActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.nostamp.NoStampActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.stampdistribution.StampDistributionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.stampwarning.StampWarningActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.buystamp.BuyStampActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.nostamp.edit.NoStampEditActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.nostamp.add.NoStampAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.nostamp.assign.NoStampAssignActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

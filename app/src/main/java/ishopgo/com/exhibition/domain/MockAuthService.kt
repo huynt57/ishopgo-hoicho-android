@@ -25,6 +25,59 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun saveStampAssign(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).saveStampAssign(id, body)
+    }
+
+    override fun loadProductAssignNoStamp(id: Long, fields: MutableMap<String, Any>): Single<BaseResponse<StampSearchProduct>> {
+        val response = BaseResponse<StampSearchProduct>()
+        response.status = 1
+        return delegate.returningResponse(response).loadProductAssignNoStamp(id, fields)
+    }
+
+    override fun getStampDistribution(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampDistribution>>> {
+        val response = BaseResponse<List<StampDistribution>>()
+        response.status = 1
+        return delegate.returningResponse(response).getStampDistribution(fields)
+    }
+
+    override fun getNoStampCreated(): Single<BaseResponse<StampNoDetail>> {
+        val response = BaseResponse<StampNoDetail>()
+        response.status = 1
+        return delegate.returningResponse(response).getNoStampCreated()
+    }
+
+    override fun createNoStamp(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createNoStamp(body)
+    }
+
+    override fun editNoStampDetail(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).editNoStampDetail(id, body)
+    }
+
+    override fun getNoStampDetail(id: Long): Single<BaseResponse<StampNoDetail>> {
+        val response = BaseResponse<StampNoDetail>()
+        response.status = 1
+        return delegate.returningResponse(response).getNoStampDetail(id)
+    }
+
+    override fun loadNoStamp(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampNoList>>> {
+        val response = BaseResponse<List<StampNoList>>()
+        response.status = 1
+        return delegate.returningResponse(response).loadNoStamp(fields)
+    }
+
+    override fun loadStampManager(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampManager>>> {
+        val response = BaseResponse<List<StampManager>>()
+        response.status = 1
+        return delegate.returningResponse(response).loadStampManager(fields)
+    }
 
     override fun deleteProductInSalePoint(body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()

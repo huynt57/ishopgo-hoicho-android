@@ -17,6 +17,7 @@ object Const {
         const val EXTRA_REQUIRE = "required"
         const val EXTRA_URL = "url"
         const val EXTRA_STAMP_CODE = "stamp_code"
+        const val EXTRA_STAMP_COUNT = "stamp_COUNT"
         const val EXTRA_STAMP_ID = "stamp_id"
         const val EXTRA_ENABLE_CREATE_GROUP = "can_create_group"
     }
@@ -54,6 +55,9 @@ object Const {
         const val PICK_BANNER = 31
         const val PICK_LOGO = 32
         const val ICHECK_UPDATE_PRODUCT = 33
+        const val EDIT_NO_STAMP = 34
+        const val ADD_NO_STAMP = 35
+        const val ASSIGN_NO_STAMP = 36
     }
 
     object AccountAction {
@@ -84,6 +88,13 @@ object Const {
         const val ACTION_CONFIG_EXPO = 24
         const val ACTION_ADMINISTRATOR = 25
         const val ACTION_REFERENCES = 26 // nguoi gioi thieu
+        const val ACTION_STAMP_MANAGER = 27
+        const val ACTION_BUY_STAMP = 28
+        const val ACTION_NO_STAMP = 29
+        const val ACTION_STAMP_WARNING = 30
+        const val ACTION_LIST_SCAN_STAMP = 31
+        const val ACTION_DISTRICBUTION_STAMP = 32
+        const val ACTION_CREATE_STAMP = 33
     }
 
     object Chat {

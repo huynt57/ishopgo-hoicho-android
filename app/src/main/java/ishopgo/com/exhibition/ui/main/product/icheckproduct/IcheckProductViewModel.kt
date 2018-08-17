@@ -101,6 +101,23 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var dataProductOnShop = MutableLiveData<List<IcheckProduct>>()
+
+    fun loadProductOnShop(request: String) {
+        addDisposable(isgService.getIcheckProductOnShop(request)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(object : BaseIcheckSingleObserver<List<IcheckProduct>>() {
+                    override fun success(data: List<IcheckProduct>?) {
+                        data?.let { dataProductOnShop.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
     var dataReview = MutableLiveData<List<IcheckReview>>()
 
     fun loadIcheckReview(request: String) {

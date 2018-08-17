@@ -397,6 +397,33 @@ class ApiService {
 
         @POST("expo/remove-sale-point")
         fun deleteProductInSalePoint(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @GET("expo/stamp")
+        fun loadStampManager(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampManager>>>
+
+        @GET("expo/stamp/list")
+        fun loadNoStamp(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampNoList>>>
+
+        @GET("expo/stamp/{id}/edit")
+        fun getNoStampDetail(@Path("id") id: Long): Single<BaseResponse<StampNoDetail>>
+
+        @GET("expo/stamp/create")
+        fun getNoStampCreated(): Single<BaseResponse<StampNoDetail>>
+
+        @POST("expo/stamp/{id}/update")
+        fun editNoStampDetail(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("expo/stamp")
+        fun createNoStamp(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("expo/stamp/{id}/assign")
+        fun saveStampAssign(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @GET("expo/stamp/assign")
+        fun getStampDistribution(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampDistribution>>>
+
+        @GET("expo/stamp/{id}/assign")
+        fun loadProductAssignNoStamp(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<StampSearchProduct>>
     }
 
     interface ISGApi {
@@ -420,6 +447,9 @@ class ApiService {
 
         @GET
         fun getIcheckProductRelated(@Url url: String): Single<IcheckRep<List<IcheckProduct>>>
+
+        @GET
+        fun getIcheckProductOnShop(@Url url: String): Single<IcheckRep<List<IcheckProduct>>>
 
         @GET
         fun getIcheckReview(@Url url: String): Single<IcheckRep<List<IcheckReview>>>

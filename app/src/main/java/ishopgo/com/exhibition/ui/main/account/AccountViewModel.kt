@@ -39,6 +39,23 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_REFERENCES, R.drawable.ic_notification, "Thành viên đã giới thiệu"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Quản lý điểm bán"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Quản trị viên gian hàng"))
+
+            val childs = ArrayList<AccountMenuItem>()
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_BUY_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Đặt mua tem", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý lô tem", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý phân lô", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Quản lý tem", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_WARNING, R.drawable.ic_qr_code_highlight_24dp, "Quản lý cảnh báo", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_LIST_SCAN_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Danh sách người quét", isParent = false))
+
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_CREATE_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Tạo mã tem chống giả", childs))
+
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Phân quyền quản trị viên"))
         }
 
         if (UserDataManager.currentType == "Thành viên") {
@@ -63,11 +80,22 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_PRODUCTS, R.drawable.ic_shopping_favorite_2, "Sản phẩm quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_FAVORITE_BOOTHS, R.drawable.ic_star_white, "Gian hàng quan tâm"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
-//            val childs = ArrayList<AccountMenuItem>()
-//            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NEWS_MANAGER, R.drawable.ic_news_pager, "Quản lý tin tức", isParent = false))
-//            childs.add(AccountMenuItem(Const.AccountAction.ACTION_GENEREL_MANAGER, R.drawable.ic_affiliate_order_white, "Quản lý thông tin chung", isParent = false))
-//            childs.add(AccountMenuItem(Const.AccountAction.ACTION_QUESTION_MANAGER, R.drawable.ic_question, "Quản lý hỏi đáp", isParent = false))
-//            items.add(AccountMenuItem(Const.AccountAction.ACTION_SYNTHETIC_MANAGER, R.drawable.ic_general, "Quản lý tổng hợp", childs))
+
+            val childs = ArrayList<AccountMenuItem>()
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_BUY_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Đặt mua tem", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý lô tem", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý phân lô", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Quản lý tem", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_WARNING, R.drawable.ic_qr_code_highlight_24dp, "Quản lý cảnh báo", isParent = false))
+
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_LIST_SCAN_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Danh sách người quét", isParent = false))
+
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_CREATE_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Tạo mã tem chống giả", childs))
+
             items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Phân quyền quản trị viên"))
         }
 

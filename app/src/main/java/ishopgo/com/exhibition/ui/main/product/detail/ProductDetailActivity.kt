@@ -30,8 +30,6 @@ class ProductDetailActivity : BaseActivity() {
         val extra = Bundle()
         extra.putLong(Const.TransferKey.EXTRA_ID, intent?.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
                 ?: -1L)
-        extra.putBoolean(Const.TransferKey.EXTRA_ID, intent?.getBooleanExtra(Const.TransferKey.EXTRA_REQUIRE, false)
-                ?: false)
         Navigation.findNavController(this, R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_self, extra)
     }
 
