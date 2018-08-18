@@ -2,79 +2,76 @@ package ishopgo.com.exhibition.ui.main.stamp.listscanstamp
 
 import android.view.View
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.response.StampManager
+import ishopgo.com.exhibition.domain.response.StampUserListScan
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
-import kotlinx.android.synthetic.main.item_stamp_manager.view.*
-import net.glxn.qrgen.android.QRCode
+import ishopgo.com.exhibition.ui.extensions.setPhone
+import kotlinx.android.synthetic.main.item_stamp_list_scan.view.*
 
-class ListScanStampAdapter : ClickableAdapter<StampManager>() {
+class ListScanStampAdapter : ClickableAdapter<StampUserListScan>() {
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return R.layout.item_stamp_manager
+        return R.layout.item_stamp_list_scan
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<StampManager> {
-        return Holder(v, StampManagerConverter())
+    override fun createHolder(v: View, viewType: Int): ViewHolder<StampUserListScan> {
+        return Holder(v, StampUserListScanConverter())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<StampManager>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<StampUserListScan>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
             itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
         }
     }
 
-    inner class Holder(v: View, private val converter: Converter<StampManager, StampManagerProvider>) : BaseRecyclerViewAdapter.ViewHolder<StampManager>(v) {
+    inner class Holder(v: View, private val converter: Converter<StampUserListScan, StampUserListScanProvider>) : BaseRecyclerViewAdapter.ViewHolder<StampUserListScan>(v) {
 
-        override fun populate(data: StampManager) {
+        override fun populate(data: StampUserListScan) {
             super.populate(data)
 
             val convert = converter.convert(data)
             itemView.apply {
-                img_qrCode.setImageBitmap(QRCode.from(convert.provideCode().toString()).withSize(300, 300).bitmap())
-
-                tv_qrCode.text = convert.provideCode()
-                tv_dateCreate.text = convert.provideDate()
-                tv_productName.text = convert.provideProductName()
-                tv_countScan.text = convert.provideCountScan()
-                tv_countProple.text = convert.provideCountPeople()
+                tv_stampName.text = convert.provideName()
+                tv_stampSDT.setPhone(convert.provideSDT(), data.accountPhone ?: "")
+                tv_stampEmail.text = convert.provideEmail()
+                tv_stampRegion.text = convert.provideRegion()
+                tv_stampCount.text = convert.provideCountScan()
             }
         }
     }
 
-    interface StampManagerProvider {
-        fun provideCode(): CharSequence
-        fun provideDate(): CharSequence
-        fun provideProductName(): CharSequence
+    interface StampUserListScanProvider {
+        fun provideName(): CharSequence
+        fun provideSDT(): CharSequence
+        fun provideEmail(): CharSequence
         fun provideCountScan(): CharSequence
-        fun provideCountPeople(): CharSequence
+        fun provideRegion(): CharSequence
     }
 
-    class StampManagerConverter : Converter<StampManager, StampManagerProvider> {
-        override fun convert(from: StampManager): StampManagerProvider {
-            return object : StampManagerProvider {
-                override fun provideCode(): CharSequence {
-                    return from.code ?: ""
+    class StampUserListScanConverter : Converter<StampUserListScan, StampUserListScanProvider> {
+        override fun convert(from: StampUserListScan): StampUserListScanProvider {
+            return object : StampUserListScanProvider {
+                override fun provideName(): CharSequence {
+                    return "Họ và tên: ${from.accountName ?: ""}"
                 }
 
-                override fun provideDate(): CharSequence {
-                    return from.createAt ?: ""
+                override fun provideSDT(): CharSequence {
+                    return "Số điện thoại: ${from.accountPhone ?: ""}"
                 }
 
-                override fun provideProductName(): CharSequence {
-                    return from.productName ?: ""
+                override fun provideEmail(): CharSequence {
+                    return "Email: ${from.location ?: ""}"
+                }
+
+                override fun provideRegion(): CharSequence {
+                    return "Khu vực: ${from.location ?: ""}"
                 }
 
                 override fun provideCountScan(): CharSequence {
-                    return "${from.scanTotal ?: 0}"
+                    return "Số lượt quét: ${from.numberOfScans ?: 0}"
                 }
-
-                override fun provideCountPeople(): CharSequence {
-                    return "${from.scanTotal ?: 0}"
-                }
-
             }
         }
     }

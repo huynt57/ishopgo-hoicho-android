@@ -424,6 +424,9 @@ class ApiService {
 
         @GET("expo/stamp/{id}/assign")
         fun loadProductAssignNoStamp(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<StampSearchProduct>>
+
+        @GET("expo/stamp/scan")
+        fun loadListScanStamp(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>>
     }
 
     interface ISGApi {

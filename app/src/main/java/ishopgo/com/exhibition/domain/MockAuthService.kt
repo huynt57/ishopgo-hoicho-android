@@ -25,6 +25,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun loadListScanStamp(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>> {
+        val response = BaseResponse<List<StampUserListScan>>()
+        response.status = 1
+        return delegate.returningResponse(response).loadListScanStamp(fields)
+    }
+
     override fun saveStampAssign(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

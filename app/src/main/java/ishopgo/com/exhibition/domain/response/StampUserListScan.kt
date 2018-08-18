@@ -4,19 +4,49 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 class StampUserListScan : IdentityData() {
-    @SerializedName("name")
+    @SerializedName("code")
     @Expose
-    var name: String? = null
-    @SerializedName("phone")
+    var code: String? = null
+    @SerializedName("stamp_id")
     @Expose
-    var phone: String? = null
-    @SerializedName("email")
+    var stampId: Int? = null
+    @SerializedName("stamp_name")
     @Expose
-    var email: String? = null
-    @SerializedName("create_at")
+    var stampName: Any? = null
+    @SerializedName("stamp_serial_number")
     @Expose
-    var createAt: Long? = null
-    @SerializedName("scan_total")
+    var stampSerialNumber: String? = null
+    @SerializedName("user_id")
     @Expose
-    var scanTotal: Int? = null
+    var userId: Int? = null
+    @SerializedName("location")
+    @Expose
+    var location: String? = null
+    @SerializedName("account_phone")
+    @Expose
+    var accountPhone: String? = null
+    @SerializedName("account_name")
+    @Expose
+    var accountName: String? = null
+    @SerializedName("product_id")
+    @Expose
+    var productId: Int? = null
+    @SerializedName("product_name")
+    @Expose
+    var productName: String? = null
+    @SerializedName("number_of_scans")
+    @Expose
+    var numberOfScans: Int? = null
+    @SerializedName("created_at")
+    @Expose
+    var createdAt: String? = null
+    @SerializedName("updated_at")
+    @Expose
+    var updatedAt: String? = null
+    @SerializedName("limited_access")
+    @Expose
+    var limitedAccess: String? = null
+    @SerializedName("detail")
+    @Expose
+    var detail: List<StampUserListScanDetail>? = null
 }

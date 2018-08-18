@@ -37,6 +37,7 @@ import ishopgo.com.exhibition.ui.main.references.ReferencesActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import ishopgo.com.exhibition.ui.main.stamp.listscanstamp.ListScanStampActivity
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampActivity
 import ishopgo.com.exhibition.ui.main.stamp.stampdistribution.StampDistributionActivity
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerActivity
@@ -237,6 +238,10 @@ class AccountFragment : BaseFragment() {
                 openStampDistribution()
             }
 
+            Const.AccountAction.ACTION_LIST_SCAN_STAMP -> {
+                openListScanStamp()
+            }
+
             Const.AccountAction.ACTION_CREATE_STAMP -> {
             }
             else -> {
@@ -426,6 +431,13 @@ class AccountFragment : BaseFragment() {
     private fun openNoStamp() {
         context?.let {
             val intent = Intent(it, NoStampActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openListScanStamp() {
+        context?.let {
+            val intent = Intent(it, ListScanStampActivity::class.java)
             startActivity(intent)
         }
     }

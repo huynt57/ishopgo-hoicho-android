@@ -74,6 +74,7 @@ import ishopgo.com.exhibition.ui.main.shop.category.CategoryViewModel
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoViewModel
 import ishopgo.com.exhibition.ui.main.shop.news.NewsViewModel
 import ishopgo.com.exhibition.ui.main.shop.rate.RateViewModel
+import ishopgo.com.exhibition.ui.main.stamp.listscanstamp.ListScanStampViewModel
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampViewModel
 import ishopgo.com.exhibition.ui.main.stamp.stampdistribution.StampDistributionViewModel
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerViewModel
@@ -182,4 +183,5 @@ interface AppComponent {
     fun inject(noStampViewModel: NoStampViewModel)
     fun inject(stampDistributionViewModel: StampDistributionViewModel)
     fun inject(stampWarningViewModel: StampWarningViewModel)
+    fun inject(listScanStampViewModel: ListScanStampViewModel)
 }
