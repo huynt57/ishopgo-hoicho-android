@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.community.SearchCommunityFragmentActionBar
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductFragment
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
+import ishopgo.com.exhibition.ui.login.LoginFragment
 import ishopgo.com.exhibition.ui.login.require.RequireLoginFragment
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
@@ -56,6 +57,12 @@ class MainFragment : BaseFragment(), BackpressConsumable {
     }
 
     companion object {
+        fun newInstance(params: Bundle): MainFragment {
+            val f = MainFragment()
+            f.arguments = params
+            return f
+        }
+
         const val TAB_HOME = 0
         const val TAB_COMMUNITY = 1
         const val TAB_SCAN = 2
@@ -68,6 +75,12 @@ class MainFragment : BaseFragment(), BackpressConsumable {
     private lateinit var viewModel: MainViewModel
     private lateinit var pagerAdapter: MainPagerAdapter
     private lateinit var filterViewModel: FilterProductViewModel
+    private var phone = ""
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        phone = arguments?.getString("phone", "") ?: ""
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -220,6 +233,12 @@ class MainFragment : BaseFragment(), BackpressConsumable {
 
         setUpNavigation()
         setUpViewPager()
+
+        if (UserDataManager.currentUserId <= 0L)
+            childFragmentManager.beginTransaction()
+                    .add(R.id.frame_main_content, LoginFragment.newInstance(phone))
+                    .addToBackStack(LoginFragment.TAG)
+                    .commit()
     }
 
     private fun setUpViewPager() {
@@ -277,6 +296,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         view_bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_SHOW
 
         view_bottom_navigation.setOnTabSelectedListener({ position, _ ->
+            childFragmentManager.popBackStack()
             view_pager.currentItem = position
             true
         })

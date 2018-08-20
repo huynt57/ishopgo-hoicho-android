@@ -15,8 +15,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
 import ishopgo.com.exhibition.domain.BaseErrorSignal
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 
 /**
  * @author Steve
@@ -102,8 +101,8 @@ open class BaseFragment : Fragment() {
                 BaseErrorSignal.ERROR_401 -> {
                     Toast.makeText(it, "Xin vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show()
 
-                    val intent = Intent(it, LoginActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                    val intent = Intent(it, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     it.startActivity(intent)
 
                     it.finish()

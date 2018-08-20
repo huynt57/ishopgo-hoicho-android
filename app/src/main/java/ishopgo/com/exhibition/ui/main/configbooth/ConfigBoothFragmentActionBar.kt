@@ -216,7 +216,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                 override fun click(position: Int, data: Region, code: Int) {
                     context?.let {
                         dialog.dismiss()
-                        data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
+                        viewModel.loadDistrict(data.name)
                         tv_setting_booth_city.visibility = View.VISIBLE
                         view.text = data.name
                         view.error = null
@@ -321,6 +321,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                 tv_setting_booth_introduction.setText(converted.provideIntroduction())
                 tv_setting_booth_city.setText(converted.provideCity())
                 tv_setting_booth_district.setText(converted.provideDistrict())
+                viewModel.loadDistrict(converted.provideCity().toString())
                 tv_setting_booth_address.setText(converted.provideAddress())
                 tv_setting_booth_type.setText(converted.provideTitle())
                 Glide.with(context)

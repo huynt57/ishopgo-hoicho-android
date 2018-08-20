@@ -25,6 +25,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.login.RegionAdapter
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_register_booth.*
 
@@ -148,9 +149,8 @@ class RegisterBoothFragment : BaseFragment() {
         viewModel.loggedOut.observe(this, Observer {
             toast("Nâng cấp thành công, vui lòng đăng nhập lại để sử dụng hệ thống")
             UserDataManager.deleteUserInfo()
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             activity?.finish()
         })

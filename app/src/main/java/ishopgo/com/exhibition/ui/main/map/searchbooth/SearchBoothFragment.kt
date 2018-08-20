@@ -16,6 +16,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
 import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
@@ -123,8 +124,8 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
                 Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_registerBoothFragmentActionBar)
             }
         } else {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }

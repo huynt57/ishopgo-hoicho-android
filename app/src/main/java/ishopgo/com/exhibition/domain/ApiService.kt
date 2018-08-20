@@ -15,7 +15,6 @@ import ishopgo.com.exhibition.model.post.PostContent
 import ishopgo.com.exhibition.model.post.PostsManager
 import ishopgo.com.exhibition.model.postmenu.PostMenuManager
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
-import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.question.QuestionCategory
 import ishopgo.com.exhibition.model.question.QuestionDetail
 import ishopgo.com.exhibition.model.question.QuestionManager
@@ -363,7 +362,7 @@ class ApiService {
         fun assignBooth(@Path("id") position: Long, @FieldMap fields: MutableMap<String, Any>): Single<BaseResponse<Any>>
 
         @GET("expo/product/{id}")
-        fun getProductManagerDetail(@Path("id") id: Long): Single<BaseResponse<ProductManagerDetail>>
+        fun getProductManagerDetail(@Path("id") id: Long): Single<BaseResponse<ProductDetail>>
 
         @GET("expo/list-administrators")
         fun getAdministrator(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<Administrator>>>

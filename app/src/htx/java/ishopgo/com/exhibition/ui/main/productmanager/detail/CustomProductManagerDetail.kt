@@ -14,7 +14,6 @@ import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.InfoProduct
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
@@ -25,6 +24,7 @@ import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_product_manager_detail.view.*
+import ishopgo.com.exhibition.domain.response.ProductDetail
 
 class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
 
@@ -86,7 +86,7 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
 //        }
     }
 
-    override fun handleInOtherFlavor(rootView: View, detail: ProductManagerDetail, fragment: BaseFragment) {
+    override fun handleInOtherFlavor(rootView: View, detail: ProductDetail, fragment: BaseFragment) {
 //        rootView.apply {
 //            val convert = ProductManagerConverter().convert(detail)
 //
@@ -129,9 +129,9 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
         fun providerInfo(): List<InfoProduct>
     }
 
-    class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
+    class ProductManagerConverter : Converter<ProductDetail, ProductManagerDetailProvider> {
 
-        override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
+        override fun convert(from: ProductDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
                 override fun providerScale(): String {
                     return from.quyMo ?: ""

@@ -31,6 +31,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.observable
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_signup.*
 import java.util.concurrent.TimeUnit
@@ -143,9 +144,9 @@ class SignupFragment : BaseFragment() {
         viewModel.registerSuccess.observe(this, Observer {
             hideProgressDialog()
             toast("Đăng ký thành công")
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
             intent.putExtra("phone", tv_signup_phone.text.toString())
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             activity?.finish()
         })

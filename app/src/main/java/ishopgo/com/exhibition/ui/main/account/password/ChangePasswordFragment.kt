@@ -15,6 +15,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.account.AccountViewModel
 import kotlinx.android.synthetic.main.fragment_change_password.*
 
@@ -60,8 +61,9 @@ class ChangePasswordFragment : BaseFragment() {
         viewModel.changePassword.observe(this, Observer {
             hideProgressDialog()
             toast("Đổi mật khẩu thành công, vui lòng đăng nhập lại")
-            val intent = Intent(context, LoginActivity::class.java)
+            val intent = Intent(context, MainActivity::class.java)
             intent.putExtra("phone", UserDataManager.currentUserPhone)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             activity?.finish()
         })

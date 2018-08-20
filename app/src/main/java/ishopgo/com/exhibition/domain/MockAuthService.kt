@@ -10,7 +10,6 @@ import ishopgo.com.exhibition.model.community.CommunityProduct
 import ishopgo.com.exhibition.model.community.ManagerCommunity
 import ishopgo.com.exhibition.model.member.ManageMember
 import ishopgo.com.exhibition.model.member.MemberManager
-import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
@@ -168,8 +167,8 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         return delegate.returningResponse(response).deleteAdministrator(id)
     }
 
-    override fun getProductManagerDetail(id: Long): Single<BaseResponse<ProductManagerDetail>> {
-        val response = BaseResponse<List<ProductManagerDetail>>()
+    override fun getProductManagerDetail(id: Long): Single<BaseResponse<ProductDetail>> {
+        val response = BaseResponse<List<ProductDetail>>()
         response.status = 1
 
         return delegate.returningResponse(response).getProductManagerDetail(id)
@@ -326,13 +325,10 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         detail.id = 16110
         detail.name = "Balo Nữ Thời Trang Naza"
         detail.price = 590000
-        detail.ttPrice = 590000
         detail.description = "<!--?xml encoding=\\\"utf-8\\\" ?-->\\r\\n<p><strong>TH&Ocirc;NG TIN SẢN PHẨM</strong></p>\\r\\n\\r\\n<p>Balo thời trang, tặng k&egrave;m gấu b&ocirc;ng<br />\\r\\n-Chất liệu: da PU cấp bền đẹp, bề mặt t&uacute;i được dập v&acirc;n tinh xảo<br />\\r\\n-D&acirc;y đeo vai c&oacute; thể điều chỉnh độ d&agrave;i ngắn<br />\\r\\n-Ngăn t&uacute;i đủ rộng để đựng c&aacute;c đồ vật cần thiết ra ngo&agrave;i: ipad,điện tho<br />\\r\\n-Kh&oacute;a k&eacute;o chống gỉ<br />\\r\\n-Chi tiết t&uacute;i được l&agrave;m tinh xảo, đường may cẩn thận<br />\\r\\n-Sử dụng nhiều mục đ&iacute;ch: đi chơi, đi học,..<br />\\r\\n-K&iacute;ch thước: d&agrave;i 29cm, cao 31cm, rộng 12cm</p>\\r\\n"
-        detail.image = "https://static.ishopgo.com/17288/657de7dc98abeddf23a80b3ac3a9bbc7contactpng.png"
         val department = Department()
         department.name = "Cafe trà sữa"
         department.id = 752
-        detail.department = department
         val booth = ishopgo.com.exhibition.domain.response.Booth()
         booth.id = 17365
         booth.name = "GIAN HÀNG TRƯNG BÀY"
@@ -343,7 +339,6 @@ class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.
         booth.address = null
         booth.count = 4
         detail.booth = booth
-        detail.linkShare = "http://hoicho.ishopgo.com/san-pham/balo-nu-thoi-trang-naza-16110"
 
         val response = BaseResponse<ProductDetail>()
         response.status = 1

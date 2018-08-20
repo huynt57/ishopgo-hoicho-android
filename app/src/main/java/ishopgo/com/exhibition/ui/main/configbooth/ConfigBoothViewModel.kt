@@ -164,9 +164,9 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var loadDistrict = MutableLiveData<MutableList<District>>()
 
-    fun loadDistrict(province_id: String) {
+    fun loadDistrict(provinceNane: String) {
         val fields = mutableMapOf<String, Any>()
-        fields["province_id"] = province_id
+        fields["province_name"] = provinceNane
 
         addDisposable(isgService.getDistricts(fields)
                 .subscribeOn(Schedulers.single())

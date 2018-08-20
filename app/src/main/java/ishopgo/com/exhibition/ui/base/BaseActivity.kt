@@ -24,11 +24,10 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.app.AppFactory
 import ishopgo.com.exhibition.app.MyApp
 import ishopgo.com.exhibition.domain.BaseErrorSignal
-import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.extensions.transact
-import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 
 
 /**
@@ -159,8 +158,8 @@ open class BaseActivity : AppCompatActivity() {
                 Toast.makeText(this, "Xin vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show()
                 UserDataManager.deleteUserInfo()
 
-                val intent = Intent(this, LoginActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                val intent = Intent(this, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
 
                 finish()

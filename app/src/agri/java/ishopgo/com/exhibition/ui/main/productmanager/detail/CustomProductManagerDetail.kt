@@ -13,8 +13,8 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.domain.response.InfoProduct
 import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
@@ -156,7 +156,7 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
         }
     }
 
-    override fun handleInOtherFlavor(rootView: View, detail: ProductManagerDetail, fragment: BaseFragment) {
+    override fun handleInOtherFlavor(rootView: View, detail: ProductDetail, fragment: BaseFragment) {
         rootView.apply {
             //            val linearLayout = view_linear as LinearLayout
             linear_agri.visibility = View.VISIBLE
@@ -621,9 +621,9 @@ class CustomProductManagerDetail : ProductManagerDetailOverwrite() {
         fun providerInfo(): List<InfoProduct>
     }
 
-    class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
+    class ProductManagerConverter : Converter<ProductDetail, ProductManagerDetailProvider> {
 
-        override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
+        override fun convert(from: ProductDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
                 override fun providerIsNhatkySx(): Boolean {
                     return from.isNhatkySx == 1

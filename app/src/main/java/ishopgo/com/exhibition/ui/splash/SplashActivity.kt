@@ -35,8 +35,8 @@ class SplashActivity : BaseActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                val intent = Intent(this@SplashActivity, LoginActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 finish()
             }

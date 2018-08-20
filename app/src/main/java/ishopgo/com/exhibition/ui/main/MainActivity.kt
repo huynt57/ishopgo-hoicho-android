@@ -77,7 +77,11 @@ class MainActivity : BaseSingleFragmentActivity() {
     }
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return MainFragment()
+        return MainFragment.newInstance(startupOption)
+    }
+
+    override fun startupOptions(): Bundle {
+        return intent?.extras ?: Bundle()
     }
 
     override fun onBackPressed() {

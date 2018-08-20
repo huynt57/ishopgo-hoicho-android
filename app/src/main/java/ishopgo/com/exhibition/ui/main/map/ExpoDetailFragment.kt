@@ -25,6 +25,7 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asColor
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
@@ -83,8 +84,8 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
                 Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_registerBoothFragmentActionBar)
             }
         } else {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }

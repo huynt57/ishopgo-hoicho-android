@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_require_login.*
 
 /**
@@ -24,8 +25,8 @@ class RequireLoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         view_login.setOnClickListener {
-            val intent = Intent(it.context, LoginActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }

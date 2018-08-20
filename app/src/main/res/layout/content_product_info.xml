@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingEnd="16dp"
     android:paddingStart="16dp"
-    tools:showIn="@layout/fragment_product_detail">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,6 +22,20 @@
             android:textSize="18sp"
             android:textStyle="bold"
             tools:text="Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless Kem trị thâm mụn Medi Spotless" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_brand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Thương hiệu" />
+
+        <View
+            style="@style/AppTheme.DividerLine"
+            android:layout_width="match_parent"
+            android:layout_marginTop="8dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:layout_width="match_parent"
@@ -90,6 +104,20 @@
             tools:visibility="visible" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_dvt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_star"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Đơn vị tính: "
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_product_madeIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -101,6 +129,20 @@
             app:drawableStartCompat="@drawable/icon_place"
             app:drawableStartSquareSize="16dp"
             tools:text="Xuất xứ: "
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_ngayDongGoi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/icon_calendar"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Ngày đóng gói: "
             tools:visibility="visible" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -116,7 +158,26 @@
             app:drawableStartSquareSize="16dp"
             tools:text="Quy cách đóng : "
             tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_hsd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/icon_calendar"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Hạn sử dụng : "
+            tools:visibility="visible" />
     </LinearLayout>
+
+    <View
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp" />
 
     <LinearLayout
         android:id="@+id/linear_sanXuat"
@@ -221,6 +282,11 @@
             tools:text="Mùa vụ:"
             tools:visibility="visible" />
     </LinearLayout>
+
+    <View
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="match_parent"
+        android:layout_marginTop="8dp" />
 
     <LinearLayout
         android:id="@+id/linear_vanChuyen"

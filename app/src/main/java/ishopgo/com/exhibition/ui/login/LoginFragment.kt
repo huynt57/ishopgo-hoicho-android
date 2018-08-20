@@ -26,6 +26,7 @@ class LoginFragment : BaseFragment() {
     private var phone = ""
 
     companion object {
+        const val TAG = "LoginFragment"
         fun newInstance(phone: String): LoginFragment {
             val f = LoginFragment()
             f.phone = phone
@@ -42,10 +43,11 @@ class LoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        tv_forget_password.text = "Quên mật khẩu ? <b><font color=\"#01579B\">Tìm lại mật khẩu</font></b>".asHtml()
+        tv_forget_password.text = "<b>Quên mật khẩu</b>".asHtml()
+        tv_signup.text = "<b>Đăng ký</b>".asHtml()
         btn_signup.text = "Chưa có tài khoản ? <b><font color=\"#ff3d00\">Đăng ký ngay</font></b>".asHtml()
 
-        btn_signup.setOnClickListener {
+        tv_signup.setOnClickListener {
             val intent = Intent(context, SignupActivity::class.java)
             startActivity(intent)
         }

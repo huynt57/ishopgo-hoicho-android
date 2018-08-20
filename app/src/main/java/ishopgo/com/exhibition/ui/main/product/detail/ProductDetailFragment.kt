@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,10 +28,7 @@ import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.*
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.ProductDetailComment
-import ishopgo.com.exhibition.model.ProductSalePoint
-import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
@@ -41,7 +37,7 @@ import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
 import ishopgo.com.exhibition.ui.extensions.*
-import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
@@ -96,8 +92,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private lateinit var ratingViewModel: RatingProductViewModel
     private lateinit var viewModelDiary: DiaryProductViewModel
 
-    private val handleOverwrite: ProductDetailOverwrite = CustomProductDetail()
-
+    private val listImage = mutableListOf<String>()
     private val sameShopProductsAdapter = ProductAdapter(0.4f)
     private val viewedProductAdapter = ProductAdapter(0.4f)
     private val favoriteProductAdapter = ProductAdapter(0.4f)
@@ -105,6 +100,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val productProcessAdapter = ProductProcessAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var adapterDiary = ProductDiaryAdapter()
+    private var adapterCert = ProductCertAdapter()
+    private var adapterDescriptionCSCB = ListDescriptionAdapter()
+    private var adapterDescriptionVatTu = ListDescriptionAdapter()
+    private var adapterDescriptionGiaiPhap = ListDescriptionAdapter()
+    private val vatTuProductAdapter = ProductAdapter(0.4f)
+    private val giaiPhapProductAdapter = ProductAdapter(0.4f)
+    private val relatedProductAdapter = ProductAdapter(0.4f)
+
     private var productId: Long = -1L
     private var stampId = ""
     private var stampCode = ""
@@ -250,10 +253,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         })
 
-        view?.let {
-            handleOverwrite.handleActivityCreated(it, viewModel, this)
-        }
-
         loadData(productId)
         firstLoadSalePoint()
     }
@@ -265,9 +264,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         context?.let {
             productDetail = product
 
-            view?.let {
-                handleOverwrite.handleInOtherFlavor(it, productDetail, this)
-            }
+            if (productDetail.certImages?.isNotEmpty() == true) {
+                val listCert = productDetail.certImages!!
+                container_cert.visibility = View.VISIBLE
+                for (i in listCert.indices)
+                    listImage.add(listCert[i].image ?: "")
+
+                adapterCert.replaceAll(listCert)
+            } else container_cert.visibility = View.GONE
 
             val processes = product.process ?: listOf()
             container_product_process.visibility = if (processes.isEmpty()) View.GONE else View.VISIBLE
@@ -317,6 +321,21 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             if (convert.providePackaging().isNotEmpty()) {
                 view_product_packaging.visibility = View.VISIBLE
                 view_product_packaging.text = convert.providePackaging()
+            }
+
+            if (convert.provideDVT().isNotEmpty()) {
+                view_product_dvt.visibility = View.VISIBLE
+                view_product_dvt.text = convert.provideDVT()
+            }
+
+            if (convert.provideHSD().isNotEmpty()) {
+                view_product_hsd.visibility = View.VISIBLE
+                view_product_hsd.text = convert.provideHSD()
+            }
+
+            if (convert.provideNgayDongGoi().isNotEmpty()) {
+                view_product_ngayDongGoi.visibility = View.VISIBLE
+                view_product_ngayDongGoi.text = convert.provideNgayDongGoi()
             }
 
             if (convert.provideNoCodeSX().isNotEmpty()) {
@@ -381,7 +400,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 linear_vanChuyen.visibility = View.VISIBLE
             else linear_vanChuyen.visibility = View.GONE
 
-            container_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
+            view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
             view_rating.rating = convert.provideRate()
             tv_rating_result.text = "(${convert.provideRate()}/5.0)"
@@ -393,6 +412,109 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 container_description.visibility = View.VISIBLE
                 view_product_show_more_description.visibility = View.VISIBLE
             }
+
+            if (convert.providerDVPP() != null) {
+                val dvpp = convert.providerDVPP()
+                container_shop_dvpp.visibility = View.VISIBLE
+                view_dvpp_name.text = dvpp?.name
+                view_dvpp_product_count.text = "<b><font color=\"#00c853\">${dvpp?.count
+                        ?: 0}</font></b><br>Sản phẩm".asHtml()
+                view_dvpp_rating.text = "<b><font color=\"red\">${dvpp?.rate?.toFloat()
+                        ?: 0.0f}/5.0</font></b><br>${dvpp?.rateCount
+                        ?: 0} Đánh giá".asHtml()
+                tv_dvpp_phone.setPhone(dvpp?.hotline ?: "", product.pp?.hotline
+                        ?: "")
+                tv_dvpp_address.text = dvpp?.address ?: ""
+                view_dvpp_detail.setOnClickListener {
+                    openShopDetail(it.context, dvpp?.id ?: 0L)
+                }
+            }
+
+            if (convert.providerCSCB() != null) {
+                val cscb = convert.providerCSCB()
+                container_shop_cscb.visibility = View.VISIBLE
+                view_cscb_name.text = cscb?.name
+                view_cscb_product_count.text = "<b><font color=\"#00c853\">${cscb?.count
+                        ?: 0}</font></b><br>Sản phẩm".asHtml()
+                view_cscb_rating.text = "<b><font color=\"red\">${cscb?.rate?.toFloat()
+                        ?: 0.0f}/5.0</font></b><br>${cscb?.rateCount
+                        ?: 0} Đánh giá".asHtml()
+                tv_cscb_phone.setPhone(cscb?.hotline ?: "", product.cscb?.hotline
+                        ?: "")
+                tv_cscb_address.text = cscb?.address ?: ""
+                view_cscb_detail.setOnClickListener {
+                    openShopDetail(it.context, cscb?.id ?: 0L)
+                }
+
+                if (cscb?.descriptions?.isNotEmpty() == true) {
+                    rv_description_cscb.visibility = View.VISIBLE
+                    adapterDescriptionCSCB.replaceAll(cscb.descriptions!!)
+                } else rv_description_cscb.visibility = View.GONE
+
+            }
+
+            if (convert.providerDVNK() != null) {
+                val dvnk = convert.providerDVNK()
+                container_shop_dvnk.visibility = View.VISIBLE
+                view_dvnk_name.text = dvnk?.name
+                view_dvnk_product_count.text = "<b><font color=\"#00c853\">${dvnk?.count
+                        ?: 0}</font></b><br>Sản phẩm".asHtml()
+                view_dvnk_rating.text = "<b><font color=\"red\">${dvnk?.rate?.toFloat()
+                        ?: 0.0f}/5.0</font></b><br>${dvnk?.rateCount
+                        ?: 0} Đánh giá".asHtml()
+                tv_dvnk_phone.setPhone(dvnk?.hotline ?: "", product.nnk?.hotline
+                        ?: "")
+                tv_dvnk_address.text = dvnk?.address ?: ""
+                view_dvnk_detail.setOnClickListener {
+                    openShopDetail(it.context, dvnk?.id ?: 0L)
+                }
+            }
+
+            for (i in convert.providerInfo().indices) {
+                val data = convert.providerInfo()[i]
+                if (i == 0) {
+                    if (data.products?.data?.isNotEmpty() == false && data.descriptions?.isNotEmpty() == false)
+                        container_nguyenLieu_vatTu.visibility = View.GONE
+                    else {
+                        container_nguyenLieu_vatTu.visibility = View.VISIBLE
+                        label_nguyenLieu_vatTu.text = data.name
+                        if (data.descriptions?.isNotEmpty() == true) {
+                            view_list_desc_nguyenLieu_vatTu.visibility = View.VISIBLE
+                            adapterDescriptionVatTu.replaceAll(data.descriptions ?: mutableListOf())
+                        } else view_list_desc_nguyenLieu_vatTu.visibility = View.GONE
+
+                        if (data.products?.data?.isNotEmpty() == true) {
+                            view_list_products_nguyenLieu_vatTu.visibility = View.VISIBLE
+                            vatTuProductAdapter.replaceAll(data.products?.data ?: mutableListOf())
+                        } else view_list_products_nguyenLieu_vatTu.visibility = View.GONE
+                    }
+                }
+                if (i == 1) {
+                    if (data.products?.data?.isNotEmpty() == false && data.descriptions?.isNotEmpty() == false)
+                        container_giaiPhap.visibility = View.GONE
+                    else {
+                        container_giaiPhap.visibility = View.VISIBLE
+                        label_giaiPhap.text = data.name
+                        if (data.descriptions?.isNotEmpty() == true) {
+                            view_list_desc_giaiPhap.visibility = View.VISIBLE
+                            adapterDescriptionGiaiPhap.replaceAll(data.descriptions ?: mutableListOf())
+                        } else view_list_desc_giaiPhap.visibility = View.VISIBLE
+
+                        if (data.products?.data?.isNotEmpty() == true) {
+                            view_list_products_giaiPhap.visibility = View.VISIBLE
+                            giaiPhapProductAdapter.replaceAll(data.products?.data ?: mutableListOf())
+                        } else view_list_products_giaiPhap.visibility = View.GONE
+                    }
+                }
+                if (i == 2) {
+                    if (data.products?.data?.isNotEmpty() == true) {
+                        container_spLienQuan.visibility = View.VISIBLE
+                        label_spLienQuan.text = data.name
+                        relatedProductAdapter.replaceAll(data.products?.data ?: mutableListOf())
+                    } else container_spLienQuan.visibility = View.GONE
+                }
+            }
+
             view_product_description.loadData(productDesc, "text/html", null)
             view_label_shop_name.text = convert.provideShopLabel()
             view_shop_name.text = convert.provideShopName()
@@ -404,7 +526,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             tv_shop_phone.setPhone(convert.provideShopPhone(), product.booth?.hotline ?: "")
 
             tv_shop_address.text = convert.provideShopAddress()
-            view_shop_detail.setOnClickListener { openShopDetail(it.context, product) }
+            view_shop_detail.setOnClickListener {
+                openShopDetail(it.context, product.booth?.id ?: 0L)
+            }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
             view_shop_message.setOnClickListener { messageShop(it.context, product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
@@ -413,7 +537,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             more_products_same_shop.setOnClickListener { openProductsOfShop(it.context, product) }
             more_favorite.setOnClickListener { openFavoriteProducts(it.context) }
             more_viewed.setOnClickListener { openViewedProducts(it.context) }
-            container_product_brand.setOnClickListener {
+            view_product_brand.setOnClickListener {
                 val brandId = product.department?.id ?: -1L
                 val brandName = product.department?.name ?: "Sản phẩm cùng thương hiệu"
                 if (brandId != -1L) {
@@ -492,6 +616,30 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_qrCodeProductFragment, extra)
     }
 
+    private fun setupRecyclerviewDescriptionCSCB() {
+        context?.let {
+            rv_description_cscb.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_description_cscb.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_description_cscb.adapter = adapterDescriptionCSCB
+        }
+    }
+
+    private fun setupRecyclerviewDescriptionVatTu() {
+        context?.let {
+            view_list_desc_nguyenLieu_vatTu.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            view_list_desc_nguyenLieu_vatTu.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            view_list_desc_nguyenLieu_vatTu.adapter = adapterDescriptionVatTu
+        }
+    }
+
+    private fun setupRecyclerviewDescriptionGiaiPhap() {
+        context?.let {
+            view_list_desc_giaiPhap.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            view_list_desc_giaiPhap.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            view_list_desc_giaiPhap.adapter = adapterDescriptionGiaiPhap
+        }
+    }
+
 //    private fun showMoreProductProcess(product: ProductDetail) {
 //        val extra = Bundle()
 //        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
@@ -516,6 +664,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideLiked(): Boolean
         fun provideShopAddress(): CharSequence
         fun provideFollowed(): Boolean
+
+        fun provideDVT(): CharSequence
+        fun provideHSD(): CharSequence
+        fun provideNgayDongGoi(): CharSequence
+
 
         fun provideProductLikeCount(): Int
         fun provideProductCommentCount(): Int
@@ -544,12 +697,48 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun providerNgayVC(): CharSequence
         fun providerDonViVC(): CharSequence
         fun providerNoteVC(): CharSequence
+
+        fun providerDVPP(): Booth?
+        fun providerDVNK(): Booth?
+        fun providerCSCB(): Booth?
+        fun providerInfo(): List<InfoProduct>
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerInfo(): List<InfoProduct> {
+                    return from.info ?: mutableListOf()
+                }
+
+                override fun providerDVPP(): Booth? {
+                    return from.pp
+                }
+
+                override fun providerDVNK(): Booth? {
+                    return from.nnk
+                }
+
+                override fun providerCSCB(): Booth? {
+                    return from.cscb
+                }
+
+                override fun provideDVT(): CharSequence {
+                    return if (from.dvt.isNullOrBlank()) ""
+                    else "<b>Đơn vị tính: <font color=\"red\">${from.dvt}</font></b>".asHtml()
+                }
+
+                override fun provideHSD(): CharSequence {
+                    return if (from.hsd.isNullOrBlank()) ""
+                    else "<b>Hạn sử dụng: <font color=\"red\">${from.hsd?.asDateProdcutDetail()}</font></b>".asHtml()
+                }
+
+                override fun provideNgayDongGoi(): CharSequence {
+                    return if (from.ngayDonggoi.isNullOrBlank()) ""
+                    else "<b>Ngày đóng gói: <font color=\"red\">${from.ngayDonggoi?.asDateProdcutDetail()}</font></b>".asHtml()
+                }
+
                 override fun providerHinhThucVC(): CharSequence {
                     return if (from.hinhThucVc.isNullOrBlank()) ""
                     else "<b>Hình thức vận chuyển: <font color=\"red\">${from.hinhThucVc}</font></b>".asHtml()
@@ -693,7 +882,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 override fun provideProductBrand(): CharSequence {
                     if (from.department?.id == 0L) return ""
-                    return from.department?.name?.trim() ?: ""
+                    return "<b>Thương hiệu: <font color=\"#00c853\">${from.department?.name?.trim()
+                            ?: ""}</font></b>".asHtml()
                 }
 
                 override fun provideProductShortDescription(): CharSequence {
@@ -746,8 +936,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun openActivtyLogin() {
-        val intent = Intent(context, LoginActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 
@@ -869,21 +1059,36 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
         setupDiaryProducts(view.context)
+        setupProductVatTu(view.context)
+        setupProductGiaiPhap(view.context)
+        setupProductRelated(view.context)
         setupSalePointRecycleview()
+        setupCertRecyclerview()
+        setupRecyclerviewDescriptionCSCB()
+        setupRecyclerviewDescriptionVatTu()
+        setupRecyclerviewDescriptionGiaiPhap()
         setupListeners()
 
-        handleOverwrite.handleViewCreated(view, view.context, this)
-
-        swipe.setOnRefreshListener {
-            swipe.isRefreshing = false
-            if (productId != -1L) loadData(productId)
-        }
+//        swipe.setOnRefreshListener {
+//            swipe.isRefreshing = false
+//            if (productId != -1L) loadData(productId)
+//        }
     }
 
     private fun setupSalePointRecycleview() {
         rv_product_sale_point.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         ViewCompat.setNestedScrollingEnabled(rv_product_sale_point, false)
         rv_product_sale_point.adapter = adapterSalePoint
+    }
+
+    private fun setupCertRecyclerview() {
+        context?.let {
+            rv_product_cert.adapter = adapterCert
+            val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_cert.layoutManager = layoutManager
+            rv_product_cert.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_product_cert.isNestedScrollingEnabled = false
+        }
     }
 
     private fun setupListeners() {
@@ -904,6 +1109,120 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 context?.let { openProductDetail(it, data) }
             }
 
+        }
+
+        adapterDiary.listener = object : ClickableAdapter.BaseAdapterAction<DiaryProduct> {
+            override fun click(position: Int, data: DiaryProduct, code: Int) {
+                when (code) {
+                    DIARY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        startActivity(intent)
+                    }
+
+                    DIARY_USER_CLICK -> {
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductComment> {
+            override fun click(position: Int, data: ProductComment, code: Int) {
+                when (code) {
+                    COMMUNITY_REPLY -> {
+                        if (UserDataManager.currentUserId > 0) {
+                            val productDetailComment = ProductDetailComment()
+                            productDetailComment.product = productDetail
+                            productDetailComment.comment = data
+
+                            val extra = Bundle()
+                            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
+                            Navigation.findNavController(view_list_comments).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment, extra)
+                        }
+                    }
+
+                    COMMUNITY_REPLY_CHILD -> {
+                        if (UserDataManager.currentUserId > 0) {
+                            val productDetailComment = ProductDetailComment()
+                            productDetailComment.product = productDetail
+                            val comment = ProductComment()
+                            comment.accountName = data.lastComment?.accountName
+                            comment.id = data.id
+                            productDetailComment.comment = comment
+
+                            val extra = Bundle()
+                            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
+                            Navigation.findNavController(view_list_comments).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment)
+                        }
+                    }
+
+                    COMMUNITY_SHOW_CHILD -> {
+
+                    }
+
+                    COMMUNITY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        startActivity(intent)
+                    }
+
+                    else -> {
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
+        adapterCert.listener = object : ClickableAdapter.BaseAdapterAction<ProductDetail.ListCert> {
+            override fun click(position: Int, data: ProductDetail.ListCert, code: Int) {
+                context?.let {
+                    val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImage.toTypedArray())
+                    startActivity(intent)
+                }
+            }
+
+        }
+
+        adapterDescriptionCSCB.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
+            override fun click(position: Int, data: Description, code: Int) {
+                toast("Đang phát triển")
+            }
+        }
+
+        adapterDescriptionVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
+            override fun click(position: Int, data: Description, code: Int) {
+                toast("Đang phát triển")
+            }
+        }
+
+        adapterDescriptionGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
+            override fun click(position: Int, data: Description, code: Int) {
+                toast("Đang phát triển")
+            }
+        }
+
+        vatTuProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
+                context?.let { openProductDetail(it, data) }
+            }
+        }
+
+        giaiPhapProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
+                context?.let { openProductDetail(it, data) }
+            }
+        }
+
+        relatedProductAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
+            override fun click(position: Int, data: Product, code: Int) {
+                context?.let { openProductDetail(it, data) }
+            }
         }
     }
 
@@ -954,8 +1273,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         startActivity(intent)
     }
 
-    private fun openShopDetail(context: Context, product: ProductDetail) {
-        val boothId = product.booth?.id
+    private fun openShopDetail(context: Context, boothId: Long) {
         val intent = Intent(context, ShopDetailActivity::class.java)
         intent.putExtra(Const.TransferKey.EXTRA_ID, boothId)
         startActivity(intent)
@@ -996,55 +1314,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         view_list_comments.layoutManager = layoutManager
         view_list_comments.isNestedScrollingEnabled = false
         view_list_comments.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
-
-        productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductComment> {
-            override fun click(position: Int, data: ProductComment, code: Int) {
-                when (code) {
-                    COMMUNITY_REPLY -> {
-                        if (UserDataManager.currentUserId > 0) {
-                            val productDetailComment = ProductDetailComment()
-                            productDetailComment.product = productDetail
-                            productDetailComment.comment = data
-
-                            val extra = Bundle()
-                            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
-                            Navigation.findNavController(view_list_comments).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment, extra)
-                        }
-                    }
-
-                    COMMUNITY_REPLY_CHILD -> {
-                        if (UserDataManager.currentUserId > 0) {
-                            val productDetailComment = ProductDetailComment()
-                            productDetailComment.product = productDetail
-                            val comment = ProductComment()
-                            comment.accountName = data.lastComment?.accountName
-                            comment.id = data.id
-                            productDetailComment.comment = comment
-
-                            val extra = Bundle()
-                            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(productDetailComment))
-                            Navigation.findNavController(view_list_comments).navigate(R.id.action_productDetailFragmentActionBar_to_ratingProductFragment)
-                        }
-                    }
-
-                    COMMUNITY_SHOW_CHILD -> {
-
-                    }
-
-                    COMMUNITY_IMAGE_CLICK -> {
-                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
-                        startActivity(intent)
-                    }
-
-                    else -> {
-                        val intent = Intent(context, MemberProfileActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
     }
 
     private fun setupFavoriteProducts(context: Context) {
@@ -1076,24 +1345,30 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_product_diary.layoutManager = layoutManager
         rv_product_diary.isNestedScrollingEnabled = false
+    }
 
-        adapterDiary.listener = object : ClickableAdapter.BaseAdapterAction<DiaryProduct> {
-            override fun click(position: Int, data: DiaryProduct, code: Int) {
-                when (code) {
-                    DIARY_IMAGE_CLICK -> {
-                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
-                        startActivity(intent)
-                    }
+    private fun setupProductVatTu(context: Context) {
+        view_list_products_nguyenLieu_vatTu.adapter = vatTuProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_products_nguyenLieu_vatTu.layoutManager = layoutManager
+        view_list_products_nguyenLieu_vatTu.isNestedScrollingEnabled = false
+        view_list_products_nguyenLieu_vatTu.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
 
-                    DIARY_USER_CLICK -> {
-                        val intent = Intent(context, MemberProfileActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
-                        startActivity(intent)
-                    }
-                }
-            }
-        }
+    private fun setupProductGiaiPhap(context: Context) {
+        view_list_products_giaiPhap.adapter = giaiPhapProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_products_giaiPhap.layoutManager = layoutManager
+        view_list_products_giaiPhap.isNestedScrollingEnabled = false
+        view_list_products_giaiPhap.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+    }
+
+    private fun setupProductRelated(context: Context) {
+        view_list_products_spLienQuan.adapter = relatedProductAdapter
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        view_list_products_spLienQuan.layoutManager = layoutManager
+        view_list_products_spLienQuan.isNestedScrollingEnabled = false
+        view_list_products_spLienQuan.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -19,6 +19,7 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.account.password.ChangePasswordActivity
 import ishopgo.com.exhibition.ui.main.administrator.AdministratorActivity
 import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowActivity
@@ -78,8 +79,8 @@ class AccountFragment : BaseFragment() {
         view_name.text = "Bạn chưa đăng nhập"
 
         view_profile_current.setOnClickListener {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             activity?.finish()
         }
@@ -477,8 +478,9 @@ class AccountFragment : BaseFragment() {
                 hideProgressDialog()
                 UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
-                val intent = Intent(context, LoginActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                val intent = Intent(context, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+//                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
                 startActivity(intent)
                 activity?.finish()
                 activity?.finishAffinity()

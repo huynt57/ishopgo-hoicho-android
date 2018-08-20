@@ -14,6 +14,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
+import ishopgo.com.exhibition.ui.main.MainActivity
 import kotlinx.android.synthetic.main.fragment_forget_password.*
 
 /**
@@ -76,9 +77,9 @@ class ForgetFragment : BaseFragment() {
         viewModel.changNewPassword.observe(this, Observer {
             hideProgressDialog()
             toast("Đặt lại mật khẩu thành công. Vui lòng đăng nhập.")
-            val intent = Intent(context, LoginActivity::class.java)
+            val intent = Intent(context, MainActivity::class.java)
             intent.putExtra("phone", tv_forget_phone.text.toString())
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             activity?.finish()
         })

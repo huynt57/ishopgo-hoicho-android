@@ -41,7 +41,7 @@ import ishopgo.com.exhibition.ui.community.CommunityViewModel
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -328,8 +328,9 @@ class CommunityResultDetailFragment : BaseFragment(), SwipeRefreshLayout.OnRefre
                     .positiveColor(Color.parseColor("#00c853"))
                     .onPositive { dialog, _ ->
                         dialog.dismiss()
-                        val intent = Intent(context, LoginActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+
+                        val intent = Intent(context, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                         startActivity(intent)
                         activity?.finish()
                     }

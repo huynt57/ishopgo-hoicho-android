@@ -32,7 +32,6 @@ import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.Const.TransferKey.EXTRA_ID
-import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
@@ -719,7 +718,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun showDetail(info: ProductManagerDetail) {
+    private fun showDetail(info: ProductDetail) {
         postMedias.clear()
         postMediasCert.clear()
 
@@ -1057,14 +1056,14 @@ class ProductManagerDetailFragment : BaseFragment() {
         fun providerNNK(): Booth?
         fun providerCSCB(): Booth?
         fun providerNoteVC(): String
-        fun providerCertImages(): List<ProductManagerDetail.ListCert>
+        fun providerCertImages(): List<ProductDetail.ListCert>
     }
 
-    class ProductManagerConverter : Converter<ProductManagerDetail, ProductManagerDetailProvider> {
+    class ProductManagerConverter : Converter<ProductDetail, ProductManagerDetailProvider> {
 
-        override fun convert(from: ProductManagerDetail): ProductManagerDetailProvider {
+        override fun convert(from: ProductDetail): ProductManagerDetailProvider {
             return object : ProductManagerDetailProvider {
-                override fun providerCertImages(): List<ProductManagerDetail.ListCert> {
+                override fun providerCertImages(): List<ProductDetail.ListCert> {
                     return from.certImages ?: mutableListOf()
                 }
 

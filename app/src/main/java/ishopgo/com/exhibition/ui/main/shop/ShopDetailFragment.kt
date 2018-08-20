@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsFragment
 import ishopgo.com.exhibition.ui.main.shop.info.ShopInfoFragment
 import ishopgo.com.exhibition.ui.main.shop.news.NewsFragment
@@ -230,8 +231,8 @@ class ShopDetailFragment : BaseFragment() {
     }
 
     private fun openLoginActivity() {
-        val intent = Intent(context, LoginActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 

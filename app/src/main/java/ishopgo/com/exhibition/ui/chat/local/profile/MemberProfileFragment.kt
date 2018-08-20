@@ -49,6 +49,7 @@ import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
 import ishopgo.com.exhibition.ui.extensions.setBoothName
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.home.search.community.detail.CommunityParentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
@@ -385,8 +386,8 @@ class MemberProfileFragment : BaseActionBarFragment() {
     }
 
     private fun openLoginActivity() {
-        val intent = Intent(context, LoginActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 

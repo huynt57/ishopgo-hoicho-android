@@ -19,8 +19,6 @@ import ishopgo.com.exhibition.model.Description
 import ishopgo.com.exhibition.model.ManagerBooth
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
-import ishopgo.com.exhibition.model.product_manager.ProductManager
-import ishopgo.com.exhibition.model.product_manager.ProductManagerDetail
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import okhttp3.MultipartBody
@@ -528,14 +526,14 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         }
     }
 
-    var dataProductDetail = MutableLiveData<ProductManagerDetail>()
+    var dataProductDetail = MutableLiveData<ProductDetail>()
 
     fun getProductDetail(product_Id: Long) {
 
         addDisposable(authService.getProductManagerDetail(product_Id)
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<ProductManagerDetail>() {
-                    override fun success(data: ProductManagerDetail?) {
+                .subscribeWith(object : BaseSingleObserver<ProductDetail>() {
+                    override fun success(data: ProductDetail?) {
                         data?.let {
                             dataProductDetail.postValue(it)
                         }

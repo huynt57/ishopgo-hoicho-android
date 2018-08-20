@@ -44,6 +44,7 @@ import ishopgo.com.exhibition.ui.community.notification.CommunityNotificationAct
 import ishopgo.com.exhibition.ui.community.share.CommunityShareActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -144,8 +145,8 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
                                 val intent = Intent(context, CommunityShareActivity::class.java)
                                 startActivityForResult(intent, Const.RequestCode.SHARE_POST_COMMUNITY)
                             } else {
-                                val intent = Intent(context, LoginActivity::class.java)
-                                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+                                val intent = Intent(context, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                                 startActivity(intent)
                             }
                         }
@@ -201,8 +202,8 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
     }
 
     private fun openLoginActivity() {
-        val intent = Intent(context, LoginActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
     }
 
@@ -211,8 +212,8 @@ class CommunityFragment : BaseListFragment<List<Community>, Community>() {
             val intent = Intent(context, CommunityNotificationActivity::class.java)
             startActivity(intent)
         } else {
-            val intent = Intent(context, LoginActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)
+            val intent = Intent(context, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
     }
