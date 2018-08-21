@@ -43,6 +43,7 @@ import ishopgo.com.exhibition.ui.main.product.branded.ProductsOfBrandActivity
 import ishopgo.com.exhibition.ui.main.product.detail.add_sale_point.ProductSalePointAddActivity
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.comment.ProductCommentsActivity
+import ishopgo.com.exhibition.ui.main.product.detail.description.DescriptionActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
@@ -413,7 +414,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_show_more_description.visibility = View.VISIBLE
             }
 
-            if (convert.providerDVPP() != null) {
+            if (convert.providerDVPP() != null && convert.providerDVPP()?.id != 0L) {
                 val dvpp = convert.providerDVPP()
                 container_shop_dvpp.visibility = View.VISIBLE
                 view_dvpp_name.text = dvpp?.name
@@ -430,7 +431,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
             }
 
-            if (convert.providerCSCB() != null) {
+            if (convert.providerCSCB() != null && convert.providerCSCB()?.id != 0L) {
                 val cscb = convert.providerCSCB()
                 container_shop_cscb.visibility = View.VISIBLE
                 view_cscb_name.text = cscb?.name
@@ -453,7 +454,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             }
 
-            if (convert.providerDVNK() != null) {
+            if (convert.providerDVNK() != null && convert.providerDVNK()?.id != 0L) {
                 val dvnk = convert.providerDVNK()
                 container_shop_dvnk.visibility = View.VISIBLE
                 view_dvnk_name.text = dvnk?.name
@@ -497,12 +498,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                         label_giaiPhap.text = data.name
                         if (data.descriptions?.isNotEmpty() == true) {
                             view_list_desc_giaiPhap.visibility = View.VISIBLE
-                            adapterDescriptionGiaiPhap.replaceAll(data.descriptions ?: mutableListOf())
+                            adapterDescriptionGiaiPhap.replaceAll(data.descriptions
+                                    ?: mutableListOf())
                         } else view_list_desc_giaiPhap.visibility = View.VISIBLE
 
                         if (data.products?.data?.isNotEmpty() == true) {
                             view_list_products_giaiPhap.visibility = View.VISIBLE
-                            giaiPhapProductAdapter.replaceAll(data.products?.data ?: mutableListOf())
+                            giaiPhapProductAdapter.replaceAll(data.products?.data
+                                    ?: mutableListOf())
                         } else view_list_products_giaiPhap.visibility = View.GONE
                     }
                 }
@@ -1191,19 +1194,25 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         adapterDescriptionCSCB.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
             override fun click(position: Int, data: Description, code: Int) {
-                toast("Đang phát triển")
+                val intent = Intent(context, DescriptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(intent)
             }
         }
 
         adapterDescriptionVatTu.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
             override fun click(position: Int, data: Description, code: Int) {
-                toast("Đang phát triển")
+                val intent = Intent(context, DescriptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(intent)
             }
         }
 
         adapterDescriptionGiaiPhap.listener = object : ClickableAdapter.BaseAdapterAction<Description> {
             override fun click(position: Int, data: Description, code: Int) {
-                toast("Đang phát triển")
+                val intent = Intent(context, DescriptionActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(intent)
             }
         }
 

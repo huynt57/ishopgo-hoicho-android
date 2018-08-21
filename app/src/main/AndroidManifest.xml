@@ -520,6 +520,11 @@
             android:name=".ui.main.stamp.nostamp.assign.NoStampAssignActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.product.detail.description.DescriptionActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
