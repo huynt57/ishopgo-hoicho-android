@@ -101,7 +101,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     fun pauseCamera() {
         Log.d(TAG, "pauseCamera: ")
-        if (isInitBarCodeScanner)
+        if (isInitBarCodeScanner && zxing_barcode_scanner != null)
             zxing_barcode_scanner.post { zxing_barcode_scanner.pauseAndWait() }
         else {
             initBarcodeScanner()

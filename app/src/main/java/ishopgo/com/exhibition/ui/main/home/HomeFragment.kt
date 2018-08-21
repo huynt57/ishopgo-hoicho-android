@@ -76,11 +76,13 @@ class HomeFragment : BaseFragment() {
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var animationSettingUp = false
     private var changePage = Runnable {
-        val currentItem = view_banner_pager.currentItem
-        val nextItem = (currentItem + 1) % (mPagerAdapter?.count ?: 1)
-        view_banner_pager.setCurrentItem(nextItem, nextItem != 0)
+        if (view_banner_pager != null) {
+            val currentItem = view_banner_pager.currentItem
+            val nextItem = (currentItem + 1) % (mPagerAdapter?.count ?: 1)
+            view_banner_pager.setCurrentItem(nextItem, nextItem != 0)
 
-        doChangeBanner()
+            doChangeBanner()
+        }
     }
 
     private fun doChangeBanner() {
@@ -192,9 +194,9 @@ class HomeFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-
-        doChangeBanner()
-
+        if (view_banner_pager != null) {
+            doChangeBanner()
+        }
     }
 
     override fun onStop() {
@@ -204,25 +206,26 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun showBanners(bannerImages: List<Banner>) {
-        mPagerAdapter = object : FragmentPagerAdapter(childFragmentManager) {
+        if (view_banner_pager != null) {
+            mPagerAdapter = object : FragmentPagerAdapter(childFragmentManager) {
 
-            override fun getItem(position: Int): Fragment {
-                val params = Bundle()
-                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(bannerImages[position]))
-                return BannerImageFragment.newInstance(params)
+                override fun getItem(position: Int): Fragment {
+                    val params = Bundle()
+                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(bannerImages[position]))
+                    return BannerImageFragment.newInstance(params)
+                }
+
+                override fun getCount(): Int {
+                    return bannerImages.size
+                }
             }
+            view_banner_pager.offscreenPageLimit = bannerImages.size
+            view_banner_pager.adapter = mPagerAdapter
+            view_banner_indicator.setViewPager(view_banner_pager)
 
-            override fun getCount(): Int {
-                return bannerImages.size
-            }
-        }
-        view_banner_pager.offscreenPageLimit = bannerImages.size
-        view_banner_pager.adapter = mPagerAdapter
-        view_banner_indicator.setViewPager(view_banner_pager)
-
-        view_banner_pager.post {
-            if (bannerImages.size > 1)
+            view_banner_pager.post {
                 doChangeBanner()
+            }
         }
     }
 

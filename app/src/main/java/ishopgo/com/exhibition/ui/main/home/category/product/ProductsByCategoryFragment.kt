@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.home.category.product
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -35,7 +36,10 @@ import kotlinx.android.synthetic.main.fragment_product_by_category.*
 /**
  * Created by xuanhong on 4/27/18. HappyCoding!
  */
-class ProductsByCategoryFragment : BaseActionBarFragment() {
+class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+    override fun onRefresh() {
+        firstLoad()
+    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_product_by_category
@@ -82,7 +86,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
         setupBreadCrumb()
 
-        swipe.setOnRefreshListener { firstLoad() }
+        swipe.setOnRefreshListener(this)
     }
 
     private fun addCategoryBreadCrumb(category: Category) {
@@ -117,9 +121,9 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     private fun openProductDetail(product: Product) {
         context?.let {
-                val intent = Intent(it, ProductDetailActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
-                startActivity(intent)
+            val intent = Intent(it, ProductDetailActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_ID, product.id)
+            startActivity(intent)
         }
     }
 
@@ -151,12 +155,12 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
         view_child_categories.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
         childAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
             override fun click(position: Int, data: Category, code: Int) {
-                    category = data
-                    setupBreadCrumb()
+                category = data
+                setupBreadCrumb()
 
-                    viewModel.loadChildCategory(category)
-                    firstLoad()
-                }
+                viewModel.loadChildCategory(category)
+                firstLoad()
+            }
 
         }
     }
@@ -225,7 +229,6 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     private fun firstLoad() {
         reloadData = true
-        swipe.isRefreshing = true
         productAdapter.clear()
         scrollListener.resetState()
 
@@ -241,7 +244,6 @@ class ProductsByCategoryFragment : BaseActionBarFragment() {
 
     private fun loadMore(currentCount: Int) {
         reloadData = false
-        swipe.isRefreshing = true
 
         val request = CategoriedProductsRequest()
         request.limit = Const.PAGE_LIMIT

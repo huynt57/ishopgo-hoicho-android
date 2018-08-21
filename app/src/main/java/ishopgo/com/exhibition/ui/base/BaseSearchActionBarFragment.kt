@@ -46,11 +46,13 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
                 .subscribe { triggerSearch(it) })
 
         view_back.setOnClickListener {
-            view_search_field.hideKeyboard()
+            if (view_search_field != null)
+                view_search_field.hideKeyboard()
             dismissSearch()
         }
         view_cancel.setOnClickListener {
-            view_search_field.hideKeyboard()
+            if (view_search_field != null)
+                view_search_field.hideKeyboard()
 
             val currentKeyword = view_search_field.text.toString()
             if (currentKeyword.isEmpty())
@@ -62,7 +64,8 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
         }
 
         view_filter.setOnClickListener {
-            view_search_field.hideKeyboard()
+            if (view_search_field != null)
+                view_search_field.hideKeyboard()
             openFilter()
         }
 
@@ -73,8 +76,8 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
             view_cancel.visibility = View.VISIBLE
             view_filter.visibility = View.GONE
         }
-
-        view_search_field.showSoftKeyboard()
+        if (view_search_field != null)
+            view_search_field.showSoftKeyboard()
     }
 
     override fun onDetach() {

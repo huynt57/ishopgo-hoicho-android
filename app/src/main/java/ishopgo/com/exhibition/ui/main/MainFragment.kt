@@ -296,7 +296,9 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         view_bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_SHOW
 
         view_bottom_navigation.setOnTabSelectedListener({ position, _ ->
-            childFragmentManager.popBackStack()
+            if (childFragmentManager.backStackEntryCount > 0) {
+                childFragmentManager.popBackStack()
+            }
             view_pager.currentItem = position
             true
         })

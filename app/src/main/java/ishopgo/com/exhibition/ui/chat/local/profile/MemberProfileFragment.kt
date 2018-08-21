@@ -46,6 +46,7 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.conversation.ConversationActivity
 import ishopgo.com.exhibition.ui.community.comment.CommunityCommentActivity
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.setBoothName
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.login.LoginActivity
@@ -300,7 +301,7 @@ class MemberProfileFragment : BaseActionBarFragment() {
                     COMMUNITY_COMMENT_CLICK -> {
                         if (UserDataManager.currentUserId > 0) {
                             val intent = Intent(context, CommunityCommentActivity::class.java)
-                            intent.putExtra(EXTRA_ID, data.id)
+                            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
                             startActivity(intent)
                         } else
                             openLoginActivity()

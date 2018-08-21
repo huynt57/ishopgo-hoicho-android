@@ -69,7 +69,8 @@ class LoginFragment : BaseFragment() {
 
         tv_password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE) {
-                tv_password.hideKeyboard()
+                if (tv_password != null)
+                    tv_password.hideKeyboard()
 
                 if (isRequiredFieldsValid(tv_account.text.toString(), tv_password.text.toString())) {
                     showProgressDialog()

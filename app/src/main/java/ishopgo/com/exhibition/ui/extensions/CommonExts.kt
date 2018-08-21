@@ -119,8 +119,8 @@ fun TextView.setPhone(phone: CharSequence, phoneNumber: String) {
 fun CharSequence.setPhone(phoneNumber: String): CharSequence {
     val spannable = SpannableString(this)
     if (this.isNotEmpty()) {
-        val positionStart = this.indexOf(phoneNumber.substring(0))
-        val positionEnd = this.indexOf(phoneNumber.substring(0)) + (phoneNumber.length)
+        val positionStart = if (this.indexOf(phoneNumber.substring(0)) > 0) this.indexOf(phoneNumber.substring(0)) else 0
+        val positionEnd = positionStart + (phoneNumber.length)
         spannable.setSpan(
                 ForegroundColorSpan(Color.RED),
                 positionStart, positionEnd,

@@ -285,7 +285,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_wholesale_limit.visibility = View.VISIBLE
                 view_product_wholesale_limit.text = convert.provideWholesaleLimit()
             } else {
-                view_product_wholesale.visibility = View.GONE
+                view_product_wholesale.visibility = View.VISIBLE
+                view_product_wholesale.text = "<b>Giá bán sỉ: <font color=\"red\">Liên hệ</font></b>".asHtml()
                 view_product_wholesale_limit.visibility = View.GONE
             }
 
@@ -885,7 +886,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 override fun provideProductBrand(): CharSequence {
                     if (from.department?.id == 0L) return ""
-                    return "<b>Thương hiệu: <font color=\"#00c853\">${from.department?.name?.trim()
+                    return "<b>Thương hiệu: <font color=\"#f73a04\">${from.department?.name?.trim()
                             ?: ""}</font></b>".asHtml()
                 }
 
