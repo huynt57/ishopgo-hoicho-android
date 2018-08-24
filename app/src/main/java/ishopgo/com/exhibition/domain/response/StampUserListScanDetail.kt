@@ -8,25 +8,43 @@ class StampUserListScanDetail : IdentityData() {
     @SerializedName("stamp_id")
     @Expose
     var stampId: Int? = null
-    @SerializedName("code")
+    @SerializedName("stamp_name")
     @Expose
-    var code: String? = null
-    @SerializedName("user_scan_id")
+    var stampName: Any? = null
+    @SerializedName("stamp_serial_number")
     @Expose
-    var userScanId: Int? = null
+    var stampSerialNumber: String? = null
+    @SerializedName("user_id")
+    @Expose
+    var userId: Int? = null
+    @SerializedName("product_id")
+    @Expose
+    var productId: Int? = null
+    @SerializedName("product_name")
+    @Expose
+    var productName: String? = null
     @SerializedName("status")
     @Expose
     var status: Int? = null
     @SerializedName("note")
     @Expose
     var note: String? = null
+    @SerializedName("device_id")
+    @Expose
+    var deviceId: Any? = null
+    @SerializedName("mac_address")
+    @Expose
+    var macAddress: Any? = null
     @SerializedName("created_at")
     @Expose
     var createdAt: String? = null
     @SerializedName("updated_at")
     @Expose
     var updatedAt: String? = null
-    @SerializedName("product_id")
+    @SerializedName("count_scan")
     @Expose
-    var productId: Int? = null
+    var countScan: Int? = null
+    @SerializedName("code")
+    @Expose
+    var code: String? = null
 }

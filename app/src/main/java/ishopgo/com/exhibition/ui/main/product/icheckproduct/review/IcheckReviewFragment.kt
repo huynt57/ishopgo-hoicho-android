@@ -64,7 +64,7 @@ class IcheckReviewFragment : BaseListFragment<List<IcheckReview>, IcheckReview>(
     override fun firstLoad() {
         super.firstLoad()
         val param = IcheckRequest()
-        val page = 1
+        val page = 0
         val pageSize = Const.PAGE_LIMIT
         val requestSalePoint = String.format("https://core.icheck.com.vn/reviews?object_id=%s&limit=%s&skip=%s", productId, pageSize, page)
         param.param = requestSalePoint

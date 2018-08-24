@@ -5,6 +5,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
@@ -24,6 +25,9 @@ class BrandManagerAdapter : ClickableAdapter<Brand>() {
         super.onBindViewHolder(holder, position)
         holder.apply {
             itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), BRAND_EDIT_CLICK) }
+            itemView.brand_item_highlight.setOnCheckedChangeListener { _, _ ->
+                    listener?.click(adapterPosition, getItem(adapterPosition), BRAND_FEATURED_CLICK)
+            }
         }
     }
 
@@ -37,6 +41,11 @@ class BrandManagerAdapter : ClickableAdapter<Brand>() {
                 Glide.with(this).load(convert.provideLogo())
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(brand_item_picture)
                 brand_item_name.text = convert.provideName()
+
+                if (UserDataManager.currentType == "Chủ hội chợ"){
+                    brand_item_highlight.visibility = View.VISIBLE
+                    brand_item_highlight.isChecked = convert.provideIsFeatured()
+                }
             }
         }
 
@@ -44,7 +53,9 @@ class BrandManagerAdapter : ClickableAdapter<Brand>() {
 
     companion object {
         const val BRAND_EDIT_CLICK = 1
+        const val BRAND_FEATURED_CLICK = 2
         const val IS_FEATURED: Int = 1  //Thương hiệu nổi bật
+        const val IS_NOT_FEATURED: Int = 0  //Thương hiệu nổi bật
     }
 
     interface BrandManagerProvider {

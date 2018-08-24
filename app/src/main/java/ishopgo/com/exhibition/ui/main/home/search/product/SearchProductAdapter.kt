@@ -10,6 +10,8 @@ import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import kotlinx.android.synthetic.main.item_search_product.view.*
 
 /**
@@ -63,6 +65,7 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
                         .into(iv_thumb)
                 view_name.text = converted.provideName()
                 view_code.text = converted.provideCode()
+                view_price.text = converted.providePrice()
             }
         }
     }
@@ -71,12 +74,26 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
         fun provideImage(): String
         fun provideName(): String
         fun provideCode(): String
+        fun providePrice(): CharSequence
     }
 
     internal class ConverterSearchProduct : Converter<Product, SearchProductProvider> {
 
         override fun convert(from: Product): SearchProductProvider {
             return object : SearchProductProvider {
+                override fun providePrice(): CharSequence {
+                    return if (from.price == 0L) {
+                        "<b><font color=\"#00c853\">Liên hệ</font></b>".asHtml()
+                    } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
+                        if (from.promotionPrice == 0L) // gia khuyen mai = 0 thi coi nhu ko khuyen mai
+                            "<b><font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                        else
+                            "<b><font color=\"#BDBDBD\"><strike>${from.price.asMoney()}</strike></font> <font color=\"#00c853\">${from.promotionPrice.asMoney()}</font></b> ".asHtml()
+                    } else {
+                        "<b><font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
+                    }
+                }
+
                 override fun provideImage(): String {
                     return from.image ?: ""
                 }

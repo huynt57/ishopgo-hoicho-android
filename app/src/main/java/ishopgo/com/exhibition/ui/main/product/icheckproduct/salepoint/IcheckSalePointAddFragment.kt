@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.view.View
 import com.bumptech.glide.Glide
@@ -12,10 +13,13 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductViewModel
 import kotlinx.android.synthetic.main.content_icheck_sale_point_add.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class IcheckSalePointAddFragment : BaseActionBarFragment() {
+    private lateinit var viewModel: IcheckProductViewModel
+
     companion object {
 
         fun newInstance(params: Bundle): IcheckSalePointAddFragment {
@@ -43,7 +47,7 @@ class IcheckSalePointAddFragment : BaseActionBarFragment() {
 
         setupToolbars()
 
-        if (data!=null){
+        if (data != null) {
             val convert = ProductDetailConverter().convert(data!!)
 
             Glide.with(context).load(convert.provideProductImage())
@@ -53,6 +57,26 @@ class IcheckSalePointAddFragment : BaseActionBarFragment() {
             tv_product_price.text = convert.provideProductPrice()
             tv_product_code.text = convert.provideProductBarCode()
         }
+
+        btn_sale_point_add.setOnClickListener {
+            viewModel.createIcheckSalePoint(-1L, "", -1L, "", -1L, -1L, "", 0.0F, 0.0F, "", -1L)
+        }
+
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = obtainViewModel(IcheckProductViewModel::class.java, false)
+        viewModel.errorSignal.observe(this, Observer { baseErrorSignal ->
+            baseErrorSignal?.let {
+                hideProgressDialog()
+                resolveError(it)
+            }
+        })
+
+        viewModel.createSalePointSucccess.observe(this, Observer {
+            toast("Tạo thành công")
+        })
 
     }
 

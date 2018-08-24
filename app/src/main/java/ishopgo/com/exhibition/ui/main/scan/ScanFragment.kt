@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
+import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,8 @@ import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.MainActivity
+import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
@@ -180,6 +183,16 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             }
         })
 
+        viewModel.linkQRCode.observe(this, Observer { p ->
+            p?.let {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+                if (context != null && intent.resolveActivity(context!!.packageManager) != null)
+                    startActivity(intent)
+
+                zxing_barcode_scanner.decodeSingle(this)
+            }
+        })
+
         activity?.let {
             beepManager = BeepManager(it)
             beepManager.isBeepEnabled = true
@@ -247,11 +260,9 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         if (TextUtils.isEmpty(qrCode)) return
 
         if (qrCode!!.toLowerCase().startsWith("http")) {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(qrCode))
-            if (context != null && intent.resolveActivity(context!!.packageManager) != null)
-                startActivity(intent)
-
-            zxing_barcode_scanner.decodeSingle(this)
+            val code = qrCode.replace("http://${resources.getString(R.string.app_host)}/check/", "")
+            Log.d(TAG, "processData: Code = [${code}]")
+            viewModel.getLinkQRCode(qrCode, code)
             return
         }
 

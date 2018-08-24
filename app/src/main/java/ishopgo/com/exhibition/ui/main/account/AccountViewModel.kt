@@ -217,7 +217,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
 
         // common
-        items.add(AccountMenuItem(Const.AccountAction.ACTION_REPORT, R.drawable.ic_feedback, "Báo lỗi - Đóng góp"))
+//        items.add(AccountMenuItem(Const.AccountAction.ACTION_REPORT, R.drawable.ic_feedback, "Báo lỗi - Đóng góp"))
         items.add(AccountMenuItem(Const.AccountAction.ACTION_CHANGE_PASSWORD, R.drawable.ic_password_white, "Đổi mật khẩu"))
         items.add(AccountMenuItem(Const.AccountAction.ACTION_LOGOUT, R.drawable.ic_logout, "Đăng xuất", textColor = R.color.md_red_500))
 

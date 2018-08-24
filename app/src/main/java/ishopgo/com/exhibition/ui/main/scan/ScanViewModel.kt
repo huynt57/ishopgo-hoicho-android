@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.response.BaseResponse
 import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
@@ -44,5 +45,21 @@ class ScanViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 })
         )
 
+    }
+
+    var linkQRCode = MutableLiveData<String>()
+
+    fun getLinkQRCode(qrCode: String, code: String) {
+        addDisposable(noAuthService.getStampLinkScan(code)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<String>() {
+                    override fun success(data: String?) {
+                        linkQRCode.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        linkQRCode.postValue(qrCode)
+                    }
+                }))
     }
 }

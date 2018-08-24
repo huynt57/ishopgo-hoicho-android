@@ -174,6 +174,9 @@ class ApiService {
 
         @GET("agri/get-product-diary")
         fun getProductDiary(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<DiaryProduct>>>
+
+        @GET("expo/stamp/check/{code}")
+        fun getStampLinkScan(@Path("code") codeQr: String): Single<BaseResponse<String>>
     }
 
     interface Auth {
@@ -426,6 +429,18 @@ class ApiService {
 
         @GET("expo/stamp/scan")
         fun loadListScanStamp(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>>
+
+//        @GET("expo/stamp/warning")
+//        fun loadStampWarning(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>>
+    }
+
+
+    interface IcheckApi {
+        @POST("contribute")
+        fun updateIcheckProduct(@Body body: String): Single<IcheckRep<Any>>
+
+        @POST("local")
+        fun createSalePoint(@Body body: String): Single<IcheckRep<Any>>
     }
 
     interface ISGApi {

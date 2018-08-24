@@ -1,22 +1,36 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct.update
 
+import android.Manifest
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.FileProvider
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.View
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.domain.response.IcheckVendor
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductViewModel
+import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_icheck_update_product.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class IcheckUpdateProductFragment : BaseActionBarFragment() {
     companion object {
@@ -27,11 +41,16 @@ class IcheckUpdateProductFragment : BaseActionBarFragment() {
 
             return fragment
         }
+
+        const val PERMISSIONS_REQUEST_CAMERA = 100
     }
 
     private var data: IcheckProduct? = null
     private var image = ""
     private var code = ""
+    private var adapterImages = ComposingPostMediaAdapter()
+    private var postMedias: ArrayList<PostMedia> = ArrayList()
+    private lateinit var viewModel: IcheckProductViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,17 +68,17 @@ class IcheckUpdateProductFragment : BaseActionBarFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbars()
-
-        view_image_add_product.setOnClickListener { launchPickPhotoIntent() }
-
+        setupImageRecycleview()
+        view_add_images.setOnClickListener { launchPickPhotoIntent() }
+        btn_product_add.setOnClickListener {
+            viewModel.updateIcheckProduct("", -1L, "", mutableListOf(), -1L, -1L, -1L, -1L,
+                    "", "", "", "", -1L)
+        }
+        view_camera.setOnClickListener {
+            takePhoto()
+        }
         if (data != null) {
             val convert = ProductDetailConverter().convert(data!!)
-
-            Glide.with(context)
-                    .load(convert.provideProductImage())
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder))
-                    .into(view_image_add_product)
 
             edit_product_tenSp.setText(convert.provideProductName())
             edit_product_maSp.setText(convert.provideProductBarCode())
@@ -84,8 +103,23 @@ class IcheckUpdateProductFragment : BaseActionBarFragment() {
             }
         }
 
-        if (code.isNotBlank()){
+        if (code.isNotBlank()) {
             edit_product_maSp.setText(code)
+        }
+    }
+
+    private fun setupImageRecycleview() {
+        context?.let {
+            rv_product_images.layoutManager = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
+            rv_product_images.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_product_images.adapter = adapterImages
+            adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
+                override fun click(position: Int, data: PostMedia, code: Int) {
+                    postMedias.remove(data)
+                    if (postMedias.isEmpty()) rv_product_images.visibility = View.GONE
+                    adapterImages.replaceAll(postMedias)
+                }
+            }
         }
     }
 
@@ -96,24 +130,97 @@ class IcheckUpdateProductFragment : BaseActionBarFragment() {
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
     }
 
+    private var sendingPhotoUri: Uri? = null
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        )
+    }
+
+    private fun takePhoto() {
+        if (context?.let { ActivityCompat.checkSelfPermission(it, Manifest.permission.CAMERA) } != PackageManager.PERMISSION_GRANTED) {
+
+            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.CAMERA), PERMISSIONS_REQUEST_CAMERA) }
+
+        } else {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            if (intent.resolveActivity(context?.packageManager) != null) {
+                var photoFile: File? = null
+                try {
+                    photoFile = createImageFile()
+                } catch (ex: IOException) {
+                    Log.e("Hong", "khong the tao file", ex)
+                }
+                photoFile?.let {
+                    val photoURI = FileProvider.getUriForFile(context!!, getString(R.string.file_provider_authority), it)
+                    sendingPhotoUri = photoURI
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(intent, Const.RequestCode.TAKE_PICTURE)
+                }
+            }
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = obtainViewModel(IcheckProductViewModel::class.java, false)
+        viewModel.errorSignal.observe(this, android.arch.lifecycle.Observer { baseErrorSignal ->
+            baseErrorSignal?.let {
+                resolveError(it)
+            }
+        })
+        viewModel.updateIcheckSucccess.observe(this, android.arch.lifecycle.Observer {
+            toast("Thành công")
+        })
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                return
+            if (data.clipData == null) {
+                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                    return
+                }
+                val postMedia = PostMedia()
+                postMedia.uri = data.data
+
+                postMedias.add(postMedia)
+
+            } else {
+                for (i in 0 until data.clipData.itemCount) {
+                    if (Toolbox.exceedSize(context!!, data.clipData.getItemAt(i).uri, (5 * 1024 * 1024).toLong())) {
+                        toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                        return
+                    }
+                    val postMedia = PostMedia()
+                    postMedia.uri = data.clipData.getItemAt(i).uri
+                    postMedias.add(postMedia)
+                }
             }
-
-            image = data.data.toString()
-
-            Glide.with(context)
-                    .load(Uri.parse(image))
-                    .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder)
-                            .error(R.drawable.image_placeholder))
-                    .into(view_image_add_product)
+            adapterImages.replaceAll(postMedias)
+            rv_product_images.visibility = View.VISIBLE
         }
+        if (requestCode == Const.RequestCode.TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
+            sendingPhotoUri?.let {
+                val postMedia = PostMedia()
 
+                postMedia.uri = it
+                postMedias.add(postMedia)
+                adapterImages.replaceAll(postMedias)
+                rv_product_images.visibility = View.VISIBLE
+            }
+        }
     }
 
     interface ProductDetailProvider {

@@ -9,6 +9,12 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.base.BaseIcheckSingleObserver
+import okhttp3.MultipartBody
+import org.json.JSONException
+import org.json.JSONObject
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Retrofit
+
 
 class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
@@ -155,6 +161,7 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var dataShopCategory = MutableLiveData<List<IcheckCategory>>()
 
     fun loadIcheckShopCategory(request: String) {
+
         addDisposable(isgService.loadIcheckShopCategory(request)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseIcheckSingleObserver<IcheckCategoryManager>() {
@@ -177,6 +184,76 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseIcheckSingleObserver<List<IcheckProduct>>() {
                     override fun success(data: List<IcheckProduct>?) {
                         data?.let { dataShopCategoryProduct.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var updateIcheckSucccess = MutableLiveData<Boolean>()
+
+    fun updateIcheckProduct(name: String, price: Long, image: String, attachments: List<String>, category_1: Long, category_2: Long, category_3: Long, category_4: Long,
+                            vendorName: String, vendorAddress: String, vendorPhone: String, vendorEmail: String, vendorCountry: Long) {
+        val paramObject = JSONObject()
+
+        val icheckProduct = IcheckProductPost.ProductPost()
+        icheckProduct.name = name
+        icheckProduct.price = price
+        icheckProduct.image = image
+        icheckProduct.attachments = attachments
+        icheckProduct.category_1 = category_1
+        icheckProduct.category_2 = category_2
+        icheckProduct.category_3 = category_3
+        icheckProduct.category_4 = category_4
+
+        val vendor = IcheckProductPost.Vendor()
+        vendor.name = vendorName
+        vendor.address = vendorAddress
+        vendor.phone = vendorPhone
+        vendor.email = vendorEmail
+        vendor.country = vendorCountry
+
+        paramObject.put("product", icheckProduct)
+        paramObject.put("vendor", vendor)
+
+        addDisposable(icheckService.updateIcheckProduct(paramObject.toString())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        updateIcheckSucccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var createSalePointSucccess = MutableLiveData<Boolean>()
+
+    fun createIcheckSalePoint(localId: Long, name: String, price: Long, phone: String, city: Long, district: Long, address: String, lat: Float, long: Float, referrerPhone: String, categoryId: Long) {
+        val paramObject = JSONObject()
+        paramObject.put("local_id", localId)
+        paramObject.put("phone", phone)
+        paramObject.put("name", name)
+        paramObject.put("city", city)
+        paramObject.put("district", district)
+        paramObject.put("address", address)
+        paramObject.put("lat", lat)
+        paramObject.put("long", long)
+        paramObject.put("referrer_phone", referrerPhone)
+        paramObject.put("category_id", categoryId)
+        paramObject.put("price", price)
+
+        addDisposable(icheckService.createSalePoint(paramObject.toString())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createSalePointSucccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {

@@ -112,6 +112,23 @@ class ApiModule {
 
     @Provides
     @Singleton
+    @Named("header_icheck")
+    fun provideHeaderInterceptorIcheck(): Interceptor {
+        return Interceptor { chain ->
+            val original = chain.request()
+
+            val request = original.newBuilder()
+                    .header("Content-Type", "application/json")
+                    .header("x-token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7ImljaGVja19pZCI6ImktMTUzNDE0MjM5NTI1NSIsIm5hbWUiOiIwMjQ3MzAwMzY0OSIsImVtYWlsIjpudWxsLCJwaG9uZSI6IjAyNDczMDAzNjQ5IiwibG9nbyI6IiIsImxhdCI6bnVsbCwibG9uZyI6bnVsbCwiaXNfdmVyaWZ5IjpmYWxzZSwiaWNoZWNrX3Rva2VuIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SnBaQ0k2TVRFNE9UYzFOVGtzSW1samFHVmphMTlwWkNJNklta3RNVFV6TkRFME1qTTVOVEkxTlNJc0ltbGhkQ0k2TVRVek5ERTFNakV3TkN3aVpYaHdJam8wTmpnNU9URXlNVEEwZlEuVXBPUUFpQXJJTEVuT0FmX1FjZG1GSktZZzg5bExsUm8tNUIzSkM5WFJMNCJ9LCJpYXQiOjE1MzQxNTIzMjQsImV4cCI6NDY4OTkxMjMyNH0.UEeStBSEP55lYP1nEMNhcbF7IMnYIkGhGN1xxI-uqgY")
+                    .method(original.method(), original.body())
+                    .build()
+
+            return@Interceptor chain.proceed(request)
+        }
+    }
+
+    @Provides
+    @Singleton
     @Named("expo_auth")
     fun provideAuthenticator(application: Application): Authenticator {
         return AppAuthenticator(application)
@@ -137,6 +154,23 @@ class ApiModule {
                 .readTimeout(TIME_OUT, TimeUnit.SECONDS)
                 .authenticator(auth)
                 .addInterceptor(header)
+                .addInterceptor(logger)
+
+        return builder.build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("okhttp_icheck_noauth_authenticator")
+    fun provideIcheckNoAuthOkHttpClient(@Named("header_icheck") headerIcheck: Interceptor,
+                                        @Named("log") logger: Interceptor,
+                                        @Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache): okhttp3.OkHttpClient {
+        val builder = okhttp3.OkHttpClient.Builder()
+        builder
+                .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .readTimeout(TIME_OUT, TimeUnit.SECONDS)
+                .authenticator(auth)
+                .addInterceptor(headerIcheck)
                 .addInterceptor(logger)
 
         return builder.build()
@@ -212,6 +246,18 @@ class ApiModule {
 
     @Provides
     @Singleton
+    @Named("retrofit_icheck_no_authenticator")
+    fun provideRetrofitIcheckNoAuth(@Named("okhttp_icheck_noauth_authenticator") okHttpClient: OkHttpClient): Retrofit {
+        return Retrofit.Builder()
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(BASE_URL_ICHECK)
+                .client(okHttpClient)
+                .build()
+    }
+
+    @Provides
+    @Singleton
     @Named("retrofit_isg")
     fun provideRetrofitISG(@Named("isg_okhttp_authenticator") okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -255,6 +301,12 @@ class ApiModule {
 
     @Provides
     @Singleton
+    fun provideIcheckNoAuthService(@Named("retrofit_icheck_no_authenticator") retrofitNoAuth: Retrofit): ApiService.IcheckApi {
+        return retrofitNoAuth.create(ApiService.IcheckApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideAuthService(@Named("retrofit_authenticator") retrofit: Retrofit,
                            @Named("expo_auth") auth: Authenticator): ApiService.Auth {
 
@@ -279,5 +331,6 @@ class ApiModule {
     companion object {
         const val TIME_OUT: Long = 30
         const val BASE_URL_ISG = "http://ishopgo.expo360.vn/api/v1/"
+        const val BASE_URL_ICHECK = "http://gateway.icheck.com.vn/"
     }
 }

@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct.shop
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -12,7 +13,10 @@ import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -49,6 +53,16 @@ class IcheckShopProductFragment : BaseListFragment<List<IcheckProduct>, IcheckPr
             view_recyclerview.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
 
+            (adapter as IcheckProductAdapter).listener = object : ClickableAdapter.BaseAdapterAction<IcheckProduct> {
+                override fun click(position: Int, data: IcheckProduct, code: Int) {
+                    context?.let {
+                        val intent = Intent(it, IcheckProductActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        it.startActivity(intent)
+                    }
+                }
+            }
+
         }
     }
 
@@ -68,12 +82,19 @@ class IcheckShopProductFragment : BaseListFragment<List<IcheckProduct>, IcheckPr
     override fun firstLoad() {
         super.firstLoad()
         val param = IcheckRequest()
-        val requestSalePoint = String.format("https://core.icheck.com.vn/vendors/%s/products", shopId)
+        val requestSalePoint = String.format("https://core.icheck.com.vn/vendors/%s/products?skip=%s&limit=%s", shopId, 0, Const.PAGE_LIMIT)
         param.param = requestSalePoint
         viewModel.loadData(param)
         view_recyclerview.scheduleLayoutAnimation()
     }
 
+    override fun loadMore(currentCount: Int) {
+        super.loadMore(currentCount)
+        val param = IcheckRequest()
+        val requestSalePoint = String.format("https://core.icheck.com.vn/vendors/%s/products?skip=%s&limit=%s", shopId, currentCount, Const.PAGE_LIMIT)
+        param.param = requestSalePoint
+        viewModel.loadData(param)
+    }
 
     companion object {
         const val TAG = "IcheckShopProductFragment"

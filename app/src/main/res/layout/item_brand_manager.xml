@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginBottom="@dimen/default_margin"
     android:background="@drawable/bg_white_black"
     android:orientation="vertical">
@@ -20,12 +21,12 @@
     <View
         android:id="@+id/view"
         android:layout_width="0dp"
-        android:layout_height="1dp"
+        android:layout_height="5dp"
         android:layout_below="@id/brand_item_picture"
         android:background="@color/md_grey_200"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/brand_item_picture" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/brand_item_name"
@@ -33,13 +34,13 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@id/brand_item_picture"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="11dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_toStartOf="@+id/brand_item_highlight"
-        android:ellipsize="end"
 
+        android:ellipsize="end"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:text="White Doctor"
@@ -47,7 +48,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toStartOf="@+id/brand_item_highlight"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/brand_item_picture" />
@@ -58,16 +59,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/brand_item_picture"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="8dp"
-        android:checked="true"
+        android:checked="false"
         android:text="Nổi bật"
-        android:visibility="gone"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/brand_item_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/brand_item_name" />
+        app:layout_constraintTop_toTopOf="@+id/brand_item_name"
+        tools:visibility="visible" />
 
 
 </android.support.constraint.ConstraintLayout>

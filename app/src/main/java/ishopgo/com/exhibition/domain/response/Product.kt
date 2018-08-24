@@ -18,7 +18,7 @@ class Product : IdentityData() {
     var price: Long = 0
     @SerializedName("promotion_price")
     @Expose
-    var promotionPrice: Long? = 0
+    var promotionPrice: Long = 0
     @SerializedName("code")
     @Expose
     var code: String? = null

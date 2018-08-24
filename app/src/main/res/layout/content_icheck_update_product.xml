@@ -12,14 +12,49 @@
         android:orientation="vertical"
         android:paddingBottom="@dimen/default_margin">
 
-        <ImageView
-            android:id="@+id/view_image_add_product"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="@dimen/default_margin"
-            app:srcCompat="@drawable/ic_add_image_default_24dp" />
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingBottom="8dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:text="Ảnh sản phẩm"
+            android:textColor="@color/md_white_1000"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/view_camera"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+        <ImageView
+            android:id="@+id/view_add_images"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_add_default_24dp" />
+    </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_product_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
+            android:scrollbars="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -224,16 +259,17 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:paddingBottom="8dp"
-                android:paddingEnd="16dp"
                 android:paddingStart="16dp"
                 android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:text="Thông tin doanh nghiệp"
                 android:textColor="@color/md_white_1000"
                 android:textSize="16sp" />
@@ -243,14 +279,15 @@
             android:id="@+id/linear_thongTin_sanXuat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_tenDoanhNghiep"
@@ -265,9 +302,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_soDienThoai"
@@ -283,9 +320,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_email"
@@ -301,9 +338,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_website"
@@ -319,9 +356,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_diaChi"
@@ -335,9 +372,9 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/default_margin"
                 android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/edit_product_quocGia"

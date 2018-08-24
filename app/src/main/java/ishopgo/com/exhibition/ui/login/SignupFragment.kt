@@ -324,18 +324,20 @@ class SignupFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == Const.RequestCode.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK && null != data) {
-            if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
-                toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
-                return
+            if (data.data != null) {
+                if (Toolbox.exceedSize(context!!, data.data, (5 * 1024 * 1024).toLong())) {
+                    toast("Chỉ đính kèm được ảnh có dung lượng dưới 5 MB. Hãy chọn file khác.")
+                    return
+                }
+
+                image = data.data.toString()
+
+                Glide.with(context)
+                        .load(Uri.parse(image))
+                        .apply(RequestOptions.placeholderOf(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
+                        .into(img_signup_avatar)
             }
-
-            image = data.data.toString()
-
-            Glide.with(context)
-                    .load(Uri.parse(image))
-                    .apply(RequestOptions.placeholderOf(R.drawable.avatar_placeholder)
-                            .error(R.drawable.avatar_placeholder))
-                    .into(img_signup_avatar)
         }
     }
 

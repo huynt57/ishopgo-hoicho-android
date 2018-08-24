@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.LinearLayoutManager
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +18,11 @@ import com.google.gson.JsonSyntaxException
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
@@ -34,6 +37,7 @@ import ishopgo.com.exhibition.ui.main.product.icheckproduct.shop.IcheckShopActiv
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_icheck_product_detail.*
+import kotlinx.android.synthetic.main.content_icheck_update_product.*
 
 class IcheckProductFragment : BaseFragment() {
 //    private var locationManager: LocationManager? = null
@@ -42,7 +46,7 @@ class IcheckProductFragment : BaseFragment() {
 //        geoLocation = location.toString()
 //    }
 
-//    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
+    //    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 //
 //    override fun onProviderEnabled(provider: String?) {}
 //
@@ -88,10 +92,10 @@ class IcheckProductFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: ""
-
+        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON) ?: "abc"
         try {
             icheckProduct = Toolbox.gson.fromJson(json, IcheckProduct::class.java)
+
         } catch (e: JsonSyntaxException) {
             icheckProduct = null
             MaterialDialog.Builder(requireContext())
@@ -103,7 +107,7 @@ class IcheckProductFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         context?.let {
-//            locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+            //            locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 //            statusCheck()
 //            if (ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
 //                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -124,13 +128,16 @@ class IcheckProductFragment : BaseFragment() {
             view_list_products_related.isNestedScrollingEnabled = false
             view_list_products_related.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
 
-//            adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
-//                override fun click(position: Int, data: Product, code: Int) {
-//                    val intent = Intent(context, ProductDetailActivity::class.java)
-//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-//                    startActivity(intent)
-//                }
-//            }
+            adapter.listener = object : ClickableAdapter.BaseAdapterAction<IcheckProduct> {
+                override fun click(position: Int, data: IcheckProduct, code: Int) {
+                    context?.let {
+                        val intent = Intent(it, IcheckProductActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        it.startActivity(intent)
+                    }
+                }
+            }
+
 
             view_list_products_shop.adapter = adapterOnShop
             val layoutManager4 = LinearLayoutManager(it, LinearLayoutManager.HORIZONTAL, false)
@@ -138,13 +145,15 @@ class IcheckProductFragment : BaseFragment() {
             view_list_products_shop.isNestedScrollingEnabled = false
             view_list_products_shop.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
 
-//            adapter.listener = object : ClickableAdapter.BaseAdapterAction<Product> {
-//                override fun click(position: Int, data: Product, code: Int) {
-//                    val intent = Intent(context, ProductDetailActivity::class.java)
-//                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-//                    startActivity(intent)
-//                }
-//            }
+            adapterOnShop.listener = object : ClickableAdapter.BaseAdapterAction<IcheckProduct> {
+                override fun click(position: Int, data: IcheckProduct, code: Int) {
+                    context?.let {
+                        val intent = Intent(it, IcheckProductActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        it.startActivity(intent)
+                    }
+                }
+            }
 
             val layoutManager2 = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_product_sale_point.layoutManager = layoutManager2
@@ -200,10 +209,10 @@ class IcheckProductFragment : BaseFragment() {
         val builder = AlertDialog.Builder(context)
         builder.setMessage("Định vị của bạn đang tắt, vui lòng mở lại?")
                 .setCancelable(false)
-                .setPositiveButton("Đồng ý", { _, _ -> startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)) })
-                .setNegativeButton("Huỷ", { dialog, _ ->
+                .setPositiveButton("Đồng ý") { _, _ -> startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                .setNegativeButton("Huỷ") { dialog, _ ->
                     dialog.cancel()
-                })
+                }
         val alert = builder.create()
         alert.show()
     }
@@ -267,12 +276,17 @@ class IcheckProductFragment : BaseFragment() {
             productCode = icheckProduct!!.code ?: ""
             val convert = ProductDetailConverter().convert(icheckProduct!!)
             loadAttributes(icheckProduct!!)
-
             showData(convert)
         }
     }
 
     private fun loadAttributes(product: IcheckProduct) {
+        val requestProductRelated = String.format("https://core.icheck.com.vn/products/hooks/prod:%s", product.code)
+        viewModel.loadProductRelated(requestProductRelated)
+
+        val requestReview = String.format("https://core.icheck.com.vn/reviews?object_id=%s&limit=%s", product.id, 5)
+        viewModel.loadIcheckReview(requestReview)
+
         if (product.attributes == null || product.attributes!!.isEmpty()) {
             container_description.visibility = View.GONE
             return
@@ -288,19 +302,11 @@ class IcheckProductFragment : BaseFragment() {
         val pageSize = 3
         val requestSalePoint = String.format("https://gateway.icheck.com.vn/app/locations/%s?geo=%s&page=%s&page_size=%s", product.code, "21.735235,121.850293", page, pageSize)
         viewModel.loadSalePoint(requestSalePoint)
-
-        val requestProductRelated = String.format("https://core.icheck.com.vn/products/hooks/prod:%s", product.code)
-        viewModel.loadProductRelated(requestProductRelated)
-
-        val requestReview = String.format("https://core.icheck.com.vn/reviews?object_id=%s&limit=%s", product.id, 5)
-        viewModel.loadIcheckReview(requestReview)
     }
 
     @SuppressLint("SetTextI18n")
     private fun showData(product: ProductDetailProvider) {
 
-        view_product_comment_count.text = product.provideProductCountLike()
-        view_product_share_count.text = product.provideProductCountShare()
         view_rating.rating = product.provideProductCountStar()
 
         if (product.provideProductImage().isNotEmpty()) {
@@ -330,7 +336,6 @@ class IcheckProductFragment : BaseFragment() {
             view_shop_product_count.text = "${vendor.productCount ?: "0"} Sản phẩm"
             view_shop_rating.text = "${vendor.star ?: "0"} Đánh giá"
             view_product_count.text = "${vendor.productCount ?: "0"} Đánh giá"
-            view_product_like_count.text = "${vendor.productCount ?: "0"} Thích"
 
             val isVerify = vendor.isVerify ?: false
             view_product_verify.text = if (isVerify) "Đã xác thực" else "Chưa xác thực"
@@ -405,6 +410,7 @@ class IcheckProductFragment : BaseFragment() {
         fun provideProductPrice(): CharSequence
         fun provideProductBarCode(): CharSequence
         fun provideProductCountLike(): CharSequence
+        fun provideProductCountComment(): CharSequence
         fun provideProductCountShare(): CharSequence
         fun provideProductCountStar(): Float
         fun provideProductVendor(): IcheckVendor?
@@ -414,6 +420,10 @@ class IcheckProductFragment : BaseFragment() {
 
         override fun convert(from: IcheckProduct): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideProductCountComment(): CharSequence {
+                    return "${from.commentCount ?: 0} bình luận"
+                }
+
                 override fun provideProductCountStar(): Float {
                     return from.star ?: 0.0F
                 }

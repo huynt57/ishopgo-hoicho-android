@@ -29,6 +29,13 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun getStampLinkScan(codeQr: String): Single<BaseResponse<String>> {
+        val response = BaseResponse<MutableList<String>>()
+        response.status = 1
+
+        return delegate.returningResponse(response).getStampLinkScan(codeQr)
+    }
+
     override fun getBoothTypes(): Single<BaseResponse<List<String>>> {
         val response = BaseResponse<MutableList<DiaryProduct>>()
         response.status = 1

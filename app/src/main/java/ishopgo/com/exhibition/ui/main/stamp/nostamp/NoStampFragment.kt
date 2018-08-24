@@ -76,6 +76,7 @@ class NoStampFragment : BaseListFragment<List<StampNoList>, StampNoList>() {
                         val intent = Intent(context, NoStampEditActivity::class.java)
                         intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                         startActivityForResult(intent, Const.RequestCode.EDIT_NO_STAMP)
+                        dialog.dismiss()
                     } else {
                         toast("Lô này đã có các sản phẩm được gán bạn không thể cập nhật thông tin")
                     }
@@ -86,6 +87,7 @@ class NoStampFragment : BaseListFragment<List<StampNoList>, StampNoList>() {
                     intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                     intent.putExtra(Const.TransferKey.EXTRA_STAMP_COUNT, data.quantityExists)
                     startActivityForResult(intent, Const.RequestCode.ASSIGN_NO_STAMP)
+                    dialog.dismiss()
                 }
                 dialog.show()
             }

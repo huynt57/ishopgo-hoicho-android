@@ -234,11 +234,11 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         setUpNavigation()
         setUpViewPager()
 
-        if (UserDataManager.currentUserId <= 0L)
-            childFragmentManager.beginTransaction()
-                    .add(R.id.frame_main_content, LoginFragment.newInstance(phone))
-                    .addToBackStack(LoginFragment.TAG)
-                    .commit()
+//        if (UserDataManager.currentUserId <= 0L)
+//            childFragmentManager.beginTransaction()
+//                    .add(R.id.frame_main_content, LoginFragment.newInstance(phone))
+//                    .addToBackStack(LoginFragment.TAG)
+//                    .commit()
     }
 
     private fun setUpViewPager() {
@@ -252,6 +252,13 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 view_bottom_navigation.currentItem = position
             }
         })
+
+        if (UserDataManager.currentUserId > 0)
+            view_bottom_navigation.currentItem = TAB_HOME
+        else {
+            view_bottom_navigation.currentItem = TAB_ACCOUNT
+            view_pager.currentItem = TAB_ACCOUNT
+        }
     }
 
     private fun setUpNavigation() {
@@ -292,19 +299,15 @@ class MainFragment : BaseFragment(), BackpressConsumable {
         view_bottom_navigation.addItem(item4)
         view_bottom_navigation.addItem(item5)
 
-        view_bottom_navigation.currentItem = 0
         view_bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_SHOW
 
         view_bottom_navigation.setOnTabSelectedListener({ position, _ ->
-            if (childFragmentManager.backStackEntryCount > 0) {
-                childFragmentManager.popBackStack()
-            }
             view_pager.currentItem = position
             true
         })
     }
 
-    class MainPagerAdapter(fm: FragmentManager) : CountSpecificPager(fm, 5) {
+    inner class MainPagerAdapter(fm: FragmentManager) : CountSpecificPager(fm, 5) {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
@@ -324,7 +327,10 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                         RequireLoginFragment()
                 }
                 TAB_ACCOUNT -> {
-                    AccountFragmentActionBar.newInstance(Bundle())
+                    if (UserDataManager.currentUserId > 0)
+                        AccountFragmentActionBar.newInstance(Bundle())
+                    else
+                        LoginFragment.newInstance(phone)
                 }
                 else -> {
                     Fragment()

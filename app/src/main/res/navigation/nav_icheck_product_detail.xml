@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_product_detail.xml"
+    app:startDestination="@+id/icheckProductFragmentActionBar">
+
+
+    <fragment
+        android:id="@+id/icheckProductFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductFragmentActionBar"
+        android:label="IcheckProductFragmentActionBar"
+        tools:layout="@layout/content_icheck_product_detail">
+
+        <action
+            android:id="@+id/action_icheckProductFragmentActionBar_self"
+            app:destination="@id/icheckProductFragmentActionBar"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+
+    </fragment>
+
+</navigation>

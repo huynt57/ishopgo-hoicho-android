@@ -1,7 +1,9 @@
 package ishopgo.com.exhibition.ui.main.stamp.stampwarning
 
 import android.arch.lifecycle.MutableLiveData
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
+import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.StampManager
@@ -21,7 +23,7 @@ class StampWarningViewModel : BaseListViewModel<List<StampManager>>(), AppCompon
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
-//            addDisposable(authService.getVisitors(fields)
+//            addDisposable(authService.loadStampWarning(fields)
 //                    .subscribeOn(Schedulers.single())
 //                    .subscribeWith(object : BaseSingleObserver<List<StampManager>>() {
 //                        override fun success(data: List<StampManager>?) {

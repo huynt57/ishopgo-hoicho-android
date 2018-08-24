@@ -16,10 +16,11 @@ import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.domain.response.IcheckSalePoint
 import ishopgo.com.exhibition.domain.response.IcheckSalePointDetail
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductAdapter
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -56,6 +57,16 @@ class IcheckSalePointDetailFragment : BaseFragment() {
             rv_product_sale_point.layoutManager = layoutManager
             rv_product_sale_point.isNestedScrollingEnabled = false
             rv_product_sale_point.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+
+            adapter.listener = object : ClickableAdapter.BaseAdapterAction<IcheckProduct> {
+                override fun click(position: Int, data: IcheckProduct, code: Int) {
+                    context?.let {
+                        val intent = Intent(it, IcheckProductActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        it.startActivity(intent)
+                    }
+                }
+            }
         }
 
         if (dataProduct != null) {

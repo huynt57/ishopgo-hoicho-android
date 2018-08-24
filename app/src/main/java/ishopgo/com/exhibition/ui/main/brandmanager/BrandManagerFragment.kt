@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.ui.main.brandmanager
 
 import android.annotation.SuppressLint
 import android.app.Activity.RESULT_OK
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -67,6 +68,12 @@ class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
                             startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_UPDATE)
                         }
                     }
+
+                    BRAND_FEATURED_CLICK -> {
+                        showProgressDialog()
+                        val isFeatured = if (data.isFeatured == BRAND_FEATURED) BRAND_NOT_FEATURED else BRAND_FEATURED
+                        (viewModel as BrandManagerViewModel).updateBrand(data.id, data.name ?:"", "", isFeatured.toString())
+                    }
                 }
             }
         }
@@ -103,6 +110,15 @@ class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
     fun openAddBrand() {
         val intent = Intent(context, BrandManagerAddActivity::class.java)
         startActivityForResult(intent, Const.RequestCode.BRAND_MANAGER_ADD)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        (viewModel as BrandManagerViewModel).updateSusscess.observe(this, Observer {
+            toast("Cập nhật thành công")
+            hideProgressDialog()
+        })
     }
 
 

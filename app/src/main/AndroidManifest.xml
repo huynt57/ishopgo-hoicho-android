@@ -525,6 +525,11 @@
             android:name=".ui.main.product.detail.description.DescriptionActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.listscanstamp.detail.ListScanStampDetailActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

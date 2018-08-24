@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct.shop
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
@@ -10,8 +11,12 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.AdapterView
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductAdapter
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -52,6 +57,16 @@ class IcheckShopCategoryFragment : BaseFragment() {
             view_recyclerview.layoutManager = layoutManager
             view_recyclerview.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
             view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
+
+            adapter.listener = object : ClickableAdapter.BaseAdapterAction<IcheckProduct> {
+                override fun click(position: Int, data: IcheckProduct, code: Int) {
+                    context?.let {
+                        val intent = Intent(it, IcheckProductActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                        it.startActivity(intent)
+                    }
+                }
+            }
         }
     }
 

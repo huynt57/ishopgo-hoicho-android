@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.product.icheckproduct
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
@@ -25,10 +26,18 @@ class IcheckProductFragmentActionBar : BaseActionBarFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbars()
+        val icheckProduct = if (arguments?.containsKey(Const.TransferKey.EXTRA_JSON) == true) {
+            // click another product in product detail screen
+            arguments!!.getString(Const.TransferKey.EXTRA_JSON)
+        } else {
+            requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_JSON)
+        }
+
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, icheckProduct)
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, IcheckProductFragment.newInstance(arguments
-                        ?: Bundle()), "IcheckProductFragment")
+                .replace(R.id.view_main_content, IcheckProductFragment.newInstance(extra), "IcheckProductFragment")
                 .commit()
     }
 

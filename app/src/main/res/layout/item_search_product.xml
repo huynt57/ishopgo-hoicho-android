@@ -45,16 +45,30 @@
         android:id="@+id/view_code"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/md_grey_800"
+        android:textSize="13sp"
+        app:drawableStartCompat="@drawable/ic_barcode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/view_name"
+        app:layout_constraintTop_toBottomOf="@id/view_name"
+        tools:text="30.999.000VND" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:textColor="@color/md_grey_800"
-        app:drawableStartCompat="@drawable/ic_barcode"
+        app:drawableStartCompat="@drawable/price_tag"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:textSize="13sp"
-        app:layout_constraintStart_toStartOf="@id/view_name"
-        app:layout_constraintTop_toBottomOf="@id/view_name"
+        app:layout_constraintStart_toStartOf="@id/view_code"
+        app:layout_constraintTop_toBottomOf="@id/view_code"
         tools:text="30.999.000VND"/>
 
     <View

@@ -16,4 +16,7 @@ open class BaseApiViewModel : BaseViewModel() {
 
     @Inject
     lateinit var isgService: ApiService.ISGApi
+
+    @Inject
+    lateinit var icheckService: ApiService.IcheckApi
 }

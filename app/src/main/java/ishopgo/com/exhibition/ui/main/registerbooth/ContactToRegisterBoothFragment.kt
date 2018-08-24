@@ -22,6 +22,15 @@ class ContactToRegisterBoothFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        view_caption.setPhone("Đăng ký tạo thông tin truy xuất nguồn gốc và tem truy xuất nguồn gốc vui lòng liên hệ hotline 0985771133".asHtml(), "0985771133")
+        view_caption.setPhone(("Chức năng này chỉ dành cho chủ gian hàng sỉ là những người đủ dù một trong các điều kiện sau:<br>" +
+                "- Đơn vị muốn làm truy xuất nguồn gốc hàng hoá<br>" +
+                "- Đơn vị phân phối độc quyền sản phẩm<br>" +
+                "- Đơn vị nhập khẩu độc quyền<br>" +
+                "- Đơn vị sản xuất hàng hoá<br>" +
+                "- Đơn vị chế biến sản phẩm<br>" +
+                "- Đơn vị nuôi trồng nông nghiệp nông - lâm - ngư nghiệp như hợp tác xã, trang trại, hộ nông dân...<br>" +
+                "- Đơn vị đăng ký gian hàng hội chợ triển lãm<br>" +
+                "<br>" +
+                "Nếu bạn có một trong các điều kiện trên hãng chuẩn bị giấy tờ liên quan để chứng minh và liên hệ 0985771133 để được nâng cấp thành gian hàng").asHtml(), "0985771133")
     }
 }

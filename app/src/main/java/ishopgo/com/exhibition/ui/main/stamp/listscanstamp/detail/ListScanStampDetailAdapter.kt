@@ -6,6 +6,7 @@ import ishopgo.com.exhibition.domain.response.StampUserListScanDetail
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asDateTime
 import kotlinx.android.synthetic.main.item_stamp_list_scan_detail.view.*
 
 class ListScanStampDetailAdapter : ClickableAdapter<StampUserListScanDetail>() {
@@ -57,22 +58,19 @@ class ListScanStampDetailAdapter : ClickableAdapter<StampUserListScanDetail>() {
                 }
 
                 override fun provideDate(): CharSequence {
-                    return ""
-//                    return "Ngày quét: ${from.accountPhone ?: ""}"
+                    return from.updatedAt?.asDateTime() ?: ""
                 }
 
                 override fun provideProductName(): CharSequence {
-                    return ""
-//                    return "Tên sản phẩm: ${from.location ?: ""}"
+                    return "Tên sản phẩm: ${from.productName ?: ""}"
                 }
 
                 override fun provideCountScan(): CharSequence {
-                    return ""
-//                    return "Số lượt quét: ${from.location ?: ""}"
+                    return "Số lần quét: ${from.countScan ?: "0"}"
                 }
 
                 override fun provideNote(): CharSequence {
-                    return "Ghi chú: ${from.note ?: 0}"
+                    return "Ghi chú: ${from.note ?: ""}"
                 }
             }
         }
