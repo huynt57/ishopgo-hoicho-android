@@ -19,6 +19,11 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 class IcheckSalePointAddFragment : BaseActionBarFragment() {
     private lateinit var viewModel: IcheckProductViewModel
+    private var cityId = -1L
+    private var districtId = -1L
+    private var categoryId = -1L
+    private var lat = 0.0F
+    private var long = 0.0F
 
     companion object {
 
@@ -56,11 +61,34 @@ class IcheckSalePointAddFragment : BaseActionBarFragment() {
             tv_product.text = convert.provideProductName()
             tv_product_price.text = convert.provideProductPrice()
             tv_product_code.text = convert.provideProductBarCode()
+
+            btn_sale_point_add.setOnClickListener {
+                viewModel.createIcheckSalePoint(data?.id
+                        ?: -1L, edit_shop_diemBan.text.toString(), edit_product_giaBan.money
+                        ?: -1L, edit_shop_sdt.text.toString(), cityId, districtId, edit_shop_diaChi.text.toString(), lat, long, edit_shop_nguoiGT.text.toString(), categoryId)
+            }
+        } else {
+            btn_sale_point_add.setOnClickListener {
+                toast("Có lỗi xảy ra, không tìm thấy sản phẩm")
+            }
         }
 
-        btn_sale_point_add.setOnClickListener {
-            viewModel.createIcheckSalePoint(-1L, "", -1L, "", -1L, -1L, "", 0.0F, 0.0F, "", -1L)
+        edit_shop_thanhPho.setOnClickListener {
+
         }
+
+        edit_shop_district.setOnClickListener {
+
+        }
+
+        edit_shop_viTri.setOnClickListener {
+
+        }
+
+        edt_product_danhMuc.setOnClickListener {
+
+        }
+
 
     }
 
