@@ -38,7 +38,7 @@ import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
 class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
     override fun initLoading() {
-        firstLoad()
+//        firstLoad()
     }
 
     private var typeManager = 0

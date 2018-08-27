@@ -24,6 +24,7 @@ import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
 import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.http.*
 
 /**
@@ -440,7 +441,7 @@ class ApiService {
         fun updateIcheckProduct(@Body body: String): Single<IcheckRep<Any>>
 
         @POST("local")
-        fun createSalePoint(@Body body: String): Single<IcheckRep<Any>>
+        fun createSalePoint(@Body body: JSONObject): Single<IcheckRep<Any>>
     }
 
     interface ISGApi {
@@ -482,6 +483,15 @@ class ApiService {
 
         @GET
         fun loadIcheckShopCategoryProduct(@Url url: String): Single<IcheckRep<List<IcheckProduct>>>
+
+        @GET
+        fun loadIcheckShopCity(@Url url: String): Single<IcheckRepAffiliate<IcheckCity>>
+
+        @GET
+        fun loadIcheckShopDistrict(@Url url: String): Single<IcheckRepAffiliate<IcheckDistrict>>
+
+        @GET
+        fun loadIcheckCategory(@Url url: String): Single<IcheckRep<List<IcheckCategory>>>
 
         @GET("scan-barcode")
         fun scanBarcode(

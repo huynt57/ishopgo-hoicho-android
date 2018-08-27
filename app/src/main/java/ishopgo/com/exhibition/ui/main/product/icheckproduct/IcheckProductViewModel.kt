@@ -1,13 +1,16 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct
 
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
+import ishopgo.com.exhibition.ui.base.BaseIcheckAffiliateSingleObserver
 import ishopgo.com.exhibition.ui.base.BaseIcheckSingleObserver
 import okhttp3.MultipartBody
 import org.json.JSONException
@@ -193,6 +196,126 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var dataCity = MutableLiveData<IcheckCity>()
+
+    fun loadIcheckShopCity(request: String) {
+        addDisposable(isgService.loadIcheckShopCity(request)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckAffiliateSingleObserver<IcheckCity>() {
+                    override fun success(data: IcheckCity?) {
+                        dataCity.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var dataDistrict = MutableLiveData<IcheckDistrict>()
+
+    fun loadIcheckShopDistrict(request: String) {
+        addDisposable(isgService.loadIcheckShopDistrict(request)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckAffiliateSingleObserver<IcheckDistrict>() {
+                    override fun success(data: IcheckDistrict?) {
+                        data?.let { dataDistrict.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var dataCategory = MutableLiveData<List<IcheckCategory>>()
+
+    fun loadIcheckCategory(request: String) {
+
+        addDisposable(isgService.loadIcheckCategory(request)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckSingleObserver<List<IcheckCategory>>() {
+                    override fun success(data: List<IcheckCategory>?) {
+                        data?.let { dataCategory.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var dataCategory_2 = MutableLiveData<List<IcheckCategory>>()
+
+    fun loadIcheckCategory_2(request: String) {
+
+        addDisposable(isgService.loadIcheckCategory(request)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckSingleObserver<List<IcheckCategory>>() {
+                    override fun success(data: List<IcheckCategory>?) {
+                        data?.let { dataCategory_2.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var dataCategory_3 = MutableLiveData<List<IcheckCategory>>()
+
+    fun loadIcheckCategory_3(request: String) {
+
+        addDisposable(isgService.loadIcheckCategory(request)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckSingleObserver<List<IcheckCategory>>() {
+                    override fun success(data: List<IcheckCategory>?) {
+                        data?.let { dataCategory_3.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var dataCategory_4 = MutableLiveData<List<IcheckCategory>>()
+
+    fun loadIcheckCategory_4(request: String) {
+
+        addDisposable(isgService.loadIcheckCategory(request)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseIcheckSingleObserver<List<IcheckCategory>>() {
+                    override fun success(data: List<IcheckCategory>?) {
+                        data?.let { dataCategory_4.postValue(it) }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var openIcheckCategory = MutableLiveData<Boolean>()
+
+    fun openIcheckCategoryFragment() {
+        openIcheckCategory.postValue(true)
+    }
+
+    var dataResultCategoryId = MutableLiveData<Long>()
+    var dataResultCategoryName = MutableLiveData<String>()
+
+    fun resultCateogory(categoryId: Long, categoryName: String) {
+        dataResultCategoryId.postValue(categoryId)
+        dataResultCategoryName.postValue(categoryName)
+    }
+
     var updateIcheckSucccess = MutableLiveData<Boolean>()
 
     fun updateIcheckProduct(name: String, price: Long, image: String, attachments: List<String>, category_1: Long, category_2: Long, category_3: Long, category_4: Long,
@@ -235,21 +358,23 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var createSalePointSucccess = MutableLiveData<Boolean>()
 
-    fun createIcheckSalePoint(localId: Long, name: String, price: Long, phone: String, city: Long, district: Long, address: String, lat: Float, long: Float, referrerPhone: String, categoryId: Long) {
+    fun createIcheckSalePoint(gtin_code: String, name: String, price: Long, phone: String, city: Long, district: Long, address: String, lat: Float, long: Float, referrerPhone: String, categoryId: Long) {
         val paramObject = JSONObject()
-        paramObject.put("local_id", localId)
+        paramObject.put("gtin_code", gtin_code)
         paramObject.put("phone", phone)
         paramObject.put("name", name)
         paramObject.put("city", city)
         paramObject.put("district", district)
         paramObject.put("address", address)
-        paramObject.put("lat", lat)
+        if (lat != 0.0F)
+            paramObject.put("lat", lat)
+        if (long != 0.0F)
         paramObject.put("long", long)
         paramObject.put("referrer_phone", referrerPhone)
         paramObject.put("category_id", categoryId)
         paramObject.put("price", price)
 
-        addDisposable(icheckService.createSalePoint(paramObject.toString())
+        addDisposable(icheckService.createSalePoint(paramObject)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseIcheckSingleObserver<Any>() {
                     override fun success(data: Any?) {
