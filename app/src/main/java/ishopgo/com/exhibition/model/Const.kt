@@ -58,6 +58,7 @@ object Const {
         const val EDIT_NO_STAMP = 34
         const val ADD_NO_STAMP = 35
         const val ASSIGN_NO_STAMP = 36
+        const val ICHECK_ADD_SALE_POINT = 37
     }
 
     object AccountAction {

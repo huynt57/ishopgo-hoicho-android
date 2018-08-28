@@ -2,6 +2,8 @@ package ishopgo.com.exhibition.ui.main.product.icheckproduct
 
 import android.arch.lifecycle.MutableLiveData
 import android.util.Log
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
@@ -17,6 +19,7 @@ import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Retrofit
+import com.google.gson.Gson
 
 
 class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
@@ -318,31 +321,38 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var updateIcheckSucccess = MutableLiveData<Boolean>()
 
-    fun updateIcheckProduct(name: String, price: Long, image: String, attachments: List<String>, category_1: Long, category_2: Long, category_3: Long, category_4: Long,
-                            vendorName: String, vendorAddress: String, vendorPhone: String, vendorEmail: String, vendorCountry: Long) {
-        val paramObject = JSONObject()
+    fun updateIcheckProduct(gtin_code: String, name: String, price: Long, image: String, attachments: List<String>, category_1: Long, category_2: Long, category_3: Long, category_4: Long,
+                            description: String) {
 
+        val paramObject = JsonObject()
         val icheckProduct = IcheckProductPost.ProductPost()
+        icheckProduct.gtin_code = gtin_code
         icheckProduct.name = name
         icheckProduct.price = price
         icheckProduct.image = image
         icheckProduct.attachments = attachments
-        icheckProduct.category_1 = category_1
-        icheckProduct.category_2 = category_2
-        icheckProduct.category_3 = category_3
-        icheckProduct.category_4 = category_4
+        if (category_1 != 0L)
+            icheckProduct.category_1 = category_1
+        if (category_2 != 0L)
+            icheckProduct.category_2 = category_2
+        if (category_3 != 0L)
+            icheckProduct.category_3 = category_3
+        if (category_4 != 0L)
+            icheckProduct.category_4 = category_4
+
+        icheckProduct.description = description
 
         val vendor = IcheckProductPost.Vendor()
-        vendor.name = vendorName
-        vendor.address = vendorAddress
-        vendor.phone = vendorPhone
-        vendor.email = vendorEmail
-        vendor.country = vendorCountry
+        vendor.name = ""
+        vendor.address = ""
+        vendor.phone = ""
+        vendor.email = ""
+        vendor.country = 0L
 
-        paramObject.put("product", icheckProduct)
-        paramObject.put("vendor", vendor)
+        paramObject.add("product", Gson().toJsonTree(icheckProduct))
+        paramObject.add("vendor", Gson().toJsonTree(vendor))
 
-        addDisposable(icheckService.updateIcheckProduct(paramObject.toString())
+        addDisposable(icheckService.updateIcheckProduct(paramObject)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseIcheckSingleObserver<Any>() {
                     override fun success(data: Any?) {
@@ -359,20 +369,20 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var createSalePointSucccess = MutableLiveData<Boolean>()
 
     fun createIcheckSalePoint(gtin_code: String, name: String, price: Long, phone: String, city: Long, district: Long, address: String, lat: Float, long: Float, referrerPhone: String, categoryId: Long) {
-        val paramObject = JSONObject()
-        paramObject.put("gtin_code", gtin_code)
-        paramObject.put("phone", phone)
-        paramObject.put("name", name)
-        paramObject.put("city", city)
-        paramObject.put("district", district)
-        paramObject.put("address", address)
+        val paramObject = JsonObject()
+        paramObject.addProperty("gtin_code", gtin_code)
+        paramObject.addProperty("phone", phone)
+        paramObject.addProperty("name", name)
+        paramObject.addProperty("city", city)
+        paramObject.addProperty("district", district)
+        paramObject.addProperty("address", address)
         if (lat != 0.0F)
-            paramObject.put("lat", lat)
+            paramObject.addProperty("lat", lat)
         if (long != 0.0F)
-        paramObject.put("long", long)
-        paramObject.put("referrer_phone", referrerPhone)
-        paramObject.put("category_id", categoryId)
-        paramObject.put("price", price)
+            paramObject.addProperty("long", long)
+        paramObject.addProperty("referrer_phone", referrerPhone)
+        paramObject.addProperty("category_id", categoryId)
+        paramObject.addProperty("price", price)
 
         addDisposable(icheckService.createSalePoint(paramObject)
                 .subscribeOn(Schedulers.single())

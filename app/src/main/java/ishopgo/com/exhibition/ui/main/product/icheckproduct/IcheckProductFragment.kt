@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.AlertDialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
@@ -59,6 +60,7 @@ class IcheckProductFragment : BaseFragment() {
     private val adapterReview = IcheckReviewAdapter()
     private lateinit var viewModel: IcheckProductViewModel
     private var productCode = ""
+    private var productId = -1L
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
         val currentItem = view_product_image.currentItem
@@ -179,7 +181,7 @@ class IcheckProductFragment : BaseFragment() {
         view_shop_add_sale_point.setOnClickListener {
             val intent = Intent(context, IcheckSalePointAddActivity::class.java)
             intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(icheckProduct))
-            startActivity(intent)
+            startActivityForResult(intent, Const.RequestCode.ICHECK_ADD_SALE_POINT)
         }
 
         view_product_show_more_sale_point.setOnClickListener {
@@ -274,6 +276,7 @@ class IcheckProductFragment : BaseFragment() {
 
         if (icheckProduct != null) {
             productCode = icheckProduct!!.code ?: ""
+            productId = icheckProduct!!.id ?: -1L
             val convert = ProductDetailConverter().convert(icheckProduct!!)
             loadAttributes(icheckProduct!!)
             showData(convert)
@@ -281,11 +284,9 @@ class IcheckProductFragment : BaseFragment() {
     }
 
     private fun loadAttributes(product: IcheckProduct) {
-        val requestProductRelated = String.format("https://core.icheck.com.vn/products/hooks/prod:%s", product.code)
-        viewModel.loadProductRelated(requestProductRelated)
-
-        val requestReview = String.format("https://core.icheck.com.vn/reviews?object_id=%s&limit=%s", product.id, 5)
-        viewModel.loadIcheckReview(requestReview)
+        loadRelated()
+        loadReview()
+        loadSalePoint()
 
         if (product.attributes == null || product.attributes!!.isEmpty()) {
             container_description.visibility = View.GONE
@@ -296,11 +297,25 @@ class IcheckProductFragment : BaseFragment() {
 
         tv_description.text = attribute.shortContent
 
-        val request = String.format("https://ishopgo.icheck.com.vn/products/%s/informations/%s", product.code, attribute.id.toString())
+        val request = String.format("https://ishopgo.icheck.com.vn/products/%s/informations/%s", productCode, attribute.id.toString())
         viewModel.loadDetail(request)
+
+    }
+
+    private fun loadRelated() {
+        val requestProductRelated = String.format("https://core.icheck.com.vn/products/hooks/prod:%s", productCode)
+        viewModel.loadProductRelated(requestProductRelated)
+    }
+
+    private fun loadReview() {
+        val requestReview = String.format("https://core.icheck.com.vn/reviews?object_id=%s&limit=%s", productId, 5)
+        viewModel.loadIcheckReview(requestReview)
+    }
+
+    private fun loadSalePoint() {
         val page = 1
         val pageSize = 3
-        val requestSalePoint = String.format("https://gateway.icheck.com.vn/app/locations/%s?geo=%s&page=%s&page_size=%s", product.code, "21.735235,121.850293", page, pageSize)
+        val requestSalePoint = String.format("https://gateway.icheck.com.vn/app/locations/%s?geo=%s&page=%s&page_size=%s", productCode, "21.735235,121.850293", page, pageSize)
         viewModel.loadSalePoint(requestSalePoint)
     }
 
@@ -402,6 +417,12 @@ class IcheckProductFragment : BaseFragment() {
 //
 //        }
 //    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Const.RequestCode.ICHECK_ADD_SALE_POINT && resultCode == Activity.RESULT_OK)
+            loadSalePoint()
+    }
 
     interface ProductDetailProvider {
 

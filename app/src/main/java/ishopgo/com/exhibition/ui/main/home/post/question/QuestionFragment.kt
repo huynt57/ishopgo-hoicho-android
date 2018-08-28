@@ -42,7 +42,7 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
     private val adapterCategory = QuestionManagerCategoryAdapter()
     private var reloadCategory = false
     private var key_search = ""
-    private var categoryId: Long = 0
+    private var categoryId: Long = 0L
     private var categoryName = ""
 
     @SuppressLint("SetTextI18n")
@@ -65,9 +65,7 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<QuestionObject> {
-        val adapter = QuestionManagerAdapter()
-        adapter.addData(QuestionObject())
-        return adapter
+        return QuestionManagerAdapter()
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<QuestionObject>> {
@@ -134,17 +132,6 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        (viewModel as QuestionMenuViewModel).dataReturned.observe(this, Observer { p ->
-            p.let {
-                hideProgressDialog()
-                if (reloadData) it?.let { it1 ->
-                    adapter.replaceAll(it1)
-                }
-                else it?.let { it1 -> adapter.addAll(it1) }
-            }
-        })
-
         (viewModel as QuestionMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
                 val category = QuestionCategory()
@@ -159,8 +146,8 @@ class QuestionFragment : BaseListFragment<List<QuestionObject>, QuestionObject>(
                 sp_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                         if (it != null && it.isNotEmpty()) {
-                            categoryId = if (position == 0) { -1L } else it[position - 1].id
-                            if (categoryId != -1L) firstLoad()
+                            categoryId = if (position == 0) { 0L } else it[position - 1].id
+                            if (categoryId != 0L) firstLoad()
                         }
                     }
 

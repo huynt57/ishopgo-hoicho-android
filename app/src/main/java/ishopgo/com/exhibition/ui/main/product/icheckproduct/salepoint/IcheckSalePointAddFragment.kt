@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.product.icheckproduct.salepoint
 
+import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
@@ -179,6 +180,7 @@ class IcheckSalePointAddFragment : BaseActionBarFragment() {
 
         viewModel.createSalePointSucccess.observe(this, Observer {
             toast("Tạo thành công")
+            activity?.setResult(RESULT_OK)
             activity?.finish()
         })
         viewModel.dataCity.observe(this, Observer { p ->

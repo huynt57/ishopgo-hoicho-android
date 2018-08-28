@@ -38,14 +38,14 @@ import kotlinx.android.synthetic.main.fragment_list_post_question.*
 
 class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
     override fun initLoading() {
-//        firstLoad()
+        firstLoad()
     }
 
     private var typeManager = 0
     private var adapterCategory = PostManagerCategoryAdapter()
     private var reloadCategory = false
     private var name = ""
-    private var categoryId: Long = 0
+    private var categoryId: Long = 0L
     private var categoryName = ""
 
     @SuppressLint("SetTextI18n")
@@ -155,15 +155,6 @@ class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        (viewModel as PostMenuViewModel).dataReturned.observe(this, Observer { p ->
-            p.let {
-                hideProgressDialog()
-                if (reloadData) it?.let { it1 -> adapter.replaceAll(it1) }
-                else it?.let { it1 -> adapter.addAll(it1) }
-
-            }
-        })
-
 
         (viewModel as PostMenuViewModel).getCategorySusscess.observe(this, Observer { p ->
             p.let {
@@ -179,8 +170,8 @@ class PostFragment : BaseListFragment<List<PostObject>, PostObject>() {
                 sp_category.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                     override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                         if (it != null && it.isNotEmpty()) {
-                            categoryId = if (position == 0) -1L else it[position - 1].id
-                            if (categoryId != -1L) firstLoad()
+                            categoryId = if (position == 0) 0L else it[position - 1].id
+                            if (categoryId != 0L) firstLoad()
                         }
                     }
 

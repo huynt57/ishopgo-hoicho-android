@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 class IcheckProductPost : IdentityData() {
     class ProductPost {
         @SerializedName("gtin_code")
-        var code: String? = null
+        var gtin_code: String? = null
         @SerializedName("name")
         var name: String? = null
         @SerializedName("price")

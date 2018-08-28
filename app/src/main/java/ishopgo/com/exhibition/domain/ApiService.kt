@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.domain
 
+import com.google.gson.JsonObject
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.*
@@ -24,6 +25,7 @@ import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.model.survey.Survey
 import okhttp3.RequestBody
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.http.*
 
@@ -438,10 +440,10 @@ class ApiService {
 
     interface IcheckApi {
         @POST("contribute")
-        fun updateIcheckProduct(@Body body: String): Single<IcheckRep<Any>>
+        fun updateIcheckProduct(@Body body: JsonObject): Single<IcheckRep<Any>>
 
         @POST("local")
-        fun createSalePoint(@Body body: JSONObject): Single<IcheckRep<Any>>
+        fun createSalePoint(@Body body: JsonObject): Single<IcheckRep<Any>>
     }
 
     interface ISGApi {
