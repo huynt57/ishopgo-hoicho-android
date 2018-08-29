@@ -205,7 +205,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Thông báo")
-                    .content("Không tìm thấy thông tin sản phẩm, bạn có muốn đóng góp thông tin sản phẩm này không?")
+                    .content("Không tìm thấy thông tin sản phẩm trên hệ thống. Bạn vui lòng giúp cộng đồng đóng góp thông tin\n")
                     .positiveText("Đồng ý")
                     .onPositive { dialog, _ ->
                         val intent = Intent(context, IcheckUpdateProductActivity::class.java)

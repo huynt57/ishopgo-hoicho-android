@@ -453,7 +453,7 @@ class IcheckUpdateProductFragment : BaseActionBarFragment() {
             }
         })
         viewModel.updateIcheckSucccess.observe(this, android.arch.lifecycle.Observer {
-            toast("Thêm thành công, cảm ơn bạn đã bổ sung thông tin sản phẩm")
+            toast("Mọi đóng góp sẽ được gửi tới nhà phát triển, cảm ơn bạn đã bổ sung thông tin sản phẩm")
             activity?.finish()
         })
 
