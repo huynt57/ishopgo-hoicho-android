@@ -342,15 +342,15 @@ class IcheckProductViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         icheckProduct.description = description
 
-        val vendor = IcheckProductPost.Vendor()
-        vendor.name = ""
-        vendor.address = ""
-        vendor.phone = ""
-        vendor.email = ""
-        vendor.country = 0L
+//        val vendor = IcheckProductPost.Vendor()
+//        vendor.name = ""
+//        vendor.address = ""
+//        vendor.phone = ""
+//        vendor.email = ""
+//        vendor.country = 0L
 
         paramObject.add("product", Gson().toJsonTree(icheckProduct))
-        paramObject.add("vendor", Gson().toJsonTree(vendor))
+//        paramObject.add("vendor", Gson().toJsonTree(vendor))
 
         addDisposable(icheckService.updateIcheckProduct(paramObject)
                 .subscribeOn(Schedulers.single())
