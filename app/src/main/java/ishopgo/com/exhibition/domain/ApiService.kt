@@ -180,6 +180,9 @@ class ApiService {
 
         @GET("expo/stamp/check/{code}")
         fun getStampLinkScan(@Path("code") codeQr: String): Single<BaseResponse<String>>
+
+        @GET("expo/get-config-footer")
+        fun getConfigFooter(): Single<BaseResponse<String>>
     }
 
     interface Auth {

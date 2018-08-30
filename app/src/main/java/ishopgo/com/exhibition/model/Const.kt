@@ -16,6 +16,7 @@ object Const {
         const val EXTRA_CONVERSATION_ID = "conversation_id"
         const val EXTRA_REQUIRE = "required"
         const val EXTRA_URL = "url"
+        const val EXTRA_CONTENT = "content"
         const val EXTRA_STAMP_CODE = "stamp_code"
         const val EXTRA_STAMP_COUNT = "stamp_COUNT"
         const val EXTRA_STAMP_ID = "stamp_id"

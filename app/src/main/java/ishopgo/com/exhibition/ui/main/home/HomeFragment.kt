@@ -8,10 +8,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.BuildConfig
 import ishopgo.com.exhibition.R
@@ -48,6 +45,22 @@ import ishopgo.com.exhibition.ui.main.product.newest.NewestProductsActivity
 import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
+import android.opengl.ETC1.getHeight
+import android.view.ViewTreeObserver
+import com.google.android.youtube.player.internal.i
+import android.support.v4.widget.NestedScrollView
+import android.opengl.ETC1.getHeight
+import android.util.Log
+import android.opengl.ETC1.getHeight
+import android.opengl.ETC1.getHeight
+import android.view.animation.TranslateAnimation
+import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
+import android.support.v4.view.ViewCompat.animate
+import android.support.v4.view.ViewPropertyAnimatorListener
+import com.bumptech.glide.request.transition.ViewPropertyTransition
+import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
+
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
@@ -189,7 +202,14 @@ class HomeFragment : BaseFragment() {
             }
         })
 
+        viewModel.footer.observe(viewLifeCycleOwner!!, Observer { p ->
+            p?.let {
+                view_company_info.text = it.asHtml()
+            }
+        })
+
         loadData()
+        viewModel.loadFooter()
     }
 
     override fun onResume() {
@@ -229,6 +249,7 @@ class HomeFragment : BaseFragment() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -246,10 +267,24 @@ class HomeFragment : BaseFragment() {
         setupExpoFair(context)
         setupListeners()
 
-        view_company_info.text = getString(R.string.footer).asHtml()
+
+        nestedScroll.viewTreeObserver.addOnScrollChangedListener {
+            if (nestedScroll.scrollY <= 300) {
+                constrain_moGianHang.visibility = View.VISIBLE
+            } else {
+                constrain_moGianHang.visibility = View.GONE
+            }
+        }
+
+        btn_moGianHang.setOnClickListener {
+            val intent = Intent(context, RegisterBoothActivity::class.java)
+            startActivity(intent)
+        }
 
         view_info_version.text = "Phiên bản ${BuildConfig.VERSION_NAME}"
     }
+
+    // To animate view slide out from bottom to top
 
     private fun openIntroduction() {
         val intent = Intent(requireContext(), IntroductionActivity::class.java)

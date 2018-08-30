@@ -278,16 +278,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             container_product_process.visibility = if (processes.isEmpty()) View.GONE else View.VISIBLE
             productProcessAdapter.replaceAll(processes)
 
+
             val convert = ProductDetailConverter().convert(product)
-            if (convert.provideViewWholesale()) {
-                view_product_wholesale.visibility = View.VISIBLE
-                view_product_wholesale.text = convert.provideWholesale()
+
+            view_product_wholesale.visibility = View.VISIBLE
+            view_product_wholesale.text = convert.provideWholesale()
+
+            if (convert.provideWholesaleLimit().isNotEmpty()){
                 view_product_wholesale_limit.visibility = View.VISIBLE
                 view_product_wholesale_limit.text = convert.provideWholesaleLimit()
-            } else {
-                view_product_wholesale.visibility = View.VISIBLE
-                view_product_wholesale.text = "<b>Giá bán sỉ: <font color=\"red\">Liên hệ</font></b>".asHtml()
-                view_product_wholesale_limit.visibility = View.GONE
             }
 
             if (product.images != null && product.images!!.isNotEmpty())
@@ -330,30 +329,30 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_dvt.text = convert.provideDVT()
             }
 
-            if (convert.provideHSD().isNotEmpty()) {
-                view_product_hsd.visibility = View.VISIBLE
-                view_product_hsd.text = convert.provideHSD()
-            }
-
-            if (convert.provideNgayDongGoi().isNotEmpty()) {
-                view_product_ngayDongGoi.visibility = View.VISIBLE
-                view_product_ngayDongGoi.text = convert.provideNgayDongGoi()
-            }
-
-            if (convert.provideNoCodeSX().isNotEmpty()) {
-                view_product_maSanXuat.visibility = View.VISIBLE
-                view_product_maSanXuat.text = convert.provideNoCodeSX()
-            }
-
-            if (convert.provideDateProduce().isNotEmpty()) {
-                view_product_ngaySanXuat.visibility = View.VISIBLE
-                view_product_ngaySanXuat.text = convert.provideDateProduce()
-            }
-
-            if (convert.provideDateExpected().isNotEmpty()) {
-                view_product_ngayThuHoachDK.visibility = View.VISIBLE
-                view_product_ngayThuHoachDK.text = convert.provideDateExpected()
-            }
+//            if (convert.provideHSD().isNotEmpty()) {
+//                view_product_hsd.visibility = View.VISIBLE
+//                view_product_hsd.text = convert.provideHSD()
+//            }
+//
+//            if (convert.provideNgayDongGoi().isNotEmpty()) {
+//                view_product_ngayDongGoi.visibility = View.VISIBLE
+//                view_product_ngayDongGoi.text = convert.provideNgayDongGoi()
+//            }
+//
+//            if (convert.provideNoCodeSX().isNotEmpty()) {
+//                view_product_maSanXuat.visibility = View.VISIBLE
+//                view_product_maSanXuat.text = convert.provideNoCodeSX()
+//            }
+//
+//            if (convert.provideDateProduce().isNotEmpty()) {
+//                view_product_ngaySanXuat.visibility = View.VISIBLE
+//                view_product_ngaySanXuat.text = convert.provideDateProduce()
+//            }
+//
+//            if (convert.provideDateExpected().isNotEmpty()) {
+//                view_product_ngayThuHoachDK.visibility = View.VISIBLE
+//                view_product_ngayThuHoachDK.text = convert.provideDateExpected()
+//            }
 
             if (convert.provideScale().isNotEmpty()) {
                 view_product_quyMoSanXuat.visibility = View.VISIBLE
@@ -370,37 +369,37 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_date_muaVu.text = convert.provideSeason()
             }
 
-            if (view_product_maSanXuat.visibility == View.VISIBLE || view_product_ngaySanXuat.visibility == View.VISIBLE ||
-                    view_product_ngayThuHoachDK.visibility == View.VISIBLE || view_product_quyMoSanXuat.visibility == View.VISIBLE ||
-                    view_product_date_khaNangCungUng.visibility == View.VISIBLE || view_product_date_muaVu.visibility == View.VISIBLE)
-                linear_sanXuat.visibility = View.VISIBLE
-            else linear_sanXuat.visibility = View.GONE
-
-            if (convert.providerHinhThucVC().isNotEmpty()) {
-                view_product_hinhThucVC.visibility = View.VISIBLE
-                view_product_hinhThucVC.text = convert.providerHinhThucVC()
-            }
-
-            if (convert.providerNgayVC().isNotEmpty()) {
-                view_product_ngayVC.visibility = View.VISIBLE
-                view_product_ngayVC.text = convert.providerNgayVC()
-            }
-
-            if (convert.providerDonViVC().isNotEmpty()) {
-                view_product_tenDonViVC.visibility = View.VISIBLE
-                view_product_tenDonViVC.text = convert.providerDonViVC()
-            }
-
-            if (convert.providerNoteVC().isNotEmpty()) {
-                view_product_ghiChuVC.visibility = View.VISIBLE
-                view_product_ghiChuVC.text = convert.providerNoteVC()
-            }
-
-            if (view_product_hinhThucVC.visibility == View.VISIBLE || view_product_hinhThucVC.visibility == View.VISIBLE ||
-                    view_product_ngayVC.visibility == View.VISIBLE || view_product_tenDonViVC.visibility == View.VISIBLE ||
-                    view_product_ghiChuVC.visibility == View.VISIBLE)
-                linear_vanChuyen.visibility = View.VISIBLE
-            else linear_vanChuyen.visibility = View.GONE
+//            if (view_product_maSanXuat.visibility == View.VISIBLE || view_product_ngaySanXuat.visibility == View.VISIBLE ||
+//                    view_product_ngayThuHoachDK.visibility == View.VISIBLE || view_product_quyMoSanXuat.visibility == View.VISIBLE ||
+//                    view_product_date_khaNangCungUng.visibility == View.VISIBLE || view_product_date_muaVu.visibility == View.VISIBLE)
+//                linear_sanXuat.visibility = View.VISIBLE
+//            else linear_sanXuat.visibility = View.GONE
+//
+//            if (convert.providerHinhThucVC().isNotEmpty()) {
+//                view_product_hinhThucVC.visibility = View.VISIBLE
+//                view_product_hinhThucVC.text = convert.providerHinhThucVC()
+//            }
+//
+//            if (convert.providerNgayVC().isNotEmpty()) {
+//                view_product_ngayVC.visibility = View.VISIBLE
+//                view_product_ngayVC.text = convert.providerNgayVC()
+//            }
+//
+//            if (convert.providerDonViVC().isNotEmpty()) {
+//                view_product_tenDonViVC.visibility = View.VISIBLE
+//                view_product_tenDonViVC.text = convert.providerDonViVC()
+//            }
+//
+//            if (convert.providerNoteVC().isNotEmpty()) {
+//                view_product_ghiChuVC.visibility = View.VISIBLE
+//                view_product_ghiChuVC.text = convert.providerNoteVC()
+//            }
+//
+//            if (view_product_hinhThucVC.visibility == View.VISIBLE || view_product_hinhThucVC.visibility == View.VISIBLE ||
+//                    view_product_ngayVC.visibility == View.VISIBLE || view_product_tenDonViVC.visibility == View.VISIBLE ||
+//                    view_product_ghiChuVC.visibility == View.VISIBLE)
+//                linear_vanChuyen.visibility = View.VISIBLE
+//            else linear_vanChuyen.visibility = View.GONE
 
             view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
@@ -839,11 +838,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideWholesaleLimit(): CharSequence {
-                    return "Mua tối thiểu <b><font color=\"red\">${from.wholesaleCountProduct}</font></b>".asHtml()
+                    return if (from.wholesaleCountProduct?.isNotEmpty() == true) "Mua tối thiểu <b><font color=\"red\">${from.wholesaleCountProduct}</font></b>".asHtml()
+                    else ""
                 }
 
                 override fun provideWholesale(): CharSequence {
-                    return "<b>Giá bán sỉ: Từ <font color=\"red\">${from.wholesalePriceFrom.asMoney()}</font> tới <font color=\"red\">${from.wholesalePriceTo.asMoney()}</font></b>".asHtml()
+                    return if (from.wholesalePriceFrom == 0L && from.wholesalePriceTo == 0L) "<b>Giá bán sỉ: <font color=\"red\">Liên hệ</font></b>".asHtml()
+                    else "<b>Giá bán sỉ: Từ <font color=\"red\">${from.wholesalePriceFrom.asMoney()}</font> tới <font color=\"red\">${from.wholesalePriceTo.asMoney()}</font></b>".asHtml()
                 }
 
                 override fun provideViewWholesale(): Boolean {

@@ -1,4 +1,6 @@
 <resources>
+    <string name="tab_home">Chợ sỉ</string>
+
     <string name="footer"><![CDATA[
         <b><font color="#0000CD">Cổng Truy Xuất Nguồn Gốc Sản phẩm</font></b>
         <br />

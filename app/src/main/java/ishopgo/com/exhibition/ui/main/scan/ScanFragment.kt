@@ -266,7 +266,14 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             return
         }
 
-        requestIcheckProduct(qrCode)
+        if (android.text.TextUtils.isDigitsOnly(qrCode)) {
+            requestIcheckProduct(qrCode)
+            return
+        }
+
+        val intent = Intent(context, ScanResultActivity::class.java)
+        intent.putExtra(Const.TransferKey.EXTRA_CONTENT, qrCode)
+        startActivity(intent)
 
 //        val uri = Uri.parse(qrCode)
 //        val boothId = uri.getQueryParameter("booth")

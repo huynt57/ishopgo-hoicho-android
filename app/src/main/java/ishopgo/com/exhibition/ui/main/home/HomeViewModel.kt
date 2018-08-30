@@ -251,6 +251,24 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
+    var footer = MutableLiveData<String>()
+
+    fun loadFooter() {
+        addDisposable(noAuthService.getConfigFooter()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<String>() {
+                    override fun success(data: String?) {
+                        footer.postValue(data ?: "")
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+    }
+
     var exposFair = MutableLiveData<List<ExpoConfig>>()
     var exposFairGoing = MutableLiveData<Boolean>()
     var exposFairCurrent = MutableLiveData<Boolean>()

@@ -271,6 +271,7 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                 AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_shopping_bag),
                 ResourcesCompat.getColor(resources, R.color.md_blue_grey_700, null)
         )
+
         val item2 = AHBottomNavigationItem(
                 resources.getString(R.string.tab_community),
                 AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_teamwork),
