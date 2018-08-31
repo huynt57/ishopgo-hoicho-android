@@ -222,7 +222,9 @@ class HomeFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
 
-        view_banner_pager.handler?.removeCallbacks(changePage)
+        if (view_banner_pager != null) {
+            view_banner_pager.handler?.removeCallbacks(changePage)
+        }
     }
 
     private fun showBanners(bannerImages: List<Banner>) {
@@ -267,14 +269,15 @@ class HomeFragment : BaseFragment() {
         setupExpoFair(context)
         setupListeners()
 
-
-        nestedScroll.viewTreeObserver.addOnScrollChangedListener {
-            if (nestedScroll.scrollY <= 300) {
-                constrain_moGianHang.visibility = View.VISIBLE
-            } else {
-                constrain_moGianHang.visibility = View.GONE
-            }
-        }
+        if (UserDataManager.currentUserId != 0L || UserDataManager.currentType == "Thành viên")
+            if (nestedScroll != null)
+                nestedScroll.viewTreeObserver.addOnScrollChangedListener {
+                    if (nestedScroll.scrollY <= 300) {
+                        constrain_moGianHang.visibility = View.VISIBLE
+                    } else {
+                        constrain_moGianHang.visibility = View.GONE
+                    }
+                }
 
         btn_moGianHang.setOnClickListener {
             val intent = Intent(context, RegisterBoothActivity::class.java)

@@ -1074,10 +1074,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupRecyclerviewDescriptionGiaiPhap()
         setupListeners()
 
-//        swipe.setOnRefreshListener {
-//            swipe.isRefreshing = false
-//            if (productId != -1L) loadData(productId)
-//        }
+        swipe.setOnRefreshListener {
+            swipe.isRefreshing = false
+            if (productId != -1L) loadData(productId)
+        }
     }
 
     private fun setupSalePointRecycleview() {

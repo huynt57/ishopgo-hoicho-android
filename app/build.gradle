@@ -24,7 +24,7 @@ project.ext {
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "ishopgo.com.exhibition"
         minSdkVersion 19
@@ -86,7 +86,7 @@ android {
         hangviet {
             applicationId "ishopgo.com.exhibition"
             versionCode 28
-            versionName "1.6.7"
+            versionName "1.7.0"
             signingConfig signingConfigs.hangviet
             resValue "string", "app_id", "hoichone"
             resValue "string", "app_name", "Hàng Việt 360"
@@ -111,7 +111,7 @@ android {
         agri {
             applicationId "ishopgo.com.agri"
             versionCode 19
-            versionName "1.1.7"
+            versionName "1.2.0"
             resValue "string", "app_id", "1839d59174da18dde3d19118052f6fb0"
             resValue "string", "app_name", "Agri 360"
             resValue "string", "app_host", "agri360.vn"
@@ -135,7 +135,7 @@ android {
         vietbuild {
             applicationId "ishopgo.com.vietbuild"
             versionCode 19
-            versionName "1.1.7"
+            versionName "1.2.0"
             resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
             resValue "string", "app_name", "Vietbuild Expo"
             resValue "string", "app_host", "vietbuildexpo.vn"
@@ -159,7 +159,7 @@ android {
         farm {
             applicationId "ishopgo.com.farm"
             versionCode 7
-            versionName "1.0.6"
+            versionName "1.1.0"
             resValue "string", "app_id", "746ebdd7905b4156b3dff5717d63d70c"
             resValue "string", "app_name", "Farm 360"
             resValue "string", "app_host", "farm360.vn/"
@@ -184,7 +184,7 @@ android {
         htx {
             applicationId "ishopgo.com.htx"
             versionCode 7
-            versionName "1.0.6"
+            versionName "1.1.0"
             resValue "string", "app_id", "efa5a395827ee60b75624bfc7e67060b"
             resValue "string", "app_name", "Hợp Tác Xã"
             resValue "string", "app_host", "hoptacxa.vn/"

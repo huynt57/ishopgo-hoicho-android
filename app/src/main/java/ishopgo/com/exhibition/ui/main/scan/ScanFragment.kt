@@ -185,11 +185,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
         viewModel.linkQRCode.observe(this, Observer { p ->
             p?.let {
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
-                if (context != null && intent.resolveActivity(context!!.packageManager) != null)
-                    startActivity(intent)
-
-                zxing_barcode_scanner.decodeSingle(this)
+                openDeeplink(it)
+//                zxing_barcode_scanner.decodeSingle(this)
             }
         })
 
@@ -262,7 +259,11 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         if (qrCode!!.toLowerCase().startsWith("http")) {
             val code = qrCode.replace("http://${resources.getString(R.string.app_host)}/check/", "")
             Log.d(TAG, "processData: Code = [${code}]")
-            viewModel.getLinkQRCode(qrCode, code)
+            if (code != qrCode)
+                viewModel.getLinkQRCode(code)
+            else {
+                openDeeplink(qrCode)
+            }
             return
         }
 
@@ -281,6 +282,12 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 //            openShopDetail(boothId.toLong())
 //        } else
 //            toast("Không hợp lệ")
+    }
+
+    private fun openDeeplink(code: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(code))
+        if (context != null && intent.resolveActivity(context!!.packageManager) != null)
+            startActivity(intent)
     }
 
     override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {
