@@ -44,7 +44,7 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
 
     private var productCode = ""
     private var searchKey = ""
-    private lateinit var adapter: IcheckSalePointAdapter
+    private val adapter = IcheckSalePointAdapter()
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private lateinit var viewModel: IcheckProductViewModel
     private var dataProduct: IcheckProduct? = null
@@ -78,7 +78,6 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
         getSearchField().hint = "Tìm kiếm điểm bán"
         search_total.visibility = View.GONE
 
-        adapter = IcheckSalePointAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<IcheckSalePoint> {
             override fun click(position: Int, data: IcheckSalePoint, code: Int) {
                 val intent = Intent(context, IcheckSalePointDetailActivity::class.java)
@@ -93,6 +92,8 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
         view_recyclerview.setHasFixedSize(true)
         val layoutManager = LinearLayoutManager(view.context, LinearLayoutManager.VERTICAL, false)
         view_recyclerview.layoutManager = layoutManager
+        view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
 
         scrollListener = object : EndlessRecyclerViewScrollListener(layoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -100,8 +101,6 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
             }
         }
         view_recyclerview.addOnScrollListener(scrollListener)
-        view_recyclerview.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.linear_layout_animation_from_bottom)
         swipe.setOnRefreshListener(this)
     }
 
@@ -130,6 +129,8 @@ class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayou
 
     fun firstLoad() {
         reloadData = true
+        adapter.clear()
+        scrollListener.resetState()
 
         val page = 1
         val pageSize = Const.PAGE_LIMIT

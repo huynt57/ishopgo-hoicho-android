@@ -44,9 +44,9 @@
                         android:id="@+id/view_banner_indicator"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
-                        android:layout_marginBottom="16dp"
-                        android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="16dp"
                         android:minWidth="20dp"
                         app:ci_drawable="@drawable/view_pager_indicator_selected"
                         app:ci_drawable_unselected="@drawable/view_pager_indicator_unselected"
@@ -130,16 +130,15 @@
                         android:layout_height="wrap_content">
 
                         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                            android:id="@+id/view_product_count"
+                            android:id="@+id/view_product_rating"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="8dp"
                             android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
                             android:gravity="center"
                             app:drawableTopCompat="@drawable/ic_star"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/view_product_verify"
-                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintEnd_toStartOf="@+id/guideline18"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
                             tools:text="54\nSản phẩm" />
@@ -148,14 +147,36 @@
                             android:id="@+id/view_product_verify"
                             android:layout_width="0dp"
                             android:layout_height="0dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginBottom="8dp"
                             android:gravity="center"
                             app:drawableTopCompat="@drawable/ic_shield"
-                            app:layout_constraintBottom_toBottomOf="@+id/view_product_count"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toEndOf="@+id/view_product_count"
-                            app:layout_constraintTop_toTopOf="@+id/view_product_count"
+                            app:layout_constraintStart_toStartOf="@+id/guideline18"
+                            app:layout_constraintTop_toTopOf="parent"
                             tools:text="Đã xác thực" />
+
+                        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                            android:id="@+id/view_product_not_verify"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="8dp"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            app:drawableTopCompat="@drawable/ic_shield_not_protected"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="@+id/guideline18"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:text="Chưa xác thực" />
+
+                        <android.support.constraint.Guideline
+                            android:id="@+id/guideline18"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            app:layout_constraintGuide_percent="0.5" />
 
                     </android.support.constraint.ConstraintLayout>
                 </LinearLayout>
@@ -257,8 +278,8 @@
                         android:id="@+id/view_shop_detail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
                         android:background="@drawable/bg_button_stroked_rounded_rectangle"
                         android:foreground="?attr/selectableItemBackground"
                         android:padding="8dp"
@@ -388,8 +409,8 @@
                         android:id="@+id/textView5"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp"
                         android:layout_marginStart="16dp"
+                        android:layout_marginEnd="16dp"
                         android:gravity="center"
                         android:text="Hãy thêm thông tin liên hệ nếu bạn đang có bán sản phẩm này"
                         android:textStyle="italic"
@@ -550,6 +571,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:isIndicator="true"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_rating_result"
                         app:layout_constraintStart_toEndOf="@+id/tv_rating_result"
                         app:layout_constraintTop_toTopOf="@+id/tv_rating_result" />

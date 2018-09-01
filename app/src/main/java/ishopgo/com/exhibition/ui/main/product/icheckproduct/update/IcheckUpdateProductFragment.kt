@@ -535,7 +535,8 @@ class IcheckUpdateProductFragment : BaseActionBarFragment() {
             return object : ProductDetailProvider {
 
                 override fun provideProductImage(): String {
-                    return "http://ucontent.icheck.vn/" + from.imageDefault + "_medium.jpg"
+                    val linkImage = from.imageDefault ?: ""
+                    return if (linkImage.toLowerCase().startsWith("http")) linkImage else "http://ucontent.icheck.vn/" + linkImage + "_medium.jpg"
                 }
 
                 override fun provideProductName(): CharSequence {

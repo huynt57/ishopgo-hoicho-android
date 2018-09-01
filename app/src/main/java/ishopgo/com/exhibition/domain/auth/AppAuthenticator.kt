@@ -44,9 +44,10 @@ class AppAuthenticator(app: Application) : Authenticator {
 
                     override fun failure(status: Int, message: String) {
                         Log.d(TAG, "onError() called $message")
+                        if (UserDataManager.currentUserId > 0)
+                            UserDataManager.deleteUserInfo()
                         obtained = false
                     }
-
                 })
 
         subscribeWith.dispose()

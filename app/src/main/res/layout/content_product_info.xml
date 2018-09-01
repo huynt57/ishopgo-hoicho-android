@@ -48,47 +48,6 @@
             app:drawableStartSquareSize="24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_product_price"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_tag_price_default_24dp"
-            app:drawableStartSquareSize="24dp"
-            tools:text="Giá bán lẻ: 280.000 đ" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_product_wholesale"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_tag_wholesale_default_24dp"
-            app:drawableStartSquareSize="24dp"
-            tools:text="Giá bán sỉ từ 0đ tới 0đ"
-            tools:visibility="visible" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_product_wholesale_limit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:textStyle="italic"
-            android:visibility="gone"
-            app:drawableStartCompat="@drawable/icon_shopping_cart"
-            app:drawableStartSquareSize="16dp"
-            tools:text="Mua tối thiểu 0 sản phẩm"
-            tools:visibility="visible" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_product_msp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -142,6 +101,47 @@
             app:drawableStartCompat="@drawable/icon_donggoi"
             app:drawableStartSquareSize="16dp"
             tools:text="Quy cách đóng : "
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_tag_price_default_24dp"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Giá bán lẻ: 280.000 đ" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_wholesale"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:drawableStartCompat="@drawable/ic_tag_wholesale_default_24dp"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Giá bán sỉ từ 0đ tới 0đ"
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_wholesale_limit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            android:textSize="13sp"
+            app:drawableStartCompat="@drawable/icon_shopping_cart"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Mua tối thiểu 0 sản phẩm"
             tools:visibility="visible" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

@@ -48,7 +48,7 @@ class IcheckShopInfoFragment : BaseFragment() {
                 so_san_pham.text = "Số sản phẩm: <b>${it.productCount ?: 0}</b>".asHtml()
                 dia_chi.text =  "Địa chỉ: <b>${it.address ?: ""}</b>".asHtml()
                 danh_gia.text = "Đánh giá: <b>${it.star ?: 0.0F}</b>".asHtml()
-                luot_quan_tam.text = "Số lượt quét: <b>${it.reviewCount ?: 0}<b>".asHtml()
+                luot_quan_tam.text = "Số lượt quét: <b>${it.scanCount ?: 0}<b>".asHtml()
             }
         })
         val request = String.format("https://core.icheck.com.vn/vendors/%s", shopId)

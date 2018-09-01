@@ -71,7 +71,8 @@ class IcheckSalePointDetailFragment : BaseFragment() {
 
         if (dataProduct != null) {
             linear_product_current.visibility = View.VISIBLE
-            Glide.with(context).load("http://ucontent.icheck.vn/" + dataProduct!!.imageDefault + "_medium.jpg")
+            val linkImage = dataProduct!!.imageDefault ?: ""
+            Glide.with(context).load(if (linkImage.toLowerCase().startsWith("http")) linkImage else "http://ucontent.icheck.vn/" + linkImage + "_medium.jpg")
                     .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                     .into(img_product)
             tv_product.text = dataProduct!!.productName

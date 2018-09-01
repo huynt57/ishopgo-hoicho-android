@@ -81,7 +81,8 @@ class IcheckProductAdapter(private var itemWidthRatio: Float = -1f, private var 
         override fun convert(from: IcheckProduct): ProductProvider {
             return object : ProductProvider {
                 override fun provideImage(): String {
-                    return "http://ucontent.icheck.vn/" + from.imageDefault + "_medium.jpg"
+                    val linkImage = from.imageDefault ?: ""
+                    return if (linkImage.toLowerCase().startsWith("http")) linkImage else "http://ucontent.icheck.vn/" + linkImage + "_medium.jpg"
                 }
 
                 override fun provideName(): String {

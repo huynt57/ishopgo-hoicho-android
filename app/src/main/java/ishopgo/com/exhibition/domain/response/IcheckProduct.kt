@@ -19,6 +19,8 @@ class IcheckProduct : IdentityData() {
     var isClone: Boolean? = null
     @SerializedName("like_count")
     var likeCount: Int? = null
+    @SerializedName("review_count")
+    var reviewCount: Int? = null
     @SerializedName("comment_count")
     var commentCount: Int? = null
     @SerializedName("seller_count")

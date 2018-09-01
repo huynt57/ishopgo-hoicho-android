@@ -322,7 +322,8 @@ class IcheckProductFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     private fun showData(product: ProductDetailProvider) {
 
-        view_rating.rating = product.provideProductCountStar()
+        tv_rating_result.text = product.provideProductReviewComment()
+        view_product_rating.text = "${product.provideProductCountStar()} Đánh giá"
 
         if (product.provideProductImage().isNotEmpty()) {
             val listImages = mutableListOf<String>()
@@ -350,10 +351,18 @@ class IcheckProductFragment : BaseFragment() {
             tv_shop_phone.setPhone(vendor.phone ?: "", vendor.phone ?: "")
             view_shop_product_count.text = "${vendor.productCount ?: "0"} Sản phẩm"
             view_shop_rating.text = "${vendor.star ?: "0"} Đánh giá"
-            view_product_count.text = "${vendor.productCount ?: "0"} Đánh giá"
 
             val isVerify = vendor.isVerify ?: false
-            view_product_verify.text = if (isVerify) "Đã xác thực" else "Chưa xác thực"
+
+            if (isVerify){
+                view_product_verify.visibility = View.VISIBLE
+                view_product_not_verify.visibility = View.GONE
+                view_product_verify.text = "Đã xác thực"
+            } else {
+                view_product_verify.visibility = View.GONE
+                view_product_not_verify.visibility = View.VISIBLE
+                view_product_not_verify.text = "Chưa xác thực"
+            }
 
             view_shop_detail.setOnClickListener {
                 val intent = Intent(context, IcheckShopActivity::class.java)
@@ -430,8 +439,7 @@ class IcheckProductFragment : BaseFragment() {
         fun provideProductName(): CharSequence
         fun provideProductPrice(): CharSequence
         fun provideProductBarCode(): CharSequence
-        fun provideProductCountLike(): CharSequence
-        fun provideProductCountComment(): CharSequence
+        fun provideProductReviewComment(): CharSequence
         fun provideProductCountShare(): CharSequence
         fun provideProductCountStar(): Float
         fun provideProductVendor(): IcheckVendor?
@@ -441,16 +449,12 @@ class IcheckProductFragment : BaseFragment() {
 
         override fun convert(from: IcheckProduct): ProductDetailProvider {
             return object : ProductDetailProvider {
-                override fun provideProductCountComment(): CharSequence {
-                    return "${from.commentCount ?: 0} bình luận"
+                override fun provideProductReviewComment(): CharSequence {
+                    return "Đánh giá (${from.reviewCount ?: 0})"
                 }
 
                 override fun provideProductCountStar(): Float {
                     return from.star ?: 0.0F
-                }
-
-                override fun provideProductCountLike(): CharSequence {
-                    return "${from.likeCount ?: 0} thích"
                 }
 
                 override fun provideProductCountShare(): CharSequence {
@@ -458,7 +462,8 @@ class IcheckProductFragment : BaseFragment() {
                 }
 
                 override fun provideProductImage(): String {
-                    return "http://ucontent.icheck.vn/" + from.imageDefault + "_medium.jpg"
+                    val linkImage = from.imageDefault ?: ""
+                    return if (linkImage.toLowerCase().startsWith("http")) linkImage else "http://ucontent.icheck.vn/" + linkImage + "_medium.jpg"
                 }
 
                 override fun provideProductName(): CharSequence {
