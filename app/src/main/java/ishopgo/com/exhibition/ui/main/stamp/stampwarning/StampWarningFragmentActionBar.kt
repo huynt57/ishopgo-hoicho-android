@@ -31,7 +31,7 @@ class StampWarningFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Quản lý cảnh báo")
+        toolbar.setCustomTitle("Quản lý tem cảnh báo")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
     }

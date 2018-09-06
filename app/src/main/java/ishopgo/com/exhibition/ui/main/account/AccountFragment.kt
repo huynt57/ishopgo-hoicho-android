@@ -38,10 +38,12 @@ import ishopgo.com.exhibition.ui.main.references.ReferencesActivity
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
 import ishopgo.com.exhibition.ui.main.salepoint.SalePointActivity
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import ishopgo.com.exhibition.ui.main.stamp.buystamp.BuyStampActivity
 import ishopgo.com.exhibition.ui.main.stamp.listscanstamp.ListScanStampActivity
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampActivity
 import ishopgo.com.exhibition.ui.main.stamp.stampdistribution.StampDistributionActivity
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerActivity
+import ishopgo.com.exhibition.ui.main.stamp.stampwarning.StampWarningActivity
 import ishopgo.com.exhibition.ui.main.ticket.TicketActivity
 import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerActivity
 import ishopgo.com.exhibition.ui.main.visitors.VisitorsActivity
@@ -239,8 +241,16 @@ class AccountFragment : BaseFragment() {
                 openStampDistribution()
             }
 
+            Const.AccountAction.ACTION_BUY_STAMP -> {
+                openStampOrders()
+            }
+
             Const.AccountAction.ACTION_LIST_SCAN_STAMP -> {
                 openListScanStamp()
+            }
+
+            Const.AccountAction.ACTION_STAMP_WARNING -> {
+                openListStampWarning()
             }
 
             Const.AccountAction.ACTION_CREATE_STAMP -> {
@@ -436,6 +446,13 @@ class AccountFragment : BaseFragment() {
         }
     }
 
+    private fun openListStampWarning() {
+        context?.let {
+            val intent = Intent(it, StampWarningActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
     private fun openListScanStamp() {
         context?.let {
             val intent = Intent(it, ListScanStampActivity::class.java)
@@ -446,6 +463,13 @@ class AccountFragment : BaseFragment() {
     private fun openStampDistribution() {
         context?.let {
             val intent = Intent(it, StampDistributionActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
+    private fun openStampOrders() {
+        context?.let {
+            val intent = Intent(it, BuyStampActivity::class.java)
             startActivity(intent)
         }
     }

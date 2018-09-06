@@ -8,7 +8,7 @@
     android:background="@color/md_white_1000">
 
     <TextView
-        android:id="@+id/tv_change_name"
+        android:id="@+id/tv_Oganic"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -16,7 +16,7 @@
         android:layout_marginEnd="8dp"
         android:background="@drawable/bg_white_black"
         android:padding="16dp"
-        android:text="Thay đổi tên"
+        android:text="Oganic"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,49 +25,49 @@
 
 
     <TextView
-        android:id="@+id/tv_change_avatar"
+        android:id="@+id/tv_Vietgap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/bg_white_black"
         android:padding="16dp"
-        android:text="Đổi ảnh đại diện"
+        android:text="Vietgap"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_Oganic"
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:id="@+id/tv_change_banner"
+        android:id="@+id/tv_Globalgap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/bg_white_black"
         android:padding="16dp"
-        android:text="Đổi ảnh bìa"
+        android:text="Globalgap"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_avatar" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_Vietgap" />
 
     <TextView
-        android:id="@+id/tv_update_profile"
+        android:id="@+id/tv_Eurepgap"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@drawable/bg_white_black"
         android:padding="16dp"
-        android:text="Cập nhật thông tin"
+        android:text="Eurepgap"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_change_banner"
+        app:layout_constraintTop_toBottomOf="@+id/tv_Globalgap"
         tools:ignore="HardcodedText" />
 </android.support.constraint.ConstraintLayout>

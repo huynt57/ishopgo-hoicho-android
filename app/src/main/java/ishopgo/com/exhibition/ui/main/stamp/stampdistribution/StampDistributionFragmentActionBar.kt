@@ -27,12 +27,21 @@ class StampDistributionFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, StampDistributionFragment.newInstance(Bundle())).commit()
+                .replace(R.id.view_main_content, StampDistributionFragment.newInstance(Bundle()), "StampDistributionFragment").commit()
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Quản lý phân lô")
+        toolbar.setCustomTitle("Kích hoạt lô tem")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
+
+        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val fragment = childFragmentManager.findFragmentByTag(StampDistributionFragment.TAG)
+            if (fragment != null) {
+                val shareFragment = fragment as StampDistributionFragment
+                shareFragment.openAssignNoStamp()
+            }
+        }
     }
 }

@@ -15,6 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.JsonSyntaxException
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.*
@@ -38,7 +40,6 @@ import ishopgo.com.exhibition.ui.main.product.icheckproduct.shop.IcheckShopActiv
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_icheck_product_detail.*
-import kotlinx.android.synthetic.main.content_icheck_update_product.*
 
 class IcheckProductFragment : BaseFragment() {
 //    private var locationManager: LocationManager? = null
@@ -345,6 +346,20 @@ class IcheckProductFragment : BaseFragment() {
 
         val vendor = product.provideProductVendor()
         if (vendor != null) {
+
+            val country = vendor.country
+            if (country != null) {
+                linear_region.visibility = View.VISIBLE
+
+                view_product_madeIn.text =  "<b>Xuất xứ: <font color=\"#00c853\">${country.name ?: ""}</font></b>".asHtml()
+                Glide.with(context)
+                        .load(country.ensign ?: "")
+                        .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
+                        .into(view_product_region)
+            } else {
+                linear_region.visibility = View.GONE
+            }
+
             container_shop_info.visibility = View.VISIBLE
             view_shop_name.text = vendor.name
             tv_shop_address.text = vendor.address
@@ -354,7 +369,7 @@ class IcheckProductFragment : BaseFragment() {
 
             val isVerify = vendor.isVerify ?: false
 
-            if (isVerify){
+            if (isVerify) {
                 view_product_verify.visibility = View.VISIBLE
                 view_product_not_verify.visibility = View.GONE
                 view_product_verify.text = "Đã xác thực"
@@ -449,6 +464,7 @@ class IcheckProductFragment : BaseFragment() {
 
         override fun convert(from: IcheckProduct): ProductDetailProvider {
             return object : ProductDetailProvider {
+
                 override fun provideProductReviewComment(): CharSequence {
                     return "Đánh giá (${from.reviewCount ?: 0})"
                 }

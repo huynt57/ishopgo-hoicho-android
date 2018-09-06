@@ -33,7 +33,7 @@ class StampManagerAdapter : ClickableAdapter<StampManager>() {
 
             val convert = converter.convert(data)
             itemView.apply {
-                img_qrCode.setImageBitmap(QRCode.from(convert.provideCode().toString()).withSize(300, 300).bitmap())
+                img_qrCode.setImageBitmap(QRCode.from("http://${resources.getString(R.string.app_host)}/check/${convert.provideCode()}").withSize(300, 300).bitmap())
 
                 tv_qrCode.text = convert.provideCode()
                 tv_dateCreate.text = convert.provideDate()

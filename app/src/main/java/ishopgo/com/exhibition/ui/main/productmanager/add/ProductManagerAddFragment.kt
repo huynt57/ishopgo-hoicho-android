@@ -8,6 +8,7 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -16,6 +17,7 @@ import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -27,6 +29,8 @@ import android.widget.TextView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.zhy.view.flowlayout.FlowLayout
+import com.zhy.view.flowlayout.TagAdapter
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.response.Brand
@@ -94,6 +98,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private var listDescriptionGiaiPhap: ArrayList<Description> = ArrayList()
     private var typeCamera = 0
     private var typeImages = 0
+    private val listChungNhan = mutableListOf<String>()
 
     companion object {
         const val TAG = "ProductManagerFragment"
@@ -158,7 +163,7 @@ class ProductManagerAddFragment : BaseFragment() {
         edit_product_donViSX.setOnClickListener { getBooth(edit_product_donViSX, TYPE_DONVI_SANXUAT) }
         edit_product_donViNK.setOnClickListener { getBooth(edit_product_donViNK, TYPE_DONVI_NHAPKHAU) }
         edit_product_CosoCB.setOnClickListener { getBooth(edit_product_CosoCB, TYPE_COSO_CHEBIEN) }
-
+        edit_product_chungNhan.setOnClickListener { getChungNhan(edit_product_chungNhan) }
         img_add_solution_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_GIAIPHAP) }
         img_add_supplies_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_VATTU) }
 
@@ -328,6 +333,7 @@ class ProductManagerAddFragment : BaseFragment() {
         setupRecyclerviewDescriptionCSCB()
         setupRecyclerviewDescriptionVatTu()
         setupRecyclerviewDescriptionGiaiPhap()
+        setupFlowChungChi()
         loadSanPhamLienQuan()
         loadVatTu()
         loadGiaiPhap()
@@ -461,6 +467,7 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         }
     }
+
     private fun setupRecyclerviewDescriptionCSCB() {
         context?.let {
             rv_description_cscb.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
@@ -472,6 +479,34 @@ class ProductManagerAddFragment : BaseFragment() {
                     adapterDescriptionCSCB.replaceAll(listDescriptionCSCB)
                 }
             }
+        }
+    }
+
+    private fun setupFlowChungChi() {
+        container_receivers.adapter = object : TagAdapter<String>(listChungNhan) {
+            override fun getView(parent: FlowLayout?, position: Int, t: String?): View {
+                val view = layoutInflater.inflate(R.layout.add_tag_flow, container_receivers, false) as TextView
+                view.text = t ?: ""
+
+                val icCheckbox = AppCompatResources.getDrawable(view.context, R.drawable.ic_close_white_16dp)
+                view.setCompoundDrawablesWithIntrinsicBounds(null, null, icCheckbox, null)
+                return view
+            }
+        }
+
+        container_receivers.setOnTagClickListener { view, position, parent ->
+            run {
+                if (position < listChungNhan.size)
+                    listChungNhan.removeAt(position)
+                else
+                    listChungNhan.removeAt(listChungNhan.size - 1)
+
+                parent.removeView(view)
+                if (listChungNhan.size == 0) {
+                    container_receivers.visibility = View.GONE
+                }
+            }
+            true
         }
     }
 
@@ -736,6 +771,77 @@ class ProductManagerAddFragment : BaseFragment() {
         intent.action = Intent.ACTION_GET_CONTENT
         if (!CASE_PICK_IMAGE) intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent, Const.RequestCode.RC_PICK_IMAGE)
+    }
+
+    private fun getChungNhan(view: TextView) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn chứng nhận")
+                    .customView(R.layout.dialog_product_cert, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val tv_Oganic = dialog.findViewById(R.id.tv_Oganic) as TextView
+            val tv_Vietgap = dialog.findViewById(R.id.tv_Vietgap) as TextView
+            val tv_Globalgap = dialog.findViewById(R.id.tv_Globalgap) as TextView
+            val tv_Eurepgap = dialog.findViewById(R.id.tv_Eurepgap) as TextView
+
+//            for (i in listChungNhan.indices) {
+//                if (listChungNhan[i] == tv_Oganic.text.toString()) {
+//                    tv_Oganic.isEnabled = false
+//                    tv_Oganic.setBackgroundColor(Color.GRAY)
+//                } else {
+//                    tv_Oganic.setBackgroundColor (Color.WHITE)
+//                    tv_Oganic.isEnabled = true
+//                }
+//
+//                if (listChungNhan[i] == tv_Vietgap.text.toString()) {
+//                    tv_Vietgap.isEnabled = false
+//                    tv_Vietgap.setBackgroundColor(Color.GRAY)
+//                } else {
+//                    tv_Vietgap.setBackgroundColor (Color.WHITE)
+//                    tv_Vietgap.isEnabled = true
+//                }
+//
+//                if (listChungNhan[i] == tv_Globalgap.text.toString()) {
+//                    tv_Globalgap.isEnabled = false
+//                    tv_Globalgap.setBackgroundColor(Color.GRAY)
+//                } else {
+//                    tv_Globalgap.setBackgroundColor (Color.WHITE)
+//                    tv_Globalgap.isEnabled = true
+//                }
+//
+//                if (listChungNhan[i] == tv_Eurepgap.text.toString()) {
+//                    tv_Eurepgap.isEnabled = false
+//                    tv_Eurepgap.setBackgroundColor(Color.GRAY)
+//                } else {
+//                    tv_Eurepgap.setBackgroundColor (Color.WHITE)
+//                    tv_Eurepgap.isEnabled = true
+//                }
+//            }
+
+            tv_Oganic.setOnClickListener {
+                    listChungNhan.add(tv_Oganic.text.toString())
+                    dialog.dismiss()
+            }
+            tv_Vietgap.setOnClickListener {
+                    listChungNhan.add(tv_Vietgap.text.toString())
+                    dialog.dismiss()
+            }
+            tv_Globalgap.setOnClickListener {
+                    listChungNhan.add(tv_Globalgap.text.toString())
+                    dialog.dismiss()
+            }
+            tv_Eurepgap.setOnClickListener {
+                    listChungNhan.add(tv_Eurepgap.text.toString())
+                    dialog.dismiss()
+            }
+
+            dialog.show()
+        }
     }
 
     private fun getBrands(view: TextView) {
@@ -1083,11 +1189,11 @@ class ProductManagerAddFragment : BaseFragment() {
                         postMediasCert.add(postMedia)
                 }
             }
-            if (typeImages == TYPE_SELECTED_IMAGES){
+            if (typeImages == TYPE_SELECTED_IMAGES) {
                 adapterImages.replaceAll(postMedias)
                 rv_product_images.visibility = View.VISIBLE
             }
-            if (typeImages == TYPE_SELECTED_CERT){
+            if (typeImages == TYPE_SELECTED_CERT) {
                 adapterImagesCert.replaceAll(postMediasCert)
                 rv_product_cert.visibility = View.VISIBLE
             }
@@ -1122,12 +1228,12 @@ class ProductManagerAddFragment : BaseFragment() {
                     val postMedia = PostMedia()
 
                     postMedia.uri = it
-                    if (typeCamera == TYPE_CAMERA_IMAGES){
+                    if (typeCamera == TYPE_CAMERA_IMAGES) {
                         postMedias.add(postMedia)
                         adapterImages.replaceAll(postMedias)
                         rv_product_images.visibility = View.VISIBLE
                     }
-                    if (typeCamera == TYPE_CAMERA_CERT){
+                    if (typeCamera == TYPE_CAMERA_CERT) {
                         postMediasCert.add(postMedia)
                         adapterImagesCert.replaceAll(postMediasCert)
                         rv_product_cert.visibility = View.VISIBLE

@@ -29,6 +29,7 @@ import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
@@ -137,6 +138,11 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        tv_contact.setPhone("Không quét được mã xin vui lòng gọi: 0985771133","0985771133")
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
@@ -173,11 +179,13 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
         viewModel.scanIcheckResult.observe(this, Observer { icheckProduct ->
             icheckProduct?.let {
+                hideProgressDialog()
                 showProduct(it)
             }
         })
         viewModel.totalNoResult.observe(this, Observer { a ->
             a?.let {
+                hideProgressDialog()
                 showDialogNoResult(it)
                 zxing_barcode_scanner.decodeSingle(this@ScanFragment)
             }
@@ -185,6 +193,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
         viewModel.linkQRCode.observe(this, Observer { p ->
             p?.let {
+                hideProgressDialog()
                 openDeeplink(it)
 //                zxing_barcode_scanner.decodeSingle(this)
             }
@@ -222,6 +231,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     private fun requestIcheckProduct(qrCode: String?) {
         qrCode?.let {
+            showProgressDialog()
             viewModel.loadIcheckProduct(it)
         }
     }
@@ -259,11 +269,14 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         if (qrCode!!.toLowerCase().startsWith("http")) {
             val code = qrCode.replace("http://${resources.getString(R.string.app_host)}/check/", "")
             Log.d(TAG, "processData: Code = [${code}]")
-            if (code != qrCode)
-                viewModel.getLinkQRCode(code)
-            else {
+            if (code != qrCode) {
+                val requestLinkQrCode = String.format("http://ishopgo.expo360.vn/url/%s", code)
+                viewModel.getLinkQRCode(requestLinkQrCode)
+            } else {
                 openDeeplink(qrCode)
             }
+            showProgressDialog()
+
             return
         }
 
@@ -285,6 +298,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
     }
 
     private fun openDeeplink(code: String) {
+        hideProgressDialog()
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(code))
         if (context != null && intent.resolveActivity(context!!.packageManager) != null)
             startActivity(intent)

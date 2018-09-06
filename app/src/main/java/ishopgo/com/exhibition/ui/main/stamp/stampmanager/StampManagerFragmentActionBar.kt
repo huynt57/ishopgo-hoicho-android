@@ -25,13 +25,12 @@ class StampManagerFragmentActionBar : BaseActionBarFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbars()
-
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, StampManagerFragment.newInstance(Bundle())).commit()
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Quản lý tem")
+        toolbar.setCustomTitle("Danh sách lô tem")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
     }

@@ -37,19 +37,20 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             items.add(AccountMenuItem(Const.AccountAction.ACTION_TICKET, R.drawable.ic_ticket, "Vé thăm quan của tôi"))
 //            items.add(AccountMenuItem(Const.AccountAction.ACTION_NOTIFICATION, R.drawable.ic_notification, "Quản lý thông báo"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_REFERENCES, R.drawable.ic_notification, "Thành viên đã giới thiệu"))
+            items.add(AccountMenuItem(Const.AccountAction.ACTION_BRAND_MANAGER, R.drawable.ic_brands, "Quản lý thương hiệu"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_SALE_POINT, R.drawable.ic_sale_point, "Quản lý điểm bán"))
             items.add(AccountMenuItem(Const.AccountAction.ACTION_ADMINISTRATOR, R.drawable.ic_authorities, "Quản trị viên gian hàng"))
 
             val childs = ArrayList<AccountMenuItem>()
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_BUY_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Đặt mua tem", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý lô tem", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Tạo lô tem in", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý phân lô", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Kích hoạt lô tem", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Quản lý tem", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Danh sách tem đã kích hoạt", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_WARNING, R.drawable.ic_qr_code_highlight_24dp, "Quản lý cảnh báo", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_WARNING, R.drawable.ic_qr_code_highlight_24dp, "Quản lý tem cảnh báo", isParent = false))
 
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_LIST_SCAN_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Danh sách người quét", isParent = false))
 
@@ -84,13 +85,13 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
             val childs = ArrayList<AccountMenuItem>()
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_BUY_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Đặt mua tem", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý lô tem", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Tạo lô tem in", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Quản lý phân lô", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Kích hoạt lô tem", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Quản lý tem", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Danh sách tem đã kích hoạt", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_WARNING, R.drawable.ic_qr_code_highlight_24dp, "Quản lý cảnh báo", isParent = false))
+            childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_WARNING, R.drawable.ic_qr_code_highlight_24dp, "Quản lý tem cảnh báo", isParent = false))
 
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_LIST_SCAN_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Danh sách người quét", isParent = false))
 

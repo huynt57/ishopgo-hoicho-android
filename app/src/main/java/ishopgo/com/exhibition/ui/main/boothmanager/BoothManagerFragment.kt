@@ -169,7 +169,7 @@ class BoothManagerFragment : BaseListFragment<List<BoothManager>, BoothManager>(
             imageData.compress(Bitmap.CompressFormat.PNG, 100, bos)
             bos.flush()
             bos.close()
-            toast("lưuLưu thành công\n$filePath")
+            toast("Lưu thành công\n$filePath")
             MediaScannerConnection.scanFile(requireContext(), arrayOf(filePath), null, null)
         } catch (e: FileNotFoundException) {
             toast("Không thành công")

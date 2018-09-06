@@ -135,3 +135,162 @@
     </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
+
+    <!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent">-->
+
+<!--<android.support.design.widget.AppBarLayout-->
+    <!--android:id="@+id/app_bar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="#fff"-->
+    <!--android:theme="@style/AppTheme.AppBarOverlay">-->
+
+    <!--<android.support.design.widget.CollapsingToolbarLayout-->
+        <!--android:id="@+id/collapsing_toolbar"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fitsSystemWindows="true"-->
+        <!--app:expandedTitleMarginEnd="64dp"-->
+        <!--app:expandedTitleMarginStart="48dp"-->
+        <!--app:layout_scrollFlags="scroll|exitUntilCollapsed">-->
+
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/view_image"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="0dp"-->
+                <!--app:layout_constraintDimensionRatio="2:1"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent"-->
+                <!--app:srcCompat="@drawable/image_placeholder" />-->
+
+            <!--<android.support.design.widget.FloatingActionButton-->
+                <!--android:id="@+id/view_zoom"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="28dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--app:fabSize="mini"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="@+id/view_image"-->
+                <!--app:srcCompat="@drawable/ic_zoom_out_map_white_24dp" />-->
+
+        <!--</android.support.constraint.ConstraintLayout>-->
+
+    <!--</android.support.design.widget.CollapsingToolbarLayout>-->
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/pinable_layout"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+
+        <!--<android.support.constraint.ConstraintLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <!--<android.support.design.widget.TabLayout-->
+                <!--android:id="@+id/view_tab_layout"-->
+                <!--style="@style/AppTheme.SinglelineTab"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@id/view_introduce"-->
+                <!--app:tabMode="fixed">-->
+
+                <!--<android.support.design.widget.TabItem-->
+                    <!--android:id="@+id/tab_expo_all"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Tất cả" />-->
+
+                <!--<android.support.design.widget.TabItem-->
+                    <!--android:id="@+id/tab_expo_isBuy"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Đã mua" />-->
+
+                <!--<android.support.design.widget.TabItem-->
+                    <!--android:id="@+id/tab_expo_empty"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Còn trống" />-->
+
+            <!--</android.support.design.widget.TabLayout>-->
+
+            <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
+                <!--android:id="@+id/view_introduce"-->
+                <!--android:layout_width="110dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:background="@drawable/bg_rounded_rectangle"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="8dp"-->
+                <!--android:singleLine="true"-->
+                <!--android:text="Giới thiệu"-->
+                <!--android:textColor="@color/colorPureWhite"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/view_get_ticket"-->
+                <!--app:layout_constraintHorizontal_bias="0.5"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
+                <!--android:id="@+id/view_get_ticket"-->
+                <!--android:layout_width="110dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:background="@drawable/bg_rounded_rectangle"-->
+                <!--app:backgroundTint="@color/colorAccent"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="8dp"-->
+                <!--android:text="Lấy vé"-->
+                <!--android:textColor="@color/colorPureWhite"-->
+                <!--app:layout_constraintEnd_toStartOf="@+id/view_fair_qrcode"-->
+                <!--app:layout_constraintHorizontal_bias="0.5"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/view_introduce"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
+                <!--android:id="@+id/view_fair_qrcode"-->
+                <!--android:layout_width="110dp"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:background="@drawable/bg_rounded_rectangle"-->
+                <!--android:gravity="center"-->
+                <!--android:padding="8dp"-->
+                <!--android:text="Mã QR"-->
+                <!--android:textColor="@color/colorPureWhite"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.5"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/view_get_ticket"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+        <!--</android.support.constraint.ConstraintLayout>-->
+
+    <!--</FrameLayout>-->
+
+<!--</android.support.design.widget.AppBarLayout>-->
+
+<!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+    <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/view_pager"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent" />-->
+
+<!--</FrameLayout>-->
+
+<!--</android.support.design.widget.CoordinatorLayout>-->
+

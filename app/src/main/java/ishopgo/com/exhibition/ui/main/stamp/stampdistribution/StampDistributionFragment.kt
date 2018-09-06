@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.stamp.stampdistribution
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
@@ -10,6 +11,7 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.main.stamp.nostamp.assign.NoStampAssignActivity
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerAdapter
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -31,6 +33,13 @@ class StampDistributionFragment : BaseListFragment<List<StampDistribution>, Stam
             view_recyclerview.scheduleLayoutAnimation()
         } else
             adapter.addAll(data)
+    }
+
+    fun openAssignNoStamp() {
+        val intent = Intent(context, NoStampAssignActivity::class.java)
+//        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+//        intent.putExtra(Const.TransferKey.EXTRA_STAMP_COUNT, data.quantityExists)
+        startActivityForResult(intent, Const.RequestCode.ASSIGN_NO_STAMP)
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<StampDistribution> {
@@ -67,7 +76,7 @@ class StampDistributionFragment : BaseListFragment<List<StampDistribution>, Stam
     }
 
     companion object {
-
+        const val TAG = "StampDistributionFragment"
         fun newInstance(params: Bundle): StampDistributionFragment {
             val fragment = StampDistributionFragment()
             fragment.arguments = params

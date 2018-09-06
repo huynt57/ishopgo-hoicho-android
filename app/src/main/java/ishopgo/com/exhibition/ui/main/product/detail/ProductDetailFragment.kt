@@ -7,7 +7,9 @@ import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
@@ -284,7 +286,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_wholesale.visibility = View.VISIBLE
             view_product_wholesale.text = convert.provideWholesale()
 
-            if (convert.provideWholesaleLimit().isNotEmpty()){
+            if (convert.provideWholesaleLimit().isNotEmpty()) {
                 view_product_wholesale_limit.visibility = View.VISIBLE
                 view_product_wholesale_limit.text = convert.provideWholesaleLimit()
             }
@@ -838,7 +840,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideWholesaleLimit(): CharSequence {
-                    return if (from.wholesaleCountProduct?.isNotEmpty() == true) "Mua tối thiểu <b><font color=\"red\">${from.wholesaleCountProduct}</font></b>".asHtml()
+                    return if (from.wholesaleCountProduct?.isNotEmpty() == true) "<b>Mua tối thiểu <font color=\"red\">${from.wholesaleCountProduct}</font></b>".asHtml()
                     else ""
                 }
 
@@ -1291,7 +1293,16 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun loadData(productId: Long) {
-        viewModel.loadData(productId, stampId, stampCode)
+        val deviceId = if (stampId.isNotEmpty() && stampCode.isNotEmpty()) {
+            context?.let {
+                var device = Settings.Secure.getString(it.contentResolver, Settings.Secure.ANDROID_ID)
+                if (device.isNullOrEmpty()) device = Build.SERIAL
+                if (device.isEmpty()) device = Build.DISPLAY
+                device
+            }
+        } else ""
+
+        viewModel.loadData(productId, stampId, stampCode, deviceId ?: "")
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         container_viewed.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE

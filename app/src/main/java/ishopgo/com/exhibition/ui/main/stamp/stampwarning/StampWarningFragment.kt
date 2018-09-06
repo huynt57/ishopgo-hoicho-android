@@ -1,24 +1,30 @@
 package ishopgo.com.exhibition.ui.main.stamp.stampwarning
 
+import android.arch.lifecycle.Observer
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
+import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.StampListWarning
 import ishopgo.com.exhibition.domain.response.StampManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerAdapter
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class StampWarningFragment : BaseListFragment<List<StampManager>, StampManager>() {
+class StampWarningFragment : BaseListFragment<List<StampListWarning>, StampListWarning>() {
     override fun initLoading() {
         firstLoad()
     }
 
-    override fun populateData(data: List<StampManager>) {
+    override fun populateData(data: List<StampListWarning>) {
         if (reloadData) {
             if (data.isEmpty()) {
                 view_empty_result_notice.visibility = View.VISIBLE
@@ -31,11 +37,84 @@ class StampWarningFragment : BaseListFragment<List<StampManager>, StampManager>(
             adapter.addAll(data)
     }
 
-    override fun itemAdapter(): BaseRecyclerViewAdapter<StampManager> {
-        return StampWarningAdapter()
+    override fun itemAdapter(): BaseRecyclerViewAdapter<StampListWarning> {
+        val adapter = StampWarningAdapter()
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<StampListWarning> {
+            override fun click(position: Int, data: StampListWarning, code: Int) {
+                context?.let {
+                    if (data.statusWarning == null)
+                        showDialogStampWarningEviction(data.stampId ?: 0L, data.code ?: "", data.productId ?: 0L)
+                    else {
+                        showDialogStampWarningRestore(data.code ?: "")
+                    }
+                }
+            }
+        }
+        return adapter
     }
 
-    override fun obtainViewModel(): BaseListViewModel<List<StampManager>> {
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        (viewModel as StampWarningViewModel).evictionSuccess.observe(this, Observer { p ->
+            p?.let {
+                hideProgressDialog()
+                firstLoad()
+                toast("Thu hồi tem thành công")
+            }
+        })
+
+        (viewModel as StampWarningViewModel).restoreSuccess.observe(this, Observer { p ->
+            p?.let {
+                hideProgressDialog()
+                firstLoad()
+                toast("Phục hồi tem thành công")
+            }
+        })
+    }
+
+    private fun showDialogStampWarningEviction(stampId: Long, code: String, productId: Long) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Nội dung cảnh báo thu hồi $code")
+                    .customView(R.layout.dialog_note_stamp_warning, false)
+                    .positiveText("Thu hồi")
+                    .onPositive { dialog, which ->
+                        showProgressDialog()
+                        val note = dialog.findViewById(R.id.edit_stamp_warning_note) as TextInputEditText
+                        (viewModel as StampWarningViewModel).evictionStampWarning(stampId, code, productId, note.text.toString())
+                        dialog.dismiss()
+                    }
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+            dialog.show()
+        }
+    }
+
+    private fun showDialogStampWarningRestore(code: String) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Nội dung cảnh báo phục hồi $code")
+                    .customView(R.layout.dialog_note_stamp_warning, false)
+                    .positiveText("Phục hồi")
+                    .onPositive { dialog, which ->
+                        showProgressDialog()
+                        val note = dialog.findViewById(R.id.edit_stamp_warning_note) as TextInputEditText
+                        (viewModel as StampWarningViewModel).restoreStampWarning(code, note.text.toString())
+                        dialog.dismiss()
+                    }
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+            dialog.show()
+        }
+    }
+
+    override fun obtainViewModel(): BaseListViewModel<List<StampListWarning>> {
         return obtainViewModel(StampWarningViewModel::class.java, false)
     }
 

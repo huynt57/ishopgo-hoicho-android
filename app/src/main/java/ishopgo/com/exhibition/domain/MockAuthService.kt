@@ -24,6 +24,35 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getStampOrderStatistical(): Single<BaseResponse<StampOrdersStatistical>> {
+        val response = BaseResponse<StampOrdersStatistical>()
+        response.status = 1
+        return delegate.returningResponse(response).getStampOrderStatistical()    }
+
+    override fun getStampOrders(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampListBuy>>> {
+        val response = BaseResponse<List<StampListBuy>>()
+        response.status = 1
+        return delegate.returningResponse(response).getStampOrders(fields)
+    }
+
+    override fun evictionStampWarning(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).evictionStampWarning(body)
+    }
+
+    override fun restoreStampWarning(code: String, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).restoreStampWarning(code, body)
+    }
+
+    override fun loadStampWarning(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampListWarning>>> {
+        val response = BaseResponse<List<StampListWarning>>()
+        response.status = 1
+        return delegate.returningResponse(response).loadStampWarning(fields)
+    }
+
     override fun loadListScanStamp(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>> {
         val response = BaseResponse<List<StampUserListScan>>()
         response.status = 1

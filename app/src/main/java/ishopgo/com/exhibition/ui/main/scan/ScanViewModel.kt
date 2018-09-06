@@ -49,8 +49,8 @@ class ScanViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var linkQRCode = MutableLiveData<String>()
 
-    fun getLinkQRCode(code: String) {
-        addDisposable(noAuthService.getStampLinkScan(code)
+    fun getLinkQRCode(url: String) {
+        addDisposable(noAuthService.getStampLinkScan(url)
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<String>() {
                     override fun success(data: String?) {
@@ -58,7 +58,7 @@ class ScanViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     }
 
                     override fun failure(status: Int, message: String) {
-                        resolveError(status, message)
+                        linkQRCode.postValue(url)
                     }
                 }))
     }

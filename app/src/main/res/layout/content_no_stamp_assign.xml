@@ -18,6 +18,23 @@
             android:layout_marginTop="16dp">
 
             <android.support.design.widget.TextInputEditText
+                android:id="@+id/edit_no_stamp"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Chọn lô tem" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp">
+
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/edit_no_stamp_thuongHieu"
                 style="@style/AppTheme.EnableInputField.DisableInput"
                 android:layout_width="match_parent"
@@ -87,6 +104,15 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:text="Số lượng tem còn lại" />
+
+        <Switch
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:checked="false"
+            android:text="Loại tem: Không phủ cào"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

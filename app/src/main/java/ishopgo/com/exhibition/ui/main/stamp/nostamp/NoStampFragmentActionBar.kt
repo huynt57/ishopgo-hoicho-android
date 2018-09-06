@@ -31,7 +31,7 @@ class NoStampFragmentActionBar : BaseActionBarFragment() {
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Quản lý lô tem")
+        toolbar.setCustomTitle("Danh sách lô tem")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
 

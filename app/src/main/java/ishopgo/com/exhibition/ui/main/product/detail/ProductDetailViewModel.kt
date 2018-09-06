@@ -102,7 +102,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    fun loadData(productId: Long, stampId: String, stampCode: String) {
+    fun loadData(productId: Long, stampId: String, stampCode: String, deviceId: String) {
 
         val fieldsLoadDetail = mutableMapOf<String, Any>()
         if (stampId.isNotBlank()) {
@@ -110,6 +110,10 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
         if (stampCode.isNotBlank()) {
             fieldsLoadDetail["stampCode"] = stampCode
+        }
+
+        if (deviceId.isNotBlank()) {
+            fieldsLoadDetail["device_id"] = deviceId
         }
 
         val d = if (UserDataManager.currentUserId > 0) authService.getProductDetail(productId, fieldsLoadDetail) else noAuthService.getProductDetail(productId, fieldsLoadDetail)

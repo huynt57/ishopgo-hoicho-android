@@ -178,8 +178,8 @@ class ApiService {
         @GET("agri/get-product-diary")
         fun getProductDiary(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<DiaryProduct>>>
 
-        @GET("expo/stamp/check/{code}")
-        fun getStampLinkScan(@Path("code") codeQr: String): Single<BaseResponse<String>>
+        @GET
+        fun getStampLinkScan(@Url url: String): Single<BaseResponse<String>>
 
         @GET("expo/get-config-footer")
         fun getConfigFooter(): Single<BaseResponse<String>>
@@ -436,8 +436,20 @@ class ApiService {
         @GET("expo/stamp/scan")
         fun loadListScanStamp(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>>
 
-//        @GET("expo/stamp/warning")
-//        fun loadStampWarning(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampUserListScan>>>
+        @GET("expo/stamp/warning")
+        fun loadStampWarning(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampListWarning>>>
+
+        @POST("expo/stamp/warning")
+        fun evictionStampWarning(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @PUT("expo/stamp/warning/{code}")
+        fun restoreStampWarning(@Path("code") code: String, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @GET("expo/stamp/orders")
+        fun getStampOrders(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampListBuy>>>
+
+        @GET("expo/stamp/orders/statistical")
+        fun getStampOrderStatistical(): Single<BaseResponse<StampOrdersStatistical>>
     }
 
 

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_white_black_bottom">
+
+    <ImageView
+        android:id="@+id/img_qrCode"
+        android:layout_width="70dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_thuHoi"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:src="@drawable/ic_qr_code" />
+
+    <TextView
+        android:id="@+id/tv_qrCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/tv_dateCreate"
+        app:layout_constraintStart_toEndOf="@+id/img_qrCode"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Mã tem" />
+
+    <TextView
+        android:id="@+id/tv_dateCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_qrCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="14/08/2018" />
+
+    <TextView
+        android:id="@+id/tv_productName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/img_qrCode"
+        app:layout_constraintTop_toBottomOf="@+id/tv_qrCode"
+        tools:text="Tên sản phẩm" />
+
+    <TextView
+        android:id="@+id/tv_countScan"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_countProple"
+        app:layout_constraintEnd_toStartOf="@+id/tv_countProple"
+        app:layout_constraintStart_toEndOf="@+id/img_qrCode"
+        app:layout_constraintTop_toBottomOf="@+id/tv_productName"
+        tools:text="Số lượng quét" />
+
+    <TextView
+        android:id="@+id/tv_countProple"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_productName"
+        tools:text="Số người quét" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_thuHoi"
+        style="@style/AppTheme.ActionButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="Thu hồi"
+        android:textColor="@color/md_white_1000"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_countProple"
+        tools:ignore="HardcodedText,MissingConstraints" />
+
+</android.support.constraint.ConstraintLayout>
