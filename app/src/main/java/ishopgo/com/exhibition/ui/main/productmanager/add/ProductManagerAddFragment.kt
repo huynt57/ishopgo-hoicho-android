@@ -58,6 +58,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private lateinit var searchProductViewModel: SearchProductManagerViewModel
     private val adapterBrands = BrandsAdapter()
     private val adapterBooth = BoothAdapter()
+    private val adapterDonViCungUng = BoothAdapter()
     private val adapterDonViSanXuat = BoothAdapter()
     private val adapterDonViNhapKhau = BoothAdapter()
     private val adapterCoSoCheBien = BoothAdapter()
@@ -611,11 +612,13 @@ class ProductManagerAddFragment : BaseFragment() {
                     adapterCoSoCheBien.replaceAll(it)
                     adapterDonViSanXuat.replaceAll(it)
                     adapterDonViNhapKhau.replaceAll(it)
+                    adapterDonViCungUng.replaceAll(it)
                 } else {
                     adapterBooth.addAll(it)
                     adapterCoSoCheBien.addAll(it)
                     adapterDonViSanXuat.addAll(it)
                     adapterDonViNhapKhau.addAll(it)
+                    adapterDonViCungUng.addAll(it)
                 }
             }
         })
@@ -1021,6 +1024,45 @@ class ProductManagerAddFragment : BaseFragment() {
             }
 
             dialog.show()
+        }
+    }
+
+    private fun getDonViCungUng(view: TextView) {
+        context?.let {
+
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn đơn vị trong chuỗi cung ứng")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_search.layoutManager = layoutManager
+
+                rv_search.adapter = adapterDonViCungUng
+            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    loadMoreProvider(totalItemsCount)
+                }
+            })
+            adapterDonViCungUng.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
+                        gianHangId = data.id
+                        view.text = data.boothName ?: ""
+                        view.error = null
+                    }
+                }
+            }
         }
     }
 
