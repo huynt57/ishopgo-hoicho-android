@@ -450,6 +450,12 @@ class ApiService {
 
         @GET("expo/stamp/orders/statistical")
         fun getStampOrderStatistical(): Single<BaseResponse<StampOrdersStatistical>>
+
+        @GET("expo/get-list-relate-shops/{id}")
+        fun getBoothRelated(@Path("id") id: Long): Single<BaseResponse<List<BoothManager>>>
+
+        @GET("expo/get-images-from-config")
+        fun getImagesForConfig(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<CertImages>>>
     }
 
 

@@ -118,7 +118,7 @@ open class BaseFragment : Fragment() {
                 }
                 BaseErrorSignal.ERROR_SERVER -> {
                     MaterialDialog.Builder(it)
-                            .content("Lỗi hệ thống. Liên lạc với nhà quản trị để được hỗ trợ.")
+                            .content("Hệ thống đang được cập nhật. Vui lòng khởi động lại hoặc quản lại sau.")
                             .positiveText("OK")
                             .show()
                 }

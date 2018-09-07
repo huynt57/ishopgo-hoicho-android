@@ -24,10 +24,22 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun getImagesForConfig(fields: MutableMap<String, Any>): Single<BaseResponse<List<CertImages>>> {
+        val response = BaseResponse<List<CertImages>>()
+        response.status = 1
+        return delegate.returningResponse(response).getImagesForConfig(fields)    }
+
+    override fun getBoothRelated(id: Long): Single<BaseResponse<List<BoothManager>>> {
+        val response = BaseResponse<List<BoothManager>>()
+        response.status = 1
+        return delegate.returningResponse(response).getBoothRelated(id)
+    }
+
     override fun getStampOrderStatistical(): Single<BaseResponse<StampOrdersStatistical>> {
         val response = BaseResponse<StampOrdersStatistical>()
         response.status = 1
-        return delegate.returningResponse(response).getStampOrderStatistical()    }
+        return delegate.returningResponse(response).getStampOrderStatistical()
+    }
 
     override fun getStampOrders(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampListBuy>>> {
         val response = BaseResponse<List<StampListBuy>>()

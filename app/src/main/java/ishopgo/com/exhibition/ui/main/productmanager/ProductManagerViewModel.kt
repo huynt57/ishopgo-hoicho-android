@@ -73,7 +73,8 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                              listAnh: ArrayList<PostMedia>, listDanhMuc: ArrayList<Category>, listVatTu: ArrayList<Product>, listGiaiPhap: ArrayList<Product>,
                              listSpLienQuan: ArrayList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert: ArrayList<PostMedia>,
                              donViSXId: Long, donViNKId: Long, coSoCBId: Long, listDescriptionCSCB: ArrayList<Description>,
-                             listDescriptionVatTu: ArrayList<Description>, listDescriptionGiaiPhap: ArrayList<Description>, ghiChu_vc: String) {
+                             listDescriptionVatTu: ArrayList<Description>, listDescriptionGiaiPhap: ArrayList<Description>, ghiChu_vc: String,
+                             chungNhan: ArrayList<String>, chuoiCungUng: ArrayList<BoothManager>, tags: String) {
 
 
         val builder = MultipartBody.Builder()
@@ -158,6 +159,23 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         builder.addFormDataPart("is_baotieu", isBaoTieu.toString())
         builder.addFormDataPart("status", trangThaiHT.toString())
         builder.addFormDataPart("is_featured", spNoiBat.toString())
+
+        if (tags.isNotEmpty())
+            builder.addFormDataPart("tags", tags)
+
+        if (!chungNhan.isEmpty()) {
+            var chungNhanString = ""
+            for (i in chungNhan.indices) {
+                chungNhanString = "$chungNhan, ${chungNhan[i]}"
+            }
+            builder.addFormDataPart("chung_nhan", chungNhanString)
+        }
+
+        if (!chuoiCungUng.isEmpty()) {
+            for (i in chuoiCungUng.indices) {
+                builder.addFormDataPart("relate_shops[]", chuoiCungUng[i].id.toString())
+            }
+        }
 
         if (!listDescriptionCSCB.isEmpty()) {
             for (i in listDescriptionCSCB.indices) {
@@ -524,6 +542,40 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                         }
                     }))
         }
+    }
+
+    var dataBoothRelated = MutableLiveData<List<BoothManager>>()
+
+    fun getBoothRelated(boothId: Long) {
+        addDisposable(authService.getBoothRelated(boothId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                    override fun success(data: List<BoothManager>?) {
+                        dataBoothRelated.postValue(data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    var dataCertImages = MutableLiveData<List<CertImages>>()
+
+    fun getCertImagesConfig(providerId: Long) {
+        val fields = mutableMapOf<String, Any>()
+        fields["provider_id"] = providerId
+        addDisposable(authService.getImagesForConfig(fields)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<CertImages>>() {
+                    override fun success(data: List<CertImages>?) {
+                        dataCertImages.postValue(data ?: mutableListOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
     }
 
     var dataProductDetail = MutableLiveData<ProductDetail>()

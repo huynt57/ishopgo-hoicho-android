@@ -46,6 +46,18 @@ class ProductManagerAddActivity : BaseSingleFragmentActivity() {
                         .commit()
             }
         })
+
+        viewModel.showCertImages.observe(this, Observer { p ->
+            p?.let {
+                val params = Bundle()
+                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.fragment_container, FilterSearchFragment.newInstance(params))
+                        .addToBackStack(FilterSearchFragment.TAG)
+                        .commit()
+            }
+        })
     }
 
     override fun onBackPressed() {

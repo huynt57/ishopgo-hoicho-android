@@ -6,6 +6,12 @@ import ishopgo.com.exhibition.model.FilterResult
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
 class SearchProductManagerViewModel : BaseApiViewModel() {
+    var showCertImages = MutableLiveData<Long>()
+
+    fun openSearchCertImages(boothId:Long) {
+        showCertImages.postValue(boothId)
+    }
+
     var showSearchSp = MutableLiveData<Int>()
 
     fun openSearchSp(type: Int) {

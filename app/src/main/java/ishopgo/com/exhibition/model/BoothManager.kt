@@ -42,4 +42,7 @@ class BoothManager : IdentityData() {
     @SerializedName("content")
     @Expose
     var content: String? = null
+    @SerializedName("title")
+    @Expose
+    var title: String? = null
 }

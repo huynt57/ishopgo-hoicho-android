@@ -52,6 +52,7 @@ import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
@@ -59,6 +60,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private val adapterBrands = BrandsAdapter()
     private val adapterBooth = BoothAdapter()
     private val adapterDonViCungUng = BoothAdapter()
+    private val adapterDonViCungUng_2 = BoothAdapter()
     private val adapterDonViSanXuat = BoothAdapter()
     private val adapterDonViNhapKhau = BoothAdapter()
     private val adapterCoSoCheBien = BoothAdapter()
@@ -71,6 +73,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private var adapterVatTu = SalePointProductAdapter(0.4f)
     private var adapterGiaiPhap = SalePointProductAdapter(0.4f)
     private var listCategory = ArrayList<Category>()
+    private var listRelatedShop = ArrayList<BoothManager>()
 
     private var reloadBrands = false
     private var reloadProvider = false
@@ -99,7 +102,7 @@ class ProductManagerAddFragment : BaseFragment() {
     private var listDescriptionGiaiPhap: ArrayList<Description> = ArrayList()
     private var typeCamera = 0
     private var typeImages = 0
-    private val listChungNhan = mutableListOf<String>()
+    private val listChungNhan = ArrayList<String>()
 
     companion object {
         const val TAG = "ProductManagerFragment"
@@ -131,6 +134,12 @@ class ProductManagerAddFragment : BaseFragment() {
         const val TYPE_DONVI_SANXUAT: Int = 1
         const val TYPE_DONVI_NHAPKHAU: Int = 2
         const val TYPE_COSO_CHEBIEN: Int = 3
+
+        const val TYPE_DONVI_CAP_1: Int = 0
+        const val TYPE_DONVI_CAP_2: Int = 1
+        const val TYPE_DONVI_CAP_3: Int = 2
+        const val TYPE_DONVI_CAP_4: Int = 3
+        const val TYPE_DONVI_CAP_5: Int = 4
 
         const val ADD_DESCRIPTION_COSOCB: Int = 0
         const val ADD_DESCRIPTION_VATTU: Int = 1
@@ -165,13 +174,41 @@ class ProductManagerAddFragment : BaseFragment() {
         edit_product_donViNK.setOnClickListener { getBooth(edit_product_donViNK, TYPE_DONVI_NHAPKHAU) }
         edit_product_CosoCB.setOnClickListener { getBooth(edit_product_CosoCB, TYPE_COSO_CHEBIEN) }
         edit_product_chungNhan.setOnClickListener { getChungNhan(edit_product_chungNhan) }
+        edit_product_donVi.setOnClickListener { getBooth(edit_product_donVi, TYPE_DONVI_CAP_1) }
+        edit_product_donVi2.setOnClickListener { getBooth(edit_product_donVi2, TYPE_DONVI_CAP_2) }
+        edit_product_donVi3.setOnClickListener { getBooth(edit_product_donVi3, TYPE_DONVI_CAP_3) }
+        edit_product_donVi4.setOnClickListener { getBooth(edit_product_donVi4, TYPE_DONVI_CAP_4) }
+        edit_product_donVi5.setOnClickListener { getBooth(edit_product_donVi5, TYPE_DONVI_CAP_5) }
         img_add_solution_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_GIAIPHAP) }
         img_add_supplies_product.setOnClickListener { searchProductViewModel.openSearchSp(TYPE_SP_VATTU) }
 
+        btn_add_donVi2.setOnClickListener {
+            btn_add_donVi2.visibility = View.GONE
+            btn_add_donVi3.visibility = View.VISIBLE
+            linear_dovi2.visibility = View.VISIBLE
+        }
+
+        btn_add_donVi3.setOnClickListener {
+            btn_add_donVi3.visibility = View.GONE
+            btn_add_donVi4.visibility = View.VISIBLE
+            linear_dovi3.visibility = View.VISIBLE
+        }
+
+        btn_add_donVi4.setOnClickListener {
+            btn_add_donVi4.visibility = View.GONE
+            btn_add_donVi5.visibility = View.VISIBLE
+            linear_dovi4.visibility = View.VISIBLE
+        }
+
+        btn_add_donVi5.setOnClickListener {
+            btn_add_donVi5.visibility = View.GONE
+            linear_dovi5.visibility = View.VISIBLE
+        }
+
         if (UserDataManager.currentType == "Chủ hội chợ")
-            til_product_booth.visibility = View.VISIBLE else {
+            linear_donVi.visibility = View.VISIBLE else {
             gianHangId = UserDataManager.currentUserId
-            til_product_booth.visibility = View.GONE
+            linear_donVi.visibility = View.GONE
         }
 
         view_image_add_product.setOnClickListener {
@@ -199,9 +236,7 @@ class ProductManagerAddFragment : BaseFragment() {
         }
 
         view_add_images_cert.setOnClickListener {
-            CASE_PICK_IMAGE = false
-            typeImages = TYPE_SELECTED_CERT
-            launchPickPhotoIntent()
+            showDialogSelectCert()
         }
 
         sw_hienThi.setOnCheckedChangeListener { _, _ ->
@@ -284,6 +319,7 @@ class ProductManagerAddFragment : BaseFragment() {
             val ghiChuVC = edit_product_ghiChu_vanChuyen.text.toString()
 
             val moTa = edit_product_moTa.text.toString()
+            val tags = edit_product_tuKhoa.text.toString()
 
             val tenVatTu = tv_nguyenLieu_vatTu.text.toString()
             val tenGiaiPhap = tv_giaiPhap.text.toString()
@@ -299,7 +335,7 @@ class ProductManagerAddFragment : BaseFragment() {
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
                             listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert, donViSXId, donViNKId, coSoCBId, listDescriptionCSCB,
-                            listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC)
+                            listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC, listChungNhan, listRelatedShop, tags)
                 }
             } else
                 if (isRequiredFieldsValid(image, tenSp, edit_product_giaBan.text.toString(), maSp,
@@ -311,7 +347,7 @@ class ProductManagerAddFragment : BaseFragment() {
                             ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                             hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
                             listCategory, listVatTu, listGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert, donViSXId, donViNKId, coSoCBId, listDescriptionCSCB,
-                            listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC)
+                            listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC, listChungNhan, listRelatedShop, tags)
                 }
         }
 
@@ -334,10 +370,31 @@ class ProductManagerAddFragment : BaseFragment() {
         setupRecyclerviewDescriptionCSCB()
         setupRecyclerviewDescriptionVatTu()
         setupRecyclerviewDescriptionGiaiPhap()
-        setupFlowChungChi()
         loadSanPhamLienQuan()
         loadVatTu()
         loadGiaiPhap()
+    }
+
+    private fun showDialogSelectCert() {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_select_image_cert, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tv_choose_album = dialog.findViewById(R.id.tv_choose_album) as VectorSupportTextView
+            tv_choose_album.setOnClickListener {
+                CASE_PICK_IMAGE = false
+                typeImages = TYPE_SELECTED_CERT
+                launchPickPhotoIntent()
+            }
+            val tv_choose_config = dialog.findViewById(R.id.tv_choose_config) as VectorSupportTextView
+            tv_choose_config.setOnClickListener {
+                showProgressDialog()
+                searchProductViewModel.openSearchCertImages(gianHangId)
+            }
+            dialog.show()
+        }
     }
 
     private fun dialogChangeName(view: VectorSupportTextView?) {
@@ -623,6 +680,12 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         })
 
+        viewModel.dataBoothRelated.observe(this, Observer { p ->
+            p?.let {
+                adapterDonViCungUng_2.replaceAll(it)
+            }
+        })
+
         viewModel.categories.observe(this, Observer { p ->
             p?.let {
                 adapterCategory.replaceAll(it)
@@ -650,6 +713,13 @@ class ProductManagerAddFragment : BaseFragment() {
         viewModel.childCategories_3.observe(this, Observer { p ->
             p?.let {
                 adapterCategory_4.replaceAll(it)
+            }
+        })
+
+        viewModel.dataCertImages.observe(this, Observer { p ->
+            p?.let {
+                hideProgressDialog()
+
             }
         })
 
@@ -792,57 +862,86 @@ class ProductManagerAddFragment : BaseFragment() {
             val tv_Globalgap = dialog.findViewById(R.id.tv_Globalgap) as TextView
             val tv_Eurepgap = dialog.findViewById(R.id.tv_Eurepgap) as TextView
 
-//            for (i in listChungNhan.indices) {
-//                if (listChungNhan[i] == tv_Oganic.text.toString()) {
-//                    tv_Oganic.isEnabled = false
-//                    tv_Oganic.setBackgroundColor(Color.GRAY)
-//                } else {
-//                    tv_Oganic.setBackgroundColor (Color.WHITE)
-//                    tv_Oganic.isEnabled = true
-//                }
-//
-//                if (listChungNhan[i] == tv_Vietgap.text.toString()) {
-//                    tv_Vietgap.isEnabled = false
-//                    tv_Vietgap.setBackgroundColor(Color.GRAY)
-//                } else {
-//                    tv_Vietgap.setBackgroundColor (Color.WHITE)
-//                    tv_Vietgap.isEnabled = true
-//                }
-//
-//                if (listChungNhan[i] == tv_Globalgap.text.toString()) {
-//                    tv_Globalgap.isEnabled = false
-//                    tv_Globalgap.setBackgroundColor(Color.GRAY)
-//                } else {
-//                    tv_Globalgap.setBackgroundColor (Color.WHITE)
-//                    tv_Globalgap.isEnabled = true
-//                }
-//
-//                if (listChungNhan[i] == tv_Eurepgap.text.toString()) {
-//                    tv_Eurepgap.isEnabled = false
-//                    tv_Eurepgap.setBackgroundColor(Color.GRAY)
-//                } else {
-//                    tv_Eurepgap.setBackgroundColor (Color.WHITE)
-//                    tv_Eurepgap.isEnabled = true
-//                }
-//            }
-
             tv_Oganic.setOnClickListener {
+                if (listChungNhan.isEmpty()) {
                     listChungNhan.add(tv_Oganic.text.toString())
+                    setupFlowChungChi()
                     dialog.dismiss()
+                } else {
+                    var forEnd = false
+                    for (i in listChungNhan.indices)
+                        if (listChungNhan[i] == tv_Oganic.text.toString()) {
+                            toast("Chứng nhận này đã được chọn")
+                            break
+                        } else if (i == listChungNhan.size - 1) forEnd = true
+
+                    if (forEnd) {
+                        listChungNhan.add(tv_Oganic.text.toString())
+                        setupFlowChungChi()
+                        dialog.dismiss()
+                    }
+                }
             }
             tv_Vietgap.setOnClickListener {
+                if (listChungNhan.isEmpty()) {
                     listChungNhan.add(tv_Vietgap.text.toString())
+                    setupFlowChungChi()
                     dialog.dismiss()
+                } else {
+                    var forEnd = false
+                    for (i in listChungNhan.indices)
+                        if (listChungNhan[i] == tv_Vietgap.text.toString()) {
+                            toast("Chứng nhận này đã được chọn")
+                            break
+                        } else if (i == listChungNhan.size - 1) forEnd = true
+
+                    if (forEnd) {
+                        listChungNhan.add(tv_Vietgap.text.toString())
+                        setupFlowChungChi()
+                        dialog.dismiss()
+                    }
+                }
             }
             tv_Globalgap.setOnClickListener {
+                if (listChungNhan.isEmpty()) {
                     listChungNhan.add(tv_Globalgap.text.toString())
+                    setupFlowChungChi()
                     dialog.dismiss()
+                } else {
+                    var forEnd = false
+                    for (i in listChungNhan.indices)
+                        if (listChungNhan[i] == tv_Globalgap.text.toString()) {
+                            toast("Chứng nhận này đã được chọn")
+                            break
+                        } else if (i == listChungNhan.size - 1) forEnd = true
+
+                    if (forEnd) {
+                        listChungNhan.add(tv_Globalgap.text.toString())
+                        setupFlowChungChi()
+                        dialog.dismiss()
+                    }
+                }
             }
             tv_Eurepgap.setOnClickListener {
+                if (listChungNhan.isEmpty()) {
                     listChungNhan.add(tv_Eurepgap.text.toString())
+                    setupFlowChungChi()
                     dialog.dismiss()
-            }
+                } else {
+                    var forEnd = false
+                    for (i in listChungNhan.indices)
+                        if (listChungNhan[i] == tv_Eurepgap.text.toString()) {
+                            toast("Chứng nhận này đã được chọn")
+                            break
+                        } else if (i == listChungNhan.size - 1) forEnd = true
 
+                    if (forEnd) {
+                        listChungNhan.add(tv_Eurepgap.text.toString())
+                        setupFlowChungChi()
+                        dialog.dismiss()
+                    }
+                }
+            }
             dialog.show()
         }
     }
@@ -1027,45 +1126,6 @@ class ProductManagerAddFragment : BaseFragment() {
         }
     }
 
-    private fun getDonViCungUng(view: TextView) {
-        context?.let {
-
-            val dialog = MaterialDialog.Builder(it)
-                    .title("Chọn đơn vị trong chuỗi cung ứng")
-                    .customView(R.layout.diglog_search_recyclerview, false)
-                    .negativeText("Huỷ")
-                    .onNegative { dialog, _ -> dialog.dismiss() }
-                    .autoDismiss(false)
-                    .canceledOnTouchOutside(false)
-                    .build()
-
-
-            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
-            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
-            edt_search.visibility = View.GONE
-
-            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
-
-                rv_search.adapter = adapterDonViCungUng
-            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
-                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                    loadMoreProvider(totalItemsCount)
-                }
-            })
-            adapterDonViCungUng.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-                override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        gianHangId = data.id
-                        view.text = data.boothName ?: ""
-                        view.error = null
-                    }
-                }
-            }
-        }
-    }
-
     private fun getBooth(view: TextView, type: Int) {
         context?.let {
             var title = ""
@@ -1077,6 +1137,8 @@ class ProductManagerAddFragment : BaseFragment() {
                 title = "Chọn đơn vị nhập khẩu"
             if (type == TYPE_COSO_CHEBIEN)
                 title = "Chọn cơ sở chế biến"
+            if (type == TYPE_DONVI_CAP_1 || type == TYPE_DONVI_CAP_2 || type == TYPE_DONVI_CAP_3 || type == TYPE_DONVI_CAP_4 || type == TYPE_DONVI_CAP_5)
+                title = "Chọn đơn vị trong chuỗi cung ứng"
 
             val dialog = MaterialDialog.Builder(it)
                     .title(title)
@@ -1103,6 +1165,16 @@ class ProductManagerAddFragment : BaseFragment() {
                 rv_search.adapter = adapterDonViNhapKhau
             if (type == TYPE_COSO_CHEBIEN)
                 rv_search.adapter = adapterCoSoCheBien
+            if (type == TYPE_DONVI_CAP_1)
+                rv_search.adapter = adapterDonViCungUng
+            if (type == TYPE_DONVI_CAP_2 || type == TYPE_DONVI_CAP_3 || type == TYPE_DONVI_CAP_4 || type == TYPE_DONVI_CAP_5)
+                rv_search.adapter = adapterDonViCungUng_2
+//            if (type == TYPE_DONVI_CAP_3)
+//                rv_search.adapter = adapterDonViCungUng_3
+//            if (type == TYPE_DONVI_CAP_4)
+//                rv_search.adapter = adapterDonViCungUng_4
+//            if (type == TYPE_DONVI_CAP_5)
+//                rv_search.adapter = adapterDonViCungUng_5
 
             rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -1152,6 +1224,123 @@ class ProductManagerAddFragment : BaseFragment() {
                     }
                 }
             }
+
+            adapterDonViCungUng.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
+                    context?.let {
+                        viewModel.getBoothRelated(data.id)
+                        gianHangId = data.id
+                        if (data.title?.isNotEmpty() == true)
+                            edit_product_chucNangDV.setText(data.title)
+                        else edit_product_chucNangDV.setText("Đơn vị phân phối")
+
+                        listRelatedShop.clear()
+                        edit_product_donVi2.setText("")
+                        edit_product_donVi3.setText("")
+                        edit_product_donVi4.setText("")
+                        edit_product_donVi5.setText("")
+                        edit_product_chucNangDV2.setText("")
+                        edit_product_chucNangDV3.setText("")
+                        edit_product_chucNangDV4.setText("")
+                        edit_product_chucNangDV5.setText("")
+
+                        view.text = data.boothName ?: ""
+                        view.error = null
+                        dialog.dismiss()
+                    }
+                }
+            }
+
+            adapterDonViCungUng_2.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
+                        val title = "Đơn vị phân phối"
+                        if (type == TYPE_DONVI_CAP_2) {
+                            if (listRelatedShop.size >= 1) {
+                                listRelatedShop.removeAt(0)
+                                listRelatedShop.add(data)
+                            } else listRelatedShop.add(data)
+
+                            if (data.title?.isNotEmpty() == true)
+                                edit_product_chucNangDV2.setText(data.title)
+                            else edit_product_chucNangDV2.setText(title)
+                        }
+                        if (type == TYPE_DONVI_CAP_3) {
+                            if (listRelatedShop.size >= 2) {
+                                listRelatedShop.removeAt(1)
+                                listRelatedShop.add(1, data)
+                            } else listRelatedShop.add(data)
+
+                            if (data.title?.isNotEmpty() == true)
+                                edit_product_chucNangDV3.setText(data.title)
+                            else edit_product_chucNangDV3.setText(title)
+                        }
+                        if (type == TYPE_DONVI_CAP_4) {
+                            if (listRelatedShop.size >= 3) {
+                                listRelatedShop.removeAt(2)
+                                listRelatedShop.add(2, data)
+                            } else listRelatedShop.add(data)
+
+                            if (data.title?.isNotEmpty() == true)
+                                edit_product_chucNangDV4.setText(data.title)
+                            else edit_product_chucNangDV4.setText(title)
+                        }
+                        if (type == TYPE_DONVI_CAP_5) {
+                            if (listRelatedShop.size >= 4) {
+                                listRelatedShop.removeAt(3)
+                                listRelatedShop.add(3, data)
+                            } else listRelatedShop.add(data)
+
+                            if (data.title?.isNotEmpty() == true)
+                                edit_product_chucNangDV5.setText(data.title)
+                            else edit_product_chucNangDV5.setText(title)
+                        }
+
+                        view.text = data.boothName ?: ""
+                        view.error = null
+                    }
+                }
+            }
+
+//            adapterDonViCungUng_3.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        if (data.title?.isNotEmpty() == true)
+//                            edit_product_chucNangDV3.setText(data.title)
+//                        else edit_product_chucNangDV3.setText("Đơn vị phân phối")
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
+//
+//            adapterDonViCungUng_4.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        if (data.title?.isNotEmpty() == true)
+//                            edit_product_chucNangDV4.setText(data.title)
+//                        else edit_product_chucNangDV4.setText("Đơn vị phân phối")
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
+//
+//            adapterDonViCungUng_5.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        if (data.title?.isNotEmpty() == true)
+//                            edit_product_chucNangDV5.setText(data.title)
+//                        else edit_product_chucNangDV5.setText("Đơn vị phân phối")
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
             dialog.show()
         }
     }

@@ -43,7 +43,7 @@ open class BaseViewModel : ViewModel() {
             BaseErrorSignal.ERROR_SERVER -> {
                 Log.e("ISG_Error", "server error $message")
                 reportBug(Exception(message))
-                errorSignal.postValue(BaseErrorSignal(BaseErrorSignal.ERROR_SERVER, "Lỗi hệ thống. Hãy liên lạc với quản trị viên để được hỗ trợ."))
+                errorSignal.postValue(BaseErrorSignal(BaseErrorSignal.ERROR_SERVER, "Hệ thống đang được cập nhật. Vui lòng khởi động lại hoặc quản lại sau."))
             }
             BaseErrorSignal.ERROR_NETWORK -> {
                 Log.e("ISG_Error", "no network")
