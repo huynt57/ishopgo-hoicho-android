@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.productmanager.search_product
 
 import android.arch.lifecycle.MutableLiveData
+import ishopgo.com.exhibition.domain.response.CertImages
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.FilterResult
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
@@ -10,6 +11,12 @@ class SearchProductManagerViewModel : BaseApiViewModel() {
 
     fun openSearchCertImages(boothId:Long) {
         showCertImages.postValue(boothId)
+    }
+
+    var getCertImages = MutableLiveData<CertImages>()
+
+    fun getCertImages(data: CertImages) {
+        getCertImages.postValue(data)
     }
 
     var showSearchSp = MutableLiveData<Int>()

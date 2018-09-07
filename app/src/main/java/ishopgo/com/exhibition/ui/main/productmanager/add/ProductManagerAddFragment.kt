@@ -387,11 +387,12 @@ class ProductManagerAddFragment : BaseFragment() {
                 CASE_PICK_IMAGE = false
                 typeImages = TYPE_SELECTED_CERT
                 launchPickPhotoIntent()
+                dialog.dismiss()
             }
             val tv_choose_config = dialog.findViewById(R.id.tv_choose_config) as VectorSupportTextView
             tv_choose_config.setOnClickListener {
-                showProgressDialog()
                 searchProductViewModel.openSearchCertImages(gianHangId)
+                dialog.dismiss()
             }
             dialog.show()
         }
@@ -787,6 +788,17 @@ class ProductManagerAddFragment : BaseFragment() {
                         adapterGiaiPhap.replaceAll(listGiaiPhap)
                     }
                 }
+            }
+        })
+
+        searchProductViewModel.getCertImages.observe(this, Observer { p ->
+            p?.let {
+                val postMedia = PostMedia()
+
+                postMedia.uri = Uri.parse(it.image ?: "")
+                postMediasCert.add(postMedia)
+                adapterImagesCert.replaceAll(postMediasCert)
+                rv_product_cert.visibility = View.VISIBLE
             }
         })
 
