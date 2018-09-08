@@ -2,6 +2,7 @@ package ishopgo.com.exhibition.domain.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
 
 
@@ -9,6 +10,9 @@ import ishopgo.com.exhibition.model.product_manager.ProductRelated
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class ProductDetail : IdentityData() {
+    @SerializedName("tags")
+    @Expose
+    var tags: String? = null
     @SerializedName("title")
     @Expose
     var title: String? = null
@@ -253,6 +257,12 @@ class ProductDetail : IdentityData() {
     @SerializedName("cert_images")
     @Expose
     var certImages: List<ListCert>? = null
+    @SerializedName("relate_shops")
+    @Expose
+    var relateShops: List<BoothManager>? = null
+    @SerializedName("chung_nhan")
+    @Expose
+    var chungNhan: String? = null
 
     class ListCert {
         @SerializedName("image")

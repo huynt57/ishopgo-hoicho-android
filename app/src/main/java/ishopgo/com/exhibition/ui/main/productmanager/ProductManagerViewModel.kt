@@ -160,57 +160,61 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         builder.addFormDataPart("status", trangThaiHT.toString())
         builder.addFormDataPart("is_featured", spNoiBat.toString())
 
-        if (tags.isNotEmpty())
-            builder.addFormDataPart("tags", tags)
+        if (tags.isNotEmpty()) {
+            val tag = tags.split(",")
+            for (i in tag) {
+                builder.addFormDataPart("tags[]", i)
+            }
+        }
 
-        if (!chungNhan.isEmpty()) {
+        if (chungNhan.isNotEmpty()) {
             var chungNhanString = ""
             for (i in chungNhan.indices) {
-                chungNhanString = "$chungNhan, ${chungNhan[i]}"
+                chungNhanString = "$chungNhanString, ${chungNhan[i]}"
             }
             builder.addFormDataPart("chung_nhan", chungNhanString)
         }
 
-        if (!chuoiCungUng.isEmpty()) {
+        if (chuoiCungUng.isNotEmpty()) {
             for (i in chuoiCungUng.indices) {
                 builder.addFormDataPart("relate_shops[]", chuoiCungUng[i].id.toString())
             }
         }
 
-        if (!listDescriptionCSCB.isEmpty()) {
+        if (listDescriptionCSCB.isNotEmpty()) {
             for (i in listDescriptionCSCB.indices) {
                 builder.addFormDataPart("list_content_title_array_cscb[]", listDescriptionCSCB[i].title.toString())
                 builder.addFormDataPart("list_content_desc_array_cscb[]", listDescriptionCSCB[i].description.toString())
             }
         }
 
-        if (!listDescriptionVatTu.isEmpty()) {
+        if (listDescriptionVatTu.isNotEmpty()) {
             for (i in listDescriptionVatTu.indices) {
                 builder.addFormDataPart("list_content_title_array_vtdsd[]", listDescriptionVatTu[i].title.toString())
                 builder.addFormDataPart("list_content_desc_array_vtdsd[]", listDescriptionVatTu[i].description.toString())
             }
         }
 
-        if (!listDescriptionGiaiPhap.isEmpty()) {
+        if (listDescriptionGiaiPhap.isNotEmpty()) {
             for (i in listDescriptionGiaiPhap.indices) {
                 builder.addFormDataPart("list_content_title_array_gpdsd[]", listDescriptionGiaiPhap[i].title.toString())
                 builder.addFormDataPart("list_content_desc_array_gpdsd[]", listDescriptionGiaiPhap[i].description.toString())
             }
         }
 
-        if (!listSpLienQuan.isEmpty()) {
+        if (listSpLienQuan.isNotEmpty()) {
             for (i in listSpLienQuan.indices) {
                 builder.addFormDataPart("products_bsp_array[]", listSpLienQuan[i].id.toString())
             }
         }
 
-        if (!listVatTu.isEmpty()) {
+        if (listVatTu.isNotEmpty()) {
             for (i in listVatTu.indices) {
                 builder.addFormDataPart("vat_tu_products_bsp[]", listVatTu[i].id.toString())
             }
         }
 
-        if (!listGiaiPhap.isEmpty()) {
+        if (listGiaiPhap.isNotEmpty()) {
             for (i in listGiaiPhap.indices) {
                 builder.addFormDataPart("giai_phap_products_bsp[]", listGiaiPhap[i].id.toString())
             }
@@ -239,13 +243,18 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         if (listCert.isNotEmpty()) {
             for (i in listCert.indices) {
                 val uri = listCert[i].uri
-                uri?.let {
-                    val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
-                    imageFile.deleteOnExit()
-                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
-                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-                    builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
-                }
+                val imageId = listCert[i].id
+                if (uri.toString().toLowerCase().startsWith("http") && imageId != 0L) {
+                    builder.addFormDataPart("shop_cert_images[]", uri.toString())
+                    builder.addFormDataPart("shop_cert_images_id[]", imageId.toString())
+                } else
+                    uri?.let {
+                        val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
+                        imageFile.deleteOnExit()
+                        Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                        val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                        builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
+                    }
 
             }
         }
@@ -309,7 +318,8 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                            listAnh: ArrayList<PostMedia>, listDanhMuc: MutableList<Category>, listVatTu: MutableList<Product>, listGiaiPhap: MutableList<Product>,
                            listSpLienQuan: MutableList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert: ArrayList<PostMedia>,
                            donViSXId: Long, donViNKId: Long, coSoCBId: Long, listDescriptionCSCB: MutableList<Description>,
-                           listDescriptionVatTu: MutableList<Description>, listDescriptionGiaiPhap: MutableList<Description>, ghiChu_vc: String, listImageDelete: ArrayList<PostMedia>) {
+                           listDescriptionVatTu: MutableList<Description>, listDescriptionGiaiPhap: MutableList<Description>, ghiChu_vc: String, listImageDelete: ArrayList<PostMedia>,
+                           chungNhan: ArrayList<String>, chuoiCungUng: ArrayList<BoothManager>, tags: String) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -393,6 +403,27 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         builder.addFormDataPart("status", trangThaiHT.toString())
         builder.addFormDataPart("is_featured", spNoiBat.toString())
 
+        if (tags.isNotEmpty()) {
+            val tag = tags.split(",")
+            for (i in tag) {
+                builder.addFormDataPart("tags[]", i)
+            }
+        }
+
+        if (chungNhan.isNotEmpty()) {
+            var chungNhanString = ""
+            for (i in chungNhan.indices) {
+                chungNhanString = "$chungNhanString, ${chungNhan[i]}"
+            }
+            builder.addFormDataPart("chung_nhan", chungNhanString)
+        }
+
+        if (chuoiCungUng.isNotEmpty()) {
+            for (i in chuoiCungUng.indices) {
+                builder.addFormDataPart("relate_shops[]", chuoiCungUng[i].id.toString())
+            }
+        }
+
         if (!listDescriptionCSCB.isEmpty()) {
             for (i in listDescriptionCSCB.indices) {
                 builder.addFormDataPart("list_content_title_array_cscb[]", listDescriptionCSCB[i].title.toString())
@@ -455,7 +486,11 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         if (listCert.isNotEmpty()) {
             for (i in listCert.indices) {
                 val uri = listCert[i].uri
-                if (!uri.toString().subSequence(0, 4).contains("http"))
+                val imageId = listCert[i].id
+                if (uri.toString().toLowerCase().startsWith("http") && imageId != 0L) {
+                    builder.addFormDataPart("shop_cert_images[]", uri.toString())
+                    builder.addFormDataPart("shop_cert_images_id[]", imageId.toString())
+                } else
                     uri?.let {
                         val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
                         imageFile.deleteOnExit()
@@ -463,6 +498,7 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                         val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
                         builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
                     }
+
             }
         }
 

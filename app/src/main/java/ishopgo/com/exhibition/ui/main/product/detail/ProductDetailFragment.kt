@@ -286,7 +286,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             view_product_wholesale.visibility = View.VISIBLE
             view_product_wholesale.text = convert.provideWholesale()
 
-            if (convert.provideWholesaleLimit().isNotEmpty()) {
+            if (product.wholesalePriceFrom == 0L || product.wholesalePriceTo == 0L)
+                view_product_wholesale_limit.visibility = View.GONE
+            else if (convert.provideWholesaleLimit().isNotEmpty()) {
                 view_product_wholesale_limit.visibility = View.VISIBLE
                 view_product_wholesale_limit.text = convert.provideWholesaleLimit()
             }
@@ -845,7 +847,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
 
                 override fun provideWholesale(): CharSequence {
-                    return if (from.wholesalePriceFrom == 0L && from.wholesalePriceTo == 0L) "<b>Giá bán sỉ: <font color=\"red\">Liên hệ</font></b>".asHtml()
+                    return if (from.wholesalePriceFrom == 0L || from.wholesalePriceTo == 0L) "<b>Giá bán sỉ: <font color=\"red\">Liên hệ</font></b>".asHtml()
                     else "<b>Giá bán sỉ: Từ <font color=\"red\">${from.wholesalePriceFrom.asMoney()}</font> tới <font color=\"red\">${from.wholesalePriceTo.asMoney()}</font></b>".asHtml()
                 }
 

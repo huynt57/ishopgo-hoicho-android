@@ -36,6 +36,51 @@
                 android:paddingTop="8dp"
                 android:paddingEnd="16dp"
                 android:paddingBottom="8dp"
+                android:text="Danh sách ảnh"
+                android:textColor="@color/md_white_1000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/view_camera"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+            <ImageView
+                android:id="@+id/view_add_images"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_add_default_24dp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_product_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
+            android:scrollbars="horizontal" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
                 android:text="Thông tin cơ bản"
                 android:textColor="@color/md_white_1000"
                 android:textSize="16sp" />
@@ -126,7 +171,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="@dimen/default_margin">
+                android:layout_marginEnd="@dimen/default_margin"
+                android:visibility="gone">
 
                 <ishopgo.com.exhibition.ui.widget.DateInputEditText
                     android:id="@+id/edt_product_ngayDongGoi"
@@ -164,7 +210,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/default_margin"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="@dimen/default_margin">
+                android:layout_marginEnd="@dimen/default_margin"
+                android:visibility="gone">
 
                 <ishopgo.com.exhibition.ui.widget.DateInputEditText
                     android:id="@+id/edt_product_hsd"
@@ -176,6 +223,51 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_muaVu_sanXuat"
+                    style="@style/AppTheme.EnableInputField"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mùa vụ sản xuất"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="@dimen/default_margin">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_product_chungNhan"
+                    style="@style/AppTheme.EnableInputField.DisableInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Chứng nhận"
+                    android:singleLine="true" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <com.zhy.view.flowlayout.TagFlowLayout
+                android:id="@+id/container_receivers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:orientation="vertical"
+                android:padding="4dp"
+                tools:visibility="visible">
+
+            </com.zhy.view.flowlayout.TagFlowLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -262,6 +354,52 @@
 
             </android.support.design.widget.TextInputLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@color/colorPrimary"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingStart="16dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="16dp"
+                    android:paddingBottom="8dp"
+                    android:text="Giấy phép chứng nhận chất lượng và nguồn gốc"
+                    android:textColor="@color/md_white_1000"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/view_camera_cert"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+                <ImageView
+                    android:id="@+id/view_add_images_cert"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic_add_default_24dp" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_product_cert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/default_margin"
+                android:scrollbars="horizontal" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -269,7 +407,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -288,7 +427,8 @@
             android:id="@+id/linear_thongTin_sanXuat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -374,51 +514,6 @@
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="@dimen/default_margin">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_product_muaVu_sanXuat"
-                    style="@style/AppTheme.EnableInputField"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Mùa vụ sản xuất"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/default_margin"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="@dimen/default_margin">
-
-                <android.support.design.widget.TextInputEditText
-                    android:id="@+id/edit_product_chungNhan"
-                    style="@style/AppTheme.EnableInputField.DisableInput"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Chứng nhận"
-                    android:singleLine="true" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <com.zhy.view.flowlayout.TagFlowLayout
-                android:id="@+id/container_receivers"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="vertical"
-                android:padding="4dp"
-                tools:visibility="visible">
-
-            </com.zhy.view.flowlayout.TagFlowLayout>
-
             <Switch
                 android:id="@+id/sw_show_baoTieu"
                 android:layout_width="match_parent"
@@ -437,7 +532,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -455,7 +551,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -565,7 +662,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -583,7 +681,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -662,7 +761,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="0dp"
@@ -1367,104 +1467,14 @@
 
             </android.support.design.widget.TextInputLayout>
 
-
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
-                android:text="Danh sách ảnh"
-                android:textColor="@color/md_white_1000"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:id="@+id/view_camera"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
-
-            <ImageView
-                android:id="@+id/view_add_images"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic_add_default_24dp" />
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_product_images"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_margin"
-            android:scrollbars="horizontal" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:paddingStart="16dp"
-                android:paddingTop="8dp"
-                android:paddingEnd="16dp"
-                android:paddingBottom="8dp"
-                android:text="Giấy phép chứng nhận chất lượng và nguồn gốc"
-                android:textColor="@color/md_white_1000"
-                android:textSize="16sp" />
-
-            <ImageView
-                android:id="@+id/view_camera_cert"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
-
-            <ImageView
-                android:id="@+id/view_add_images_cert"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="8dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic_add_default_24dp" />
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_product_cert"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/default_margin"
-            android:scrollbars="horizontal" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/tv_nguyenLieu_vatTu"

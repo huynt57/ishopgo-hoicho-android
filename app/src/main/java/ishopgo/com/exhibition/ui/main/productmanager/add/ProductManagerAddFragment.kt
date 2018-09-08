@@ -327,7 +327,7 @@ class ProductManagerAddFragment : BaseFragment() {
 
             if (UserDataManager.currentType == "Chủ hội chợ") {
                 if (isRequiredFieldsValid(image, tenSp, edit_product_giaBan.text.toString(), maSp,
-                                edt_product_danhMuc.text.toString(), edit_product_gianHang.text.toString(), edit_product_thuongHieu.text.toString())) {
+                                edt_product_danhMuc.text.toString(), edit_product_donVi.text.toString(), edit_product_thuongHieu.text.toString())) {
 
                     showProgressDialog()
 
@@ -794,8 +794,8 @@ class ProductManagerAddFragment : BaseFragment() {
         searchProductViewModel.getCertImages.observe(this, Observer { p ->
             p?.let {
                 val postMedia = PostMedia()
-
                 postMedia.uri = Uri.parse(it.image ?: "")
+                postMedia.id = it.id
                 postMediasCert.add(postMedia)
                 adapterImagesCert.replaceAll(postMediasCert)
                 rv_product_cert.visibility = View.VISIBLE
@@ -1141,14 +1141,14 @@ class ProductManagerAddFragment : BaseFragment() {
     private fun getBooth(view: TextView, type: Int) {
         context?.let {
             var title = ""
-            if (type == TYPE_DONVI_PHANPHOI)
-                title = "Chọn đơn vị phân phối"
-            if (type == TYPE_DONVI_SANXUAT)
-                title = "Chọn đơn vị sản xuất"
-            if (type == TYPE_DONVI_NHAPKHAU)
-                title = "Chọn đơn vị nhập khẩu"
-            if (type == TYPE_COSO_CHEBIEN)
-                title = "Chọn cơ sở chế biến"
+//            if (type == TYPE_DONVI_PHANPHOI)
+//                title = "Chọn đơn vị phân phối"
+//            if (type == TYPE_DONVI_SANXUAT)
+//                title = "Chọn đơn vị sản xuất"
+//            if (type == TYPE_DONVI_NHAPKHAU)
+//                title = "Chọn đơn vị nhập khẩu"
+//            if (type == TYPE_COSO_CHEBIEN)
+//                title = "Chọn cơ sở chế biến"
             if (type == TYPE_DONVI_CAP_1 || type == TYPE_DONVI_CAP_2 || type == TYPE_DONVI_CAP_3 || type == TYPE_DONVI_CAP_4 || type == TYPE_DONVI_CAP_5)
                 title = "Chọn đơn vị trong chuỗi cung ứng"
 
@@ -1169,14 +1169,14 @@ class ProductManagerAddFragment : BaseFragment() {
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
 
-            if (type == TYPE_DONVI_PHANPHOI)
-                rv_search.adapter = adapterBooth
-            if (type == TYPE_DONVI_SANXUAT)
-                rv_search.adapter = adapterDonViSanXuat
-            if (type == TYPE_DONVI_NHAPKHAU)
-                rv_search.adapter = adapterDonViNhapKhau
-            if (type == TYPE_COSO_CHEBIEN)
-                rv_search.adapter = adapterCoSoCheBien
+//            if (type == TYPE_DONVI_PHANPHOI)
+//                rv_search.adapter = adapterBooth
+//            if (type == TYPE_DONVI_SANXUAT)
+//                rv_search.adapter = adapterDonViSanXuat
+//            if (type == TYPE_DONVI_NHAPKHAU)
+//                rv_search.adapter = adapterDonViNhapKhau
+//            if (type == TYPE_COSO_CHEBIEN)
+//                rv_search.adapter = adapterCoSoCheBien
             if (type == TYPE_DONVI_CAP_1)
                 rv_search.adapter = adapterDonViCungUng
             if (type == TYPE_DONVI_CAP_2 || type == TYPE_DONVI_CAP_3 || type == TYPE_DONVI_CAP_4 || type == TYPE_DONVI_CAP_5)
@@ -1193,49 +1193,49 @@ class ProductManagerAddFragment : BaseFragment() {
                     loadMoreProvider(totalItemsCount)
                 }
             })
-            adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-                override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        gianHangId = data.id
-                        view.text = data.boothName ?: ""
-                        view.error = null
-                    }
-                }
-            }
-
-            adapterDonViSanXuat.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-                override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        donViSXId = data.id
-                        view.text = data.boothName ?: ""
-                        view.error = null
-                    }
-                }
-            }
-
-            adapterDonViNhapKhau.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-                override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        donViNKId = data.id
-                        view.text = data.boothName ?: ""
-                        view.error = null
-                    }
-                }
-            }
-
-            adapterCoSoCheBien.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-                override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        coSoCBId = data.id
-                        view.text = data.boothName ?: ""
-                        view.error = null
-                    }
-                }
-            }
+//            adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        gianHangId = data.id
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
+//
+//            adapterDonViSanXuat.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        donViSXId = data.id
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
+//
+//            adapterDonViNhapKhau.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        donViNKId = data.id
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
+//
+//            adapterCoSoCheBien.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+//                override fun click(position: Int, data: BoothManager, code: Int) {
+//                    context?.let {
+//                        dialog.dismiss()
+//                        coSoCBId = data.id
+//                        view.text = data.boothName ?: ""
+//                        view.error = null
+//                    }
+//                }
+//            }
 
             adapterDonViCungUng.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
@@ -1522,8 +1522,8 @@ class ProductManagerAddFragment : BaseFragment() {
 
         if (provider.trim().isEmpty()) {
             toast("Nhà cung cấp không được để trống")
-            edit_product_gianHang.error = getString(R.string.error_field_required)
-            edit_product_gianHang.requestFocus()
+            edit_product_donVi.error = getString(R.string.error_field_required)
+            edit_product_donVi.requestFocus()
             return false
         }
 
