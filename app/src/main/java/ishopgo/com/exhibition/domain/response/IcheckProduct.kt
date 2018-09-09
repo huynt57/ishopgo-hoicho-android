@@ -10,7 +10,7 @@ class IcheckProduct : IdentityData() {
     @SerializedName("image_default")
     var imageDefault: String? = null
     @SerializedName("price_default")
-    var priceDefault: Long = 0
+    var priceDefault: Double = 0.0
     @SerializedName("vendor")
     var vendor: IcheckVendor? = null
     @SerializedName("attributes")
@@ -27,4 +27,6 @@ class IcheckProduct : IdentityData() {
     var sellerCount: Int? = null
     @SerializedName("star")
     var star: Float? = null
+    @SerializedName("is_verify")
+    var isVerify: Boolean? = null
 }

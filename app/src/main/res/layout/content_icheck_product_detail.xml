@@ -44,9 +44,9 @@
                     android:id="@+id/view_banner_indicator"
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:minWidth="20dp"
                     app:ci_drawable="@drawable/view_pager_indicator_selected"
                     app:ci_drawable_unselected="@drawable/view_pager_indicator_unselected"
@@ -60,8 +60,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_rounded_rectangle"
-                    android:paddingStart="8dp"
                     android:paddingEnd="16dp"
+                    android:paddingStart="8dp"
                     app:layout_constraintBottom_toBottomOf="@id/view_product_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_product_image">
@@ -85,8 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <TextView
                     android:id="@+id/view_product_name"
@@ -158,8 +158,8 @@
                         android:id="@+id/view_product_rating"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="center"
                         app:drawableTopCompat="@drawable/ic_star"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -172,8 +172,8 @@
                         android:id="@+id/view_product_verify"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
                         android:gravity="center"
                         app:drawableTopCompat="@drawable/ic_shield"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -204,6 +204,27 @@
                         app:layout_constraintGuide_percent="0.5" />
 
                 </android.support.constraint.ConstraintLayout>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cardView_vertify"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_cardview_border"
+                    android:visibility="gone"
+                    app:cardUseCompatPadding="true"
+                    app:cardCornerRadius="5dp"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_vertify"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="8dp"
+                        android:textStyle="bold|italic"
+                        tools:text="Sản phẩm đã được kiểm chứng bởi thông tin nhà sản xuất" />
+
+                </android.support.v7.widget.CardView>
             </LinearLayout>
 
             <View
@@ -225,10 +246,10 @@
                     android:id="@+id/tv_description"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"
                     android:textColor="#838383"
                     app:layout_constraintBottom_toTopOf="@+id/tv_view_details"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -240,9 +261,9 @@
                     android:id="@+id/tv_view_details"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginStart="@dimen/default_margin"
-                    android:layout_marginEnd="@dimen/default_margin"
                     android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginStart="@dimen/default_margin"
                     android:background="?attr/selectableItemBackground"
                     android:fontFamily="@font/ff_roboto"
                     android:gravity="center"
@@ -288,8 +309,8 @@
                     android:id="@+id/view_shop_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
+                    android:layout_marginStart="8dp"
                     android:textAllCaps="true"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="16sp"
@@ -303,8 +324,8 @@
                     android:id="@+id/view_shop_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginTop="8dp"
                     android:background="@drawable/bg_button_stroked_rounded_rectangle"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="8dp"
@@ -350,9 +371,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
                     android:background="@drawable/bg_stroked_rounded_rectangle"
                     android:orientation="vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -366,10 +387,10 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
+                        android:paddingBottom="4dp"
+                        android:paddingEnd="8dp"
                         android:paddingStart="8dp"
                         android:paddingTop="8dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="4dp"
                         app:drawableStartCompat="@drawable/ic_phone_highlight_24dp"
                         app:drawableStartSquareSize="18dp"
                         tools:text="Số điện thoại: 0985771135" />
@@ -380,10 +401,10 @@
                         android:layout_height="wrap_content"
                         android:drawablePadding="8dp"
                         android:gravity="center_vertical"
+                        android:paddingBottom="8dp"
+                        android:paddingEnd="8dp"
                         android:paddingStart="8dp"
                         android:paddingTop="4dp"
-                        android:paddingEnd="8dp"
-                        android:paddingBottom="8dp"
                         app:drawableStartCompat="@drawable/ic_location_highlight_16dp"
                         app:drawableStartSquareSize="18dp"
                         tools:text="Địa chỉ: 68 Dương Đình Nghệ, Cầu Giấy, Hà Nội" />
@@ -434,8 +455,8 @@
                     android:id="@+id/textView5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginStart="16dp"
                     android:gravity="center"
                     android:text="Hãy thêm thông tin liên hệ nếu bạn đang có bán sản phẩm này"
                     android:textStyle="italic"
@@ -447,9 +468,9 @@
                     android:id="@+id/rv_product_sale_point"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:clipToPadding="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -460,8 +481,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:text="Xem thêm điểm bán lẻ"
                     android:textColor="@color/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -581,8 +602,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:paddingStart="8dp"
                     android:paddingEnd="8dp"
+                    android:paddingStart="8dp"
                     android:text="Đánh giá"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -605,9 +626,9 @@
                     android:id="@+id/view_list_comments"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:clipToPadding="false"
                     android:padding="@dimen/item_spacing"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -628,13 +649,34 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:paddingTop="8dp"
                     android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
                     android:text="Xem thêm đánh giá"
                     android:textColor="@color/colorPrimary"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view_divider_111" />
+
+                <View
+                    android:id="@+id/view_divider_112"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_product_show_more_comment" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:text="Dữ liệu được cung cấp bởi Icheck Scanner"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textStyle="bold|italic"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_divider_112" />
 
             </android.support.constraint.ConstraintLayout>
 

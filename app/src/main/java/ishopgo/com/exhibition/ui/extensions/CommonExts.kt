@@ -111,6 +111,12 @@ fun Long.asMoney(): String {
     return "$formatted đ"
 }
 
+fun Double.asMoney(): String {
+    val numberFormat = NumberFormat.getIntegerInstance(Locale("vi"))
+    val formatted = numberFormat.format(this)
+    return "$formatted đ"
+}
+
 fun TextView.setPhone(phone: CharSequence, phoneNumber: String) {
     this.text = phone.setPhone(phoneNumber)
     this.movementMethod = LinkMovementMethod.getInstance()
@@ -118,7 +124,7 @@ fun TextView.setPhone(phone: CharSequence, phoneNumber: String) {
 
 fun CharSequence.setPhone(phoneNumber: String): CharSequence {
     val spannable = SpannableString(this)
-    if (this.isNotEmpty()) {
+    if (this.isNotEmpty() && phoneNumber.isNotEmpty()) {
         val positionStart = if (this.indexOf(phoneNumber.substring(0)) > 0) this.indexOf(phoneNumber.substring(0)) else 0
         val positionEnd = positionStart + (phoneNumber.length)
         spannable.setSpan(

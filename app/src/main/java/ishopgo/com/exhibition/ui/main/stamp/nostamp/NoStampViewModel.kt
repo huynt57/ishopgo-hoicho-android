@@ -125,7 +125,7 @@ class NoStampViewModel : BaseListViewModel<List<StampNoList>>(), AppComponent.In
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            addDisposable(isgService.getBrands(fields)
+            addDisposable(noAuthService.getAllBrands(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
                         override fun success(data: ManagerBrand?) {

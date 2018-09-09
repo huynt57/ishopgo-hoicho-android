@@ -90,7 +90,7 @@ class IcheckProductAdapter(private var itemWidthRatio: Float = -1f, private var 
                 }
 
                 override fun providePrice(): String {
-                    return if (from.priceDefault == 0L) "Liên hệ"
+                    return if (from.priceDefault == 0.0) "Liên hệ"
                     else
                         return from.priceDefault.asMoney()
                 }

@@ -344,6 +344,24 @@ class IcheckProductFragment : BaseFragment() {
             view_product_price.text = product.provideProductPrice()
         }
 
+        val isVerify = product.provideProductIsVertify()
+
+        if (isVerify) {
+            view_product_verify.visibility = View.VISIBLE
+            view_product_not_verify.visibility = View.GONE
+            view_product_verify.text = "Đã xác thực"
+            cardView_vertify.visibility = View.VISIBLE
+            tv_vertify.text = "Sản phẩm đã được kiểm chứng bởi thông tin nhà sản xuất."
+            tv_vertify.setTextColor(resources.getColor(R.color.colorPrimaryDark))
+        } else {
+            view_product_verify.visibility = View.GONE
+            view_product_not_verify.visibility = View.VISIBLE
+            view_product_not_verify.text = "Chưa xác thực"
+            cardView_vertify.visibility = View.VISIBLE
+            tv_vertify.text = "Sản phẩm chưa được kiểm chứng và xác nhận thông tin từ nhà sản xuất, vui lòng xem xét kỹ sản phẩm trước khi mua."
+            tv_vertify.setTextColor(resources.getColor(R.color.colorAccent))
+        }
+
         val vendor = product.provideProductVendor()
         if (vendor != null) {
 
@@ -351,7 +369,8 @@ class IcheckProductFragment : BaseFragment() {
             if (country != null) {
                 linear_region.visibility = View.VISIBLE
 
-                view_product_madeIn.text =  "<b>Xuất xứ: <font color=\"#00c853\">${country.name ?: ""}</font></b>".asHtml()
+                view_product_madeIn.text = "<b>Xuất xứ: <font color=\"#00c853\">${country.name
+                        ?: ""}</font></b>".asHtml()
                 Glide.with(context)
                         .load(country.ensign ?: "")
                         .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
@@ -366,18 +385,6 @@ class IcheckProductFragment : BaseFragment() {
             tv_shop_phone.setPhone(vendor.phone ?: "", vendor.phone ?: "")
             view_shop_product_count.text = "${vendor.productCount ?: "0"} Sản phẩm"
             view_shop_rating.text = "${vendor.star ?: "0"} Đánh giá"
-
-            val isVerify = vendor.isVerify ?: false
-
-            if (isVerify) {
-                view_product_verify.visibility = View.VISIBLE
-                view_product_not_verify.visibility = View.GONE
-                view_product_verify.text = "Đã xác thực"
-            } else {
-                view_product_verify.visibility = View.GONE
-                view_product_not_verify.visibility = View.VISIBLE
-                view_product_not_verify.text = "Chưa xác thực"
-            }
 
             view_shop_detail.setOnClickListener {
                 val intent = Intent(context, IcheckShopActivity::class.java)
@@ -457,6 +464,7 @@ class IcheckProductFragment : BaseFragment() {
         fun provideProductReviewComment(): CharSequence
         fun provideProductCountShare(): CharSequence
         fun provideProductCountStar(): Float
+        fun provideProductIsVertify(): Boolean
         fun provideProductVendor(): IcheckVendor?
     }
 
@@ -464,6 +472,9 @@ class IcheckProductFragment : BaseFragment() {
 
         override fun convert(from: IcheckProduct): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun provideProductIsVertify(): Boolean {
+                    return from.isVerify ?: false
+                }
 
                 override fun provideProductReviewComment(): CharSequence {
                     return "Đánh giá (${from.reviewCount ?: 0})"
@@ -487,7 +498,7 @@ class IcheckProductFragment : BaseFragment() {
                 }
 
                 override fun provideProductPrice(): CharSequence {
-                    return if (from.priceDefault == 0L) {
+                    return if (from.priceDefault == 0.0) {
                         "<b>Giá bán: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
                     } else
                         "<b>Giá bán: <font color=\"#00c853\">${from.priceDefault.asMoney()}</font></b>".asHtml()

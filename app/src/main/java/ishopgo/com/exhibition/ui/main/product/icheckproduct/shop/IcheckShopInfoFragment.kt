@@ -44,9 +44,10 @@ class IcheckShopInfoFragment : BaseFragment() {
         viewModel.dataShopInfo.observe(this, Observer { i ->
             i?.let {
                 ten_gian_hang.text = "Tên: <b>${it.name ?: ""}</b>".asHtml()
-                hotline.setPhone("Điện thoại: <b>${it.phone ?: ""}</b>".asHtml(), it.phone ?: "")
+                hotline.setPhone("Điện thoại: <b>${it.phone ?: ""}</b>".asHtml(), it.phone
+                        ?: "")
                 so_san_pham.text = "Số sản phẩm: <b>${it.productCount ?: 0}</b>".asHtml()
-                dia_chi.text =  "Địa chỉ: <b>${it.address ?: ""}</b>".asHtml()
+                dia_chi.text = "Địa chỉ: <b>${it.address ?: ""}</b>".asHtml()
                 danh_gia.text = "Đánh giá: <b>${it.star ?: 0.0F}</b>".asHtml()
                 luot_quan_tam.text = "Số lượt quét: <b>${it.scanCount ?: 0}<b>".asHtml()
             }

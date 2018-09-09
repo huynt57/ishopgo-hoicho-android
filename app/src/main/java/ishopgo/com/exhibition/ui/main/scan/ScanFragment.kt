@@ -140,7 +140,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        tv_contact.setPhone("Không quét được mã xin vui lòng gọi: 0985771133","0985771133")
+        tv_contact.text = "Không quét được mã sản phẩm thì vui lòng xem xét kỹ sản phẩm, cân nhắc trước khi mua."
+//        tv_contact.setPhone("Không quét được mã xin vui lòng gọi: 0985771133","0985771133")
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

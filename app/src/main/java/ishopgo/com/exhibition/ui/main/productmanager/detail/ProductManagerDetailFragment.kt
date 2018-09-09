@@ -709,7 +709,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     }
 
     private fun firstLoadBrand() {
-        reloadBrands = false
+        reloadBrands = true
         val firstLoad = LoadMoreRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
@@ -717,7 +717,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     }
 
     private fun loadMoreBrands(currentCount: Int) {
-        reloadBrands = true
+        reloadBrands = false
         val loadMore = LoadMoreRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
@@ -1065,7 +1065,14 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         } else {
             gianHangId = UserDataManager.currentUserId
-            linear_donVi.visibility = View.GONE
+            linear_donVi.visibility = View.VISIBLE
+            edit_product_donVi.isFocusableInTouchMode = false
+            edit_product_donVi.isFocusable = false
+            edit_product_donVi.setOnClickListener(null)
+            if (convert.providerBooth() != null) {
+                edit_product_donVi.setText(convert.providerBooth()!!.name ?: "")
+                edit_product_chucNangDV.setText(convert.providerBooth()!!.title ?: "Đơn vị phân phối")
+            }
         }
 
         setupImageRecycleview()

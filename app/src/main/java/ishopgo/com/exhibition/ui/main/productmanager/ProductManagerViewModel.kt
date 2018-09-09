@@ -14,10 +14,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.response.*
-import ishopgo.com.exhibition.model.BoothManager
-import ishopgo.com.exhibition.model.Description
-import ishopgo.com.exhibition.model.ManagerBooth
-import ishopgo.com.exhibition.model.PostMedia
+import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -543,7 +540,7 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            addDisposable(isgService.getBrands(fields)
+            addDisposable(noAuthService.getAllBrands(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
                         override fun success(data: ManagerBrand?) {
@@ -759,6 +756,26 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                     })
             )
         }
+    }
+
+    var dataShopInfo = MutableLiveData<ShopDetail>()
+
+    fun getShopInfo(shopId: Long) {
+        val request = if (UserDataManager.currentUserId > 0) authService.getShopInfo(shopId) else noAuthService.getShopInfo(shopId)
+        addDisposable(request
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<ManagerShopDetail>() {
+                    override fun success(data: ManagerShopDetail?) {
+                        dataShopInfo.postValue(data?.booth)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+
+                })
+        )
     }
 
     companion object {

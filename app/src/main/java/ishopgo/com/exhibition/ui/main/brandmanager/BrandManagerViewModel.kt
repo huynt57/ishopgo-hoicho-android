@@ -33,7 +33,7 @@ class BrandManagerViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
-            addDisposable(isgService.getBrands(fields)
+            addDisposable(noAuthService.getAllBrands(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
                         override fun success(data: ManagerBrand?) {

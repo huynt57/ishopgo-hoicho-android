@@ -12,6 +12,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.os.UserManager
 import android.provider.MediaStore
 import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
@@ -208,7 +209,6 @@ class ProductManagerAddFragment : BaseFragment() {
         if (UserDataManager.currentType == "Chủ hội chợ")
             linear_donVi.visibility = View.VISIBLE else {
             gianHangId = UserDataManager.currentUserId
-            linear_donVi.visibility = View.GONE
         }
 
         view_image_add_product.setOnClickListener {
@@ -724,6 +724,19 @@ class ProductManagerAddFragment : BaseFragment() {
             }
         })
 
+        viewModel.dataShopInfo.observe(this, Observer { p ->
+            p?.let {
+                linear_donVi.visibility = View.VISIBLE
+                edit_product_donVi.isFocusable = false
+                edit_product_donVi.isFocusableInTouchMode = false
+                edit_product_donVi.setOnClickListener(null)
+                edit_product_donVi.setText(it.name ?: "")
+                edit_product_chucNangDV.setText("Đơn vị phân phối")
+            }
+        })
+
+
+
         searchProductViewModel = obtainViewModel(SearchProductManagerViewModel::class.java, true)
         searchProductViewModel.getSpLienQuan.observe(this, Observer { p ->
             p?.let {
@@ -804,6 +817,9 @@ class ProductManagerAddFragment : BaseFragment() {
 
         reloadBrands = true
         reloadProvider = true
+
+        if (UserDataManager.currentType == "Chủ gian hàng")
+            viewModel.getShopInfo(UserDataManager.currentUserId)
 
         firstLoadBrand()
         firstLoadCategory()
