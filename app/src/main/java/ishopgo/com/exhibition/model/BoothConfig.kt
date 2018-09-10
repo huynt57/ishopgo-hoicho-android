@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.model
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.domain.response.IdentityData
+import ishopgo.com.exhibition.domain.response.ProductDetail
 
 
 /**
@@ -43,4 +44,7 @@ class BoothConfig : IdentityData() {
     @SerializedName("title")
     @Expose
     var title: String? = null
+    @SerializedName("cert_images")
+    @Expose
+    var certImages: List<ProductDetail.ListCert>? = null
 }

@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.domain
 import android.util.Log
 import io.reactivex.Single
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.User
 import ishopgo.com.exhibition.model.community.Community
 import ishopgo.com.exhibition.model.community.CommunityComment
@@ -55,7 +56,7 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getBoothTypes()
     }
 
-    override fun getShopRelate(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<BoothRelate>>> {
+    override fun getShopRelate(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>> {
         val response = BaseResponse<MutableList<DiaryProduct>>()
         response.status = 1
 

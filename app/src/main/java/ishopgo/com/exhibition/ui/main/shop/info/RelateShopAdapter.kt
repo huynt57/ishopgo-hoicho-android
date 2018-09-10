@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.BoothRelate
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
@@ -13,17 +14,17 @@ import kotlinx.android.synthetic.main.item_shop_relate.view.*
 /**
  * Created by xuanhong on 5/3/18. HappyCoding!
  */
-class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
+class RelateShopAdapter : ClickableAdapter<BoothManager>() {
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_shop_relate
     }
 
-    override fun createHolder(v: View, viewType: Int): ViewHolder<BoothRelate> {
+    override fun createHolder(v: View, viewType: Int): ViewHolder<BoothManager> {
         return ProductHolder(v, BoothRelateConverter())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder<BoothRelate>, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder<BoothManager>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.itemView.setOnClickListener {
             val adapterPosition = holder.adapterPosition
@@ -32,9 +33,9 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
         }
     }
 
-    inner class ProductHolder(v: View, private val converter: Converter<BoothRelate, ShopRelateProvider>) : BaseRecyclerViewAdapter.ViewHolder<BoothRelate>(v) {
+    inner class ProductHolder(v: View, private val converter: Converter<BoothManager, ShopRelateProvider>) : BaseRecyclerViewAdapter.ViewHolder<BoothManager>(v) {
 
-        override fun populate(data: BoothRelate) {
+        override fun populate(data: BoothManager) {
             super.populate(data)
 
             val convert = converter.convert(data)
@@ -55,8 +56,8 @@ class RelateShopAdapter : ClickableAdapter<BoothRelate>() {
         fun provideFunction(): String
     }
 
-    class BoothRelateConverter : Converter<BoothRelate, ShopRelateProvider> {
-        override fun convert(from: BoothRelate): ShopRelateProvider {
+    class BoothRelateConverter : Converter<BoothManager, ShopRelateProvider> {
+        override fun convert(from: BoothManager): ShopRelateProvider {
             return object : ShopRelateProvider {
                 override fun provideFunction(): String {
                     return from.content ?: ""

@@ -731,7 +731,6 @@ class ProductManagerAddFragment : BaseFragment() {
                 edit_product_donVi.isFocusableInTouchMode = false
                 edit_product_donVi.setOnClickListener(null)
                 edit_product_donVi.setText(it.name ?: "")
-                edit_product_chucNangDV.setText("Đơn vị phân phối")
             }
         })
 
@@ -1197,12 +1196,6 @@ class ProductManagerAddFragment : BaseFragment() {
                 rv_search.adapter = adapterDonViCungUng
             if (type == TYPE_DONVI_CAP_2 || type == TYPE_DONVI_CAP_3 || type == TYPE_DONVI_CAP_4 || type == TYPE_DONVI_CAP_5)
                 rv_search.adapter = adapterDonViCungUng_2
-//            if (type == TYPE_DONVI_CAP_3)
-//                rv_search.adapter = adapterDonViCungUng_3
-//            if (type == TYPE_DONVI_CAP_4)
-//                rv_search.adapter = adapterDonViCungUng_4
-//            if (type == TYPE_DONVI_CAP_5)
-//                rv_search.adapter = adapterDonViCungUng_5
 
             rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
@@ -1260,7 +1253,7 @@ class ProductManagerAddFragment : BaseFragment() {
                         gianHangId = data.id
                         if (data.title?.isNotEmpty() == true)
                             edit_product_chucNangDV.setText(data.title)
-                        else edit_product_chucNangDV.setText("Đơn vị phân phối")
+                        else edit_product_chucNangDV.setText("")
 
                         listRelatedShop.clear()
                         edit_product_donVi2.setText("")
@@ -1283,7 +1276,7 @@ class ProductManagerAddFragment : BaseFragment() {
                 override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
                         dialog.dismiss()
-                        val title = "Đơn vị phân phối"
+                        val title = ""
                         if (type == TYPE_DONVI_CAP_2) {
                             if (listRelatedShop.size >= 1) {
                                 listRelatedShop.removeAt(0)
@@ -1330,45 +1323,6 @@ class ProductManagerAddFragment : BaseFragment() {
                     }
                 }
             }
-
-//            adapterDonViCungUng_3.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-//                override fun click(position: Int, data: BoothManager, code: Int) {
-//                    context?.let {
-//                        dialog.dismiss()
-//                        if (data.title?.isNotEmpty() == true)
-//                            edit_product_chucNangDV3.setText(data.title)
-//                        else edit_product_chucNangDV3.setText("Đơn vị phân phối")
-//                        view.text = data.boothName ?: ""
-//                        view.error = null
-//                    }
-//                }
-//            }
-//
-//            adapterDonViCungUng_4.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-//                override fun click(position: Int, data: BoothManager, code: Int) {
-//                    context?.let {
-//                        dialog.dismiss()
-//                        if (data.title?.isNotEmpty() == true)
-//                            edit_product_chucNangDV4.setText(data.title)
-//                        else edit_product_chucNangDV4.setText("Đơn vị phân phối")
-//                        view.text = data.boothName ?: ""
-//                        view.error = null
-//                    }
-//                }
-//            }
-//
-//            adapterDonViCungUng_5.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
-//                override fun click(position: Int, data: BoothManager, code: Int) {
-//                    context?.let {
-//                        dialog.dismiss()
-//                        if (data.title?.isNotEmpty() == true)
-//                            edit_product_chucNangDV5.setText(data.title)
-//                        else edit_product_chucNangDV5.setText("Đơn vị phân phối")
-//                        view.text = data.boothName ?: ""
-//                        view.error = null
-//                    }
-//                }
-//            }
             dialog.show()
         }
     }

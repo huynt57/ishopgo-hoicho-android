@@ -15,6 +15,8 @@ import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.ShopRelateRequest
 import ishopgo.com.exhibition.domain.response.BaseResponse
 import ishopgo.com.exhibition.domain.response.BoothRelate
+import ishopgo.com.exhibition.domain.response.Brand
+import ishopgo.com.exhibition.domain.response.ManagerBrand
 import ishopgo.com.exhibition.model.*
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -61,8 +63,7 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var editSusscess = MutableLiveData<Boolean>()
 
-
-    fun editConfigBooth(name: String, hotline: String, introduction: String, image: Uri?, logo: Uri?, city: String?, district: String?, title: String?, listBoothRelate: List<BoothRelate>) {
+    fun editConfigBooth(name: String, hotline: String, introduction: String, image: Uri?, logo: Uri?, city: String?, district: String?, title: String?, listBoothRelate: List<BoothManager>) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -102,7 +103,7 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (!listBoothRelate.isEmpty()) {
             for (i in listBoothRelate.indices) {
                 builder.addFormDataPart("ids[]", listBoothRelate[i].id.toString())
-                builder.addFormDataPart("contents[]", listBoothRelate[i].content.toString())
+                builder.addFormDataPart("contents[]", listBoothRelate[i].title.toString())
             }
         }
 
@@ -181,15 +182,15 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    var shopRelates = MutableLiveData<List<BoothRelate>>()
+    var shopRelates = MutableLiveData<List<BoothManager>>()
     fun loadShopRelates(params: Request) {
         if (params is ShopRelateRequest) {
             val fields = mutableMapOf<String, Any>()
 
             addDisposable(noAuthService.getShopRelate(params.shopId, fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothRelate>>() {
-                        override fun success(data: List<BoothRelate>?) {
+                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                        override fun success(data: List<BoothManager>?) {
                             shopRelates.postValue(data ?: listOf())
                         }
 
@@ -200,6 +201,27 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
                     })
             )
+        }
+    }
+
+    var dataBooth = MutableLiveData<List<BoothManager>>()
+
+    fun getBooth(params: Request) {
+        if (params is LoadMoreRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+            addDisposable(authService.getBooth(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<ManagerBooth>() {
+                        override fun success(data: ManagerBooth?) {
+                            dataBooth.postValue(data?.booths ?: mutableListOf())
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    }))
         }
     }
 }

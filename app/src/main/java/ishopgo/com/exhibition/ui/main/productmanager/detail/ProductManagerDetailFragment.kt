@@ -1100,7 +1100,7 @@ class ProductManagerDetailFragment : BaseFragment() {
             if (convert.providerBooth() != null) {
                 edit_product_donVi.setText(convert.providerBooth()!!.name ?: "")
                 edit_product_chucNangDV.setText(convert.providerBooth()!!.title
-                        ?: "Đơn vị phân phối")
+                        ?: "")
             }
         }
 
@@ -1896,7 +1896,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                         gianHangId = data.id
                         if (data.title?.isNotEmpty() == true)
                             edit_product_chucNangDV.setText(data.title)
-                        else edit_product_chucNangDV.setText("Đơn vị phân phối")
+                        else edit_product_chucNangDV.setText("")
 
                         listRelatedShop.clear()
                         edit_product_donVi2.setText("")

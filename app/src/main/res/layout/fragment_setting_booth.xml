@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                                            xmlns:app="http://schemas.android.com/apk/res-auto"
-                                            android:id="@+id/view_scrollview"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="match_parent"
-                                            android:orientation="vertical"
-                                            android:windowSoftInputMode="adjustResize">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustResize">
 
 
     <LinearLayout
@@ -87,7 +88,7 @@
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/tv_setting_booth_type"
-                    style="@style/AppTheme.EnableInputField"
+                    style="@style/AppTheme.EnableInputField.DisableInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Loại gian hàng*"
@@ -95,14 +96,6 @@
                     android:singleLine="true"/>
 
             </android.support.design.widget.TextInputLayout>
-
-            <ImageView
-                android:id="@+id/view_choose_type"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="end|bottom"
-                app:srcCompat="@drawable/ic_arrow_drop_down_default_24dp"/>
-
         </FrameLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -199,45 +192,360 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <!--<FrameLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="@dimen/default_margin">-->
+        <!--</FrameLayout>-->
 
-        <FrameLayout
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:background="@color/md_grey_200"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:padding="8dp"-->
+                <!--android:text="Đơn vị liên quan trong chuỗi cung ứng"-->
+                <!--android:textColor="@color/colorPrimaryText"-->
+                <!--android:textSize="13sp"-->
+                <!--/>-->
+
+            <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
+                <!--android:id="@+id/add_relate_booth"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_vertical|end"-->
+                <!--android:background="@color/colorPrimary"-->
+                <!--android:padding="8dp"-->
+                <!--android:text="Thêm"-->
+                <!--app:drawableStartCompat="@drawable/ic_add_white_24dp"-->
+                <!--app:drawableStartSquareSize="16dp"-->
+                <!--android:textColor="@color/colorPureWhite"-->
+                <!--android:textSize="13sp"-->
+                <!--/>-->
+
+
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/related_booth"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--/>-->
+
+        <LinearLayout
+            android:id="@+id/linear_donVi"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/default_margin"
-            >
+            android:orientation="vertical">
 
-            <TextView
+            <LinearLayout
+                android:id="@+id/linear_dovi2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/md_grey_200"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:text="Đơn vị liên quan trong chuỗi cung ứng"
-                android:textColor="@color/colorPrimaryText"
-                android:textSize="13sp"
-                />
+                android:orientation="vertical"
+                tools:visibility="visible">
 
-            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                android:id="@+id/add_relate_booth"
-                android:layout_width="wrap_content"
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_donVi2"
+                        style="@style/AppTheme.EnableInputField.DisableInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Các đơn vị trong chuỗi cung ứng"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_chucNangDV2"
+                        style="@style/AppTheme.EnableInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chức năng của đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_add_donVi3"
+                    style="@style/AppTheme.ActionButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="THÊM ĐƠN VỊ"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline18"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_dovi3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:background="@color/colorPrimary"
-                android:padding="8dp"
-                android:text="Thêm"
-                app:drawableStartCompat="@drawable/ic_add_white_24dp"
-                app:drawableStartSquareSize="16dp"
-                android:textColor="@color/colorPureWhite"
-                android:textSize="13sp"
-                />
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
 
-        </FrameLayout>
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/related_booth"
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_donVi3"
+                        style="@style/AppTheme.EnableInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chọn đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_chucNangDV3"
+                        style="@style/AppTheme.DisableInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chức năng của đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_add_donVi4"
+                    style="@style/AppTheme.ActionButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="THÊM ĐƠN VỊ"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline19"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline19"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_dovi4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_donVi4"
+                        style="@style/AppTheme.EnableInputField.DisableInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chọn đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_chucNangDV4"
+                        style="@style/AppTheme.EnableInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chức năng của đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_add_donVi5"
+                    style="@style/AppTheme.ActionButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="0dp"
+                    android:text="THÊM ĐƠN VỊ"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline20"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <android.support.constraint.Guideline
+                    android:id="@+id/guideline20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.5" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_dovi5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_donVi5"
+                        style="@style/AppTheme.EnableInputField.DisableInput"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chọn đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/default_margin"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="@dimen/default_margin"
+                    android:layout_marginBottom="8dp">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/edit_product_chucNangDV5"
+                        style="@style/AppTheme.EnableInputField"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Chức năng của đơn vị"
+                        tools:drawableEnd="@drawable/ic_arrow_drop_down_default_24dp" />
+
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:layout_marginTop="16dp"
+            android:background="@color/colorPrimary"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="Giấy phép chứng nhận chất lượng và nguồn gốc"
+                android:textColor="@color/md_white_1000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/view_camera_cert"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_photo_camera_black_24dp" />
+
+            <ImageView
+                android:id="@+id/view_add_images_cert"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="8dp"
+                android:padding="4dp"
+                app:srcCompat="@drawable/ic_add_default_24dp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_product_cert"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/default_margin"
+            android:scrollbars="horizontal" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/btn_create_booth"

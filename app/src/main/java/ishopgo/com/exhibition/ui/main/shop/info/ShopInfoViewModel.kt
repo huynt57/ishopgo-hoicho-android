@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.domain.request.ShopRelateRequest
 import ishopgo.com.exhibition.domain.response.BoothRelate
 import ishopgo.com.exhibition.domain.response.ManagerShopDetail
 import ishopgo.com.exhibition.domain.response.ShopDetail
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
@@ -24,7 +25,7 @@ class ShopInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var info = MutableLiveData<ShopDetail>()
     var listSalePoint = MutableLiveData<List<SearchSalePoint>>()
-    var shopRelates = MutableLiveData<List<BoothRelate>>()
+    var shopRelates = MutableLiveData<List<BoothManager>>()
 
     fun loadInfo(shopId: Long) {
         val request = if (UserDataManager.currentUserId > 0) authService.getShopInfo(shopId) else noAuthService.getShopInfo(shopId)
@@ -53,8 +54,8 @@ class ShopInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             addDisposable(noAuthService.getShopRelate(params.shopId, fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothRelate>>() {
-                        override fun success(data: List<BoothRelate>?) {
+                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                        override fun success(data: List<BoothManager>?) {
                             shopRelates.postValue(data ?: listOf())
                         }
 

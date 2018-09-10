@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.domain.request.ShopRelateRequest
 import ishopgo.com.exhibition.domain.response.BoothRelate
 import ishopgo.com.exhibition.domain.response.ShopDetail
 import ishopgo.com.exhibition.domain.response.ShopProcess
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
@@ -318,8 +319,8 @@ class ShopInfoFragment : BaseFragment() {
         lm2.isAutoMeasureEnabled = true
         view_recyclerview_relates_booth.layoutManager = lm2
         view_recyclerview_relates_booth.isNestedScrollingEnabled = false
-        relateBoothAdapter.listener = object : ClickableAdapter.BaseAdapterAction<BoothRelate> {
-            override fun click(position: Int, data: BoothRelate, code: Int) {
+        relateBoothAdapter.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+            override fun click(position: Int, data: BoothManager, code: Int) {
                 val intent = Intent(view.context, ShopDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                 startActivity(intent)
