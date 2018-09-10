@@ -167,7 +167,9 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         if (chungNhan.isNotEmpty()) {
             var chungNhanString = ""
             for (i in chungNhan.indices) {
-                chungNhanString = "$chungNhanString, ${chungNhan[i]}"
+                chungNhanString = if (chungNhanString.trim().isNotEmpty())
+                    "$chungNhanString, ${chungNhan[i]}"
+                else chungNhan[i]
             }
             builder.addFormDataPart("chung_nhan", chungNhanString)
         }
@@ -316,7 +318,7 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
                            listSpLienQuan: MutableList<Product>, tenVatTu: String, tenGiaiPhap: String, tenLienQuan: String, listCert: ArrayList<PostMedia>,
                            donViSXId: Long, donViNKId: Long, coSoCBId: Long, listDescriptionCSCB: MutableList<Description>,
                            listDescriptionVatTu: MutableList<Description>, listDescriptionGiaiPhap: MutableList<Description>, ghiChu_vc: String, listImageDelete: ArrayList<PostMedia>,
-                           chungNhan: ArrayList<String>, chuoiCungUng: ArrayList<BoothManager>, tags: String) {
+                           chungNhan: ArrayList<String>, chuoiCungUng: ArrayList<BoothManager>, tags: String, listImageDeleteCert: ArrayList<PostMedia>) {
 
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
@@ -410,7 +412,9 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         if (chungNhan.isNotEmpty()) {
             var chungNhanString = ""
             for (i in chungNhan.indices) {
-                chungNhanString = "$chungNhanString, ${chungNhan[i]}"
+                chungNhanString = if (chungNhanString.trim().isNotEmpty())
+                    "$chungNhanString, ${chungNhan[i]}"
+                else chungNhan[i]
             }
             builder.addFormDataPart("chung_nhan", chungNhanString)
         }
@@ -484,18 +488,18 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
             for (i in listCert.indices) {
                 val uri = listCert[i].uri
                 val imageId = listCert[i].id
-                if (uri.toString().toLowerCase().startsWith("http") && imageId != 0L) {
+                if (uri.toString().toLowerCase().startsWith("http") && imageId > 0L) {
                     builder.addFormDataPart("shop_cert_images[]", uri.toString())
                     builder.addFormDataPart("shop_cert_images_id[]", imageId.toString())
                 } else
-                    uri?.let {
-                        val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
-                        imageFile.deleteOnExit()
-                        Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
-                        val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
-                        builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
-                    }
-
+                    if (!uri.toString().toLowerCase().startsWith("http") && imageId <= 0L)
+                        uri?.let {
+                            val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
+                            imageFile.deleteOnExit()
+                            Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                            val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                            builder.addFormDataPart("cert_files[]", imageFile.name, imageBody)
+                        }
             }
         }
 
@@ -516,6 +520,12 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         if (listImageDelete.isNotEmpty()) {
             for (i in listImageDelete.indices) {
                 builder.addFormDataPart("deleted_images[]", listImageDelete[i].uri.toString())
+            }
+        }
+
+        if (listImageDeleteCert.isNotEmpty()) {
+            for (i in listImageDeleteCert.indices) {
+                builder.addFormDataPart("deleted_cert_images[]", listImageDeleteCert[i].uri.toString())
             }
         }
 

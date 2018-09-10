@@ -271,12 +271,13 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             val code = qrCode.replace("http://${resources.getString(R.string.app_host)}/check/", "")
             Log.d(TAG, "processData: Code = [${code}]")
             if (code != qrCode) {
+                showProgressDialog()
                 val requestLinkQrCode = String.format("http://ishopgo.expo360.vn/url/%s", code)
                 viewModel.getLinkQRCode(requestLinkQrCode)
             } else {
+                showProgressDialog()
                 openDeeplink(qrCode)
             }
-            showProgressDialog()
 
             return
         }

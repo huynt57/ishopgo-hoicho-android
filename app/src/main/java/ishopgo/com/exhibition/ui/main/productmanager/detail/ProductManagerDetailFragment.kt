@@ -67,6 +67,7 @@ class ProductManagerDetailFragment : BaseFragment() {
     private var postMedias = ArrayList<PostMedia>()
     private var postMediasCert = ArrayList<PostMedia>()
     private var listImageDelete = ArrayList<PostMedia>()
+    private var listImageDeleteCert = ArrayList<PostMedia>()
     private var adapterImages = ComposingPostMediaAdapter()
     private var adapterImagesCert = ComposingPostMediaAdapter()
     private var image: String = ""
@@ -244,7 +245,6 @@ class ProductManagerDetailFragment : BaseFragment() {
             val tenLienQuan = tv_lienQuan.text.toString()
             val tags = edit_product_tuKhoa.text.toString()
 
-
             if (isRequiredFieldsValid(tenSp, edit_product_giaBan.text.toString(), maSp, edt_product_danhMuc.text.toString(),
                             edit_product_giaBan.text.toString(), edit_product_thuongHieu.text.toString())) {
                 showProgressDialog()
@@ -252,7 +252,7 @@ class ProductManagerDetailFragment : BaseFragment() {
                         ngaySX, ngayThuHoachDK, quyMo, khaNangCungUng, muaVu, msLoHang, cangXuat, cangNhap, ngayXuatHang, ngayNhapHang, soLuongNhap,
                         hinhThucVC, ngayVC, donViVC, moTa, thuongHieuId, gianHangId, nkxs, baoTieu, trangThaiHT, spNoiBat, postMedias,
                         listCategory, listProductVatTu, listProductGiaiPhap, listProductRelated, tenVatTu, tenGiaiPhap, tenLienQuan, postMediasCert, donViSXId, donViNKId, coSoCBId, listDescriptionCSCB,
-                        listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC, listImageDelete, listChungNhan, listRelatedShop, tags)
+                        listDescriptionVatTu, listDescriptionGiaiPhap, ghiChuVC, listImageDelete, listChungNhan, listRelatedShop, tags, listImageDeleteCert)
             }
         }
     }
@@ -472,6 +472,8 @@ class ProductManagerDetailFragment : BaseFragment() {
             adapterImagesCert.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
                 override fun click(position: Int, data: PostMedia, code: Int) {
                     postMediasCert.remove(data)
+                    if (data.uri.toString().subSequence(0, 4).contains("http"))
+                        listImageDeleteCert.add(data)
                     if (postMediasCert.isEmpty()) rv_product_cert.visibility = View.GONE
                     adapterImagesCert.replaceAll(postMediasCert)
                 }
@@ -573,9 +575,13 @@ class ProductManagerDetailFragment : BaseFragment() {
             toast("Cập nhật thành công")
             viewModel.getProductDetail(product_Id)
             postMedias.clear()
+            listImageDeleteCert.clear()
+            listImageDelete.clear()
             listProductRelated.clear()
             listProductVatTu.clear()
             listProductGiaiPhap.clear()
+            postMediasCert.clear()
+            listChungNhan.clear()
             activity?.setResult(RESULT_OK)
         })
 
@@ -696,6 +702,28 @@ class ProductManagerDetailFragment : BaseFragment() {
                         listProductGiaiPhap.add(data)
                         adapterGiaiPhap.replaceAll(listProductGiaiPhap)
                     }
+                }
+            }
+        })
+
+        searchProductViewModel.getCertImages.observe(this, Observer { p ->
+            p?.let {
+                val postMedia = PostMedia()
+                var forEnd = false
+
+                for (i in postMediasCert.indices) {
+                    if (postMediasCert[i].uri == Uri.parse(it.image)) {
+                        toast("Hình ảnh này đã tồn tại")
+                        break
+                    } else if (i == postMediasCert.size - 1) forEnd = true
+                }
+
+                if (forEnd) {
+                    postMedia.uri = Uri.parse(it.image ?: "")
+                    postMedia.id = it.id
+                    postMediasCert.add(postMedia)
+                    adapterImagesCert.replaceAll(postMediasCert)
+                    rv_product_cert.visibility = View.VISIBLE
                 }
             }
         })
@@ -1071,7 +1099,8 @@ class ProductManagerDetailFragment : BaseFragment() {
             edit_product_donVi.setOnClickListener(null)
             if (convert.providerBooth() != null) {
                 edit_product_donVi.setText(convert.providerBooth()!!.name ?: "")
-                edit_product_chucNangDV.setText(convert.providerBooth()!!.title ?: "Đơn vị phân phối")
+                edit_product_chucNangDV.setText(convert.providerBooth()!!.title
+                        ?: "Đơn vị phân phối")
             }
         }
 

@@ -39,8 +39,7 @@ class CertImagesAdapter : ClickableAdapter<CertImages>() {
                 Glide.with(this)
                         .load(data.image)
                         .apply(RequestOptions
-                                .circleCropTransform()
-                                .placeholder(R.drawable.avatar_placeholder)
+                                .placeholderOf(R.drawable.avatar_placeholder)
                                 .error(R.drawable.avatar_placeholder))
                         .into(image)
             }
