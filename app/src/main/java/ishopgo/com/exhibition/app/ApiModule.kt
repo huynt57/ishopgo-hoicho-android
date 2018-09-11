@@ -7,6 +7,7 @@ import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.domain.auth.AppAuthenticator
 import ishopgo.com.exhibition.domain.auth.ISGAuthenticator
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.ui.extensions.StaticBaseURL
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -164,7 +165,7 @@ class ApiModule {
     @Named("okhttp_icheck_noauth_authenticator")
     fun provideIcheckNoAuthOkHttpClient(@Named("header_icheck") headerIcheck: Interceptor,
                                         @Named("log") logger: Interceptor,
-                                        @Named("expo_auth") auth: Authenticator, cache: okhttp3.Cache): okhttp3.OkHttpClient {
+                                        @Named("expo_auth") auth: Authenticator): okhttp3.OkHttpClient {
         val builder = okhttp3.OkHttpClient.Builder()
         builder
                 .connectTimeout(TIME_OUT, TimeUnit.SECONDS)
@@ -330,7 +331,7 @@ class ApiModule {
 
     companion object {
         const val TIME_OUT: Long = 30
-        const val BASE_URL_ISG = "http://ishopgo.expo360.vn/api/v1/"
+        const val BASE_URL_ISG = StaticBaseURL.BASE_URL
         const val BASE_URL_ICHECK = "https://gateway.icheck.com.vn/"
     }
 }

@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_end="54dp"/>
+        app:layout_constraintGuide_end="54dp"/>a
 
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="196dp"
@@ -49,8 +49,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline9"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo_expo_horizontal"
-        app:tint="@color/colorPureWhite"
-        tools:ignore="ContentDescription,MissingConstraints"/>
+        tools:ignore="ContentDescription,MissingConstraints" />
 
     <EditText
         android:id="@+id/tv_account"

@@ -48,6 +48,7 @@ import ishopgo.com.exhibition.ui.main.productmanager.add.*
 import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
+import ishopgo.com.exhibition.ui.main.productmanager.detail.CustomProductManagerDetail
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView

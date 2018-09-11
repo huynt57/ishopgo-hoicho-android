@@ -109,6 +109,58 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424833294520:android:7b39733689314ddb",
+        "android_client_info": {
+          "package_name": "ishopgo.com.icheckexpo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424833294520-lp0gnbkh4paidhajk6s9ki5njt0i4ca3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ishopgo.com.icheckexpo",
+            "certificate_hash": "09839bc7a9e3bba8a602cf34bce452ad3349428d"
+          }
+        },
+        {
+          "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ0iYMzanYaO_7QUrkYasjowZtu3jpHtc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424833294520-mb01afa88ikv2btbpr6o6rre2ho55ngk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "424833294520-cnn78omf929imghao6eupovm9dulrkb6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ishopgo.icheckexpo",
+                "app_store_id": "1431650952"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"

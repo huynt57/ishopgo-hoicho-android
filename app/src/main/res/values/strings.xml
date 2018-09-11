@@ -7,20 +7,4 @@
     <string name="tab_home">Hội chợ</string>
     <string name="tab_profile">Tài khoản</string>
     <string name="error_field_required">Trường này còn trống</string>
-
-    <string name="footer"><![CDATA[
-        <b><font color="#0000CD">HỘI CHỢ TRIỂN LÃM ONLINE</font></b>
-        <br />
-        <b><font color="#0000CD">HÀNG VIỆT NAM CHẤT LƯỢNG CAO</font></b>
-        <br />
-        <b>HỘI DOANH NGHIỆP HVNCLC TP HỒ CHÍ MINH</b>
-        <br />
-        Địa chỉ: 163 Pasteur, Phường 6, Q.3,TPHCM
-        <br />
-        Tel : 08-38202797 | Fax : 08-38207978 | Email : info@bsa.org.vn
-        <br />
-        © Bản quyền 2018| iShopGo® Nền tảng ERP cho doanh nghiệp vừa và nhỏ
-        <br />
-        ]]>
-    </string>
 </resources>

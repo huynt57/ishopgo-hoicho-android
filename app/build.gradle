@@ -71,6 +71,12 @@ android {
             storeFile file('../keystore/keystore_htx.jks')
             storePassword '123456'
         }
+        icheckexpo {
+            keyAlias 'ishopgo_icheck_expo'
+            keyPassword '123456'
+            storeFile file('../keystore/keystore_icheck_expo.jks')
+            storePassword '123456'
+        }
     }
 
     lintOptions {
@@ -140,7 +146,7 @@ android {
             resValue "string", "app_name", "Vietbuild Expo"
             resValue "string", "app_host", "vietbuildexpo.vn"
             resValue "string", "app_protocol", "http"
-            resValue "string", "host_deeplink", "vietbuildexpo.vn "
+            resValue "string", "host_deeplink", "vietbuildexpo.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.vietbuild.fileprovider"
             resValue "string", "external_file_path", "Android/data/ishopgo.com.vietbuild/files/Pictures"
             resValue "string", "firebase_app_version_ref", "app_variations/android/vietbuild"
@@ -162,9 +168,9 @@ android {
             versionName "1.2.3"
             resValue "string", "app_id", "746ebdd7905b4156b3dff5717d63d70c"
             resValue "string", "app_name", "Farm 360"
-            resValue "string", "app_host", "farm360.vn/"
+            resValue "string", "app_host", "farm360.vn"
             resValue "string", "app_protocol", "http"
-            resValue "string", "host_deeplink", "vietbuildexpo.vn "
+            resValue "string", "host_deeplink", "farm360.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.farm.fileprovider"
             resValue "string", "external_file_path", "Android/data/ishopgo.com.farm/files/Pictures"
             resValue "string", "firebase_app_version_ref", "app_variations/android/farm"
@@ -187,9 +193,9 @@ android {
             versionName "1.2.3"
             resValue "string", "app_id", "efa5a395827ee60b75624bfc7e67060b"
             resValue "string", "app_name", "Hợp Tác Xã"
-            resValue "string", "app_host", "hoptacxa.vn/"
+            resValue "string", "app_host", "hoptacxa.vn"
             resValue "string", "app_protocol", "http"
-            resValue "string", "host_deeplink", "hoptacxa.vn "
+            resValue "string", "host_deeplink", "hoptacxa.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.htx.fileprovider"
             resValue "string", "external_file_path", "Android/data/ishopgo.com.htx/files/Pictures"
             resValue "string", "firebase_app_version_ref", "app_variations/android/htx"
@@ -205,6 +211,31 @@ android {
                 into '.'
             }
         }
+
+        icheckexpo {
+            applicationId "ishopgo.com.icheckexpo"
+            versionCode 1
+            versionName "1.0.0"
+            resValue "string", "app_id", "icheckexpo.com"
+            resValue "string", "app_name", "Icheck Expo"
+            resValue "string", "app_host", "icheckexpo.com"
+            resValue "string", "app_protocol", "http"
+            resValue "string", "host_deeplink", "icheckexpo.com "
+            resValue "string", "file_provider_authority", "ishopgo.com.icheckexpo.fileprovider"
+            resValue "string", "external_file_path", "Android/data/ishopgo.com.icheckexpo/files/Pictures"
+            resValue "string", "firebase_app_version_ref", "app_variations/android/icheckexpo"
+            resValue "string", "keyword_store_search", "icheck%20expo%20ishopgo"
+
+            resValue "string", "facebook_app_id", "2074136346234361"
+            resValue "string", "fb_login_protocol_scheme", "2074136346234361"
+            resValue "string", "fb_provider_id", "com.facebook.app.FacebookContentProvider2074136346234361"
+
+            copy {
+                from 'src/icheckexpo/'
+                include '*.json'
+                into '.'
+            }
+        }
     }
 
     buildTypes {
@@ -214,6 +245,7 @@ android {
             productFlavors.vietbuild.signingConfig signingConfigs.vietbuild
             productFlavors.farm.signingConfig signingConfigs.farm
             productFlavors.htx.signingConfig signingConfigs.htx
+            productFlavors.icheckexpo.signingConfig signingConfigs.icheckexpo
 
             minifyEnabled false
             debuggable false
