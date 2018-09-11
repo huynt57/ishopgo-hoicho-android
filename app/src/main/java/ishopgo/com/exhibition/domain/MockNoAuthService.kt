@@ -56,11 +56,11 @@ class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiServ
         return delegate.returningResponse(response).getBoothTypes()
     }
 
-    override fun getShopRelate(id: Long, params: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>> {
+    override fun getShopRelate(id: Long): Single<BaseResponse<List<BoothManager>>> {
         val response = BaseResponse<MutableList<DiaryProduct>>()
         response.status = 1
 
-        return delegate.returningResponse(response).getShopRelate(id, params)
+        return delegate.returningResponse(response).getShopRelate(id)
     }
 
     override fun getProductDiary(fields: MutableMap<String, Any>): Single<BaseResponse<MutableList<DiaryProduct>>> {

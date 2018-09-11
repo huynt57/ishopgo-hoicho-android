@@ -161,7 +161,11 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                     tv_setting_booth_city.text.toString(),
                     tv_setting_booth_district.text.toString(),
                     tv_setting_booth_type.text.toString(),
-                    listBoothRelate
+                    listBoothRelate,
+                    edit_product_chucNangDV2.text.toString(),
+                    edit_product_chucNangDV3.text.toString(),
+                    edit_product_chucNangDV4.text.toString(),
+                    edit_product_chucNangDV5.text.toString(), postMediasCert
             )
         }
 
@@ -344,9 +348,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                 listImageDeleteCert.clear()
                 postMediasCert.clear()
 
-                val relateRequest = ShopRelateRequest()
-                relateRequest.shopId = UserDataManager.currentUserId
-                viewModel.loadShopRelates(relateRequest)
+                viewModel.loadShopRelates(UserDataManager.currentUserId)
                 toast("Cập nhật thành công")
             }
         })
@@ -448,7 +450,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                         if (donVi[i].content == "null")
                             edit_product_chucNangDV3.setText("")
                         else
-                        edit_product_chucNangDV3.setText(donVi[i].content)
+                            edit_product_chucNangDV3.setText(donVi[i].content)
                     }
                     if (i == 2) {
                         btn_add_donVi4.visibility = View.GONE
@@ -459,7 +461,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                         if (donVi[i].content == "null")
                             edit_product_chucNangDV4.setText("")
                         else
-                        edit_product_chucNangDV4.setText(donVi[i].content)
+                            edit_product_chucNangDV4.setText(donVi[i].content)
                     }
                     if (i == 3) {
                         btn_add_donVi5.visibility = View.GONE
@@ -469,7 +471,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
                         if (donVi[i].content == "null")
                             edit_product_chucNangDV5.setText("")
                         else
-                        edit_product_chucNangDV5.setText(donVi[i].content)
+                            edit_product_chucNangDV5.setText(donVi[i].content)
                     }
                 }
 //                relateBoothAdapter.replaceAll(it)
@@ -493,9 +495,7 @@ class ConfigBoothFragmentActionBar : BaseActionBarFragment() {
 //            }
 //        })
 
-        val relateRequest = ShopRelateRequest()
-        relateRequest.shopId = UserDataManager.currentUserId
-        viewModel.loadShopRelates(relateRequest)
+        viewModel.loadShopRelates(UserDataManager.currentUserId)
         firstLoadProvider()
         viewModel.getConfigBooth()
         viewModel.loadRegion()

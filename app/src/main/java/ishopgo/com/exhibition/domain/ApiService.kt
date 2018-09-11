@@ -100,7 +100,7 @@ class ApiService {
         fun getShopRatings(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<ShopRate>>>
 
         @GET("expo/get-relate-shop/{id}")
-        fun getShopRelate(@Path("id") id: Long, @QueryMap params: MutableMap<String, Any>): Single<BaseResponse<List<BoothManager>>>
+        fun getShopRelate(@Path("id") id: Long): Single<BaseResponse<List<BoothManager>>>
 
         @FormUrlEncoded
         @POST("expo/login")

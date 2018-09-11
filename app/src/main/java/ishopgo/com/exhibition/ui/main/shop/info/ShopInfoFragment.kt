@@ -111,10 +111,7 @@ class ShopInfoFragment : BaseFragment() {
         })
 
         viewModel.loadInfo(shopId)
-
-        val relateRequest = ShopRelateRequest()
-        relateRequest.shopId = shopId
-        viewModel.loadShopRelates(relateRequest)
+        viewModel.loadShopRelates(shopId)
     }
 
     @SuppressLint("SetTextI18n")

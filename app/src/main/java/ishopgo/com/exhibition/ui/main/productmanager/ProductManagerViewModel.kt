@@ -473,7 +473,7 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         if (listAnh.isNotEmpty()) {
             for (i in listAnh.indices) {
                 val uri = listAnh[i].uri
-                if (!uri.toString().subSequence(0, 4).contains("http"))
+                if (!uri.toString().toLowerCase().startsWith("http"))
                     uri?.let {
                         val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
                         imageFile.deleteOnExit()

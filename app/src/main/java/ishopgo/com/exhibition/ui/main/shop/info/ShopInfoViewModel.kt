@@ -46,27 +46,21 @@ class ShopInfoViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    fun loadShopRelates(params: Request) {
-        if (params is ShopRelateRequest) {
-            val fields = mutableMapOf<String, Any>()
-//            fields["limit"] = params.limit
-//            fields["offset"] = params.offset
+    fun loadShopRelates(shopId: Long) {
+        addDisposable(noAuthService.getShopRelate(shopId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                    override fun success(data: List<BoothManager>?) {
+                        shopRelates.postValue(data ?: listOf())
+                    }
 
-            addDisposable(noAuthService.getShopRelate(params.shopId, fields)
-                    .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
-                            shopRelates.postValue(data ?: listOf())
-                        }
-
-                        override fun failure(status: Int, message: String) {
-                            resolveError(status, message)
-                        }
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
 
 
-                    })
-            )
-        }
+                })
+        )
     }
 
 }

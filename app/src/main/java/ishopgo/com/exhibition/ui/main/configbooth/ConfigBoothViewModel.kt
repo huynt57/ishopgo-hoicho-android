@@ -63,7 +63,8 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var editSusscess = MutableLiveData<Boolean>()
 
-    fun editConfigBooth(name: String, hotline: String, introduction: String, image: Uri?, logo: Uri?, city: String?, district: String?, title: String?, listBoothRelate: List<BoothManager>) {
+    fun editConfigBooth(name: String, hotline: String, introduction: String, image: Uri?, logo: Uri?, city: String?, district: String?, title: String?, listBoothRelate: List<BoothManager>,
+                        chucNangDv2: String, chucNangDv3: String, chucNangDv4: String, chucNangDv5: String, listCert: ArrayList<PostMedia>) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -80,6 +81,20 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
         title?.let {
             builder.addFormDataPart("title", it)
+        }
+
+        if (listCert.isNotEmpty()) {
+            for (i in listCert.indices) {
+                val uri = listCert[i].uri
+                if (!uri.toString().toLowerCase().startsWith("http"))
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postCert$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("cert_images[]", imageFile.name, imageBody)
+                }
+            }
         }
 
         if (image != null) {
@@ -103,10 +118,16 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
         if (!listBoothRelate.isEmpty()) {
             for (i in listBoothRelate.indices) {
                 builder.addFormDataPart("ids[]", listBoothRelate[i].id.toString())
-                builder.addFormDataPart("contents[]", listBoothRelate[i].title.toString())
+                if (i == 0)
+                    builder.addFormDataPart("contents[]", chucNangDv2)
+                if (i == 1)
+                    builder.addFormDataPart("contents[]", chucNangDv3)
+                if (i == 2)
+                    builder.addFormDataPart("contents[]", chucNangDv4)
+                if (i == 3)
+                    builder.addFormDataPart("contents[]", chucNangDv5)
             }
         }
-
 
         addDisposable(authService.editConfigBooth(builder.build())
                 .subscribeOn(Schedulers.single())
@@ -183,25 +204,20 @@ class ConfigBoothViewModel : BaseApiViewModel(), AppComponent.Injectable {
     }
 
     var shopRelates = MutableLiveData<List<BoothManager>>()
-    fun loadShopRelates(params: Request) {
-        if (params is ShopRelateRequest) {
-            val fields = mutableMapOf<String, Any>()
+    fun loadShopRelates(shopId: Long) {
 
-            addDisposable(noAuthService.getShopRelate(params.shopId, fields)
-                    .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
-                        override fun success(data: List<BoothManager>?) {
-                            shopRelates.postValue(data ?: listOf())
-                        }
+        addDisposable(noAuthService.getShopRelate(shopId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                    override fun success(data: List<BoothManager>?) {
+                        shopRelates.postValue(data ?: listOf())
+                    }
 
-                        override fun failure(status: Int, message: String) {
-                            resolveError(status, message)
-                        }
-
-
-                    })
-            )
-        }
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
     }
 
     var dataBooth = MutableLiveData<List<BoothManager>>()
