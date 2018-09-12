@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.main.boothfollow.BoothFollowViewModel
 import ishopgo.com.exhibition.ui.main.boothmanager.BoothManagerViewModel
 import ishopgo.com.exhibition.ui.main.brand.popular.PopularBrandsViewModel
 import ishopgo.com.exhibition.ui.main.brandmanager.BrandManagerViewModel
+import ishopgo.com.exhibition.ui.main.brandmanager.search.BrandSearchViewModel
 import ishopgo.com.exhibition.ui.main.configbooth.ConfigBoothViewModel
 import ishopgo.com.exhibition.ui.main.home.HomeViewModel
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryViewModel
@@ -186,4 +187,5 @@ interface AppComponent {
     fun inject(stampWarningViewModel: StampWarningViewModel)
     fun inject(listScanStampViewModel: ListScanStampViewModel)
     fun inject(stampListBuyViewModel: StampListBuyViewModel)
+    fun inject(brandSearchViewModel: BrandSearchViewModel)
 }

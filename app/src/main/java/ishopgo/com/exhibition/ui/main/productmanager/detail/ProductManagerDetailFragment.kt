@@ -42,6 +42,7 @@ import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateProdcutDetail
+import ishopgo.com.exhibition.ui.main.brandmanager.search.BrandSearchViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.add.*
@@ -61,6 +62,7 @@ import java.util.*
 
 class ProductManagerDetailFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
+    private lateinit var searchBrandsViewModel: BrandSearchViewModel
     private var product_Id: Long = 0L
     private var booth_id: Long = 0L
     private var spNoiBat: Int = STATUS_NOT_FEAUTURED
@@ -169,7 +171,10 @@ class ProductManagerDetailFragment : BaseFragment() {
 
         } else btn_product_add.visibility = View.GONE
 
-        edit_product_thuongHieu.setOnClickListener { getBrands(edit_product_thuongHieu) }
+        edit_product_thuongHieu.setOnClickListener {
+            searchProductViewModel.openSearchBrands()
+//            getBrands(edit_product_thuongHieu)
+        }
         edit_product_gianHang.setOnClickListener { getBooth(edit_product_gianHang, TYPE_DONVI_PHANPHOI) }
         edit_product_donViSX.setOnClickListener { getBooth(edit_product_donViSX, TYPE_DONVI_SANXUAT) }
         edit_product_donViNK.setOnClickListener { getBooth(edit_product_donViNK, TYPE_DONVI_NHAPKHAU) }
@@ -729,9 +734,17 @@ class ProductManagerDetailFragment : BaseFragment() {
             }
         })
 
+        searchBrandsViewModel = obtainViewModel(BrandSearchViewModel::class.java, true)
+        searchBrandsViewModel.getDataSearchBrands.observe(this, Observer { p ->
+            p?.let {
+                thuongHieuId = it.id
+                edit_product_thuongHieu.setText(it.name ?: "")
+            }
+        })
+
         reloadBrands = true
         reloadProvider = true
-        firstLoadBrand()
+//        firstLoadBrand()
         firstLoadProvider()
         firstLoadCategory()
         viewModel.getProductDetail(product_Id)

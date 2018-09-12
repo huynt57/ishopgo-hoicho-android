@@ -42,6 +42,8 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.brandmanager.search.BrandSearchViewModel
+import ishopgo.com.exhibition.ui.main.home.search.brands.SearchBrandsViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchProductManagerViewModel
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointProductAdapter
@@ -58,6 +60,7 @@ import kotlin.collections.ArrayList
 class ProductManagerAddFragment : BaseFragment() {
     private lateinit var viewModel: ProductManagerViewModel
     private lateinit var searchProductViewModel: SearchProductManagerViewModel
+    private lateinit var searchBrandsViewModel: BrandSearchViewModel
     private val adapterBrands = BrandsAdapter()
     private val adapterBooth = BoothAdapter()
     private val adapterDonViCungUng = BoothAdapter()
@@ -169,7 +172,10 @@ class ProductManagerAddFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        edit_product_thuongHieu.setOnClickListener { getBrands(edit_product_thuongHieu) }
+        edit_product_thuongHieu.setOnClickListener {
+            searchProductViewModel.openSearchBrands()
+//            getBrands(edit_product_thuongHieu)
+        }
         edit_product_gianHang.setOnClickListener { getBooth(edit_product_gianHang, TYPE_DONVI_PHANPHOI) }
         edit_product_donViSX.setOnClickListener { getBooth(edit_product_donViSX, TYPE_DONVI_SANXUAT) }
         edit_product_donViNK.setOnClickListener { getBooth(edit_product_donViNK, TYPE_DONVI_NHAPKHAU) }
@@ -736,6 +742,14 @@ class ProductManagerAddFragment : BaseFragment() {
 
 
 
+        searchBrandsViewModel = obtainViewModel(BrandSearchViewModel::class.java, true)
+        searchBrandsViewModel.getDataSearchBrands.observe(this, Observer { p ->
+            p?.let {
+                thuongHieuId = it.id
+                edit_product_thuongHieu.setText(it.name ?: "")
+            }
+        })
+
         searchProductViewModel = obtainViewModel(SearchProductManagerViewModel::class.java, true)
         searchProductViewModel.getSpLienQuan.observe(this, Observer { p ->
             p?.let {
@@ -820,7 +834,7 @@ class ProductManagerAddFragment : BaseFragment() {
         if (UserDataManager.currentType == "Chủ gian hàng")
             viewModel.getShopInfo(UserDataManager.currentUserId)
 
-        firstLoadBrand()
+//        firstLoadBrand()
         firstLoadCategory()
         firstLoadProvider()
     }

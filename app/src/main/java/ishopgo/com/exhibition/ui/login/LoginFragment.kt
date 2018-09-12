@@ -67,6 +67,10 @@ class LoginFragment : BaseFragment() {
             }
         }
 
+        btn_login_fb.setOnClickListener {
+            toast("Đang phát triển")
+        }
+
         tv_password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
             if (id == EditorInfo.IME_ACTION_DONE) {
                 if (tv_password != null)

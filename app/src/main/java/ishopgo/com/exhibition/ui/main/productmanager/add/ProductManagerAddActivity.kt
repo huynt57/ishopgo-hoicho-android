@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.brandmanager.search.BrandSearchFragment
 import ishopgo.com.exhibition.ui.main.productmanager.search_product.CertImagesConfigFragment
 import ishopgo.com.exhibition.ui.main.productmanager.search_product.FilterSearchFragment
 import ishopgo.com.exhibition.ui.main.productmanager.search_product.SearchProductFragmentActionBar
@@ -56,6 +57,17 @@ class ProductManagerAddActivity : BaseSingleFragmentActivity() {
                         .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                         .add(R.id.fragment_container, CertImagesConfigFragment.newInstance(params))
                         .addToBackStack(CertImagesConfigFragment.TAG)
+                        .commit()
+            }
+        })
+
+        viewModel.showThuongHieu.observe(this, Observer { p ->
+            p?.let {
+                val params = Bundle()
+                supportFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.fragment_container, BrandSearchFragment.newInstance(params))
+                        .addToBackStack(BrandSearchFragment.TAG)
                         .commit()
             }
         })

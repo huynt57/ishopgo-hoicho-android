@@ -7,6 +7,7 @@ import android.net.Uri
 import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
+import ishopgo.com.exhibition.domain.request.BrandsRequest
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Brand
@@ -23,21 +24,27 @@ class BrandManagerViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
         appComponent.inject(this)
     }
 
+    var total = MutableLiveData<Int>()
+
     @SuppressLint("StaticFieldLeak")
     @Inject
     lateinit var appContext: Application
 
     override fun loadData(params: Request) {
-        if (params is LoadMoreRequest) {
+        if (params is BrandsRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
+            params.name?.let {
+                fields["name"] = it
+            }
 
             addDisposable(noAuthService.getAllBrands(fields)
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<ManagerBrand>() {
                         override fun success(data: ManagerBrand?) {
                             data?.let {
+                                total.postValue(it.total)
                                 dataReturned.postValue(it.brand ?: mutableListOf())
                             }
                         }
@@ -51,7 +58,7 @@ class BrandManagerViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
 
     var updateSusscess = MutableLiveData<Boolean>()
 
-    fun updateBrand(brand_Id: Long, name:String, logo:String, is_featured:String) {
+    fun updateBrand(brand_Id: Long, name: String, logo: String, is_featured: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)
@@ -86,7 +93,7 @@ class BrandManagerViewModel : BaseListViewModel<List<Brand>>(), AppComponent.Inj
 
     var createSusscess = MutableLiveData<Boolean>()
 
-    fun createBrand(name:String, logo:String, is_featured:String) {
+    fun createBrand(name: String, logo: String, is_featured: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("name", name)

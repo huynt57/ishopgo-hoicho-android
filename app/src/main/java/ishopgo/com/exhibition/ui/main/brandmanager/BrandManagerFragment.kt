@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.BrandsRequest
 import ishopgo.com.exhibition.domain.response.Brand
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -87,7 +87,7 @@ class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
 
     override fun firstLoad() {
         super.firstLoad()
-        val firstLoad = LoadMoreRequest()
+        val firstLoad = BrandsRequest()
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
         viewModel.loadData(firstLoad)
@@ -95,7 +95,7 @@ class BrandManagerFragment : BaseListFragment<List<Brand>, Brand>() {
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val loadMore = LoadMoreRequest()
+        val loadMore = BrandsRequest()
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
         viewModel.loadData(loadMore)
