@@ -130,7 +130,9 @@ class ShopInfoFragment : BaseFragment() {
         }
         so_san_pham.text = "Số sản phẩm: <b>${convert.provideProductCount()}</b>".asHtml()
         tham_gia.text = "Ngày tham gia: <b>${convert.provideJoinedDate()}</b>".asHtml()
-        dia_chi.text = "Địa chỉ: <b>${convert.provideRegion()}</b>".asHtml()
+        dia_chi.text = "Địa chỉ: <b>${convert.provideAddress()}</b>".asHtml()
+        quan_huyen.text = "Quận huyện: <b>${convert.provideDistrict()}</b>".asHtml()
+        tinh_thanh.text = "Thành phố: <b>${convert.provideRegion()}</b>".asHtml()
         danh_gia.text = "Đánh giá shop: <b>${convert.provideRating()}/5 điểm</b>".asHtml()
         luot_quan_tam.text = "Số lượt quan tâm: <b>${convert.provideFollowCount()}</b>".asHtml()
         luot_tham_quan.text = "Số lượt tham quan: <b>${convert.provideVisitCount()}</b>".asHtml()
@@ -164,6 +166,8 @@ class ShopInfoFragment : BaseFragment() {
         fun provideImage(): String
         fun provideProductCount(): Int
         fun provideJoinedDate(): String
+        fun provideAddress(): String
+        fun provideDistrict(): String
         fun provideRegion(): String
         fun provideRating(): Int
         fun provideShareCount(): Int
@@ -178,6 +182,14 @@ class ShopInfoFragment : BaseFragment() {
 
         override fun convert(from: ShopDetail): ShopInfoProvider {
             return object : ShopInfoProvider {
+                override fun provideAddress(): String {
+                    return if (from.address.isNullOrBlank()) "Đang cập nhật" else from.address!!
+                }
+
+                override fun provideDistrict(): String {
+                    return from.district ?: ""
+                }
+
                 override fun provideQrCode(): String {
                     return from.qrcode ?: ""
                 }
@@ -207,7 +219,7 @@ class ShopInfoFragment : BaseFragment() {
                 }
 
                 override fun provideRegion(): String {
-                    return if (from.address.isNullOrBlank()) "Đang cập nhật" else from.address!!
+                    return from.city ?: ""
                 }
 
                 override fun provideRating(): Int {

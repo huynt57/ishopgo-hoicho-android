@@ -32,6 +32,12 @@ class ShopDetail : IdentityData() {
     @SerializedName("address")
     @Expose
     var address: String? = null
+    @SerializedName("city")
+    @Expose
+    var city: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
     @SerializedName("product_count")
     @Expose
     var productCount: Int = 0

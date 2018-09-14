@@ -58,6 +58,26 @@
         tools:text="dia chi"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/quan_huyen"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_place"
+        app:drawableStartSquareSize="18dp"
+        tools:text="quan huyen"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/tinh_thanh"
+        style="@style/AppTheme.ShopInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawablePadding="8dp"
+        app:drawableStartCompat="@drawable/icon_place"
+        app:drawableStartSquareSize="18dp"
+        tools:text="tinh thanh"/>
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/danh_gia"
         style="@style/AppTheme.ShopInfo"
         android:layout_width="match_parent"
