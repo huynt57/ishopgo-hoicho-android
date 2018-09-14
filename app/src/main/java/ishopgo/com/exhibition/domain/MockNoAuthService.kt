@@ -30,6 +30,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockNoAuthService(behavior: BehaviorDelegate<ApiService.NoAuth>) : ApiService.NoAuth {
+    override fun loginFacebook(body: RequestBody): Single<BaseResponse<LoginFacebook>> {
+        val response = BaseResponse<LoginFacebook>()
+        response.status = 1
+        return delegate.returningResponse(response).loginFacebook(body)
+    }
+
     override fun getAllBrands(fields: MutableMap<String, Any>): Single<BaseResponse<ManagerBrand>> {
         val response = BaseResponse<ManagerBrand>()
         response.status = 1

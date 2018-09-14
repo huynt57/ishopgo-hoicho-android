@@ -49,6 +49,10 @@ import ishopgo.com.exhibition.ui.main.ticketmanager.TicketManagerActivity
 import ishopgo.com.exhibition.ui.main.visitors.VisitorsActivity
 import ishopgo.com.exhibition.ui.survey.SurveyActivity
 import kotlinx.android.synthetic.main.fragment_account.*
+import com.facebook.login.LoginManager
+import com.facebook.AccessToken
+import com.facebook.Profile
+
 
 class AccountFragment : BaseFragment() {
 
@@ -502,6 +506,9 @@ class AccountFragment : BaseFragment() {
                 hideProgressDialog()
                 UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
+                if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
+                    LoginManager.getInstance().logOut()
+                }
                 val intent = Intent(context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
 //                intent.putExtra(Const.TransferKey.EXTRA_REQUIRE, true)

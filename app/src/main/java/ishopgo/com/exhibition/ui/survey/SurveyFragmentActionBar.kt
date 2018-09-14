@@ -4,6 +4,9 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.facebook.AccessToken
+import com.facebook.Profile
+import com.facebook.login.LoginManager
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
@@ -48,6 +51,9 @@ class SurveyFragmentActionBar : BaseActionBarFragment() {
             m?.let {
                 UserDataManager.deleteUserInfo()
                 toast("Đăng xuất thành công")
+                if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
+                    LoginManager.getInstance().logOut()
+                }
                 val intent = Intent(context, MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)

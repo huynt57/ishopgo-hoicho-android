@@ -2,6 +2,9 @@ package ishopgo.com.exhibition.domain.auth
 
 import android.app.Application
 import android.util.Log
+import com.facebook.AccessToken
+import com.facebook.Profile
+import com.facebook.login.LoginManager
 import ishopgo.com.exhibition.domain.ApiService
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.RefreshTokenResponse
@@ -44,8 +47,12 @@ class AppAuthenticator(app: Application) : Authenticator {
 
                     override fun failure(status: Int, message: String) {
                         Log.d(TAG, "onError() called $message")
-                        if (UserDataManager.currentUserId > 0)
+                        if (UserDataManager.currentUserId > 0 || !UserDataManager.passLoginFacebook) {
+                            if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
+                                LoginManager.getInstance().logOut()
+                            }
                             UserDataManager.deleteUserInfo()
+                        }
                         obtained = false
                     }
                 })
@@ -60,7 +67,7 @@ class AppAuthenticator(app: Application) : Authenticator {
 
     private fun responseCount(response: Response): Int {
         var result = 1
-        var failed:  Response? = response
+        var failed: Response? = response
         while (failed?.priorResponse() != null) {
             result++
             failed = failed.priorResponse()

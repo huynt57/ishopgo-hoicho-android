@@ -15,6 +15,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
+import ishopgo.com.exhibition.ui.login.facebook.UpdateInfoLoginActivity
 
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
@@ -23,6 +24,7 @@ class MainActivity : BaseSingleFragmentActivity() {
 
     companion object {
         private val TAG = "MainActivity"
+        const val PASS_LOGIN_FACEBOOK_NOT_UPDATE = 0L
     }
 
     private var backpressCount = 1 // backpresscount = 2 will exit application
@@ -77,25 +79,32 @@ class MainActivity : BaseSingleFragmentActivity() {
     }
 
     override fun createFragment(startupOption: Bundle): Fragment {
-        return MainFragment.newInstance(startupOption)
-    }
-
-    override fun startupOptions(): Bundle {
-        return intent?.extras ?: Bundle()
-    }
-
-    override fun onBackPressed() {
-        if (currentFragment is BackpressConsumable && (currentFragment as BackpressConsumable).onBackPressConsumed())
-            return
-        else {
-            if (backpressCount == 2)
-                super.onBackPressed()
-            else {
-                backpressCount++
-                Handler().postDelayed(resetBackpressRunable, 1500)
-                Toast.makeText(this, "Ấn back một lần nữa để thoát ứng dụng !", Toast.LENGTH_SHORT).show()
-            }
+        return if (!UserDataManager.passLoginFacebook) {
+            val intent = Intent(this, UpdateInfoLoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            Fragment()
+        } else {
+            MainFragment.newInstance(startupOption)
         }
     }
 
-}
+        override fun startupOptions(): Bundle {
+            return intent?.extras ?: Bundle()
+        }
+
+        override fun onBackPressed() {
+            if (currentFragment is BackpressConsumable && (currentFragment as BackpressConsumable).onBackPressConsumed())
+                return
+            else {
+                if (backpressCount == 2)
+                    super.onBackPressed()
+                else {
+                    backpressCount++
+                    Handler().postDelayed(resetBackpressRunable, 1500)
+                    Toast.makeText(this, "Ấn back một lần nữa để thoát ứng dụng !", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    }

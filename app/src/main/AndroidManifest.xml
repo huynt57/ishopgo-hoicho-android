@@ -535,6 +535,11 @@
             android:name=".ui.main.scan.ScanResultActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.login.facebook.UpdateInfoLoginActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

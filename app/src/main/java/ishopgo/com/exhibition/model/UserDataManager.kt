@@ -13,7 +13,7 @@ object UserDataManager {
     private const val KEY_APP_ID = "app_id"
     private const val KEY_ACCESS_TOKEN = "access_token"
     private const val KEY_USER_ID = "user_id"
-    private const val KEY_PASS_LOGIN_SCREEN = "pass_login_screen"
+    private const val KEY_PASS_LOGIN_FACEBOOK = "pass_login_facebook"
     private const val KEY_SKIP_UPDATE = "skip_update"
     private const val KEY_USER_AVATAR = "user_avatar"
     private const val KEY_USER_PHONE = "user_phone"
@@ -56,6 +56,9 @@ object UserDataManager {
     var skipUpdate: Boolean
         get() = pref.getBoolean(KEY_SKIP_UPDATE, false)
         set(value) = pref.edit().putBoolean(KEY_SKIP_UPDATE, value).apply()
+    var passLoginFacebook: Boolean
+        get() = pref.getBoolean(KEY_PASS_LOGIN_FACEBOOK, true)
+        set(value) = pref.edit().putBoolean(KEY_PASS_LOGIN_FACEBOOK, value).apply()
 
     var displayWidth: Int = 0
     var displayHeight: Int = 0
@@ -86,13 +89,12 @@ object UserDataManager {
         val edit = pref.edit()
         edit.remove(KEY_ACCESS_TOKEN)
         edit.remove(KEY_USER_ID)
-        edit.remove(KEY_PASS_LOGIN_SCREEN)
+        edit.remove(KEY_PASS_LOGIN_FACEBOOK)
         edit.remove(KEY_SKIP_UPDATE)
         edit.remove(KEY_USER_AVATAR)
         edit.remove(KEY_USER_PHONE)
         edit.remove(KEY_USER_NAME)
         edit.remove(KEY_USER_TYPE)
-        edit.remove(KEY_USER_SURVEY)
         edit.remove(KEY_USER_SURVEY)
         edit.apply()
     }

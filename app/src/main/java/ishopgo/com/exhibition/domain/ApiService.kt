@@ -36,6 +36,9 @@ class ApiService {
 
     interface NoAuth {
 
+        @POST("expo/login-fb")
+        fun loginFacebook(@Body body: RequestBody): Single<BaseResponse<LoginFacebook>>
+
         @GET("expo/all-brands")
         fun getAllBrands(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<ManagerBrand>>
 

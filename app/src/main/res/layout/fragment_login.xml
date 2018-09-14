@@ -114,7 +114,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_forget_password"
         tools:ignore="HardcodedText" />
 
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+    <com.facebook.login.widget.LoginButton
         android:id="@+id/btn_login_fb"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -128,7 +128,6 @@
         android:paddingTop="8dp"
         android:paddingEnd="16dp"
         android:paddingBottom="8dp"
-        android:text="Đăng nhập bằng Facebook"
         android:textColor="@color/colorPureWhite"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -136,6 +135,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView16"
+        app:com_facebook_login_text="Đăng nhập bằng Facebook"
         tools:ignore="HardcodedText" />
 
     <TextView
