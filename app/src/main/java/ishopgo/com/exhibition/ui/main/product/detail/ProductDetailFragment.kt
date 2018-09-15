@@ -1125,7 +1125,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 when (code) {
                     DIARY_IMAGE_CLICK -> {
                         val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, data.images!!.toTypedArray())
+                        val listImages = mutableListOf<String>()
+                        if (data.images?.isNotEmpty() == true)
+                            for (i in data.images!!.indices)
+                                listImages.add(data.images!![i].image ?:"")
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImages.toTypedArray())
                         startActivity(intent)
                     }
 

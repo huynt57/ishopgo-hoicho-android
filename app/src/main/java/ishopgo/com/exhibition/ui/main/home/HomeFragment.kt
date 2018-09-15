@@ -60,6 +60,7 @@ import android.support.v4.view.ViewCompat.animate
 import android.support.v4.view.ViewPropertyAnimatorListener
 import com.bumptech.glide.request.transition.ViewPropertyTransition
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
+import android.opengl.ETC1.getHeight
 
 
 /**
@@ -270,7 +271,7 @@ class HomeFragment : BaseFragment() {
         setupListeners()
 
         if (UserDataManager.currentUserId != 0L || UserDataManager.currentType == "Thành viên")
-            if (nestedScroll != null)
+            if (nestedScroll != null && constrain_moGianHang != null)
                 nestedScroll.viewTreeObserver.addOnScrollChangedListener {
                     if (nestedScroll.scrollY <= 300) {
                         constrain_moGianHang.visibility = View.VISIBLE
