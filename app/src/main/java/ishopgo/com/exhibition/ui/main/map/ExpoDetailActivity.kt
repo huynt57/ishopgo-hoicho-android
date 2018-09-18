@@ -1,19 +1,19 @@
 package ishopgo.com.exhibition.ui.main.map
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import androidx.navigation.Navigation
-import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.ui.base.BaseActivity
+import android.support.v4.app.Fragment
+import ishopgo.com.exhibition.ui.base.BaseSingleFragmentActivity
 
-class ExpoDetailActivity : BaseActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_expo_map)
+class ExpoDetailActivity : BaseSingleFragmentActivity() {
+    override fun createFragment(startupOption: Bundle): Fragment {
+        return ExpoDetailFragment2.newInstance(startupOption)
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        return Navigation.findNavController(this, R.id.nav_map_host_fragment).navigateUp()
+    override fun startupOptions(): Bundle {
+        return intent.extras ?: Bundle()
     }
+
+//    override fun onSupportNavigateUp(): Boolean {
+//        return Navigation.findNavController(this, R.id.nav_map_host_fragment).navigateUp()
+//    }
 }

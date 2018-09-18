@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.map
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -24,6 +25,8 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asColor
+import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.login.LoginActivity
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
@@ -179,6 +182,7 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setupWithConfig() {
         view_introduce.setOnClickListener {
             val intent = Intent(context, FullDetailActivity::class.java)
@@ -206,6 +210,13 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
             extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
             Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_qrCodeExpo, extra)
         }
+
+        view_name.text = expoInfo.name ?: ""
+        view_time.text = "Thời gian: ${expoInfo.startTime?.asDateTime()
+                ?: ""} - ${expoInfo.endTime?.asDateTime() ?: ""}"
+        view_address.text = "Địa điểm: ${expoInfo.address ?: ""}"
+        view_price.text = "Giá vé: ${if (expoInfo.price != 0L) expoInfo.price?.asMoney()
+                ?: "Miễn phí" else "Miễn phí"}"
 
         Glide.with(requireContext())
                 .load(expoInfo.map ?: "")
@@ -251,6 +262,13 @@ class ExpoDetailFragment : BaseListActionBarFragment<List<Kiosk>, Kiosk>() {
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
             activity?.onBackPressed()
+        }
+
+        toolbar.rightButton(R.drawable.icon_qr_code_highlight_24dp)
+        toolbar.setRightButtonClickListener {
+            val extra = Bundle()
+            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
+            Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_qrCodeExpo, extra)
         }
     }
 

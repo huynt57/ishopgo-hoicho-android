@@ -29,8 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_shadow_gradient"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_name"
@@ -48,7 +47,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/view_qrcode"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
-                tools:text="Medi White"/>
+                tools:text="Medi White" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_time"
@@ -59,7 +58,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/view_address"
                 app:layout_constraintEnd_toEndOf="@id/view_name"
                 app:layout_constraintStart_toStartOf="@+id/view_name"
-                tools:text="ngay bat dau"/>
+                tools:text="ngay bat dau" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_address"
@@ -70,7 +69,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/view_price"
                 app:layout_constraintEnd_toEndOf="@id/view_name"
                 app:layout_constraintStart_toStartOf="@+id/view_name"
-                tools:text="dia chi"/>
+                tools:text="dia chi" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/view_price"
@@ -82,7 +81,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/view_name"
                 app:layout_constraintStart_toStartOf="@+id/view_name"
-                tools:text="giá"/>
+                tools:text="giá" />
 
             <ImageView
                 android:id="@+id/view_setting"
@@ -92,7 +91,7 @@
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_more_vertical_whilte_24dp"/>
+                app:srcCompat="@drawable/ic_more_vertical_whilte_24dp" />
 
             <ImageView
                 android:id="@+id/view_qrcode"
@@ -102,7 +101,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/view_name"
-                tools:srcCompat="@tools:sample/avatars"/>
+                tools:srcCompat="@tools:sample/avatars" />
 
         </android.support.constraint.ConstraintLayout>
 

@@ -35,16 +35,79 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/image_placeholder" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/view_zoom"
-                    android:layout_width="wrap_content"
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="28dp"
-                    android:layout_marginBottom="8dp"
-                    app:fabSize="mini"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/view_image"
-                    app:srcCompat="@drawable/ic_zoom_out_map_white_24dp" />
+                    android:background="@drawable/bg_shadow_gradient"
+                    app:layout_constraintBottom_toBottomOf="parent">
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/view_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorPureWhite"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@+id/view_time"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="Medi White" />
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/view_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:textColor="@color/colorPureWhite"
+                        app:layout_constraintBottom_toTopOf="@+id/view_address"
+                        app:layout_constraintEnd_toStartOf="@+id/view_zoom"
+                        app:layout_constraintStart_toStartOf="@+id/view_name"
+                        tools:text="ngay bat dau" />
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/view_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:textColor="@color/colorPureWhite"
+                        app:layout_constraintBottom_toTopOf="@+id/view_price"
+                        app:layout_constraintEnd_toStartOf="@+id/view_zoom"
+                        app:layout_constraintStart_toStartOf="@+id/view_name"
+                        tools:text="dia chi" />
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/view_price"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/colorPureWhite"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/view_name"
+                        app:layout_constraintEnd_toStartOf="@+id/view_zoom"
+                        app:layout_constraintStart_toStartOf="@+id/view_name"
+                        tools:text="giá" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/view_zoom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="8dp"
+                        app:fabSize="mini"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:srcCompat="@drawable/ic_zoom_out_map_white_24dp" />
+
+                </android.support.constraint.ConstraintLayout>
 
             </android.support.constraint.ConstraintLayout>
 
@@ -53,7 +116,8 @@
         <FrameLayout
             android:id="@+id/pinable_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -94,11 +158,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_rounded_rectangle"
-                    app:backgroundTint="@color/colorAccent"
                     android:gravity="center"
                     android:padding="8dp"
                     android:text="Lấy vé"
                     android:textColor="@color/colorPureWhite"
+                    app:backgroundTint="@color/colorAccent"
                     app:layout_constraintEnd_toStartOf="@+id/view_fair_qrcode"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/view_introduce"
