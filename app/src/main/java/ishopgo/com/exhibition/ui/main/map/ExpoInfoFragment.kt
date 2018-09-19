@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.fragment_expo_map_info.*
 
 class ExpoInfoFragment : BaseFragment() {
     private var fairId = -1L
+    private lateinit var shareViewModel: ExpoMapShareViewModel
 
     companion object {
 
@@ -52,11 +53,13 @@ class ExpoInfoFragment : BaseFragment() {
         expoInfo = Toolbox.gson.fromJson(json, ExpoConfig::class.java)
     }
 
-    private lateinit var expoInfo: ExpoConfig
+    private var expoInfo: ExpoConfig? = null
     private lateinit var viewModel: ExpoDetailViewModel
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        shareViewModel = obtainViewModel(ExpoMapShareViewModel::class.java, true)
+
         viewModel = obtainViewModel(ExpoDetailViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
@@ -65,12 +68,16 @@ class ExpoInfoFragment : BaseFragment() {
             }
         })
 
+        viewModel.expoDetail.observe(this, expoDetailObserver)
+
+
         if (fairId != -1L)
             startWithId(fairId)
         else {
-            requireNotNull(expoInfo)
-
-            setupWithConfig()
+            if (expoInfo != null) {
+                requireNotNull(expoInfo)
+                setupWithConfig()
+            }
         }
 
         viewModel.ticket.observe(this, ticketObserver)
@@ -86,12 +93,12 @@ class ExpoInfoFragment : BaseFragment() {
 
         btn_get_ticket.setOnClickListener {
             showProgressDialog()
-            viewModel.getTicket(expoInfo.id!!)
+            viewModel.getTicket(expoInfo?.id ?: -1L)
         }
 
         view_zoom.setOnClickListener {
             val intent = Intent(context, PhotoAlbumViewActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, arrayOf(expoInfo.map ?: ""))
+            intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, arrayOf(expoInfo?.map ?: ""))
             intent.putExtra(Const.TransferKey.EXTRA_FETCH_FULL_SIZE, true)
             startActivity(intent)
         }
@@ -102,31 +109,31 @@ class ExpoInfoFragment : BaseFragment() {
 //            Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_qrCodeExpo, extra)
 //        }
 
-        view_name.text = expoInfo.name ?: ""
-        view_time.text = "Thời gian: ${expoInfo.startTime?.asDateTime()
-                ?: ""} - ${expoInfo.endTime?.asDateTime() ?: ""}"
-        view_address.text = "Địa điểm: ${expoInfo.address ?: ""}"
-        view_price.text = "Giá vé: ${if (expoInfo.price != 0L) expoInfo.price?.asMoney()
+        view_name.text = expoInfo?.name ?: ""
+        view_time.text = "Thời gian: ${expoInfo?.startTime?.asDateTime()
+                ?: ""} - ${expoInfo?.endTime?.asDateTime() ?: ""}"
+        view_address.text = "Địa điểm: ${expoInfo?.address ?: ""}"
+        view_price.text = "Giá vé: ${if (expoInfo?.price != 0L) expoInfo?.price?.asMoney()
                 ?: "Miễn phí" else "Miễn phí"}"
 
         Glide.with(requireContext())
-                .load(expoInfo.map ?: "")
+                .load(expoInfo?.map ?: "")
                 .apply(RequestOptions().centerCrop()
                         .placeholder(R.drawable.image_placeholder)
                         .error(R.drawable.image_placeholder)
                 )
                 .into(view_image)
 
-        if (!TextUtils.isEmpty(expoInfo.description)) {
+        if (!TextUtils.isEmpty(expoInfo?.description ?: "")) {
             val fullHtml = String.format(
                     "<html><head><meta name=\"viewport\"/><style>%s</style></head><body>%s</body></html>",
                     Const.webViewCSS,
-                    expoInfo.description
+                    expoInfo?.description ?: ""
             )
             view_webview.loadData(fullHtml, "text/html; charset=UTF-8", null)
         }
 
-        view_webview.setOnTouchListener { v, event -> event.action == MotionEvent.ACTION_MOVE };
+        view_webview.setOnTouchListener { v, event -> event.action == MotionEvent.ACTION_MOVE }
 
         view_webview.settings.javaScriptEnabled = true
         view_webview.webChromeClient = object : WebChromeClient() {
@@ -145,7 +152,7 @@ class ExpoInfoFragment : BaseFragment() {
 
         view_show_more_description.setOnClickListener {
             val intent = Intent(context, FullDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, expoInfo.description)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, expoInfo?.description ?: "")
             startActivity(intent)
         }
     }
@@ -157,10 +164,7 @@ class ExpoInfoFragment : BaseFragment() {
     private val ticketObserver = Observer<Ticket> { t ->
         t?.let {
             hideProgressDialog()
-
-            val extra = Bundle()
-            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
-            Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_ticketDetailFragmentActionBar2, extra)
+            shareViewModel.openTicketDetail(it)
         }
     }
 

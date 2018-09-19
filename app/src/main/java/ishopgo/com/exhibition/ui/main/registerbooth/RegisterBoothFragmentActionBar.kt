@@ -9,7 +9,7 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 class RegisterBoothFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
-
+        const val TAG = "RegisterBoothFragmentActionBar"
         fun newInstance(params: Bundle): RegisterBoothFragmentActionBar {
             val fragment = RegisterBoothFragmentActionBar()
             fragment.arguments = params

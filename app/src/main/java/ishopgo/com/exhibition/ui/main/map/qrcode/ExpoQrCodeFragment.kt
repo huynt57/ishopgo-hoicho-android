@@ -23,14 +23,30 @@ import com.bumptech.glide.request.target.Target
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
 import java.io.*
 
-class ExpoQrCodeFragment : BaseActionBarFragment() {
+class ExpoQrCodeFragment : BaseActionBarFragment(), BackpressConsumable {
+    override fun onBackPressConsumed(): Boolean {
+        return hideKeyboard()
+    }
+
     private lateinit var data: ExpoConfig
+
+    companion object {
+        const val TAG = "ExpoQrCodeFragment"
+        fun newInstance(params: Bundle): ExpoQrCodeFragment {
+            val fragment = ExpoQrCodeFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
+    }
 
     override fun contentLayoutRes(): Int {
         return R.layout.fragment_myqr

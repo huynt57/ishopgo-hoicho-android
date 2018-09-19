@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.main.ticket.TicketFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 class TicketDetailFragmentActionBar : BaseActionBarFragment() {
 
     companion object {
-
+        const val TAG = "TicketDetailFragmentActionBar"
         fun newInstance(params: Bundle): TicketDetailFragmentActionBar {
             val fragment = TicketDetailFragmentActionBar()
             fragment.arguments = params
@@ -27,7 +28,7 @@ class TicketDetailFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Vé tham quan")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
-            Navigation.findNavController(it).navigateUp()
+            activity?.onBackPressed()
         }
     }
 

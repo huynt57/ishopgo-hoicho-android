@@ -13,11 +13,13 @@ import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.Kiosk
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.login.LoginActivity
+import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
+import ishopgo.com.exhibition.ui.main.map.ExpoMapShareViewModel
 import ishopgo.com.exhibition.ui.main.map.ExpoShopAdapter
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
@@ -27,7 +29,13 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 /**
  * Created by xuanhong on 6/19/18. HappyCoding!
  */
-class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener, BackpressConsumable {
+    private lateinit var shareViewModel: ExpoMapShareViewModel
+
+    override fun onBackPressConsumed(): Boolean {
+        return hideKeyboard()
+    }
+
     override fun openFilter() {
 
     }
@@ -117,11 +125,13 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
     private fun chooseKiosk(data: Kiosk) {
         if (UserDataManager.currentUserId > 0) {
             if (UserDataManager.currentType == "Chủ hội chợ") {
-                val extra = Bundle()
-                extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
-                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_chooseBoothFragment, extra)
+                shareViewModel.openBoothSelected(data.id ?: -1L)
+//                val extra = Bundle()
+//                extra.putLong(Const.TransferKey.EXTRA_ID, data.id ?: -1L)
+//                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_chooseBoothFragment, extra)
             } else {
-                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_registerBoothFragmentActionBar)
+                shareViewModel.openRegisterExpo()
+//                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_registerBoothFragmentActionBar)
             }
         } else {
             val intent = Intent(context, MainActivity::class.java)
@@ -139,7 +149,8 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
+        shareViewModel = obtainViewModel(ExpoMapShareViewModel::class.java, true)
+        shareViewModel.addBoothSuccess.observe(this, Observer { firstLoad() })
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
                 hideProgressDialog()

@@ -10,13 +10,18 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.Ticket
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.*
 import kotlinx.android.synthetic.main.fragment_ticket_account.*
 import net.glxn.qrgen.android.QRCode
 
-class TicketFragment : BaseFragment() {
+class TicketFragment : BaseFragment(), BackpressConsumable {
+    override fun onBackPressConsumed(): Boolean {
+        return hideKeyboard()
+    }
+
     private lateinit var ticket: Ticket
 
     companion object {
@@ -43,6 +48,7 @@ class TicketFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        nestedScroll.setOnClickListener(null)
         val converted = TicketConverter().convert(ticket)
 
         Glide.with(context)

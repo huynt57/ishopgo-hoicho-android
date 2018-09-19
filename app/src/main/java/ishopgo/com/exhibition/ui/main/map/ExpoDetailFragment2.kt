@@ -24,6 +24,7 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
     private lateinit var pagerAdapter: MainPagerAdapter
     private lateinit var expoInfo: ExpoConfig
     private var fairId = -1L
+    private lateinit var viewModel: ExpoMapShareViewModel
 
     companion object {
         fun newInstance(params: Bundle): ExpoDetailFragment2 {
@@ -66,11 +67,10 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
         titleView.setTextColor(R.color.md_grey_700.asColor(requireContext()))
         titleView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
         titleView.setOnClickListener {
-            //            if (::expoInfo.isInitialized) {
-//                val extra = Bundle()
-//                extra.putLong(Const.TransferKey.EXTRA_ID, expoInfo.id!!)
+            if (::expoInfo.isInitialized) {
+                viewModel.openSearchBoothFragment(expoInfo.id!!)
 //                Navigation.findNavController(it).navigate(R.id.action_expoDetailFragment_to_searchBoothFragment, extra)
-//            }
+            }
         }
         titleView.drawableCompat(0, 0, R.drawable.ic_search_highlight_24dp, 0)
 
@@ -81,10 +81,16 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
 
         toolbar.rightButton(R.drawable.icon_qr_code_highlight_24dp)
         toolbar.setRightButtonClickListener {
-            //            val extra = Bundle()
+            viewModel.openQrCode(expoInfo)
+//                        val extra = Bundle()
 //            extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(expoInfo))
 //            Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_expoDetailFragment_to_qrCodeExpo, extra)
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        viewModel = obtainViewModel(ExpoMapShareViewModel::class.java, true)
     }
 
     private fun setUpViewPager() {
@@ -137,7 +143,7 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
                 }
                 TAB_BOOTH -> {
                     Fragment()
-//                    CommunityFragmentActionBar.newInstance(Bundle())
+                    ExpoBoothTabFragment.newInstance(arguments ?: Bundle())
                 }
                 else -> {
                     Fragment()

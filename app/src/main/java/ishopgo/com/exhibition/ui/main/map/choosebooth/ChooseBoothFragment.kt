@@ -11,9 +11,12 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.SearchBoothRequest
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.map.ExpoDetailViewModel
+import ishopgo.com.exhibition.ui.main.map.ExpoMapShareViewModel
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -21,7 +24,13 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 /**
  * Created by xuanhong on 6/19/18. HappyCoding!
  */
-class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
+class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener, BackpressConsumable {
+    private lateinit var shareViewModel: ExpoMapShareViewModel
+
+    override fun onBackPressConsumed(): Boolean {
+        return hideKeyboard()
+    }
+
     override fun openFilter() {
 
     }
@@ -105,6 +114,7 @@ class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        shareViewModel = obtainViewModel(ExpoMapShareViewModel::class.java, true)
 
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {
@@ -122,8 +132,10 @@ class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
         viewModel.boothAssigned.observe(this, Observer { i ->
             if (i == true) {
+                shareViewModel.addBoothSuccess()
                 toast("Gắn gian hàng thành công")
-                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.finish_chosing)
+                activity?.onBackPressed()
+//                Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.finish_chosing)
             }
         })
 
