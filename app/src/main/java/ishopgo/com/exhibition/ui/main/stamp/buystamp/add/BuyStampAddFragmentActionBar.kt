@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.stamp.buystamp
+package ishopgo.com.exhibition.ui.main.stamp.buystamp.add
 
 import android.os.Bundle
 import android.view.View
@@ -6,11 +6,11 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
-class BuyStampFragmentActionBar : BaseActionBarFragment() {
+class BuyStampAddFragmentActionBar : BaseActionBarFragment() {
     companion object {
 
-        fun newInstance(params: Bundle): BuyStampFragmentActionBar {
-            val fragment = BuyStampFragmentActionBar()
+        fun newInstance(params: Bundle): BuyStampAddFragmentActionBar {
+            val fragment = BuyStampAddFragmentActionBar()
             fragment.arguments = params
 
             return fragment
@@ -27,20 +27,13 @@ class BuyStampFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, BuyStampFragment.newInstance(Bundle()), "BuyStampFragment").commit()
+                .replace(R.id.view_main_content, BuyStampAddFragment.newInstance(arguments
+                        ?: Bundle())).commit()
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Đặt mua tem")
+        toolbar.setCustomTitle("Tạo đơn hàng")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
-        toolbar.rightButton(R.drawable.ic_add_highlight_24dp)
-        toolbar.setRightButtonClickListener {
-            val fragment = childFragmentManager.findFragmentByTag(BuyStampFragment.TAG)
-            if (fragment != null) {
-                val shareFragment = fragment as BuyStampFragment
-                shareFragment.openStampOrderAdd()
-            }
-        }
     }
 }

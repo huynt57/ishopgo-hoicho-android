@@ -17,13 +17,19 @@ class StampListBuy : IdentityData() {
     var updatedAt: String? = null
     @SerializedName("quantity")
     @Expose
-    var quantity: Int? = null
+    var quantity: Int = 0
     @SerializedName("user_id")
     @Expose
     var userId: Int? = null
     @SerializedName("user_name")
     @Expose
     var userName: String? = null
+    @SerializedName("user_email")
+    @Expose
+    var userEmail: String? = null
+    @SerializedName("user_phone")
+    @Expose
+    var userPhone: String? = null
     @SerializedName("note")
     @Expose
     var note: String? = null
@@ -35,7 +41,7 @@ class StampListBuy : IdentityData() {
     var priceTotal: Long? = null
     @SerializedName("status_id")
     @Expose
-    var statusId: Int? = null
+    var statusId: Long? = null
     @SerializedName("status_name")
     @Expose
     var statusName: String? = null

@@ -41,6 +41,7 @@ class StampListBuyAdapter : ClickableAdapter<StampListBuy>() {
                 tv_donGia.text = convert.provideUnitPrice()
                 tv_thanhTien.text = convert.providePrice()
                 tv_tv_ghiChu.text = convert.provideNote()
+                tv_trangThai.text = convert.provideStatus()
             }
         }
     }
@@ -53,11 +54,18 @@ class StampListBuyAdapter : ClickableAdapter<StampListBuy>() {
         fun provideUnitPrice(): CharSequence
         fun providePrice(): CharSequence
         fun provideNote(): CharSequence
+        fun provideStatus(): CharSequence
     }
 
     class StampManagerConverter : Converter<StampListBuy, StampManagerProvider> {
         override fun convert(from: StampListBuy): StampManagerProvider {
             return object : StampManagerProvider {
+                override fun provideStatus(): CharSequence {
+                    return if (from.statusName?.isNotEmpty() == true)
+                    "Trạng thái: ${from.statusName ?: ""}"
+                    else ""
+                }
+
                 override fun provideCode(): CharSequence {
                     return "Mã đơn hàng: ${from.code ?: ""}"
                 }

@@ -457,6 +457,9 @@ class ApiService {
         @GET("expo/stamp/orders/statistical")
         fun getStampOrderStatistical(): Single<BaseResponse<StampOrdersStatistical>>
 
+        @GET("expo/stamp/orders/{id}/update")
+        fun updateStampOrder(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<StampListBuy>>
+
         @GET("expo/get-list-relate-shops/{id}")
         fun getBoothRelated(@Path("id") id: Long): Single<BaseResponse<List<BoothManager>>>
 
