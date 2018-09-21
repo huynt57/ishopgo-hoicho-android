@@ -21,12 +21,14 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ishopgo.com.exhibition.ui.widget.MoneyEditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_soLuong"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Số lượng (*)" />
+                android:hint="Số lượng (*)"
+                android:inputType="number"
+                android:maxLength="13" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -82,7 +84,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Ghi chú (*)"
+                android:hint="Ghi chú"
                 android:lines="3" />
         </android.support.design.widget.TextInputLayout>
 
@@ -382,11 +384,6 @@
                     android:id="@+id/tv_contact"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Bạn có thể đặt số lượng lớn để có giá tốt nhất sau đó bán tem cho người có nhu cầu.
-
-Có bán máy in tem QR Code biến đổi giá 7.000.000 đ (chi phí in tem bằng máy này ~ 30 đ/tem gồm mực + giấy)
-
-Tư vấn hỗ trợ : 0985771133 Mr Dương"
                     android:textSize="13sp" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -395,9 +392,7 @@ Tư vấn hỗ trợ : 0985771133 Mr Dương"
             android:id="@+id/view_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_margin="16dp"
             android:text="Tạo đơn hàng"
             android:textColor="@color/colorPureWhite"
             app:backgroundTint="@color/colorPrimary"

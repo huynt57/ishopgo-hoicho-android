@@ -6,6 +6,8 @@ import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +27,7 @@ class BuyStampUpdatedFragment : BaseFragment() {
     private lateinit var viewModel: StampListBuyViewModel
 
     companion object {
-
+        const val TAG = "BuyStampUpdatedFragment"
         fun newInstance(params: Bundle): BuyStampUpdatedFragment {
             val fragment = BuyStampUpdatedFragment()
             fragment.arguments = params
@@ -56,20 +58,73 @@ class BuyStampUpdatedFragment : BaseFragment() {
             tv_maDonHang.setText(data!!.code ?: "")
             tv_soLuong.setText(data!!.quantity.toString())
             tv_donGia.setText(data!!.unitPrice?.toString() ?: "")
-            tv_thanhTien.setText(data!!.priceTotal?.asMoney() ?: "")
+            tv_thanhTien.setText(data!!.priceTotal?.toString() ?: "")
             tv_trangThai.setText(data!!.statusName ?: "")
             tv_ghiChu.setText(data!!.note ?: "")
         }
 
+        tv_soLuong.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val soLuong = if (tv_soLuong.text.toString().isNotEmpty() && !tv_soLuong.text.toString().startsWith("-"))
+                    tv_soLuong.text.toString().toLong()
+                else {
+                    tv_soLuong.setText("0")
+                    0
+                }
+                if (soLuong <= 10000) {
+                    tv_donGia.setText("200")
+                    tv_thanhTien.setText("${soLuong * 200}")
+                    return
+                }
+
+                if (soLuong in 10001..100000) {
+                    tv_donGia.setText("150")
+                    tv_thanhTien.setText("${soLuong * 150}")
+                    return
+                }
+
+                if (soLuong in 100001..500000) {
+                    tv_donGia.setText("100")
+                    tv_thanhTien.setText("${soLuong * 100}")
+                    return
+                }
+
+                if (soLuong in 500001..1000000) {
+                    tv_donGia.setText("80")
+                    tv_thanhTien.setText("${soLuong * 80}")
+                    return
+                }
+
+                if (soLuong > 1000000) {
+                    tv_donGia.setText("60")
+                    tv_thanhTien.setText("${soLuong * 60}")
+                    return
+                }
+            }
+        })
+
         view_submit.setOnClickListener {
             if (data != null)
-                if (isRequiredFieldsValid(tv_soLuong.text.toString().toInt(), tv_donGia.text.toString().toLong())) {
+                if (isRequiredFieldsValid(tv_soLuong.text.toString().toInt(), tv_donGia?.money
+                                ?: 0)) {
                     showProgressDialog()
                     viewModel.updateBuyStamp(data!!.id, data!!.statusId
-                            ?: 0, tv_ghiChuKhac.text.toString(), tv_thanhTien?.money
+                            ?: 0, tv_ghiChuKhac.text.toString(), tv_donGia?.money
                             ?: 0, tv_soLuong.text.toString())
                 }
         }
+    }
+
+    fun openHistory() {
+//        val intent = Intent(context, ProductSalePointAddActivity::class.java)
+//        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+//        startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
     }
 
     private fun isRequiredFieldsValid(soLuong: Int, donGia: Long): Boolean {

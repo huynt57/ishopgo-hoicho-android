@@ -33,7 +33,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/image_placeholder"/>
+                    app:srcCompat="@drawable/image_placeholder" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                     android:id="@+id/tv_edit_image"

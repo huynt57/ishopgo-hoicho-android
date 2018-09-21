@@ -110,12 +110,14 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent">
 
-            <ishopgo.com.exhibition.ui.widget.MoneyEditText
+            <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_soLuong"
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Số lượng (*)" />
+                android:inputType="number"
+                android:hint="Số lượng (*)"
+                android:maxLength="13"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -128,12 +130,11 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent">
 
-            <android.support.design.widget.TextInputEditText
+            <ishopgo.com.exhibition.ui.widget.MoneyInputEditText
                 android:id="@+id/tv_donGia"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.DisableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
                 android:hint="Đơn giá (*)" />
         </android.support.design.widget.TextInputLayout>
 
@@ -149,7 +150,7 @@
 
             <ishopgo.com.exhibition.ui.widget.MoneyInputEditText
                 android:id="@+id/tv_thanhTien"
-                style="@style/AppTheme.EnableInputField"
+                style="@style/AppTheme.DisableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Thành tiền" />
@@ -205,7 +206,7 @@
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/tv_ghiChuKhac"
-                style="@style/AppTheme.DisableInputField"
+                style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Ghi chú khác"
@@ -216,9 +217,7 @@
             android:id="@+id/view_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_margin="16dp"
             android:text="Cập nhật"
             android:textColor="@color/colorPureWhite"
             app:backgroundTint="@color/colorPrimary"

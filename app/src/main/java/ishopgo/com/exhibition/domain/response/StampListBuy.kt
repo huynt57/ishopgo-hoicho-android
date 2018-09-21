@@ -45,4 +45,7 @@ class StampListBuy : IdentityData() {
     @SerializedName("status_name")
     @Expose
     var statusName: String? = null
+    @SerializedName("histories")
+    @Expose
+    var histories: List<StampOrderHistory>? = null
 }

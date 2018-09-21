@@ -35,5 +35,14 @@ class BuyStampUpdatedFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Sửa lô tem")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
+
+        toolbar.rightButton(R.drawable.ic_history)
+        toolbar.setRightButtonClickListener {
+                val fragment = childFragmentManager.findFragmentByTag(BuyStampUpdatedFragment.TAG)
+                if (fragment != null) {
+                    val shareFragment = fragment as BuyStampUpdatedFragment
+                    shareFragment.openHistory()
+                }
+        }
     }
 }

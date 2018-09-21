@@ -57,7 +57,7 @@ class StampListBuyViewModel : BaseListViewModel<List<StampListBuy>>(), AppCompon
         )
     }
 
-    var updateBuyStampSuccess = MutableLiveData<StampListBuy>()
+    var updateBuyStampSuccess = MutableLiveData<Boolean>()
 
     fun updateBuyStamp(id: Long, status: Long, saleNote: String, price: Long, quantity: String) {
         val builder = MultipartBody.Builder()
@@ -66,12 +66,35 @@ class StampListBuyViewModel : BaseListViewModel<List<StampListBuy>>(), AppCompon
                 .addFormDataPart("sale_note", saleNote)
                 .addFormDataPart("price", price.toString())
                 .addFormDataPart("quantity", quantity)
+                .addFormDataPart("_method", "PUT")
 
         addDisposable(authService.updateStampOrder(id, builder.build())
                 .subscribeOn(Schedulers.single())
-                .subscribeWith(object : BaseSingleObserver<StampListBuy>() {
-                    override fun success(data: StampListBuy?) {
-                        updateBuyStampSuccess.postValue(data)
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        updateBuyStampSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var createBuyStampSuccess = MutableLiveData<Boolean>()
+
+    fun createdBuyStamp(quantity: String, note:String) {
+        val builder = MultipartBody.Builder()
+        builder.setType(MultipartBody.FORM)
+                .addFormDataPart("note", note)
+                .addFormDataPart("quantity", quantity)
+
+        addDisposable(authService.createdStampOrder(builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createBuyStampSuccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {

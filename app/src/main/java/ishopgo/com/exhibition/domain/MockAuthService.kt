@@ -24,8 +24,14 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
-    override fun updateStampOrder(id: Long, body: RequestBody): Single<BaseResponse<StampListBuy>> {
-        val response = BaseResponse<StampListBuy>()
+    override fun createdStampOrder(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createdStampOrder(body)
+    }
+
+    override fun updateStampOrder(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
         response.status = 1
         return delegate.returningResponse(response).updateStampOrder(id, body)
     }
