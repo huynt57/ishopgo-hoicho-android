@@ -61,21 +61,17 @@ class ExpoBoothEmptyFragment : BaseListFragment<List<Kiosk>, Kiosk>() {
         val expoShopAdapter = ExpoShopAdapter()
         expoShopAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Kiosk> {
             override fun click(position: Int, data: Kiosk, code: Int) {
-                if (data.boothId != null && data.boothId != 0L) {
-                    openShopDetail(data.boothId!!)
-                } else {
-                    if (UserDataManager.currentType == "Quản trị viên") {
-                        val listPermission = Const.listPermission
+                if (UserDataManager.currentType == "Quản trị viên") {
+                    val listPermission = Const.listPermission
 
-                        if (listPermission.isNotEmpty()) {
-                            for (i in listPermission.indices)
-                                if (Const.Permission.EXPO_MAP_ADD == listPermission[i]) {
-                                    chooseKiosk(data)
-                                } else toast("Bạn không có quyền để thêm gian hàng")
-                        }
-                    } else
-                        chooseKiosk(data)
-                }
+                    if (listPermission.isNotEmpty()) {
+                        for (i in listPermission.indices)
+                            if (Const.Permission.EXPO_MAP_ADD == listPermission[i]) {
+                                chooseKiosk(data)
+                            } else toast("Bạn không có quyền để thêm gian hàng")
+                    }
+                } else
+                    chooseKiosk(data)
             }
 
         }
@@ -104,12 +100,6 @@ class ExpoBoothEmptyFragment : BaseListFragment<List<Kiosk>, Kiosk>() {
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
         }
-    }
-
-    private fun openShopDetail(shopId: Long) {
-        val intent = Intent(context, ShopDetailActivity::class.java)
-        intent.putExtra(Const.TransferKey.EXTRA_ID, shopId)
-        startActivity(intent)
     }
 
     override fun obtainViewModel(): BaseListViewModel<List<Kiosk>> {

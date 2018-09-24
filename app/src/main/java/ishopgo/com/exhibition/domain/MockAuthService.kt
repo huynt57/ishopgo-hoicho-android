@@ -24,6 +24,12 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun deleteBoothMap(id: Long): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).deleteBoothMap(id)
+    }
+
     override fun createdStampOrder(body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

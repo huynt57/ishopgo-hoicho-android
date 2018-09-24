@@ -47,6 +47,8 @@ class ExpoBoothAdapter : ClickableAdapter<BoothManager>() {
                 view_name.text = converted.provideName()
                 view_region.setPhone(converted.provideRegion(), data.phone ?: "")
                 view_region.visibility = View.VISIBLE
+                view_delete_salePoint.visibility = View.GONE
+                view_phone.visibility = View.GONE
             }
         }
     }

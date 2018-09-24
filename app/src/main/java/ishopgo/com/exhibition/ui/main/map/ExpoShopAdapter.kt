@@ -9,12 +9,19 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.extensions.setPhone
 import kotlinx.android.synthetic.main.item_shop_location.view.*
 
 /**
  * Created by xuanhong on 6/11/18. HappyCoding!
  */
-class ExpoShopAdapter : ClickableAdapter<Kiosk>() {
+class ExpoShopAdapter(private var showDelete: Boolean = false) : ClickableAdapter<Kiosk>() {
+
+    companion object {
+        const val CLICK_SELECT_SALE_POINT = 1
+        const val CLICK_DELETE_SALE_POINT = 0
+    }
+
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_shop_location
     }
@@ -26,12 +33,21 @@ class ExpoShopAdapter : ClickableAdapter<Kiosk>() {
     override fun onBindViewHolder(holder: ViewHolder<Kiosk>, position: Int) {
         super.onBindViewHolder(holder, position)
 
-        holder.itemView.setOnClickListener {
-            val adapterPosition = holder.adapterPosition
-            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+        holder.apply {
+            itemView.setOnClickListener {
+                val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 
-            listener?.click(adapterPosition, getItem(adapterPosition))
+                listener?.click(adapterPosition, getItem(adapterPosition), CLICK_SELECT_SALE_POINT)
+            }
+            itemView.view_delete_salePoint.setOnClickListener {
+                val adapterPosition = holder.adapterPosition
+                if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+                listener?.click(adapterPosition, getItem(adapterPosition), CLICK_DELETE_SALE_POINT)
+            }
         }
+
     }
 
     inner class ExpoShopHolder(v: View, private val converter: Converter<Kiosk, ExpoShopProvider>) : BaseRecyclerViewAdapter.ViewHolder<Kiosk>(v) {
@@ -43,8 +59,11 @@ class ExpoShopAdapter : ClickableAdapter<Kiosk>() {
             itemView.apply {
                 view_number.text = converted.provideNumber()
                 view_name.text = converted.provideName()
+                view_phone.setPhone(converted.providePhone(), data.booth?.phone ?: "")
                 view_region.text = converted.provideRegion()
+                view_phone.visibility = if (converted.isSetup()) View.VISIBLE else View.GONE
                 view_region.visibility = if (converted.isSetup()) View.VISIBLE else View.GONE
+                view_delete_salePoint.visibility = if (showDelete) if (UserDataManager.currentType == "Chủ hội chợ") if (converted.isSetup()) View.VISIBLE else View.GONE else View.GONE else View.GONE
             }
         }
     }
@@ -54,6 +73,7 @@ class ExpoShopAdapter : ClickableAdapter<Kiosk>() {
         fun provideName(): CharSequence
         fun provideNumber(): CharSequence
         fun provideRegion(): CharSequence
+        fun providePhone(): CharSequence
         fun isSetup(): Boolean
 
     }
@@ -62,6 +82,10 @@ class ExpoShopAdapter : ClickableAdapter<Kiosk>() {
 
         override fun convert(from: Kiosk): ExpoShopProvider {
             return object : ExpoShopProvider {
+                override fun providePhone(): CharSequence {
+                    return from.booth?.phone ?: ""
+                }
+
                 override fun isSetup(): Boolean {
                     return from.booth != null
                 }

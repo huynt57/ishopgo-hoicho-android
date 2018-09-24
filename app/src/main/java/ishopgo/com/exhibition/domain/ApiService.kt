@@ -468,6 +468,9 @@ class ApiService {
 
         @GET("expo/get-images-from-config")
         fun getImagesForConfig(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<CertImages>>>
+
+        @POST("expo/map/delete-booth/{id}")
+        fun deleteBoothMap(@Path("id") id: Long): Single<BaseResponse<Any>>
     }
 
 

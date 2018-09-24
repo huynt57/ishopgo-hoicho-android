@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import androidx.navigation.Navigation
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.Kiosk
@@ -52,6 +53,9 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
             f.arguments = arg
             return f
         }
+
+        const val CLICK_SELECT_SALE_POINT = 1
+        const val CLICK_DELETE_SALE_POINT = 0
     }
 
     private var searchKey = ""
@@ -95,13 +99,22 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         getSearchField().hint = "Tìm kiếm gian hàng"
         search_total.visibility = View.GONE
 
-        adapter = ExpoShopAdapter()
+        adapter = ExpoShopAdapter(true)
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Kiosk> {
             override fun click(position: Int, data: Kiosk, code: Int) {
-                if (data.boothId != null && data.boothId != 0L) {
-                    openShopDetail(data.boothId!!)
-                } else {
-                    chooseKiosk(data)
+                when (code) {
+                    CLICK_DELETE_SALE_POINT -> {
+                        if (data.id != null && data.id != 0L)
+                            deleleBooth(data.id ?: -1L)
+                    }
+
+                    CLICK_SELECT_SALE_POINT -> {
+                        if (data.boothId != null && data.boothId != 0L) {
+                            openShopDetail(data.boothId!!)
+                        } else {
+                            chooseKiosk(data)
+                        }
+                    }
                 }
             }
 
@@ -120,6 +133,21 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
         swipe.setOnRefreshListener(this)
 
+    }
+
+    fun deleleBooth(boothId: Long) {
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .content("Bạn có muốn xoá gian hàng này không?")
+                    .positiveText("Có")
+                    .onPositive { _, _ ->
+                        viewModel.deleteBoothMap(boothId)
+                        showProgressDialog()
+                    }
+                    .negativeText("Không")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
+        }
     }
 
     private fun chooseKiosk(data: Kiosk) {
@@ -163,6 +191,11 @@ class SearchBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
 
                 finishLoading()
             }
+        })
+
+        viewModel.deleteBoothMap.observe(this, Observer {
+            hideProgressDialog()
+            firstLoad()
         })
 
         firstLoad()

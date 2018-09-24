@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.domain.request.ExpoShopLocationRequest
 import ishopgo.com.exhibition.domain.response.ExpoConfig
 import ishopgo.com.exhibition.domain.response.Kiosk
@@ -29,6 +30,9 @@ class ExpoBoothBoughtFragment : BaseListFragment<List<Kiosk>, Kiosk>() {
             f.arguments = params
             return f
         }
+
+        const val CLICK_SELECT_SALE_POINT = 1
+        const val CLICK_DELETE_SALE_POINT = 0
     }
 
     override fun initLoading() {
@@ -58,23 +62,32 @@ class ExpoBoothBoughtFragment : BaseListFragment<List<Kiosk>, Kiosk>() {
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<Kiosk> {
-        val expoShopAdapter = ExpoShopAdapter()
+        val expoShopAdapter = ExpoShopAdapter(true)
         expoShopAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Kiosk> {
             override fun click(position: Int, data: Kiosk, code: Int) {
-                if (data.boothId != null && data.boothId != 0L) {
-                    openShopDetail(data.boothId!!)
-                } else {
-                    if (UserDataManager.currentType == "Quản trị viên") {
-                        val listPermission = Const.listPermission
+                when (code) {
+                    CLICK_DELETE_SALE_POINT -> {
+                        if (data.id != null && data.id != 0L)
+                            deleleBooth(data.id ?: -1L)
+                    }
 
-                        if (listPermission.isNotEmpty()) {
-                            for (i in listPermission.indices)
-                                if (Const.Permission.EXPO_MAP_ADD == listPermission[i]) {
-                                    chooseKiosk(data)
-                                } else toast("Bạn không có quyền để thêm gian hàng")
+                    CLICK_SELECT_SALE_POINT -> {
+                        if (data.boothId != null && data.boothId != 0L) {
+                            openShopDetail(data.boothId!!)
+                        } else {
+                            if (UserDataManager.currentType == "Quản trị viên") {
+                                val listPermission = Const.listPermission
+
+                                if (listPermission.isNotEmpty()) {
+                                    for (i in listPermission.indices)
+                                        if (Const.Permission.EXPO_MAP_ADD == listPermission[i]) {
+                                            chooseKiosk(data)
+                                        } else toast("Bạn không có quyền để thêm gian hàng")
+                                }
+                            } else
+                                chooseKiosk(data)
                         }
-                    } else
-                        chooseKiosk(data)
+                    }
                 }
             }
 
@@ -82,10 +95,30 @@ class ExpoBoothBoughtFragment : BaseListFragment<List<Kiosk>, Kiosk>() {
         return expoShopAdapter
     }
 
+    fun deleleBooth(boothId: Long) {
+        context?.let {
+            MaterialDialog.Builder(it)
+                    .content("Bạn có muốn xoá gian hàng này không?")
+                    .positiveText("Có")
+                    .onPositive { _, _ ->
+                        (viewModel as ExpoDetailViewModel).deleteBoothMap(boothId)
+                        showProgressDialog()
+                    }
+                    .negativeText("Không")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .show()
+        }
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         shareViewModel = obtainViewModel(ExpoMapShareViewModel::class.java, true)
         shareViewModel.addBoothSuccess.observe(this, Observer { firstLoad() })
+
+        (viewModel as ExpoDetailViewModel).deleteBoothMap.observe(this, Observer {
+            hideProgressDialog()
+            firstLoad()
+        })
     }
 
     private fun chooseKiosk(data: Kiosk) {

@@ -118,8 +118,10 @@ fun Double.asMoney(): String {
 }
 
 fun TextView.setPhone(phone: CharSequence, phoneNumber: String) {
-    this.text = phone.setPhone(phoneNumber)
-    this.movementMethod = LinkMovementMethod.getInstance()
+    if (phone.length >= phoneNumber.length) {
+        this.text = phone.setPhone(phoneNumber)
+        this.movementMethod = LinkMovementMethod.getInstance()
+    } else this.text = phone
 }
 
 fun CharSequence.setPhone(phoneNumber: String): CharSequence {

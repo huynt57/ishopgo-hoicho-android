@@ -106,6 +106,24 @@ class ExpoDetailViewModel : BaseListViewModel<List<Kiosk>>(), AppComponent.Injec
         )
     }
 
+    var deleteBoothMap = MutableLiveData<Any>()
+
+    fun deleteBoothMap(boothId: Long) {
+
+        addDisposable(authService.deleteBoothMap(boothId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        deleteBoothMap.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
     var ticket = MutableLiveData<Ticket>()
 
     fun getTicket(fairId: Long) {
