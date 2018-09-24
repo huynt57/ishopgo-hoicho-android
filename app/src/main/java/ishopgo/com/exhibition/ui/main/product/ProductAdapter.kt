@@ -86,7 +86,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
 
     interface ProductProvider {
         fun provideImage(): String
-        fun provideName(): String
+        fun provideName(): CharSequence
         fun providePrice(): String
         fun providePromotionPrice(): String
         fun hasDiscount(): Boolean
@@ -99,8 +99,8 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
             return object : ProductProvider {
                 override fun discountPercent(): CharSequence {
                     if (hasDiscount()) {
-                        val pPrice = from.promotionPrice ?: 0L
-                        val rPrice = from.price ?: 0L
+                        val pPrice = from.promotionPrice
+                        val rPrice = from.price
 
                         if (rPrice == 0L) return "0%"
                         val percent = (1 - pPrice.toFloat() / rPrice.toFloat()) * 100
@@ -116,15 +116,17 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                 }
 
                 override fun hasDiscount(): Boolean {
-                    return from.promotionPrice != null && from.promotionPrice != 0L && from.promotionPrice!! < from.price
+                    return from.promotionPrice != 0L && from.promotionPrice < from.price
                 }
 
                 override fun provideImage(): String {
                     return from.image?.trim() ?: ""
                 }
 
-                override fun provideName(): String {
-                    return from.name?.trim() ?: "Sản phẩm"
+                override fun provideName(): CharSequence {
+                    return "${from.name?.trim()
+                            ?: "Sản phẩm"} - <b><font color=\"blue\">${from.departmentName?.trim()
+                            ?: ""}</font></b>".asHtml()
                 }
 
                 override fun providePrice(): String {
@@ -134,7 +136,7 @@ class ProductAdapter(private var itemWidthRatio: Float = -1f, private var itemHe
                 }
 
                 override fun providePromotionPrice(): String {
-                    return from.promotionPrice?.asMoney() ?: "0 đ"
+                    return from.promotionPrice.asMoney()
                 }
             }
         }

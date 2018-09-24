@@ -111,6 +111,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val giaiPhapProductAdapter = ProductAdapter(0.4f)
     private val relatedProductAdapter = ProductAdapter(0.4f)
 
+    private var isViewDiary = false
     private var productId: Long = -1L
     private var stampId = ""
     private var stampCode = ""
@@ -251,8 +252,16 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         })
 
         viewModel.productDiary.observe(this, Observer { p ->
-            p.let {
-                it?.let { it1 -> adapterDiary.replaceAll(it1) }
+            p?.let {
+                if (it.isEmpty())
+                    if (isViewDiary)
+                        container_diary.visibility = View.VISIBLE
+                    else
+                        container_diary.visibility = View.GONE
+                else {
+                    container_diary.visibility = View.VISIBLE
+                    it.let { it1 -> adapterDiary.replaceAll(it1) }
+                }
             }
         })
 
@@ -600,9 +609,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 } else view_add_diary.visibility = View.GONE
 
 
-                if (UserDataManager.currentUserId == product.booth?.id)
+                if (UserDataManager.currentUserId == product.booth?.id) {
+                    isViewDiary = true
                     view_add_diary.visibility = View.VISIBLE
-                else view_add_diary.visibility = View.GONE
+                } else {
+                    isViewDiary = false
+                    view_add_diary.visibility = View.GONE
+                }
 
                 firstLoadDiary()
 
@@ -1128,7 +1141,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                         val listImages = mutableListOf<String>()
                         if (data.images?.isNotEmpty() == true)
                             for (i in data.images!!.indices)
-                                listImages.add(data.images!![i].image ?:"")
+                                listImages.add(data.images!![i].image ?: "")
                         intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImages.toTypedArray())
                         startActivity(intent)
                     }

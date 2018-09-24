@@ -45,6 +45,7 @@
             android:text="THÔNG TIN CƠ BẢN"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:visibility="gone"
             app:drawableStartSquareSize="24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

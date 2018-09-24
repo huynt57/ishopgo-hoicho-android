@@ -28,24 +28,54 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:textColor="@color/colorPrimaryText"
-        app:layout_constraintBottom_toTopOf="@+id/view_region"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/view_phone"
+        app:layout_constraintEnd_toStartOf="@+id/view_delete_salePoint"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/view_number"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Medi White" />
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_phone"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/view_region"
+        app:layout_constraintEnd_toStartOf="@+id/view_delete_salePoint"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/view_name"
+        app:layout_constraintTop_toBottomOf="@+id/view_name"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="0974427143" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/view_region"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginEnd="8dp"
         android:textColor="@color/colorSecondaryText"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/view_delete_salePoint"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/view_name"
-        app:layout_constraintTop_toBottomOf="@+id/view_name"
-        tools:text="0974427143 - Đắc lak" />
+        app:layout_constraintTop_toBottomOf="@+id/view_phone"
+        tools:text="Đắc lak" />
+
+    <ImageView
+        android:id="@+id/view_delete_salePoint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_delete_highlight_24dp" />
 
 </android.support.constraint.ConstraintLayout>

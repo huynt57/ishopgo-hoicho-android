@@ -106,7 +106,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Nhà tài trợ"
+                                android:text="Thương hiệu uy tín"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -188,7 +188,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Sản phẩm nổi bật"
+                                android:text="Sản phẩm uy tín"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 

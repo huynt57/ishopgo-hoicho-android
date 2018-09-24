@@ -270,7 +270,7 @@ class HomeFragment : BaseFragment() {
         setupExpoFair(context)
         setupListeners()
 
-        if (UserDataManager.currentUserId != 0L || UserDataManager.currentType == "Thành viên")
+        if ((UserDataManager.currentUserId != 0L && UserDataManager.currentType.isEmpty()) || UserDataManager.currentType == "Thành viên")
             if (nestedScroll != null && constrain_moGianHang != null)
                 nestedScroll.viewTreeObserver.addOnScrollChangedListener {
                     if (nestedScroll.scrollY <= 300) {
@@ -279,6 +279,7 @@ class HomeFragment : BaseFragment() {
                         constrain_moGianHang.visibility = View.GONE
                     }
                 }
+        else constrain_moGianHang.visibility = View.GONE
 
         btn_moGianHang.setOnClickListener {
             val intent = Intent(context, RegisterBoothActivity::class.java)
