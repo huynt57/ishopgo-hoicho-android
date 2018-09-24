@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.content_buy_stamp_update.*
 class BuyStampUpdatedFragment : BaseFragment() {
     private var data: StampListBuy? = null
     private lateinit var viewModel: StampListBuyViewModel
+    private lateinit var shareViewModel: ShareStampOrderViewModel
 
     companion object {
         const val TAG = "BuyStampUpdatedFragment"
@@ -122,9 +123,9 @@ class BuyStampUpdatedFragment : BaseFragment() {
     }
 
     fun openHistory() {
-//        val intent = Intent(context, ProductSalePointAddActivity::class.java)
-//        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-//        startActivityForResult(intent, Const.RequestCode.SALE_POINT_ADD)
+        if (data != null)
+            shareViewModel.openSearchProduct(data!!)
+        else toast("Có lỗi xảy ra, vui lòng thử lại")
     }
 
     private fun isRequiredFieldsValid(soLuong: Int, donGia: Long): Boolean {
@@ -152,6 +153,7 @@ class BuyStampUpdatedFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        shareViewModel = obtainViewModel(ShareStampOrderViewModel::class.java, true)
         viewModel = obtainViewModel(StampListBuyViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer {
             it?.let {

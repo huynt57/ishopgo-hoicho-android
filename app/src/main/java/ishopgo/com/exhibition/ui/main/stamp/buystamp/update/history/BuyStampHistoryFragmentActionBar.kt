@@ -14,7 +14,7 @@ class BuyStampHistoryFragmentActionBar : BaseActionBarFragment(), BackpressConsu
     }
 
     companion object {
-
+        const val TAG = "BuyStampHistoryFragmentActionBar"
         fun newInstance(params: Bundle): BuyStampHistoryFragmentActionBar {
             val fragment = BuyStampHistoryFragmentActionBar()
             fragment.arguments = params

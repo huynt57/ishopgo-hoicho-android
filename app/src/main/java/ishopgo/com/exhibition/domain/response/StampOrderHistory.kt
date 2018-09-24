@@ -26,4 +26,10 @@ class StampOrderHistory : IdentityData() {
     @SerializedName("note")
     @Expose
     var note: String? = null
+    @SerializedName("status_id")
+    @Expose
+    var statusId: Long? = null
+    @SerializedName("status_name")
+    @Expose
+    var statusName: String? = null
 }

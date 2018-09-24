@@ -28,7 +28,7 @@ class BuyStampUpdatedFragmentActionBar : BaseActionBarFragment() {
 
         childFragmentManager.beginTransaction()
                 .replace(R.id.view_main_content, BuyStampUpdatedFragment.newInstance(arguments
-                        ?: Bundle())).commit()
+                        ?: Bundle()), "BuyStampUpdatedFragment").commit()
     }
 
     private fun setupToolbars() {
