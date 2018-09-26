@@ -3,15 +3,18 @@ package ishopgo.com.exhibition.ui.filterproduct
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
+import android.widget.RadioButton
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_filter_product.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
+import android.support.v7.app.AppCompatDelegate
+
 
 class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
     override fun onBackPressConsumed(): Boolean {
@@ -39,9 +42,12 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
 
         const val TYPE_FILTER_PROMOTION = 2
         const val TYPE_FILTER_CARE = 1
-        const val TYPE_FILTER_SUPPLY = 3
+        const val TYPE_FILTER_RETAIL = 6
+        const val TYPE_FILTER_DIARY = 5
+        const val TYPE_FILTER_QRCODE = 7
+        const val TYPE_FILTER_KNCU = 3
         const val TYPE_FILTER_WHOLESALE = 4
-        const val TYPE_FILTER_NKSX = 5
+
         const val SORT_BY_NAME = "name"
         const val SORT_BY_FOLLOW = "follow"
         const val SORT_BY_RATE = "rate"
@@ -64,6 +70,42 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         super.onViewCreated(view, savedInstanceState)
         setupToolbars()
 
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true)
+
+        val cb_QrCode = resources.getDrawable(R.drawable.ic_filter_qrcode_highlight_24dp)
+        cb_qrCode.setCompoundDrawablesWithIntrinsicBounds(cb_QrCode, null, null, null)
+
+        val cb_Promotion = resources.getDrawable(R.drawable.ic_filter_sale_highlight_24dp)
+        cb_promotion.setCompoundDrawablesWithIntrinsicBounds(cb_Promotion, null, null, null)
+
+        val cb_Care = resources.getDrawable(R.drawable.ic_filter_care_highlight_24dp)
+        cb_care.setCompoundDrawablesWithIntrinsicBounds(cb_Care, null, null, null)
+
+        val cb_Retail = resources.getDrawable(R.drawable.ic_filter_price_highlight_24dp)
+        cb_retail.setCompoundDrawablesWithIntrinsicBounds(cb_Retail, null, null, null)
+
+        val cb_Wholesale = resources.getDrawable(R.drawable.ic_filter_price_highlight_24dp)
+        cb_wholesale.setCompoundDrawablesWithIntrinsicBounds(cb_Wholesale, null, null, null)
+
+        val cb_nksx = resources.getDrawable(R.drawable.ic_filter_cart_highlight_24dp)
+        cb_NKSX.setCompoundDrawablesWithIntrinsicBounds(cb_nksx, null, null, null)
+
+        val cb_kncu = resources.getDrawable(R.drawable.ic_filter_refresh_highlight_24dp)
+        cb_KNCU.setCompoundDrawablesWithIntrinsicBounds(cb_kncu, null, null, null)
+
+        val rb_Price_high = resources.getDrawable(R.drawable.ic_sort_price_down_highlight_24dp)
+        rb_price_high_to_low.setCompoundDrawablesWithIntrinsicBounds(rb_Price_high, null, null, null)
+
+        val rb_Price_low = resources.getDrawable(R.drawable.ic_sort_price_up_highlight_24dp)
+        rb_price_low_to_high.setCompoundDrawablesWithIntrinsicBounds(rb_Price_low, null, null, null)
+
+        val rb_Rating = resources.getDrawable(R.drawable.ic_sort_rating_highlight_24dp)
+        rb_rating.setCompoundDrawablesWithIntrinsicBounds(rb_Rating, null, null, null)
+
+        val rb_Care = resources.getDrawable(R.drawable.ic_sort_care_highlight_24dp)
+        rb_care.setCompoundDrawablesWithIntrinsicBounds(rb_Care, null, null, null)
+
+
         handleOverwrite.handleInOtherFlavor(view)
 
         if (data != null) {
@@ -75,19 +117,25 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
                 listTypeFilter.addAll(data_filter)
                 for (i in data_filter.indices) {
                     if (data_filter[i] == TYPE_FILTER_PROMOTION) {
-                        tv_promotion.setTextColor(resources.getColor(R.color.colorPrimary))
+                        cb_promotion.isChecked = true
                     }
                     if (data_filter[i] == TYPE_FILTER_CARE) {
-                        tv_care.setTextColor(resources.getColor(R.color.colorPrimary))
+                        cb_care.isChecked = true
                     }
-                    if (data_filter[i] == TYPE_FILTER_SUPPLY) {
-                        tv_supply.setTextColor(resources.getColor(R.color.colorPrimary))
+                    if (data_filter[i] == TYPE_FILTER_RETAIL) {
+                        cb_retail.isChecked = true
                     }
                     if (data_filter[i] == TYPE_FILTER_WHOLESALE) {
-                        tv_wholesale.setTextColor(resources.getColor(R.color.colorPrimary))
+                        cb_wholesale.isChecked = true
                     }
-                    if (data_filter[i] == TYPE_FILTER_NKSX) {
-                        tv_nksx.setTextColor(resources.getColor(R.color.colorPrimary))
+                    if (data_filter[i] == TYPE_FILTER_DIARY) {
+                        cb_NKSX.isChecked = true
+                    }
+                    if (data_filter[i] == TYPE_FILTER_QRCODE) {
+                        cb_qrCode.isChecked = true
+                    }
+                    if (data_filter[i] == TYPE_FILTER_KNCU) {
+                        cb_KNCU.isChecked = true
                     }
                 }
             }
@@ -95,92 +143,77 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
             if (data_sort_type == SORT_TYPE_DESC && data_sort_by == SORT_BY_PRICE) {
                 sort_type = SORT_TYPE_DESC
                 sort_by = SORT_BY_PRICE
-                tv_price_high_to_low.setTextColor(resources.getColor(R.color.colorPrimary))
+                rb_price_high_to_low.isChecked = true
             }
+
             if (data_sort_type == SORT_TYPE_ASC && data_sort_by == SORT_BY_PRICE) {
                 sort_type = SORT_TYPE_ASC
                 sort_by = SORT_BY_PRICE
-                tv_price_low_to_high.setTextColor(resources.getColor(R.color.colorPrimary))
+                rb_price_low_to_high.isChecked = true
             }
-            if (data_sort_type == SORT_TYPE_ASC && data_sort_by == SORT_BY_NAME) {
-                sort_type = SORT_TYPE_ASC
-                sort_by = SORT_BY_NAME
-                tv_a_z.setTextColor(resources.getColor(R.color.colorPrimary))
-            }
-            if (data_sort_type == SORT_TYPE_DESC && data_sort_by == SORT_BY_NAME) {
-                sort_type = SORT_TYPE_DESC
-                sort_by = SORT_BY_NAME
-                tv_z_a.setTextColor(resources.getColor(R.color.colorPrimary))
-            }
-            if (data_sort_type == SORT_TYPE_DESC && data_sort_by == SORT_BY_FOLLOW) {
-                sort_type = SORT_TYPE_DESC
-                sort_by = SORT_BY_FOLLOW
-                tv_care_high_to_low.setTextColor(resources.getColor(R.color.colorPrimary))
-            }
+
             if (data_sort_type == SORT_TYPE_DESC && data_sort_by == SORT_BY_RATE) {
                 sort_type = SORT_TYPE_DESC
                 sort_by = SORT_BY_RATE
-                tv_evaluation_high_to_low.setTextColor(resources.getColor(R.color.colorPrimary))
+                rb_rating.isChecked = true
             }
 
+            if (data_sort_type == SORT_TYPE_DESC && data_sort_by == SORT_BY_FOLLOW) {
+                sort_type = SORT_TYPE_DESC
+                sort_by = SORT_BY_FOLLOW
+                rb_care.isChecked = true
+            }
         }
 
-        tv_price_high_to_low.setOnClickListener {
+        rb_price_high_to_low.setOnClickListener {
             sort_type = SORT_TYPE_DESC
             sort_by = SORT_BY_PRICE
-            selectSortType(tv_price_high_to_low)
+            selectSortType(rb_price_high_to_low)
         }
-        tv_price_low_to_high.setOnClickListener {
+        rb_price_low_to_high.setOnClickListener {
             sort_type = SORT_TYPE_ASC
             sort_by = SORT_BY_PRICE
-            selectSortType(tv_price_low_to_high)
+            selectSortType(rb_price_low_to_high)
         }
-        tv_a_z.setOnClickListener {
-            sort_type = SORT_TYPE_ASC
-            sort_by = SORT_BY_NAME
-            selectSortType(tv_a_z)
-        }
-        tv_z_a.setOnClickListener {
-            sort_type = SORT_TYPE_DESC
-            sort_by = SORT_BY_NAME
-            selectSortType(tv_z_a)
-        }
-        tv_care_high_to_low.setOnClickListener {
-            sort_type = SORT_TYPE_DESC
-            sort_by = SORT_BY_FOLLOW
-            selectSortType(tv_care_high_to_low)
-        }
-
-        tv_evaluation_high_to_low.setOnClickListener {
+        rb_rating.setOnClickListener {
             sort_type = SORT_TYPE_DESC
             sort_by = SORT_BY_RATE
-            selectSortType(tv_evaluation_high_to_low)
+            selectSortType(rb_rating)
         }
 
-        tv_promotion.setOnClickListener {
+        rb_care.setOnClickListener {
+            sort_type = SORT_TYPE_DESC
+            sort_by = SORT_BY_FOLLOW
+            selectSortType(rb_care)
+        }
+
+        cb_promotion.setOnClickListener {
             type_filter = TYPE_FILTER_PROMOTION
-            listTypeFilter.clear()
-            selectFilterType(tv_promotion)
+            selectFilterType(cb_promotion)
         }
-        tv_care.setOnClickListener {
+        cb_care.setOnClickListener {
             type_filter = TYPE_FILTER_CARE
-            listTypeFilter.clear()
-            selectFilterType(tv_care)
+            selectFilterType(cb_care)
         }
-        tv_supply.setOnClickListener {
-            type_filter = TYPE_FILTER_SUPPLY
-            listTypeFilter.clear()
-            selectFilterType(tv_supply)
-        }
-        tv_wholesale.setOnClickListener {
+        cb_wholesale.setOnClickListener {
             type_filter = TYPE_FILTER_WHOLESALE
-            listTypeFilter.clear()
-            selectFilterType(tv_wholesale)
+            selectFilterType(cb_wholesale)
         }
-        tv_nksx.setOnClickListener {
-            type_filter = TYPE_FILTER_NKSX
-            listTypeFilter.clear()
-            selectFilterType(tv_nksx)
+        cb_retail.setOnClickListener {
+            type_filter = TYPE_FILTER_RETAIL
+            selectFilterType(cb_retail)
+        }
+        cb_KNCU.setOnClickListener {
+            type_filter = TYPE_FILTER_KNCU
+            selectFilterType(cb_KNCU)
+        }
+        cb_NKSX.setOnClickListener {
+            type_filter = TYPE_FILTER_DIARY
+            selectFilterType(cb_NKSX)
+        }
+        cb_qrCode.setOnClickListener {
+            type_filter = TYPE_FILTER_QRCODE
+            selectFilterType(cb_qrCode)
         }
 
         btn_filter.setOnClickListener {
@@ -197,28 +230,27 @@ class FilterProductFragment : BaseActionBarFragment(), BackpressConsumable {
         constraintLayout.setOnClickListener(null)
     }
 
-    private fun selectSortType(view: VectorSupportTextView) {
-        tv_price_high_to_low.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_price_low_to_high.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_a_z.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_z_a.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_care_high_to_low.setTextColor(resources.getColor(R.color.md_grey_800))
-        tv_evaluation_high_to_low.setTextColor(resources.getColor(R.color.md_grey_800))
-
-        view.setTextColor(resources.getColor(R.color.colorPrimary))
+    private fun selectSortType(view: RadioButton) {
+        view.isChecked = true
     }
 
-    private fun selectFilterType(view: VectorSupportTextView) {
+    private fun selectFilterType(view: CheckBox) {
         if (listTypeFilter.isEmpty()) {
             listTypeFilter.add(type_filter)
+            view.isChecked = true
+        } else {
+            var forEnd = false
+            for (i in listTypeFilter.indices)
+                if (listTypeFilter[i] == type_filter) {
+                    listTypeFilter.remove(type_filter)
+                    view.isChecked = false
+                    break
+                } else if (i == listTypeFilter.size - 1) forEnd = true
 
-            tv_promotion.setTextColor(resources.getColor(R.color.md_grey_800))
-            tv_care.setTextColor(resources.getColor(R.color.md_grey_800))
-            tv_supply.setTextColor(resources.getColor(R.color.md_grey_800))
-            tv_wholesale.setTextColor(resources.getColor(R.color.md_grey_800))
-            tv_nksx.setTextColor(resources.getColor(R.color.md_grey_800))
-
-            view.setTextColor(resources.getColor(R.color.colorPrimary))
+            if (forEnd) {
+                listTypeFilter.add(type_filter)
+                view.isChecked = true
+            }
         }
     }
 

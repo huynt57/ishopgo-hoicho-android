@@ -43,9 +43,9 @@ class UpdateInfoLoginFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         btn_login_fb.setOnClickListener {
-            if (isRequiredFieldsValid(edit_facebook_sdt.text.toString(), edit_facebook_thanhPho.text.toString(), edit_facebook_quanHuyen.text.toString())) {
+            if (isRequiredFieldsValid(edit_facebook_sdt.text.toString(), edit_product_matKhau.text.toString(), edit_product_nhapLai_matKhau.text.toString(), edit_facebook_thanhPho.text.toString(), edit_facebook_quanHuyen.text.toString())) {
                 showProgressDialog()
-                viewModel.updateInfoFacebook(edit_facebook_sdt.text.toString(), edit_facebook_thanhPho.text.toString(),
+                viewModel.updateInfoFacebook(edit_facebook_sdt.text.toString(), edit_product_matKhau.text.toString(), edit_facebook_thanhPho.text.toString(),
                         edit_facebook_quanHuyen.text.toString(), edit_facebook_diaChi.text.toString())
             }
         }
@@ -175,7 +175,31 @@ class UpdateInfoLoginFragment : BaseFragment() {
         }
     }
 
-    private fun isRequiredFieldsValid(sdt: String, thanhPho: String, quanHuyen: String): Boolean {
+    private fun isRequiredFieldsValid(sdt: String, matKhau: String, nhapLaiMk: String, thanhPho: String, quanHuyen: String): Boolean {
+        if (matKhau.trim().isEmpty()) {
+            toast("Mật khẩu không được để trống")
+            edit_product_matKhau.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_product_matKhau)
+
+            return false
+        }
+
+        if (nhapLaiMk.trim().isEmpty()) {
+            toast("Mật khẩu không được để trống")
+            edit_product_nhapLai_matKhau.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_product_nhapLai_matKhau)
+
+            return false
+        }
+
+        if (matKhau != nhapLaiMk) {
+            toast("Mật khẩu phải giống nhau")
+            edit_product_nhapLai_matKhau.error = "Vui lòng nhập lại"
+            requestFocusEditText(edit_product_nhapLai_matKhau)
+
+            return false
+        }
+
         if (sdt.trim().isEmpty()) {
             toast("Số điện thoại không được để trống")
             edit_facebook_sdt.error = getString(R.string.error_field_required)

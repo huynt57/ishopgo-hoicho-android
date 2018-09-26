@@ -230,11 +230,12 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    fun updateInfoFacebook(phone: String, thanhPho: String, quanHuyen: String, diaChi: String) {
+    fun updateInfoFacebook(phone: String, matKhau:String, thanhPho: String, quanHuyen: String, diaChi: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                         .addFormDataPart("phone", phone)
                         .addFormDataPart("name", UserDataManager.currentUserName)
+                        .addFormDataPart("password", matKhau)
 
         if (thanhPho.isNotEmpty()) builder.addFormDataPart("region", thanhPho)
         if (quanHuyen.isNotEmpty()) builder.addFormDataPart("district", quanHuyen)
