@@ -46,7 +46,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Tạo lô tem in", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Kích hoạt lô tem", isParent = false))
+//            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Kích hoạt lô tem", isParent = false))
 
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Danh sách tem đã kích hoạt", isParent = false))
 
@@ -87,7 +87,7 @@ class AccountViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_NO_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Tạo lô tem in", isParent = false))
 
-            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Kích hoạt lô tem", isParent = false))
+//            childs.add(AccountMenuItem(Const.AccountAction.ACTION_DISTRICBUTION_STAMP, R.drawable.ic_qr_code_highlight_24dp, "Kích hoạt lô tem", isParent = false))
 
             childs.add(AccountMenuItem(Const.AccountAction.ACTION_STAMP_MANAGER, R.drawable.ic_qr_code_highlight_24dp, "Danh sách tem đã kích hoạt", isParent = false))
 

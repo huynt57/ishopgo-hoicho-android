@@ -19,12 +19,12 @@ import java.util.concurrent.TimeUnit
 /**
  * Created by xuanhong on 4/18/18. HappyCoding!
  */
-abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription, SearchHandler {
+abstract class BaseSearchFilterActionBarFragment : BaseFragment(), ContentDescription, FilterHandler {
 
     private val disposables = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.base_fragment_search, container, false)
+        val view = inflater.inflate(R.layout.base_fragment_filter, container, false)
 
         val contentLayoutRes = contentLayoutRes()
         if (contentLayoutRes != 0) {
@@ -61,6 +61,12 @@ abstract class BaseSearchActionBarFragment : BaseFragment(), ContentDescription,
                 view_search_field.setText("")
                 searchReset()
             }
+        }
+
+        view_filter.setOnClickListener {
+            if (view_search_field != null)
+                view_search_field.hideKeyboard()
+            openFilter()
         }
 
         if (view_search_field != null)

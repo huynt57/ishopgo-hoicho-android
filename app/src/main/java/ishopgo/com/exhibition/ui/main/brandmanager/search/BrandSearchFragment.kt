@@ -88,13 +88,6 @@ class BrandSearchFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         activity?.onBackPressed()
     }
 
-    override fun openFilter() {
-    }
-
-    override fun showFilter(): Boolean {
-        return false
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

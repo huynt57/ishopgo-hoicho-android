@@ -24,6 +24,30 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun createNoStampNew(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<String>()
+        response.status = 1
+        return delegate.returningResponse(response).createNoStampNew(body)
+    }
+
+    override fun generateStamp(): Single<BaseResponse<String>> {
+        val response = BaseResponse<String>()
+        response.status = 1
+        return delegate.returningResponse(response).generateStamp()
+    }
+
+    override fun getNoStampNew(fields: MutableMap<String, Any>): Single<BaseResponse<List<StampNoListNew>>> {
+        val response = BaseResponse<List<StampNoListNew>>()
+        response.status = 1
+        return delegate.returningResponse(response).getNoStampNew(fields)
+    }
+
+    override fun downloadNoStamp(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).downloadNoStamp(id, body)
+    }
+
     override fun deleteBoothMap(id: Long): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

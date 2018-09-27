@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.main.stamp.nostamp.assign
 
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
@@ -44,13 +45,6 @@ class NoStampSearchProductFragment : BaseSearchActionBarFragment(), SwipeRefresh
         activity?.onBackPressed()
     }
 
-    override fun openFilter() {
-    }
-
-    override fun showFilter(): Boolean {
-        return false
-    }
-
     override fun onRefresh() {
         swipe.isRefreshing = false
         firstLoad()
@@ -65,7 +59,7 @@ class NoStampSearchProductFragment : BaseSearchActionBarFragment(), SwipeRefresh
         firstLoad.limit = Const.PAGE_LIMIT
         firstLoad.offset = 0
         firstLoad.keyword = searchKey
-        viewModel.searchProductAssign(stampId, firstLoad)
+        viewModel.searchProductAssign(firstLoad)
     }
 
     private fun loadMore(currentCount: Int) {
@@ -75,29 +69,34 @@ class NoStampSearchProductFragment : BaseSearchActionBarFragment(), SwipeRefresh
         loadMore.limit = Const.PAGE_LIMIT
         loadMore.offset = currentCount
         loadMore.keyword = searchKey
-        viewModel.searchProductAssign(stampId, loadMore)
+        viewModel.searchProductAssign(loadMore)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    @SuppressLint("SetTextI18n")
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = obtainViewModel(NoStampViewModel::class.java, true)
         viewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
         viewModel.dataProductSearch.observe(this, Observer { d ->
             d?.let {
-                val products = it.products ?: listOf()
                 if (reloadData) {
-                    adapter.replaceAll(products)
+                    adapter.replaceAll(it)
                 } else {
-                    adapter.addAll(products)
+                    adapter.addAll(it)
                 }
 
-                search_total.visibility = View.VISIBLE
-                search_total.text = "${it.productsTotal ?: 0} sản phẩm"
             }
         })
 
-        stampId = arguments?.getLong(Const.TransferKey.EXTRA_ID, 0L) ?: 0L
+        viewModel.total.observe(this, Observer { p ->
+            p?.let {
+                search_total.visibility = View.VISIBLE
+                search_total.text = "${it} sản phẩm"
+            }
+        })
+
+        firstLoad()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

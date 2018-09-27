@@ -18,6 +18,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterResult
 import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseSearchActionBarFragment
+import ishopgo.com.exhibition.ui.base.BaseSearchFilterActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.productmanager.ProductManagerViewModel
@@ -27,10 +28,7 @@ import kotlinx.android.synthetic.main.content_search_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
-class SearchProductFragmentActionBar : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener, BackpressConsumable {
-    override fun showFilter(): Boolean {
-        return true
-    }
+class SearchProductFragmentActionBar : BaseSearchFilterActionBarFragment(), SwipeRefreshLayout.OnRefreshListener, BackpressConsumable {
 
     override fun triggerSearch(key: String) {
         keyword = key

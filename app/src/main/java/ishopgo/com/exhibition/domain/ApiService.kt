@@ -436,6 +436,18 @@ class ApiService {
         @GET("expo/stamp/assign")
         fun getStampDistribution(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampDistribution>>>
 
+        @GET("expo/stamp/assign")
+        fun getNoStampNew(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampNoListNew>>>
+
+        @POST("expo/stamp/assign")
+        fun createNoStampNew(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("expo/stamp/assign/{id}/download")
+        fun downloadNoStamp(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("expo/stamp/assign/genCode")
+        fun generateStamp(): Single<BaseResponse<String>>
+
         @GET("expo/stamp/{id}/assign")
         fun loadProductAssignNoStamp(@Path("id") id: Long, @QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<StampSearchProduct>>
 

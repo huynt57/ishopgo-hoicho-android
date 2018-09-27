@@ -24,13 +24,6 @@ import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 
 class IcheckSalePointFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
-    override fun openFilter() {
-
-    }
-
-    override fun showFilter(): Boolean {
-        return false
-    }
 
 
     companion object {

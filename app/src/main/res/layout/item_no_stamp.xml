@@ -23,57 +23,60 @@
         android:id="@+id/tv_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_qrCode"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Nguyễn Văn A" />
 
     <TextView
-        android:id="@+id/tv_stampName"
+        android:id="@+id/tv_productName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_subDivision"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_qrCode"
         tools:text="Tên lô tem" />
 
     <TextView
-        android:id="@+id/tv_countStanp"
+        android:id="@+id/tv_download"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_countRest"
-        app:layout_constraintEnd_toStartOf="@+id/tv_countRest"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_limitAccess"
+        app:layout_constraintBottom_toTopOf="@+id/tv_note"
+        app:layout_constraintEnd_toStartOf="@+id/tv_limitAccess"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_stampName"
-        tools:text="Số lượng" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_productName"
+        tools:text="Đã tải" />
 
     <TextView
-        android:id="@+id/tv_countRest"
+        android:id="@+id/tv_limitAccess"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_stampName"
-        tools:text="Số người còn" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_productName"
+        tools:text="Hạn cảnh báo" />
 
     <TextView
-        android:id="@+id/tv_subDivision"
-        android:layout_width="wrap_content"
+        android:id="@+id/tv_note"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Phân lô"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_qrCode" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Ghi chú" />
+
 </android.support.constraint.ConstraintLayout>

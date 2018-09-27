@@ -31,14 +31,6 @@ class ChooseBoothFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.On
         return hideKeyboard()
     }
 
-    override fun openFilter() {
-
-    }
-
-    override fun showFilter(): Boolean {
-        return false
-    }
-
     companion object {
         const val TAG = "ChooseBoothFragment"
 

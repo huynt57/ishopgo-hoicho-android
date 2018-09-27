@@ -19,12 +19,6 @@ import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 
 class SearchPromotionProductsFragment : BaseSearchActionBarFragment(), SwipeRefreshLayout.OnRefreshListener {
-    override fun openFilter() {
-    }
-
-    override fun showFilter(): Boolean {
-        return false
-    }
 
     override fun onRefresh() {
         swipe.isRefreshing = false

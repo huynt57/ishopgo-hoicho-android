@@ -546,8 +546,14 @@
             android:name=".ui.main.stamp.buystamp.update.BuyStampUpdatedActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.main.stamp.buystamp.add.BuyStampAddActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.QrCodeViewerActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

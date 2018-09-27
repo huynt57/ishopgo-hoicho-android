@@ -5,15 +5,17 @@ import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.response.*
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.ManagerBooth
+import ishopgo.com.exhibition.model.product_manager.ManageProduct
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import okhttp3.MultipartBody
 
-class NoStampViewModel : BaseListViewModel<List<StampNoList>>(), AppComponent.Injectable {
+class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent.Injectable {
 
     var total = MutableLiveData<Long>()
 
@@ -27,10 +29,10 @@ class NoStampViewModel : BaseListViewModel<List<StampNoList>>(), AppComponent.In
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
-            addDisposable(authService.loadNoStamp(fields)
+            addDisposable(authService.getNoStampNew(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<List<StampNoList>>() {
-                        override fun success(data: List<StampNoList>?) {
+                    .subscribeWith(object : BaseSingleObserver<List<StampNoListNew>>() {
+                        override fun success(data: List<StampNoListNew>?) {
                             dataReturned.postValue(data ?: mutableListOf())
                         }
 
@@ -97,14 +99,15 @@ class NoStampViewModel : BaseListViewModel<List<StampNoList>>(), AppComponent.In
 
     var addNoStampSusscess = MutableLiveData<Boolean>()
 
-    fun addNoStampDetail(name: String, quantity: String, serialNumberPrefix: String) {
+    fun addNoStampDetail(product_id: Long, stamp_assign_product_code: String, coatings: String, limited_access: String) {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
-                .addFormDataPart("name", name)
-                .addFormDataPart("quantity", quantity)
-                .addFormDataPart("serial_number_prefix", serialNumberPrefix)
+                .addFormDataPart("product_id", product_id.toString())
+                .addFormDataPart("stamp_assign_product_code", stamp_assign_product_code)
+                .addFormDataPart("coatings", coatings)
+                .addFormDataPart("limited_access", limited_access)
 
-        addDisposable(authService.createNoStamp(builder.build())
+        addDisposable(authService.createNoStampNew(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
@@ -162,32 +165,35 @@ class NoStampViewModel : BaseListViewModel<List<StampNoList>>(), AppComponent.In
         }
     }
 
-    var dataProductSearch = MutableLiveData<StampSearchProduct>()
+    var dataProductSearch = MutableLiveData<List<Product>>()
+    var totalProduct = MutableLiveData<Int>()
 
-    fun searchProductAssign(id: Long, params: Request) {
+    fun searchProductAssign(params: Request) {
         if (params is SearchProductRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            fields["keyword"] = params.keyword
+            fields["name"] = params.keyword
 
-            addDisposable(authService.loadProductAssignNoStamp(id, fields)
+            addDisposable(isgService.getProductManager(fields)
                     .subscribeOn(Schedulers.single())
-                    .subscribeWith(object : BaseSingleObserver<StampSearchProduct>() {
-                        override fun success(data: StampSearchProduct?) {
-                            dataProductSearch.postValue(data)
+                    .subscribeWith(object : BaseSingleObserver<ManageProduct>() {
+                        override fun success(data: ManageProduct?) {
+                            dataProductSearch.postValue(data?.product ?: mutableListOf())
+                            totalProduct.postValue(data?.total ?: 0)
                         }
 
                         override fun failure(status: Int, message: String) {
                             resolveError(status, message)
                         }
-                    }))
+                    })
+            )
         }
     }
 
     var saveStampAssignSucccess = MutableLiveData<Boolean>()
 
-    fun saveStampAssign(stampId:Long, productId: Long, limited_access: String, limited_access_message: String, quantity_assign: String) {
+    fun saveStampAssign(stampId: Long, productId: Long, limited_access: String, limited_access_message: String, quantity_assign: String) {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("product_id", productId.toString())
@@ -200,6 +206,45 @@ class NoStampViewModel : BaseListViewModel<List<StampNoList>>(), AppComponent.In
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         saveStampAssignSucccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var downloadSuccess = MutableLiveData<Boolean>()
+
+    fun downloadStamp(stampId: Long, quantity_assign: String) {
+        val builder = MultipartBody.Builder()
+        builder.setType(MultipartBody.FORM)
+                .addFormDataPart("quantity_assign", quantity_assign)
+
+        addDisposable(authService.downloadNoStamp(stampId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        downloadSuccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var generateStamp = MutableLiveData<String>()
+
+    fun getGenerateStamp() {
+
+        addDisposable(authService.generateStamp()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<String>() {
+                    override fun success(data: String?) {
+                        generateStamp.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {

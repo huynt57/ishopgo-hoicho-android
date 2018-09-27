@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/default_margin">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
@@ -18,11 +17,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <android.support.design.widget.TextInputEditText
-            android:id="@+id/edit_keyword"
+            android:id="@+id/edit_number_stamp"
             style="@style/AppTheme.EnableInputField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nhập từ khoá tìm kiếm"
+            android:hint="Nhập số lượng tem"
+            android:inputType="number"
             tools:ignore="HardcodedText" />
 
     </android.support.design.widget.TextInputLayout>
