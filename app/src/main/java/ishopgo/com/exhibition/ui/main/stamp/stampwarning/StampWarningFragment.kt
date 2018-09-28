@@ -1,12 +1,14 @@
 package ishopgo.com.exhibition.ui.main.stamp.stampwarning
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.view.View
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.QrCode
 import ishopgo.com.exhibition.domain.response.StampListWarning
 import ishopgo.com.exhibition.domain.response.StampManager
 import ishopgo.com.exhibition.model.Const
@@ -14,6 +16,8 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.main.stamp.QrCodeViewerActivity
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerAdapter
 import ishopgo.com.exhibition.ui.main.stamp.stampmanager.StampManagerViewModel
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
@@ -41,13 +45,27 @@ class StampWarningFragment : BaseListFragment<List<StampListWarning>, StampListW
         val adapter = StampWarningAdapter()
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<StampListWarning> {
             override fun click(position: Int, data: StampListWarning, code: Int) {
-                context?.let {
-                    if (data.statusWarning == null)
-                        showDialogStampWarningEviction(data.stampId ?: 0L, data.code ?: "", data.productId ?: 0L)
-                    else {
-                        showDialogStampWarningRestore(data.code ?: "")
+                when(code) {
+                    CLICK_BUTTOM_THU_HOI ->{
+                        context?.let {
+                            if (data.statusWarning == null)
+                                showDialogStampWarningEviction(data.stampId ?: 0L, data.code ?: "", data.productId ?: 0L)
+                            else {
+                                showDialogStampWarningRestore(data.code ?: "")
+                            }
+                        }
+                    }
+
+                    CLICK_ITEMVIEW ->{
+                        val qrcode = QrCode()
+                        qrcode.name = data.code
+                        qrcode.qrCode = data.code
+                        val intent = Intent(context, QrCodeViewerActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(qrcode))
+                        startActivity(intent)
                     }
                 }
+
             }
         }
         return adapter
@@ -135,7 +153,8 @@ class StampWarningFragment : BaseListFragment<List<StampListWarning>, StampListW
     }
 
     companion object {
-
+        const val CLICK_BUTTOM_THU_HOI = 0
+        const val CLICK_ITEMVIEW = 1
         fun newInstance(params: Bundle): StampWarningFragment {
             val fragment = StampWarningFragment()
             fragment.arguments = params

@@ -102,7 +102,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    fun loadData(productId: Long, stampId: String, stampCode: String, deviceId: String) {
+    fun loadData(productId: Long, stampId: String, stampCode: String, stampType :String, deviceId: String) {
 
         val fieldsLoadDetail = mutableMapOf<String, Any>()
         if (stampId.isNotBlank()) {
@@ -110,6 +110,10 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         }
         if (stampCode.isNotBlank()) {
             fieldsLoadDetail["stampCode"] = stampCode
+        }
+
+        if (stampType.isNotBlank()) {
+            fieldsLoadDetail["type"] = stampType
         }
 
         if (deviceId.isNotBlank()) {

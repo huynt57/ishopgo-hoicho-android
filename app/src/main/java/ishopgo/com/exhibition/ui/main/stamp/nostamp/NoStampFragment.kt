@@ -97,7 +97,7 @@ class NoStampFragment : BaseListFragment<List<StampNoListNew>, StampNoListNew>()
                 qrcode.qrCode = data.code
                 val intent = Intent(context, QrCodeViewerActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(qrcode))
-                startActivityForResult(intent, Const.RequestCode.STAMP_ORDER_UPDATE)
+                startActivity(intent)
                 //                if (data.quantity == data.quantityExists) {
 //                    val intent = Intent(context, NoStampEditActivity::class.java)
 //                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)

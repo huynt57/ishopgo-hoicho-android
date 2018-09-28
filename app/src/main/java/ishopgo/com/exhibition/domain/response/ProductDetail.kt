@@ -4,6 +4,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.product_manager.ProductRelated
+import ishopgo.com.exhibition.domain.response.ProductDetail.Stamp
+
+
 
 
 /**
@@ -263,10 +266,31 @@ class ProductDetail : IdentityData() {
     @SerializedName("chung_nhan")
     @Expose
     var chungNhan: String? = null
+    @SerializedName("stamp")
+    @Expose
+    var stamp: Stamp? = null
 
     class ListCert {
         @SerializedName("image")
         @Expose
         var image: String? = null
+    }
+
+    class Stamp {
+        @SerializedName("code")
+        @Expose
+        var code: String? = null
+        @SerializedName("is_fake")
+        @Expose
+        var isFake: Boolean? = null
+        @SerializedName("type")
+        @Expose
+        var type: String? = null
+        @SerializedName("number_of_scans")
+        @Expose
+        var numberOfScans: Int? = null
+        @SerializedName("number_of_scanners")
+        @Expose
+        var numberOfScanners: Int? = null
     }
 }

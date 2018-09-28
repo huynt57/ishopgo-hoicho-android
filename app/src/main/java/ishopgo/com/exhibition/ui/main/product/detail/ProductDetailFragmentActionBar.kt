@@ -49,10 +49,18 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
             requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_ID)
         }
 
+        val stampType = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_TYPE) == true) {
+            // click another product in product detail screen
+            arguments!!.getString(Const.TransferKey.EXTRA_STAMP_TYPE)
+        } else {
+            requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_TYPE)
+        }
+
         val extra = Bundle()
         extra.putLong(Const.TransferKey.EXTRA_ID, productId)
         extra.putString(Const.TransferKey.EXTRA_STAMP_ID, stampId)
         extra.putString(Const.TransferKey.EXTRA_STAMP_CODE, stampCode)
+        extra.putString(Const.TransferKey.EXTRA_STAMP_TYPE, stampType)
 
         val fragment = ProductDetailFragment.newInstance(extra)
         childFragmentManager.beginTransaction()

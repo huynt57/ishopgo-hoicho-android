@@ -11,6 +11,10 @@ import kotlinx.android.synthetic.main.item_stamp_warning.view.*
 import net.glxn.qrgen.android.QRCode
 
 class StampWarningAdapter : ClickableAdapter<StampListWarning>() {
+    companion object {
+        const val CLICK_BUTTOM_THU_HOI = 0
+        const val CLICK_ITEMVIEW = 1
+    }
 
     override fun getChildLayoutResource(viewType: Int): Int {
         return R.layout.item_stamp_warning
@@ -23,7 +27,8 @@ class StampWarningAdapter : ClickableAdapter<StampListWarning>() {
     override fun onBindViewHolder(holder: ViewHolder<StampListWarning>, position: Int) {
         super.onBindViewHolder(holder, position)
         holder.apply {
-            itemView.btn_thuHoi.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition)) }
+            itemView.btn_thuHoi.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_BUTTOM_THU_HOI) }
+            itemView.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_ITEMVIEW) }
         }
     }
 
@@ -43,7 +48,7 @@ class StampWarningAdapter : ClickableAdapter<StampListWarning>() {
                 tv_countScan.text = convert.provideCountScan()
                 tv_countProple.text = convert.provideCountPeople()
                 if (convert.provideStatusWarning().isNotEmpty()) btn_thuHoi.text = convert.provideStatusWarning()
-                    else btn_thuHoi.text = "Thu hồi"
+                else btn_thuHoi.text = "Thu hồi"
             }
         }
     }

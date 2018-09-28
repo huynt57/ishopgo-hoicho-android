@@ -20,6 +20,7 @@ object Const {
         const val EXTRA_STAMP_CODE = "stamp_code"
         const val EXTRA_STAMP_COUNT = "stamp_COUNT"
         const val EXTRA_STAMP_ID = "stamp_id"
+        const val EXTRA_STAMP_TYPE = "stamp_type"
         const val EXTRA_ENABLE_CREATE_GROUP = "can_create_group"
     }
 

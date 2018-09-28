@@ -96,6 +96,9 @@ class DeeplinkHandlerActivity : BaseActivity() {
                     intent.putExtra(Const.TransferKey.EXTRA_ID, link.getQueryParameter("productId").toLong())
                     intent.putExtra(Const.TransferKey.EXTRA_STAMP_CODE, link.getQueryParameter("stampCode"))
                     intent.putExtra(Const.TransferKey.EXTRA_STAMP_ID, link.getQueryParameter("stampId"))
+                    if (link.getQueryParameter("type")?.isNotEmpty() == true) {
+                        intent.putExtra(Const.TransferKey.EXTRA_STAMP_TYPE, link.getQueryParameter("type"))
+                    }
                     startActivity(intent)
                 } else {
                     val intent = Intent(this, MainActivity::class.java)

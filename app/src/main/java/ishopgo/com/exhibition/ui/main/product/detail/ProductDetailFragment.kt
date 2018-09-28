@@ -115,6 +115,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private var productId: Long = -1L
     private var stampId = ""
     private var stampCode = ""
+    private var stampType = ""
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
         val currentItem = view_product_image.currentItem
@@ -144,6 +145,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         productId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
         stampId = arguments?.getString(Const.TransferKey.EXTRA_STAMP_ID, "") ?: ""
         stampCode = arguments?.getString(Const.TransferKey.EXTRA_STAMP_CODE, "") ?: ""
+        stampType = arguments?.getString(Const.TransferKey.EXTRA_STAMP_TYPE, "") ?: ""
 
         if (productId == -1L)
             throw RuntimeException("Sai dinh dang")
@@ -291,6 +293,30 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
 
             val convert = ProductDetailConverter().convert(product)
+
+            if (convert.providerStamp() != null) {
+                val stamp = convert.providerStamp()!!
+                const_vertify.visibility = View.VISIBLE
+                if (stamp.isFake == true) {
+                    tv_not_vertify.visibility = View.VISIBLE
+                    tv_vertify.visibility = View.GONE
+
+                } else {
+                    tv_vertify.visibility = View.VISIBLE
+                    tv_not_vertify.visibility = View.GONE
+                }
+
+                if (stamp.code?.isNotEmpty() == true)
+                    tv_code.text = "Serial: ${stamp.code}"
+
+                if (stamp.numberOfScans != null)
+                    tv_number_scan.text = "${stamp.numberOfScans} Số lần quét"
+                else linear_stamp_vertify.visibility = View.GONE
+                if (stamp.numberOfScanners != null)
+                    tv_user_scan.text = "${stamp.numberOfScanners} Số người quét"
+                else linear_stamp_vertify.visibility = View.GONE
+
+            } else const_vertify.visibility = View.GONE
 
             view_product_wholesale.visibility = View.VISIBLE
             view_product_wholesale.text = convert.provideWholesale()
@@ -722,12 +748,17 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun providerDVNK(): Booth?
         fun providerCSCB(): Booth?
         fun providerInfo(): List<InfoProduct>
+        fun providerStamp(): ProductDetail.Stamp?
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerStamp(): ProductDetail.Stamp? {
+                    return from.stamp
+                }
+
                 override fun providerInfo(): List<InfoProduct> {
                     return from.info ?: mutableListOf()
                 }
@@ -1311,6 +1342,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         startActivity(intent)
     }
 
+    @SuppressLint("HardwareIds")
     private fun loadData(productId: Long) {
         val deviceId = if (stampId.isNotEmpty() && stampCode.isNotEmpty()) {
             context?.let {
@@ -1321,7 +1353,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         } else ""
 
-        viewModel.loadData(productId, stampId, stampCode, deviceId ?: "")
+        viewModel.loadData(productId, stampId, stampCode, stampType, deviceId ?: "")
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         container_viewed.visibility = if (isUserLoggedIn) View.VISIBLE else View.GONE

@@ -27,6 +27,7 @@ import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_myqr.*
+import net.glxn.qrgen.android.QRCode
 import java.io.*
 
 class QrCodeViewerFragment : BaseActionBarFragment() {
@@ -50,7 +51,7 @@ class QrCodeViewerFragment : BaseActionBarFragment() {
 
         setupToolbars()
 
-        view_qr_label.text = "Mã truy xuất nguồn gốc"
+        view_qr_label.text = ""
         view_booth_code.visibility = View.VISIBLE
         constraintLayout.setOnClickListener(null)
     }
@@ -64,41 +65,16 @@ class QrCodeViewerFragment : BaseActionBarFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        Glide.with(view_qrcode.context)
-                .asBitmap()
-                .load("http://${resources.getString(R.string.app_host)}/check/${data.qrCode}")
-                .apply(RequestOptions()
-                        .placeholder(R.drawable.image_placeholder)
-                        .error(R.drawable.image_placeholder))
-                .listener(object : RequestListener<Bitmap> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
-                        if (isVisible)
-                            view_download.setOnClickListener {
-                                toast("Lỗi khi tải ảnh.")
-                            }
+        view_qrcode.setImageBitmap(QRCode.from("http://${resources.getString(R.string.app_host)}/check/${data.qrCode}").withSize(300, 300).bitmap())
+        view_download.setOnClickListener {
+            if (!hasCameraPermission(it.context))
+                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
+            else
+                storeImage(data.qrCode ?: "unknown")
 
-                        return false
-                    }
+        }
 
-                    override fun onResourceReady(resource: Bitmap?, model: Any?, target: Target<Bitmap>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        if (isVisible)
-                            view_download.setOnClickListener {
-                                if (!hasCameraPermission(it.context))
-                                    requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Const.RequestCode.STORAGE_PERMISSION)
-                                else
-                                    storeImage(data.name ?: "unknown")
-
-                            }
-
-                        return false
-                    }
-                })
-                .into(view_qrcode)
-
-        view_booth_name.text = data.name
         view_booth_code.text = data.qrCode
-
-
     }
 
     private fun hasCameraPermission(context: Context): Boolean {
