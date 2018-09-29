@@ -50,7 +50,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/img_product"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="ten san pham"/>
+                tools:text="ten san pham" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/tv_product_code"

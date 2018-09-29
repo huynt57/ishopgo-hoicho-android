@@ -102,7 +102,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         )
     }
 
-    fun loadData(productId: Long, stampId: String, stampCode: String, stampType :String, deviceId: String) {
+    fun loadData(productId: Long, stampId: String, stampCode: String, stampType: String, deviceId: String) {
 
         val fieldsLoadDetail = mutableMapOf<String, Any>()
         if (stampId.isNotBlank()) {
@@ -529,6 +529,78 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         deleteProductDiary.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
+
+    var getListBGBN = MutableLiveData<Boolean>()
+
+    fun getListBGBN(params: Request) {
+        if (params is ListBGBNRequest) {
+            val fields = mutableMapOf<String, Any>()
+            fields["product_id"] = params.product_id
+            fields["booth_id"] = params.booth_id
+            fields["q"] = params.q
+            fields["limit"] = params.limit
+            fields["offset"] = params.offset
+
+            addDisposable(authService.getListBGBN(fields)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<List<ListBGBN>>() {
+                        override fun success(data: List<ListBGBN>?) {
+                            getListBGBN.postValue(true)
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    }))
+        }
+    }
+
+    var createExchangeDiarySuccess = MutableLiveData<Boolean>()
+
+    fun createExchangeDiary(name: String, content: String, senderId: Long, senderType: String, receiverId: Long, receiverType: String, expiryDate: String, lat: String, lng: String,
+                            productId: Long, quantity: String, quantity_prefix: String, stamp_assign_code: String, images: ArrayList<PostMedia>) {
+        val builder = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("content", content)
+                .addFormDataPart("name", name)
+                .addFormDataPart("product_id", productId.toString())
+                .addFormDataPart("sender_id", senderId.toString())
+                .addFormDataPart("receiver_id", receiverId.toString())
+                .addFormDataPart("senderType", senderType)
+                .addFormDataPart("receiverType", receiverType)
+                .addFormDataPart("expiryDate", expiryDate)
+                .addFormDataPart("lat", lat)
+                .addFormDataPart("lng", lng)
+                .addFormDataPart("quantity", quantity)
+                .addFormDataPart("quantity_prefix", quantity_prefix)
+                .addFormDataPart("stamp_assign_code", stamp_assign_code)
+
+        if (images.isNotEmpty()) {
+            for (i in images.indices) {
+                val uri = images[i].uri
+                uri?.let {
+                    val imageFile = File(appContext.cacheDir, "postImage$i.jpg")
+                    imageFile.deleteOnExit()
+                    Toolbox.reEncodeBitmap(appContext, it, 640, Uri.fromFile(imageFile))
+                    val imageBody = RequestBody.create(MultipartBody.FORM, imageFile)
+                    builder.addFormDataPart("images[]", imageFile.name, imageBody)
+                }
+
+            }
+        }
+
+        addDisposable(authService.createExchangeDiaryProduct(builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createExchangeDiarySuccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {

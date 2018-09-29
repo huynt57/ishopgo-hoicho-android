@@ -483,6 +483,12 @@ class ApiService {
 
         @POST("expo/map/delete-booth/{id}")
         fun deleteBoothMap(@Path("id") id: Long): Single<BaseResponse<Any>>
+
+        @POST("expo/exchange-diary-product")
+        fun createExchangeDiaryProduct(@Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @POST("expo/get-list-bg-bn")
+        fun getListBGBN(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ListBGBN>>>
     }
 
 
