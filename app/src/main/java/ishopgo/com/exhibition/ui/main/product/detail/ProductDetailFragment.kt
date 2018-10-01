@@ -27,6 +27,7 @@ import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
+import ishopgo.com.exhibition.domain.request.ListBGBNRequest
 import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
 import ishopgo.com.exhibition.domain.request.ProductSalePointRequest
 import ishopgo.com.exhibition.domain.response.*
@@ -161,7 +162,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun firstLoadDiary() {
         val firstLoad = ProductDiaryRequest()
-        firstLoad.limit = 2
+        firstLoad.limit = 1
         firstLoad.offset = 0
         firstLoad.productId = productId
         viewModel.getProductDiary(firstLoad)
@@ -440,6 +441,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 //                linear_vanChuyen.visibility = View.VISIBLE
 //            else linear_vanChuyen.visibility = View.GONE
 
+            if (convert.providerExchangeDiaryProduct().isNotEmpty()){
+
+            }
+
             view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
             view_rating.rating = convert.provideRate()
@@ -647,11 +652,36 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             } else container_diary.visibility = View.GONE
 
-        }
-        openProductSalePoint(product)
+            if (stampType.isNotEmpty()) {
+                container_exchange_diary.visibility = View.VISIBLE
 
-        floatQrCode.setOnClickListener {
-            showQrCodeProduct(product)
+                if (UserDataManager.currentType == "Quản trị viên") {
+                    val listPermission = Const.listPermission
+                    if (listPermission.isNotEmpty())
+                        for (i in listPermission.indices)
+                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+                                view_add_exchange_diary.visibility = View.VISIBLE
+                                break
+                            }
+                } else view_add_exchange_diary.visibility = View.GONE
+
+
+                if (UserDataManager.currentUserId == product.booth?.id || UserDataManager.currentType == "Chủ hội chợ") {
+                    isViewDiary = true
+                    view_add_exchange_diary.visibility = View.VISIBLE
+                } else {
+                    isViewDiary = false
+                    view_add_exchange_diary.visibility = View.GONE
+                }
+
+                view_add_exchange_diary.setOnClickListener { showAddExchangDiary(product) }
+            } else container_exchange_diary.visibility = View.GONE
+
+            openProductSalePoint(product)
+
+            floatQrCode.setOnClickListener {
+                showQrCodeProduct(product)
+            }
         }
     }
 
@@ -660,6 +690,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
 
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_qrCodeProductFragment, extra)
+    }
+
+    private fun showAddExchangDiary(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragment, extra)
     }
 
     private fun setupRecyclerviewDescriptionCSCB() {
@@ -749,12 +786,17 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun providerCSCB(): Booth?
         fun providerInfo(): List<InfoProduct>
         fun providerStamp(): ProductDetail.Stamp?
+        fun providerExchangeDiaryProduct(): List<ExchangeDiaryProduct>
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerExchangeDiaryProduct(): List<ExchangeDiaryProduct> {
+                    return from.exchangeDiaryProduct ?: mutableListOf()
+                }
+
                 override fun providerStamp(): ProductDetail.Stamp? {
                     return from.stamp
                 }
@@ -1112,6 +1154,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupSameShopProducts(view.context)
         setupViewedProducts(view.context)
         setupDiaryProducts(view.context)
+        setupExchangeDiaryProducts(view.context)
         setupProductVatTu(view.context)
         setupProductGiaiPhap(view.context)
         setupProductRelated(view.context)
@@ -1418,6 +1461,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_product_diary.layoutManager = layoutManager
         rv_product_diary.isNestedScrollingEnabled = false
+    }
+
+    private fun setupExchangeDiaryProducts(context: Context) {
+        rv_product_exchange_diary.adapter = adapterDiary
+        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rv_product_exchange_diary.layoutManager = layoutManager
+        rv_product_exchange_diary.isNestedScrollingEnabled = false
     }
 
     private fun setupProductVatTu(context: Context) {

@@ -31,6 +31,20 @@
             android:textStyle="bold"
             tools:text="Thương hiệu" />
 
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_madeIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/icon_place"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Xuất xứ: "
+            tools:visibility="visible" />
+
         <View
             style="@style/AppTheme.DividerLine"
             android:layout_width="match_parent"
@@ -193,20 +207,6 @@
             app:drawableStartCompat="@drawable/ic_star"
             app:drawableStartSquareSize="16dp"
             tools:text="Đơn vị tính: "
-            tools:visibility="visible" />
-
-        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_product_madeIn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:textSize="13sp"
-            android:visibility="gone"
-            app:drawableStartCompat="@drawable/icon_place"
-            app:drawableStartSquareSize="16dp"
-            tools:text="Xuất xứ: "
             tools:visibility="visible" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

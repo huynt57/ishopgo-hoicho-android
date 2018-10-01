@@ -8,6 +8,9 @@ class ListBGBN : IdentityData() {
     @SerializedName("booth_name")
     @Expose
     var boothName: String? = null
+    @SerializedName("name")
+    @Expose
+    var name: String? = null
     @SerializedName("phone")
     @Expose
     var phone: String? = null

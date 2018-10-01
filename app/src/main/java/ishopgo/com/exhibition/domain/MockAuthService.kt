@@ -24,6 +24,18 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun createExchangeDiaryProduct(body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).createExchangeDiaryProduct(body)
+    }
+
+    override fun getListBGBN(fields: MutableMap<String, Any>): Single<BaseResponse<List<ListBGBN>>> {
+        val response = BaseResponse<List<ListBGBN>>()
+        response.status = 1
+        return delegate.returningResponse(response).getListBGBN(fields)
+    }
+
     override fun createNoStampNew(body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<String>()
         response.status = 1

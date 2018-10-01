@@ -77,6 +77,8 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
 
+        builder.addFormDataPart("price", giaBan.toString())
+
         if (tenSp.isNotEmpty())
             builder.addFormDataPart("name", tenSp)
         if (maSp.isNotEmpty())
@@ -97,8 +99,6 @@ class ProductManagerViewModel : BaseListViewModel<List<Product>>(), AppComponent
             builder.addFormDataPart("dong_goi", quyCachDongGoi)
         if (hsd.isNotEmpty())
             builder.addFormDataPart("hsd", hsd)
-        if (giaBan != 0L)
-            builder.addFormDataPart("price", giaBan.toString())
         if (giaBanKm != 0L)
             builder.addFormDataPart("promotion_price", giaBanKm.toString())
         if (giaBanSiTu != 0L)

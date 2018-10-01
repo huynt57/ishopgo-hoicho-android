@@ -189,7 +189,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="@dimen/default_margin">
 
-                <android.support.design.widget.TextInputEditText
+                <ishopgo.com.exhibition.ui.widget.DateInputEditText
                     android:id="@+id/edit_hsd"
                     style="@style/AppTheme.EnableInputField"
                     android:layout_width="match_parent"

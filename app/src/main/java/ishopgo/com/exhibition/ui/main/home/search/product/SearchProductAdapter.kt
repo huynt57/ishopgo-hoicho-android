@@ -72,7 +72,7 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
 
     interface SearchProductProvider {
         fun provideImage(): String
-        fun provideName(): String
+        fun provideName(): CharSequence
         fun provideCode(): String
         fun providePrice(): CharSequence
     }
@@ -98,8 +98,10 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
                     return from.image ?: ""
                 }
 
-                override fun provideName(): String {
-                    return from.name ?: ""
+                override fun provideName(): CharSequence {
+                    return "${from.name?.trim()
+                            ?: "Sản phẩm"} - <b><font color=\"blue\">${from.departmentName?.trim()
+                            ?: ""}</font></b>".asHtml()
                 }
 
                 override fun provideCode(): String {

@@ -487,7 +487,7 @@ class ApiService {
         @POST("expo/exchange-diary-product")
         fun createExchangeDiaryProduct(@Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @POST("expo/get-list-bg-bn")
+        @GET("expo/get-list-bg-bn")
         fun getListBGBN(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ListBGBN>>>
     }
 

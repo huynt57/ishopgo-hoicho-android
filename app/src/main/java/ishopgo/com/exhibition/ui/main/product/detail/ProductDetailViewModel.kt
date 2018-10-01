@@ -537,14 +537,14 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    var getListBGBN = MutableLiveData<Boolean>()
+    var getListBGBN = MutableLiveData<List<ListBGBN>>()
 
     fun getListBGBN(params: Request) {
         if (params is ListBGBNRequest) {
             val fields = mutableMapOf<String, Any>()
             fields["product_id"] = params.product_id
             fields["booth_id"] = params.booth_id
-            fields["q"] = params.q
+            fields["q"] = params.keyword
             fields["limit"] = params.limit
             fields["offset"] = params.offset
 
@@ -552,7 +552,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                     .subscribeOn(Schedulers.single())
                     .subscribeWith(object : BaseSingleObserver<List<ListBGBN>>() {
                         override fun success(data: List<ListBGBN>?) {
-                            getListBGBN.postValue(true)
+                            getListBGBN.postValue(data)
                         }
 
                         override fun failure(status: Int, message: String) {

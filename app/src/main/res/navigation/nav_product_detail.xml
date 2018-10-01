@@ -60,7 +60,17 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/expoDetailFragment" />
 
+        <action
+            android:id="@+id/action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragment"
+            app:destination="@id/productExchangeDiaryAddFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment" />
     </fragment>
+
+
 
     <fragment
         android:id="@+id/ratingProductFragment"
@@ -82,4 +92,22 @@
         android:id="@+id/productDiaryAddFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.detail.diary_product.ProductDiaryAddFragment"
         android:label="ProductDiaryAddFragment" />
+    <fragment
+        android:id="@+id/productExchangeDiaryAddFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeDiaryAddFragment"
+        android:label="ProductExchangeDiaryAddFragment" >
+        <action
+            android:id="@+id/action_searchBoothFragment_to_productExchangeBGBNFragment"
+            app:destination="@id/productExchangeBGBNFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/productExchangeBGBNFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeBGBNFragment"
+        android:label="productExchangeBGBNFragment" />
 </navigation>

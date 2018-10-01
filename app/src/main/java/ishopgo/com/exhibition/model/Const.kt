@@ -22,6 +22,7 @@ object Const {
         const val EXTRA_STAMP_ID = "stamp_id"
         const val EXTRA_STAMP_TYPE = "stamp_type"
         const val EXTRA_ENABLE_CREATE_GROUP = "can_create_group"
+        const val EXTRA_STATUS_BG_BN = "status_bgbn"
     }
 
     object RequestCode {

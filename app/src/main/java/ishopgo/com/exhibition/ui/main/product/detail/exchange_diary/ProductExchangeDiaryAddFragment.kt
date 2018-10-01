@@ -1,9 +1,15 @@
 package ishopgo.com.exhibition.ui.main.product.detail.exchange_diary
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -13,6 +19,7 @@ import android.support.v4.content.FileProvider
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
 import android.view.View
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -35,12 +42,35 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
+
+class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListener {
+    override fun onLocationChanged(location: Location?) {
+        lat = location?.latitude ?: 0.0
+        lng = location?.longitude ?: 0.0
+    }
+
+    override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+    }
+
+    override fun onProviderEnabled(provider: String?) {
+    }
+
+    override fun onProviderDisabled(provider: String?) {
+    }
+
     private var data = ProductDetail()
     private lateinit var viewModel: ProductDetailViewModel
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
     private lateinit var viewModelDiary: ExchangeDiaryProductViewModel
+    private var typeGui = 0
+    private var typeNhan = 0
+    private var idGui = -1L
+    private var idNhan = -1L
+    private val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
+    private var lat: Double = 0.0
+    private var lng: Double = 0.0
+    private var locationManager: LocationManager? = null
 
     companion object {
         const val PERMISSIONS_REQUEST_CAMERA = 100
@@ -61,6 +91,22 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        statusCheck()
+
+        activity?.let {
+            if (ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+
+                ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_LOCATION)
+                ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSIONS_REQUEST_ACCESS_LOCATION)
+
+            } else {
+                if (locationManager != null) {
+                    locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+                }
+            }
+        }
         setupToolbars()
         view_add_images.setOnClickListener {
             launchPickPhotoIntent()
@@ -73,7 +119,7 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
         btn_add.setOnClickListener {
             if (isRequiredFieldsValid(edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString())) {
                 showProgressDialog()
-                viewModel.createExchangeDiary(edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString(), 0L, "", 0L, "", edit_hsd.text.toString(), "", "",
+                viewModel.createExchangeDiary(edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString(), idGui, typeGui.toString(), idNhan, typeNhan.toString(), edit_hsd.text.toString(), lat.toString(), lng.toString(),
                         data.id, edit_soLuong.text.toString(), edit_donVi.text.toString(), edit_maLo.text.toString(), postMedias)
             }
         }
@@ -91,6 +137,26 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
         setupImageRecycleview()
     }
 
+    private fun statusCheck() {
+        val manager = context?.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            buildAlertMessageNoGps()
+        }
+    }
+
+    private fun buildAlertMessageNoGps() {
+        val builder = AlertDialog.Builder(context)
+        builder.setMessage("Định vị của bạn đang tắt, vui lòng mở lại?")
+                .setCancelable(false)
+                .setPositiveButton("Đồng ý") { _, _ -> startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
+                .setNegativeButton("Huỷ") { dialog, _ ->
+                    dialog.cancel()
+                }
+        val alert = builder.create()
+        alert.show()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModelDiary = obtainViewModel(ExchangeDiaryProductViewModel::class.java, true)
@@ -102,7 +168,7 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
             }
         })
 
-        viewModel.createProductDiary.observe(this, android.arch.lifecycle.Observer { p ->
+        viewModel.createExchangeDiarySuccess.observe(this, android.arch.lifecycle.Observer { p ->
             p?.let {
                 toast("Tạo nhật ký giao dịch thành công")
                 viewModelDiary.createExchangeDiarySusscess()
@@ -111,6 +177,35 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
                 activity?.onBackPressed()
             }
         })
+
+        viewModelDiary.resultdBenGiao.observe(this, android.arch.lifecycle.Observer { p ->
+            p?.let {
+                idGui = it.id
+                typeGui = it.type ?: 0
+                if (typeGui == 1) edit_benGui.setText(it.boothName ?: "")
+                else edit_benGui.setText(it.name ?: "")
+            }
+        })
+
+        viewModelDiary.resultdBenNhan.observe(this, android.arch.lifecycle.Observer { p ->
+            p?.let {
+                idNhan = it.id
+                typeNhan = it.type ?: 0
+                if (typeNhan == 1) edt_benNhan.setText(it.boothName ?: "")
+                else edt_benNhan.setText(it.name ?: "")
+            }
+        })
+
+        edit_benGui.setOnClickListener { showAddExchangDiary(data, true) }
+        edt_benNhan.setOnClickListener { showAddExchangDiary(data, false) }
+    }
+
+    private fun showAddExchangDiary(product: ProductDetail, statusBGBN: Boolean) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+        extra.putBoolean(Const.TransferKey.EXTRA_STATUS_BG_BN, statusBGBN)
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_productExchangeBGBNFragment, extra)
     }
 
     private fun isRequiredFieldsValid(name: String, content: String): Boolean {
@@ -240,6 +335,22 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment() {
                 rv_images.visibility = View.VISIBLE
 
             }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            PERMISSIONS_REQUEST_ACCESS_LOCATION -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (locationManager != null) {
+                        locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+                    }
+                }
+                return
+            }
+
         }
     }
 }

@@ -269,6 +269,9 @@ class ProductDetail : IdentityData() {
     @SerializedName("stamp")
     @Expose
     var stamp: Stamp? = null
+    @SerializedName("exchange_diary_product")
+    @Expose
+    var exchangeDiaryProduct: List<ExchangeDiaryProduct>? = null
 
     class ListCert {
         @SerializedName("image")
