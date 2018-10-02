@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    tools:visibility="visible">
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_label_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:textStyle="bold"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        app:drawableStartCompat="@drawable/ic_home_highlight_24dp"
+        app:layout_constraintEnd_toStartOf="@+id/view_detail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_divider_shop"
+        tools:ignore="HardcodedText"
+        tools:text="Đơn vị phân phối" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_label_name"
+        tools:text="Công ty TNHH Mua đồ tốt" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_button_stroked_rounded_rectangle"
+        android:foreground="?attr/selectableItemBackground"
+        android:padding="8dp"
+        android:text="Xem thêm"
+        app:layout_constraintBottom_toBottomOf="@+id/view_label_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_divider_shop"
+        tools:targetApi="m" />
+
+    <View
+        android:id="@+id/textView7"
+        style="@style/AppTheme.DividerLine"
+        android:layout_width="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_name" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_product_count"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toStartOf="@+id/view_rating"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:text="54\nSản phẩm" />
+
+    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+        android:id="@+id/view_rating"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/view_product_count"
+        app:layout_constraintTop_toBottomOf="@+id/textView7"
+        tools:text="5\nĐánh giá" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_stroked_rounded_rectangle"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_rating">
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/tv_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="4dp"
+            app:drawableStartCompat="@drawable/ic_phone_highlight_24dp"
+            app:drawableStartSquareSize="18dp"
+            tools:text="Số điện thoại: 0985771135" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/tv_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:paddingStart="8dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="8dp"
+            android:paddingBottom="8dp"
+            app:drawableStartCompat="@drawable/ic_location_highlight_16dp"
+            app:drawableStartSquareSize="18dp"
+            tools:text="Địa chỉ: 68 Dương Đình Nghệ, Cầu Giấy, Hà Nội" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

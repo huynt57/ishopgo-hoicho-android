@@ -47,9 +47,11 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
     override fun onLocationChanged(location: Location?) {
         lat = location?.latitude ?: 0.0
         lng = location?.longitude ?: 0.0
+        Log.d("latlng", "$lat,$lng")
     }
 
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+
     }
 
     override fun onProviderEnabled(provider: String?) {
@@ -67,14 +69,14 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
     private var typeNhan = 0
     private var idGui = -1L
     private var idNhan = -1L
-    private val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
     private var lat: Double = 0.0
     private var lng: Double = 0.0
     private var locationManager: LocationManager? = null
 
     companion object {
+        const val TAG = "ProductExchangeDiary"
         const val PERMISSIONS_REQUEST_CAMERA = 100
-
+        const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
     }
 
     override fun contentLayoutRes(): Int {
@@ -94,6 +96,8 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
         statusCheck()
 
         activity?.let {
+            locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
             if (ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(it, Manifest.permission.ACCESS_COARSE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
@@ -103,7 +107,7 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
 
             } else {
                 if (locationManager != null) {
-                    locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+                    locationManager!!.requestLocationUpdates(locationServicesEnabled(), 0, 0f, this)
                 }
             }
         }
@@ -155,6 +159,34 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
                 }
         val alert = builder.create()
         alert.show()
+    }
+
+    private fun locationServicesEnabled(): String {
+        val gpsEnabled: Boolean
+        val netEnabled: Boolean
+
+        var location = LocationManager.NETWORK_PROVIDER
+
+        try {
+            gpsEnabled = locationManager!!.isProviderEnabled(LocationManager.GPS_PROVIDER)
+            location = if (gpsEnabled)
+                LocationManager.GPS_PROVIDER
+            else LocationManager.NETWORK_PROVIDER
+        } catch (ex: Exception) {
+            Log.e(TAG, "Exception gps_enabled")
+        }
+
+        try {
+            netEnabled = locationManager!!.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+            if (netEnabled)
+                location = if (netEnabled)
+                    LocationManager.NETWORK_PROVIDER
+                else LocationManager.GPS_PROVIDER
+        } catch (ex: Exception) {
+            Log.e(TAG, "Exception network_enabled")
+        }
+
+        return location
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -345,7 +377,7 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
             PERMISSIONS_REQUEST_ACCESS_LOCATION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     if (locationManager != null) {
-                        locationManager!!.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, this)
+                        locationManager!!.requestLocationUpdates(locationServicesEnabled(), 0, 0f, this)
                     }
                 }
                 return

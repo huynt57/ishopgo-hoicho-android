@@ -485,12 +485,17 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var createProductDiary = MutableLiveData<Boolean>()
 
-    fun createProductDiary(productId: Long, title: String, content: String, postMedias: ArrayList<PostMedia> = ArrayList()) {
+    fun createProductDiary(productId: Long, title: String, content: String, postMedias: ArrayList<PostMedia> = ArrayList(), stampCode: String, lat: String, lng:String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("content", content)
                 .addFormDataPart("title", title)
                 .addFormDataPart("product_id", productId.toString())
+                .addFormDataPart("lat", lat)
+                .addFormDataPart("lng", lng)
+
+        if (stampCode.isNotEmpty())
+            builder.addFormDataPart("stampCode", stampCode)
 
         if (postMedias.isNotEmpty()) {
             for (i in postMedias.indices) {

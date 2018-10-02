@@ -52,6 +52,21 @@
                 tools:text="name" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_diary_address"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="12sp"
+                app:drawableStartCompat="@drawable/ic_location_highlight_16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_account_name"
+                tools:ignore="MissingConstraints"
+                tools:text="Địa chỉ" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/tv_diary_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,7 +78,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_account_name"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_address"
                 tools:text="title" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

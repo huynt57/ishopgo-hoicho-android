@@ -102,8 +102,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
     private val productProcessAdapter = ProductProcessAdapter()
+    private var adapterSupplyChain = SupplyChainAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var adapterDiary = ProductDiaryAdapter()
+    private var adapterExchangeDiary = ProductExchangeDiaryAdapter()
     private var adapterCert = ProductCertAdapter()
     private var adapterDescriptionCSCB = ListDescriptionAdapter()
     private var adapterDescriptionVatTu = ListDescriptionAdapter()
@@ -169,6 +171,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModelDiary = obtainViewModel(DiaryProductViewModel::class.java, true)
@@ -189,7 +192,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         })
         viewModel.conversation.observe(this, Observer { c ->
-            c?.let {
+            c?.let { _ ->
                 val conv = LocalConversationItem()
                 conv.idConversions = c.id ?: ""
                 conv.name = c.name ?: ""
@@ -276,11 +279,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetail) {
-        context?.let {
+        context?.let { _ ->
             productDetail = product
-
-            if (productDetail.certImages?.isNotEmpty() == true) {
-                val listCert = productDetail.certImages!!
+            if (product.certImages?.isNotEmpty() == true) {
+                val listCert = product.certImages!!
                 container_cert.visibility = View.VISIBLE
                 for (i in listCert.indices)
                     listImage.add(listCert[i].image ?: "")
@@ -369,31 +371,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_dvt.text = convert.provideDVT()
             }
 
-//            if (convert.provideHSD().isNotEmpty()) {
-//                view_product_hsd.visibility = View.VISIBLE
-//                view_product_hsd.text = convert.provideHSD()
-//            }
-//
-//            if (convert.provideNgayDongGoi().isNotEmpty()) {
-//                view_product_ngayDongGoi.visibility = View.VISIBLE
-//                view_product_ngayDongGoi.text = convert.provideNgayDongGoi()
-//            }
-//
-//            if (convert.provideNoCodeSX().isNotEmpty()) {
-//                view_product_maSanXuat.visibility = View.VISIBLE
-//                view_product_maSanXuat.text = convert.provideNoCodeSX()
-//            }
-//
-//            if (convert.provideDateProduce().isNotEmpty()) {
-//                view_product_ngaySanXuat.visibility = View.VISIBLE
-//                view_product_ngaySanXuat.text = convert.provideDateProduce()
-//            }
-//
-//            if (convert.provideDateExpected().isNotEmpty()) {
-//                view_product_ngayThuHoachDK.visibility = View.VISIBLE
-//                view_product_ngayThuHoachDK.text = convert.provideDateExpected()
-//            }
-
             if (convert.provideScale().isNotEmpty()) {
                 view_product_quyMoSanXuat.visibility = View.VISIBLE
                 view_product_quyMoSanXuat.text = convert.provideScale()
@@ -409,40 +386,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_date_muaVu.text = convert.provideSeason()
             }
 
-//            if (view_product_maSanXuat.visibility == View.VISIBLE || view_product_ngaySanXuat.visibility == View.VISIBLE ||
-//                    view_product_ngayThuHoachDK.visibility == View.VISIBLE || view_product_quyMoSanXuat.visibility == View.VISIBLE ||
-//                    view_product_date_khaNangCungUng.visibility == View.VISIBLE || view_product_date_muaVu.visibility == View.VISIBLE)
-//                linear_sanXuat.visibility = View.VISIBLE
-//            else linear_sanXuat.visibility = View.GONE
-//
-//            if (convert.providerHinhThucVC().isNotEmpty()) {
-//                view_product_hinhThucVC.visibility = View.VISIBLE
-//                view_product_hinhThucVC.text = convert.providerHinhThucVC()
-//            }
-//
-//            if (convert.providerNgayVC().isNotEmpty()) {
-//                view_product_ngayVC.visibility = View.VISIBLE
-//                view_product_ngayVC.text = convert.providerNgayVC()
-//            }
-//
-//            if (convert.providerDonViVC().isNotEmpty()) {
-//                view_product_tenDonViVC.visibility = View.VISIBLE
-//                view_product_tenDonViVC.text = convert.providerDonViVC()
-//            }
-//
-//            if (convert.providerNoteVC().isNotEmpty()) {
-//                view_product_ghiChuVC.visibility = View.VISIBLE
-//                view_product_ghiChuVC.text = convert.providerNoteVC()
-//            }
-//
-//            if (view_product_hinhThucVC.visibility == View.VISIBLE || view_product_hinhThucVC.visibility == View.VISIBLE ||
-//                    view_product_ngayVC.visibility == View.VISIBLE || view_product_tenDonViVC.visibility == View.VISIBLE ||
-//                    view_product_ghiChuVC.visibility == View.VISIBLE)
-//                linear_vanChuyen.visibility = View.VISIBLE
-//            else linear_vanChuyen.visibility = View.GONE
+            if (convert.providerExchangeDiaryProduct().isNotEmpty()) {
+                val listExchangeDiary = mutableListOf<ExchangeDiaryProduct>()
+                for (i in convert.providerExchangeDiaryProduct().indices)
+                    if (i == 0) {
+                        listExchangeDiary.add(convert.providerExchangeDiaryProduct()[i])
+                        break
+                    }
 
-            if (convert.providerExchangeDiaryProduct().isNotEmpty()){
-
+                adapterExchangeDiary.replaceAll(listExchangeDiary)
             }
 
             view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
@@ -456,63 +408,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             } else {
                 container_description.visibility = View.VISIBLE
                 view_product_show_more_description.visibility = View.VISIBLE
-            }
-
-            if (convert.providerDVPP() != null && convert.providerDVPP()?.id != 0L) {
-                val dvpp = convert.providerDVPP()
-                container_shop_dvpp.visibility = View.VISIBLE
-                view_dvpp_name.text = dvpp?.name
-                view_dvpp_product_count.text = "<b><font color=\"#00c853\">${dvpp?.count
-                        ?: 0}</font></b><br>Sản phẩm".asHtml()
-                view_dvpp_rating.text = "<b><font color=\"red\">${dvpp?.rate?.toFloat()
-                        ?: 0.0f}/5.0</font></b><br>${dvpp?.rateCount
-                        ?: 0} Đánh giá".asHtml()
-                tv_dvpp_phone.setPhone(dvpp?.hotline ?: "", product.pp?.hotline
-                        ?: "")
-                tv_dvpp_address.text = dvpp?.address ?: ""
-                view_dvpp_detail.setOnClickListener {
-                    openShopDetail(it.context, dvpp?.id ?: 0L)
-                }
-            }
-
-            if (convert.providerCSCB() != null && convert.providerCSCB()?.id != 0L) {
-                val cscb = convert.providerCSCB()
-                container_shop_cscb.visibility = View.VISIBLE
-                view_cscb_name.text = cscb?.name
-                view_cscb_product_count.text = "<b><font color=\"#00c853\">${cscb?.count
-                        ?: 0}</font></b><br>Sản phẩm".asHtml()
-                view_cscb_rating.text = "<b><font color=\"red\">${cscb?.rate?.toFloat()
-                        ?: 0.0f}/5.0</font></b><br>${cscb?.rateCount
-                        ?: 0} Đánh giá".asHtml()
-                tv_cscb_phone.setPhone(cscb?.hotline ?: "", product.cscb?.hotline
-                        ?: "")
-                tv_cscb_address.text = cscb?.address ?: ""
-                view_cscb_detail.setOnClickListener {
-                    openShopDetail(it.context, cscb?.id ?: 0L)
-                }
-
-                if (cscb?.descriptions?.isNotEmpty() == true) {
-                    rv_description_cscb.visibility = View.VISIBLE
-                    adapterDescriptionCSCB.replaceAll(cscb.descriptions!!)
-                } else rv_description_cscb.visibility = View.GONE
-
-            }
-
-            if (convert.providerDVNK() != null && convert.providerDVNK()?.id != 0L) {
-                val dvnk = convert.providerDVNK()
-                container_shop_dvnk.visibility = View.VISIBLE
-                view_dvnk_name.text = dvnk?.name
-                view_dvnk_product_count.text = "<b><font color=\"#00c853\">${dvnk?.count
-                        ?: 0}</font></b><br>Sản phẩm".asHtml()
-                view_dvnk_rating.text = "<b><font color=\"red\">${dvnk?.rate?.toFloat()
-                        ?: 0.0f}/5.0</font></b><br>${dvnk?.rateCount
-                        ?: 0} Đánh giá".asHtml()
-                tv_dvnk_phone.setPhone(dvnk?.hotline ?: "", product.nnk?.hotline
-                        ?: "")
-                tv_dvnk_address.text = dvnk?.address ?: ""
-                view_dvnk_detail.setOnClickListener {
-                    openShopDetail(it.context, dvnk?.id ?: 0L)
-                }
             }
 
             for (i in convert.providerInfo().indices) {
@@ -563,21 +458,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
 
             view_product_description.loadData(productDesc, "text/html", null)
-            view_label_shop_name.text = convert.provideShopLabel()
-            view_shop_name.text = convert.provideShopName()
-            view_shop_product_count.text = convert.provideShopProductCount()
-            view_shop_rating.text = convert.provideShopRatePoint()
             view_product_like_count.text = "${convert.provideProductLikeCount()} thích"
             view_product_comment_count.text = "${convert.provideProductCommentCount()} Đánh giá"
             view_product_share_count.text = "${convert.provideProductShareCount()} chia sẻ"
-            tv_shop_phone.setPhone(convert.provideShopPhone(), product.booth?.hotline ?: "")
 
-            tv_shop_address.text = convert.provideShopAddress()
-            view_shop_detail.setOnClickListener {
-                openShopDetail(it.context, product.booth?.id ?: 0L)
-            }
+//            view_shop_detail.setOnClickListener {
+//                openShopDetail(it.context, product.booth?.id ?: 0L)
+//            }
             view_shop_call.setOnClickListener { callShop(it.context, product) }
-            view_shop_message.setOnClickListener { messageShop(it.context, product) }
+            view_shop_message.setOnClickListener { messageShop(product) }
             view_product_show_more_description.setOnClickListener { showProductFullDescription(it.context, product) }
             view_product_show_more_comment.setOnClickListener { showMoreComment(it.context, product) }
             view_product_show_more_sale_point.setOnClickListener { showMoreSalePoint(it.context, product) }
@@ -650,6 +539,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 firstLoadDiary()
 
+                view_add_diary.setOnClickListener { showAddDiary(product) }
+                view_product_show_more_diary.setOnClickListener { showDiary(product) }
+
             } else container_diary.visibility = View.GONE
 
             if (stampType.isNotEmpty()) {
@@ -674,7 +566,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     view_add_exchange_diary.visibility = View.GONE
                 }
 
-                view_add_exchange_diary.setOnClickListener { showAddExchangDiary(product) }
+                view_add_exchange_diary.setOnClickListener { showAddExchangeDiary(product) }
+                view_product_show_more_exchange_diary.setOnClickListener { showExchangeDiary(product) }
             } else container_exchange_diary.visibility = View.GONE
 
             openProductSalePoint(product)
@@ -682,6 +575,29 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             floatQrCode.setOnClickListener {
                 showQrCodeProduct(product)
             }
+
+            val listShop = mutableListOf<Booth>()
+            convert.providerBooth()?.let { listShop.add(it) }
+
+            if (convert.providerRelatedShop().isNotEmpty()) {
+                val relatedShop = convert.providerRelatedShop()
+
+                for (i in relatedShop.indices) {
+                    val shop = Booth()
+                    shop.id = relatedShop[i].id
+                    shop.name = relatedShop[i].name
+                    shop.title = relatedShop[i].title
+                    shop.hotline = relatedShop[i].hotline
+                    shop.address = relatedShop[i].address
+                    shop.city = relatedShop[i].city
+                    shop.district = relatedShop[i].district
+                    shop.count = relatedShop[i].productCount
+                    shop.rateCount = relatedShop[i].rateCount
+                    shop.rate = relatedShop[i].rate
+                    listShop.add(shop)
+                }
+            }
+            adapterSupplyChain.replaceAll(listShop)
         }
     }
 
@@ -692,18 +608,39 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_qrCodeProductFragment, extra)
     }
 
-    private fun showAddExchangDiary(product: ProductDetail) {
+    private fun showExchangeDiary(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productExchangeDiaryFragment, extra)
+    }
+
+    private fun showDiary(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putLong(Const.TransferKey.EXTRA_ID, product.id)
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryFragment, extra)
+    }
+
+    private fun showAddExchangeDiary(product: ProductDetail) {
         val extra = Bundle()
         extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
 
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragment, extra)
     }
 
-    private fun setupRecyclerviewDescriptionCSCB() {
+    private fun showAddDiary(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragment, extra)
+    }
+
+    private fun setupRecyclerviewSupplyChain() {
         context?.let {
-            rv_description_cscb.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_description_cscb.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
-            rv_description_cscb.adapter = adapterDescriptionCSCB
+            rv_supply_chain.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_supply_chain.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            rv_supply_chain.adapter = adapterSupplyChain
         }
     }
 
@@ -723,13 +660,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         }
     }
 
-//    private fun showMoreProductProcess(product: ProductDetail) {
-//        val extra = Bundle()
-//        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-//
-//        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productProcessFragment, extra)
-//    }
-
     interface ProductDetailProvider {
 
         fun provideProductImage(): CharSequence
@@ -737,20 +667,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideProductPrice(): CharSequence
         fun provideProductBrand(): CharSequence
         fun provideProductShortDescription(): CharSequence
-        fun provideShopName(): CharSequence
-        fun provideShopLabel(): CharSequence
-        fun provideShopRegion(): CharSequence
-        fun provideShopProductCount(): CharSequence
-        fun provideShopRateCount(): Int
-        fun provideShopRatePoint(): CharSequence
         fun provideShopPhone(): CharSequence
         fun provideLiked(): Boolean
         fun provideShopAddress(): CharSequence
-        fun provideFollowed(): Boolean
-
-        fun provideDVT(): CharSequence
-        fun provideHSD(): CharSequence
-        fun provideNgayDongGoi(): CharSequence
 
 
         fun provideProductLikeCount(): Int
@@ -758,41 +677,49 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideProductShareCount(): Int
         fun provideProductLinkAffiliate(): CharSequence
 
+        fun providePackaging(): CharSequence
+        fun provideDVT(): CharSequence
+
+
         fun provideViewWholesale(): Boolean
         fun provideWholesale(): CharSequence
         fun provideWholesaleLimit(): CharSequence
-
         fun provideProductProcess(): List<CharSequence>
         fun provideRate(): Float
 
         fun provideProductCode(): CharSequence
-        fun providePackaging(): CharSequence
         fun provideMadeIn(): CharSequence
         fun provideNoCodeSX(): CharSequence
-        fun provideDateProduce(): CharSequence
-        fun provideDateExpected(): CharSequence
         fun provideScale(): CharSequence
         fun provideNumberExpected(): CharSequence
         fun provideSeason(): CharSequence
         fun provideIsDiary(): Boolean
 
-        fun providerHinhThucVC(): CharSequence
-        fun providerNgayVC(): CharSequence
-        fun providerDonViVC(): CharSequence
-        fun providerNoteVC(): CharSequence
-
-        fun providerDVPP(): Booth?
-        fun providerDVNK(): Booth?
-        fun providerCSCB(): Booth?
         fun providerInfo(): List<InfoProduct>
         fun providerStamp(): ProductDetail.Stamp?
         fun providerExchangeDiaryProduct(): List<ExchangeDiaryProduct>
+        fun providerRelatedShop(): List<BoothManager>
+        fun providerBooth(): Booth?
     }
 
     class ProductDetailConverter : Converter<ProductDetail, ProductDetailProvider> {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerBooth(): Booth? {
+                    return from.booth
+                }
+
+                override fun providePackaging(): CharSequence {
+                    return if (from.dongGoi.isNullOrBlank()) ""
+                    else "<b>Đóng gói: <font color=\"red\">${from.dongGoi}</font></b>".asHtml()
+                }
+
+                override fun provideDVT(): CharSequence {
+                    return if (from.dvt.isNullOrBlank()) ""
+                    else "<b>Đơn vị tính: <font color=\"red\">${from.dvt}</font></b>".asHtml()
+                }
+
                 override fun providerExchangeDiaryProduct(): List<ExchangeDiaryProduct> {
                     return from.exchangeDiaryProduct ?: mutableListOf()
                 }
@@ -803,58 +730,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 override fun providerInfo(): List<InfoProduct> {
                     return from.info ?: mutableListOf()
-                }
-
-                override fun providerDVPP(): Booth? {
-                    return from.pp
-                }
-
-                override fun providerDVNK(): Booth? {
-                    return from.nnk
-                }
-
-                override fun providerCSCB(): Booth? {
-                    return from.cscb
-                }
-
-                override fun provideDVT(): CharSequence {
-                    return if (from.dvt.isNullOrBlank()) ""
-                    else "<b>Đơn vị tính: <font color=\"red\">${from.dvt}</font></b>".asHtml()
-                }
-
-                override fun provideHSD(): CharSequence {
-                    return if (from.hsd.isNullOrBlank()) ""
-                    else "<b>Hạn sử dụng: <font color=\"red\">${from.hsd?.asDateProdcutDetail()}</font></b>".asHtml()
-                }
-
-                override fun provideNgayDongGoi(): CharSequence {
-                    return if (from.ngayDonggoi.isNullOrBlank()) ""
-                    else "<b>Ngày đóng gói: <font color=\"red\">${from.ngayDonggoi?.asDateProdcutDetail()}</font></b>".asHtml()
-                }
-
-                override fun providerHinhThucVC(): CharSequence {
-                    return if (from.hinhThucVc.isNullOrBlank()) ""
-                    else "<b>Hình thức vận chuyển: <font color=\"red\">${from.hinhThucVc}</font></b>".asHtml()
-                }
-
-                override fun providerNgayVC(): CharSequence {
-                    return if (from.ngayVc.isNullOrBlank()) ""
-                    else "<b>Ngày vận chuyển: <font color=\"red\">${from.ngayVc}</font></b>".asHtml()
-                }
-
-                override fun providerDonViVC(): CharSequence {
-                    return if (from.donviVc.isNullOrBlank()) ""
-                    else "<b>Đơn vị vận chuyển: <font color=\"red\">${from.donviVc}</font></b>".asHtml()
-                }
-
-                override fun providerNoteVC(): CharSequence {
-                    return if (from.vcNote.isNullOrBlank()) ""
-                    else "<b>Ghi chú vận chuyển: <font color=\"red\">${from.vcNote}</font></b>".asHtml()
-                }
-
-                override fun providePackaging(): CharSequence {
-                    return if (from.dongGoi.isNullOrBlank()) ""
-                    else "<b>Đóng gói: <font color=\"red\">${from.dongGoi}</font></b>".asHtml()
                 }
 
                 override fun provideSeason(): CharSequence {
@@ -872,12 +747,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 }
 
-                override fun provideShopLabel(): CharSequence {
-                    return if (from.booth?.title.isNullOrEmpty())
-                        "Gian hàng trưng bày"
-                    else from.booth?.title!!
-                }
-
                 override fun provideMadeIn(): CharSequence {
                     return if (from.madeIn.isNullOrBlank()) ""
                     else "<b>Xuất xứ: <font color=\"red\">${from.madeIn}</font></b>".asHtml()
@@ -888,15 +757,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     else "<b>Mã số lô sản xuất: <font color=\"red\">${from.msSanxuat}</font></b>".asHtml()
                 }
 
-                override fun provideDateProduce(): CharSequence {
-                    return if (from.ngaySx.isNullOrBlank()) ""
-                    else "<b>Ngày bắt đầu sản xuất: <font color=\"red\">${from.ngaySx?.asDateProdcutDetail()}</font></b>".asHtml()
-                }
-
-                override fun provideDateExpected(): CharSequence {
-                    return if (from.dkThuhoach.isNullOrBlank()) ""
-                    else "<b>Ngày thu hoạch dự kiến: <font color=\"red\">${from.dkThuhoach?.asDateProdcutDetail()}</font></b>".asHtml()
-                }
 
                 override fun provideScale(): CharSequence {
                     return if (from.quyMo.isNullOrBlank()) ""
@@ -906,12 +766,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 override fun provideNumberExpected(): CharSequence {
                     return if (from.sanLuong.isNullOrBlank()) ""
                     else "<b>Khả năng cung ứng: <font color=\"red\">${from.sanLuong}</font></b>".asHtml()
-                }
-
-                override fun provideShopRatePoint(): CharSequence {
-                    return "<b><font color=\"red\">${from.booth?.rate?.toFloat()
-                            ?: 0.0f}/5.0</font></b><br>${from.booth?.rateCount
-                            ?: 0} Đánh giá".asHtml()
                 }
 
                 override fun provideRate(): Float {
@@ -965,7 +819,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 override fun provideProductPrice(): CharSequence {
                     return if (from.price == 0L) {
                         "<b>Giá bán lẻ: <font color=\"#00c853\">Liên hệ</font></b>".asHtml()
-                    } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
+                    } else if (from.promotionPrice != from.price) {
                         if (from.promotionPrice == 0L) // gia khuyen mai = 0 thi coi nhu ko khuyen mai
                             "<b>Giá bán lẻ: <font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                         else
@@ -990,23 +844,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     }
                 }
 
-                override fun provideShopName(): CharSequence {
-                    return from.booth?.name?.trim() ?: ""
-                }
-
-                override fun provideShopRegion(): CharSequence {
-                    return from.booth?.address?.trim() ?: ""
-                }
-
-                override fun provideShopProductCount(): CharSequence {
-                    return "<b><font color=\"#00c853\">${from.booth?.count
-                            ?: 0}</font></b><br>Sản phẩm".asHtml()
-                }
-
-                override fun provideShopRateCount(): Int {
-                    return from.booth?.rateCount ?: 0
-                }
-
                 override fun provideShopPhone(): CharSequence {
                     return from.booth?.hotline ?: ""
                 }
@@ -1023,8 +860,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     return from.shares
                 }
 
-                override fun provideFollowed(): Boolean {
-                    return from.booth?.isFollowed() ?: false
+                override fun providerRelatedShop(): List<BoothManager> {
+                    return from.relateShops ?: mutableListOf()
                 }
             }
         }
@@ -1037,7 +874,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun showDialogShare(product: ProductDetail) {
-        context?.let {
+        context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
                     .customView(R.layout.dialog_community_share, false)
                     .autoDismiss(false)
@@ -1119,7 +956,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         startActivityForResult(intent, Const.RequestCode.PRODUCT_SALE_POINT_DETAIL)
     }
 
-    private fun messageShop(context: Context, product: ProductDetail) {
+    private fun messageShop(product: ProductDetail) {
         if (UserDataManager.currentUserId > 0) {
             // gui tin nhan cho shop
             val boothId = product.booth?.id
@@ -1139,7 +976,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun callShop(context: Context, product: ProductDetail) {
         val phoneNumber = product.booth?.hotline ?: ""
-        val call = Uri.parse("tel:" + phoneNumber)
+        val call = Uri.parse("tel:$phoneNumber")
         val intent = Intent(Intent.ACTION_DIAL, call)
         if (intent.resolveActivity(context.packageManager) != null)
             startActivity(intent)
@@ -1160,7 +997,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupProductRelated(view.context)
         setupSalePointRecycleview()
         setupCertRecyclerview()
-        setupRecyclerviewDescriptionCSCB()
+        setupRecyclerviewSupplyChain()
         setupRecyclerviewDescriptionVatTu()
         setupRecyclerviewDescriptionGiaiPhap()
         setupListeners()
@@ -1464,7 +1301,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     }
 
     private fun setupExchangeDiaryProducts(context: Context) {
-        rv_product_exchange_diary.adapter = adapterDiary
+        rv_product_exchange_diary.adapter = adapterExchangeDiary
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_product_exchange_diary.layoutManager = layoutManager
         rv_product_exchange_diary.isNestedScrollingEnabled = false

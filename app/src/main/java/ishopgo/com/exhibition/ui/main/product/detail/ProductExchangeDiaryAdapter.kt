@@ -7,13 +7,13 @@ import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ExchangeDiaryImage
 import ishopgo.com.exhibition.domain.response.ExchangeDiaryProduct
-import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.UserDataManager
-import ishopgo.com.exhibition.model.diary.DiaryImages
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
+import ishopgo.com.exhibition.ui.extensions.asDate
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asHtml
+import ishopgo.com.exhibition.ui.main.product.ProductExchangeDiaryImageAdapter
 import kotlinx.android.synthetic.main.item_product_exchange_diary.view.*
 
 class ProductExchangeDiaryAdapter : ClickableAdapter<ExchangeDiaryProduct>() {
@@ -21,7 +21,6 @@ class ProductExchangeDiaryAdapter : ClickableAdapter<ExchangeDiaryProduct>() {
     companion object {
         const val DIARY_IMAGE_CLICK = 0
         const val DIARY_USER_CLICK = 1
-        const val DIARY_DELETE_CLICK = 2
     }
 
     override fun getChildLayoutResource(viewType: Int): Int {
@@ -49,74 +48,87 @@ class ProductExchangeDiaryAdapter : ClickableAdapter<ExchangeDiaryProduct>() {
 
             val converted = converter.convert(data)
             itemView.apply {
-                tv_account_name.text = converted.provideAccountName()
-//                tv_diary_title.text = converted.provideTitle()
-//                tv_diary_content.text = converted.provideContent()
-//                tv_comment_time.text = converted.provideDateTime()
+                if (data.accountName?.isNotEmpty() == true)
+                    tv_account_name.text = converted.provideAccountName()
+                else tv_account_name.visibility = View.GONE
+                if (data.name?.isNotEmpty() == true)
+                    tv_tenGiaoDich.text = converted.provideTitle()
+                else tv_tenGiaoDich.visibility = View.GONE
+                if (data.content?.isNotEmpty() == true)
+                    tv_noiDung.text = converted.provideContent()
+                else tv_noiDung.visibility = View.GONE
+                if (data.stampCode?.isNotEmpty() == true)
+                    tv_maSoLo.text = converted.provideMaSoLo()
+                else tv_maSoLo.visibility = View.GONE
+                if (data.senderBoothName?.isNotEmpty() == true)
+                    tv_benGiao.text = converted.provideBenGui()
+                else tv_benGiao.visibility = View.GONE
+                if (data.receiverBoothName?.isNotEmpty() == true)
+                    tv_benNhan.text = converted.provideBenNhan()
+                else tv_benNhan.visibility = View.GONE
+                if (data.address?.isNotEmpty() == true)
+                    tv_diaChi.text = converted.provideDiaChi()
+                else tv_diaChi.visibility = View.GONE
+                if (data.expiryDate?.isNotEmpty() == true)
+                    tv_HSD.text = converted.provideHSD()
+                else tv_HSD.visibility = View.GONE
+                if (data.quantity?.isNotEmpty() == true)
+                    tv_soLuong.text = converted.provideSoLuong()
+                else tv_soLuong.visibility = View.GONE
 
-//                Glide.with(context)
-//                        .load(converted.provideAvatar())
-//                        .apply(RequestOptions.circleCropTransform()
-//                                .placeholder(R.drawable.avatar_placeholder)
-//                                .error(R.drawable.avatar_placeholder))
-//                        .into(img_account_avatar)
-//
-//                if (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == data.boothId) {
-//                    val listPermission = Const.listPermission
-//                    if (listPermission.isNotEmpty())
-//                        for (i in listPermission.indices)
-//                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
-//                                tv_diary_delete.visibility = View.VISIBLE
-//                                break
-//                            }
-//                } else if (UserDataManager.currentUserId == data.accountId)
-//                    tv_diary_delete.visibility = View.VISIBLE
-//                else tv_diary_delete.visibility = View.GONE
-//
-//                if (converted.provideImages().isNotEmpty()) {
-//                    if (converted.provideImages().size > 1) {
-//                        img_diary.visibility = View.GONE
-//                        rv_diary_image.visibility = View.VISIBLE
-//
-//                        val adapter = ProductDiaryImageAdapter()
-//                        adapter.replaceAll(converted.provideImages())
-//                        rv_diary_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
-//                        rv_diary_image.isNestedScrollingEnabled = false
-//                        rv_diary_image.setHasFixedSize(false)
-//                        rv_diary_image.adapter = adapter
-//                        adapter.listener = object : ClickableAdapter.BaseAdapterAction<DiaryImages> {
-//                            override fun click(position: Int, data: DiaryImages, code: Int) {
-//                                listener?.click(adapterPosition, getItem(adapterPosition), DIARY_IMAGE_CLICK)
-//                            }
-//                        }
-//                    } else {
-//                        img_diary.visibility = View.VISIBLE
-//                        rv_diary_image.visibility = View.GONE
-//
-//                        Glide.with(this).load(converted.provideImages()[0].image)
-//                                .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_diary)
-//
-//                        img_diary.setOnClickListener {
-//                            listener?.click(adapterPosition, getItem(adapterPosition), DIARY_IMAGE_CLICK)
-//                        }
-//                    }
-//                } else {
-//                    img_diary.visibility = View.GONE
-//                    rv_diary_image.visibility = View.GONE
-//                }
+                Glide.with(context)
+                        .load(converted.provideAccountAvatar())
+                        .apply(RequestOptions.circleCropTransform()
+                                .placeholder(R.drawable.avatar_placeholder)
+                                .error(R.drawable.avatar_placeholder))
+                        .into(img_account_avatar)
+
+                if (converted.provideImages().isNotEmpty()) {
+                    if (converted.provideImages().size > 1) {
+                        img_exchange_diary.visibility = View.GONE
+                        rv_exchange_diary_image.visibility = View.VISIBLE
+
+                        val adapter = ProductExchangeDiaryImageAdapter()
+                        adapter.replaceAll(converted.provideImages())
+                        rv_exchange_diary_image.layoutManager = GridLayoutManager(context, 2, GridLayoutManager.VERTICAL, false)
+                        rv_exchange_diary_image.isNestedScrollingEnabled = false
+                        rv_exchange_diary_image.setHasFixedSize(false)
+                        rv_exchange_diary_image.adapter = adapter
+                        adapter.listener = object : ClickableAdapter.BaseAdapterAction<ExchangeDiaryImage> {
+                            override fun click(position: Int, data: ExchangeDiaryImage, code: Int) {
+                                listener?.click(adapterPosition, getItem(adapterPosition), DIARY_IMAGE_CLICK)
+                            }
+                        }
+                    } else {
+                        img_exchange_diary.visibility = View.VISIBLE
+                        rv_exchange_diary_image.visibility = View.GONE
+
+                        Glide.with(this).load(converted.provideImages()[0].image)
+                                .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_exchange_diary)
+
+                        img_exchange_diary.setOnClickListener {
+                            listener?.click(adapterPosition, getItem(adapterPosition), DIARY_IMAGE_CLICK)
+                        }
+                    }
+                } else {
+                    img_exchange_diary.visibility = View.GONE
+                    rv_exchange_diary_image.visibility = View.GONE
+                }
             }
         }
     }
 
     interface DiaryProvider {
         fun provideAccountName(): CharSequence
+        fun provideAccountAvatar(): CharSequence
         fun provideTitle(): CharSequence
-        fun provideContent(): String
+        fun provideContent(): CharSequence
         fun provideHSD(): CharSequence
         fun provideBenGui(): CharSequence
         fun provideBenNhan(): CharSequence
         fun provideDiaChi(): CharSequence
         fun provideSoLuong(): CharSequence
+        fun provideMaSoLo(): CharSequence
         fun provideImages(): List<ExchangeDiaryImage>
 
     }
@@ -124,36 +136,46 @@ class ProductExchangeDiaryAdapter : ClickableAdapter<ExchangeDiaryProduct>() {
     class ConverterDiaryProduct : Converter<ExchangeDiaryProduct, DiaryProvider> {
         override fun convert(from: ExchangeDiaryProduct): DiaryProvider {
             return object : DiaryProvider {
+                override fun provideAccountAvatar(): CharSequence {
+                    return ""
+                }
+
+                override fun provideMaSoLo(): CharSequence {
+                    return "<b>Mã số lô:</b> ${from.stampCode ?: ""}".asHtml()
+                }
+
                 override fun provideAccountName(): CharSequence {
-                    return from.accountName ?: ""
+                    return "<b>${from.accountName
+                            ?: ""}</b> - <font color=\"#757575\">${from.createdAt?.asDateTime()
+                            ?: ""}</font>".asHtml()
                 }
 
                 override fun provideTitle(): CharSequence {
-                    return "Tên giao dịch: ${from.accountName ?: ""}"
+                    return "<b>Tên giao dịch:</b> ${from.accountName ?: ""}".asHtml()
                 }
 
-                override fun provideContent(): String {
-                    return "Nội dung: ${from.content ?: ""}"
+                override fun provideContent(): CharSequence {
+                    return "<b>Nội dung:</b> ${from.content ?: ""}".asHtml()
                 }
 
                 override fun provideHSD(): CharSequence {
-                    return "Hạn sử dụng: ${from.expiryDate?.asDateTime() ?: ""}"
+                    return "<b>Hạn sử dụng:</b> ${from.expiryDate?.asDate() ?: ""}".asHtml()
                 }
 
                 override fun provideBenGui(): CharSequence {
-                    return "Bên gửi: ${from.senderBoothName ?: ""}"
+                    return "<b>Bên gửi:</b> ${from.senderBoothName ?: ""}".asHtml()
                 }
 
                 override fun provideBenNhan(): CharSequence {
-                    return "Bên nhân: ${from.receiverBoothName ?: ""}"
+                    return "<b>Bên nhận:</b> ${from.receiverBoothName ?: ""}".asHtml()
                 }
 
                 override fun provideDiaChi(): CharSequence {
-                    return "Địa chỉ: ${from.address ?: ""}"
+                    return "<b>Địa chỉ:</b> ${from.address ?: ""}".asHtml()
                 }
 
                 override fun provideSoLuong(): CharSequence {
-                    return "Số lượng: ${from.quantity ?: ""}"
+                    return "<b>Số lượng:</b> ${from.quantity ?: ""}".asHtml()
                 }
 
                 override fun provideImages(): List<ExchangeDiaryImage> {

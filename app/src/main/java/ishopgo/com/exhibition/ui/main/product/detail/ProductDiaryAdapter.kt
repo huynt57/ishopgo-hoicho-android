@@ -60,6 +60,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                 tv_diary_title.text = converted.provideTitle()
                 tv_diary_content.text = converted.provideContent()
                 tv_comment_time.text = converted.provideDateTime()
+                tv_diary_address.text = converted.provideAddress()
 
                 Glide.with(context)
                         .load(converted.provideAvatar())
@@ -122,6 +123,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
         fun provideContent(): String
         fun provideImages(): List<DiaryImages>
         fun provideDateTime(): String
+        fun provideAddress(): String
     }
 
     class ConverterDiaryProduct : Converter<DiaryProduct, DiaryProvider> {
@@ -149,6 +151,10 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
 
                 override fun provideDateTime(): String {
                     return from.createdAt?.asDateTime() ?: ""
+                }
+
+                override fun provideAddress(): String {
+                    return from.address ?: ""
                 }
 
             }

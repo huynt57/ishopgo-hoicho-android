@@ -45,4 +45,25 @@ class BoothManager : IdentityData() {
     @SerializedName("title")
     @Expose
     var title: String? = null
+    @SerializedName("product_count")
+    @Expose
+    var productCount: Int? = null
+    @SerializedName("rate")
+    @Expose
+    var rate: Int? = null
+    @SerializedName("image")
+    @Expose
+    var image: String? = null
+    @SerializedName("city")
+    @Expose
+    var city: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
+    @SerializedName("rate_count")
+    @Expose
+    var rateCount: Int? = null
+    @SerializedName("followed")
+    @Expose
+    var followed: Int? = null
 }

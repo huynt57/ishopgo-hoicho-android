@@ -15,6 +15,9 @@ class DiaryProduct : IdentityData() {
     @SerializedName("created_at")
     @Expose
     var createdAt: String? = null
+    @SerializedName("address")
+    @Expose
+    var address: String? = null
     @SerializedName("account")
     @Expose
     var account: DiaryAccount? = null

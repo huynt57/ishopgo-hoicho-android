@@ -45,17 +45,20 @@
             tools:text="Xuất xứ: "
             tools:visibility="visible" />
 
-        <View
-            style="@style/AppTheme.DividerLine"
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp" />
-
         <android.support.constraint.ConstraintLayout
             android:id="@+id/const_vertify"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
+            android:layout_marginTop="8dp"
             tools:visibility="visible">
+
+            <View
+                style="@style/AppTheme.DividerLine"
+                android:layout_width="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView_vertify"
@@ -64,7 +67,8 @@
                 android:background="@drawable/bg_cardview_border"
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="5dp"
-                app:cardUseCompatPadding="true">
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"

@@ -1,6 +1,5 @@
 package ishopgo.com.exhibition.ui.main.product.detail.diary_product
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -13,15 +12,11 @@ import android.view.animation.AnimationUtils
 import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
-import ishopgo.com.exhibition.domain.response.IdentityData
 import ishopgo.com.exhibition.model.Const
-import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.model.diary.DiaryProduct
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.chat.local.profile.MemberProfileActivity
-import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
-import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDiaryAdapter
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
