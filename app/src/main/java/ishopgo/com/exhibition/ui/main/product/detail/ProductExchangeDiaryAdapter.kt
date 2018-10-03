@@ -38,6 +38,10 @@ class ProductExchangeDiaryAdapter : ClickableAdapter<ExchangeDiaryProduct>() {
             itemView.tv_account_name.setOnClickListener {
                 listener?.click(adapterPosition, getItem(adapterPosition), DIARY_USER_CLICK)
             }
+
+            itemView.img_account_avatar.setOnClickListener {
+                listener?.click(adapterPosition, getItem(adapterPosition), DIARY_USER_CLICK)
+            }
         }
     }
 

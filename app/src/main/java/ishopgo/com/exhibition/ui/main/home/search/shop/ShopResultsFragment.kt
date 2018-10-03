@@ -112,7 +112,7 @@ class ShopResultsFragment : BaseListFragment<List<SearchShopResultProvider>, Sea
 
     override fun loadMore(currentCount: Int) {
         super.loadMore(currentCount)
-        val request = SearchProductRequest()
+        val request = SearchShopRequest()
         request.keyword = keyword
         request.offset = currentCount
         request.limit = Const.PAGE_LIMIT

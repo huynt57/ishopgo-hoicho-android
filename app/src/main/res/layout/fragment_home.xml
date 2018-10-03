@@ -75,6 +75,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Danh mục"
+                                android:textAllCaps="true"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -107,6 +108,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Thương hiệu uy tín"
+                                android:textAllCaps="true"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -147,6 +149,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Hội chợ mới nhất"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -188,6 +191,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Sản phẩm uy tín"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -229,6 +233,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Sản phẩm yêu thích"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -269,6 +274,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Sản phẩm khuyến mãi"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -309,6 +315,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Sản phẩm đã xem"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -349,6 +356,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Sản phẩm mới nhất"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
@@ -389,6 +397,7 @@
                                 style="@style/AppTheme.SectionLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:textAllCaps="true"
                                 android:text="Tin tức mới nhất"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />

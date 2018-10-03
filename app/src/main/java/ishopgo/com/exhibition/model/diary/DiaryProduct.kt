@@ -36,4 +36,7 @@ class DiaryProduct : IdentityData() {
     @SerializedName("booth_id")
     @Expose
     var boothId: Long? = null
+    @SerializedName("ma_lo")
+    @Expose
+    var maLo: String? = null
 }

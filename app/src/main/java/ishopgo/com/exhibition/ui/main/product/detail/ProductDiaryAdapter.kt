@@ -13,6 +13,7 @@ import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import kotlinx.android.synthetic.main.item_product_diary.view.*
 
 class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
@@ -39,7 +40,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                 listener?.click(adapterPosition, getItem(adapterPosition), DIARY_USER_CLICK)
             }
 
-            itemView.tv_account_name.setOnClickListener {
+            itemView.img_account_avatar.setOnClickListener {
                 listener?.click(adapterPosition, getItem(adapterPosition), DIARY_USER_CLICK)
             }
 
@@ -59,7 +60,7 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                 tv_account_name.text = converted.provideAccountName()
                 tv_diary_title.text = converted.provideTitle()
                 tv_diary_content.text = converted.provideContent()
-                tv_comment_time.text = converted.provideDateTime()
+                tv_diary_maLo.text = converted.provideMaLo()
                 tv_diary_address.text = converted.provideAddress()
 
                 Glide.with(context)
@@ -117,31 +118,37 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
     }
 
     interface DiaryProvider {
-        fun provideAvatar(): String
-        fun provideAccountName(): String
-        fun provideTitle(): String
-        fun provideContent(): String
+        fun provideAvatar(): CharSequence
+        fun provideAccountName(): CharSequence
+        fun provideTitle(): CharSequence
+        fun provideContent(): CharSequence
         fun provideImages(): List<DiaryImages>
-        fun provideDateTime(): String
-        fun provideAddress(): String
+        fun provideDateTime(): CharSequence
+        fun provideAddress(): CharSequence
+        fun provideMaLo(): CharSequence
     }
 
     class ConverterDiaryProduct : Converter<DiaryProduct, DiaryProvider> {
         override fun convert(from: DiaryProduct): DiaryProvider {
             return object : DiaryProvider {
-                override fun provideAvatar(): String {
+                override fun provideMaLo(): CharSequence {
+                    return "<b>Mã lô: <font color=\"red\">${from.maLo ?: ""}</font></b>".asHtml()
+                }
+
+                override fun provideAvatar(): CharSequence {
                     return from.account?.avatar ?: ""
                 }
 
-                override fun provideAccountName(): String {
-                    return from.account?.name ?: "unknown"
+                override fun provideAccountName(): CharSequence {
+                    return "<b>${from.account?.name
+                            ?: "unknown"}</b> - ${from.createdAt?.asDateTime() ?: ""}".asHtml()
                 }
 
-                override fun provideTitle(): String {
+                override fun provideTitle(): CharSequence {
                     return from.title ?: ""
                 }
 
-                override fun provideContent(): String {
+                override fun provideContent(): CharSequence {
                     return from.content ?: ""
                 }
 
@@ -149,11 +156,11 @@ class ProductDiaryAdapter : ClickableAdapter<DiaryProduct>() {
                     return from.images ?: mutableListOf()
                 }
 
-                override fun provideDateTime(): String {
+                override fun provideDateTime(): CharSequence {
                     return from.createdAt?.asDateTime() ?: ""
                 }
 
-                override fun provideAddress(): String {
+                override fun provideAddress(): CharSequence {
                     return from.address ?: ""
                 }
 

@@ -23,7 +23,7 @@ class SupplyChainAdapter : ClickableAdapter<Booth>() {
     override fun onBindViewHolder(holder: ViewHolder<Booth>, position: Int) {
         super.onBindViewHolder(holder, position)
 
-        holder.itemView.setOnClickListener {
+        holder.itemView.view_detail.setOnClickListener {
             val adapterPosition = holder.adapterPosition
             if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 

@@ -880,13 +880,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
                     .build()
-            val tv_share_facebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
-            tv_share_facebook.setOnClickListener {
+            val tvShareFacebook = dialog.findViewById(R.id.tv_share_facebook) as VectorSupportTextView
+            tvShareFacebook.setOnClickListener {
                 shareFacebook(product)
                 viewModel.postShareProduct(productId)
             }
-            val tv_share_zalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
-            tv_share_zalo.setOnClickListener {
+            val tvShareZalo = dialog.findViewById(R.id.tv_share_zalo) as VectorSupportTextView
+            tvShareZalo.setOnClickListener {
                 shareApp(product)
                 viewModel.postShareProduct(productId)
             }
@@ -1066,6 +1066,28 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         }
 
+        adapterExchangeDiary.listener = object : ClickableAdapter.BaseAdapterAction<ExchangeDiaryProduct> {
+            override fun click(position: Int, data: ExchangeDiaryProduct, code: Int) {
+                when (code) {
+                    DIARY_IMAGE_CLICK -> {
+                        val intent = Intent(context, PhotoAlbumViewActivity::class.java)
+                        val listImages = mutableListOf<String>()
+                        if (data.images?.isNotEmpty() == true)
+                            for (i in data.images!!.indices)
+                                listImages.add(data.images!![i].image ?: "")
+                        intent.putExtra(Const.TransferKey.EXTRA_STRING_LIST, listImages.toTypedArray())
+                        startActivity(intent)
+                    }
+
+                    DIARY_USER_CLICK -> {
+                        val intent = Intent(context, MemberProfileActivity::class.java)
+                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.accountId)
+                        startActivity(intent)
+                    }
+                }
+            }
+        }
+
         productCommentAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ProductComment> {
             override fun click(position: Int, data: ProductComment, code: Int) {
                 when (code) {
@@ -1166,6 +1188,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             override fun click(position: Int, data: Product, code: Int) {
                 context?.let { openProductDetail(it, data) }
             }
+        }
+
+        adapterSupplyChain.listener = object :ClickableAdapter.BaseAdapterAction<Booth>{
+            override fun click(position: Int, data: Booth, code: Int) {
+                context?.let { openShopDetail(it, data.id) }
+            }
+
         }
     }
 

@@ -54,7 +54,7 @@ class SearchSalePointAdapter(var itemWidthRatio: Float = -1f, var itemHeightRati
                 tv_product_sale_point_name.text = convert.provideName()
                 tv_product_sale_point_address.text = convert.provideAddress()
                 tv_product_sale_point_price.text = convert.provideCountProduct()
-                tv_product_sale_point_price.setPhone(convert.providePhone(), data.phone ?: "")
+                tv_product_sale_point_phone.setPhone(convert.providePhone(), data.phone ?: "")
             }
         }
     }

@@ -20,7 +20,8 @@ class SearchShopsViewModel : BaseListViewModel<List<SearchShopResultProvider>>()
             val fields = mutableMapOf<String, Any>()
             fields["limit"] = params.limit
             fields["offset"] = params.offset
-            fields["q"] = params.keyword
+            if (params.keyword.isNotEmpty())
+                fields["q"] = params.keyword
 
             addDisposable(noAuthService.searchShops(fields)
                     .subscribeOn(Schedulers.single())

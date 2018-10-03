@@ -11,30 +11,25 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
+import com.bumptech.glide.Glide
 import com.google.zxing.ResultPoint
 import com.google.zxing.client.android.BeepManager
 import com.google.zxing.client.android.Intents
 import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
-import com.journeyapps.barcodescanner.CaptureManager
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.setPhone
-import ishopgo.com.exhibition.ui.main.MainActivity
-import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
-import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
 import kotlinx.android.synthetic.main.fragment_scan.*
 
 /**
@@ -45,10 +40,10 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         const val TAG = "ScanFragment"
     }
 
-    private val capture: CaptureManager? = null
     private lateinit var beepManager: BeepManager
     private lateinit var viewModel: ScanViewModel
     private var isInitBarCodeScanner = false
+    private var isFlash = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_scan, container, false)
@@ -141,6 +136,26 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tv_contact.text = "Không quét được mã sản phẩm thì vui lòng xem xét kỹ sản phẩm, cân nhắc trước khi mua."
+        view_flash.setOnClickListener {
+            if (!isFlash) {
+                if (isInitBarCodeScanner && zxing_barcode_scanner != null) {
+                    Glide.with(context).load(R.drawable.ic_flash_off).into(view_flash)
+                    isFlash = true
+                    zxing_barcode_scanner.setTorchOn()
+                } else toast("Có lỗi xảy ra")
+            } else {
+                if (isInitBarCodeScanner && zxing_barcode_scanner != null) {
+                    Glide.with(context).load(R.drawable.ic_flash_on).into(view_flash)
+                    isFlash = false
+                    zxing_barcode_scanner.setTorchOff()
+                } else toast("Có lỗi xảy ra")
+            }
+        }
+        frame_history.setOnClickListener {
+//            if (isInitBarCodeScanner)
+//                pauseCamera()
+            toast("Đang phát triển")
+        }
 //        tv_contact.setPhone("Không quét được mã xin vui lòng gọi: 0985771133","0985771133")
     }
 
@@ -309,5 +324,4 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
     override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {
 //        Log.d(TAG, "    possibleResultPoints: resultPoints = [${resultPoints}]")
     }
-
 }

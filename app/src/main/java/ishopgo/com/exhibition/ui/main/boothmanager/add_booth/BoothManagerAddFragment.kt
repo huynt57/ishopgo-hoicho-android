@@ -82,6 +82,7 @@ class BoothManagerAddFragment : BaseFragment() {
         })
 
         viewModel.createSusscess.observe(this, Observer {
+            hideProgressDialog()
             toast("Thêm thành công")
             activity?.setResult(RESULT_OK)
             activity?.finish()

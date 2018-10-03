@@ -44,9 +44,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="name" />
@@ -67,6 +65,19 @@
                 tools:text="Địa chỉ" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                android:id="@+id/tv_diary_maLo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/colorPrimaryText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_address"
+                tools:text="title" />
+
+            <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                 android:id="@+id/tv_diary_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -78,7 +89,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_diary_address"
+                app:layout_constraintTop_toBottomOf="@+id/tv_diary_maLo"
                 tools:text="title" />
 
             <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -110,7 +121,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -119,21 +129,6 @@
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
-
-    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-        android:id="@+id/tv_comment_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:drawablePadding="4dp"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/colorSecondaryText"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/img_account_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/cardView2"
-        tools:layout_width="40dp"
-        tools:text="time"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/tv_diary_delete"
@@ -148,8 +143,8 @@
         android:textColor="@color/colorSecondaryText"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/tv_comment_time"
+        app:layout_constraintStart_toEndOf="@+id/img_account_avatar"
         app:layout_constraintTop_toBottomOf="@+id/cardView2"
-        tools:layout_width="40dp"/>
+        tools:layout_width="40dp" />
 
 </android.support.constraint.ConstraintLayout>
