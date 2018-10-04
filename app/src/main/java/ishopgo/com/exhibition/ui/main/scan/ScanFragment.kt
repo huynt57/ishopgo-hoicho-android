@@ -1,6 +1,7 @@
 package ishopgo.com.exhibition.ui.main.scan
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
@@ -30,6 +31,7 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
+import ishopgo.com.exhibition.ui.main.scan.history.HistoryScanActivity
 import kotlinx.android.synthetic.main.fragment_scan.*
 
 /**
@@ -123,6 +125,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         return ActivityCompat.checkSelfPermission(context, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED
     }
 
+    @SuppressLint("SetTextI18n")
     private fun requestCameraPermission() {
         activity?.let {
             view_request_camera_permission.visibility = View.VISIBLE
@@ -133,6 +136,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         tv_contact.text = "Không quét được mã sản phẩm thì vui lòng xem xét kỹ sản phẩm, cân nhắc trước khi mua."
@@ -154,7 +158,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
         frame_history.setOnClickListener {
 //            if (isInitBarCodeScanner)
 //                pauseCamera()
-            toast("Đang phát triển")
+            val intent = Intent(context, HistoryScanActivity::class.java)
+            startActivity(intent)
         }
 //        tv_contact.setPhone("Không quét được mã xin vui lòng gọi: 0985771133","0985771133")
     }

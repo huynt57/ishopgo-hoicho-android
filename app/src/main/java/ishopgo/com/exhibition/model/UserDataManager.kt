@@ -22,6 +22,8 @@ object UserDataManager {
     private const val KEY_USER_SURVEY = "survey"
     private const val KEY_USER_SURVEY_IS_MANDATORY = "survey_mandatory"
     private const val KEY_BOOTH_ID = "id_booth"
+    private const val KEY_HISTORY_BARCODE = "history_barcode"
+    private const val KEY_HISTORY_QRCODE = "history_qrcode"
 
     var accessToken: String
         get() = pref.getString(KEY_ACCESS_TOKEN, "")
@@ -59,6 +61,12 @@ object UserDataManager {
     var passLoginFacebook: Boolean
         get() = pref.getBoolean(KEY_PASS_LOGIN_FACEBOOK, true)
         set(value) = pref.edit().putBoolean(KEY_PASS_LOGIN_FACEBOOK, value).apply()
+    var currentQrCode: String
+        get() = pref.getString(KEY_HISTORY_QRCODE, "")
+        set(value) = pref.edit().putString(KEY_HISTORY_QRCODE, value).apply()
+    var currentBarCode: String
+        get() = pref.getString(KEY_HISTORY_BARCODE, "")
+        set(value) = pref.edit().putString(KEY_HISTORY_BARCODE, value).apply()
 
     var displayWidth: Int = 0
     var displayHeight: Int = 0
@@ -96,6 +104,8 @@ object UserDataManager {
         edit.remove(KEY_USER_NAME)
         edit.remove(KEY_USER_TYPE)
         edit.remove(KEY_USER_SURVEY)
+        edit.remove(KEY_HISTORY_BARCODE)
+        edit.remove(KEY_HISTORY_QRCODE)
         edit.apply()
     }
 }

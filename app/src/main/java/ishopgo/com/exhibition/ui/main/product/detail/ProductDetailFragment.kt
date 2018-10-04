@@ -25,6 +25,9 @@ import com.facebook.FacebookException
 import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
+import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ListBGBNRequest
@@ -280,6 +283,23 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetail) {
         context?.let { _ ->
+            if (stampCode.isNotEmpty() && stampId.isNotEmpty()) {
+//                val listHistoryScan = mutableListOf<HistoryScan>()
+//                listHistoryScan.add(Toolbox.gson.fromJson(UserDataManager.currentQrCode, HistoryScan::class.java))
+
+                val historyScan = HistoryScan.QrCode()
+                val paramObject = JsonObject()
+
+                historyScan.code = stampCode
+                historyScan.productId = product.id
+                historyScan.productName = product.name ?: ""
+                historyScan.productImage = product.image ?: ""
+                paramObject.add("", Toolbox.gson.toJsonTree(historyScan))
+                val listQrCode = mutableListOf<JsonObject>()
+                listQrCode.add(paramObject)
+                UserDataManager.currentQrCode = listQrCode.toString()
+            }
+
             productDetail = product
             if (product.certImages?.isNotEmpty() == true) {
                 val listCert = product.certImages!!
@@ -1190,7 +1210,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         }
 
-        adapterSupplyChain.listener = object :ClickableAdapter.BaseAdapterAction<Booth>{
+        adapterSupplyChain.listener = object : ClickableAdapter.BaseAdapterAction<Booth> {
             override fun click(position: Int, data: Booth, code: Int) {
                 context?.let { openShopDetail(it, data.id) }
             }
