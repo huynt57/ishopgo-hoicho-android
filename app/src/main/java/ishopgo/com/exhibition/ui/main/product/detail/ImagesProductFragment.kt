@@ -31,7 +31,7 @@ class ImagesProductFragment : BaseFragment() {
 
         Glide.with(view.context)
                 .load(image)
-                .apply(RequestOptions().centerCrop().placeholder(R.drawable.image_placeholder)
+                .apply(RequestOptions().placeholder(R.drawable.image_placeholder)
                         .error(R.drawable.image_placeholder))
                 .into(view_banner_image)
     }
