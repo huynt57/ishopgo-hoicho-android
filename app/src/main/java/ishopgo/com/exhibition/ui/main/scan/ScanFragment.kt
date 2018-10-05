@@ -12,12 +12,15 @@ import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.text.TextUtils
+import android.text.format.Time
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
+import com.google.gson.JsonElement
+import com.google.gson.reflect.TypeToken
 import com.google.zxing.ResultPoint
 import com.google.zxing.client.android.BeepManager
 import com.google.zxing.client.android.Intents
@@ -25,14 +28,19 @@ import com.google.zxing.integration.android.IntentIntegrator
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.BarcodeResult
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.HistoryScan
 import ishopgo.com.exhibition.domain.response.IcheckProduct
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
+import ishopgo.com.exhibition.ui.extensions.asDateTime
+import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.IcheckProductActivity
 import ishopgo.com.exhibition.ui.main.product.icheckproduct.update.IcheckUpdateProductActivity
 import ishopgo.com.exhibition.ui.main.scan.history.HistoryScanActivity
 import kotlinx.android.synthetic.main.fragment_scan.*
+import java.util.*
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
@@ -156,8 +164,8 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             }
         }
         frame_history.setOnClickListener {
-//            if (isInitBarCodeScanner)
-//                pauseCamera()
+            if (isInitBarCodeScanner)
+                pauseCamera()
             val intent = Intent(context, HistoryScanActivity::class.java)
             startActivity(intent)
         }
@@ -202,6 +210,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
             icheckProduct?.let {
                 hideProgressDialog()
                 showProduct(it)
+                saveBarCode(icheckProduct.code, icheckProduct)
             }
         })
         viewModel.totalNoResult.observe(this, Observer { a ->
@@ -209,6 +218,7 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
                 hideProgressDialog()
                 showDialogNoResult(it)
                 zxing_barcode_scanner.decodeSingle(this@ScanFragment)
+                saveBarCode(a, null)
             }
         })
 
@@ -229,6 +239,9 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
     }
 
     private fun showDialogNoResult(code: String) {
+        if (isInitBarCodeScanner)
+            pauseCamera()
+
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Thông báo")
@@ -241,7 +254,10 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
                         dialog.dismiss()
                     }
                     .negativeText("Huỷ bỏ")
-                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .onNegative { dialog, _ ->
+                        resumeCamera()
+                        dialog.dismiss()
+                    }
                     .autoDismiss(false)
                     .canceledOnTouchOutside(false)
                     .build()
@@ -296,6 +312,12 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
                 viewModel.getLinkQRCode(requestLinkQrCode)
             } else {
                 showProgressDialog()
+                if (!qrCode.toLowerCase().startsWith("https://bbp88.app.goo.gl") && !qrCode.toLowerCase().startsWith("https://yf5kt.app.goo.gl")
+                        && !qrCode.toLowerCase().startsWith("https://expo360.page.link") && !qrCode.toLowerCase().startsWith("https://hangviet360.page.link")
+                        && !qrCode.toLowerCase().startsWith("https://farm360.page.link") && !qrCode.toLowerCase().startsWith("https://hoptacxa.page.link")
+                        && !qrCode.toLowerCase().startsWith("https://icheckexpo.page.link") && !qrCode.toLowerCase().startsWith("https://htxnongnghiep.page.link")) {
+                    saveQrCode(qrCode)
+                }
                 openDeeplink(qrCode)
             }
 
@@ -328,5 +350,47 @@ class ScanFragment : BaseFragment(), BarcodeCallback {
 
     override fun possibleResultPoints(resultPoints: MutableList<ResultPoint>?) {
 //        Log.d(TAG, "    possibleResultPoints: resultPoints = [${resultPoints}]")
+    }
+
+    private fun saveQrCode(link: String) {
+        val listHistoryScan = mutableListOf<JsonElement>()
+        if (UserDataManager.currentQrCode.isNotEmpty()) {
+            val listQrCode = Toolbox.gson.fromJson<MutableList<HistoryScan>>(UserDataManager.currentQrCode, object : TypeToken<MutableList<HistoryScan>>() {}.type)
+            for (i in listQrCode.indices)
+                listHistoryScan.add(Toolbox.gson.toJsonTree(listQrCode[i]))
+        }
+
+        val historyScan = HistoryScan()
+        historyScan.link = link
+        historyScan.time = Toolbox.getDateTimeCurrent()
+
+        listHistoryScan.add(0, Toolbox.gson.toJsonTree(historyScan))
+        UserDataManager.currentQrCode = listHistoryScan.toString()
+    }
+
+    private fun saveBarCode(code: String?, icheckProduct: IcheckProduct?) {
+        val listHistoryBarCode = mutableListOf<JsonElement>()
+        if (UserDataManager.currentBarCode.isNotEmpty()) {
+            val listBarCode = Toolbox.gson.fromJson<MutableList<HistoryScan>>(UserDataManager.currentBarCode, object : TypeToken<MutableList<HistoryScan>>() {}.type)
+            for (i in listBarCode.indices)
+                listHistoryBarCode.add(Toolbox.gson.toJsonTree(listBarCode[i]))
+        }
+
+        val historyScan = HistoryScan()
+        historyScan.code = code ?: ""
+        historyScan.time = Toolbox.getDateTimeCurrent()
+
+        if (icheckProduct != null) {
+            historyScan.icheckProduct = icheckProduct
+            historyScan.productId = icheckProduct.id
+            historyScan.productName = icheckProduct.productName ?: ""
+            val linkImage = icheckProduct.imageDefault ?: ""
+            historyScan.productImage = if (linkImage.toLowerCase().startsWith("http")) linkImage else "http://ucontent.icheck.vn/" + linkImage + "_medium.jpg"
+            historyScan.productPrice = if (icheckProduct.priceDefault == 0.0) {
+                "Liên hệ"
+            } else icheckProduct.priceDefault.asMoney()
+        }
+        listHistoryBarCode.add(0, Toolbox.gson.toJsonTree(historyScan))
+        UserDataManager.currentBarCode = listHistoryBarCode.toString()
     }
 }

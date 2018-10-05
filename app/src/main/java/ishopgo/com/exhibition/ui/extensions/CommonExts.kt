@@ -9,7 +9,6 @@ import android.os.Build
 import android.text.*
 import android.text.method.LinkMovementMethod
 import android.text.style.ForegroundColorSpan
-import android.text.style.StyleSpan
 import android.text.style.UnderlineSpan
 import android.util.TypedValue
 import android.view.View
@@ -26,6 +25,7 @@ import java.util.*
 import android.text.style.ClickableSpan
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.main.shop.ShopDetailActivity
+import java.text.SimpleDateFormat
 
 
 /**

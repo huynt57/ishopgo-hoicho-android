@@ -14,6 +14,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.view.ViewCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.format.Time
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,8 +27,10 @@ import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
 import com.google.gson.Gson
+import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ListBGBNRequest
@@ -122,6 +125,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private var stampId = ""
     private var stampCode = ""
     private var stampType = ""
+    private var stampScan = false
     private var mPagerAdapter: FragmentPagerAdapter? = null
     private var changePage = Runnable {
         val currentItem = view_product_image.currentItem
@@ -152,7 +156,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         stampId = arguments?.getString(Const.TransferKey.EXTRA_STAMP_ID, "") ?: ""
         stampCode = arguments?.getString(Const.TransferKey.EXTRA_STAMP_CODE, "") ?: ""
         stampType = arguments?.getString(Const.TransferKey.EXTRA_STAMP_TYPE, "") ?: ""
-
+        stampScan = arguments?.getBoolean(Const.TransferKey.EXTRA_SCAN_PRODUCT, false) ?: false
         if (productId == -1L)
             throw RuntimeException("Sai dinh dang")
     }
@@ -283,21 +287,33 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     @SuppressLint("SetTextI18n")
     private fun showProductDetail(product: ProductDetail) {
         context?.let { _ ->
-            if (stampCode.isNotEmpty() && stampId.isNotEmpty()) {
-//                val listHistoryScan = mutableListOf<HistoryScan>()
-//                listHistoryScan.add(Toolbox.gson.fromJson(UserDataManager.currentQrCode, HistoryScan::class.java))
+            if (stampScan) {
+                val listHistoryScan = mutableListOf<JsonElement>()
+                if (UserDataManager.currentQrCode.isNotEmpty()) {
+                    val listQrCode = Toolbox.gson.fromJson<MutableList<HistoryScan>>(UserDataManager.currentQrCode, object : TypeToken<MutableList<HistoryScan>>() {}.type)
+                    for (i in listQrCode.indices)
+                        listHistoryScan.add(Toolbox.gson.toJsonTree(listQrCode[i]))
+                }
 
-                val historyScan = HistoryScan.QrCode()
-                val paramObject = JsonObject()
-
-                historyScan.code = stampCode
+                val historyScan = HistoryScan()
+                historyScan.code = product.code ?: ""
                 historyScan.productId = product.id
                 historyScan.productName = product.name ?: ""
                 historyScan.productImage = product.image ?: ""
-                paramObject.add("", Toolbox.gson.toJsonTree(historyScan))
-                val listQrCode = mutableListOf<JsonObject>()
-                listQrCode.add(paramObject)
-                UserDataManager.currentQrCode = listQrCode.toString()
+                historyScan.productPrice = if (product.price == 0L) {
+                    "<b><font color=\"#00c853\">Liên hệ</font></b>"
+                } else if (true && product.promotionPrice != product.price) {
+                    if (product.promotionPrice == 0L) // gia khuyen mai = 0 thi coi nhu ko khuyen mai
+                        "<b><font color=\"#00c853\">${product.price.asMoney()}</font></b>"
+                    else
+                        "<b><font color=\"#BDBDBD\"><strike>${product.price.asMoney()}</strike></font> <font color=\"#00c853\">${product.promotionPrice.asMoney()}</font></b> "
+                } else {
+                    "<b><font color=\"#00c853\">${product.price.asMoney()}</font></b>"
+                }
+                historyScan.time = Toolbox.getDateTimeCurrent()
+
+                listHistoryScan.add(0,Toolbox.gson.toJsonTree(historyScan))
+                UserDataManager.currentQrCode = listHistoryScan.toString()
             }
 
             productDetail = product

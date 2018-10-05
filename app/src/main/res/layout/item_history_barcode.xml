@@ -94,7 +94,7 @@
     </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraintLayoutLink"
+        android:id="@+id/constraintLayoutBarCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
@@ -109,7 +109,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-            android:id="@+id/view_link"
+            android:id="@+id/view_barCode"
             style="@style/AppTheme.CategoryTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
             android:drawablePadding="8dp"
             android:textColor="@color/colorPrimaryText"
             android:textStyle="bold"
-            app:drawableStartCompat="@drawable/ic_web_highlight_24dp"
+            app:drawableStartCompat="@drawable/ic_barcode"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -140,7 +140,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view_link"
+            app:layout_constraintTop_toBottomOf="@+id/view_barCode"
             tools:text="Time" />
 
     </android.support.constraint.ConstraintLayout>

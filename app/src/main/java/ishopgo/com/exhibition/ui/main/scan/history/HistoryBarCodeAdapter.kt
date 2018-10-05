@@ -8,15 +8,16 @@ import ishopgo.com.exhibition.domain.response.HistoryScan
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.extensions.asHtml
-import kotlinx.android.synthetic.main.item_history_qrcode.view.*
+import kotlinx.android.synthetic.main.item_history_barcode.view.*
 
-class HistoryQrCodeAdapter : ClickableAdapter<HistoryScan>() {
+class HistoryBarCodeAdapter : ClickableAdapter<HistoryScan>() {
     companion object {
         const val CLICK_PRODUCT = 0
-        const val CLICK_LINK = 1
+        const val CLICK_BARCODE = 1
     }
+
     override fun getChildLayoutResource(viewType: Int): Int {
-        return R.layout.item_history_qrcode
+        return R.layout.item_history_barcode
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<HistoryScan> {
@@ -27,7 +28,7 @@ class HistoryQrCodeAdapter : ClickableAdapter<HistoryScan>() {
         super.onBindViewHolder(holder, position)
         holder.apply {
             itemView.constraintLayoutProduct.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_PRODUCT) }
-            itemView.constraintLayoutLink.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_LINK) }
+            itemView.constraintLayoutBarCode.setOnClickListener { listener?.click(adapterPosition, getItem(adapterPosition), CLICK_BARCODE) }
         }
     }
 
@@ -37,10 +38,9 @@ class HistoryQrCodeAdapter : ClickableAdapter<HistoryScan>() {
             super.populate(data)
 
             itemView.apply {
-                if (data.productId > 0) {
+                if (data.icheckProduct != null) {
                     constraintLayoutProduct.visibility = View.VISIBLE
-                    constraintLayoutLink.visibility = View.GONE
-
+                    constraintLayoutBarCode.visibility = View.GONE
                     Glide.with(itemView.context).load(data.productImage)
                             .apply(RequestOptions().placeholder(R.drawable.image_placeholder).error(R.drawable.image_placeholder)).into(img_product)
 
@@ -50,8 +50,8 @@ class HistoryQrCodeAdapter : ClickableAdapter<HistoryScan>() {
                     tv_product_time.text = data.time
                 } else {
                     constraintLayoutProduct.visibility = View.GONE
-                    constraintLayoutLink.visibility = View.VISIBLE
-                    view_link.text = data.link
+                    constraintLayoutBarCode.visibility = View.VISIBLE
+                    view_barCode.text = data.code
                     view_time.text = data.time
                 }
             }

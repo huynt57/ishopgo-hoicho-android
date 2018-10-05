@@ -33,6 +33,12 @@ object Toolbox {
 
     val gson = defaultGson
 
+    fun getDateTimeCurrent(): String {
+        val calendar = Calendar.getInstance()
+        val format = SimpleDateFormat("HH:mm:ss dd/MM/yyyy", LOCALE_VN)
+        return format.format(calendar.time)
+    }
+
     fun exceedSize(context: Context, uri: Uri, maxSize: Long): Boolean {
         var isExceed = false
         val query = context.contentResolver.query(uri, null, null, null, null)
