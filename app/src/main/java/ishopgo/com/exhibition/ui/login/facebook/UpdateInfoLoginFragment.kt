@@ -17,22 +17,28 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.facebook.AccessToken
 import com.facebook.Profile
 import com.facebook.login.LoginManager
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import ishopgo.com.exhibition.R
-import ishopgo.com.exhibition.model.District
-import ishopgo.com.exhibition.model.Region
-import ishopgo.com.exhibition.model.UserDataManager
+import ishopgo.com.exhibition.domain.response.LoginFacebook
+import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.observable
 import ishopgo.com.exhibition.ui.login.LoginViewModel
 import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.MainActivity
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import kotlinx.android.synthetic.main.fragment_login_facebook.*
+import java.util.concurrent.TimeUnit
 
 class UpdateInfoLoginFragment : BaseFragment() {
     private lateinit var viewModel: LoginViewModel
     private val adapterRegion = RegionAdapter()
     private val adapterDistrict = DistrictAdapter()
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_login_facebook, container, false)
@@ -42,11 +48,25 @@ class UpdateInfoLoginFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        disposables.add(edit_facebook_sdt.observable()
+                .debounce(600, TimeUnit.MILLISECONDS)
+                .filter { it.isNotEmpty() }
+                .distinctUntilChanged()
+                .subscribeOn(Schedulers.single())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    reloadData = true
+                    if (!it.isEmpty()) {
+                        viewModel.loadUserByPhone(it)
+                    } else {
+                        showInfo(null)
+                    }
+                })
         btn_login_fb.setOnClickListener {
-            if (isRequiredFieldsValid(edit_facebook_sdt.text.toString(), edit_product_matKhau.text.toString(), edit_product_nhapLai_matKhau.text.toString(), edit_facebook_thanhPho.text.toString(), edit_facebook_quanHuyen.text.toString())) {
+            if (isRequiredFieldsValid(edit_facebook_sdt.text.toString(), edit_facebook_matKhau.text.toString(), edit_facebook_nhapLai_matKhau.text.toString(), edit_facebook_thanhPho.text.toString(), edit_facebook_quanHuyen.text.toString(), UserDataManager.currentUserFacebookId, edit_facebook_ten.text.toString())) {
                 showProgressDialog()
-                viewModel.updateInfoFacebook(edit_facebook_sdt.text.toString(), edit_product_matKhau.text.toString(), edit_facebook_thanhPho.text.toString(),
-                        edit_facebook_quanHuyen.text.toString(), edit_facebook_diaChi.text.toString())
+                viewModel.updateInfoFacebook(edit_facebook_sdt.text.toString(), edit_facebook_matKhau.text.toString(), edit_facebook_thanhPho.text.toString(),
+                        edit_facebook_quanHuyen.text.toString(), edit_facebook_diaChi.text.toString(), UserDataManager.currentUserFacebookId, UserDataManager.currentUserAvatar, edit_facebook_ten.text.toString())
             }
         }
 
@@ -60,8 +80,16 @@ class UpdateInfoLoginFragment : BaseFragment() {
     }
 
     fun logoutFacebook() {
-        viewModel.logout()
-        showProgressDialog()
+        hideProgressDialog()
+        UserDataManager.deleteUserInfo()
+        toast("Đăng xuất thành công")
+        if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
+            LoginManager.getInstance().logOut()
+        }
+        val intent = Intent(context, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        activity?.finish()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -97,22 +125,20 @@ class UpdateInfoLoginFragment : BaseFragment() {
             }
         })
 
-        viewModel.loggedOut.observe(this, Observer { m ->
-            m?.let {
-                hideProgressDialog()
-                UserDataManager.deleteUserInfo()
-                toast("Đăng xuất thành công")
-                if (AccessToken.getCurrentAccessToken() != null && Profile.getCurrentProfile() != null) {
-                    LoginManager.getInstance().logOut()
-                }
-                val intent = Intent(context, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                startActivity(intent)
-                activity?.finish()
+        viewModel.getUserByPhone.observe(this, Observer { p ->
+            p?.let {
+                showInfo(it)
             }
         })
 
         viewModel.loadRegion()
+    }
+
+    private fun showInfo(data: PhoneInfo?) {
+        edit_facebook_ten.setText(data?.name ?: "")
+        edit_facebook_thanhPho.setText(data?.region ?: "")
+        edit_facebook_quanHuyen.setText(data?.district ?: "")
+        edit_facebook_diaChi.setText(data?.address ?: "")
     }
 
     private fun getRegion(view: TextView) {
@@ -175,35 +201,43 @@ class UpdateInfoLoginFragment : BaseFragment() {
         }
     }
 
-    private fun isRequiredFieldsValid(sdt: String, matKhau: String, nhapLaiMk: String, thanhPho: String, quanHuyen: String): Boolean {
+    private fun isRequiredFieldsValid(sdt: String, matKhau: String, nhapLaiMk: String, thanhPho: String, quanHuyen: String, facebookId: String, ten: String): Boolean {
+        if (sdt.trim().isEmpty()) {
+            toast("Số điện thoại không được để trống")
+            edit_facebook_sdt.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_facebook_sdt)
+
+            return false
+        }
+
         if (matKhau.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
-            edit_product_matKhau.error = getString(R.string.error_field_required)
-            requestFocusEditText(edit_product_matKhau)
+            edit_facebook_matKhau.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_facebook_matKhau)
 
             return false
         }
 
         if (nhapLaiMk.trim().isEmpty()) {
             toast("Mật khẩu không được để trống")
-            edit_product_nhapLai_matKhau.error = getString(R.string.error_field_required)
-            requestFocusEditText(edit_product_nhapLai_matKhau)
+            edit_facebook_nhapLai_matKhau.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_facebook_nhapLai_matKhau)
 
             return false
         }
 
         if (matKhau != nhapLaiMk) {
             toast("Mật khẩu phải giống nhau")
-            edit_product_nhapLai_matKhau.error = "Vui lòng nhập lại"
-            requestFocusEditText(edit_product_nhapLai_matKhau)
+            edit_facebook_nhapLai_matKhau.error = "Vui lòng nhập lại"
+            requestFocusEditText(edit_facebook_nhapLai_matKhau)
 
             return false
         }
 
-        if (sdt.trim().isEmpty()) {
-            toast("Số điện thoại không được để trống")
-            edit_facebook_sdt.error = getString(R.string.error_field_required)
-            requestFocusEditText(edit_facebook_sdt)
+        if (ten.trim().isEmpty()) {
+            toast("Họ và tên không được để trống")
+            edit_facebook_ten.error = getString(R.string.error_field_required)
+            requestFocusEditText(edit_facebook_ten)
 
             return false
         }
@@ -219,6 +253,11 @@ class UpdateInfoLoginFragment : BaseFragment() {
             toast("Quận huyện không được để trống")
             edit_facebook_quanHuyen.error = "Trường này còn trống"
             requestFocusEditText(edit_facebook_quanHuyen)
+            return false
+        }
+
+        if (facebookId.trim().isEmpty()) {
+            toast("Có lỗi xảy ra, vui lòng đăng nhập lại")
             return false
         }
 

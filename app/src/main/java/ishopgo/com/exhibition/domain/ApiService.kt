@@ -489,6 +489,9 @@ class ApiService {
 
         @GET("expo/get-list-bg-bn")
         fun getListBGBN(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<ListBGBN>>>
+
+        @POST("expo/update-and-create-account")
+        fun updateInfoFormFacebook(@Body body: RequestBody): Single<BaseResponse<Profile>>
     }
 
 

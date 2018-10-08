@@ -12,6 +12,7 @@ import ishopgo.com.exhibition.app.AppComponent
 import ishopgo.com.exhibition.domain.BaseSingleObserver
 import ishopgo.com.exhibition.domain.response.LoginFacebook
 import ishopgo.com.exhibition.model.*
+import ishopgo.com.exhibition.model.search_sale_point.SearchSalePoint
 import ishopgo.com.exhibition.model.survey.CheckSurvey
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -230,19 +231,22 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 }))
     }
 
-    fun updateInfoFacebook(phone: String, matKhau:String, thanhPho: String, quanHuyen: String, diaChi: String) {
+    fun updateInfoFacebook(phone: String, matKhau: String, thanhPho: String, quanHuyen: String, diaChi: String, facebookId: String, facebookImage: String, ten: String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                        .addFormDataPart("phone", phone)
-                        .addFormDataPart("name", UserDataManager.currentUserName)
-                        .addFormDataPart("password", matKhau)
+                .addFormDataPart("phone", phone)
+                .addFormDataPart("name", UserDataManager.currentUserName)
+                .addFormDataPart("password", matKhau)
+                .addFormDataPart("facebook_id", facebookId)
+                .addFormDataPart("image", facebookImage)
+                .addFormDataPart("name", ten)
 
         if (thanhPho.isNotEmpty()) builder.addFormDataPart("region", thanhPho)
         if (quanHuyen.isNotEmpty()) builder.addFormDataPart("district", quanHuyen)
         if (diaChi.isNotEmpty()) builder.addFormDataPart("address", diaChi)
 
 
-        addDisposable(authService.updateProfile(builder.build())
+        addDisposable(authService.updateInfoFormFacebook(builder.build())
                 .subscribeOn(Schedulers.single())
                 .subscribeWith(object : BaseSingleObserver<Profile>() {
                     override fun success(data: Profile?) {
@@ -296,7 +300,8 @@ class LoginViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
                                 loginFacebookSuccess.postValue(true)
                             } else {
-                                UserDataManager.accessToken = data.token ?: ""
+                                UserDataManager.currentUserFacebookId = facebookId
+                                UserDataManager.currentUserAvatar = image
                                 UserDataManager.passLoginFacebook = false
                                 loginFacebookUpdate.postValue(data)
                             }

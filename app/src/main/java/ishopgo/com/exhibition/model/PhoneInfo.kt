@@ -12,6 +12,9 @@ class PhoneInfo {
     @SerializedName("region")
     @Expose
     var region: String? = null
+    @SerializedName("district")
+    @Expose
+    var district: String? = null
     @SerializedName("company")
     @Expose
     var company: String? = null

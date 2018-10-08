@@ -13,6 +13,7 @@ object UserDataManager {
     private const val KEY_APP_ID = "app_id"
     private const val KEY_ACCESS_TOKEN = "access_token"
     private const val KEY_USER_ID = "user_id"
+    private const val KEY_USER_FACEBOOK_ID = "user_facebook_id"
     private const val KEY_PASS_LOGIN_FACEBOOK = "pass_login_facebook"
     private const val KEY_SKIP_UPDATE = "skip_update"
     private const val KEY_USER_AVATAR = "user_avatar"
@@ -67,7 +68,9 @@ object UserDataManager {
     var currentBarCode: String
         get() = pref.getString(KEY_HISTORY_BARCODE, "")
         set(value) = pref.edit().putString(KEY_HISTORY_BARCODE, value).apply()
-
+    var currentUserFacebookId: String
+        get() = pref.getString(KEY_USER_FACEBOOK_ID, "")
+        set(value) = pref.edit().putString(KEY_USER_FACEBOOK_ID, value).apply()
     var displayWidth: Int = 0
     var displayHeight: Int = 0
 
@@ -106,6 +109,7 @@ object UserDataManager {
         edit.remove(KEY_USER_SURVEY)
         edit.remove(KEY_HISTORY_BARCODE)
         edit.remove(KEY_HISTORY_QRCODE)
+        edit.remove(KEY_USER_FACEBOOK_ID)
         edit.apply()
     }
 }
