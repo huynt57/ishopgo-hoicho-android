@@ -115,4 +115,10 @@ class MainViewModel : BaseApiViewModel(), AppComponent.Injectable {
     fun searchInCategory(category: Category) {
         openSearchInCategory.postValue(category)
     }
+
+    var showCategoryFragment = MutableLiveData<Boolean>()
+
+    fun openCategoryFragment() {
+        showCategoryFragment.postValue(true)
+    }
 }

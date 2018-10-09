@@ -8,6 +8,7 @@ import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
+import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseApiViewModel
 
 /**
@@ -49,6 +50,7 @@ class ProductsByCategoryViewModel : BaseApiViewModel(), AppComponent.Injectable 
             fields["limit"] = request.limit
             fields["offset"] = request.offset
             fields["category_id"] = request.categoryId
+            fields["city"] = request.city
             request.sort_by?.let { fields["sort_by"] = it }
             request.sort_type?.let { fields["sort_type"] = it }
 
@@ -75,5 +77,20 @@ class ProductsByCategoryViewModel : BaseApiViewModel(), AppComponent.Injectable 
         }
     }
 
+    var loadRegion = MutableLiveData<MutableList<Region>>()
+
+    fun loadRegion() {
+        addDisposable(isgService.getRegions()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<MutableList<Region>>() {
+                    override fun success(data: MutableList<Region>?) {
+                        loadRegion.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                }))
+    }
 
 }

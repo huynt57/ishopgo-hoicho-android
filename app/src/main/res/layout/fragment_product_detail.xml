@@ -423,42 +423,169 @@
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
-                android:id="@+id/container_supply_chain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
                 tools:visibility="visible">
 
-            <View
-                android:id="@+id/view_divider_supply_chain"
-                style="@style/AppTheme.DividerFat"
-                android:layout_width="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_label_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:text="Liên hệ mua hàng"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_home_highlight_24dp"
+                    app:layout_constraintEnd_toStartOf="@+id/view_detail"
+                    app:layout_constraintStart_toStartOf="parent"
+                    tools:ignore="HardcodedText" />
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/vectorSupportTextView"
-                    style="@style/AppTheme.SectionLabel"
+                    android:id="@+id/view_shop_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_label_shop_name"
+                    tools:text="Công ty TNHH Mua đồ tốt" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_shop_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_button_stroked_rounded_rectangle"
+                    android:padding="8dp"
+                    android:text="Xem thêm"
+                    app:layout_constraintBottom_toBottomOf="@+id/view_label_shop_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:targetApi="m" />
+
+                <View
+                    android:id="@+id/textView7"
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_shop_name" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_product_count"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toStartOf="@+id/view_shop_rating"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7"
+                    tools:text="54\nSản phẩm" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_shop_rating"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/view_product_count"
+                    app:layout_constraintTop_toBottomOf="@+id/textView7"
+                    tools:text="5\nĐánh giá" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Chuỗi cung ứng"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="@drawable/bg_stroked_rounded_rectangle"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view_divider_product_process" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_shop_rating">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_supply_chain"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="-1dp"
-                    android:padding="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/vectorSupportTextView"
-                    tools:itemCount="5"
-                    tools:listitem="@layout/item_supply_chain" />
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/tv_shop_phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:paddingTop="8dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="4dp"
+                        app:drawableStartCompat="@drawable/ic_phone_highlight_24dp"
+                        app:drawableStartSquareSize="18dp"
+                        tools:text="Số điện thoại: 0985771135" />
+
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/tv_shop_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:paddingTop="4dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="8dp"
+                        app:drawableStartCompat="@drawable/ic_location_highlight_16dp"
+                        app:drawableStartSquareSize="18dp"
+                        tools:text="Địa chỉ: 68 Dương Đình Nghệ, Cầu Giấy, Hà Nội" />
+                </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
+
+            <!--<android.support.constraint.ConstraintLayout-->
+                <!--android:id="@+id/container_supply_chain"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--tools:visibility="visible">-->
+
+            <!--<View-->
+                <!--android:id="@+id/view_divider_supply_chain"-->
+                <!--style="@style/AppTheme.DividerFat"-->
+                <!--android:layout_width="0dp"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+                <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
+                    <!--android:id="@+id/vectorSupportTextView"-->
+                    <!--style="@style/AppTheme.SectionLabel"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Chuỗi cung ứng"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/view_divider_product_process" />-->
+
+                <!--<android.support.v7.widget.RecyclerView-->
+                    <!--android:id="@+id/rv_supply_chain"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginTop="-1dp"-->
+                    <!--android:padding="8dp"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/view_divider_supply_chain"-->
+                    <!--tools:itemCount="5"-->
+                    <!--tools:listitem="@layout/item_supply_chain" />-->
+
+            <!--</android.support.constraint.ConstraintLayout>-->
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/container_shop_sale_point"

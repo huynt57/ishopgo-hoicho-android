@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.home.category.product
 import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.TextInputLayout
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -12,16 +13,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.FilterProduct
+import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
+import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
@@ -61,6 +65,9 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
     private lateinit var mainViewModel: MainViewModel
     private lateinit var filterViewModel: FilterProductViewModel
     private var filterProduct = FilterProduct()
+    private val adapterRegion = RegionAdapter()
+    private var city = ""
+    private var categoryId = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,40 +91,51 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
 
         setupProducts(view)
 
-        setupBreadCrumb()
+//        setupBreadCrumb()
 
         swipe.setOnRefreshListener(this)
-    }
 
-    private fun addCategoryBreadCrumb(category: Category) {
-        context?.let {
-            val item = LayoutInflater.from(it)
-                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, false) as VectorSupportTextView
-            item.id = category.id.toInt()
-            item.text = category.name
-            item.setOnClickListener {
-                if (this.category != category) {
-                    this.category = category
-                    setupBreadCrumb()
-
-                    viewModel.loadChildCategory(category)
-                    firstLoad()
-                }
-            }
-
-            view_breadcrumb_container.addView(item, 0)
-
-            category.parent?.let {
-                addCategoryBreadCrumb(it)
-            }
+        view_region.setOnClickListener {
+            getRegion(view_region)
         }
+
+        view_category.setOnClickListener {
+            mainViewModel.openCategoryFragment()
+        }
+
+        view_category.text = category.name
+        categoryId = category.id
     }
 
-    private fun setupBreadCrumb() {
-        view_breadcrumb_container.removeAllViews()
-        addCategoryBreadCrumb(category)
-        view_breadcrumb_container.post { view_breadcrumb.fullScroll(View.FOCUS_RIGHT) }
-    }
+//    private fun addCategoryBreadCrumb(category: Category) {
+//        context?.let {
+//            val item = LayoutInflater.from(it)
+//                    .inflate(R.layout.item_breadcrumb, view_breadcrumb_container, false) as VectorSupportTextView
+//            item.id = category.id.toInt()
+//            item.text = category.name
+//            item.setOnClickListener {
+//                if (this.category != category) {
+//                    this.category = category
+//                    setupBreadCrumb()
+//
+//                    viewModel.loadChildCategory(category)
+//                    firstLoad()
+//                }
+//            }
+//
+//            view_breadcrumb_container.addView(item, 0)
+//
+//            category.parent?.let {
+//                addCategoryBreadCrumb(it)
+//            }
+//        }
+//    }
+//
+//    private fun setupBreadCrumb() {
+//        view_breadcrumb_container.removeAllViews()
+//        addCategoryBreadCrumb(category)
+//        view_breadcrumb_container.post { view_breadcrumb.fullScroll(View.FOCUS_RIGHT) }
+//    }
 
     private fun openProductDetail(product: Product) {
         context?.let {
@@ -156,7 +174,9 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
         childAdapter.listener = object : ClickableAdapter.BaseAdapterAction<Category> {
             override fun click(position: Int, data: Category, code: Int) {
                 category = data
-                setupBreadCrumb()
+                view_category.text = data.name
+                categoryId = data.id
+//                setupBreadCrumb()
 
                 viewModel.loadChildCategory(category)
                 firstLoad()
@@ -188,6 +208,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
         super.onActivityCreated(savedInstanceState)
 
         mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        mainViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
 
         filterViewModel = obtainViewModel(FilterProductViewModel::class.java, true)
         filterViewModel.getDataFilter.observe(viewLifeCycleOwner!!, Observer { c ->
@@ -224,7 +245,17 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
             }
         })
 
+        viewModel.loadRegion.observe(this, Observer { p ->
+            p?.let {
+                val region = Region()
+                region.name = "Tất cả khu vực"
+                it.add(0, region)
+                adapterRegion.replaceAll(it)
+            }
+        })
+
         viewModel.loadChildCategory(category)
+        viewModel.loadRegion()
     }
 
     private fun firstLoad() {
@@ -236,6 +267,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
         request.categoryId = category.id
+        request.city = city
         request.sort_by = filterProduct.sort_by
         request.sort_type = filterProduct.sort_type
         request.type_filter = filterProduct.filter ?: mutableListOf()
@@ -249,6 +281,7 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
         request.categoryId = category.id
+        request.city = city
         request.sort_by = filterProduct.sort_by
         request.sort_type = filterProduct.sort_type
         request.type_filter = filterProduct.filter ?: mutableListOf()
@@ -257,6 +290,41 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
 
     private fun finishLoading() {
         swipe.isRefreshing = false
+    }
+
+    private fun getRegion(view: TextView) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn khu vực")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
+
+            rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+
+            rv_search.adapter = adapterRegion
+            adapterRegion.listener = object : ClickableAdapter.BaseAdapterAction<Region> {
+                override fun click(position: Int, data: Region, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
+                        city = if (position == 0) "" else data.name
+                        firstLoad()
+//                        data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
+//                        booth_district.visibility = View.VISIBLE
+                        view.text = data.name
+                        view.error = null
+                    }
+                }
+            }
+            dialog.show()
+        }
     }
 
 }

@@ -108,7 +108,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
     private val productProcessAdapter = ProductProcessAdapter()
-    private var adapterSupplyChain = SupplyChainAdapter()
+//    private var adapterSupplyChain = SupplyChainAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var adapterDiary = ProductDiaryAdapter()
     private var adapterExchangeDiary = ProductExchangeDiaryAdapter()
@@ -612,28 +612,19 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 showQrCodeProduct(product)
             }
 
-            val listShop = mutableListOf<Booth>()
-            convert.providerBooth()?.let { listShop.add(it) }
+            convert.providerBooth()?.let {
+                val convertShop = ConverterShop().convert(it)
 
-            if (convert.providerRelatedShop().isNotEmpty()) {
-                val relatedShop = convert.providerRelatedShop()
+                view_shop_name.text = convertShop.provideName()
+                view_product_count.text = convertShop.provideProductCount()
+                view_shop_rating.text = convertShop.provideRatingPoint()
+                tv_shop_phone.setPhone(convertShop.provideHotline(), it.hotline ?: "")
+                tv_shop_address.text = convertShop.provideAddress()
 
-                for (i in relatedShop.indices) {
-                    val shop = Booth()
-                    shop.id = relatedShop[i].id
-                    shop.name = relatedShop[i].name
-                    shop.title = relatedShop[i].title
-                    shop.hotline = relatedShop[i].hotline
-                    shop.address = relatedShop[i].address
-                    shop.city = relatedShop[i].city
-                    shop.district = relatedShop[i].district
-                    shop.count = relatedShop[i].productCount
-                    shop.rateCount = relatedShop[i].rateCount
-                    shop.rate = relatedShop[i].rate
-                    listShop.add(shop)
+                view_shop_detail.setOnClickListener {
+                    openShopDetail(it.context, product.booth?.id ?: 0L)
                 }
             }
-            adapterSupplyChain.replaceAll(listShop)
         }
     }
 
@@ -672,13 +663,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragment, extra)
     }
 
-    private fun setupRecyclerviewSupplyChain() {
-        context?.let {
-            rv_supply_chain.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_supply_chain.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
-            rv_supply_chain.adapter = adapterSupplyChain
-        }
-    }
+//    private fun setupRecyclerviewSupplyChain() {
+//        context?.let {
+//            rv_supply_chain.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+//            rv_supply_chain.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+//            rv_supply_chain.adapter = adapterSupplyChain
+//        }
+//    }
 
     private fun setupRecyclerviewDescriptionVatTu() {
         context?.let {
@@ -903,6 +894,47 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         }
     }
 
+    interface ProcessProvider {
+        fun provideName(): CharSequence
+        fun provideHotline(): CharSequence
+        fun provideAddress(): CharSequence
+        fun provideProductCount(): CharSequence
+        fun provideRatingPoint(): CharSequence
+    }
+
+    class ConverterShop : Converter<Booth, ProcessProvider> {
+        override fun convert(from: Booth): ProcessProvider {
+            return object : ProcessProvider {
+
+                override fun provideHotline(): CharSequence {
+                    return from.hotline ?: ""
+                }
+
+                override fun provideAddress(): CharSequence {
+                    return if (from.address?.isNotEmpty() == true)
+                        "${from.address ?: ""}, ${from.city ?: ""}"
+                    else from.city ?: ""
+                }
+
+                override fun provideProductCount(): CharSequence {
+                    return "<b><font color=\"#00c853\">${from.count
+                            ?: 0}</font></b><br>Sản phẩm".asHtml()
+
+                }
+
+                override fun provideRatingPoint(): CharSequence {
+                    return "<b><font color=\"red\">${from.rate?.toFloat()
+                            ?: 0.0f}/5.0</font></b><br>${from.rateCount
+                            ?: 0} Đánh giá".asHtml()
+                }
+
+                override fun provideName(): CharSequence {
+                    return from.name ?: ""
+                }
+            }
+        }
+    }
+
     private fun openActivtyLogin() {
         val intent = Intent(context, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -1033,7 +1065,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         setupProductRelated(view.context)
         setupSalePointRecycleview()
         setupCertRecyclerview()
-        setupRecyclerviewSupplyChain()
+//        setupRecyclerviewSupplyChain()
         setupRecyclerviewDescriptionVatTu()
         setupRecyclerviewDescriptionGiaiPhap()
         setupListeners()
@@ -1226,12 +1258,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         }
 
-        adapterSupplyChain.listener = object : ClickableAdapter.BaseAdapterAction<Booth> {
-            override fun click(position: Int, data: Booth, code: Int) {
-                context?.let { openShopDetail(it, data.id) }
-            }
+//        adapterSupplyChain.listener = object : ClickableAdapter.BaseAdapterAction<Booth> {
+//            override fun click(position: Int, data: Booth, code: Int) {
+//                context?.let { openShopDetail(it, data.id) }
+//            }
 
-        }
+//        }
     }
 
     private fun showProductsOfBrand(brand: Brand) {

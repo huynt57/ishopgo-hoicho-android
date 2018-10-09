@@ -8,4 +8,5 @@ import ishopgo.com.exhibition.domain.response.FilterProductRequest
 class CategoriedProductsRequest : FilterProductRequest() {
 
     var categoryId: Long = -1L
+    var city: String = ""
 }

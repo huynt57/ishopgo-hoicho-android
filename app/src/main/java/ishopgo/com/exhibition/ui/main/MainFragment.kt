@@ -33,6 +33,7 @@ import ishopgo.com.exhibition.ui.login.LoginFragment
 import ishopgo.com.exhibition.ui.login.require.RequireLoginFragment
 import ishopgo.com.exhibition.ui.main.account.AccountFragmentActionBar
 import ishopgo.com.exhibition.ui.main.home.HomeFragmentActionBar
+import ishopgo.com.exhibition.ui.main.home.category.product.CategoryFragment
 import ishopgo.com.exhibition.ui.main.home.category.product.ProductsByCategoryFragment
 import ishopgo.com.exhibition.ui.main.home.category.product.search.SearchProductsOfCategoryFragment
 import ishopgo.com.exhibition.ui.main.home.search.SearchFragment
@@ -140,6 +141,16 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                         .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
                         .add(R.id.content_main_container, ProductsByCategoryFragment.newInstance(params))
                         .addToBackStack(ProductsByCategoryFragment.TAG)
+                        .commit()
+            }
+        })
+        viewModel.showCategoryFragment.observe(this, Observer { s ->
+            s?.let {
+                val params = Bundle()
+                childFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.content_main_container, CategoryFragment.newInstance(params))
+                        .addToBackStack(CategoryFragment.TAG)
                         .commit()
             }
         })
