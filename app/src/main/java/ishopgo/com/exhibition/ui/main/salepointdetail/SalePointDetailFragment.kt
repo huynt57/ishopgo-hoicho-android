@@ -162,7 +162,8 @@ class SalePointDetailFragment : BaseFragment() {
         }
 
         if (dataProduct != null) {
-            linear_product_current.visibility = View.VISIBLE
+            linear_product_current.visibility = View.GONE
+//            linear_product_current.visibility = View.VISIBLE
             Glide.with(context).load(dataProduct!!.image)
                     .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
                     .into(img_product)

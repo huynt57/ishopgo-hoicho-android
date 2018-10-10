@@ -1,167 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 xmlns:tools="http://schemas.android.com/tools">
+<android.support.constraint.ConstraintLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/app_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+            android:layout_height="wrap_content"
+            android:background="#fff"
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-            <android.support.constraint.ConstraintLayout
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collapsing_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                app:expandedTitleMarginEnd="64dp"
+                app:expandedTitleMarginStart="48dp"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <ImageView
-                    android:id="@+id/view_image"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="2:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/image_placeholder" />
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/tv_edit_image"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/custom_edit_image"
-                    android:drawablePadding="8dp"
-                    android:paddingStart="8dp"
-                    android:paddingEnd="8dp"
-                    android:text="Chỉnh sửa"
-                    android:visibility="gone"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/colorPureWhite"
-                    app:drawableTintCompat="@color/colorPureWhite"
-                    tools:visibility="visible"
-                    app:drawableStartCompat="@drawable/ic_edit_default_24dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/view_image"
-                    app:layout_constraintEnd_toEndOf="parent"/>
+                    <ImageView
+                        android:id="@+id/view_image"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintDimensionRatio="2:1"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:srcCompat="@drawable/image_placeholder" />
 
-            </android.support.constraint.ConstraintLayout>
+                    <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                        android:id="@+id/tv_edit_image"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/custom_edit_image"
+                        android:drawablePadding="8dp"
+                        android:gravity="center_vertical"
+                        android:paddingStart="8dp"
+                        android:paddingEnd="8dp"
+                        android:text="Chỉnh sửa"
+                        android:textColor="@color/colorPureWhite"
+                        android:visibility="gone"
+                        app:drawableStartCompat="@drawable/ic_edit_default_24dp"
+                        app:drawableTintCompat="@color/colorPureWhite"
+                        app:layout_constraintBottom_toBottomOf="@+id/view_image"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:visibility="visible" />
 
-        </android.support.design.widget.CollapsingToolbarLayout>
+                </android.support.constraint.ConstraintLayout>
 
-        <LinearLayout
-            android:id="@+id/pinable_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <View
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="match_parent"
-                android:layout_gravity="top"/>
+            </android.support.design.widget.CollapsingToolbarLayout>
 
             <LinearLayout
-                android:id="@+id/constraintLayout"
+                android:id="@+id/pinable_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorPureWhite"
-                android:orientation="horizontal"
-                >
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/view_shop_follow"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="Quan tâm"
-                    app:drawableTopCompat="@drawable/ic_favorite_border_default_24dp"/>
+                <View
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="top" />
 
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/view_shop_call"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="Gọi điện"
-                    app:drawableTopCompat="@drawable/ic_phone_highlight_24dp"/>
+                <View
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="top" />
 
-                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
-                    android:id="@+id/view_shop_message"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:gravity="center"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:text="Nhắn tin"
-                    app:drawableTopCompat="@drawable/ic_comment_highlight_24dp"/>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/view_tab_layout"
+                    style="@style/AppTheme.SinglelineTab"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tab_shop_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thông tin" />
+
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tab_shop_products"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sản phẩm" />
+
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tab_shop_news"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tin tức" />
+
+                    <android.support.design.widget.TabItem
+                        android:id="@+id/tab_shop_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đánh giá" />
+
+                </android.support.design.widget.TabLayout>
+
+                <View
+                    style="@style/AppTheme.DividerLine"
+                    android:layout_width="match_parent"
+                    android:layout_gravity="bottom" />
             </LinearLayout>
 
-            <View
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="match_parent"
-                android:layout_gravity="top"/>
+        </android.support.design.widget.AppBarLayout>
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/view_tab_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/AppTheme.SinglelineTab">
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-                <android.support.design.widget.TabItem
-                    android:id="@+id/tab_shop_info"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thông tin"/>
+    </android.support.design.widget.CoordinatorLayout>
 
-                <android.support.design.widget.TabItem
-                    android:id="@+id/tab_shop_products"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sản phẩm"/>
-
-                <android.support.design.widget.TabItem
-                    android:id="@+id/tab_shop_news"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tin tức" />
-
-                <android.support.design.widget.TabItem
-                    android:id="@+id/tab_shop_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Đánh giá"/>
-
-            </android.support.design.widget.TabLayout>
-
-            <View
-                style="@style/AppTheme.DividerLine"
-                android:layout_width="match_parent"
-                android:layout_gravity="bottom"/>
-        </LinearLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        android:layout_height="wrap_content"
+        android:background="@color/colorPureWhite"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-</android.support.design.widget.CoordinatorLayout>
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_shop_follow"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Quan tâm"
+            app:drawableTopCompat="@drawable/ic_favorite_border_default_24dp" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_shop_call"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Gọi điện"
+            app:drawableTopCompat="@drawable/ic_phone_highlight_24dp" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_shop_message"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Nhắn tin"
+            app:drawableTopCompat="@drawable/ic_comment_highlight_24dp" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

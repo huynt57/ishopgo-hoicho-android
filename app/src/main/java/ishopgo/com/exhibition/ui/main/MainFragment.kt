@@ -315,10 +315,10 @@ class MainFragment : BaseFragment(), BackpressConsumable {
 
         view_bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_SHOW
 
-        view_bottom_navigation.setOnTabSelectedListener({ position, _ ->
+        view_bottom_navigation.setOnTabSelectedListener { position, _ ->
             view_pager.currentItem = position
             true
-        })
+        }
     }
 
     inner class MainPagerAdapter(fm: FragmentManager) : CountSpecificPager(fm, 5) {
@@ -329,7 +329,8 @@ class MainFragment : BaseFragment(), BackpressConsumable {
                     HomeFragmentActionBar()
                 }
                 TAB_COMMUNITY -> {
-                    CommunityFragmentActionBar.newInstance(Bundle())
+//                    CommunityFragmentActionBar.newInstance(Bundle())
+                    UnderDevelopFragment()
                 }
                 TAB_SCAN -> {
                     ScanFragmentActionBar.newInstance(Bundle())
