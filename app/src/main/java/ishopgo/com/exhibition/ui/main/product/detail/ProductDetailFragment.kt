@@ -60,6 +60,7 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_product_info.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
+import kotlinx.android.synthetic.main.item_community_share.*
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
@@ -103,7 +104,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val favoriteProductAdapter = ProductAdapter(0.4f)
     private val productCommentAdapter = ProductCommentAdapter()
     private val productProcessAdapter = ProductProcessAdapter()
-//    private var adapterSupplyChain = SupplyChainAdapter()
+    //    private var adapterSupplyChain = SupplyChainAdapter()
     private var adapterSalePoint = ProductSalePointAdapter()
     private var adapterDiary = ProductDiaryAdapter()
     private var adapterExchangeDiary = ProductExchangeDiaryAdapter()
@@ -307,7 +308,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 }
                 historyScan.time = Toolbox.getDateTimeCurrent()
 
-                listHistoryScan.add(0,Toolbox.gson.toJsonTree(historyScan))
+                listHistoryScan.add(0, Toolbox.gson.toJsonTree(historyScan))
                 UserDataManager.currentQrCode = listHistoryScan.toString()
             }
 
@@ -426,6 +427,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     }
 
                 adapterExchangeDiary.replaceAll(listExchangeDiary)
+                if (listExchangeDiary.size > 0 && stampCode.isNotEmpty() && stampId.isNotEmpty()) {
+                    container_exchange_diary.visibility = View.VISIBLE
+                }
+            } else if (stampCode.isNotEmpty() && stampId.isNotEmpty()) {
+                container_exchange_diary.visibility = View.VISIBLE
             }
 
             view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
@@ -575,31 +581,29 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
             } else container_diary.visibility = View.GONE
 
-            if (stampType.isNotEmpty()) {
-                container_exchange_diary.visibility = View.VISIBLE
+//                    showDiaryTabFragment(product)
 
-                if (UserDataManager.currentType == "Quản trị viên") {
-                    val listPermission = Const.listPermission
-                    if (listPermission.isNotEmpty())
-                        for (i in listPermission.indices)
-                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
-                                view_add_exchange_diary.visibility = View.VISIBLE
-                                break
-                            }
-                } else view_add_exchange_diary.visibility = View.GONE
+            if (UserDataManager.currentType == "Quản trị viên") {
+                val listPermission = Const.listPermission
+                if (listPermission.isNotEmpty())
+                    for (i in listPermission.indices)
+                        if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+                            view_add_exchange_diary.visibility = View.VISIBLE
+                            break
+                        }
+            } else view_add_exchange_diary.visibility = View.GONE
 
 
-                if (UserDataManager.currentUserId == product.booth?.id || UserDataManager.currentType == "Chủ hội chợ") {
-                    isViewDiary = true
-                    view_add_exchange_diary.visibility = View.VISIBLE
-                } else {
-                    isViewDiary = false
-                    view_add_exchange_diary.visibility = View.GONE
-                }
+            if (UserDataManager.currentUserId == product.booth?.id || UserDataManager.currentType == "Chủ hội chợ") {
+                isViewDiary = true
+                view_add_exchange_diary.visibility = View.VISIBLE
+            } else {
+                isViewDiary = false
+                view_add_exchange_diary.visibility = View.GONE
+            }
 
-                view_add_exchange_diary.setOnClickListener { showAddExchangeDiary(product) }
-                view_product_show_more_exchange_diary.setOnClickListener { showExchangeDiary(product) }
-            } else container_exchange_diary.visibility = View.GONE
+            view_add_exchange_diary.setOnClickListener { showAddExchangeDiary(product) }
+            view_product_show_more_exchange_diary.setOnClickListener { showExchangeDiary(product) }
 
             openProductSalePoint(product)
 
@@ -637,6 +641,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productExchangeDiaryFragment, extra)
     }
 
+    private fun showDiaryTabFragment(product: ProductDetail) {
+        val extra = Bundle()
+        extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
+
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_diaryTabFragment, extra)
+    }
+
     private fun showDiary(product: ProductDetail) {
         val extra = Bundle()
         extra.putLong(Const.TransferKey.EXTRA_ID, product.id)
@@ -648,14 +659,14 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         val extra = Bundle()
         extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
 
-        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragment, extra)
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragmentActionBar, extra)
     }
 
     private fun showAddDiary(product: ProductDetail) {
         val extra = Bundle()
         extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
 
-        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragment, extra)
+        Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragmentActionBar, extra)
     }
 
 //    private fun setupRecyclerviewSupplyChain() {

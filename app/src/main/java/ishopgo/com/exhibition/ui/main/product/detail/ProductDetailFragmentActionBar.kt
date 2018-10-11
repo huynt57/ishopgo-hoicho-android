@@ -23,40 +23,46 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
         return R.layout.fragment_single_content
     }
 
+    private var productId = -1L
+    private var stampCode = ""
+    private var stampId = ""
+    private var stampType = ""
+    private var stampScan = false
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbars()
 
-        val productId = if (arguments?.containsKey(Const.TransferKey.EXTRA_ID) == true) {
+        productId = if (arguments?.containsKey(Const.TransferKey.EXTRA_ID) == true) {
             // click another product in product detail screen
             arguments!!.getLong(Const.TransferKey.EXTRA_ID)
         } else {
             requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
         }
 
-        val stampCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_CODE) == true) {
+        stampCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_CODE) == true) {
             // click another product in product detail screen
             arguments!!.getString(Const.TransferKey.EXTRA_STAMP_CODE)
         } else {
             requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_CODE)
         }
 
-        val stampId = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_ID) == true) {
+        stampId = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_ID) == true) {
             // click another product in product detail screen
             arguments!!.getString(Const.TransferKey.EXTRA_STAMP_ID)
         } else {
             requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_ID)
         }
 
-        val stampType = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_TYPE) == true) {
+        stampType = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_TYPE) == true) {
             // click another product in product detail screen
             arguments!!.getString(Const.TransferKey.EXTRA_STAMP_TYPE)
         } else {
             requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_TYPE)
         }
 
-        val stampScan = if (arguments?.containsKey(Const.TransferKey.EXTRA_SCAN_PRODUCT) == true) {
+        stampScan = if (arguments?.containsKey(Const.TransferKey.EXTRA_SCAN_PRODUCT) == true) {
             // click another product in product detail screen
             arguments!!.getBoolean(Const.TransferKey.EXTRA_SCAN_PRODUCT)
         } else {

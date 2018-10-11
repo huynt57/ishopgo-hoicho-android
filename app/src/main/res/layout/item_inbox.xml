@@ -37,7 +37,6 @@
         android:singleLine="true"
         android:textColor="#424242"
         android:textSize="16sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/view_message"
         app:layout_constraintEnd_toStartOf="@+id/view_time"
         app:layout_constraintHorizontal_bias="0.5"

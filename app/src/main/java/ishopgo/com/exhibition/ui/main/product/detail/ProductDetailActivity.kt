@@ -32,6 +32,4 @@ class ProductDetailActivity : BaseActivity() {
                 ?: -1L)
         Navigation.findNavController(this, R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_self, extra)
     }
-
-
 }

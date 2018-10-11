@@ -1,5 +1,6 @@
 package ishopgo.com.exhibition.ui.chat.local.inbox
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.bumptech.glide.Glide
@@ -8,6 +9,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.LocalConversationItem
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
+import ishopgo.com.exhibition.ui.extensions.asHtml
 import kotlinx.android.synthetic.main.item_inbox.view.*
 
 /**
@@ -43,6 +45,7 @@ class InboxAdapter : ClickableAdapter<InboxProvider>() {
     }
 
     inner class InboxHolder(v: View) : BaseRecyclerViewAdapter.ViewHolder<InboxProvider>(v) {
+        @SuppressLint("SetTextI18n")
         override fun populate(data: InboxProvider) {
             super.populate(data)
 
@@ -55,9 +58,14 @@ class InboxAdapter : ClickableAdapter<InboxProvider>() {
                                 .error(R.drawable.avatar_placeholder)
                         )
                         .into(view_avatar)
-                view_title.text = data.provideName()
+                if (data.provideWasRead()) {
+                    view_title.text = data.provideName()
+                    view_message.text = data.provideMessage()
+                } else {
+                    view_title.text = "<b>${data.provideName()}</b>".asHtml()
+                    view_message.text = "<b>${data.provideMessage()}</b>".asHtml()
+                }
                 view_time.text = data.provideTime()
-                view_message.text = data.provideMessage()
                 view_unread_count.visibility = if (data.provideWasRead()) View.GONE else View.VISIBLE
             }
         }

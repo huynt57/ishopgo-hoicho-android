@@ -81,7 +81,7 @@ class DeeplinkHandlerActivity : BaseActivity() {
                 Log.d("hong", "nhan dc productId= $productId")
                 val intent = Intent(this, ProductDetailActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, productId.toLong())
-                intent.putExtra(Const.TransferKey.EXTRA_SCAN_PRODUCT,true)
+                intent.putExtra(Const.TransferKey.EXTRA_SCAN_PRODUCT, true)
                 startActivity(intent)
                 finish()
             }
@@ -97,11 +97,12 @@ class DeeplinkHandlerActivity : BaseActivity() {
                     intent.putExtra(Const.TransferKey.EXTRA_ID, link.getQueryParameter("productId").toLong())
                     intent.putExtra(Const.TransferKey.EXTRA_STAMP_CODE, link.getQueryParameter("stampCode"))
                     intent.putExtra(Const.TransferKey.EXTRA_STAMP_ID, link.getQueryParameter("stampId"))
-                    intent.putExtra(Const.TransferKey.EXTRA_SCAN_PRODUCT,true)
+                    intent.putExtra(Const.TransferKey.EXTRA_SCAN_PRODUCT, true)
 
                     if (link.getQueryParameter("type")?.isNotEmpty() == true) {
                         intent.putExtra(Const.TransferKey.EXTRA_STAMP_TYPE, link.getQueryParameter("type"))
-                    }
+                    } else intent.putExtra(Const.TransferKey.EXTRA_STAMP_TYPE, "")
+
                     startActivity(intent)
                 } else {
                     val intent = Intent(this, MainActivity::class.java)

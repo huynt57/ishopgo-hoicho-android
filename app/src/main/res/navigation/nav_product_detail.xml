@@ -18,21 +18,24 @@
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment"/>
         <action
             android:id="@+id/action_productDetailFragmentActionBar_self"
             app:destination="@id/productDetailFragmentActionBar"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment"/>
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productProcessFragment"
             app:destination="@id/productProcessFragment"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment"/>
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_qrCodeProductFragment"
             app:destination="@id/qrCodeProductFragment"
@@ -52,8 +55,8 @@
             app:popUpTo="@+id/expoDetailFragment" />
 
         <action
-            android:id="@+id/action_productDetailFragmentActionBar_to_productDiaryAddFragment"
-            app:destination="@id/productDiaryAddFragment"
+            android:id="@+id/action_productDetailFragmentActionBar_to_productDiaryAddFragmentActionBar"
+            app:destination="@id/productDiaryAddFragmentActionBar"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
@@ -61,8 +64,8 @@
             app:popUpTo="@+id/expoDetailFragment" />
 
         <action
-            android:id="@+id/action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragment"
-            app:destination="@id/productExchangeDiaryAddFragment"
+            android:id="@+id/action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragmentActionBar"
+            app:destination="@id/productExchangeDiaryAddFragmentActionBar"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
@@ -77,8 +80,16 @@
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/expoDetailFragment" />
-    </fragment>
 
+        <action
+            android:id="@+id/action_productDetailFragmentActionBar_to_diaryTabFragment"
+            app:destination="@id/diaryTabFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/expoDetailFragment" />
+    </fragment>
 
 
     <fragment
@@ -98,29 +109,47 @@
         android:name="ishopgo.com.exhibition.ui.main.product.detail.diary_product.ProductDiaryFragment"
         android:label="ProductDiaryFragment" />
     <fragment
-        android:id="@+id/productDiaryAddFragment"
-        android:name="ishopgo.com.exhibition.ui.main.product.detail.diary_product.ProductDiaryAddFragment"
-        android:label="ProductDiaryAddFragment" />
+        android:id="@+id/productDiaryAddFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.diary_product.ProductDiaryAddFragmentActionBar"
+        android:label="productDiaryAddFragmentActionBar" />
     <fragment
         android:id="@+id/productExchangeDiaryFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeDiaryFragment"
         android:label="productExchangeDiaryFragment" />
     <fragment
-        android:id="@+id/productExchangeDiaryAddFragment"
-        android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeDiaryAddFragment"
-        android:label="productExchangeDiaryAddFragment" >
+        android:id="@+id/productExchangeDiaryAddFragmentActionBar"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeDiaryAddFragmentActionBar"
+        android:label="productExchangeDiaryAddFragmentActionBar">
         <action
             android:id="@+id/action_searchBoothFragment_to_productExchangeBGBNFragment"
             app:destination="@id/productExchangeBGBNFragment"
             app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            />
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
     </fragment>
+
+    <fragment
+        android:id="@+id/productExchangeDiaryAddFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeDiaryAddFragment"
+        android:label="productExchangeDiaryAddFragment" />
 
     <fragment
         android:id="@+id/productExchangeBGBNFragment"
         android:name="ishopgo.com.exhibition.ui.main.product.detail.exchange_diary.ProductExchangeBGBNFragment"
         android:label="productExchangeBGBNFragment" />
+
+    <fragment
+        android:id="@+id/diaryTabFragment"
+        android:name="ishopgo.com.exhibition.ui.main.product.detail.DiaryTabFragment"
+        android:label="diaryTabFragment">
+        <action
+            android:id="@+id/action_searchBoothFragment_to_productExchangeBGBNFragment"
+            app:destination="@id/productExchangeBGBNFragment"
+            app:enterAnim="@anim/nav_slide_right_to_left_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+
 </navigation>

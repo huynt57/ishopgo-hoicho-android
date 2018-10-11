@@ -18,7 +18,9 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -26,7 +28,7 @@ import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -35,7 +37,6 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.product.detail.ExchangeDiaryProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_exchange_diary_add.*
 import java.io.File
 import java.io.IOException
@@ -43,7 +44,12 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListener {
+class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_product_exchange_diary_add, container, false)
+    }
+
     override fun onLocationChanged(location: Location?) {
         lat = location?.latitude ?: 0.0
         lng = location?.longitude ?: 0.0
@@ -77,10 +83,13 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
         const val TAG = "ProductExchangeDiary"
         const val PERMISSIONS_REQUEST_CAMERA = 100
         const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
-    }
 
-    override fun contentLayoutRes(): Int {
-        return R.layout.fragment_product_exchange_diary_add
+        fun newInstance(params: Bundle): ProductExchangeDiaryAddFragment {
+            val fragment = ProductExchangeDiaryAddFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -111,7 +120,7 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
                 }
             }
         }
-        setupToolbars()
+
         view_add_images.setOnClickListener {
             launchPickPhotoIntent()
         }
@@ -317,15 +326,6 @@ class ProductExchangeDiaryAddFragment : BaseActionBarFragment(), LocationListene
                 }
             }
         }
-    }
-
-    private fun setupToolbars() {
-        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
-        toolbar.setLeftButtonClickListener {
-            activity?.onBackPressed()
-        }
-
-        toolbar.setCustomTitle("Thêm nhật ký giao dịch")
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

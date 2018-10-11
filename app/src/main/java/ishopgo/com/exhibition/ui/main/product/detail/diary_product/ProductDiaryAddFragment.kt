@@ -15,7 +15,9 @@ import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.GridLayoutManager
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -23,6 +25,7 @@ import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
+import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
@@ -34,7 +37,12 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_diary_add.*
 
-class ProductDiaryAddFragment : BaseActionBarFragment(), LocationListener {
+class ProductDiaryAddFragment : BaseFragment(), LocationListener {
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_product_diary_add, container, false)
+    }
+
     override fun onLocationChanged(location: Location?) {
         lat = location?.latitude ?: 0.0
         lng = location?.longitude ?: 0.0
@@ -53,6 +61,13 @@ class ProductDiaryAddFragment : BaseActionBarFragment(), LocationListener {
     companion object {
         const val TAG = "ProductDiaryAddFragment"
         const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
+
+        fun newInstance(params: Bundle): ProductDiaryAddFragment {
+            val fragment = ProductDiaryAddFragment()
+            fragment.arguments = params
+
+            return fragment
+        }
     }
 
     private var data = ProductDetail()
@@ -63,10 +78,6 @@ class ProductDiaryAddFragment : BaseActionBarFragment(), LocationListener {
     private var lat: Double = 0.0
     private var lng: Double = 0.0
     private var locationManager: LocationManager? = null
-
-    override fun contentLayoutRes(): Int {
-        return R.layout.fragment_product_diary_add
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,7 +108,6 @@ class ProductDiaryAddFragment : BaseActionBarFragment(), LocationListener {
             }
         }
 
-        setupToolbars()
         tv_add_image.setOnClickListener { launchPickPhotoIntent() }
 
         btn_add_diary.setOnClickListener {
@@ -249,15 +259,6 @@ class ProductDiaryAddFragment : BaseActionBarFragment(), LocationListener {
             }
             adapterImages.replaceAll(postMedias)
         }
-    }
-
-    private fun setupToolbars() {
-        toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
-        toolbar.setLeftButtonClickListener {
-            activity?.onBackPressed()
-        }
-
-        toolbar.setCustomTitle("Thêm nhật ký sản xuất")
     }
 
     @SuppressLint("MissingPermission")

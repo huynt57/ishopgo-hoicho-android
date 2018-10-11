@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_tab_layout"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/view_tab_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/colorPrimaryDark"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="@color/colorPrimaryDark">
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_Diary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhật ký sản xuất" />
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/tab_ExchangeDiary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhật ký giao dịch" />
+
+    </android.support.design.widget.TabLayout>
+
+</android.support.constraint.ConstraintLayout>
