@@ -18,6 +18,9 @@ class ProductDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_detail)
+
+        val viewModelDiary = obtainViewModel(DiaryProductViewModel::class.java)
+        viewModelDiary.openDiaryTabFragment(true)
     }
 
     override fun requireInput(): List<String> {

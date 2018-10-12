@@ -179,6 +179,7 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModelDiary = obtainViewModel(DiaryProductViewModel::class.java, true)
+        viewModelDiary.openDiaryTabFragment(false)
         viewModel = obtainViewModel(ProductDetailViewModel::class.java, false)
         viewModel.errorSignal.observe(this, Observer { error ->
             error?.let {

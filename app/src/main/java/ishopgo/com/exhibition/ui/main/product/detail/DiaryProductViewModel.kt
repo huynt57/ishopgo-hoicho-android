@@ -11,4 +11,9 @@ class DiaryProductViewModel : BaseApiViewModel() {
         isSusscess.postValue(true)
     }
 
+    var showDiaryTabFragment = MutableLiveData<Boolean>()
+
+    fun openDiaryTabFragment(status: Boolean) {
+        showDiaryTabFragment.postValue(status)
+    }
 }

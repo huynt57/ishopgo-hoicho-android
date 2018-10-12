@@ -60,7 +60,6 @@ import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_product_info.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
-import kotlinx.android.synthetic.main.item_community_share.*
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
@@ -209,8 +208,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             }
         })
         viewModel.detail.observe(this, Observer { d ->
-            d?.let {
-                showProductDetail(it)
+            d?.let { productDetail ->
+                showProductDetail(productDetail)
+                viewModelDiary.showDiaryTabFragment.observe(this, Observer { p ->
+                    p?.let {
+                        if (it) {
+                            if (stampType.isNotEmpty()) showDiaryTabFragment(productDetail)
+                        }
+                    }
+                })
             }
         })
         viewModel.sameShopProducts.observe(this, Observer { p ->
@@ -427,12 +433,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     }
 
                 adapterExchangeDiary.replaceAll(listExchangeDiary)
-                if (listExchangeDiary.size > 0 && stampCode.isNotEmpty() && stampId.isNotEmpty()) {
+                if ((listExchangeDiary.size > 0 && stampCode.isNotEmpty() && stampId.isNotEmpty()) || stampType.isNotEmpty()) {
                     container_exchange_diary.visibility = View.VISIBLE
                 }
-            } else if (stampCode.isNotEmpty() && stampId.isNotEmpty()) {
-                container_exchange_diary.visibility = View.VISIBLE
-            }
+
+            } else if (stampType.isNotEmpty()) container_exchange_diary.visibility = View.VISIBLE
+            else
+                if (stampCode.isNotEmpty() && stampId.isNotEmpty()) {
+                    container_exchange_diary.visibility = View.GONE
+                }
 
             view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
@@ -580,44 +589,43 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_show_more_diary.setOnClickListener { showDiary(product) }
 
             } else container_diary.visibility = View.GONE
+            if (stampType.isNotEmpty()) {
 
-//                    showDiaryTabFragment(product)
-
-            if (UserDataManager.currentType == "Quản trị viên") {
-                val listPermission = Const.listPermission
-                if (listPermission.isNotEmpty())
-                    for (i in listPermission.indices)
-                        if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
-                            view_add_exchange_diary.visibility = View.VISIBLE
-                            break
-                        }
-            } else view_add_exchange_diary.visibility = View.GONE
+                if (UserDataManager.currentType == "Quản trị viên") {
+                    val listPermission = Const.listPermission
+                    if (listPermission.isNotEmpty())
+                        for (i in listPermission.indices)
+                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
+                                view_add_exchange_diary.visibility = View.VISIBLE
+                                break
+                            }
+                } else view_add_exchange_diary.visibility = View.GONE
 
 
-            if (UserDataManager.currentUserId == product.booth?.id || UserDataManager.currentType == "Chủ hội chợ") {
-                isViewDiary = true
-                view_add_exchange_diary.visibility = View.VISIBLE
-            } else {
-                isViewDiary = false
-                view_add_exchange_diary.visibility = View.GONE
+                if (UserDataManager.currentUserId == product.booth?.id || UserDataManager.currentType == "Chủ hội chợ") {
+                    isViewDiary = true
+                    view_add_exchange_diary.visibility = View.VISIBLE
+                } else {
+                    isViewDiary = false
+                    view_add_exchange_diary.visibility = View.GONE
+                }
+
+                view_add_exchange_diary.setOnClickListener { showAddExchangeDiary(product) }
+                view_product_show_more_exchange_diary.setOnClickListener { showExchangeDiary(product) }
             }
-
-            view_add_exchange_diary.setOnClickListener { showAddExchangeDiary(product) }
-            view_product_show_more_exchange_diary.setOnClickListener { showExchangeDiary(product) }
-
             openProductSalePoint(product)
 
             floatQrCode.setOnClickListener {
                 showQrCodeProduct(product)
             }
 
-            convert.providerBooth()?.let {
-                val convertShop = ConverterShop().convert(it)
+            convert.providerBooth()?.let { booth ->
+                val convertShop = ConverterShop().convert(booth)
 
                 view_shop_name.text = convertShop.provideName()
                 view_product_count.text = convertShop.provideProductCount()
                 view_shop_rating.text = convertShop.provideRatingPoint()
-                tv_shop_phone.setPhone(convertShop.provideHotline(), it.hotline ?: "")
+                tv_shop_phone.setPhone(convertShop.provideHotline(), booth.hotline ?: "")
                 tv_shop_address.text = convertShop.provideAddress()
 
                 view_shop_detail.setOnClickListener {

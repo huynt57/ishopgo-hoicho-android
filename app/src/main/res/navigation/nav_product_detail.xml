@@ -19,7 +19,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment"/>
+            app:popUpTo="@+id/productDetailFragmentActionBar"/>
         <action
             android:id="@+id/action_productDetailFragmentActionBar_self"
             app:destination="@id/productDetailFragmentActionBar"
@@ -27,7 +27,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment"/>
+            app:popUpTo="@+id/productDetailFragmentActionBar"/>
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productProcessFragment"
             app:destination="@id/productProcessFragment"
@@ -35,7 +35,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment"/>
+            app:popUpTo="@+id/productDetailFragmentActionBar"/>
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_qrCodeProductFragment"
             app:destination="@id/qrCodeProductFragment"
@@ -43,7 +43,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment" />
+            app:popUpTo="@+id/productDetailFragmentActionBar" />
 
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productDiaryFragment"
@@ -52,7 +52,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment" />
+            app:popUpTo="@+id/productDetailFragmentActionBar" />
 
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productDiaryAddFragmentActionBar"
@@ -61,7 +61,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment" />
+            app:popUpTo="@+id/productDetailFragmentActionBar" />
 
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productExchangeDiaryAddFragmentActionBar"
@@ -70,7 +70,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment" />
+            app:popUpTo="@+id/productDetailFragmentActionBar" />
 
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_productExchangeDiaryFragment"
@@ -79,7 +79,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment" />
+            app:popUpTo="@+id/productDetailFragmentActionBar" />
 
         <action
             android:id="@+id/action_productDetailFragmentActionBar_to_diaryTabFragment"
@@ -88,7 +88,7 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_pop_right_to_left_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/expoDetailFragment" />
+            app:popUpTo="@+id/productDetailFragmentActionBar" />
     </fragment>
 
 
