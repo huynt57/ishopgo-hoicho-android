@@ -23,50 +23,56 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
         return R.layout.fragment_single_content
     }
 
-    private var productId = -1L
-    private var stampCode = ""
-    private var stampId = ""
-    private var stampType = ""
-    private var stampScan = false
+    private var productScreen = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbars()
 
-        productId = if (arguments?.containsKey(Const.TransferKey.EXTRA_ID) == true) {
+        val productId = if (arguments?.containsKey(Const.TransferKey.EXTRA_ID) == true) {
             // click another product in product detail screen
+            productScreen = true
             arguments!!.getLong(Const.TransferKey.EXTRA_ID)
         } else {
+            productScreen = false
             requireActivity().intent.getLongExtra(Const.TransferKey.EXTRA_ID, -1L)
         }
 
-        stampCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_CODE) == true) {
+        val stampCode = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_CODE) == true) {
             // click another product in product detail screen
             arguments!!.getString(Const.TransferKey.EXTRA_STAMP_CODE)
         } else {
+            if (!productScreen)
             requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_CODE)
+            else ""
         }
 
-        stampId = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_ID) == true) {
+        val stampId = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_ID) == true) {
             // click another product in product detail screen
             arguments!!.getString(Const.TransferKey.EXTRA_STAMP_ID)
         } else {
-            requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_ID)
+            if (!productScreen)
+                requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_ID)
+            else ""
         }
 
-        stampType = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_TYPE) == true) {
+        val stampType = if (arguments?.containsKey(Const.TransferKey.EXTRA_STAMP_TYPE) == true) {
             // click another product in product detail screen
             arguments!!.getString(Const.TransferKey.EXTRA_STAMP_TYPE)
         } else {
-            requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_TYPE)
+            if (!productScreen)
+                requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_STAMP_TYPE)
+            else ""
         }
 
-        stampScan = if (arguments?.containsKey(Const.TransferKey.EXTRA_SCAN_PRODUCT) == true) {
+        val stampScan = if (arguments?.containsKey(Const.TransferKey.EXTRA_SCAN_PRODUCT) == true) {
             // click another product in product detail screen
             arguments!!.getBoolean(Const.TransferKey.EXTRA_SCAN_PRODUCT)
         } else {
-            requireActivity().intent.getBooleanExtra(Const.TransferKey.EXTRA_SCAN_PRODUCT, false)
+            if (!productScreen)
+                requireActivity().intent.getBooleanExtra(Const.TransferKey.EXTRA_SCAN_PRODUCT, false)
+            else false
         }
 
         val extra = Bundle()
@@ -86,7 +92,7 @@ class ProductDetailFragmentActionBar : BaseActionBarFragment() {
         toolbar.setCustomTitle("Chi tiết sản phẩm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener {
-            activity?.finish()
+            activity?.onBackPressed()
         }
     }
 

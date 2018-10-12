@@ -49,11 +49,12 @@
             android:id="@+id/const_vertify"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
             android:layout_marginTop="8dp"
+            android:visibility="gone"
             tools:visibility="visible">
 
             <View
+                android:id="@+id/view8"
                 style="@style/AppTheme.DividerLine"
                 android:layout_width="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +69,8 @@
                 app:cardBackgroundColor="@color/colorPrimaryDark"
                 app:cardCornerRadius="5dp"
                 app:cardUseCompatPadding="true"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -90,17 +92,38 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                </android.support.constraint.ConstraintLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView_not_vertify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_cardview_border"
+                android:visibility="gone"
+                app:cardBackgroundColor="@color/md_white_1000"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_vertify"
+                tools:ignore="MissingConstraints">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
                     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
                         android:id="@+id/tv_not_vertify"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:padding="8dp"
-                        android:text="Sản phẩm không phải là hàng chính hãng"
-                        android:textColor="@color/md_white_1000"
+                        android:text="Mã tem này đã có rất nhiều người quét và vượt quá số lượng cảnh báo nên vui lòng cảm giác khi mua hàng. Cảm ơn bạn!"
+                        android:textColor="@color/md_red_500"
                         android:textStyle="bold"
-                        android:visibility="gone"
-                        app:drawableTopCompat="@drawable/ic_cancel_white_24dp"
+                        app:drawableTopCompat="@drawable/ic_warning_red_24dp"
                         app:drawableTopSquareSize="42dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -122,10 +145,11 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/cardView_vertify"
+                app:layout_constraintTop_toBottomOf="@+id/cardView_not_vertify"
                 tools:text="SERIAL: ABCDE" />
 
             <View
+                android:id="@+id/view9"
                 style="@style/AppTheme.DividerLine"
                 android:layout_width="match_parent"
                 android:layout_marginTop="-1dp"

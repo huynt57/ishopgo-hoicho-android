@@ -339,12 +339,12 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 val stamp = convert.providerStamp()!!
                 const_vertify.visibility = View.VISIBLE
                 if (stamp.isFake == true) {
-                    tv_not_vertify.visibility = View.VISIBLE
-                    tv_vertify.visibility = View.GONE
+                    cardView_not_vertify.visibility = View.VISIBLE
+                    cardView_vertify.visibility = View.GONE
 
                 } else {
-                    tv_vertify.visibility = View.VISIBLE
-                    tv_not_vertify.visibility = View.GONE
+                    cardView_vertify.visibility = View.VISIBLE
+                    cardView_not_vertify.visibility = View.GONE
                 }
 
                 if (stamp.code?.isNotEmpty() == true)
