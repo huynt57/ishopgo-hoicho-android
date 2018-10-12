@@ -31,6 +31,7 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
     var shopImage = MutableLiveData<String>()
     var shopFollow = MutableLiveData<Boolean>()
     var shopId = MutableLiveData<Long>()
+    var productCount = MutableLiveData<Int>()
     var qrCode = MutableLiveData<ShopDetail>()
 
     override fun inject(appComponent: AppComponent) {
@@ -43,6 +44,10 @@ class ShopDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
         shopFollow.postValue(follow)
         shopSDT.postValue(sdt)
         this.qrCode.postValue(qrCode)
+    }
+
+    fun updateProductCount(count : Int){
+        productCount.postValue(count)
     }
 
     var editSusscess = MutableLiveData<Boolean>()

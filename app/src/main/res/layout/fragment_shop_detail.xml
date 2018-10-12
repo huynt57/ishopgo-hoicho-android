@@ -164,6 +164,18 @@
             app:drawableTopCompat="@drawable/ic_phone_highlight_24dp" />
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_shop_productCount"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="0 sản phẩm"
+            app:drawableTopCompat="@drawable/ic_shopping_cart_default_24dp" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:id="@+id/view_shop_message"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -172,7 +184,7 @@
             android:gravity="center"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
-            android:text="Nhắn tin"
+            android:text="Nhắc hỏi mua"
             app:drawableTopCompat="@drawable/ic_comment_highlight_24dp" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

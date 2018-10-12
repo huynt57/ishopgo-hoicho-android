@@ -13,15 +13,20 @@ import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
 import ishopgo.com.exhibition.ui.base.widget.Converter
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.asMoney
-import kotlinx.android.synthetic.main.item_product_grid.view.*
+import kotlinx.android.synthetic.main.item_product_booth_grid.view.*
 
-class ProducBoothAdapter (private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<Product>() {
+class ProducBoothAdapter(private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<Product>() {
+
+    companion object {
+        const val CLICK_ITEMVIEW = 1
+        const val CLICK_ADD_PRODUCT = 2
+    }
 
     private var screenWidth: Int = UserDataManager.displayWidth
     private var screenHeight: Int = UserDataManager.displayHeight
 
     override fun getChildLayoutResource(viewType: Int): Int {
-        return R.layout.item_product_grid
+        return R.layout.item_product_booth_grid
     }
 
     override fun createHolder(v: View, viewType: Int): ViewHolder<Product> {
@@ -43,7 +48,14 @@ class ProducBoothAdapter (private var itemWidthRatio: Float = -1f, private var i
             val adapterPosition = holder.adapterPosition
             if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
 
-            listener?.click(adapterPosition, getItem(adapterPosition))
+            listener?.click(adapterPosition, getItem(adapterPosition), CLICK_ITEMVIEW)
+        }
+
+        holder.itemView.iv_addProduct.setOnClickListener {
+            val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+
+            listener?.click(adapterPosition, getItem(adapterPosition), CLICK_ADD_PRODUCT)
         }
     }
 

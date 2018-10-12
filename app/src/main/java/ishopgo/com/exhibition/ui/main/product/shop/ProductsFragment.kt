@@ -94,7 +94,7 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
     }
 
     override fun itemAdapter(): BaseRecyclerViewAdapter<Product> {
-        return ProductAdapter()
+        return ProducBoothAdapter()
     }
 
     override fun firstLoad() {

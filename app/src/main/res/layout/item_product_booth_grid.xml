@@ -24,11 +24,12 @@
         tools:src="@tools:sample/avatars" />
 
     <ImageView
+        android:id="@+id/iv_addProduct"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@color/colorPureWhite"
+        android:background="@color/md_grey_300"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/ic_product_booth_add" />

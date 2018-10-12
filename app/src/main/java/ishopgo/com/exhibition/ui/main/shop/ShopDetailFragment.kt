@@ -140,6 +140,12 @@ class ShopDetailFragment : BaseFragment() {
             }
         })
 
+        viewModel.productCount.observe(this, Observer { i ->
+            i?.let {
+                view_shop_productCount.text = "$it sản phẩm"
+            }
+        })
+
         viewModel.shopId.observe(this, Observer { i ->
             i?.let {
                 boothId = it
