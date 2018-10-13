@@ -58,7 +58,7 @@ class ListScanStampAdapter : ClickableAdapter<StampUserListScan>() {
                 }
 
                 override fun provideSDT(): CharSequence {
-                    return "Số điện thoại: ${from.accountPhone ?: ""}"
+                    return from.accountPhone ?: ""
                 }
 
                 override fun provideEmail(): CharSequence {

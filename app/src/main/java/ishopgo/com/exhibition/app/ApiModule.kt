@@ -98,8 +98,8 @@ class ApiModule {
         return Interceptor { chain ->
             val original = chain.request()
 
-            val auth = if (original.url().host().toLowerCase().startsWith("https://ishopgo.icheck.com.vn")
-                    || original.url().host().contains("https://core.icheck.com.vn")
+            val auth = if (original.url().host().contains("ishopgo.icheck.com.vn")
+                    || original.url().host().contains("core.icheck.com.vn")
                     || original.url().host().contains("gateway.icheck.com.vn")) {
                 Credentials.basic("ishopgo", "iShopgo@2017!@#")
             } else "Bearer" + UserDataManager.accessToken
