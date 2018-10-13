@@ -32,7 +32,19 @@
         android:background="@color/md_grey_300"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@drawable/ic_product_booth_add" />
+        app:srcCompat="@drawable/ic_product_booth_add" />
+
+    <ImageView
+        android:id="@+id/iv_deleteProduct"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/md_grey_300"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_product_booth_delete"
+        android:visibility="gone"/>
 
     <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
         android:id="@+id/view_discount"

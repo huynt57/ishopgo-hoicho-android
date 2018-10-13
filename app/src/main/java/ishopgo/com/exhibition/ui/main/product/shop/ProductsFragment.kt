@@ -26,8 +26,8 @@ import ishopgo.com.exhibition.ui.base.list.BaseListFragment
 import ishopgo.com.exhibition.ui.base.list.BaseListViewModel
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
 import ishopgo.com.exhibition.ui.base.widget.BaseRecyclerViewAdapter
-import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.main.shop.ShopDetailViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
@@ -55,8 +55,9 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
         const val SORT_BY_ASC = "asc"
         const val SORT_BY_DESC = "desc"
 
-        const val TYPE_PARENT = 1
-        const val TYPE_CHILD = 2
+        const val CLICK_ITEMVIEW = 0
+        const val CLICK_ADD_PRODUCT = 1
+        const val CLICK_DELETE_PRODUCT = 2
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -67,6 +68,8 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
     private var categoryId: Long = 0
     private var sortValue: String = ""
     private var sortBy: String = ""
+    private lateinit var shopViewModel: ShopDetailViewModel
+    private var listProduct = mutableListOf<Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -145,11 +148,25 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
         if (adapter is ClickableAdapter<Product>)
             (adapter as ClickableAdapter<Product>).listener = object : ClickableAdapter.BaseAdapterAction<Product> {
                 override fun click(position: Int, data: Product, code: Int) {
-                    context?.let {
-                        val intent = Intent(it, ProductDetailActivity::class.java)
-                        intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
-                        startActivity(intent)
+                    when (code) {
+                        CLICK_ITEMVIEW -> {
+                            context?.let {
+                                val intent = Intent(it, ProductDetailActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                                startActivity(intent)
+                            }
+                        }
+                        CLICK_ADD_PRODUCT -> {
+                            listProduct.add(data)
+                            shopViewModel.updateProductCount(listProduct.size)
+                        }
+
+                        CLICK_DELETE_PRODUCT -> {
+                            listProduct.remove(data)
+                            shopViewModel.updateProductCount(listProduct.size)
+                        }
                     }
+
                 }
             }
         view_recyclerview.layoutAnimation = AnimationUtils.loadLayoutAnimation(view.context, R.anim.grid_layout_animation_from_bottom)
@@ -255,6 +272,9 @@ class ProductsFragment : BaseListFragment<List<Product>, Product>() {
                 adapterCategory.addData(0, category)
             }
         })
+
+        shopViewModel = obtainViewModel(ShopDetailViewModel::class.java, true)
+
         firstLoadBoothCategory()
     }
 

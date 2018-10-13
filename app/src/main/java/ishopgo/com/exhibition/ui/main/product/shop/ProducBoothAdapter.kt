@@ -18,8 +18,9 @@ import kotlinx.android.synthetic.main.item_product_booth_grid.view.*
 class ProducBoothAdapter(private var itemWidthRatio: Float = -1f, private var itemHeightRatio: Float = -1F) : ClickableAdapter<Product>() {
 
     companion object {
-        const val CLICK_ITEMVIEW = 1
-        const val CLICK_ADD_PRODUCT = 2
+        const val CLICK_ITEMVIEW = 0
+        const val CLICK_ADD_PRODUCT = 1
+        const val CLICK_DELETE_PRODUCT = 2
     }
 
     private var screenWidth: Int = UserDataManager.displayWidth
@@ -54,8 +55,17 @@ class ProducBoothAdapter(private var itemWidthRatio: Float = -1f, private var it
         holder.itemView.iv_addProduct.setOnClickListener {
             val adapterPosition = holder.adapterPosition
             if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
-
+            holder.itemView.iv_addProduct.visibility = View.GONE
+            holder.itemView.iv_deleteProduct.visibility = View.VISIBLE
             listener?.click(adapterPosition, getItem(adapterPosition), CLICK_ADD_PRODUCT)
+        }
+
+        holder.itemView.iv_deleteProduct.setOnClickListener {
+            val adapterPosition = holder.adapterPosition
+            if (adapterPosition == RecyclerView.NO_POSITION) return@setOnClickListener
+            holder.itemView.iv_addProduct.visibility = View.VISIBLE
+            holder.itemView.iv_deleteProduct.visibility = View.GONE
+            listener?.click(adapterPosition, getItem(adapterPosition), CLICK_DELETE_PRODUCT)
         }
     }
 
