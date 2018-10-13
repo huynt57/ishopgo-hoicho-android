@@ -9,4 +9,5 @@ class CategoriedProductsRequest : FilterProductRequest() {
 
     var categoryId: Long = -1L
     var city: String = ""
+    var district: String = ""
 }

@@ -19,6 +19,7 @@ import ishopgo.com.exhibition.domain.request.CategoriedProductsRequest
 import ishopgo.com.exhibition.domain.response.Category
 import ishopgo.com.exhibition.domain.response.Product
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.District
 import ishopgo.com.exhibition.model.FilterProduct
 import ishopgo.com.exhibition.model.Region
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
@@ -29,6 +30,7 @@ import ishopgo.com.exhibition.ui.login.RegionAdapter
 import ishopgo.com.exhibition.ui.main.MainViewModel
 import ishopgo.com.exhibition.ui.main.product.ProductAdapter
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
+import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
@@ -66,7 +68,9 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
     private lateinit var filterViewModel: FilterProductViewModel
     private var filterProduct = FilterProduct()
     private val adapterRegion = RegionAdapter()
+    private val adapterDistrict = DistrictAdapter()
     private var city = ""
+    private var district = ""
     private var categoryId = -1L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -254,6 +258,15 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
             }
         })
 
+        viewModel.loadDistrict.observe(this, Observer { p ->
+            p?.let {
+                val district = District()
+                district.name = "Tất cả quận huyện"
+                it.add(0, district)
+                adapterDistrict.replaceAll(it)
+            }
+        })
+
         viewModel.loadChildCategory(category)
         viewModel.loadRegion()
     }
@@ -267,7 +280,11 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
         request.limit = Const.PAGE_LIMIT
         request.offset = 0
         request.categoryId = category.id
-        request.city = city
+        if (city.isNotEmpty())
+            request.city = city
+        if (district.isNotEmpty())
+            request.district = district
+
         request.sort_by = filterProduct.sort_by
         request.sort_type = filterProduct.sort_type
         request.type_filter = filterProduct.filter ?: mutableListOf()
@@ -281,7 +298,10 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
         request.limit = Const.PAGE_LIMIT
         request.offset = currentCount
         request.categoryId = category.id
-        request.city = city
+        if (city.isNotEmpty())
+            request.city = city
+        if (district.isNotEmpty())
+            request.district = district
         request.sort_by = filterProduct.sort_by
         request.sort_type = filterProduct.sort_type
         request.type_filter = filterProduct.filter ?: mutableListOf()
@@ -314,13 +334,55 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
                 override fun click(position: Int, data: Region, code: Int) {
                     context?.let {
                         dialog.dismiss()
-                        city = if (position == 0) "" else data.name
-                        firstLoad()
-//                        data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
-//                        booth_district.visibility = View.VISIBLE
-                        view.text = data.name
+                        if (position == 0) {
+                            city = ""
+                            district = ""
+                            view.text = data.name
+                            firstLoad()
+                        } else {
+                            data.provinceid?.let { it1 -> viewModel.loadDistrict(it1) }
+                            getDistrict(view, data.name)
+                        }
+
                         view.error = null
                     }
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getDistrict(view: TextView, parentName: String) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn quận huyện")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edt_search.visibility = View.GONE
+
+            rv_search.layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+
+            rv_search.adapter = adapterDistrict
+            adapterDistrict.listener = object : ClickableAdapter.BaseAdapterAction<District> {
+                override fun click(position: Int, data: District, code: Int) {
+                    dialog.dismiss()
+                    if (position == 0) {
+                        view.text = parentName
+                        city = parentName
+                        firstLoad()
+                    } else {
+                        district = data.name ?: ""
+                        view.text = data.name
+                        firstLoad()
+                    }
+                    view.error = null
                 }
             }
             dialog.show()
