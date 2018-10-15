@@ -45,22 +45,9 @@ import ishopgo.com.exhibition.ui.main.product.newest.NewestProductsActivity
 import ishopgo.com.exhibition.ui.main.product.promotion.PromotionProductsActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import kotlinx.android.synthetic.main.fragment_home.*
-import android.opengl.ETC1.getHeight
-import android.view.ViewTreeObserver
-import com.google.android.youtube.player.internal.i
-import android.support.v4.widget.NestedScrollView
-import android.opengl.ETC1.getHeight
-import android.util.Log
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getHeight
-import android.view.animation.TranslateAnimation
-import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
-import android.support.v4.view.ViewCompat.animate
-import android.support.v4.view.ViewPropertyAnimatorListener
-import com.bumptech.glide.request.transition.ViewPropertyTransition
+import ishopgo.com.exhibition.ui.main.home.expo_fair.ExpoFairHomeFragment
 import ishopgo.com.exhibition.ui.main.registerbooth.RegisterBoothActivity
-import android.opengl.ETC1.getHeight
 
 
 /**
@@ -70,7 +57,6 @@ class HomeFragment : BaseFragment() {
 
     companion object {
         private const val CHANGE_BANNER_PERIOD = 3000L
-        const val TYPE_CURRENT = 0
         const val TYPE_GOING = 1
     }
 
@@ -88,6 +74,7 @@ class HomeFragment : BaseFragment() {
     private val latestNewsAdapter = LatestPostsAdapter(0.6f)
     private val categoriesAdapter = CategoryAdapter()
     private var mPagerAdapter: FragmentPagerAdapter? = null
+    private var mPagerExpoFairAdapter: FragmentPagerAdapter? = null
     private var animationSettingUp = false
     private var changePage = Runnable {
         if (view_banner_pager != null) {
@@ -97,11 +84,28 @@ class HomeFragment : BaseFragment() {
 
             doChangeBanner()
         }
+
+        if (view_expo_fair_pager != null) {
+            val currentItem = view_expo_fair_pager.currentItem
+            val nextItem = (currentItem + 1) % (mPagerExpoFairAdapter?.count ?: 1)
+            view_expo_fair_pager.setCurrentItem(nextItem, nextItem != 0)
+
+            doChangeExpoFair()
+        }
     }
 
     private fun doChangeBanner() {
         if (mPagerAdapter?.count ?: 1 > 1) {
             view_banner_pager.handler?.let {
+                it.removeCallbacks(changePage)
+                it.postDelayed(changePage, CHANGE_BANNER_PERIOD)
+            }
+        }
+    }
+
+    private fun doChangeExpoFair() {
+        if (mPagerExpoFairAdapter?.count ?: 1 > 1) {
+            view_expo_fair_pager.handler?.let {
                 it.removeCallbacks(changePage)
                 it.postDelayed(changePage, CHANGE_BANNER_PERIOD)
             }
@@ -193,9 +197,8 @@ class HomeFragment : BaseFragment() {
         viewModel.exposFair.observe(this, Observer { p ->
             p?.let {
                 if (it.isNotEmpty()) {
-                    val listExpoConfig = mutableListOf<ExpoConfig>()
-                    listExpoConfig.add(it[0])
-                    expoConfigAdapter.replaceAll(listExpoConfig)
+                    setupExpoFair(it as MutableList<ExpoConfig>)
+//                    expoConfigAdapter.replaceAll(listExpoConfig)
                     container_expo.visibility = View.VISIBLE
                 } else {
                     container_expo.visibility = View.GONE
@@ -225,6 +228,10 @@ class HomeFragment : BaseFragment() {
 
         if (view_banner_pager != null) {
             view_banner_pager.handler?.removeCallbacks(changePage)
+        }
+
+        if (view_expo_fair_pager != null) {
+            view_expo_fair_pager.handler?.removeCallbacks(changePage)
         }
     }
 
@@ -267,7 +274,6 @@ class HomeFragment : BaseFragment() {
         setupFavoriteProducts(context)
         setupNewestProducts(context)
         setupPromotionProducts(context)
-        setupExpoFair(context)
         setupListeners()
 
         if ((UserDataManager.currentUserId != 0L && UserDataManager.currentType.isEmpty()) || UserDataManager.currentType == "Thành viên")
@@ -606,29 +612,51 @@ class HomeFragment : BaseFragment() {
         view_list_newest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
-    private fun setupExpoFair(context: Context) {
+    private fun setupExpoFair(listExpo : MutableList<ExpoConfig>) {
         // dummy product
-        val dummy = mutableListOf<ExpoConfig>()
-        val element = ExpoConfig()
-        element.id = -1L
-        dummy.add(element)
-        expoConfigAdapter.addAll(dummy)
+//        val dummy = mutableListOf<ExpoConfig>()
+//        val element = ExpoConfig()
+//        element.id = -1L
+//        dummy.add(element)
+        if (view_expo_fair_pager != null) {
+            mPagerExpoFairAdapter = object : FragmentPagerAdapter(childFragmentManager) {
 
-        expoConfigAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoConfig> {
-            override fun click(position: Int, data: ExpoConfig, code: Int) {
-                if (data.id != -1L) {
-                    val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
-                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
-                    startActivity(intent)
+                override fun getItem(position: Int): Fragment {
+                    val params = Bundle()
+                    params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(listExpo[position]))
+                    return ExpoFairHomeFragment.newInstance(params)
                 }
+
+                override fun getCount(): Int {
+                    return listExpo.size
+                }
+            }
+            view_expo_fair_pager.offscreenPageLimit = listExpo.size
+            view_expo_fair_pager.adapter = mPagerExpoFairAdapter
+            view_expo_fair_indicator.setViewPager(view_banner_pager)
+
+            view_expo_fair_pager.post {
+                doChangeExpoFair()
             }
         }
 
-        view_list_expo_fair.adapter = expoConfigAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        view_list_expo_fair.layoutManager = layoutManager
-        view_list_expo_fair.isNestedScrollingEnabled = false
-        view_list_expo_fair.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
+//        expoConfigAdapter.addAll(dummy)
+
+//        expoConfigAdapter.listener = object : ClickableAdapter.BaseAdapterAction<ExpoConfig> {
+//            override fun click(position: Int, data: ExpoConfig, code: Int) {
+//                if (data.id != -1L) {
+//                    val intent = Intent(requireContext(), ExpoDetailActivity::class.java)
+//                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+//                    startActivity(intent)
+//                }
+//            }
+//        }
+
+//        view_list_expo_fair.adapter = expoConfigAdapter
+//        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+//        view_list_expo_fair.layoutManager = layoutManager
+//        view_list_expo_fair.isNestedScrollingEnabled = false
+//        view_list_expo_fair.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
     private fun setupPromotionProducts(context: Context) {

@@ -133,28 +133,34 @@ class ExpoInfoFragment : BaseFragment() {
             view_webview.loadData(fullHtml, "text/html; charset=UTF-8", null)
         }
 
-        view_webview.setOnTouchListener { v, event -> event.action == MotionEvent.ACTION_MOVE }
+
+
+//        view_webview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+//            if (scrollX == 0 && scrollY == 0)
+//                constraintLayout.visibility = View.VISIBLE
+//            else constraintLayout.visibility = View.GONE
+//        }
 
         view_webview.settings.javaScriptEnabled = true
-        view_webview.webChromeClient = object : WebChromeClient() {
-            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-                super.onProgressChanged(view, newProgress)
-                if (progressBar != null) {
-                    if (newProgress == 100) {
-                        progressBar.visibility = View.GONE
-                    } else if (newProgress < 100) {
-                        progressBar.visibility = View.VISIBLE
-                        progressBar.progress = newProgress
-                    }
-                }
-            }
-        }
+//        view_webview.webChromeClient = object : WebChromeClient() {
+//            override fun onProgressChanged(view: WebView?, newProgress: Int) {
+//                super.onProgressChanged(view, newProgress)
+//                if (progressBar != null) {
+//                    if (newProgress == 100) {
+//                        progressBar.visibility = View.GONE
+//                    } else if (newProgress < 100) {
+//                        progressBar.visibility = View.VISIBLE
+//                        progressBar.progress = newProgress
+//                    }
+//                }
+//            }
+//        }
 
-        view_show_more_description.setOnClickListener {
-            val intent = Intent(context, FullDetailActivity::class.java)
-            intent.putExtra(Const.TransferKey.EXTRA_JSON, expoInfo?.description ?: "")
-            startActivity(intent)
-        }
+//        view_show_more_description.setOnClickListener {
+//            val intent = Intent(context, FullDetailActivity::class.java)
+//            intent.putExtra(Const.TransferKey.EXTRA_JSON, expoInfo?.description ?: "")
+//            startActivity(intent)
+//        }
     }
 
     private fun startWithId(fairId: Long) {
