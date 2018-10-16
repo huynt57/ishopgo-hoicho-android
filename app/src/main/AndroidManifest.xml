@@ -33,6 +33,9 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPureWhite" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/app_map_key"/>
 
         <service android:name=".service.FcmService">
             <intent-filter>

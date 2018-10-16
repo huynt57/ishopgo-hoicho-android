@@ -189,6 +189,9 @@ class ApiService {
 
         @GET("expo/get-config-footer")
         fun getConfigFooter(): Single<BaseResponse<String>>
+
+        @GET("expo/get-scientific-councils")
+        fun getScuentificCouncils(): Single<BaseResponse<ScuentificCouncils>>
     }
 
     interface Auth {
@@ -418,7 +421,10 @@ class ApiService {
         @GET("expo/stamp/list")
         fun loadNoStamp(@QueryMap fields: MutableMap<String, Any>): Single<BaseResponse<List<StampNoList>>>
 
-        @GET("expo/stamp/{id}/edit")
+//        @GET("expo/stamp/{id}/edit")
+//        fun getNoStampDetail(@Path("id") id: Long): Single<BaseResponse<StampNoDetail>>
+
+        @GET("expo/stamp/assign/{id}/show")
         fun getNoStampDetail(@Path("id") id: Long): Single<BaseResponse<StampNoDetail>>
 
         @GET("expo/stamp/create")

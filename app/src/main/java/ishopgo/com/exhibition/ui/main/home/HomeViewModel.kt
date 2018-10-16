@@ -74,6 +74,28 @@ class HomeViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     }
 
+    var scuentificCouncils = MutableLiveData<MutableList<ScuentificCouncils.Advisor>>()
+
+    fun loadScuentificCouncils() {
+        addDisposable(noAuthService.getScuentificCouncils()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<ScuentificCouncils>() {
+                    override fun success(data: ScuentificCouncils?) {
+                        data?.let {
+                            scuentificCouncils.postValue(it.advisors
+                                    ?: mutableListOf())
+                        }
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+                })
+        )
+
+    }
+
     var highlightProducts = MutableLiveData<List<Product>>()
 
     fun loadHighlightProducts() {

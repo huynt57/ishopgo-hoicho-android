@@ -38,4 +38,37 @@ class StampNoDetail : IdentityData() {
     @SerializedName("updated_at")
     @Expose
     var updatedAt: String? = null
+    @SerializedName("code")
+    @Expose
+    var code: String? = null
+    @SerializedName("account_phone")
+    @Expose
+    var accountPhone: String? = null
+    @SerializedName("account_name")
+    @Expose
+    var accountName: String? = null
+    @SerializedName("product_id")
+    @Expose
+    var productId: Int? = null
+    @SerializedName("product_name")
+    @Expose
+    var productName: String? = null
+    @SerializedName("download")
+    @Expose
+    var download: Int? = null
+    @SerializedName("start_quantity")
+    @Expose
+    var startQuantity: Int? = null
+    @SerializedName("end_quantity")
+    @Expose
+    var endQuantity: Int? = null
+    @SerializedName("note")
+    @Expose
+    var note: Any? = null
+    @SerializedName("limited_access")
+    @Expose
+    var limitedAccess: Int? = null
+    @SerializedName("trackings")
+    @Expose
+    var trackings: List<Tracking>? = null
 }

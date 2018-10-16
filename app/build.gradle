@@ -104,6 +104,7 @@ android {
             resValue "string", "app_id", "hoichone"
             resValue "string", "app_name", "Hàng Việt 360"
             resValue "string", "app_host", "hangviet360.com"
+            resValue "string", "app_map_key", "AIzaSyATNO5dBGhIwNli2Fus_uvVsV8Pv6sLstg"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "hangviet360.com"
             resValue "string", "file_provider_authority", "ishopgo.com.exhibition.fileprovider"
@@ -128,6 +129,7 @@ android {
             resValue "string", "app_id", "1839d59174da18dde3d19118052f6fb0"
             resValue "string", "app_name", "Agri 360"
             resValue "string", "app_host", "agri360.vn"
+            resValue "string", "app_map_key", "AIzaSyBWbxkGV8SPu4QL3p92lRBy2_1Pp6H675A"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "agri360.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.agri.fileprovider"
@@ -152,6 +154,7 @@ android {
             resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
             resValue "string", "app_name", "Vietbuild Expo"
             resValue "string", "app_host", "vietbuildexpo.vn"
+            resValue "string", "app_map_key", "AIzaSyAktDsHwCVtHFSa2Y4acYKk-TTTlzuaH08"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "vietbuildexpo.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.vietbuild.fileprovider"
@@ -176,6 +179,7 @@ android {
             resValue "string", "app_id", "746ebdd7905b4156b3dff5717d63d70c"
             resValue "string", "app_name", "Farm 360"
             resValue "string", "app_host", "farm360.vn"
+            resValue "string", "app_map_key", "AIzaSyDMkB09dUJH7rcQOJ2TOak841HNL7Pw5Dw"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "farm360.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.farm.fileprovider"
@@ -201,6 +205,7 @@ android {
             resValue "string", "app_id", "efa5a395827ee60b75624bfc7e67060b"
             resValue "string", "app_name", "Hợp Tác Xã"
             resValue "string", "app_host", "hoptacxa.vn"
+            resValue "string", "app_map_key", "AIzaSyBjCZlsvdi_Z64-VD58TcVTQe2Az_ELpLs"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "hoptacxa.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.htx.fileprovider"
@@ -226,6 +231,7 @@ android {
             resValue "string", "app_id", "icheckexpo.com"
             resValue "string", "app_name", "Icheck Expo"
             resValue "string", "app_host", "icheckexpo.com"
+            resValue "string", "app_map_key", "AIzaSyCuKRIaaS4ZzmfRZiQdJ3gsQ_C_2ycFjL8"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "icheckexpo.com "
             resValue "string", "file_provider_authority", "ishopgo.com.icheckexpo.fileprovider"
@@ -251,6 +257,7 @@ android {
             resValue "string", "app_id", "476f6f9d89a205518b54c6c302ebb3b0"
             resValue "string", "app_name", "Hợp tác xã nông nghiệp"
             resValue "string", "app_host", "htxnongnghiep.vn"
+            resValue "string", "app_map_key", "AIzaSyBzEffgYmzrVOSSJ0UVaWHUQU3f_ejaCtU"
             resValue "string", "app_protocol", "http"
             resValue "string", "host_deeplink", "htxnongnghiep.vn"
             resValue "string", "file_provider_authority", "ishopgo.com.htxnn.fileprovider"
@@ -391,6 +398,10 @@ dependencies {
     implementation 'commons-io:commons-io:2.5'
     //Tag flow
     implementation 'com.hyman:flowlayout-lib:1.1.2'
+    //Google Map Direction
+    implementation 'com.akexorcist:googledirectionlibrary:1.1.1'
+    implementation "com.google.android.gms:play-services-maps:15.0.1"
+    implementation "com.google.android.gms:play-services-location:15.0.1"
 
     implementation('com.facebook.android:facebook-android-sdk:4.28.0') {
         exclude group: 'com.android.support', module: "support-core-utils"

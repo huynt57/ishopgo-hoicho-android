@@ -92,6 +92,12 @@ class NoStampFragment : BaseListFragment<List<StampNoListNew>, StampNoListNew>()
                     .build()
             val tv_edit_noStamp = dialog.findViewById(R.id.tv_edit_noStamp) as VectorSupportTextView
             tv_edit_noStamp.setOnClickListener {
+                val intent = Intent(context, NoStampEditActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                startActivityForResult(intent, Const.RequestCode.EDIT_NO_STAMP)
+            }
+            val tv_view_noStamp = dialog.findViewById(R.id.tv_view_noStamp) as VectorSupportTextView
+            tv_view_noStamp.setOnClickListener {
                 val qrcode = QrCode()
                 qrcode.name = data.code
                 qrcode.qrCode = data.code

@@ -144,16 +144,10 @@ class SalePointDetailFragment : BaseFragment() {
                             DELETE_PRODUCT -> {
                                 dialogDeleteProduct(data.id, PRODUCT_NOT_CURRENT)
                             }
-                            else -> context?.let {
-                                productId = data.id
-
-                                val productDetail = ProductDetail()
-                                productDetail.image = data.image
-                                productDetail.name = data.name
-                                productDetail.price = data.price
-                                productDetail.code = data.code
-                                dataProduct = productDetail
-                                viewModel.loadData(phone, productId)
+                            else -> {
+                                val intent = Intent(context, ProductDetailActivity::class.java)
+                                intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
+                                startActivity(intent)
                             }
                         }
                     }

@@ -62,6 +62,8 @@ class HomeFragment : BaseFragment() {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var mainViewModel: MainViewModel
+    private lateinit var viewFragment: View
+    private val handleOverwrite: HomeFragmentOverwrite = CustomHomeFragment()
 
     private val highlightProductAdapter = ProductAdapter(0.4f)
     private val viewedProductAdapter = ProductAdapter(0.4f)
@@ -262,7 +264,7 @@ class HomeFragment : BaseFragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewFragment = view
         val context = view.context
 
         setupHighlightBrands(context)
@@ -285,7 +287,7 @@ class HomeFragment : BaseFragment() {
                         constrain_moGianHang.visibility = View.GONE
                     }
                 }
-        else constrain_moGianHang.visibility = View.GONE
+            else constrain_moGianHang.visibility = View.GONE
 
         btn_moGianHang.setOnClickListener {
             val intent = Intent(context, RegisterBoothActivity::class.java)
@@ -517,6 +519,7 @@ class HomeFragment : BaseFragment() {
         viewModel.loadNewestProducts()
         viewModel.loadPromotionProducts()
         viewModel.loadLatestNews()
+        handleOverwrite.handleInOtherFlavor(viewFragment, viewModel, this)
 
         val isUserLoggedIn = UserDataManager.currentUserId > 0
         if (isUserLoggedIn) {
@@ -612,7 +615,7 @@ class HomeFragment : BaseFragment() {
         view_list_newest_products.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
     }
 
-    private fun setupExpoFair(listExpo : MutableList<ExpoConfig>) {
+    private fun setupExpoFair(listExpo: MutableList<ExpoConfig>) {
         // dummy product
 //        val dummy = mutableListOf<ExpoConfig>()
 //        val element = ExpoConfig()
