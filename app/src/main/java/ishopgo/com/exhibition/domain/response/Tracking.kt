@@ -6,10 +6,10 @@ import com.google.gson.annotations.SerializedName
 class Tracking : IdentityData() {
     @SerializedName("lat")
     @Expose
-    var lat: String? = null
+    var lat: Double = 0.0
     @SerializedName("lng")
     @Expose
-    var lng: String? = null
+    var lng: Double = 0.0
     @SerializedName("sort")
     @Expose
     var sort: Int? = null
