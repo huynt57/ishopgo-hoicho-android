@@ -564,7 +564,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             if (convert.provideIsDiary()) {
                 container_diary.visibility = View.VISIBLE
 
-                if (UserDataManager.currentType == "Quản trị viên") {
+                if (UserDataManager.currentType == "Quản trị viên" || (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == product.booth?.id)) {
                     val listPermission = Const.listPermission
                     if (listPermission.isNotEmpty())
                         for (i in listPermission.indices)
@@ -572,10 +572,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                                 view_add_diary.visibility = View.VISIBLE
                                 break
                             }
-                } else view_add_diary.visibility = View.GONE
-
-
-                if (UserDataManager.currentUserId == product.booth?.id) {
+                } else if (UserDataManager.currentUserId == product.booth?.id) {
                     isViewDiary = true
                     view_add_diary.visibility = View.VISIBLE
                 } else {
@@ -624,7 +621,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
                 view_shop_name.text = convertShop.provideName()
                 view_product_count.text = convertShop.provideProductCount()
-                view_shop_rating.text = convertShop.provideRatingPoint()
+                view_shop_rating.text = convertShop.provideSightseeingt()
                 tv_shop_phone.setPhone(convertShop.provideHotline(), booth.hotline ?: "")
                 tv_shop_address.text = convertShop.provideAddress()
 
@@ -673,7 +670,6 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private fun showAddDiary(product: ProductDetail) {
         val extra = Bundle()
         extra.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(product))
-
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_productDetailFragmentActionBar_to_productDiaryAddFragmentActionBar, extra)
     }
 
@@ -914,11 +910,15 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun provideAddress(): CharSequence
         fun provideProductCount(): CharSequence
         fun provideRatingPoint(): CharSequence
+        fun provideSightseeingt(): CharSequence
     }
 
     class ConverterShop : Converter<Booth, ProcessProvider> {
         override fun convert(from: Booth): ProcessProvider {
             return object : ProcessProvider {
+                override fun provideSightseeingt(): CharSequence {
+                    return "<b><font color=\"#00c853\">${from.visit
+                            ?: 0}</font></b><br>Lượt tham quan".asHtml()                }
 
                 override fun provideHotline(): CharSequence {
                     return from.hotline ?: ""

@@ -215,6 +215,28 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
         )
     }
 
+    var createTrackingSucccess = MutableLiveData<Boolean>()
+
+    fun createTracking(stampId: Long, title:String, boothId: Long) {
+        val builder = MultipartBody.Builder()
+        builder.setType(MultipartBody.FORM)
+                .addFormDataPart("title", title)
+                .addFormDataPart("value", boothId.toString())
+
+        addDisposable(authService.addTracking(stampId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        createTrackingSucccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
     var downloadSuccess = MutableLiveData<Boolean>()
 
     fun downloadStamp(stampId: Long, quantity_assign: String) {
@@ -265,4 +287,24 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
     fun resultProduct(product: Product) {
         resultProduct.postValue(product)
     }
+
+    var shopRelates = MutableLiveData<List<BoothManager>>()
+
+    fun loadShopRelates(shopId: Long) {
+        addDisposable(noAuthService.getShopRelate(shopId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
+                    override fun success(data: List<BoothManager>?) {
+                        shopRelates.postValue(data ?: listOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+
+                })
+        )
+    }
+
 }

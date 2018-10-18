@@ -498,6 +498,9 @@ class ApiService {
 
         @POST("expo/update-and-create-account")
         fun updateInfoFormFacebook(@Body body: RequestBody): Single<BaseResponse<Profile>>
+
+        @POST("expo/stamp/tracking/{assign_id}/create")
+        fun addTracking(@Path("assign_id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
 

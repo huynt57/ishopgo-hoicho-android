@@ -40,6 +40,9 @@ class Booth : IdentityData() {
     @SerializedName("count")
     @Expose
     var count: Int? = null
+    @SerializedName("visit")
+    @Expose
+    var visit: Int? = null
     @SerializedName("followed")
     @Expose
     var followed: Int = 0

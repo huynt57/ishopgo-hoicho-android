@@ -95,6 +95,7 @@ class NoStampFragment : BaseListFragment<List<StampNoListNew>, StampNoListNew>()
                 val intent = Intent(context, NoStampEditActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)
                 startActivityForResult(intent, Const.RequestCode.EDIT_NO_STAMP)
+                dialog.dismiss()
             }
             val tv_view_noStamp = dialog.findViewById(R.id.tv_view_noStamp) as VectorSupportTextView
             tv_view_noStamp.setOnClickListener {
@@ -104,6 +105,7 @@ class NoStampFragment : BaseListFragment<List<StampNoListNew>, StampNoListNew>()
                 val intent = Intent(context, QrCodeViewerActivity::class.java)
                 intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(qrcode))
                 startActivity(intent)
+                dialog.dismiss()
                 //                if (data.quantity == data.quantityExists) {
 //                    val intent = Intent(context, NoStampEditActivity::class.java)
 //                    intent.putExtra(Const.TransferKey.EXTRA_ID, data.id)

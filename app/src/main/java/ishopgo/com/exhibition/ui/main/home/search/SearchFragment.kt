@@ -77,7 +77,7 @@ class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
         searchViewModel.errorSignal.observe(this, Observer { error -> error?.let { resolveError(it) } })
     }
 
-    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 4) {
+    inner class ResultAdapter(f: FragmentManager) : CountSpecificPager(f, 3) {
         override fun getItem(position: Int): Fragment {
             return when (position) {
                 0 -> {
@@ -86,10 +86,10 @@ class SearchFragment : BaseSearchActionBarFragment(), BackpressConsumable {
                 1 -> {
                     ShopResultsFragment()
                 }
+//                2 -> {
+//                    SalePointResultFragment()
+//                }
                 2 -> {
-                    SalePointResultFragment()
-                }
-                3 -> {
                     BrandsResultFragment()
                 }
                 else -> {

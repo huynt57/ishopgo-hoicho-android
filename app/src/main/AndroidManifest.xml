@@ -567,6 +567,11 @@
             android:name=".ui.main.scan.history.HistoryScanActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.main.stamp.nostamp.edit.map.NoStampMapActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

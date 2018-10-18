@@ -276,6 +276,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="16dp"
+                android:visibility="gone"
                 tools:visibility="visible">
 
                 <ishopgo.com.exhibition.ui.widget.VectorSupportTextView

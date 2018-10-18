@@ -29,7 +29,13 @@ class ProductDiaryAddFragmentActionBar : BaseActionBarFragment() {
 
         setupToolbars()
 
-        val json = requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_JSON)
+        val json = if (arguments?.containsKey(Const.TransferKey.EXTRA_JSON) == true) {
+            // click another product in product detail screen
+            arguments!!.getString(Const.TransferKey.EXTRA_JSON)
+        } else {
+                requireActivity().intent.getStringExtra(Const.TransferKey.EXTRA_JSON)
+        }
+
         data = Toolbox.gson.fromJson(json, ProductDetail::class.java)
 
         val extra = Bundle()

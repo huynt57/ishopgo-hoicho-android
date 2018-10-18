@@ -3,44 +3,53 @@ package ishopgo.com.exhibition.ui.main.stamp.nostamp.edit
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.akexorcist.googledirection.DirectionCallback
-import com.akexorcist.googledirection.GoogleDirection
-import com.akexorcist.googledirection.config.GoogleDirectionConfiguration
-import com.akexorcist.googledirection.constant.TransportMode
-import com.akexorcist.googledirection.model.Direction
-import com.akexorcist.googledirection.model.Route
-import com.akexorcist.googledirection.util.DirectionConverter
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
+import com.afollestad.materialdialogs.MaterialDialog
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.ui.IconGenerator
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.request.LoadMoreRequest
+import ishopgo.com.exhibition.domain.response.StampNoDetail
 import ishopgo.com.exhibition.domain.response.Tracking
+import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
+import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
+import ishopgo.com.exhibition.ui.main.productmanager.add.BoothAdapter
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampViewModel
+import ishopgo.com.exhibition.ui.main.stamp.nostamp.edit.map.NoStampMapActivity
+import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_no_stamp_edit.*
 import kotlinx.android.synthetic.main.content_title_map_marker.view.*
 
-class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallback {
+class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
     private var adapter = TrackingAdapter()
     private lateinit var item: List<Tracking>
     private var stampId = 0L
     private lateinit var viewModel: NoStampViewModel
+    private var data: StampNoDetail? = null
+    private var reloadProvider = false
+    private val adapterBooth = BoothAdapter()
+    private val adapterBoothCurrent = BoothAdapter()
 
     companion object {
 
@@ -64,9 +73,18 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_edit_no_stamp.setOnClickListener {
-            //                viewModel.editNoStampDetail(stampId, edit_no_stamp_name.text.toString(), edit_no_stamp_count.text.toString())
+        view_show_map.setOnClickListener {
+            if (data != null) {
+                val intent = Intent(context, NoStampMapActivity::class.java)
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                startActivity(intent)
+            }
         }
+
+        img_add_maker.setOnClickListener {
+            showDialogAddMaker()
+        }
+
         rv_tracking.adapter = adapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_tracking.layoutManager = layoutManager
@@ -89,11 +107,13 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
 
         viewModel.getDataNoStampDetail.observe(this, Observer { p ->
             p?.let { it ->
+                data = it
                 edit_no_stamp_name.setText(it.code ?: "")
                 edit_no_stamp_count.setText("${it.limitedAccess ?: 0}")
                 item = it.trackings ?: mutableListOf()
                 adapter.replaceAll(item)
-
+                val mapFragment = childFragmentManager.findFragmentById((R.id.map)) as SupportMapFragment
+                mapFragment.getMapAsync(this)
             }
         })
 
@@ -105,7 +125,49 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
             }
         })
 
+        viewModel.dataBooth.observe(this, Observer { p ->
+            p?.let {
+                if (reloadProvider) adapterBooth.replaceAll(it) else adapterBooth.addAll(it)
+            }
+        })
+
+        viewModel.shopRelates.observe(this, Observer { p ->
+            p?.let {
+                adapterBoothCurrent.replaceAll(it)
+            }
+        })
+
+        viewModel.createTrackingSucccess.observe(this, Observer { p ->
+            p?.let {
+                viewModel.getDetailNoStamp(stampId)
+                hideProgressDialog()
+                toast("Thêm hành trình thành công")
+            }
+        })
+
+        reloadProvider = true
+
         viewModel.getDetailNoStamp(stampId)
+        firstLoadProvider()
+        if (UserDataManager.currentBoothId > 0)
+            viewModel.loadShopRelates(UserDataManager.currentBoothId)
+        else viewModel.loadShopRelates(UserDataManager.currentUserId)
+    }
+
+    private fun firstLoadProvider() {
+        reloadProvider = true
+        val firstLoad = LoadMoreRequest()
+        firstLoad.limit = Const.PAGE_LIMIT
+        firstLoad.offset = 0
+        viewModel.getBooth(firstLoad)
+    }
+
+    private fun loadMoreProvider(currentCount: Int) {
+        reloadProvider = false
+        val loadMore = LoadMoreRequest()
+        loadMore.limit = Const.PAGE_LIMIT
+        loadMore.offset = currentCount
+        viewModel.getBooth(loadMore)
     }
 
     override fun onMapReady(p0: GoogleMap?) {
@@ -117,6 +179,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
             uiSettings?.isZoomGesturesEnabled = true
             uiSettings?.isCompassEnabled = true
             uiSettings?.isRotateGesturesEnabled = true
+            uiSettings?.isScrollGesturesEnabled = false
             if (item.isNotEmpty()) {
                 val latLng = LatLng(item[0].lat, item[0].lng)
                 it.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL))
@@ -125,10 +188,12 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
 //        mMap?.setOnMapClickListener(this)
 
 //        mMap?.let { infoWindowAdapter(it) }
-            GoogleDirectionConfiguration.getInstance().isLogEnabled = true
+//            GoogleDirectionConfiguration.getInstance().isLogEnabled = true
+            val latLngBounds = LatLngBounds.Builder()
             for (i in item.indices) {
                 infoWindowAdapter(it, i, item)
                 val latLng = LatLng(item[i].lat, item[i].lng)
+                latLngBounds.include(latLng)
                 val text = TextView(context)
                 text.text = "  " + (i + 1)
                 text.setTextColor(Color.WHITE)
@@ -136,7 +201,6 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
                 generator.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.ic_waypoint) })
                 generator.setContentView(text)
                 val icon: Bitmap = generator.makeIcon()
-
                 if (i == 0) {
                     mMap?.addMarker(latLng.let {
                         MarkerOptions().position(it)
@@ -161,46 +225,55 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
                     END = latLng
                 }
 
-                if (FROM != LatLng(0.0, 0.0) && END != LatLng(0.0, 0.0))
-                    GoogleDirection.withServerKey(context?.getString(R.string.app_map_key))
-                            .from(FROM)
-                            .and(waypoint)
-                            .to(END)
-                            .transportMode(TransportMode.DRIVING)
-                            .execute(this)
-            }
-        }
-    }
+                if (FROM != LatLng(0.0, 0.0) && END != LatLng(0.0, 0.0)) {
+                    waypoint.add(0, FROM)
+                    waypoint.add(waypoint.size, END)
+                    mMap?.addPolyline(PolylineOptions().addAll(waypoint).width(5.0f).color(Color.RED))
 
-    override fun onDirectionSuccess(direction: Direction?, rawBody: String?) {
-        direction?.let {
-            if (direction.isOK) {
-                val route = direction.routeList[0]
-                val legCount = route.legList.size
-                for (index in 0 until legCount) {
-                    val leg = route.legList[index]
-
-                    val stepList = leg.stepList
-                    val polylineOptionList = DirectionConverter.createTransitPolyline(context, stepList, 5, Color.RED, 3, Color.BLUE)
-                    for (polylineOption in polylineOptionList) {
-                        mMap?.addPolyline(polylineOption)
+                    mMap?.setOnMapLoadedCallback {
+                        val bounds: LatLngBounds = latLngBounds.build()
+                        mMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
                     }
                 }
-                setCameraWithCoordinationBounds(route)
+//                    GoogleDirection.withServerKey(context?.getString(R.string.app_map_key))
+//                            .from(FROM)
+//                            .and(waypoint)
+//                            .to(END)
+//                            .transportMode(TransportMode.DRIVING)
+//                            .execute(this)
             }
         }
     }
 
-    private fun setCameraWithCoordinationBounds(route: Route) {
-        val southwest = route.bound.southwestCoordination.coordination
-        val northeast = route.bound.northeastCoordination.coordination
-        val bounds = LatLngBounds(southwest, northeast)
-        mMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
-    }
+//    override fun onDirectionSuccess(direction: Direction?, rawBody: String?) {
+//        direction?.let {
+//            if (direction.isOK) {
+//                val route = direction.routeList[0]
+//                val legCount = route.legList.size
+//                for (index in 0 until legCount) {
+//                    val leg = route.legList[index]
+//
+//                    val stepList = leg.stepList
+//                    val polylineOptionList = DirectionConverter.createTransitPolyline(context, stepList, 5, Color.RED, 3, Color.BLUE)
+//                    for (polylineOption in polylineOptionList) {
+//                        mMap?.addPolyline(polylineOption)
+//                    }
+//                }
+//                setCameraWithCoordinationBounds(route)
+//            }
+//        }
+//    }
 
-    override fun onDirectionFailure(t: Throwable?) {
-        Log.d("MapException", t?.message.toString())
-    }
+//    private fun setCameraWithCoordinationBounds(route: Route) {
+//        val southwest = route.bound.southwestCoordination.coordination
+//        val northeast = route.bound.northeastCoordination.coordination
+//        val bounds = LatLngBounds(southwest, northeast)
+//        mMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+//    }
+
+//    override fun onDirectionFailure(t: Throwable?) {
+//        Log.d("MapException", t?.message.toString())
+//    }
 
     private var mMap: GoogleMap? = null
     private val ZOOM_LEVEL = 15f
@@ -225,6 +298,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
                     p0?.let {
                         for (i in 0..position) {
                             if (it.id == "m$i") {
+                                tv_map_title.visibility = if (item[i].title?.isNotEmpty() == true) View.VISIBLE else View.GONE
                                 tv_map_title.text = "<b>${item[i].title
                                         ?: ""}</b>".asHtml()
                                 tv_map_name.text = "Tên: <b>${item[i].valueSync?.name
@@ -239,6 +313,112 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback, DirectionCallbac
                 return mWindow
             }
         })
+    }
 
+    private fun showDialogAddMaker() {
+        context?.let { it ->
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_no_stamp_journeys, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tvAffiliates = dialog.findViewById(R.id.tv_affiliates) as VectorSupportTextView
+            tvAffiliates.setOnClickListener {
+                getBoothCurrent()
+                dialog.dismiss()
+            }
+            val tvSystem = dialog.findViewById(R.id.tv_system) as VectorSupportTextView
+            tvSystem.setOnClickListener {
+                getBoothSystem()
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getBoothSystem() {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn gian hàng")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
+            textInputLayout.visibility = View.VISIBLE
+            textInputLayout.hint = "Tiêu đề danh mục"
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_search.layoutManager = layoutManager
+
+            rv_search.adapter = adapterBooth
+            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    loadMoreProvider(totalItemsCount)
+                }
+            })
+            adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
+                    context?.let {
+                        if (edt_search.text.isEmpty()) {
+                            toast("Vui lòng nhập tiêu đề danh mục")
+                            edt_search.error = "Tiêu đề danh mục còn trống"
+                            return
+                        }
+                        viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        showProgressDialog()
+                        dialog.dismiss()
+                    }
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getBoothCurrent() {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn gian hàng")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
+            textInputLayout.visibility = View.VISIBLE
+            textInputLayout.hint = "Tiêu đề danh mục"
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_search.layoutManager = layoutManager
+
+            rv_search.adapter = adapterBoothCurrent
+
+            adapterBoothCurrent.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
+                override fun click(position: Int, data: BoothManager, code: Int) {
+                    context?.let {
+                        if (edt_search.text.isEmpty()) {
+                            toast("Vui lòng nhập tiêu đề danh mục")
+                            edt_search.error = "Tiêu đề danh mục còn trống"
+                            return
+                        }
+                        viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        showProgressDialog()
+                        dialog.dismiss()
+                    }
+                }
+            }
+            dialog.show()
+        }
     }
 }
