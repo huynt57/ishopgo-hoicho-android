@@ -485,7 +485,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
 
     var createProductDiary = MutableLiveData<Boolean>()
 
-    fun createProductDiary(productId: Long, title: String, content: String, postMedias: ArrayList<PostMedia> = ArrayList(), stampCode: String, lat: String, lng:String) {
+    fun createProductDiary(productId: Long, title: String, content: String, postMedias: ArrayList<PostMedia> = ArrayList(), stampCode: String, lat: String, lng:String, maLo:String) {
         val builder = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("content", content)
@@ -493,6 +493,7 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                 .addFormDataPart("product_id", productId.toString())
                 .addFormDataPart("lat", lat)
                 .addFormDataPart("lng", lng)
+                .addFormDataPart("ma_lo", maLo)
 
         if (stampCode.isNotEmpty())
             builder.addFormDataPart("stampCode", stampCode)
@@ -612,5 +613,21 @@ class ProductDetailViewModel : BaseApiViewModel(), AppComponent.Injectable {
                         resolveError(status, message)
                     }
                 }))
+    }
+
+    var getCodeNoStamp = MutableLiveData<List<CodeNoStamp>>()
+
+    fun getCodeNoStamp(productId: Long) {
+            addDisposable(authService.getStampCodeFromProduct(productId)
+                    .subscribeOn(Schedulers.single())
+                    .subscribeWith(object : BaseSingleObserver<List<CodeNoStamp>>() {
+                        override fun success(data: List<CodeNoStamp>?) {
+                            getCodeNoStamp.postValue(data)
+                        }
+
+                        override fun failure(status: Int, message: String) {
+                            resolveError(status, message)
+                        }
+                    }))
     }
 }

@@ -14,17 +14,22 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.FileProvider
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.CodeNoStamp
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -36,7 +41,9 @@ import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.product.detail.ExchangeDiaryProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
+import ishopgo.com.exhibition.ui.main.product.detail.diary_product.CodeNoStampAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
 import kotlinx.android.synthetic.main.fragment_product_exchange_diary_add.*
 import java.io.File
 import java.io.IOException
@@ -78,6 +85,7 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
     private var lat: Double = 0.0
     private var lng: Double = 0.0
     private var locationManager: LocationManager? = null
+    private var adapterCodeNoStamp = CodeNoStampAdapter()
 
     companion object {
         const val TAG = "ProductExchangeDiary"
@@ -130,7 +138,7 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
         }
 
         btn_add.setOnClickListener {
-            if (isRequiredFieldsValid(edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString())) {
+            if (isRequiredFieldsValid(edit_maLo.text.toString(), edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString())) {
                 showProgressDialog()
                 viewModel.createExchangeDiary(edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString(), idGui, typeGui.toString(), idNhan, typeNhan.toString(), edit_hsd.text.toString(), lat.toString(), lng.toString(),
                         data.id, edit_soLuong.text.toString(), edit_donVi.text.toString(), edit_maLo.text.toString(), postMedias)
@@ -237,8 +245,56 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
             }
         })
 
+
+        viewModel.getCodeNoStamp.observe(this, android.arch.lifecycle.Observer { p ->
+            p?.let {
+                adapterCodeNoStamp.replaceAll(it)
+            }
+        })
+
+
         edit_benGui.setOnClickListener { showAddExchangDiary(data, true) }
         edt_benNhan.setOnClickListener { showAddExchangDiary(data, false) }
+
+        edit_maLo.setOnClickListener {
+            getCodeNoStamp(edit_maLo)
+        }
+
+        viewModel.getCodeNoStamp(data.id)
+    }
+
+    private fun getCodeNoStamp(view: VectorSupportEditText) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn mã lô tem")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            textInputLayout.visibility = View.GONE
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_search.layoutManager = layoutManager
+
+            rv_search.adapter = adapterCodeNoStamp
+
+            adapterCodeNoStamp.listener = object : ClickableAdapter.BaseAdapterAction<CodeNoStamp> {
+                override fun click(position: Int, data: CodeNoStamp, code: Int) {
+                    context?.let {
+                        view.setText(data.code ?: "")
+                        view.error = null
+                        dialog.dismiss()
+                    }
+                }
+            }
+            dialog.show()
+        }
     }
 
     private fun showAddExchangDiary(product: ProductDetail, statusBGBN: Boolean) {
@@ -249,9 +305,13 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
         Navigation.findNavController(requireActivity(), R.id.nav_map_host_fragment).navigate(R.id.action_searchBoothFragment_to_productExchangeBGBNFragment, extra)
     }
 
-    private fun isRequiredFieldsValid(name: String, content: String): Boolean {
+    private fun isRequiredFieldsValid(maLo: String, name: String, content: String): Boolean {
+        if (maLo.trim().isEmpty()) {
+            toast("Mã lô không được để trống")
+            return false
+        }
         if (name.trim().isEmpty()) {
-            toast("Tên giao dịch được để trống")
+            toast("Tên giao dịch không được để trống")
             return false
         }
         if (content.trim().isEmpty()) {

@@ -100,7 +100,7 @@
             tools:ignore="HardcodedText"/>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/textInputLayout"
+            android:id="@+id/textInputLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -110,6 +110,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView17">
 
+            <ishopgo.com.exhibition.ui.widget.VectorSupportEditText
+                android:id="@+id/edit_code"
+                style="@style/AppTheme.EnableInputField.DisableInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mã lô tem"
+                app:supportDrawableEnd="@drawable/ic_arrow_drop_down_default_24dp"
+                tools:ignore="HardcodedText"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/edit_title"
                 style="@style/AppTheme.EnableInputField"
@@ -118,7 +140,7 @@
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:hint="Nhập tiêu đề nhật ký"
-                tools:ignore="HardcodedText"/>
+                tools:ignore="HardcodedText" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -142,7 +164,6 @@
                 android:focusableInTouchMode="true"
                 android:hint="Nhập nội dung nhật ký"
                 android:lines="3"
-                android:gravity="top|start"
                 tools:ignore="HardcodedText"/>
 
         </android.support.design.widget.TextInputLayout>

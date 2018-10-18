@@ -501,6 +501,9 @@ class ApiService {
 
         @POST("expo/stamp/tracking/{assign_id}/create")
         fun addTracking(@Path("assign_id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
+
+        @GET("expo/stamp/product/{id}")
+        fun getStampCodeFromProduct(@Path("id") id: Long): Single<BaseResponse<List<CodeNoStamp>>>
     }
 
 

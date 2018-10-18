@@ -12,15 +12,21 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.CodeNoStamp
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
@@ -34,6 +40,7 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.product.detail.DiaryProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
+import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_diary_add.*
 
@@ -74,6 +81,7 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
     private lateinit var viewModel: ProductDetailViewModel
     private var postMedias: ArrayList<PostMedia> = ArrayList()
     private var adapterImages = ComposingPostMediaAdapter()
+    private var adapterCodeNoStamp = CodeNoStampAdapter()
     private lateinit var viewModelDiary: DiaryProductViewModel
     private var lat: Double = 0.0
     private var lng: Double = 0.0
@@ -111,10 +119,10 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
         tv_add_image.setOnClickListener { launchPickPhotoIntent() }
 
         btn_add_diary.setOnClickListener {
-            if (isRequiredFieldsValid(edit_title.text.toString(), edit_content.text.toString())) {
+            if (isRequiredFieldsValid(edit_title.text.toString(), edit_content.text.toString(), edit_code.text.toString())) {
                 showProgressDialog()
                 val stampCode = if (data.stamp != null) data.stamp!!.code ?: "" else ""
-                viewModel.createProductDiary(data.id, edit_title.text.toString(), edit_content.text.toString(), postMedias, stampCode, lat.toString(), lng.toString())
+                viewModel.createProductDiary(data.id, edit_title.text.toString(), edit_content.text.toString(), postMedias, stampCode, lat.toString(), lng.toString(), edit_code.text.toString())
             }
         }
 
@@ -124,8 +132,48 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
         tv_product.text = data.name
         tv_product_price.text = data.price.asMoney()
         tv_product_code.text = data.code
+        if (data.stamp != null)
+            edit_code.setText(data.stamp!!.code ?: "")
+
+        edit_code.setOnClickListener {
+            getCodeNoStamp(edit_code)
+        }
 
         setupImageRecycleview()
+    }
+
+    private fun getCodeNoStamp(view: VectorSupportEditText) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn mã lô tem")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            textInputLayout.visibility = View.GONE
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rv_search.layoutManager = layoutManager
+
+            rv_search.adapter = adapterCodeNoStamp
+
+            adapterCodeNoStamp.listener = object : ClickableAdapter.BaseAdapterAction<CodeNoStamp> {
+                override fun click(position: Int, data: CodeNoStamp, code: Int) {
+                    context?.let {
+                        view.setText(data.code ?: "")
+                        view.error = null
+                        dialog.dismiss()
+                    }
+                }
+            }
+            dialog.show()
+        }
     }
 
     private fun locationServicesEnabled(): String {
@@ -197,9 +245,21 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
                 activity?.onBackPressed()
             }
         })
+
+        viewModel.getCodeNoStamp.observe(this, Observer { p ->
+            p?.let {
+                adapterCodeNoStamp.replaceAll(it)
+            }
+        })
+
+        viewModel.getCodeNoStamp(data.id)
     }
 
-    private fun isRequiredFieldsValid(title: String, content: String): Boolean {
+    private fun isRequiredFieldsValid(title: String, content: String, code: String): Boolean {
+        if (code.trim().isEmpty()) {
+            toast("Mã lô tem không được để trống")
+            return false
+        }
         if (title.trim().isEmpty()) {
             toast("Tiêu đề không được để trống")
             return false
