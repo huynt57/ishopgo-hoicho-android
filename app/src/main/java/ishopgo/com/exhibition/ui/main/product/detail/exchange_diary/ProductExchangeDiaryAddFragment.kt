@@ -42,6 +42,7 @@ import ishopgo.com.exhibition.ui.extensions.hideKeyboard
 import ishopgo.com.exhibition.ui.main.product.detail.ExchangeDiaryProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.diary_product.CodeNoStampAdapter
+import ishopgo.com.exhibition.ui.main.product.detail.diary_product.ComposingPostMediaAddAdapter
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
 import kotlinx.android.synthetic.main.fragment_product_exchange_diary_add.*
@@ -76,7 +77,7 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
     private var data = ProductDetail()
     private lateinit var viewModel: ProductDetailViewModel
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private var adapterImages = ComposingPostMediaAdapter()
+    private var adapterImages = ComposingPostMediaAddAdapter()
     private lateinit var viewModelDiary: ExchangeDiaryProductViewModel
     private var typeGui = 0
     private var typeNhan = 0
@@ -91,6 +92,8 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
         const val TAG = "ProductExchangeDiary"
         const val PERMISSIONS_REQUEST_CAMERA = 100
         const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
+        const val IMAGE_ADD = 0
+        const val IMAGE_DELETE = 2
 
         fun newInstance(params: Bundle): ProductExchangeDiaryAddFragment {
             val fragment = ProductExchangeDiaryAddFragment()
@@ -127,10 +130,6 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
                     locationManager!!.requestLocationUpdates(locationServicesEnabled(), 0, 0f, this)
                 }
             }
-        }
-
-        view_add_images.setOnClickListener {
-            launchPickPhotoIntent()
         }
 
         view_camera.setOnClickListener {
@@ -329,12 +328,20 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
         context?.let {
             rv_images.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
             rv_images.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            adapterImages.addData(0, PostMedia())
             rv_images.adapter = adapterImages
             adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
                 override fun click(position: Int, data: PostMedia, code: Int) {
-                    postMedias.remove(data)
-                    if (postMedias.isEmpty()) rv_images.visibility = View.GONE
-                    adapterImages.replaceAll(postMedias)
+                    when (code) {
+                        IMAGE_ADD -> launchPickPhotoIntent()
+                        IMAGE_DELETE -> {
+                            postMedias.remove(data)
+                            adapterImages.replaceAll(postMedias)
+                            if (postMedias.isNotEmpty())
+                                adapterImages.addData(postMedias.size, PostMedia())
+                            else adapterImages.addData(0, PostMedia())
+                        }
+                    }
                 }
             }
         }
@@ -413,8 +420,9 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
                 }
             }
             adapterImages.replaceAll(postMedias)
-            rv_images.visibility = View.VISIBLE
-
+            if (postMedias.isNotEmpty())
+                adapterImages.addData(postMedias.size, PostMedia())
+            else adapterImages.addData(0, PostMedia())
         }
 
         if (requestCode == Const.RequestCode.TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
@@ -424,8 +432,9 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
                 postMedia.uri = it
                 postMedias.add(postMedia)
                 adapterImages.replaceAll(postMedias)
-                rv_images.visibility = View.VISIBLE
-
+                if (postMedias.isNotEmpty())
+                    adapterImages.addData(postMedias.size, PostMedia())
+                else adapterImages.addData(0, PostMedia())
             }
         }
     }

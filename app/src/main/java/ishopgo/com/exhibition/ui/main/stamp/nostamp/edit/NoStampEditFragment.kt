@@ -59,6 +59,8 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
 
             return fragment
         }
+
+        const val ADD_TRACKING = true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,7 +84,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         }
 
         img_add_maker.setOnClickListener {
-            showDialogAddMaker()
+            showDialogAddMaker(ADD_TRACKING, "")
         }
 
         rv_tracking.adapter = adapter
@@ -92,6 +94,14 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         rv_tracking.isNestedScrollingEnabled = false
         rv_tracking.setHasFixedSize(false)
         rv_tracking.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+
+        adapter.listener = object : ClickableAdapter.BaseAdapterAction<Tracking> {
+            override fun click(position: Int, data: Tracking, code: Int) {
+                context?.let {
+                    showDialogClickTrackingAdapter(data)
+                }
+            }
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -137,11 +147,25 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             }
         })
 
+        viewModel.deleteTrackingSuccess.observe(this, Observer { p ->
+            p?.let {
+                viewModel.getDetailNoStamp(stampId)
+            }
+        })
+
         viewModel.createTrackingSucccess.observe(this, Observer { p ->
             p?.let {
                 viewModel.getDetailNoStamp(stampId)
                 hideProgressDialog()
                 toast("Thêm hành trình thành công")
+            }
+        })
+
+        viewModel.editTrackingSucccess.observe(this, Observer { p ->
+            p?.let {
+                viewModel.getDetailNoStamp(stampId)
+                hideProgressDialog()
+                toast("Sửa hành trình thành công")
             }
         })
 
@@ -170,6 +194,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.getBooth(loadMore)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
         mMap?.let {
@@ -315,28 +340,70 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         })
     }
 
-    private fun showDialogAddMaker() {
+    private fun showDialogAddMaker(type: Boolean, title: String) {
         context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
+                    .content("Thêm hành trình")
                     .customView(R.layout.dialog_no_stamp_journeys, false)
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
                     .build()
             val tvAffiliates = dialog.findViewById(R.id.tv_affiliates) as VectorSupportTextView
             tvAffiliates.setOnClickListener {
-                getBoothCurrent()
+                getBoothCurrent(type, title)
                 dialog.dismiss()
             }
             val tvSystem = dialog.findViewById(R.id.tv_system) as VectorSupportTextView
             tvSystem.setOnClickListener {
-                getBoothSystem()
+                getBoothSystem(type, title)
                 dialog.dismiss()
             }
             dialog.show()
         }
     }
 
-    private fun getBoothSystem() {
+    private fun showDialogClickTrackingAdapter(data: Tracking) {
+        context?.let { it ->
+            val dialog = MaterialDialog.Builder(it)
+                    .customView(R.layout.dialog_no_stamp_tracking, false)
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(true)
+                    .build()
+            val tvViewTracking = dialog.findViewById(R.id.tv_viewTracking) as VectorSupportTextView
+            tvViewTracking.setOnClickListener {
+                val latLng = LatLng(data.lat, data.lng)
+                mMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL))
+                dialog.dismiss()
+            }
+            val tvEditTracking = dialog.findViewById(R.id.tv_editTracking) as VectorSupportTextView
+            tvEditTracking.setOnClickListener {
+                showDialogAddMaker(!ADD_TRACKING, data.title ?:"")
+                dialog.dismiss()
+            }
+            val tvDeleteTracking = dialog.findViewById(R.id.tv_deleteTracking) as VectorSupportTextView
+            tvDeleteTracking.setOnClickListener {
+                dialogDeleteTracking(data)
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+    }
+
+    private fun dialogDeleteTracking(data: Tracking) {
+        MaterialDialog.Builder(requireContext())
+                .content("Bạn có muốn xoá hành trình này không?")
+                .positiveText("Có")
+                .onPositive { dialog, _ ->
+                    viewModel.deleteTracking(data.id)
+                    showProgressDialog()
+                    dialog.dismiss()
+                }
+                .negativeText("Không")
+                .onNegative { dialog, _ -> dialog.dismiss() }
+                .show()
+    }
+
+    private fun getBoothSystem(type: Boolean, title: String) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
@@ -347,12 +414,13 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                     .canceledOnTouchOutside(false)
                     .build()
 
-
             val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
             val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
             val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
+
+            edt_search.setText(if (type == ADD_TRACKING) "" else title)
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
@@ -371,7 +439,9 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                             edt_search.error = "Tiêu đề danh mục còn trống"
                             return
                         }
-                        viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        if (type == ADD_TRACKING)
+                            viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        else viewModel.editTracking(stampId, edt_search.text.trim().toString(), data.id)
                         showProgressDialog()
                         dialog.dismiss()
                     }
@@ -381,7 +451,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    private fun getBoothCurrent() {
+    private fun getBoothCurrent(type: Boolean, title: String) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
@@ -392,12 +462,13 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                     .canceledOnTouchOutside(false)
                     .build()
 
-
             val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
             val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
             val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
+
+            edt_search.setText(if (type == ADD_TRACKING) "" else title)
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
@@ -412,7 +483,10 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                             edt_search.error = "Tiêu đề danh mục còn trống"
                             return
                         }
-                        viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        if (type == ADD_TRACKING)
+                            viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        else viewModel.editTracking(stampId, edt_search.text.trim().toString(), data.id)
+
                         showProgressDialog()
                         dialog.dismiss()
                     }

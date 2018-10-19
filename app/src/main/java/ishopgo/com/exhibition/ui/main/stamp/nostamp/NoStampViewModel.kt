@@ -217,7 +217,7 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
 
     var createTrackingSucccess = MutableLiveData<Boolean>()
 
-    fun createTracking(stampId: Long, title:String, boothId: Long) {
+    fun createTracking(stampId: Long, title: String, boothId: Long) {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("title", title)
@@ -228,6 +228,28 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         createTrackingSucccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var editTrackingSucccess = MutableLiveData<Boolean>()
+
+    fun editTracking(stampId: Long, title: String, boothId: Long) {
+        val builder = MultipartBody.Builder()
+        builder.setType(MultipartBody.FORM)
+                .addFormDataPart("title", title)
+                .addFormDataPart("value", boothId.toString())
+
+        addDisposable(authService.editTracking(stampId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        editTrackingSucccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -296,6 +318,25 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
                 .subscribeWith(object : BaseSingleObserver<List<BoothManager>>() {
                     override fun success(data: List<BoothManager>?) {
                         shopRelates.postValue(data ?: listOf())
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+
+
+                })
+        )
+    }
+
+    var deleteTrackingSuccess = MutableLiveData<Boolean>()
+
+    fun deleteTracking(trackingId: Long) {
+        addDisposable(authService.deleteTracking(trackingId)
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        deleteTrackingSuccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {

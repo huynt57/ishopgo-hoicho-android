@@ -12,7 +12,6 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v7.widget.GridLayoutManager
@@ -30,10 +29,8 @@ import ishopgo.com.exhibition.domain.response.CodeNoStamp
 import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.PostMedia
-import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.community.ComposingPostMediaAdapter
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asMoney
 import ishopgo.com.exhibition.ui.extensions.hideKeyboard
@@ -41,7 +38,6 @@ import ishopgo.com.exhibition.ui.main.product.detail.DiaryProductViewModel
 import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
-import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_product_diary_add.*
 
 class ProductDiaryAddFragment : BaseFragment(), LocationListener {
@@ -68,6 +64,8 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
     companion object {
         const val TAG = "ProductDiaryAddFragment"
         const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
+        const val IMAGE_ADD = 0
+        const val IMAGE_DELETE = 2
 
         fun newInstance(params: Bundle): ProductDiaryAddFragment {
             val fragment = ProductDiaryAddFragment()
@@ -80,7 +78,7 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
     private var data = ProductDetail()
     private lateinit var viewModel: ProductDetailViewModel
     private var postMedias: ArrayList<PostMedia> = ArrayList()
-    private var adapterImages = ComposingPostMediaAdapter()
+    private var adapterImages = ComposingPostMediaAddAdapter()
     private var adapterCodeNoStamp = CodeNoStampAdapter()
     private lateinit var viewModelDiary: DiaryProductViewModel
     private var lat: Double = 0.0
@@ -116,7 +114,7 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
             }
         }
 
-        tv_add_image.setOnClickListener { launchPickPhotoIntent() }
+//        tv_add_image.setOnClickListener { launchPickPhotoIntent() }
 
         btn_add_diary.setOnClickListener {
             if (isRequiredFieldsValid(edit_title.text.toString(), edit_content.text.toString(), edit_code.text.toString())) {
@@ -154,22 +152,20 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
                     .build()
 
 
-            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
             val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
             textInputLayout.visibility = View.GONE
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
+            rvSearch.layoutManager = layoutManager
 
-            rv_search.adapter = adapterCodeNoStamp
+            rvSearch.adapter = adapterCodeNoStamp
 
             adapterCodeNoStamp.listener = object : ClickableAdapter.BaseAdapterAction<CodeNoStamp> {
                 override fun click(position: Int, data: CodeNoStamp, code: Int) {
-                    context?.let {
                         view.setText(data.code ?: "")
                         view.error = null
                         dialog.dismiss()
-                    }
                 }
             }
             dialog.show()
@@ -275,12 +271,20 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
         context?.let {
             rv_image.layoutManager = GridLayoutManager(context, 3, GridLayoutManager.VERTICAL, false)
             rv_image.addItemDecoration(ItemOffsetDecoration(it, R.dimen.item_spacing))
+            adapterImages.addData(0, PostMedia())
             rv_image.adapter = adapterImages
             adapterImages.listener = object : ClickableAdapter.BaseAdapterAction<PostMedia> {
                 override fun click(position: Int, data: PostMedia, code: Int) {
-                    postMedias.remove(data)
-                    if (postMedias.isEmpty()) rv_image.visibility = View.GONE
-                    adapterImages.replaceAll(postMedias)
+                    when (code) {
+                        IMAGE_DELETE -> {
+                            postMedias.remove(data)
+                            adapterImages.replaceAll(postMedias)
+                            if (postMedias.isNotEmpty())
+                                adapterImages.addData(postMedias.size, PostMedia())
+                            else adapterImages.addData(0, PostMedia())
+                        }
+                        IMAGE_ADD -> launchPickPhotoIntent()
+                    }
                 }
             }
         }
@@ -319,6 +323,9 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
                 }
             }
             adapterImages.replaceAll(postMedias)
+            if (postMedias.isNotEmpty())
+                adapterImages.addData(postMedias.size, PostMedia())
+            else adapterImages.addData(0, PostMedia())
         }
     }
 

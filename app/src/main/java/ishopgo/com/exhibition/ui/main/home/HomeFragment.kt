@@ -223,6 +223,8 @@ class HomeFragment : BaseFragment() {
         if (view_banner_pager != null) {
             doChangeBanner()
         }
+        if (view_expo_fair_pager != null)
+            doChangeExpoFair()
     }
 
     override fun onStop() {
@@ -636,7 +638,7 @@ class HomeFragment : BaseFragment() {
             }
             view_expo_fair_pager.offscreenPageLimit = listExpo.size
             view_expo_fair_pager.adapter = mPagerExpoFairAdapter
-            view_expo_fair_indicator.setViewPager(view_banner_pager)
+            view_expo_fair_indicator.setViewPager(view_expo_fair_pager)
 
             view_expo_fair_pager.post {
                 doChangeExpoFair()
