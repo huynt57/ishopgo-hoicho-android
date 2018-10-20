@@ -343,7 +343,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
     private fun showDialogAddMaker(type: Boolean, title: String) {
         context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
-                    .content("Thêm hành trình")
+                    .title("Thêm hành trình")
                     .customView(R.layout.dialog_no_stamp_journeys, false)
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
@@ -377,7 +377,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             }
             val tvEditTracking = dialog.findViewById(R.id.tv_editTracking) as VectorSupportTextView
             tvEditTracking.setOnClickListener {
-                showDialogAddMaker(!ADD_TRACKING, data.title ?:"")
+                showDialogAddMaker(!ADD_TRACKING, data.title ?: "")
                 dialog.dismiss()
             }
             val tvDeleteTracking = dialog.findViewById(R.id.tv_deleteTracking) as VectorSupportTextView
