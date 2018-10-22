@@ -3,6 +3,7 @@ package ishopgo.com.exhibition.ui.main.stamp.nostamp.add
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.location.Address
@@ -35,15 +36,18 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
+import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.main.productmanager.add.BoothAdapter
 import ishopgo.com.exhibition.ui.main.productmanager.add.BrandsAdapter
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampViewModel
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.edit.TrackingAdapter
+import ishopgo.com.exhibition.ui.main.stamp.nostamp.edit.map.NoStampMapActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+import kotlinx.android.synthetic.*
 import kotlinx.android.synthetic.main.content_no_stamp_add.*
 import kotlinx.android.synthetic.main.content_title_map_marker.view.*
 import java.io.IOException
@@ -62,7 +66,6 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     private var thuongHieuId: Long = 0L
     private var gianHangId: Long = 0L
     private var productId: Long = 0L
-    private var coatings: Int = COATINGS_HIDDEN
     private var listTracking = mutableListOf<Tracking>()
     private var mMap: GoogleMap? = null
     private val ZOOM_LEVEL = 15f
@@ -70,6 +73,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     private var waypoint: ArrayList<LatLng> = ArrayList()
     private var END = LatLng(0.0, 0.0)
     private lateinit var mapFragment: SupportMapFragment
+    private var countLoop = 0
 
     companion object {
 
@@ -92,6 +96,11 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        view_show_map.setOnClickListener {
+            val intent = Intent(context, NoStampMapActivity::class.java)
+            intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(listTracking))
+            startActivity(intent)
+        }
         edit_no_stamp_thuongHieu.setOnClickListener { getBrands(edit_no_stamp_thuongHieu) }
         edit_no_stamp_gianHang.setOnClickListener { getBooth(edit_no_stamp_gianHang) }
         edit_no_stamp_sanPham.setOnClickListener { viewModel.openSearchProduct(stampId) }
@@ -104,7 +113,6 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         rv_tracking.isNestedScrollingEnabled = false
         rv_tracking.setHasFixedSize(false)
         rv_tracking.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
-        mapFragment = childFragmentManager.findFragmentById((R.id.map)) as SupportMapFragment
 
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Tracking> {
             override fun click(position: Int, data: Tracking, code: Int) {
@@ -114,19 +122,11 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             }
         }
 
-        sw_coatings.setOnCheckedChangeListener { b, _ ->
-            if (b.isChecked) {
-                coatings = COATINGS_SHOW
-                sw_coatings.text = "Loại tem: Có phủ cào"
-            } else {
-                coatings = COATINGS_HIDDEN
-                sw_coatings.text = "Loại tem: Không phủ cào"
-            }
-        }
         btn_assign_no_stamp.setOnClickListener {
             if (isRequiredFieldsValid(edit_no_stamp.text.toString(), edit_no_stamp_thuongHieu.text.toString(), edit_no_stamp_gianHang.text.toString(), edit_no_stamp_sanPham.text.toString(), edit_no_stamp_gioiHan.text.toString())) {
                 showProgressDialog()
-                viewModel.addNoStampDetail(productId, edit_no_stamp.text.toString(), coatings.toString(), edit_no_stamp_gioiHan.text.toString())
+                viewModel.addNoStampDetail(productId, edit_no_stamp.text.toString(), edit_no_stamp_gioiHan.text.toString(), listTracking, edit_no_stamp_ngaySX.text.toString(),
+                        edit_no_stamp_HSD.text.toString(), edit_no_stamp_soLuong.text.toString())
             }
         }
     }
@@ -169,7 +169,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = obtainViewModel(NoStampViewModel::class.java, true)
-        viewModel.errorSignal.observe(this, Observer {
+        viewModel.errorSignal.observe(this, Observer { it ->
             it?.let {
                 hideProgressDialog()
                 resolveError(it)
@@ -260,15 +260,15 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                     .canceledOnTouchOutside(false)
                     .build()
 
-            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
-            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
-            edt_search.visibility = View.GONE
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edtSearch = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edtSearch.visibility = View.GONE
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
+            rvSearch.layoutManager = layoutManager
 
-            rv_search.adapter = adapterBrands
-            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+            rvSearch.adapter = adapterBrands
+            rvSearch.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     loadMoreBrands(totalItemsCount)
                 }
@@ -300,15 +300,15 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                     .build()
 
 
-            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
-            val edt_search = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
-            edt_search.visibility = View.GONE
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edtSearch = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edtSearch.visibility = View.GONE
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
+            rvSearch.layoutManager = layoutManager
 
-            rv_search.adapter = adapterBooth
-            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+            rvSearch.adapter = adapterBooth
+            rvSearch.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     loadMoreProvider(totalItemsCount)
                 }
@@ -432,17 +432,17 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                     .canceledOnTouchOutside(false)
                     .build()
 
-            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
             val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
-            val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
+            val edtSearch = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
+            rvSearch.layoutManager = layoutManager
 
-            rv_search.adapter = adapterBooth
-            rv_search.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+            rvSearch.adapter = adapterBooth
+            rvSearch.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
                 override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
                     loadMoreProvider(totalItemsCount)
                 }
@@ -450,13 +450,13 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
-                        if (edt_search.text.isEmpty()) {
+                        if (edtSearch.text.isEmpty()) {
                             toast("Vui lòng nhập tiêu đề danh mục")
-                            edt_search.error = "Tiêu đề danh mục còn trống"
+                            edtSearch.error = "Tiêu đề danh mục còn trống"
                             return
                         }
 
-                        getLatLngFromAddress(data, edt_search.text.toString())
+                        getLatLngFromAddress(data, edtSearch.text.toString())
 
                         dialog.dismiss()
                     }
@@ -477,27 +477,27 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                     .canceledOnTouchOutside(false)
                     .build()
 
-            val rv_search = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
             val textInputLayout = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
-            val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
+            val edtSearch = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
 
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
-            rv_search.layoutManager = layoutManager
+            rvSearch.layoutManager = layoutManager
 
-            rv_search.adapter = adapterBoothCurrent
+            rvSearch.adapter = adapterBoothCurrent
 
             adapterBoothCurrent.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
-                        if (edt_search.text.isEmpty()) {
+                        if (edtSearch.text.isEmpty()) {
                             toast("Vui lòng nhập tiêu đề danh mục")
-                            edt_search.error = "Tiêu đề danh mục còn trống"
+                            edtSearch.error = "Tiêu đề danh mục còn trống"
                             return
                         }
-                        getLatLngFromAddress(data, edt_search.text.toString())
+                        getLatLngFromAddress(data, edtSearch.text.toString())
 
                         dialog.dismiss()
                     }
@@ -509,7 +509,6 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun getLatLngFromAddress(data: BoothManager, title: String) {
         try {
-            mMap?.clear()
             val listLocation: List<Address>?
             val geocoder = Geocoder(context)
             listLocation = geocoder.getFromLocationName(data.address, 1)
@@ -525,7 +524,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                 tracking.valueSync = values
                 listTracking.add(tracking)
                 adapter.replaceAll(listTracking)
-
+                mapFragment = childFragmentManager.findFragmentById((R.id.map)) as SupportMapFragment
                 mapFragment.getMapAsync(this)
 
             } else toast("Không tìm thấy vị trí bạn cần tìm")
@@ -575,11 +574,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         })
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onMapReady(p0: GoogleMap?) {
         mMap = p0
         mMap?.let {
-            it.clear()
-
             val uiSettings = it.uiSettings
             uiSettings?.isMyLocationButtonEnabled = true
             uiSettings?.isZoomControlsEnabled = true
@@ -593,8 +591,9 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             }
 
             val latLngBounds = LatLngBounds.Builder()
+
             for (i in listTracking.indices) {
-                infoWindowAdapter(it, i, listTracking)
+//                infoWindowAdapter(it, i, listTracking)
                 val latLng = LatLng(listTracking[i].lat, listTracking[i].lng)
                 latLngBounds.include(latLng)
                 val text = TextView(context)
@@ -605,6 +604,8 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                 generator.setContentView(text)
                 val icon: Bitmap = generator.makeIcon()
                 if (i == 0) {
+                    if (listTracking.size > 1)
+                        countLoop++
                     mMap?.addMarker(latLng.let {
                         MarkerOptions().position(it)
                                 .icon(BitmapDescriptorFactory.fromBitmap(icon))

@@ -5,42 +5,15 @@ import com.google.gson.annotations.SerializedName
 
 
 class StampNoDetail : IdentityData() {
-    @SerializedName("name")
-    @Expose
-    var name: String? = null
-    @SerializedName("quantity")
-    @Expose
-    var quantity: Int? = null
-    @SerializedName("quantity_exists")
-    @Expose
-    var quantityExists: Int? = null
-    @SerializedName("serial_number_prefix")
-    @Expose
-    var serialNumberPrefix: String? = null
-    @SerializedName("serial_number")
-    @Expose
-    var serialNumber: String? = null
-    @SerializedName("assign_product")
-    @Expose
-    var assignProduct: Int? = null
-    @SerializedName("shop_id")
-    @Expose
-    var shopId: Int? = null
-    @SerializedName("calculate_quantity")
-    @Expose
-    var calculateQuantity: Int? = null
-    @SerializedName("account_id")
-    @Expose
-    var accountId: Int? = null
-    @SerializedName("created_at")
-    @Expose
-    var createdAt: String? = null
-    @SerializedName("updated_at")
-    @Expose
-    var updatedAt: String? = null
     @SerializedName("code")
     @Expose
     var code: String? = null
+    @SerializedName("shop_id")
+    @Expose
+    var shopId: Int? = null
+    @SerializedName("account_id")
+    @Expose
+    var accountId: Int? = null
     @SerializedName("account_phone")
     @Expose
     var accountPhone: String? = null
@@ -53,9 +26,12 @@ class StampNoDetail : IdentityData() {
     @SerializedName("product_name")
     @Expose
     var productName: String? = null
+    @SerializedName("quantity")
+    @Expose
+    var quantity: Int? = null
     @SerializedName("download")
     @Expose
-    var download: Int? = null
+    var download: String? = null
     @SerializedName("start_quantity")
     @Expose
     var startQuantity: Int? = null
@@ -64,11 +40,26 @@ class StampNoDetail : IdentityData() {
     var endQuantity: Int? = null
     @SerializedName("note")
     @Expose
-    var note: Any? = null
+    var note: String? = null
     @SerializedName("limited_access")
     @Expose
     var limitedAccess: Int? = null
+    @SerializedName("date_of_manufacture")
+    @Expose
+    var dateOfManufacture: String? = null
+    @SerializedName("date_expiry")
+    @Expose
+    var dateExpiry: String? = null
+    @SerializedName("quantity_diary")
+    @Expose
+    var quantityDiary: String? = null
     @SerializedName("trackings")
     @Expose
     var trackings: List<Tracking>? = null
+    @SerializedName("created_at")
+    @Expose
+    var createdAt: String? = null
+    @SerializedName("updated_at")
+    @Expose
+    var updatedAt: String? = null
 }

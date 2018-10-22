@@ -99,13 +99,22 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
 
     var addNoStampSusscess = MutableLiveData<Boolean>()
 
-    fun addNoStampDetail(product_id: Long, stamp_assign_product_code: String, coatings: String, limited_access: String) {
+    fun addNoStampDetail(product_id: Long, stamp_assign_product_code: String, limited_access: String, tracking: List<Tracking>, ngaySX: String, hsd: String, soLuong: String) {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("product_id", product_id.toString())
                 .addFormDataPart("stamp_assign_product_code", stamp_assign_product_code)
-                .addFormDataPart("coatings", coatings)
+                .addFormDataPart("date_of_manufacture", ngaySX)
+                .addFormDataPart("date_expiry", hsd)
+                .addFormDataPart("quantity_diary", soLuong)
                 .addFormDataPart("limited_access", limited_access)
+
+        if (tracking.isNotEmpty()) {
+            for (i in tracking.indices) {
+                builder.addFormDataPart("tracking[$i][title]", tracking[i].title.toString())
+                builder.addFormDataPart("tracking[$i][value]", tracking[i].value.toString())
+            }
+        }
 
         addDisposable(authService.createNoStampNew(builder.build())
                 .subscribeOn(Schedulers.single())

@@ -78,7 +78,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         view_show_map.setOnClickListener {
             if (data != null) {
                 val intent = Intent(context, NoStampMapActivity::class.java)
-                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data))
+                intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(data!!.trackings))
                 startActivity(intent)
             }
         }

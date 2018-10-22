@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.gson.reflect.TypeToken
 import com.google.maps.android.ui.IconGenerator
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.response.StampNoDetail
@@ -28,7 +29,6 @@ import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
     private lateinit var item: List<Tracking>
     private var mMap: GoogleMap? = null
-    private var data: StampNoDetail? = null
     private val ZOOM_LEVEL = 15f
     private var FROM = LatLng(0.0, 0.0)
     private var waypoint: ArrayList<LatLng> = ArrayList()
@@ -154,18 +154,16 @@ class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
 
         setupToolbars()
 
-        if (data != null && data!!.trackings?.isNotEmpty() == true) {
-            item = data!!.trackings ?: mutableListOf()
+        if (item.isNotEmpty()) {
             val mapFragment = childFragmentManager.findFragmentById((R.id.map)) as SupportMapFragment
             mapFragment.getMapAsync(this)
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val json = arguments?.getString(Const.TransferKey.EXTRA_JSON)
-        data = Toolbox.gson.fromJson(json, StampNoDetail::class.java)
+        item = Toolbox.gson.fromJson<MutableList<Tracking>>(arguments?.getString(Const.TransferKey.EXTRA_JSON),
+                object : TypeToken<MutableList<Tracking>>() {}.type)
     }
 
     private fun setupToolbars() {
