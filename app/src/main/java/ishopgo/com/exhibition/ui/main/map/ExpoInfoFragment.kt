@@ -6,12 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import ishopgo.com.exhibition.R
@@ -22,7 +18,6 @@ import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asDateTime
 import ishopgo.com.exhibition.ui.extensions.asMoney
-import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import kotlinx.android.synthetic.main.fragment_expo_map_info.*
 
@@ -38,6 +33,8 @@ class ExpoInfoFragment : BaseFragment() {
 
             return fragment
         }
+
+        const val ANIMATION_DURATION = 500
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -132,35 +129,10 @@ class ExpoInfoFragment : BaseFragment() {
             )
             view_webview.loadData(fullHtml, "text/html; charset=UTF-8", null)
         }
-
-
-
-//        view_webview.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-//            if (scrollX == 0 && scrollY == 0)
-//                constraintLayout.visibility = View.VISIBLE
-//            else constraintLayout.visibility = View.GONE
-//        }
-
         view_webview.settings.javaScriptEnabled = true
-//        view_webview.webChromeClient = object : WebChromeClient() {
-//            override fun onProgressChanged(view: WebView?, newProgress: Int) {
-//                super.onProgressChanged(view, newProgress)
-//                if (progressBar != null) {
-//                    if (newProgress == 100) {
-//                        progressBar.visibility = View.GONE
-//                    } else if (newProgress < 100) {
-//                        progressBar.visibility = View.VISIBLE
-//                        progressBar.progress = newProgress
-//                    }
-//                }
-//            }
-//        }
-
-//        view_show_more_description.setOnClickListener {
-//            val intent = Intent(context, FullDetailActivity::class.java)
-//            intent.putExtra(Const.TransferKey.EXTRA_JSON, expoInfo?.description ?: "")
-//            startActivity(intent)
-//        }
+        view_webview.isNestedScrollingEnabled = false
+        view_webview.isVerticalScrollBarEnabled = false
+        view_webview.isHorizontalScrollBarEnabled = false
     }
 
     private fun startWithId(fairId: Long) {

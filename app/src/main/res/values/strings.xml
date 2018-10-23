@@ -8,5 +8,7 @@
     <string name="tab_profile">Tài khoản</string>
     <string name="tab_info">Giới thiệu</string>
     <string name="tab_booth">Gian hàng</string>
+    <string name="tab_map">Bản đồ</string>
+    <string name="tab_statistical">Thống kê</string>
     <string name="error_field_required">Trường này còn trống</string>
 </resources>

@@ -271,6 +271,7 @@
                 </LinearLayout>
 
             </android.support.constraint.ConstraintLayout>
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/container_shop_sale_point"
                 android:layout_width="match_parent"
@@ -366,6 +367,7 @@
                 android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:padding="8dp"
+                android:textSize="12sp"
                 android:text="+ Xem chi tiết"
                 android:textColor="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -614,43 +616,42 @@
             </android.support.constraint.ConstraintLayout>
 
             <!--<android.support.constraint.ConstraintLayout-->
-                <!--android:id="@+id/container_supply_chain"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--tools:visibility="visible">-->
+            <!--android:id="@+id/container_supply_chain"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--tools:visibility="visible">-->
 
             <!--<View-->
-                <!--android:id="@+id/view_divider_supply_chain"-->
-                <!--style="@style/AppTheme.DividerFat"-->
-                <!--android:layout_width="0dp"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent"-->
-                <!--app:layout_constraintTop_toTopOf="parent" />-->
+            <!--android:id="@+id/view_divider_supply_chain"-->
+            <!--style="@style/AppTheme.DividerFat"-->
+            <!--android:layout_width="0dp"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent" />-->
 
-                <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
-                    <!--android:id="@+id/vectorSupportTextView"-->
-                    <!--style="@style/AppTheme.SectionLabel"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:text="Chuỗi cung ứng"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/view_divider_product_process" />-->
+            <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
+            <!--android:id="@+id/vectorSupportTextView"-->
+            <!--style="@style/AppTheme.SectionLabel"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Chuỗi cung ứng"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/view_divider_product_process" />-->
 
-                <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:id="@+id/rv_supply_chain"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginTop="-1dp"-->
-                    <!--android:padding="8dp"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/view_divider_supply_chain"-->
-                    <!--tools:itemCount="5"-->
-                    <!--tools:listitem="@layout/item_supply_chain" />-->
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:id="@+id/rv_supply_chain"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginTop="-1dp"-->
+            <!--android:padding="8dp"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@+id/view_divider_supply_chain"-->
+            <!--tools:itemCount="5"-->
+            <!--tools:listitem="@layout/item_supply_chain" />-->
 
             <!--</android.support.constraint.ConstraintLayout>-->
-
 
 
             <android.support.constraint.ConstraintLayout

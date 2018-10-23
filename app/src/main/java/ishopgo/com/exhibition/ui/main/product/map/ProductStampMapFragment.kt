@@ -1,4 +1,4 @@
-package ishopgo.com.exhibition.ui.main.stamp.nostamp.edit.map
+package ishopgo.com.exhibition.ui.main.product.map
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
@@ -16,25 +16,25 @@ import com.google.android.gms.maps.model.*
 import com.google.gson.reflect.TypeToken
 import com.google.maps.android.ui.IconGenerator
 import ishopgo.com.exhibition.R
+import ishopgo.com.exhibition.domain.response.ProductDetail
 import ishopgo.com.exhibition.domain.response.Tracking
 import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
-import ishopgo.com.exhibition.ui.main.product.map.ProductStampMapFragment
 import kotlinx.android.synthetic.main.content_title_map_marker.view.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
-class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
-    private lateinit var item: List<Tracking>
+class ProductStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
+    private lateinit var item: List<ProductDetail.StampTracking>
     private var mMap: GoogleMap? = null
     private val ZOOM_LEVEL = 15f
     private var FROM = LatLng(0.0, 0.0)
     private var waypoint: ArrayList<LatLng> = ArrayList()
     private var END = LatLng(0.0, 0.0)
 
-    private fun infoWindowAdapter(mMap: GoogleMap, position: Int, item: List<Tracking>) {
+    private fun infoWindowAdapter(mMap: GoogleMap, position: Int, item: List<ProductDetail.StampTracking>) {
 
         mMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
 
@@ -55,11 +55,12 @@ class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
                                 tv_map_title.visibility = if (item[i].title?.isNotEmpty() == true) View.VISIBLE else View.GONE
                                 tv_map_title.text = "<b>${item[i].title
                                         ?: ""}</b>".asHtml()
-                                tv_map_name.text = "Tên: <b>${item[i].valueSync?.name
+                                tv_map_name.text = "Tên: <b>${item[i].valueName
                                         ?: ""}</b>".asHtml()
-                                val sdt = "Sđt: <b>${item[i].valueSync?.phone ?: ""}</b>".asHtml()
-                                tv_map_phone.setPhone(sdt, item[i].valueSync?.phone ?: "")
-                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueSync?.address}</b>".asHtml()
+                                val sdt = "Sđt: <b>${item[i].valuePhone ?: ""}</b>".asHtml()
+                                tv_map_phone.setPhone(sdt, item[i].valuePhone ?: "")
+                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueAddress
+                                        ?: ""}</b>".asHtml()
                             }
                         }
                     }
@@ -123,7 +124,7 @@ class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
                 if (FROM != LatLng(0.0, 0.0) && END != LatLng(0.0, 0.0)) {
                     waypoint.add(0, FROM)
                     waypoint.add(waypoint.size, END)
-                    mMap?.addPolyline(PolylineOptions().addAll(waypoint).width(5.0f).color(Color.RED))
+//                    mMap?.addPolyline(PolylineOptions().addAll(waypoint).width(5.0f).color(Color.RED))
 
                     mMap?.setOnMapLoadedCallback{
                         val bounds: LatLngBounds = latLngBounds.build()
@@ -162,12 +163,12 @@ class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        item = Toolbox.gson.fromJson<MutableList<Tracking>>(arguments?.getString(Const.TransferKey.EXTRA_JSON),
-                object : TypeToken<MutableList<Tracking>>() {}.type)
+        item = Toolbox.gson.fromJson<MutableList<ProductDetail.StampTracking>>(arguments?.getString(Const.TransferKey.EXTRA_JSON),
+                object : TypeToken<MutableList<ProductDetail.StampTracking>>() {}.type)
     }
 
     private fun setupToolbars() {
-        toolbar.setCustomTitle("Bản đồ truy xuất đường đi của sản phẩm")
+        toolbar.setCustomTitle("Bản đồ điểm bán sản phẩm")
         toolbar.leftButton(R.drawable.ic_arrow_back_highlight_24dp)
         toolbar.setLeftButtonClickListener { activity?.finish() }
     }

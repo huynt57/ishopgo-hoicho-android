@@ -6,17 +6,22 @@ import android.app.Activity.RESULT_OK
 import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewCompat
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.navigation.Navigation
 import com.afollestad.materialdialogs.MaterialDialog
 import com.facebook.CallbackManager
@@ -25,8 +30,14 @@ import com.facebook.FacebookException
 import com.facebook.share.Sharer
 import com.facebook.share.model.ShareLinkContent
 import com.facebook.share.widget.ShareDialog
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
 import com.google.gson.JsonElement
 import com.google.gson.reflect.TypeToken
+import com.google.maps.android.ui.IconGenerator
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.domain.request.CreateConversationRequest
 import ishopgo.com.exhibition.domain.request.ProductDiaryRequest
@@ -51,6 +62,7 @@ import ishopgo.com.exhibition.ui.main.product.detail.description.DescriptionActi
 import ishopgo.com.exhibition.ui.main.product.detail.fulldetail.FullDetailActivity
 import ishopgo.com.exhibition.ui.main.product.detail.sale_point.ProductSalePointActivity
 import ishopgo.com.exhibition.ui.main.product.favorite.FavoriteProductsActivity
+import ishopgo.com.exhibition.ui.main.product.map.ProductStampMapActivity
 import ishopgo.com.exhibition.ui.main.product.shop.ProductsOfShopActivity
 import ishopgo.com.exhibition.ui.main.product.viewed.ViewedProductsActivity
 import ishopgo.com.exhibition.ui.main.salepointdetail.SalePointDetailActivity
@@ -59,12 +71,14 @@ import ishopgo.com.exhibition.ui.photoview.PhotoAlbumViewActivity
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_product_info.*
+import kotlinx.android.synthetic.main.content_title_map_marker.view.*
 import kotlinx.android.synthetic.main.fragment_product_detail.*
 
 /**
  * Created by xuanhong on 4/25/18. HappyCoding!
  */
-class ProductDetailFragment : BaseFragment(), BackpressConsumable {
+class ProductDetailFragment : BaseFragment(), BackpressConsumable, OnMapReadyCallback {
+
     override fun onBackPressConsumed(): Boolean {
         return childFragmentManager.popBackStackImmediate()
     }
@@ -114,6 +128,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
     private val vatTuProductAdapter = ProductAdapter(0.4f)
     private val giaiPhapProductAdapter = ProductAdapter(0.4f)
     private val relatedProductAdapter = ProductAdapter(0.4f)
+
+    private var mMap: GoogleMap? = null
+    private val ZOOM_LEVEL = 15f
+    private var FROM = LatLng(0.0, 0.0)
+    private var waypoint: ArrayList<LatLng> = ArrayList()
+    private var END = LatLng(0.0, 0.0)
+    private lateinit var listStampTracking: List<ProductDetail.StampTracking>
 
     private var isViewDiary = false
     private var productId: Long = -1L
@@ -357,6 +378,25 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                     tv_user_scan.text = "${stamp.numberOfScanners} Số người quét"
                 else linear_stamp_vertify.visibility = View.GONE
 
+                if (stamp.dateOfManufacture?.isNotEmpty() == true) {
+                    view_product_ngaySanXuat.visibility = View.VISIBLE
+                    view_product_ngaySanXuat.text = "<b>Ngày sản xuất: <font color=\"#f73a04\">${stamp.dateOfManufacture
+                            ?: ""}</font></b>".asHtml()
+                } else view_product_ngaySanXuat.visibility = View.GONE
+
+                if (stamp.dateExpiry?.isNotEmpty() == true) {
+                    view_product_hsd.visibility = View.VISIBLE
+                    view_product_hsd.text = "<b>Hạn sử dụng: <font color=\"#f73a04\">${stamp.dateExpiry
+                            ?: ""}</font></b>".asHtml()
+                } else view_product_hsd.visibility = View.GONE
+
+                if (stamp.quantityDiary?.isNotEmpty() == true) {
+                    view_product_soLuong.visibility = View.VISIBLE
+                    view_product_soLuong.text = "<b>Số lượng: <font color=\"#f73a04\">${stamp.quantityDiary
+                            ?: ""}</font></b>".asHtml()
+                } else view_product_soLuong.visibility = View.GONE
+
+
             } else const_vertify.visibility = View.GONE
 
             view_product_wholesale.visibility = View.VISIBLE
@@ -423,6 +463,19 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
                 view_product_date_muaVu.visibility = View.VISIBLE
                 view_product_date_muaVu.text = convert.provideSeason()
             }
+
+            if (convert.providerStapTracking().isNotEmpty()) {
+                linear_map.visibility = View.VISIBLE
+                listStampTracking = convert.providerStapTracking()
+                val mapFragment = childFragmentManager.findFragmentById((R.id.map)) as SupportMapFragment
+                mapFragment.getMapAsync(this)
+                view_show_map.setOnClickListener {
+                    val intent = Intent(context, ProductStampMapActivity::class.java)
+                    intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(listStampTracking))
+                    startActivity(intent)
+                }
+            } else linear_map.visibility = View.GONE
+
 
             if (convert.providerExchangeDiaryProduct().isNotEmpty()) {
                 val listExchangeDiary = mutableListOf<ExchangeDiaryProduct>()
@@ -735,6 +788,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
         fun providerInfo(): List<InfoProduct>
         fun providerStamp(): ProductDetail.Stamp?
         fun providerExchangeDiaryProduct(): List<ExchangeDiaryProduct>
+        fun providerStapTracking(): List<ProductDetail.StampTracking>
         fun providerRelatedShop(): List<BoothManager>
         fun providerBooth(): Booth?
     }
@@ -743,6 +797,10 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerStapTracking(): List<ProductDetail.StampTracking> {
+                    return from.stampTracking ?: mutableListOf()
+                }
+
                 override fun providerBooth(): Booth? {
                     return from.booth
                 }
@@ -918,7 +976,8 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             return object : ProcessProvider {
                 override fun provideSightseeingt(): CharSequence {
                     return "<b><font color=\"#00c853\">${from.visit
-                            ?: 0}</font></b><br>Lượt tham quan".asHtml()                }
+                            ?: 0}</font></b><br>Lượt tham quan".asHtml()
+                }
 
                 override fun provideHotline(): CharSequence {
                     return from.hotline ?: ""
@@ -1382,7 +1441,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun setupFavoriteProducts(context: Context) {
         view_list_favorite.adapter = favoriteProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_favorite.layoutManager = layoutManager
         view_list_favorite.isNestedScrollingEnabled = false
         view_list_favorite.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -1390,7 +1449,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun setupSameShopProducts(context: Context) {
         view_list_products_same_shop.adapter = sameShopProductsAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_products_same_shop.layoutManager = layoutManager
         view_list_products_same_shop.isNestedScrollingEnabled = false
         view_list_products_same_shop.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -1398,7 +1457,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun setupViewedProducts(context: Context) {
         view_list_viewed.adapter = viewedProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_viewed.layoutManager = layoutManager
         view_list_viewed.isNestedScrollingEnabled = false
         view_list_viewed.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -1420,7 +1479,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun setupProductVatTu(context: Context) {
         view_list_products_nguyenLieu_vatTu.adapter = vatTuProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_products_nguyenLieu_vatTu.layoutManager = layoutManager
         view_list_products_nguyenLieu_vatTu.isNestedScrollingEnabled = false
         view_list_products_nguyenLieu_vatTu.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -1428,7 +1487,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun setupProductGiaiPhap(context: Context) {
         view_list_products_giaiPhap.adapter = giaiPhapProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_products_giaiPhap.layoutManager = layoutManager
         view_list_products_giaiPhap.isNestedScrollingEnabled = false
         view_list_products_giaiPhap.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -1436,7 +1495,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
 
     private fun setupProductRelated(context: Context) {
         view_list_products_spLienQuan.adapter = relatedProductAdapter
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager = GridLayoutManager(context, 2, GridLayoutManager.HORIZONTAL, false)
         view_list_products_spLienQuan.layoutManager = layoutManager
         view_list_products_spLienQuan.isNestedScrollingEnabled = false
         view_list_products_spLienQuan.addItemDecoration(ItemOffsetDecoration(context, R.dimen.item_spacing))
@@ -1482,5 +1541,107 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable {
             if (imagesList.size > 1)
                 doChangeBanner()
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onMapReady(p0: GoogleMap?) {
+        mMap = p0
+        mMap?.let { it ->
+            val uiSettings = it.uiSettings
+            uiSettings?.isMyLocationButtonEnabled = true
+            uiSettings?.isZoomControlsEnabled = true
+            uiSettings?.isZoomGesturesEnabled = true
+            uiSettings?.isCompassEnabled = true
+            uiSettings?.isRotateGesturesEnabled = true
+            uiSettings?.isScrollGesturesEnabled = false
+            if (listStampTracking.isNotEmpty()) {
+                val latLng = LatLng(listStampTracking[0].lat, listStampTracking[0].lng)
+                it.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, ZOOM_LEVEL))
+            }
+
+            val latLngBounds = LatLngBounds.Builder()
+            for (i in listStampTracking.indices) {
+                infoWindowAdapter(it, i, listStampTracking)
+                val latLng = LatLng(listStampTracking[i].lat, listStampTracking[i].lng)
+                latLngBounds.include(latLng)
+                val text = TextView(context)
+                text.text = "  " + (i + 1)
+                text.setTextColor(Color.WHITE)
+                val generator = IconGenerator(context)
+                generator.setBackground(context?.let { ContextCompat.getDrawable(it, R.drawable.ic_waypoint) })
+                generator.setContentView(text)
+                val icon: Bitmap = generator.makeIcon()
+                if (i == 0) {
+                    mMap?.addMarker(latLng.let {
+                        MarkerOptions().position(it)
+                                .icon(BitmapDescriptorFactory.fromBitmap(icon))
+                    })
+                    FROM = latLng
+                }
+
+                if (i > 0 && i != listStampTracking.size - 1) {
+                    mMap?.addMarker(latLng.let {
+                        MarkerOptions().position(it)
+                                .icon(BitmapDescriptorFactory.fromBitmap(icon))
+                    })
+                    waypoint.add(latLng)
+                }
+
+                if (i == listStampTracking.size - 1) {
+                    mMap?.addMarker(latLng.let {
+                        MarkerOptions().position(it).title((i + 1).toString())
+                                .icon(BitmapDescriptorFactory.fromBitmap(icon))
+                    })
+                    END = latLng
+                }
+
+                if (FROM != LatLng(0.0, 0.0) && END != LatLng(0.0, 0.0)) {
+                    waypoint.add(0, FROM)
+                    waypoint.add(waypoint.size, END)
+//                    mMap?.addPolyline(PolylineOptions().addAll(waypoint).width(5.0f).color(Color.RED))
+
+                    mMap?.setOnMapLoadedCallback {
+                        val bounds: LatLngBounds = latLngBounds.build()
+                        mMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun infoWindowAdapter(mMap: GoogleMap, position: Int, item: List<ProductDetail.StampTracking>) {
+
+        mMap.setInfoWindowAdapter(object : GoogleMap.InfoWindowAdapter {
+
+            val layoutInflater = LayoutInflater.from(context)
+            @SuppressLint("InflateParams")
+            private val mWindow: View = layoutInflater.inflate(R.layout.content_title_map_marker, null)
+
+            override fun getInfoContents(p0: Marker?): View? {
+                return null
+            }
+
+            @SuppressLint("SetTextI18n")
+            override fun getInfoWindow(p0: Marker?): View? {
+                mWindow.apply {
+                    p0?.let {
+                        for (i in 0..position) {
+                            if (it.id == "m$i") {
+                                tv_map_title.visibility = if (item[i].title?.isNotEmpty() == true) View.VISIBLE else View.GONE
+                                tv_map_title.text = "<b>${item[i].title
+                                        ?: ""}</b>".asHtml()
+                                tv_map_name.text = "Tên: <b>${item[i].valueName
+                                        ?: ""}</b>".asHtml()
+                                val sdt = "Sđt: <b>${item[i].valuePhone ?: ""}</b>".asHtml()
+                                tv_map_phone.setPhone(sdt, item[i].valuePhone ?: "")
+                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueAddress
+                                        ?: ""}</b>".asHtml()
+                            }
+                        }
+                    }
+                }
+                return mWindow
+            }
+        })
     }
 }

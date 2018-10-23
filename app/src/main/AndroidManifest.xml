@@ -572,6 +572,10 @@
             android:name=".ui.main.stamp.nostamp.edit.map.NoStampMapActivity"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.main.product.map.ProductStampMapActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

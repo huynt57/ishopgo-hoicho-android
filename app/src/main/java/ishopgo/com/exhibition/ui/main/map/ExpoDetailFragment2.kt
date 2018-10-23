@@ -16,6 +16,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.extensions.asColor
+import ishopgo.com.exhibition.ui.main.UnderDevelopFragment
 import ishopgo.com.exhibition.ui.widget.CountSpecificPager
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 import kotlinx.android.synthetic.main.fragment_expo_map2.*
@@ -35,6 +36,8 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
 
         const val TAB_INFO = 0
         const val TAB_BOOTH = 1
+        const val TAB_MAP = 2
+        const val TAB_STATISTICAL = 3
 
         private val TAG = "MainFragment"
     }
@@ -113,18 +116,32 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
 
         val item1 = AHBottomNavigationItem(
                 resources.getString(R.string.tab_info),
-                AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_shopping_bag),
+                AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_information),
                 ResourcesCompat.getColor(resources, R.color.md_blue_grey_700, null)
         )
 
         val item2 = AHBottomNavigationItem(
                 resources.getString(R.string.tab_booth),
-                AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_teamwork),
+                AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_booth),
+                ResourcesCompat.getColor(resources, R.color.md_blue_grey_700, null)
+        )
+
+        val item3 = AHBottomNavigationItem(
+                resources.getString(R.string.tab_map),
+                AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_location),
+                ResourcesCompat.getColor(resources, R.color.md_blue_grey_700, null)
+        )
+
+        val item4 = AHBottomNavigationItem(
+                resources.getString(R.string.tab_statistical),
+                AppCompatResources.getDrawable(view_bottom_navigation.context, R.drawable.ic_statistical),
                 ResourcesCompat.getColor(resources, R.color.md_blue_grey_700, null)
         )
 
         view_bottom_navigation.addItem(item1)
         view_bottom_navigation.addItem(item2)
+        view_bottom_navigation.addItem(item3)
+        view_bottom_navigation.addItem(item4)
 
         view_bottom_navigation.titleState = AHBottomNavigation.TitleState.ALWAYS_SHOW
 
@@ -134,7 +151,7 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
         }
     }
 
-    inner class MainPagerAdapter(fm: FragmentManager) : CountSpecificPager(fm, 2) {
+    inner class MainPagerAdapter(fm: FragmentManager) : CountSpecificPager(fm, 4) {
 
         override fun getItem(position: Int): Fragment {
             return when (position) {
@@ -142,8 +159,13 @@ class ExpoDetailFragment2 : BaseActionBarFragment() {
                     ExpoInfoFragment.newInstance(arguments ?: Bundle())
                 }
                 TAB_BOOTH -> {
-                    Fragment()
                     ExpoBoothTabFragment.newInstance(arguments ?: Bundle())
+                }
+                TAB_MAP -> {
+                    UnderDevelopFragment()
+                }
+                TAB_STATISTICAL -> {
+                    UnderDevelopFragment()
                 }
                 else -> {
                     Fragment()

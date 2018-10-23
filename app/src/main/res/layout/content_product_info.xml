@@ -196,6 +196,59 @@
 
         </android.support.constraint.ConstraintLayout>
 
+        <LinearLayout
+            android:id="@+id/linear_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="0dp"
+                android:layout_marginEnd="0dp">
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/vectorSupportTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:padding="8dp"
+                    android:text="Bản đồ điểm bán sản phẩm"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/view_show_map"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+                    android:id="@+id/view_show_map"
+                    style="@style/AppTheme.MoreInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="Xem chi tiết"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/frame_map"
+                android:layout_width="match_parent"
+                android:layout_height="300dp">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
+        </LinearLayout>
 
         <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
             android:layout_width="match_parent"
@@ -332,6 +385,48 @@
             app:drawableStartCompat="@drawable/ic_star"
             app:drawableStartSquareSize="16dp"
             tools:text="Mùa vụ:"
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_hsd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/icon_calendar"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Hạn sử dụng : "
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_ngaySanXuat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/icon_calendar"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Ngày sản xuất: "
+            tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_soLuong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_star"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Số lượng: "
             tools:visibility="visible" />
     </LinearLayout>
 
@@ -485,19 +580,6 @@
     <!--tools:text="Quy cách đóng : "-->
     <!--tools:visibility="visible" />-->
 
-    <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
-    <!--android:id="@+id/view_product_hsd"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="4dp"-->
-    <!--android:drawablePadding="8dp"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:textSize="13sp"-->
-    <!--android:visibility="gone"-->
-    <!--app:drawableStartCompat="@drawable/icon_calendar"-->
-    <!--app:drawableStartSquareSize="16dp"-->
-    <!--tools:text="Hạn sử dụng : "-->
-    <!--tools:visibility="visible" />-->
     <!--</LinearLayout>-->
 
     <!--<View-->
@@ -536,20 +618,6 @@
     <!--app:drawableStartCompat="@drawable/icon_ms_lo_hang"-->
     <!--app:drawableStartSquareSize="16dp"-->
     <!--tools:text="Mã sản phẩm: "-->
-    <!--tools:visibility="visible" />-->
-
-    <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
-    <!--android:id="@+id/view_product_ngaySanXuat"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_marginTop="4dp"-->
-    <!--android:drawablePadding="8dp"-->
-    <!--android:gravity="center_vertical"-->
-    <!--android:textSize="13sp"-->
-    <!--android:visibility="gone"-->
-    <!--app:drawableStartCompat="@drawable/icon_calendar"-->
-    <!--app:drawableStartSquareSize="16dp"-->
-    <!--tools:text="Ngày sản xuất: "-->
     <!--tools:visibility="visible" />-->
 
     <!--<ishopgo.com.exhibition.ui.widget.VectorSupportTextView-->
