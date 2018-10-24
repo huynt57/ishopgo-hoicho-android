@@ -496,6 +496,9 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable, OnMapReadyCal
                     container_exchange_diary.visibility = View.GONE
                 }
 
+            view_product_chungNhan.visibility = if (convert.providerCertificate().isBlank()) View.GONE else View.VISIBLE
+            view_product_chungNhan.text = convert.providerCertificate()
+
             view_product_brand.visibility = if (convert.provideProductBrand().isBlank()) View.GONE else View.VISIBLE
             view_product_brand.text = convert.provideProductBrand()
             view_rating.rating = convert.provideRate()
@@ -786,6 +789,7 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable, OnMapReadyCal
         fun provideIsDiary(): Boolean
 
         fun providerInfo(): List<InfoProduct>
+        fun providerCertificate(): CharSequence
         fun providerStamp(): ProductDetail.Stamp?
         fun providerExchangeDiaryProduct(): List<ExchangeDiaryProduct>
         fun providerStapTracking(): List<ProductDetail.StampTracking>
@@ -797,6 +801,11 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable, OnMapReadyCal
 
         override fun convert(from: ProductDetail): ProductDetailProvider {
             return object : ProductDetailProvider {
+                override fun providerCertificate(): CharSequence {
+                    return if (from.chungNhan.isNullOrBlank()) ""
+                    else "<b>Chứng nhận: <font color=\"red\">${from.chungNhan}</font></b>".asHtml()
+                }
+
                 override fun providerStapTracking(): List<ProductDetail.StampTracking> {
                     return from.stampTracking ?: mutableListOf()
                 }

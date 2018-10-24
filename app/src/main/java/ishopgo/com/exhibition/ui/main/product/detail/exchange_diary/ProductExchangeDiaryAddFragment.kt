@@ -136,6 +136,10 @@ class ProductExchangeDiaryAddFragment : BaseFragment(), LocationListener {
             takePhoto()
         }
 
+        view_add_images.setOnClickListener {
+            launchPickPhotoIntent()
+        }
+
         btn_add.setOnClickListener {
             if (isRequiredFieldsValid(edit_maLo.text.toString(), edit_tenGiaoDich.text.toString(), edit_noiDung.text.toString())) {
                 showProgressDialog()

@@ -428,6 +428,20 @@
             app:drawableStartSquareSize="16dp"
             tools:text="Số lượng: "
             tools:visibility="visible" />
+
+        <ishopgo.com.exhibition.ui.widget.VectorSupportTextView
+            android:id="@+id/view_product_chungNhan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            android:visibility="gone"
+            app:drawableStartCompat="@drawable/ic_star"
+            app:drawableStartSquareSize="16dp"
+            tools:text="Chứng nhận: "
+            tools:visibility="visible" />
     </LinearLayout>
 
     <!--<LinearLayout-->

@@ -7,9 +7,12 @@ import android.view.View
 import androidx.navigation.Navigation
 import ishopgo.com.exhibition.R
 import ishopgo.com.exhibition.model.Const
+import ishopgo.com.exhibition.model.FilterProduct
+import ishopgo.com.exhibition.ui.base.BackpressConsumable
 import ishopgo.com.exhibition.ui.base.BaseActionBarFragment
 import ishopgo.com.exhibition.ui.extensions.Toolbox
 import ishopgo.com.exhibition.ui.filterproduct.FilterProductViewModel
+import ishopgo.com.exhibition.ui.main.MainViewModel
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
 
 /**
@@ -38,8 +41,23 @@ class PopularProductsFragmentActionBar : BaseActionBarFragment() {
         setupToolbars()
 
         childFragmentManager.beginTransaction()
-                .replace(R.id.view_main_content, PopularFragment.newInstance(Bundle()), "PopularFragment")
+                .replace(R.id.view_main_content, PopularFragment.newInstance(arguments
+                        ?: Bundle()), "PopularFragment")
                 .commit()
+
+        val mainViewModel = obtainViewModel(MainViewModel::class.java, true)
+        mainViewModel.showCategoriedProducts.observe(this, Observer {s ->
+            s?.let {
+                val params = Bundle()
+                filterViewModel.getDataFilter(FilterProduct())
+                params.putString(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(it))
+                childFragmentManager.beginTransaction()
+                        .setCustomAnimations(R.anim.enter_from_right, 0, 0, R.anim.exit_to_right)
+                        .add(R.id.view_main_content, PopularFragment.newInstance(params))
+                        .addToBackStack(PopularFragment.TAG)
+                        .commit()
+            }
+        })
     }
 
     private fun setupToolbars() {

@@ -11,9 +11,13 @@ import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
+import android.support.v4.content.FileProvider
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -39,6 +43,10 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailViewModel
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
 import ishopgo.com.exhibition.ui.widget.VectorSupportEditText
 import kotlinx.android.synthetic.main.fragment_product_diary_add.*
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ProductDiaryAddFragment : BaseFragment(), LocationListener {
 
@@ -64,6 +72,7 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
     companion object {
         const val TAG = "ProductDiaryAddFragment"
         const val PERMISSIONS_REQUEST_ACCESS_LOCATION = 100
+        const val PERMISSIONS_REQUEST_CAMERA = 100
         const val IMAGE_ADD = 0
         const val IMAGE_DELETE = 2
 
@@ -123,6 +132,10 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
                 viewModel.createProductDiary(data.id, edit_title.text.toString(), edit_content.text.toString(), postMedias, stampCode, lat.toString(), lng.toString(), edit_code.text.toString())
             }
         }
+
+        view_add_images.setOnClickListener { launchPickPhotoIntent() }
+
+        view_camera.setOnClickListener { takePhoto() }
 
         Glide.with(context).load(data.image)
                 .apply(RequestOptions.placeholderOf(R.drawable.image_placeholder).error(R.drawable.image_placeholder))
@@ -290,6 +303,46 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
         }
     }
 
+    private var sendingPhotoUri: Uri? = null
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        )
+    }
+
+    private fun takePhoto() {
+        if (context?.let { ActivityCompat.checkSelfPermission(it, Manifest.permission.CAMERA) } != PackageManager.PERMISSION_GRANTED) {
+
+            activity?.let { ActivityCompat.requestPermissions(it, arrayOf(Manifest.permission.CAMERA), PERMISSIONS_REQUEST_CAMERA) }
+
+        } else {
+            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            if (intent.resolveActivity(context?.packageManager) != null) {
+                var photoFile: File? = null
+                try {
+                    photoFile = createImageFile()
+                } catch (ex: IOException) {
+                    Log.e("Hong", "khong the tao file", ex)
+                }
+                photoFile?.let {
+                    val photoURI = FileProvider.getUriForFile(context!!, getString(R.string.file_provider_authority), it)
+                    sendingPhotoUri = photoURI
+
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(intent, Const.RequestCode.TAKE_PICTURE)
+                }
+            }
+        }
+    }
+
     private fun launchPickPhotoIntent() {
         val intent = Intent()
         intent.type = "image/*"
@@ -326,6 +379,19 @@ class ProductDiaryAddFragment : BaseFragment(), LocationListener {
             if (postMedias.isNotEmpty())
                 adapterImages.addData(postMedias.size, PostMedia())
             else adapterImages.addData(0, PostMedia())
+        }
+
+        if (requestCode == Const.RequestCode.TAKE_PICTURE && resultCode == Activity.RESULT_OK) {
+            sendingPhotoUri?.let {
+                val postMedia = PostMedia()
+
+                postMedia.uri = it
+                postMedias.add(postMedia)
+                adapterImages.replaceAll(postMedias)
+                if (postMedias.isNotEmpty())
+                    adapterImages.addData(postMedias.size, PostMedia())
+                else adapterImages.addData(0, PostMedia())
+            }
         }
     }
 

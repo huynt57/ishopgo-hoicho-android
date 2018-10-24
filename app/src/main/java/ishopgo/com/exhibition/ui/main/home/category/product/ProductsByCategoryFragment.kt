@@ -33,7 +33,6 @@ import ishopgo.com.exhibition.ui.main.product.detail.ProductDetailActivity
 import ishopgo.com.exhibition.ui.main.salepoint.DistrictAdapter
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
-import ishopgo.com.exhibition.ui.widget.VectorSupportTextView
 import kotlinx.android.synthetic.main.content_swipable_recyclerview.*
 import kotlinx.android.synthetic.main.empty_list_result.*
 import kotlinx.android.synthetic.main.fragment_base_actionbar.*
@@ -180,7 +179,6 @@ class ProductsByCategoryFragment : BaseActionBarFragment(), SwipeRefreshLayout.O
                 category = data
                 view_category.text = data.name
                 categoryId = data.id
-//                setupBreadCrumb()
 
                 viewModel.loadChildCategory(category)
                 firstLoad()
