@@ -231,13 +231,19 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable, OnMapReadyCal
         viewModel.detail.observe(this, Observer { d ->
             d?.let { productDetail ->
                 showProductDetail(productDetail)
-                viewModelDiary.showDiaryTabFragment.observe(this, Observer { p ->
-                    p?.let {
-                        if (it) {
-                            if (stampType.isNotEmpty()) showDiaryTabFragment(productDetail)
+
+                if (UserDataManager.currentType == "Quản trị viên"
+                        || (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == productDetail.booth?.id
+                                || UserDataManager.currentUserId == productDetail.booth?.id || UserDataManager.currentType == "Chủ hội chợ")) {
+                    viewModelDiary.showDiaryTabFragment.observe(this, Observer { p ->
+                        p?.let {
+                            if (it) {
+                                if (stampType.isNotEmpty()) showDiaryTabFragment(productDetail)
+                            }
                         }
-                    }
-                })
+                    })
+                }
+
             }
         })
         viewModel.sameShopProducts.observe(this, Observer { p ->
@@ -644,22 +650,13 @@ class ProductDetailFragment : BaseFragment(), BackpressConsumable, OnMapReadyCal
             } else container_diary.visibility = View.GONE
             if (stampType.isNotEmpty()) {
 
-                if (UserDataManager.currentType == "Quản trị viên") {
-                    val listPermission = Const.listPermission
-                    if (listPermission.isNotEmpty())
-                        for (i in listPermission.indices)
-                            if (Const.Permission.EXPO_BOOTH_PRODUCTION_DIARY_ADD == listPermission[i]) {
-                                view_add_exchange_diary.visibility = View.VISIBLE
-                                break
-                            }
+                if (UserDataManager.currentType == "Quản trị viên" || (UserDataManager.currentType == "Nhân viên gian hàng" && UserDataManager.currentBoothId == product.booth?.id)) {
+                    view_add_exchange_diary.visibility = View.VISIBLE
                 } else view_add_exchange_diary.visibility = View.GONE
 
-
                 if (UserDataManager.currentUserId == product.booth?.id || UserDataManager.currentType == "Chủ hội chợ") {
-                    isViewDiary = true
                     view_add_exchange_diary.visibility = View.VISIBLE
                 } else {
-                    isViewDiary = false
                     view_add_exchange_diary.visibility = View.GONE
                 }
 

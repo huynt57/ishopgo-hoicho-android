@@ -84,7 +84,7 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
                 override fun providePrice(): CharSequence {
                     return if (from.price == 0L) {
                         "<b><font color=\"#00c853\">Liên hệ</font></b>".asHtml()
-                    } else if (from.promotionPrice != null && from.promotionPrice != from.price) {
+                    } else if (from.promotionPrice != from.price) {
                         if (from.promotionPrice == 0L) // gia khuyen mai = 0 thi coi nhu ko khuyen mai
                             "<b><font color=\"#00c853\">${from.price.asMoney()}</font></b>".asHtml()
                         else
@@ -99,9 +99,11 @@ class SearchProductAdapter(private var itemWidthRatio: Float = -1f, private var 
                 }
 
                 override fun provideName(): CharSequence {
-                    return "${from.name?.trim()
+                    return  if (from.departmentName?.isNotEmpty() == true) "${from.name?.trim()
                             ?: "Sản phẩm"} - <b><font color=\"blue\">${from.departmentName?.trim()
                             ?: ""}</font></b>".asHtml()
+                    else (from.name?.trim()
+                            ?: "Sản phẩm").asHtml()
                 }
 
                 override fun provideCode(): String {

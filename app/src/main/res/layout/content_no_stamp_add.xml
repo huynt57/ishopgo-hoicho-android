@@ -156,7 +156,7 @@
                 style="@style/AppTheme.EnableInputField"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Số lượng"
+                android:hint="Số lượng giao dịch"
                 android:inputType="number"
                 android:maxLength="10" />
 

@@ -34,6 +34,7 @@ import ishopgo.com.exhibition.ui.extensions.asHtml
 import ishopgo.com.exhibition.ui.extensions.setPhone
 import ishopgo.com.exhibition.ui.main.productmanager.add.BoothAdapter
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampViewModel
+import ishopgo.com.exhibition.ui.main.stamp.nostamp.add.TitleAdapter
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.edit.map.NoStampMapActivity
 import ishopgo.com.exhibition.ui.widget.EndlessRecyclerViewScrollListener
 import ishopgo.com.exhibition.ui.widget.ItemOffsetDecoration
@@ -50,6 +51,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
     private var reloadProvider = false
     private val adapterBooth = BoothAdapter()
     private val adapterBoothCurrent = BoothAdapter()
+    private val adapterTitle = TitleAdapter()
 
     companion object {
 
@@ -63,6 +65,21 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         const val ADD_TRACKING = true
     }
 
+    val title = mutableListOf(
+            "Điểm bán lẻ",
+            "Nhà phân phối",
+            "Nhà sản xuất",
+            "Nhà nhập khẩu",
+            "Trang trại",
+            "Nhà vườn",
+            "Hộ nông dân",
+            "Cơ quan kiểm dịch",
+            "Nhà máy sản xuất",
+            "Nhà máy chế biến",
+            "Khu sơ chế",
+            "Nhà sản xuất"
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         stampId = arguments?.getLong(Const.TransferKey.EXTRA_ID, -1L) ?: -1L
@@ -75,6 +92,8 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapterTitle.replaceAll(title)
+
         view_show_map.setOnClickListener {
             if (data != null) {
                 val intent = Intent(context, NoStampMapActivity::class.java)
@@ -101,6 +120,11 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                     showDialogClickTrackingAdapter(data)
                 }
             }
+        }
+
+        btn_assign_no_stamp.setOnClickListener {
+            viewModel.updateStampDiaryInfo(stampId, edit_no_stamp_ngaySX.text.toString(),
+                    edit_no_stamp_HSD.text.toString(), edit_no_stamp_soLuong.text.toString())
         }
     }
 
@@ -150,6 +174,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.deleteTrackingSuccess.observe(this, Observer { p ->
             p?.let {
                 viewModel.getDetailNoStamp(stampId)
+                toast("Xoá thành công")
             }
         })
 
@@ -166,6 +191,14 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                 viewModel.getDetailNoStamp(stampId)
                 hideProgressDialog()
                 toast("Sửa hành trình thành công")
+            }
+        })
+
+        viewModel.updateStampDiarySucccess.observe(this, Observer { p ->
+            p?.let {
+                viewModel.getDetailNoStamp(stampId)
+                hideProgressDialog()
+                toast("Cập nhật thành công")
             }
         })
 
@@ -342,8 +375,9 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun showDialogAddMaker(type: Boolean, title: String) {
         context?.let { it ->
+            val titleDialog = if (type == ADD_TRACKING) "Thêm hành trình" else "Sửa hành trình"
             val dialog = MaterialDialog.Builder(it)
-                    .title("Thêm hành trình")
+                    .title(titleDialog)
                     .customView(R.layout.dialog_no_stamp_journeys, false)
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
@@ -419,8 +453,10 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
-
-            edt_search.setText(if (type == ADD_TRACKING) "" else title)
+            edt_search.isFocusable = false
+            edt_search.isFocusableInTouchMode = false
+            edt_search.setOnClickListener { getTitle(edt_search) }
+            edt_search.setText(if (type == ADD_TRACKING) "Điểm bán lẻ" else title)
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
@@ -467,8 +503,11 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             val edt_search = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
-
-            edt_search.setText(if (type == ADD_TRACKING) "" else title)
+            edt_search.isFocusable = false
+            edt_search.isFocusableInTouchMode = false
+            edt_search.setText("Điểm bán lẻ")
+            edt_search.setOnClickListener { getTitle(edt_search) }
+            edt_search.setText(if (type == ADD_TRACKING) "Điểm bán lẻ" else title)
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rv_search.layoutManager = layoutManager
@@ -489,6 +528,44 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
 
                         showProgressDialog()
                         dialog.dismiss()
+                    }
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getTitle(view: TextView) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn gian hàng")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edtSearch = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edtSearch.visibility = View.GONE
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rvSearch.layoutManager = layoutManager
+
+            rvSearch.adapter = adapterTitle
+            rvSearch.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    loadMoreProvider(totalItemsCount)
+                }
+            })
+            adapterTitle.listener = object : ClickableAdapter.BaseAdapterAction<String> {
+                override fun click(position: Int, data: String, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
+                        view.text = data
+                        view.error = null
                     }
                 }
             }

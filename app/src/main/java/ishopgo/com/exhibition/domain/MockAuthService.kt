@@ -24,6 +24,11 @@ import java.util.*
  * Created by xuanhong on 5/2/18. HappyCoding!
  */
 class MockAuthService(behavior: BehaviorDelegate<ApiService.Auth>) : ApiService.Auth {
+    override fun updateStampDiaryInfo(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
+        val response = BaseResponse<Any>()
+        response.status = 1
+        return delegate.returningResponse(response).updateStampDiaryInfo(id, body)
+    }
     override fun editTracking(id: Long, body: RequestBody): Single<BaseResponse<Any>> {
         val response = BaseResponse<Any>()
         response.status = 1

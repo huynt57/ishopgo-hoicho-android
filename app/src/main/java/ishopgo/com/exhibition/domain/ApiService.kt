@@ -502,7 +502,7 @@ class ApiService {
         @POST("expo/stamp/tracking/{assign_id}/create")
         fun addTracking(@Path("assign_id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
-        @POST("eexpo/stamp/tracking/{id}/update")
+        @POST("expo/stamp/tracking/{id}/update")
         fun editTracking(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
 
         @GET("expo/stamp/product/{id}")
@@ -510,6 +510,9 @@ class ApiService {
 
         @POST("expo/stamp/tracking/{id}/delete")
         fun deleteTracking(@Path("id") id: Long): Single<BaseResponse<Any>>
+
+        @POST("expo/stamp/assign/{id}/update-diary-info")
+        fun updateStampDiaryInfo(@Path("id") id: Long, @Body body: RequestBody): Single<BaseResponse<Any>>
     }
 
 

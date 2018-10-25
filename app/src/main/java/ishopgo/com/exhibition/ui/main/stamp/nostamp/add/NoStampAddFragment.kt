@@ -60,6 +60,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var viewModel: NoStampViewModel
     private val adapterBrands = BrandsAdapter()
     private val adapterBooth = BoothAdapter()
+    private val adapterTitle = TitleAdapter()
     private val adapterBoothCurrent = BoothAdapter()
     private var reloadBrands = false
     private var reloadProvider = false
@@ -74,6 +75,22 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     private var END = LatLng(0.0, 0.0)
     private lateinit var mapFragment: SupportMapFragment
     private var countLoop = 0
+
+
+    val title = mutableListOf<String>(
+            "Điểm bán lẻ",
+            "Nhà phân phối",
+            "Nhà sản xuất",
+            "Nhà nhập khẩu",
+            "Trang trại",
+            "Nhà vườn",
+            "Hộ nông dân",
+            "Cơ quan kiểm dịch",
+            "Nhà máy sản xuất",
+            "Nhà máy chế biến",
+            "Khu sơ chế",
+            "Nhà sản xuất"
+    )
 
     companion object {
 
@@ -101,6 +118,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             intent.putExtra(Const.TransferKey.EXTRA_JSON, Toolbox.gson.toJson(listTracking))
             startActivity(intent)
         }
+        adapterTitle.replaceAll(title)
         edit_no_stamp_thuongHieu.setOnClickListener { getBrands(edit_no_stamp_thuongHieu) }
         edit_no_stamp_gianHang.setOnClickListener { getBooth(edit_no_stamp_gianHang) }
         edit_no_stamp_sanPham.setOnClickListener { viewModel.openSearchProduct(stampId) }
@@ -113,6 +131,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         rv_tracking.isNestedScrollingEnabled = false
         rv_tracking.setHasFixedSize(false)
         rv_tracking.addItemDecoration(ItemOffsetDecoration(view.context, R.dimen.item_spacing))
+
 
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Tracking> {
             override fun click(position: Int, data: Tracking, code: Int) {
@@ -239,6 +258,17 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             }
         })
 
+        viewModel.getDataConfigBooth.observe(this, Observer { p ->
+            p?.let {
+                val booth = BoothManager()
+                booth.id = it.id
+                booth.name = it.name ?: ""
+                booth.phone = it.hotline ?: ""
+                booth.address = it.address ?: ""
+                getLatLngFromAddress(booth, "Nhà sản xuất")
+            }
+        })
+
         reloadBrands = true
         reloadProvider = true
 
@@ -247,6 +277,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         if (UserDataManager.currentBoothId > 0)
             viewModel.loadShopRelates(UserDataManager.currentBoothId)
         else viewModel.loadShopRelates(UserDataManager.currentUserId)
+
+        if (UserDataManager.currentType == "Chủ gian hàng") {
+            viewModel.getConfigBooth()
+        }
     }
 
     private fun getBrands(view: TextView) {
@@ -319,6 +353,44 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                         dialog.dismiss()
                         gianHangId = data.id
                         view.text = data.boothName ?: ""
+                        view.error = null
+                    }
+                }
+            }
+            dialog.show()
+        }
+    }
+
+    private fun getTitle(view: TextView) {
+        context?.let {
+            val dialog = MaterialDialog.Builder(it)
+                    .title("Chọn gian hàng")
+                    .customView(R.layout.diglog_search_recyclerview, false)
+                    .negativeText("Huỷ")
+                    .onNegative { dialog, _ -> dialog.dismiss() }
+                    .autoDismiss(false)
+                    .canceledOnTouchOutside(false)
+                    .build()
+
+
+            val rvSearch = dialog.findViewById(R.id.rv_search) as RecyclerView
+            val edtSearch = dialog.findViewById(R.id.textInputLayout) as TextInputLayout
+            edtSearch.visibility = View.GONE
+
+            val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
+            rvSearch.layoutManager = layoutManager
+
+            rvSearch.adapter = adapterTitle
+            rvSearch.addOnScrollListener(object : EndlessRecyclerViewScrollListener(layoutManager) {
+                override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                    loadMoreProvider(totalItemsCount)
+                }
+            })
+            adapterTitle.listener = object : ClickableAdapter.BaseAdapterAction<String> {
+                override fun click(position: Int, data: String, code: Int) {
+                    context?.let {
+                        dialog.dismiss()
+                        view.text = data
                         view.error = null
                     }
                 }
@@ -422,7 +494,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun getBoothSystem() {
-        context?.let {
+        context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
                     .customView(R.layout.diglog_search_recyclerview, false)
@@ -437,6 +509,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             val edtSearch = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
+            edtSearch.isFocusable = false
+            edtSearch.isFocusableInTouchMode = false
+            edtSearch.setText("Điểm bán lẻ")
+            edtSearch.setOnClickListener { getTitle(edtSearch) }
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rvSearch.layoutManager = layoutManager
@@ -482,7 +558,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             val edtSearch = dialog.findViewById(R.id.edt_search) as TextInputEditText
             textInputLayout.visibility = View.VISIBLE
             textInputLayout.hint = "Tiêu đề danh mục"
-
+            edtSearch.isFocusable = false
+            edtSearch.isFocusableInTouchMode = false
+            edtSearch.setText("Điểm bán lẻ")
+            edtSearch.setOnClickListener { getTitle(edtSearch) }
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rvSearch.layoutManager = layoutManager
@@ -518,6 +597,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                 tracking.lng = listLocation?.get(0)?.longitude ?: 0.0
                 tracking.title = title
                 val values = ValueSync()
+                values.id = data.id
                 values.name = data.boothName
                 values.address = data.address
                 values.phone = data.phone

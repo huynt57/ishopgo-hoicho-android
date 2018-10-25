@@ -9,6 +9,7 @@ import ishopgo.com.exhibition.domain.request.ProductManagerRequest
 import ishopgo.com.exhibition.domain.request.Request
 import ishopgo.com.exhibition.domain.request.SearchProductRequest
 import ishopgo.com.exhibition.domain.response.*
+import ishopgo.com.exhibition.model.BoothConfig
 import ishopgo.com.exhibition.model.BoothManager
 import ishopgo.com.exhibition.model.ManagerBooth
 import ishopgo.com.exhibition.model.product_manager.ManageProduct
@@ -52,6 +53,23 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
                 .subscribeWith(object : BaseSingleObserver<StampNoDetail>() {
                     override fun success(data: StampNoDetail?) {
                         getDataNoStampDetail.postValue(data)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var getDataConfigBooth = MutableLiveData<BoothConfig>()
+
+    fun getConfigBooth() {
+        addDisposable(authService.getConfigBooth()
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<BoothConfig>() {
+                    override fun success(data: BoothConfig?) {
+                        getDataConfigBooth.postValue(data)
                     }
 
                     override fun failure(status: Int, message: String) {
@@ -112,7 +130,7 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
         if (tracking.isNotEmpty()) {
             for (i in tracking.indices) {
                 builder.addFormDataPart("tracking[$i][title]", tracking[i].title.toString())
-                builder.addFormDataPart("tracking[$i][value]", tracking[i].value.toString())
+                builder.addFormDataPart("tracking[$i][value]", tracking[i].valueSync?.id.toString())
             }
         }
 
@@ -215,6 +233,29 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
                 .subscribeWith(object : BaseSingleObserver<Any>() {
                     override fun success(data: Any?) {
                         saveStampAssignSucccess.postValue(true)
+                    }
+
+                    override fun failure(status: Int, message: String) {
+                        resolveError(status, message)
+                    }
+                })
+        )
+    }
+
+    var updateStampDiarySucccess = MutableLiveData<Boolean>()
+
+    fun updateStampDiaryInfo(stampId: Long, date_of_manufacture: String, date_expiry: String, quantity_diary: String) {
+        val builder = MultipartBody.Builder()
+        builder.setType(MultipartBody.FORM)
+                .addFormDataPart("date_of_manufacture", date_of_manufacture)
+                .addFormDataPart("date_expiry", date_expiry)
+                .addFormDataPart("quantity_diary", quantity_diary)
+
+        addDisposable(authService.updateStampDiaryInfo(stampId, builder.build())
+                .subscribeOn(Schedulers.single())
+                .subscribeWith(object : BaseSingleObserver<Any>() {
+                    override fun success(data: Any?) {
+                        updateStampDiarySucccess.postValue(true)
                     }
 
                     override fun failure(status: Int, message: String) {
