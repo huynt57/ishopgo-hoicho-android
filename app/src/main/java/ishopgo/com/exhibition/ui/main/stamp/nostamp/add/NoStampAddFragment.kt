@@ -101,8 +101,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             return fragment
         }
 
-        const val COATINGS_SHOW: Int = 1 //Có phủ cào
-        const val COATINGS_HIDDEN: Int = 0 //Không phủ cào
+        const val ADD_TRACKING = true
+        const val BOOTH_CURRENT = "1"
+        const val BOOTH_SYSTEM = "2"
+        const val BOOTH_SHOP = "3"
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -123,7 +125,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         edit_no_stamp_gianHang.setOnClickListener { getBooth(edit_no_stamp_gianHang) }
         edit_no_stamp_sanPham.setOnClickListener { viewModel.openSearchProduct(stampId) }
         edit_no_stamp.setOnClickListener { viewModel.getGenerateStamp() }
-        img_add_maker.setOnClickListener { showDialogAddMaker() }
+        img_add_maker.setOnClickListener { showDialogAddMaker(ADD_TRACKING, "", null) }
         rv_tracking.adapter = adapter
         val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         rv_tracking.layoutManager = layoutManager
@@ -136,7 +138,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         adapter.listener = object : ClickableAdapter.BaseAdapterAction<Tracking> {
             override fun click(position: Int, data: Tracking, code: Int) {
                 context?.let {
-                    showDialogClickTrackingAdapter(data)
+                    showDialogClickTrackingAdapter(data, position)
                 }
             }
         }
@@ -240,7 +242,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         })
         viewModel.shopRelates.observe(this, Observer { p ->
             p?.let {
-                adapterBoothCurrent.replaceAll(it)
+                adapterBoothCurrent.addAll(it)
             }
         })
 
@@ -261,11 +263,16 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.getDataConfigBooth.observe(this, Observer { p ->
             p?.let {
                 val booth = BoothManager()
-                booth.id = it.id
-                booth.name = it.name ?: ""
+                booth.id = if (UserDataManager.currentBoothId > 0)
+                    UserDataManager.currentBoothId
+                else UserDataManager.currentUserId
+
+                booth.boothName = it.name ?: ""
                 booth.phone = it.hotline ?: ""
                 booth.address = it.address ?: ""
-                getLatLngFromAddress(booth, "Nhà sản xuất")
+                booth.valueType = BOOTH_SHOP
+                adapterBoothCurrent.addData(0, booth)
+                getLatLngFromAddress(booth, "Nhà sản xuất", null, null)
             }
         })
 
@@ -310,12 +317,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
 
             adapterBrands.listener = object : ClickableAdapter.BaseAdapterAction<Brand> {
                 override fun click(position: Int, data: Brand, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        thuongHieuId = data.id
-                        view.text = data.name ?: ""
-                        view.error = null
-                    }
+                    dialog.dismiss()
+                    thuongHieuId = data.id
+                    view.text = data.name ?: ""
+                    view.error = null
                 }
             }
             dialog.show()
@@ -349,12 +354,10 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             })
             adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        gianHangId = data.id
-                        view.text = data.boothName ?: ""
-                        view.error = null
-                    }
+                    dialog.dismiss()
+                    gianHangId = data.id
+                    view.text = data.boothName ?: ""
+                    view.error = null
                 }
             }
             dialog.show()
@@ -388,11 +391,9 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             })
             adapterTitle.listener = object : ClickableAdapter.BaseAdapterAction<String> {
                 override fun click(position: Int, data: String, code: Int) {
-                    context?.let {
-                        dialog.dismiss()
-                        view.text = data
-                        view.error = null
-                    }
+                    dialog.dismiss()
+                    view.text = data
+                    view.error = null
                 }
             }
             dialog.show()
@@ -431,10 +432,11 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.getBooth(loadMore)
     }
 
-    private fun showDialogAddMaker() {
+    private fun showDialogAddMaker(type: Boolean, title: String, position: Int?) {
         context?.let { it ->
+            val titleDialog = if (type == ADD_TRACKING) "Thêm hành trình" else "Sửa hành trình"
             val dialog = MaterialDialog.Builder(it)
-                    .title("Thêm hành trình")
+                    .title(titleDialog)
                     .customView(R.layout.dialog_no_stamp_journeys, false)
                     .autoDismiss(false)
                     .canceledOnTouchOutside(true)
@@ -442,19 +444,19 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
 
             val tvAffiliates = dialog.findViewById(R.id.tv_affiliates) as VectorSupportTextView
             tvAffiliates.setOnClickListener {
-                getBoothCurrent()
+                getBoothCurrent(type, title, position)
                 dialog.dismiss()
             }
             val tvSystem = dialog.findViewById(R.id.tv_system) as VectorSupportTextView
             tvSystem.setOnClickListener {
-                getBoothSystem()
+                getBoothSystem(type, title, position)
                 dialog.dismiss()
             }
             dialog.show()
         }
     }
 
-    private fun showDialogClickTrackingAdapter(data: Tracking) {
+    private fun showDialogClickTrackingAdapter(data: Tracking, position: Int) {
         context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
                     .customView(R.layout.dialog_no_stamp_tracking, false)
@@ -468,24 +470,27 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                 dialog.dismiss()
             }
             val tvEditTracking = dialog.findViewById(R.id.tv_editTracking) as VectorSupportTextView
-            tvEditTracking.visibility = View.GONE
+            tvEditTracking.setOnClickListener {
+                showDialogAddMaker(!ADD_TRACKING, data.title ?: "", position)
+                dialog.dismiss()
+            }
 
             val tvDeleteTracking = dialog.findViewById(R.id.tv_deleteTracking) as VectorSupportTextView
             tvDeleteTracking.setOnClickListener {
-                dialogDeleteTracking(data)
+                dialogDeleteTracking(position)
                 dialog.dismiss()
             }
             dialog.show()
         }
     }
 
-    private fun dialogDeleteTracking(data: Tracking) {
+    private fun dialogDeleteTracking(position: Int) {
         MaterialDialog.Builder(requireContext())
                 .content("Bạn có muốn xoá hành trình này không?")
                 .positiveText("Có")
                 .onPositive { dialog, _ ->
-                    viewModel.deleteTracking(data.id)
-                    showProgressDialog()
+                    listTracking.removeAt(position)
+                    toast("Xoá thành công")
                     dialog.dismiss()
                 }
                 .negativeText("Không")
@@ -493,7 +498,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                 .show()
     }
 
-    private fun getBoothSystem() {
+    private fun getBoothSystem(type: Boolean, title: String, i: Int?) {
         context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
@@ -511,8 +516,8 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             textInputLayout.hint = "Tiêu đề danh mục"
             edtSearch.isFocusable = false
             edtSearch.isFocusableInTouchMode = false
-            edtSearch.setText("Điểm bán lẻ")
             edtSearch.setOnClickListener { getTitle(edtSearch) }
+            edtSearch.setText(if (type == ADD_TRACKING) "Điểm bán lẻ" else title)
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rvSearch.layoutManager = layoutManager
@@ -525,25 +530,18 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             })
             adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
-                    context?.let {
-                        if (edtSearch.text.isEmpty()) {
-                            toast("Vui lòng nhập tiêu đề danh mục")
-                            edtSearch.error = "Tiêu đề danh mục còn trống"
-                            return
-                        }
-
-                        getLatLngFromAddress(data, edtSearch.text.toString())
-
-                        dialog.dismiss()
-                    }
+                    if (type == ADD_TRACKING)
+                        getLatLngFromAddress(data, edtSearch.text.toString(), null, BOOTH_SYSTEM)
+                    else getLatLngFromAddress(data, edtSearch.text.toString(), i, BOOTH_SYSTEM)
+                    dialog.dismiss()
                 }
             }
             dialog.show()
         }
     }
 
-    private fun getBoothCurrent() {
-        context?.let {
+    private fun getBoothCurrent(type: Boolean, title: String, i: Int?) {
+        context?.let { it ->
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
                     .customView(R.layout.diglog_search_recyclerview, false)
@@ -560,8 +558,8 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             textInputLayout.hint = "Tiêu đề danh mục"
             edtSearch.isFocusable = false
             edtSearch.isFocusableInTouchMode = false
-            edtSearch.setText("Điểm bán lẻ")
             edtSearch.setOnClickListener { getTitle(edtSearch) }
+            edtSearch.setText(if (type == ADD_TRACKING) "Điểm bán lẻ" else title)
 
             val layoutManager = LinearLayoutManager(it, LinearLayoutManager.VERTICAL, false)
             rvSearch.layoutManager = layoutManager
@@ -571,12 +569,9 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
             adapterBoothCurrent.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
-                        if (edtSearch.text.isEmpty()) {
-                            toast("Vui lòng nhập tiêu đề danh mục")
-                            edtSearch.error = "Tiêu đề danh mục còn trống"
-                            return
-                        }
-                        getLatLngFromAddress(data, edtSearch.text.toString())
+                        if (type == ADD_TRACKING)
+                            getLatLngFromAddress(data, edtSearch.text.toString(), null, BOOTH_CURRENT)
+                        else getLatLngFromAddress(data, edtSearch.text.toString(), i, BOOTH_CURRENT)
 
                         dialog.dismiss()
                     }
@@ -586,7 +581,7 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    private fun getLatLngFromAddress(data: BoothManager, title: String) {
+    private fun getLatLngFromAddress(data: BoothManager, title: String, position: Int?, valueType: String?) {
         try {
             val listLocation: List<Address>?
             val geocoder = Geocoder(context)
@@ -596,13 +591,29 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                 tracking.lat = listLocation?.get(0)?.latitude ?: 0.0
                 tracking.lng = listLocation?.get(0)?.longitude ?: 0.0
                 tracking.title = title
-                val values = ValueSync()
-                values.id = data.id
-                values.name = data.boothName
-                values.address = data.address
-                values.phone = data.phone
-                tracking.valueSync = values
-                listTracking.add(tracking)
+                tracking.id = data.id
+                if (data.boothName?.isNotEmpty() == true)
+                    tracking.valueName = data.boothName
+                else tracking.valueName = data.name
+
+                tracking.valueAddress = data.address
+
+                if (data.phone?.isNotEmpty() == true)
+                    tracking.valuePhone = data.phone
+                else tracking.valuePhone = data.hotline
+
+                if (data.valueType != null)
+                    tracking.valueType = data.valueType
+                else
+                    tracking.valueType = valueType
+
+                if (position == null)
+                    listTracking.add(tracking)
+                else {
+                    listTracking.removeAt(position)
+                    listTracking.add(position, tracking)
+                }
+
                 adapter.replaceAll(listTracking)
                 mapFragment = childFragmentManager.findFragmentById((R.id.map)) as SupportMapFragment
                 mapFragment.getMapAsync(this)
@@ -640,11 +651,11 @@ class NoStampAddFragment : BaseFragment(), OnMapReadyCallback {
                                 tv_map_title.visibility = if (item[i].title?.isNotEmpty() == true) View.VISIBLE else View.GONE
                                 tv_map_title.text = "<b>${item[i].title
                                         ?: ""}</b>".asHtml()
-                                tv_map_name.text = "Tên: <b>${item[i].valueSync?.name
+                                tv_map_name.text = "Tên: <b>${item[i].valueName
                                         ?: ""}</b>".asHtml()
-                                val sdt = "Sđt: <b>${item[i].valueSync?.phone ?: ""}</b>".asHtml()
-                                tv_map_phone.setPhone(sdt, item[i].valueSync?.phone ?: "")
-                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueSync?.address}</b>".asHtml()
+                                val sdt = "Sđt: <b>${item[i].valuePhone ?: ""}</b>".asHtml()
+                                tv_map_phone.setPhone(sdt, item[i].valuePhone ?: "")
+                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueAddress}</b>".asHtml()
                             }
                         }
                     }

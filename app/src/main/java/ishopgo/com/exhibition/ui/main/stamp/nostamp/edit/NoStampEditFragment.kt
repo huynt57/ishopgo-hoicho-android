@@ -29,9 +29,7 @@ import ishopgo.com.exhibition.model.Const
 import ishopgo.com.exhibition.model.UserDataManager
 import ishopgo.com.exhibition.ui.base.BaseFragment
 import ishopgo.com.exhibition.ui.base.list.ClickableAdapter
-import ishopgo.com.exhibition.ui.extensions.Toolbox
-import ishopgo.com.exhibition.ui.extensions.asHtml
-import ishopgo.com.exhibition.ui.extensions.setPhone
+import ishopgo.com.exhibition.ui.extensions.*
 import ishopgo.com.exhibition.ui.main.productmanager.add.BoothAdapter
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.NoStampViewModel
 import ishopgo.com.exhibition.ui.main.stamp.nostamp.add.TitleAdapter
@@ -63,6 +61,9 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         }
 
         const val ADD_TRACKING = true
+        const val BOOTH_CURRENT = "1"
+        const val BOOTH_SYSTEM = "2"
+        const val BOOTH_SHOP = "3"
     }
 
     val title = mutableListOf(
@@ -103,7 +104,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         }
 
         img_add_maker.setOnClickListener {
-            showDialogAddMaker(ADD_TRACKING, "")
+            showDialogAddMaker(ADD_TRACKING, "", null)
         }
 
         rv_tracking.adapter = adapter
@@ -142,6 +143,9 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.getDataNoStampDetail.observe(this, Observer { p ->
             p?.let { it ->
                 data = it
+                edit_no_stamp_ngaySX.setText(it.dateOfManufacture?.asDateProdcutDetail() ?: "")
+                edit_no_stamp_HSD.setText(it.dateExpiry?.asDateProdcutDetail() ?: "")
+                edit_no_stamp_soLuong.setText(it.quantityDiary)
                 edit_no_stamp_name.setText(it.code ?: "")
                 edit_no_stamp_count.setText("${it.limitedAccess ?: 0}")
                 item = it.trackings ?: mutableListOf()
@@ -174,6 +178,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         viewModel.deleteTrackingSuccess.observe(this, Observer { p ->
             p?.let {
                 viewModel.getDetailNoStamp(stampId)
+                hideProgressDialog()
                 toast("Xoá thành công")
             }
         })
@@ -201,6 +206,25 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                 toast("Cập nhật thành công")
             }
         })
+
+        viewModel.getDataConfigBooth.observe(this, Observer { p ->
+            p?.let {
+                val booth = BoothManager()
+                booth.id = if (UserDataManager.currentBoothId > 0)
+                    UserDataManager.currentBoothId
+                else UserDataManager.currentUserId
+
+                booth.boothName = it.name ?: ""
+                booth.phone = it.hotline ?: ""
+                booth.address = it.address ?: ""
+                booth.valueType = BOOTH_SHOP
+                adapterBoothCurrent.addData(0, booth)
+            }
+        })
+
+        if (UserDataManager.currentType == "Chủ gian hàng") {
+            viewModel.getConfigBooth()
+        }
 
         reloadProvider = true
 
@@ -249,7 +273,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
 //            GoogleDirectionConfiguration.getInstance().isLogEnabled = true
             val latLngBounds = LatLngBounds.Builder()
             for (i in item.indices) {
-                infoWindowAdapter(it, i, item)
+//                infoWindowAdapter(it, i, item)
                 val latLng = LatLng(item[i].lat, item[i].lng)
                 latLngBounds.include(latLng)
                 val text = TextView(context)
@@ -359,11 +383,11 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                                 tv_map_title.visibility = if (item[i].title?.isNotEmpty() == true) View.VISIBLE else View.GONE
                                 tv_map_title.text = "<b>${item[i].title
                                         ?: ""}</b>".asHtml()
-                                tv_map_name.text = "Tên: <b>${item[i].valueSync?.name
+                                tv_map_name.text = "Tên: <b>${item[i].valueName
                                         ?: ""}</b>".asHtml()
-                                val sdt = "Sđt: <b>${item[i].valueSync?.phone ?: ""}</b>".asHtml()
-                                tv_map_phone.setPhone(sdt, item[i].valueSync?.phone ?: "")
-                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueSync?.address}</b>".asHtml()
+                                val sdt = "Sđt: <b>${item[i].valuePhone ?: ""}</b>".asHtml()
+                                tv_map_phone.setPhone(sdt, item[i].valuePhone ?: "")
+                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueAddress}</b>".asHtml()
                             }
                         }
                     }
@@ -373,7 +397,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         })
     }
 
-    private fun showDialogAddMaker(type: Boolean, title: String) {
+    private fun showDialogAddMaker(type: Boolean, title: String, trackingId: Long?) {
         context?.let { it ->
             val titleDialog = if (type == ADD_TRACKING) "Thêm hành trình" else "Sửa hành trình"
             val dialog = MaterialDialog.Builder(it)
@@ -384,12 +408,12 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                     .build()
             val tvAffiliates = dialog.findViewById(R.id.tv_affiliates) as VectorSupportTextView
             tvAffiliates.setOnClickListener {
-                getBoothCurrent(type, title)
+                getBoothCurrent(type, title, trackingId)
                 dialog.dismiss()
             }
             val tvSystem = dialog.findViewById(R.id.tv_system) as VectorSupportTextView
             tvSystem.setOnClickListener {
-                getBoothSystem(type, title)
+                getBoothSystem(type, title, trackingId)
                 dialog.dismiss()
             }
             dialog.show()
@@ -411,7 +435,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             }
             val tvEditTracking = dialog.findViewById(R.id.tv_editTracking) as VectorSupportTextView
             tvEditTracking.setOnClickListener {
-                showDialogAddMaker(!ADD_TRACKING, data.title ?: "")
+                showDialogAddMaker(!ADD_TRACKING, data.title ?: "", data.id)
                 dialog.dismiss()
             }
             val tvDeleteTracking = dialog.findViewById(R.id.tv_deleteTracking) as VectorSupportTextView
@@ -437,7 +461,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
                 .show()
     }
 
-    private fun getBoothSystem(type: Boolean, title: String) {
+    private fun getBoothSystem(type: Boolean, title: String, trackingId: Long?) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
@@ -470,14 +494,11 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             adapterBooth.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
-                        if (edt_search.text.isEmpty()) {
-                            toast("Vui lòng nhập tiêu đề danh mục")
-                            edt_search.error = "Tiêu đề danh mục còn trống"
-                            return
-                        }
-                        if (type == ADD_TRACKING)
-                            viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
-                        else viewModel.editTracking(stampId, edt_search.text.trim().toString(), data.id)
+                        val valueType = if (data.valueType != null) BOOTH_SHOP else BOOTH_SYSTEM
+
+                        if (type == ADD_TRACKING) {
+                            viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id, valueType)
+                        } else viewModel.editTracking(trackingId ?: -1L, edt_search.text.trim().toString(), data.id, valueType)
                         showProgressDialog()
                         dialog.dismiss()
                     }
@@ -487,7 +508,7 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
         }
     }
 
-    private fun getBoothCurrent(type: Boolean, title: String) {
+    private fun getBoothCurrent(type: Boolean, title: String, trackingId: Long?) {
         context?.let {
             val dialog = MaterialDialog.Builder(it)
                     .title("Chọn gian hàng")
@@ -517,14 +538,12 @@ class NoStampEditFragment : BaseFragment(), OnMapReadyCallback {
             adapterBoothCurrent.listener = object : ClickableAdapter.BaseAdapterAction<BoothManager> {
                 override fun click(position: Int, data: BoothManager, code: Int) {
                     context?.let {
-                        if (edt_search.text.isEmpty()) {
-                            toast("Vui lòng nhập tiêu đề danh mục")
-                            edt_search.error = "Tiêu đề danh mục còn trống"
-                            return
-                        }
+                        val valueType = if (data.valueType != null) BOOTH_SHOP else BOOTH_CURRENT
+
                         if (type == ADD_TRACKING)
-                            viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id)
-                        else viewModel.editTracking(stampId, edt_search.text.trim().toString(), data.id)
+                            viewModel.createTracking(stampId, edt_search.text.trim().toString(), data.id, valueType)
+                        else viewModel.editTracking(trackingId
+                                ?: -1L, edt_search.text.trim().toString(), data.id, valueType)
 
                         showProgressDialog()
                         dialog.dismiss()

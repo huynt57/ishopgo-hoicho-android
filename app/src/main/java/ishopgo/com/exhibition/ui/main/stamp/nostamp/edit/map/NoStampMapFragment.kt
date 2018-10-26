@@ -55,11 +55,11 @@ class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
                                 tv_map_title.visibility = if (item[i].title?.isNotEmpty() == true) View.VISIBLE else View.GONE
                                 tv_map_title.text = "<b>${item[i].title
                                         ?: ""}</b>".asHtml()
-                                tv_map_name.text = "Tên: <b>${item[i].valueSync?.name
+                                tv_map_name.text = "Tên: <b>${item[i].valueName
                                         ?: ""}</b>".asHtml()
-                                val sdt = "Sđt: <b>${item[i].valueSync?.phone ?: ""}</b>".asHtml()
-                                tv_map_phone.setPhone(sdt, item[i].valueSync?.phone ?: "")
-                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueSync?.address}</b>".asHtml()
+                                val sdt = "Sđt: <b>${item[i].valuePhone ?: ""}</b>".asHtml()
+                                tv_map_phone.setPhone(sdt, item[i].valuePhone ?: "")
+                                tv_map_address.text = "Địa chỉ: <b>${item[i].valueAddress}</b>".asHtml()
                             }
                         }
                     }
@@ -137,8 +137,8 @@ class NoStampMapFragment : BaseActionBarFragment(), OnMapReadyCallback {
 
     companion object {
 
-        fun newInstance(params: Bundle): ProductStampMapFragment {
-            val fragment = ProductStampMapFragment()
+        fun newInstance(params: Bundle): NoStampMapFragment {
+            val fragment = NoStampMapFragment()
             fragment.arguments = params
 
             return fragment

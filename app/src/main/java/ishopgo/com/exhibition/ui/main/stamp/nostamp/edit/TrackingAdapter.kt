@@ -40,7 +40,7 @@ class TrackingAdapter : ClickableAdapter<Tracking>() {
                 view_shop_name.text = convert.provideShop()
                 view_shop_address.text = convert.provideAddress()
                 view_shop_title.text = convert.provideTitle()
-                view_shop_phone.setPhone(convert.providePhone(), data.valueSync?.phone ?: "")
+                view_shop_phone.setPhone(convert.providePhone(), data.valuePhone ?: "")
 
                 view_shop_title.visibility = if (convert.provideTitle().isNotEmpty()) View.VISIBLE else View.GONE
                 view_shop_name.visibility = if (convert.provideShop().isNotEmpty()) View.VISIBLE else View.GONE
@@ -65,15 +65,15 @@ class TrackingAdapter : ClickableAdapter<Tracking>() {
                 }
 
                 override fun provideShop(): CharSequence {
-                    return from.valueSync?.name ?: ""
+                    return from.valueName ?: ""
                 }
 
                 override fun providePhone(): CharSequence {
-                    return from.valueSync?.phone ?: ""
+                    return from.valuePhone ?: ""
                 }
 
                 override fun provideAddress(): CharSequence {
-                    return from.valueSync?.address ?: ""
+                    return from.valueAddress ?: ""
                 }
             }
         }

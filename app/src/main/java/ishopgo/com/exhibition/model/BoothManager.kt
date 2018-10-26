@@ -66,4 +66,6 @@ class BoothManager : IdentityData() {
     @SerializedName("followed")
     @Expose
     var followed: Int? = null
+
+    var valueType: String? = null
 }

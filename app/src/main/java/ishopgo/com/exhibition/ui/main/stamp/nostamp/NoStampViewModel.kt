@@ -130,7 +130,8 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
         if (tracking.isNotEmpty()) {
             for (i in tracking.indices) {
                 builder.addFormDataPart("tracking[$i][title]", tracking[i].title.toString())
-                builder.addFormDataPart("tracking[$i][value]", tracking[i].valueSync?.id.toString())
+                builder.addFormDataPart("tracking[$i][value]", tracking[i].id.toString())
+                builder.addFormDataPart("tracking[$i][value_type]", tracking[i].valueType ?: "")
             }
         }
 
@@ -267,11 +268,12 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
 
     var createTrackingSucccess = MutableLiveData<Boolean>()
 
-    fun createTracking(stampId: Long, title: String, boothId: Long) {
+    fun createTracking(stampId: Long, title: String, boothId: Long, valueType:String) {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("title", title)
                 .addFormDataPart("value", boothId.toString())
+                .addFormDataPart("value_type", valueType)
 
         addDisposable(authService.addTracking(stampId, builder.build())
                 .subscribeOn(Schedulers.single())
@@ -289,11 +291,12 @@ class NoStampViewModel : BaseListViewModel<List<StampNoListNew>>(), AppComponent
 
     var editTrackingSucccess = MutableLiveData<Boolean>()
 
-    fun editTracking(stampId: Long, title: String, boothId: Long) {
+    fun editTracking(stampId: Long, title: String, boothId: Long, valueType:String) {
         val builder = MultipartBody.Builder()
         builder.setType(MultipartBody.FORM)
                 .addFormDataPart("title", title)
                 .addFormDataPart("value", boothId.toString())
+                .addFormDataPart("value_type", valueType)
 
         addDisposable(authService.editTracking(stampId, builder.build())
                 .subscribeOn(Schedulers.single())

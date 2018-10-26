@@ -19,7 +19,22 @@ class Tracking : IdentityData() {
     @SerializedName("value")
     @Expose
     var value: String? = null
-    @SerializedName("value_sync")
+    @SerializedName("value_name")
     @Expose
-    var valueSync: ValueSync? = null
+    var valueName: String? = null
+    @SerializedName("value_type")
+    @Expose
+    var valueType: String? = null
+    @SerializedName("value_phone")
+    @Expose
+    var valuePhone: String? = null
+    @SerializedName("value_address")
+    @Expose
+    var valueAddress: String? = null
+    @SerializedName("value_district")
+    @Expose
+    var valueDistrict: String? = null
+    @SerializedName("value_city")
+    @Expose
+    var valueCity: String? = null
 }

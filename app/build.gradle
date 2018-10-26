@@ -98,8 +98,8 @@ android {
     productFlavors {
         hangviet {
             applicationId "ishopgo.com.exhibition"
-            versionCode 39
-            versionName "1.8.9"
+            versionCode 40
+            versionName "1.8.10"
             signingConfig signingConfigs.hangviet
             resValue "string", "app_id", "hoichone"
             resValue "string", "app_name", "Hàng Việt 360"
@@ -124,8 +124,8 @@ android {
         }
         agri {
             applicationId "ishopgo.com.agri"
-            versionCode 30
-            versionName "1.3.9"
+            versionCode 31
+            versionName "1.3.10"
             resValue "string", "app_id", "1839d59174da18dde3d19118052f6fb0"
             resValue "string", "app_name", "Agri 360"
             resValue "string", "app_host", "agri360.vn"
@@ -149,8 +149,8 @@ android {
         }
         vietbuild {
             applicationId "ishopgo.com.vietbuild"
-            versionCode 30
-            versionName "1.3.9"
+            versionCode 31
+            versionName "1.3.10"
             resValue "string", "app_id", "8f80fa2be72c1ecd40536ef38c341459"
             resValue "string", "app_name", "Vietbuild Expo"
             resValue "string", "app_host", "vietbuildexpo.vn"
@@ -174,8 +174,8 @@ android {
         }
         farm {
             applicationId "ishopgo.com.farm"
-            versionCode 18
-            versionName "1.2.9"
+            versionCode 19
+            versionName "1.2.10"
             resValue "string", "app_id", "746ebdd7905b4156b3dff5717d63d70c"
             resValue "string", "app_name", "Farm 360"
             resValue "string", "app_host", "farm360.vn"
@@ -200,8 +200,8 @@ android {
 
         htx {
             applicationId "ishopgo.com.htx"
-            versionCode 18
-            versionName "1.2.9"
+            versionCode 19
+            versionName "1.2.10"
             resValue "string", "app_id", "efa5a395827ee60b75624bfc7e67060b"
             resValue "string", "app_name", "Hợp Tác Xã"
             resValue "string", "app_host", "hoptacxa.vn"
@@ -226,8 +226,8 @@ android {
 
         icheckexpo {
             applicationId "ishopgo.com.icheckexpo"
-            versionCode 7
-            versionName "1.0.6"
+            versionCode 8
+            versionName "1.0.7"
             resValue "string", "app_id", "icheckexpo.com"
             resValue "string", "app_name", "Icheck Expo"
             resValue "string", "app_host", "icheckexpo.com"
@@ -252,8 +252,8 @@ android {
 
         htxnn {
             applicationId "ishopgo.com.htxnn"
-            versionCode 5
-            versionName "1.0.4"
+            versionCode 6
+            versionName "1.0.5"
             resValue "string", "app_id", "476f6f9d89a205518b54c6c302ebb3b0"
             resValue "string", "app_name", "Hợp tác xã nông nghiệp"
             resValue "string", "app_host", "htxnongnghiep.vn"
